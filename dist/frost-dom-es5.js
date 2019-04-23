@@ -2462,8 +2462,6 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
      * @param {string|HTMLElement|HTMLCollection|HTMLElement[]} others The other node(s), or a query selector or HTML string.
      */
     wrapAll: function wrapAll(nodes, others) {
-      var _this34 = this;
-
       others = this._parseQuery(others);
       var clone = this.clone(others, true);
 
@@ -2471,8 +2469,8 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
       var first = clone.shift();
 
-      DOM._append(this.filterOne(DOM._findBySelector('*', first), function (test) {
-        return !_this34.child(test);
+      DOM._append(Core.merge([], DOM._findBySelector('*', first)).find(function (node) {
+        return !DOM._hasChildren(node);
       }) || first, nodes);
     },
 
@@ -2482,12 +2480,12 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
      * @param {string|HTMLElement|HTMLCollection|HTMLElement[]} others The other node(s), or a query selector or HTML string.
      */
     wrapInner: function wrapInner(nodes, others) {
-      var _this35 = this;
+      var _this34 = this;
 
       others = this._parseQuery(others);
 
       this._nodeFilter(nodes, DOM.isNode).forEach(function (node) {
-        return _this35._wrapInner(node, others);
+        return _this34._wrapInner(node, others);
       });
     },
 
@@ -2507,9 +2505,9 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       selection.removeAllRanges();
       var first = nodes.slice().shift();
 
-      DOM._append(this.filterOne(DOM._findBySelector('*', first), function (test) {
-        return !DOM._children(test, false, true).length;
-      }) || first, _toConsumableArray(range.extractContents().childNodes));
+      DOM._append(Core.merge([], DOM._findBySelector('*', first)).find(function (node) {
+        return !DOM._hasChildren(node);
+      }) || first, Core.merge([], range.extractContents().childNodes));
 
       nodes.forEach(function (node) {
         return range.insertNode(node);
@@ -2545,8 +2543,8 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
       var first = clone.shift();
 
-      DOM._append(this.filterOne(DOM._findBySelector('*', first), function (test) {
-        return !DOM._children(test, false, true).length;
+      DOM._append(Core.merge([], DOM._findBySelector('*', first)).find(function (node) {
+        return !DOM._hasChildren(node);
       }) || first, [node]);
     },
 
@@ -2564,8 +2562,8 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
       var first = clone.shift();
 
-      DOM._append(this.filterOne(DOM._findBySelector('*', first), function (test) {
-        return !DOM._children(test, false, true).length;
+      DOM._append(Core.merge([], DOM._findBySelector('*', first)).find(function (node) {
+        return !DOM._hasChildren(node);
       }) || first, children);
     }
   });
@@ -2668,10 +2666,10 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
      * @returns {HTMLElement[]} The filtered nodes.
      */
     hidden: function hidden(nodes) {
-      var _this36 = this;
+      var _this35 = this;
 
       return this._nodeFilter(nodes, function (node) {
-        return (DOM.isNode(node) || DOM.isDocument(node) || Core.isWindow(node)) && _this36.isHidden(node);
+        return (DOM.isNode(node) || DOM.isDocument(node) || Core.isWindow(node)) && _this35.isHidden(node);
       });
     },
 
@@ -2681,10 +2679,10 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
      * @returns {HTMLElement} The filtered node.
      */
     hiddenOne: function hiddenOne(nodes) {
-      var _this37 = this;
+      var _this36 = this;
 
       return this._nodeFind(nodes, function (node) {
-        return (DOM.isNode(node) || DOM.isDocument(node) || Core.isWindow(node)) && _this37.isHidden(node);
+        return (DOM.isNode(node) || DOM.isDocument(node) || Core.isWindow(node)) && _this36.isHidden(node);
       }) || null;
     },
 
@@ -2694,10 +2692,10 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
      * @returns {HTMLElement[]} The filtered nodes.
      */
     visible: function visible(nodes) {
-      var _this38 = this;
+      var _this37 = this;
 
       return this._nodeFilter(nodes, function (node) {
-        return (DOM.isNode(node) || DOM.isDocument(node) || Core.isWindow(node)) && _this38.isVisible(node);
+        return (DOM.isNode(node) || DOM.isDocument(node) || Core.isWindow(node)) && _this37.isVisible(node);
       });
     },
 
@@ -2707,10 +2705,10 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
      * @returns {HTMLElement} The filtered node.
      */
     visibleOne: function visibleOne(nodes) {
-      var _this39 = this;
+      var _this38 = this;
 
       return this._nodeFind(nodes, function (node) {
-        return (DOM.isNode(node) || DOM.isDocument(node) || Core.isWindow(node)) && _this39.isVisible(node);
+        return (DOM.isNode(node) || DOM.isDocument(node) || Core.isWindow(node)) && _this38.isVisible(node);
       }) || null;
     }
   });
@@ -3650,8 +3648,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       }
 
       var range = selection.getRangeAt(0);
-
-      var nodes = DOM._findBySelector('*', range.commonAncestorContainer);
+      var nodes = Core.merge([], DOM._findBySelector('*', range.commonAncestorContainer));
 
       if (!nodes.length) {
         return [range.commonAncestorContainer];
@@ -3732,10 +3729,10 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
      * @returns {Boolean} TRUE if any of the nodes has a CSS animation, otherwise FALSE.
      */
     hasAnimation: function hasAnimation(nodes) {
-      var _this40 = this;
+      var _this39 = this;
 
       return this._nodeFilter(nodes).some(function (node) {
-        return !!parseFloat(_this40._css(node, 'animation-duration'));
+        return !!parseFloat(_this39._css(node, 'animation-duration'));
       });
     },
 
@@ -3777,12 +3774,12 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
      * @returns {Boolean} TRUE if any of the nodes has custom data, otherwise FALSE.
      */
     hasData: function hasData(nodes, key) {
-      var _this41 = this;
+      var _this40 = this;
 
       return this._nodeFilter(nodes, function (node) {
         return DOM.isElement(node) || DOM.isDocument(node) || Core.isWindow(node);
       }).some(function (node) {
-        return _this41.nodeData.has(node) && (!key || _this41.nodeData.get(node).hasOwnProperty(key));
+        return _this40.nodeData.has(node) && (!key || _this40.nodeData.get(node).hasOwnProperty(key));
       });
     },
 
@@ -3804,10 +3801,10 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
      * @returns {Boolean} TRUE if any of the nodes has a CSS transition, otherwise FALSE.
      */
     hasTransition: function hasTransition(nodes) {
-      var _this42 = this;
+      var _this41 = this;
 
       return this._nodeFilter(nodes).some(function (node) {
-        return !!parseFloat(_this42._css(node, 'transition-duration'));
+        return !!parseFloat(_this41._css(node, 'transition-duration'));
       });
     },
 
@@ -3856,11 +3853,11 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
      * @returns {Boolean} TRUE if any of the nodes is "fixed", otherwise FALSE.
      */
     isFixed: function isFixed(nodes) {
-      var _this43 = this;
+      var _this42 = this;
 
       return this._nodeFilter(nodes).some(function (node) {
-        return _this43._css(node, 'position') === 'fixed' || _this43._parents(node, function (parent) {
-          return _this43._css(parent, 'position') === 'fixed';
+        return _this42._css(node, 'position') === 'fixed' || _this42._parents(node, function (parent) {
+          return _this42._css(parent, 'position') === 'fixed';
         }, false, true).length;
       });
     },
@@ -3908,7 +3905,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
      * @returns {*} The result of the callback.
      */
     forceShow: function forceShow(nodes, callback) {
-      var _this44 = this;
+      var _this43 = this;
 
       var node = this._nodeFind(nodes, function (node) {
         return DOM.isNode(node) || DOM.isDocument(node) || Core.isWindow(node);
@@ -3931,7 +3928,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       }
 
       this._parents(node, function (parent) {
-        return _this44._css(parent, 'display') === 'none';
+        return _this43._css(parent, 'display') === 'none';
       }).forEach(function (parent) {
         elements.push(parent);
         styles.push(DOM._getAttribute(parent, 'style'));
@@ -3993,11 +3990,11 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
      * @returns {Array} The serialized array.
      */
     serializeArray: function serializeArray(nodes) {
-      var _this45 = this;
+      var _this44 = this;
 
       return this._nodeFilter(nodes).reduce(function (values, node) {
         if (DOM._is(node, 'form')) {
-          return values.concat(_this45.serializeArray(DOM._findBySelector('input, select, textarea', node)));
+          return values.concat(_this44.serializeArray(DOM._findBySelector('input, select, textarea', node)));
         }
 
         if (DOM._is(node, '[disabled], input[type=submit], input[type=reset], input[type=file], input[type=radio]:not(:checked), input[type=checkbox]:not(:checked)')) {
@@ -5023,17 +5020,17 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
      * @returns {string} The URI-encoded attribute string.
      */
     _parseParams: function _parseParams(data) {
-      var _this46 = this;
+      var _this45 = this;
 
       var values = [];
 
       if (Array.isArray(data)) {
         values = data.map(function (value) {
-          return _this46._parseParam(value.name, value.value);
+          return _this45._parseParam(value.name, value.value);
         });
       } else if (Core.isObject(data)) {
         values = Object.keys(data).map(function (key) {
-          return _this46._parseParam(key, data[key]);
+          return _this45._parseParam(key, data[key]);
         });
       }
 
@@ -5047,17 +5044,17 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
      * @returns {string|array} The parsed attributes.
      */
     _parseParam: function _parseParam(key, value) {
-      var _this47 = this;
+      var _this46 = this;
 
       if (Array.isArray(value)) {
         return value.map(function (val) {
-          return _this47._parseParam(key, val);
+          return _this46._parseParam(key, val);
         }).flat();
       }
 
       if (Core.isObject(value)) {
         return Object.keys(value).map(function (subKey) {
-          return _this47._parseParam(key + '[' + subKey + ']', value[subKey]);
+          return _this46._parseParam(key + '[' + subKey + ']', value[subKey]);
         }).flat();
       }
 
@@ -5265,11 +5262,11 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
      * @returns {Promise} A new Promise that resolves when the request is completed, or rejects on failure.
      */
     loadScripts: function loadScripts(scripts) {
-      var _this48 = this;
+      var _this47 = this;
 
       var cache = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
       return Promise.all(scripts.map(function (script) {
-        return _this48.ajax(script, {
+        return _this47.ajax(script, {
           cache: cache
         });
       })).then(function (responses) {
@@ -5286,13 +5283,13 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
      * @returns {Promise} A new Promise that resolves when the request is completed, or rejects on failure.
      */
     loadStyle: function loadStyle(stylesheet) {
-      var _this49 = this;
+      var _this48 = this;
 
       var cache = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
       return this.ajax(stylesheet, {
         cache: cache
       }).then(function (response) {
-        return _this49.append(_this49.findOne('head'), _this49.create('style', {
+        return _this48.append(_this48.findOne('head'), _this48.create('style', {
           text: response.response
         }));
       });
@@ -5305,15 +5302,15 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
      * @returns {Promise} A new Promise that resolves when the request is completed, or rejects on failure.
      */
     loadStyles: function loadStyles(stylesheets) {
-      var _this50 = this;
+      var _this49 = this;
 
       var cache = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
       return Promise.all(stylesheets.map(function (stylesheet) {
-        return _this50.ajax(stylesheet, {
+        return _this49.ajax(stylesheet, {
           cache: cache
         });
       })).then(function (responses) {
-        return _this50.append(_this50.findOne('head'), _this50.create('style', {
+        return _this49.append(_this49.findOne('head'), _this49.create('style', {
           text: responses.map(function (response) {
             return response.response;
           }).join("\r\n")
@@ -5416,7 +5413,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
      * @returns {DOM~eventCallback} The mouse drag event callback.
      */
     mouseDragFactory: function mouseDragFactory(down, move, up) {
-      var _this51 = this;
+      var _this50 = this;
 
       var animated = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : true;
 
@@ -5434,13 +5431,13 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         }
 
         if (move) {
-          _this51._addEvent(window, 'mousemove', move);
+          _this50._addEvent(window, 'mousemove', move);
         }
 
         if (move || up) {
-          _this51._addEventOnce(window, 'mouseup', function (e) {
+          _this50._addEventOnce(window, 'mouseup', function (e) {
             if (move) {
-              _this51._removeEvent(window, 'mousemove', move);
+              _this50._removeEvent(window, 'mousemove', move);
             }
 
             if (up) {
@@ -5485,7 +5482,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
     _getDelegateContainsFactory: function _getDelegateContainsFactory(node, selector) {
       selector = DOM._prefixSelectors(selectors, "#".concat(DOM._tempId));
       return function (target) {
-        var matches = DOM._findByCustom(selector, node);
+        var matches = Core.merge([], DOM._findByCustom(selector, node));
 
         if (!matches.length) {
           return false;
@@ -5527,10 +5524,10 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
      * @param {DOM~eventCallback} callback The callback to execute.
      */
     _selfDestructFactory: function _selfDestructFactory(node, events, delegate, callback) {
-      var _this52 = this;
+      var _this51 = this;
 
       var realCallback = function realCallback(e) {
-        delegate ? _this52._removeEvent(node, events, callback, delegate) : _this52._removeEvent(node, events, realCallback);
+        delegate ? _this51._removeEvent(node, events, callback, delegate) : _this51._removeEvent(node, events, realCallback);
         return callback(e);
       };
 
@@ -5585,7 +5582,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
      * @returns {DOM~filterCallback} The element contains filter callback.
      */
     _parseFilterContains: function _parseFilterContains(filter) {
-      var _this53 = this;
+      var _this52 = this;
 
       if (!filter) {
         return false;
@@ -5597,7 +5594,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
       if (Core.isString(filter)) {
         return function (node) {
-          return !!_this53.findOne(filter, node);
+          return !!_this52.findOne(filter, node);
         };
       }
 

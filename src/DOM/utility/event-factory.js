@@ -84,7 +84,10 @@ Object.assign(DOM.prototype, {
         selector = DOM._prefixSelectors(selectors, `#${DOM._tempId}`);
 
         return target => {
-            const matches = DOM._findByCustom(selector, node);
+            const matches = Core.merge(
+                [],
+                DOM._findByCustom(selector, node)
+            );
 
             if (!matches.length) {
                 return false;

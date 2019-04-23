@@ -2578,9 +2578,11 @@
             const first = clone.shift();
 
             DOM._append(
-                this.filterOne(
-                    DOM._findBySelector('*', first),
-                    test => !this.child(test)
+                Core.merge(
+                    [],
+                    DOM._findBySelector('*', first)
+                ).find(node =>
+                    !DOM._hasChildren(node)
                 ) || first,
                 nodes
             );
@@ -2619,11 +2621,16 @@
 
             const first = nodes.slice().shift();
             DOM._append(
-                this.filterOne(
-                    DOM._findBySelector('*', first),
-                    test => !DOM._children(test, false, true).length
+                Core.merge(
+                    [],
+                    DOM._findBySelector('*', first)
+                ).find(node =>
+                    !DOM._hasChildren(node)
                 ) || first,
-                [...range.extractContents().childNodes]
+                Core.merge(
+                    [],
+                    range.extractContents().childNodes
+                )
             );
 
             nodes.forEach(node =>
@@ -2659,11 +2666,14 @@
         _wrap(node, others) {
             const clone = this.clone(others, true);
             DOM._before(node, clone);
+
             const first = clone.shift();
             DOM._append(
-                this.filterOne(
-                    DOM._findBySelector('*', first),
-                    test => !DOM._children(test, false, true).length
+                Core.merge(
+                    [],
+                    DOM._findBySelector('*', first)
+                ).find(node =>
+                    !DOM._hasChildren(node)
                 ) || first,
                 [node]
             );
@@ -2678,11 +2688,14 @@
             const clone = this.clone(others, true);
             const children = DOM._children(node, false, false, false);
             DOM._append(node, clone);
+
             const first = clone.shift();
             DOM._append(
-                this.filterOne(
-                    DOM._findBySelector('*', first),
-                    test => !DOM._children(test, false, true).length
+                Core.merge(
+                    [],
+                    DOM._findBySelector('*', first)
+                ).find(node =>
+                    !DOM._hasChildren(node)
                 ) || first,
                 children
             );
@@ -3533,7 +3546,10 @@
 
             const range = selection.getRangeAt(0);
 
-            const nodes = DOM._findBySelector('*', range.commonAncestorContainer);
+            const nodes = Core.merge(
+                [],
+                DOM._findBySelector('*', range.commonAncestorContainer)
+            );
 
             if (!nodes.length) {
                 return [range.commonAncestorContainer];
@@ -5464,7 +5480,10 @@
             selector = DOM._prefixSelectors(selectors, `#${DOM._tempId}`);
 
             return target => {
-                const matches = DOM._findByCustom(selector, node);
+                const matches = Core.merge(
+                    [],
+                    DOM._findByCustom(selector, node)
+                );
 
                 if (!matches.length) {
                     return false;

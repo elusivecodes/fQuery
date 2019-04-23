@@ -44,9 +44,11 @@ Object.assign(DOM.prototype, {
         const first = clone.shift();
 
         DOM._append(
-            this.filterOne(
-                DOM._findBySelector('*', first),
-                test => !this.child(test)
+            Core.merge(
+                [],
+                DOM._findBySelector('*', first)
+            ).find(node =>
+                !DOM._hasChildren(node)
             ) || first,
             nodes
         );
@@ -85,11 +87,16 @@ Object.assign(DOM.prototype, {
 
         const first = nodes.slice().shift();
         DOM._append(
-            this.filterOne(
-                DOM._findBySelector('*', first),
-                test => !DOM._children(test, false, true).length
+            Core.merge(
+                [],
+                DOM._findBySelector('*', first)
+            ).find(node =>
+                !DOM._hasChildren(node)
             ) || first,
-            [...range.extractContents().childNodes]
+            Core.merge(
+                [],
+                range.extractContents().childNodes
+            )
         );
 
         nodes.forEach(node =>
@@ -125,11 +132,14 @@ Object.assign(DOM.prototype, {
     _wrap(node, others) {
         const clone = this.clone(others, true);
         DOM._before(node, clone);
+
         const first = clone.shift();
         DOM._append(
-            this.filterOne(
-                DOM._findBySelector('*', first),
-                test => !DOM._children(test, false, true).length
+            Core.merge(
+                [],
+                DOM._findBySelector('*', first)
+            ).find(node =>
+                !DOM._hasChildren(node)
             ) || first,
             [node]
         );
@@ -144,11 +154,14 @@ Object.assign(DOM.prototype, {
         const clone = this.clone(others, true);
         const children = DOM._children(node, false, false, false);
         DOM._append(node, clone);
+
         const first = clone.shift();
         DOM._append(
-            this.filterOne(
-                DOM._findBySelector('*', first),
-                test => !DOM._children(test, false, true).length
+            Core.merge(
+                [],
+                DOM._findBySelector('*', first)
+            ).find(node =>
+                !DOM._hasChildren(node)
             ) || first,
             children
         );

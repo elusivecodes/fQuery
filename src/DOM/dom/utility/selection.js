@@ -17,7 +17,10 @@ Object.assign(DOM.prototype, {
 
         const range = selection.getRangeAt(0);
 
-        const nodes = DOM._findBySelector('*', range.commonAncestorContainer);
+        const nodes = Core.merge(
+            [],
+            DOM._findBySelector('*', range.commonAncestorContainer)
+        );
 
         if (!nodes.length) {
             return [range.commonAncestorContainer];
