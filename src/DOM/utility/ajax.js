@@ -20,39 +20,38 @@ Object.assign(DOM.prototype, {
      * @returns {Promise} A new Promise that resolves when the request is completed, or rejects on failure.
      */
     ajax(options) {
-        const settings = {
+        options = {
             url: window.location,
             headers: {},
             ...DOM.ajaxDefaults,
             ...options
         };
 
-        if (!settings.cache) {
-            const url = new URL(settings.url);
+        if (!options.cache) {
+            const url = new URL(options.url);
             url.searchParams.append('_', Date.now());
-            settings.url = url.toString();
+            options.url = url.toString();
         }
 
-        if (settings.contentType && !settings.headers['Content-Type']) {
-            settings.headers['Content-Type'] = settings.contentType;
+        if (options.contentType && !options.headers['Content-Type']) {
+            options.headers['Content-Type'] = options.contentType;
         }
 
-        if (!settings.headers['X-Requested-With']) {
-            settings.headers['X-Requested-With'] = 'XMLHttpRequest';
+        if (!options.headers['X-Requested-With']) {
+            options.headers['X-Requested-With'] = 'XMLHttpRequest';
         }
 
         return new Promise((resolve, reject) => {
             const xhr = new XMLHttpRequest;
 
-            xhr.open(settings.method, settings.url, true);
+            xhr.open(options.method, options.url, true);
 
-            Object.keys(settings.headers)
-                .forEach(key =>
-                    xhr.setRequestHeader(key, settings.headers[key])
-                );
+            for (const key of options.headers) {
+                xhr.setRequestHeader(key, options.headers[key]);
+            }
 
-            if (settings.responseType) {
-                xhr.responseType = settings.responseType;
+            if (options.responseType) {
+                xhr.responseType = options.responseType;
             }
 
             xhr.onload = e => {
@@ -78,25 +77,25 @@ Object.assign(DOM.prototype, {
                     event: e
                 });
 
-            if (settings.uploadProgress) {
+            if (options.uploadProgress) {
                 xhr.upload.onprogress = e =>
-                    settings.uploadProgress(e.loaded / e.total, xhr, e);
+                    options.uploadProgress(e.loaded / e.total, xhr, e);
             }
 
-            if (settings.beforeSend) {
-                settings.beforeSend(xhr);
+            if (options.beforeSend) {
+                options.beforeSend(xhr);
             }
 
-            if (settings.data && settings.processData) {
-                if (settings.contentType === 'application/json') {
-                    settings.data = JSON.stringify(settings.data);
-                } else if (settings.contentType === 'application/x-www-form-urlencoded') {
-                    settings.data = DOM._parseParams(settings.data);
+            if (options.data && options.processData) {
+                if (options.contentType === 'application/json') {
+                    options.data = JSON.stringify(options.data);
+                } else if (options.contentType === 'application/x-www-form-urlencoded') {
+                    options.data = DOM._parseParams(options.data);
                 } else {
                     options.data = DOM._parseFormData(options.data);
                 }
             }
-            xhr.send(settings.data);
+            xhr.send(options.data);
         });
     },
 
@@ -195,11 +194,11 @@ Object.assign(DOM.prototype, {
                     this.ajax(script, { cache })
                 )
             )
-            .then(responses =>
-                responses.forEach(response =>
-                    eval.apply(window, response.response)
-                )
-            );
+            .then(responses => {
+                for (const response of responses) {
+                    eval.apply(window, response.response);
+                }
+            });
     },
 
     /**
@@ -211,8 +210,8 @@ Object.assign(DOM.prototype, {
     loadStyle(stylesheet, cache = true) {
         return this.ajax(stylesheet, { cache })
             .then(response =>
-                this.append(
-                    this.findOne('head'),
+                DOM._append(
+                    this.context.head,
                     this.create(
                         'style',
                         {
@@ -237,8 +236,8 @@ Object.assign(DOM.prototype, {
                 )
             )
             .then(responses =>
-                this.append(
-                    this.findOne('head'),
+                DOM._append(
+                    this.context.head,
                     this.create(
                         'style',
                         {

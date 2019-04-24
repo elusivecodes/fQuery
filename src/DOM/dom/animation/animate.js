@@ -21,13 +21,11 @@ Object.assign(DOM.prototype, {
      * @returns {Promise} A new Promise that resolves when the animation has completed.
      */
     animate(nodes, callback, options) {
-        // set default options
         options = {
             ...DOM.animationDefaults,
             ...options
         };
 
-        // handle multiple element argument
         const promises = this._nodeFilter(nodes)
             .map(node =>
                 this._animate(node, callback, options)
@@ -44,8 +42,9 @@ Object.assign(DOM.prototype, {
      * @param {Boolean} [finish=true] Whether to complete all current animations.
      */
     stop(nodes, finish = true) {
-        this._nodeFilter(nodes)
-            .forEach(node => this._stop(node, finish));
+        for (const node of this._nodeFilter(nodes)) {
+            this._stop(node, finish);
+        }
     },
 
     /**
@@ -59,15 +58,15 @@ Object.assign(DOM.prototype, {
      * @returns {Promise} A new Promise that resolves when the animation has completed.
      */
     _animate(node, callback, options) {
-        if (!this.animations.has(node)) {
-            this.animations.set(node, []);
+        if (!this._animations.has(node)) {
+            this._animations.set(node, []);
         }
 
         const start = performance.now();
 
         return new Promise((resolve, reject) => {
 
-            this.animations.get(node).push((stop = false, finish = false) => {
+            this._animations.get(node).push((stop = false, finish = false) => {
 
                 if (stop && !finish) {
                     reject(node);
@@ -113,8 +112,7 @@ Object.assign(DOM.prototype, {
      * Run a single frame of all animations, and then queue up the next frame.
      */
     _animationFrame() {
-        this.animations.forEach((animations, node) => {
-
+        for (const [node, animations] of this._animations) {
             animations = animations.filter(animation => !animation());
 
             if (!animations.length) {
@@ -122,14 +120,14 @@ Object.assign(DOM.prototype, {
             } else {
                 this.animations.set(node, animations);
             }
-        });
+        }
 
-        if (this.animations.size) {
+        if (this._animations.size) {
             window.requestAnimationFrame(_ =>
                 this._animationFrame()
             );
         } else {
-            this.animating = false;
+            this._animating = false;
         }
     },
 
@@ -137,11 +135,11 @@ Object.assign(DOM.prototype, {
      * Start the animation loop (if not already started).
      */
     _start() {
-        if (this.animating) {
+        if (this._animating) {
             return;
         }
 
-        this.animating = true;
+        this._animating = true;
         this._animationFrame();
     },
 
@@ -151,16 +149,15 @@ Object.assign(DOM.prototype, {
      * @param {Boolean} [finish=true] Whether to complete all current animations.
      */
     _stop(node, finish = true) {
-        if (!this.animations.has(node)) {
+        if (!this._animations.has(node)) {
             return;
         }
 
-        this.animations.get(node)
-            .forEach(animation =>
-                animation(true, finish)
-            );
+        for (const animation of this._animations.get(node)) {
+            animation(true, finish);
+        }
 
-        this.animations.delete(node);
+        this._animations.delete(node);
     }
 
 });

@@ -25,33 +25,33 @@ Object.assign(DOM.prototype, {
             return node;
         }
 
-        if (options.html) {
+        if ('html' in options) {
             this.setHTML(node, options.html);
-        } else if (options.text) {
+        } else if ('text' in options) {
             this.setText(node, options.text);
         }
 
-        if (options.class) {
+        if ('class' in options) {
             this.addClass(node, options.class);
         }
 
-        if (options.style) {
+        if ('style' in options) {
             this.setStyle(node, options.style);
         }
 
-        if (options.value) {
+        if ('value' in options) {
             this.setValue(node, options.value);
         }
 
-        if (options.attributes) {
+        if ('attributes' in options) {
             this.setAttribute(node, options.attributes);
         }
 
-        if (options.properties) {
+        if ('properties' in options) {
             this.setProperty(node, options.properties);
         }
 
-        if (options.dataset) {
+        if ('dataset' in options) {
             this.setDataset(node, options.dataset);
         }
 

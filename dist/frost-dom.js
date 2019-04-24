@@ -38,15 +38,14 @@
         constructor(context = document) {
             this.context = context;
 
+            this._animating = false;
+            this._animations = new Map;
 
-            this.animating = false;
-            this.animations = new Map;
+            this._queues = new WeakMap;
 
-            this.queues = new WeakMap;
-
-            this.nodeData = new WeakMap;
-            this.nodeEvents = new WeakMap;
-            this.nodeStyles = new WeakMap;
+            this._data = new WeakMap;
+            this._events = new WeakMap;
+            this._styles = new WeakMap;
         }
 
         /**
@@ -84,13 +83,11 @@
          * @returns {Promise} A new Promise that resolves when the animation has completed.
          */
         animate(nodes, callback, options) {
-            // set default options
             options = {
                 ...DOM.animationDefaults,
                 ...options
             };
 
-            // handle multiple element argument
             const promises = this._nodeFilter(nodes)
                 .map(node =>
                     this._animate(node, callback, options)
@@ -107,8 +104,9 @@
          * @param {Boolean} [finish=true] Whether to complete all current animations.
          */
         stop(nodes, finish = true) {
-            this._nodeFilter(nodes)
-                .forEach(node => this._stop(node, finish));
+            for (const node of this._nodeFilter(nodes)) {
+                this._stop(node, finish);
+            }
         },
 
         /**
@@ -122,15 +120,15 @@
          * @returns {Promise} A new Promise that resolves when the animation has completed.
          */
         _animate(node, callback, options) {
-            if (!this.animations.has(node)) {
-                this.animations.set(node, []);
+            if (!this._animations.has(node)) {
+                this._animations.set(node, []);
             }
 
             const start = performance.now();
 
             return new Promise((resolve, reject) => {
 
-                this.animations.get(node).push((stop = false, finish = false) => {
+                this._animations.get(node).push((stop = false, finish = false) => {
 
                     if (stop && !finish) {
                         reject(node);
@@ -176,8 +174,7 @@
          * Run a single frame of all animations, and then queue up the next frame.
          */
         _animationFrame() {
-            this.animations.forEach((animations, node) => {
-
+            for (const [node, animations] of this._animations) {
                 animations = animations.filter(animation => !animation());
 
                 if (!animations.length) {
@@ -185,14 +182,14 @@
                 } else {
                     this.animations.set(node, animations);
                 }
-            });
+            }
 
-            if (this.animations.size) {
+            if (this._animations.size) {
                 window.requestAnimationFrame(_ =>
                     this._animationFrame()
                 );
             } else {
-                this.animating = false;
+                this._animating = false;
             }
         },
 
@@ -200,11 +197,11 @@
          * Start the animation loop (if not already started).
          */
         _start() {
-            if (this.animating) {
+            if (this._animating) {
                 return;
             }
 
-            this.animating = true;
+            this._animating = true;
             this._animationFrame();
         },
 
@@ -214,16 +211,15 @@
          * @param {Boolean} [finish=true] Whether to complete all current animations.
          */
         _stop(node, finish = true) {
-            if (!this.animations.has(node)) {
+            if (!this._animations.has(node)) {
                 return;
             }
 
-            this.animations.get(node)
-                .forEach(animation =>
-                    animation(true, finish)
-                );
+            for (const animation of this._animations.get(node)) {
+                animation(true, finish);
+            }
 
-            this.animations.delete(node);
+            this._animations.delete(node);
         }
 
     });
@@ -676,8 +672,9 @@
          * @param {DOM~queueCallback} callback The callback to queue.
          */
         queue(nodes, callback) {
-            this._nodeFilter(nodes)
-                .forEach(node => this._queue(node, callback));
+            for (const node of this._nodeFilter(nodes)) {
+                this._queue(node, callback);
+            }
         },
 
         /**
@@ -685,8 +682,9 @@
          * @param {string|HTMLElement|HTMLCollection|HTMLElement[]} nodes The input node(s), or a query selector string.
          */
         clearQueue(nodes) {
-            this._nodeFilter(nodes)
-                .forEach(node => this._clearQueue(node));
+            for (const node of this._nodeFilter(nodes)) {
+                this._clearQueue(node);
+            }
         },
 
         /**
@@ -694,11 +692,11 @@
          * @param {HTMLElement} node The input node.
          */
         _clearQueue(node) {
-            if (!this.queues.has(node)) {
+            if (!this._queues.has(node)) {
                 return;
             }
 
-            this.queues.delete(node);
+            this._queues.delete(node);
         },
 
         /**
@@ -706,14 +704,14 @@
          * @param {HTMLElement} node The input node.
          */
         _dequeueNode(node) {
-            if (!this.queues.has(node)) {
+            if (!this._queues.has(node)) {
                 return;
             }
 
-            const next = this.queues.get(node).shift();
+            const next = this._queues.get(node).shift();
 
             if (!next) {
-                this.queues.delete(node);
+                this._queues.delete(node);
                 return;
             }
 
@@ -729,17 +727,13 @@
          * @param {DOM~queueCallback} callback The callback to queue.
          */
         _queue(node, callback) {
-            const newQueue = !this.queues.has(node);
+            const newQueue = !this._queues.has(node);
 
-            let queue;
             if (newQueue) {
-                queue = [];
-                this.queues.set(node, queue);
-            } else {
-                queue = this.queues.get(node);
+                this._queues.set(node, []);
             }
 
-            queue.push(callback);
+            this._queues.get(node).push(callback);
 
             if (newQueue) {
                 this._dequeueNode(node);
@@ -844,10 +838,9 @@
          * @param {string} attribute The attribute name.
          */
         removeAttribute(nodes, attribute) {
-            this._nodeFilter(nodes)
-                .forEach(node =>
-                    DOM._removeAttribute(node, attribute)
-                );
+            for (const node of this._nodeFilter(nodes)) {
+                DOM._removeAttribute(node, attribute);
+            }
         },
 
         /**
@@ -856,10 +849,9 @@
          * @param {string} property The property name.
          */
         removeProperty(nodes, property) {
-            this._nodeFilter(nodes)
-                .forEach(node =>
-                    DOM._removeProperty(node, property)
-                );
+            for (const node of this._nodeFilter(nodes)) {
+                DOM._removeProperty(node, property);
+            }
         },
 
         /**
@@ -871,10 +863,9 @@
         setAttribute(nodes, attribute, value) {
             const attributes = DOM._parseData(attribute, value);
 
-            this._nodeFilter(nodes)
-                .forEach(node =>
-                    DOM._setAttribute(node, attributes)
-                );
+            for (const node of this._nodeFilter(nodes)) {
+                DOM._setAttribute(node, attributes);
+            }
         },
 
         /**
@@ -886,10 +877,9 @@
         setDataset(nodes, key, value) {
             const dataset = DOM._parseData(key, value);
 
-            this._nodeFilter(nodes)
-                .forEach(node =>
-                    DOM._setDataset(node, dataset)
-                );
+            for (const node of this._nodeFilter(nodes)) {
+                DOM._setDataset(node, dataset);
+            }
         },
 
         /**
@@ -916,10 +906,9 @@
         setProperty(nodes, property, value) {
             const properties = DOM._parseData(property, value);
 
-            this._nodeFilter(nodes)
-                .forEach(node =>
-                    DOM._setProperty(node, properties)
-                );
+            for (const node of this._nodeFilter(nodes)) {
+                DOM._setProperty(node, properties);
+            }
         },
 
         /**
@@ -964,10 +953,9 @@
          * @param {string|Node|NodeList|HTMLCollection|Window|Node[]} others The other node(s), or a query selector string.
          */
         cloneData(nodes, others) {
-            this._nodeFilter(nodes, node => DOM.isNode(node) || DOM.isDocument(node) || Core.isWindow(node))
-                .forEach(node =>
-                    this._cloneData(node, others)
-                );
+            for (const node of this._nodeFilter(nodes, node => DOM.isNode(node) || DOM.isDocument(node) || Core.isWindow(node))) {
+                this._cloneData(node, others);
+            }
         },
 
         /**
@@ -992,10 +980,9 @@
          * @param {string} [key] The data key.
          */
         removeData(nodes, key) {
-            this._nodeFilter(nodes, node => DOM.isNode(node) || DOM.isDocument(node) || Core.isWindow(node))
-                .forEach(node =>
-                    this._removeData(node, key)
-                );
+            for (const node of this._nodeFilter(nodes, node => DOM.isNode(node) || DOM.isDocument(node) || Core.isWindow(node))) {
+                this._removeData(node, key);
+            }
         },
 
         /**
@@ -1007,10 +994,9 @@
         setData(nodes, key, value) {
             const data = DOM._parseData(key, value);
 
-            this._nodeFilter(nodes, node => DOM.isNode(node) || DOM.isDocument(node) || Core.isWindow(node))
-                .forEach(node =>
-                    this._setData(node, data)
-                );
+            for (const node of this._nodeFilter(nodes, node => DOM.isNode(node) || DOM.isDocument(node) || Core.isWindow(node))) {
+                this._setData(node, data);
+            }
         },
 
         /**
@@ -1019,12 +1005,12 @@
          * @param {string|Node|NodeList|HTMLCollection|Window|Node[]} others The other node(s), or a query selector string.
          */
         _cloneData(node, others) {
-            if (!this.nodeData.has(node)) {
+            if (!this._data.has(node)) {
                 return;
             }
 
             this.setData(others, {
-                ...this.nodeData.get(node)
+                ...this._data.get(node)
             });
         },
 
@@ -1035,15 +1021,15 @@
          * @returns {*} The data value.
          */
         _getData(node, key) {
-            if (!this.nodeData.has(node)) {
+            if (!this._data.has(node)) {
                 return;
             }
 
             if (!key) {
-                return this.nodeData.get(node);
+                return this._data.get(node);
             }
 
-            return this.nodeData.get(node)[key];
+            return this._data.get(node)[key];
         },
 
         /**
@@ -1052,19 +1038,19 @@
          * @param {string} [key] The data key.
          */
         _removeData(node, key) {
-            if (!this.nodeData.has(node)) {
+            if (!this._data.has(node)) {
                 return;
             }
 
             if (key) {
-                const nodeData = this.nodeData.get(node);
-                delete nodeData[key];
-                if (Object.keys(nodeData).length) {
+                const data = this._data.get(node);
+                delete data[key];
+                if (Object.keys(data).length) {
                     return;
                 }
             }
 
-            this.nodeData.delete(node);
+            this._data.delete(node);
         },
 
         /**
@@ -1073,12 +1059,12 @@
          * @param {object} data An object containing data.
          */
         _setData(node, data) {
-            if (!this.nodeData.has(node)) {
-                this.nodeData.set(node, {});
+            if (!this._data.has(node)) {
+                this._data.set(node, {});
             }
 
             Object.assign(
-                this.nodeData.get(node),
+                this._data.get(node),
                 data
             );
         }
@@ -1122,8 +1108,9 @@
                 return;
             }
 
-            this._nodeFilter(nodes)
-                .forEach(node => this._constrain(node, containerBox));
+            for (const node of this._nodeFilter(nodes)) {
+                this._constrain(node, containerBox);
+            }
         },
 
         /**
@@ -1181,14 +1168,13 @@
             let closest = null;
             let closestDistance = Number.MAX_VALUE;
 
-            this._nodeFilter(nodes)
-                .forEach(node => {
-                    const dist = this.distTo(node, x, y, offset);
-                    if (dist && dist < closestDistance) {
-                        closestDistance = dist;
-                        closest = node;
-                    }
-                });
+            for (const node of this._nodeFilter(nodes)) {
+                const dist = this.distTo(node, x, y, offset);
+                if (dist && dist < closestDistance) {
+                    closestDistance = dist;
+                    closest = node;
+                }
+            }
 
             return closest;
         },
@@ -1434,8 +1420,9 @@
          * @param {number} y The scroll Y position.
          */
         setScroll(nodes, x, y) {
-            this._nodeFilter(nodes, node => DOM.isElement(node) || DOM.isDocument(node) || Core.isWindow(node))
-                .forEach(node => DOM._setScroll(node, x, y));
+            for (const node of this._nodeFilter(nodes, node => DOM.isElement(node) || DOM.isDocument(node) || Core.isWindow(node))) {
+                DOM._setScroll(node, x, y);
+            }
         },
 
         /**
@@ -1444,8 +1431,9 @@
          * @param {number} x The scroll X position.
          */
         setScrollX(nodes, x) {
-            this._nodeFilter(nodes, node => DOM.isElement(node) || DOM.isDocument(node) || Core.isWindow(node))
-                .forEach(node => DOM._setScrollX(node, x));
+            for (const node of this._nodeFilter(nodes, node => DOM.isElement(node) || DOM.isDocument(node) || Core.isWindow(node))) {
+                DOM._setScrollX(node, x);
+            }
         },
 
         /**
@@ -1454,8 +1442,9 @@
          * @param {number} y The scroll Y position.
          */
         setScrollY(nodes, y) {
-            this._nodeFilter(nodes, node => DOM.isElement(node) || DOM.isDocument(node) || Core.isWindow(node))
-                .forEach(node => DOM._setScrollY(node, y));
+            for (const node of this._nodeFilter(nodes, node => DOM.isElement(node) || DOM.isDocument(node) || Core.isWindow(node))) {
+                DOM._setScrollY(node, y);
+            }
         }
 
     });
@@ -1610,8 +1599,9 @@
                 return;
             }
 
-            this._nodeFilter(nodes)
-                .forEach(node => DOM._addClass(node, classes));
+            for (const node of this._nodeFilter(nodes)) {
+                DOM._addClass(node, classes);
+            }
         },
 
         /**
@@ -1626,8 +1616,9 @@
                 return;
             }
 
-            this._nodeFilter(nodes)
-                .forEach(node => DOM._removeClass(node, classes));
+            for (const node of this._nodeFilter(nodes)) {
+                DOM._removeClass(node, classes);
+            }
         },
 
         /**
@@ -1642,8 +1633,9 @@
                 return;
             }
 
-            this._nodeFilter(nodes)
-                .forEach(node => DOM._toggleClass(node, classes));
+            for (const node of this._nodeFilter(nodes)) {
+                DOM._toggleClass(node, classes);
+            }
         },
 
         /**
@@ -1676,21 +1668,22 @@
             const styles = DOM._parseData(style, value),
                 realStyles = {};
 
-            Object.keys(styles)
-                .forEach(key => {
-                    let value = '' + styles[key];
-                    key = Core.snakeCase(key);
+            for (let key in styles) {
+                let value = `${styles[key]}`;
+                key = Core.snakeCase(key);
 
-                    // if value is numeric and not a number property, add px
-                    if (value && Core.isNumeric(value) && !DOM.cssNumberProperties.includes(key)) {
-                        value = value + 'px';
-                    }
+                // if value is numeric and not a number property, add px
+                if (value && Core.isNumeric(value) && !DOM.cssNumberProperties.includes(key)) {
+                    value += 'px';
+                }
 
-                    realStyles[key] = value;
-                });
+                realStyles[key] = value;
+            }
 
-            this._nodeFilter(nodes)
-                .forEach(node => DOM._setStyle(node, realStyles, important));
+
+            for (const node of this._nodeFilter(nodes)) {
+                DOM._setStyle(node, realStyles, important);
+            }
         },
 
         /**
@@ -1738,8 +1731,9 @@
          * @param {string|HTMLElement|HTMLCollection|HTMLElement[]} nodes The input node(s), or a query selector string.
          */
         toggle(nodes) {
-            this._nodeFilter(nodes)
-                .forEach(node => DOM._toggle(node));
+            for (const node of this._nodeFilter(nodes)) {
+                DOM._toggle(node);
+            }
         },
 
         /**
@@ -1749,14 +1743,14 @@
          * @returns {string} The CSS style value.
          */
         _css(node, style) {
-            if (!this.nodeStyles.has(node)) {
-                this.nodeStyles.set(
+            if (!this._styles.has(node)) {
+                this._styles.set(
                     node,
                     window.getComputedStyle(node)
                 );
             }
 
-            return this.nodeStyles.get(node)
+            return this._styles.get(node)
                 .getPropertyValue(style);
         }
 
@@ -1816,10 +1810,11 @@
          */
         ready(callback) {
             if (this.context.readyState === 'complete') {
-                return callback();
+                callback();
+                return;
             }
 
-            this.addEvent(
+            this._addEvent(
                 window,
                 'DOMContentLoaded',
                 callback
@@ -1844,34 +1839,37 @@
          * @param {string|HTMLElement|HTMLCollection|Document|Window|HTMLElement[]} nodes The input node(s), or a query selector string.
          * @param {string} events The event names.
          * @param {DOM~eventCallback} callback The callback to execute.
-         * @param {string} [delegate] The delegate selector.
-         * @param {Boolean} [selfDestruct] Whether to remove the event after triggering.
          */
-        addEvent(nodes, events, callback, delegate, selfDestruct) {
-            this._nodeFilter(nodes, node => DOM.isElement(node) || DOM.isDocument(node) || Core.isWindow(node))
-                .forEach(node => this._addEvent(node, events, callback, delegate, selfDestruct));
+        addEvent(nodes, events, callback) {
+            for (const node of this._nodeFilter(nodes, node => DOM.isElement(node) || DOM.isDocument(node) || Core.isWindow(node))) {
+                this._addEvent(node, events, callback);
+            }
         },
 
         /**
          * Add a delegated event to each element.
          * @param {string|HTMLElement|HTMLCollection|Document|Window|HTMLElement[]} nodes The input node(s), or a query selector string.
          * @param {string} events The event names.
-         * @param {string} [delegate] The delegate selector.
+         * @param {string} delegate The delegate selector.
          * @param {DOM~eventCallback} callback The callback to execute.
          */
         addEventDelegate(nodes, events, delegate, callback) {
-            return this.addEvent(nodes, events, callback, delegate);
+            for (const node of this._nodeFilter(nodes, node => DOM.isElement(node) || DOM.isDocument(node) || Core.isWindow(node))) {
+                this._addEvent(node, events, callback, delegate);
+            }
         },
 
         /**
          * Add a self-destructing delegated event to each element.
          * @param {string|HTMLElement|HTMLCollection|Document|Window|HTMLElement[]} nodes The input node(s), or a query selector string.
          * @param {string} events The event names.
-         * @param {string} [delegate] The delegate selector.
+         * @param {string} delegate The delegate selector.
          * @param {DOM~eventCallback} callback The callback to execute.
          */
         addEventDelegateOnce(nodes, events, delegate, callback) {
-            return this.addEvent(nodes, events, callback, delegate, true);
+            for (const node of this._nodeFilter(nodes, node => DOM.isElement(node) || DOM.isDocument(node) || Core.isWindow(node))) {
+                this._addEvent(node, events, callback, delegate, true);
+            }
         },
 
         /**
@@ -1881,13 +1879,9 @@
          * @param {DOM~eventCallback} callback The callback to execute.
          */
         addEventOnce(nodes, events, callback) {
-            return this.addEvent(
-                nodes,
-                events,
-                callback,
-                null,
-                true
-            );
+            for (const node of this._nodeFilter(nodes, node => DOM.isElement(node) || DOM.isDocument(node) || Core.isWindow(node))) {
+                this._addEvent(node, events, callback, null, true);
+            }
         },
 
         /**
@@ -1896,8 +1890,9 @@
          * @param {string|HTMLElement|HTMLCollection|Document|Window|HTMLElement[]} others The other node(s), or a query selector string.
          */
         cloneEvents(nodes, others) {
-            this._nodeFilter(nodes, node => DOM.isElement(node) || DOM.isDocument(node) || Core.isWindow(node))
-                .forEach(node => this._cloneEvents(node, others));
+            for (const node of this._nodeFilter(nodes, node => DOM.isElement(node) || DOM.isDocument(node) || Core.isWindow(node))) {
+                this._cloneEvents(node, others);
+            }
         },
 
         /**
@@ -1905,11 +1900,11 @@
          * @param {string|HTMLElement|HTMLCollection|Document|Window|HTMLElement[]} nodes The input node(s), or a query selector string.
          * @param {string} [events] The event names.
          * @param {DOM~eventCallback} [callback] The callback to remove.
-         * @param {string} [delegate] The delegate selector.
          */
-        removeEvent(nodes, events, callback, delegate) {
-            this._nodeFilter(nodes, node => DOM.isElement(node) || DOM.isDocument(node) || Core.isWindow(node))
-                .forEach(node => this._removeEvent(node, events, callback, delegate));
+        removeEvent(nodes, events, callback) {
+            for (const node of this._nodeFilter(nodes, node => DOM.isElement(node) || DOM.isDocument(node) || Core.isWindow(node))) {
+                this._removeEvent(node, events, callback);
+            }
         },
 
         /**
@@ -1920,7 +1915,9 @@
          * @param {DOM~eventCallback} [callback] The callback to remove.
          */
         removeEventDelegate(nodes, events, delegate, callback) {
-            return this.removeEvent(nodes, events, callback, delegate);
+            for (const node of this._nodeFilter(nodes, node => DOM.isElement(node) || DOM.isDocument(node) || Core.isWindow(node))) {
+                this._removeEvent(node, events, callback, delegate);
+            }
         },
 
         /**
@@ -1930,8 +1927,9 @@
          * @param {object} [data] Additional data to attach to the event.
          */
         triggerEvent(nodes, events, data) {
-            this._nodeFilter(nodes, node => DOM.isElement(node) || DOM.isDocument(node) || Core.isWindow(node))
-                .forEach(node => this._triggerEvent(node, events, data));
+            for (const node of this._nodeFilter(nodes, node => DOM.isElement(node) || DOM.isDocument(node) || Core.isWindow(node))) {
+                DOM._triggerEvent(node, events, data);
+            }
         },
 
         /**
@@ -1953,11 +1951,11 @@
                 realCallback = this._delegateFactory(node, delegate, realCallback);
             }
 
-            if (!this.nodeEvents.has(node)) {
-                this.nodeEvents.set(node, {});
+            if (!this._events.has(node)) {
+                this._events.set(node, {});
             }
 
-            const nodeEvents = this.nodeEvents.get(node);
+            const nodeEvents = this._events.get(node);
 
             const eventData = {
                 delegate,
@@ -1966,7 +1964,7 @@
                 selfDestruct
             };
 
-            DOM._parseEvents(events).forEach(event => {
+            for (const event of DOM._parseEvents(events)) {
                 const realEvent = DOM._parseEvent(event);
                 eventData.event = event;
                 eventData.realEvent = realEvent;
@@ -1980,7 +1978,7 @@
                 node.addEventListener(realEvent, realCallback);
 
                 nodeEvents[realEvent].push(eventData);
-            });
+            }
         },
 
         /**
@@ -1989,24 +1987,22 @@
          * @param {string|HTMLElement|HTMLCollection|Document|Window|HTMLElement[]} others The other node(s), or a query selector string.
          */
         _cloneEvents(node, others) {
-            if (!this.nodeEvents.has(node)) {
+            if (!this._events.has(node)) {
                 return;
             }
 
-            const nodeEvents = this.nodeEvents.get(node);
-            Object.keys(nodeEvents)
-                .forEach(event => {
-                    const realEvent = DOM._parseEvent(event);
-                    nodeEvents[realEvent].forEach(eventData => {
-                        this.addEvent(
-                            others,
-                            eventData.event,
-                            eventData.callback,
-                            eventData.delegate,
-                            eventData.selfDestruct
-                        );
-                    });
-                });
+            const nodeEvents = this._events.get(node);
+            for (const event in nodeEvents) {
+                for (const eventData of nodeEvents[event]) {
+                    this.addEvent(
+                        others,
+                        eventData.event,
+                        eventData.callback,
+                        eventData.delegate,
+                        eventData.selfDestruct
+                    );
+                }
+            }
         },
 
         /**
@@ -2017,17 +2013,17 @@
          * @param {string} [delegate] The delegate selector.
          */
         _removeEvent(node, events, callback, delegate) {
-            if (!this.nodeEvents.has(node)) {
+            if (!this._events.has(node)) {
                 return;
             }
 
-            const nodeEvents = this.nodeEvents.get(node);
+            const nodeEvents = this._events.get(node);
 
             const eventArray = events ?
                 DOM._parseEvents(events) :
                 Object.keys(nodeEvents);
 
-            eventArray.forEach(event => {
+            for (const event of eventArray) {
                 const realEvent = DOM._parseEvent(event);
 
                 if (!nodeEvents[realEvent]) {
@@ -2071,32 +2067,13 @@
                 if (!nodeEvents[realEvent].length) {
                     delete nodeEvents[realEvent];
                 }
-            });
-
-            if (!Object.keys(nodeEvents).length) {
-                this.nodeEvents.delete(node);
             }
-        },
 
-        /**
-         * Trigger an event on a single element.
-         * @param {HTMLElement|Document|Window} nodes The input node.
-         * @param {string} events The event names.
-         * @param {object} [data] Additional data to attach to the Event object.
-         */
-        _triggerEvent(node, events, data) {
-            DOM._parseEvents(events)
-                .forEach(event => {
-                    const realEvent = DOM._parseEvent(event);
+            if (Object.keys(nodeEvents).length) {
+                return;
+            }
 
-                    const eventData = new Event(realEvent);
-
-                    if (data) {
-                        Object.assign(eventData, data);
-                    }
-
-                    node.dispatchEvent(eventData);
-                });
+            this._events.delete(node);
         }
 
     });
@@ -2128,33 +2105,33 @@
                 return node;
             }
 
-            if (options.html) {
+            if ('html' in options) {
                 this.setHTML(node, options.html);
-            } else if (options.text) {
+            } else if ('text' in options) {
                 this.setText(node, options.text);
             }
 
-            if (options.class) {
+            if ('class' in options) {
                 this.addClass(node, options.class);
             }
 
-            if (options.style) {
+            if ('style' in options) {
                 this.setStyle(node, options.style);
             }
 
-            if (options.value) {
+            if ('value' in options) {
                 this.setValue(node, options.value);
             }
 
-            if (options.attributes) {
+            if ('attributes' in options) {
                 this.setAttribute(node, options.attributes);
             }
 
-            if (options.properties) {
+            if ('properties' in options) {
                 this.setProperty(node, options.properties);
             }
 
-            if (options.dataset) {
+            if ('dataset' in options) {
                 this.setDataset(node, options.dataset);
             }
 
@@ -2207,8 +2184,9 @@
          * @param {string|Node|NodeList|HTMLCollection|Node[]} nodes The input node(s), or a query selector string.
          */
         detach(nodes) {
-            this._nodeFilter(nodes, DOM.isNode)
-                .forEach(node => DOM._detach(node));
+            for (const node of this._nodeFilter(nodes, DOM.isNode)) {
+                DOM._detach(node);
+            }
         },
 
         /**
@@ -2216,8 +2194,9 @@
          * @param {string|HTMLElement|HTMLCollection|Document|HTMLElement[]} nodes The input node(s), or a query selector string.
          */
         empty(nodes) {
-            this._nodeFilter(nodes, node => DOM.isElement(node) || DOM.isDocument(node))
-                .forEach(node => this._empty(node));
+            for (const node of this._nodeFilter(nodes, node => DOM.isElement(node) || DOM.isDocument(node))) {
+                this._empty(node);
+            }
         },
 
         /**
@@ -2235,7 +2214,7 @@
 
             selection.removeAllRanges();
 
-            return [...range.extractContents().childNodes];
+            return Core.merge([], range.extractContents().childNodes);
         },
 
         /**
@@ -2243,10 +2222,9 @@
          * @param {string|Node|NodeList|HTMLCollection|Node[]} nodes The input node(s), or a query selector string.
          */
         remove(nodes) {
-            this._nodeFilter(nodes, DOM.isNode)
-                .forEach(
-                    node => this._remove(node)
-                );
+            for (const node of this._nodeFilter(nodes, DOM.isNode)) {
+                this._remove(node);
+            }
         },
 
         /**
@@ -2266,8 +2244,9 @@
         replaceWith(nodes, others) {
             others = this._parseQuery(others, DOM.isNode);
 
-            this._nodeFilter(nodes, DOM.isNode)
-                .forEach(node => this._replaceWith(node, others));
+            for (const node of this._nodeFilter(nodes, DOM.isNode)) {
+                this._replaceWith(node, others);
+            }
         },
 
         /**
@@ -2308,19 +2287,20 @@
          * @param {Boolean} [cloneData=false] Whether to also clone custom data.
          */
         _deepClone(node, clone, cloneEvents, cloneData) {
-            const cloneChildren = DOM._contents(clone);
+            const children = DOM._children(node, false, false, false);
+            const cloneChildren = DOM._children(clone, false, false, false);
 
-            DOM._children(node, false, false, false).forEach((child, index) => {
+            for (let i = 0; i < children.length; i++) {
                 if (cloneEvents) {
-                    this._cloneEvents(cloneChildren[index], child);
+                    this._cloneEvents(children[i], cloneChildren[i]);
                 }
 
                 if (cloneData) {
-                    this._cloneData(cloneChildren[index], child);
+                    this._cloneData(children[i], cloneChildren[i]);
                 }
 
-                this._cloneDeep(child, cloneChildren[index]);
-            });
+                this._deepClone(children[i], cloneChildren[i]);
+            }
         },
 
         /**
@@ -2328,9 +2308,9 @@
          * @param {HTMLElement} node The input node.
          */
         _empty(node) {
-            DOM._children(node, false, false, false).forEach(child =>
-                this._remove(child)
-            );
+            for (const child of DOM._children(node, false, false, false)) {
+                this._remove(child);
+            }
         },
 
         /**
@@ -2344,15 +2324,16 @@
 
             this._clearQueue(node);
             this._stop(node);
-            this._removeEvent(node);
-            this._removeData(node);
 
-            if (this.nodeStyles.has(node)) {
-                this.nodeStyles.delete(node);
+            if (this._styles.has(node)) {
+                this._styles.delete(node);
             }
 
             DOM._detach(node);
-            this._triggerEvent(node, 'remove');
+            DOM._triggerEvent(node, 'remove');
+
+            this._removeEvent(node);
+            this._removeData(node);
         },
 
         /**
@@ -2405,17 +2386,15 @@
                 return;
             }
 
-            nodes = this._parseQuery(nodes);
-
             const range = selection.getRangeAt(0);
 
             selection.removeAllRanges();
 
             range.collapse();
 
-            nodes.forEach(node =>
-                range.insertNode(node)
-            );
+            for (const node of this._parseQuery(nodes)) {
+                range.insertNode(node);
+            }
         },
 
         /**
@@ -2474,15 +2453,13 @@
                 return;
             }
 
-            nodes = this._parseQuery(nodes);
-
             const range = selection.getRangeAt(0);
 
             selection.removeAllRanges();
 
-            nodes.forEach(node =>
-                range.insertNode(node)
-            );
+            for (const node of this._parseQuery(nodes)) {
+                range.insertNode(node);
+            }
         },
 
         /**
@@ -2544,10 +2521,9 @@
          * @param {string|HTMLElement|HTMLCollection|HTMLElement[]|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
          */
         unwrap(nodes, filter) {
-            this._nodeFilter(nodes, DOM.isNode)
-                .forEach(node =>
-                    this._unwrap(node, filter)
-                );
+            for (const node of this._nodeFilter(nodes, DOM.isNode)) {
+                this._unwrap(node, filter);
+            }
         },
 
         /**
@@ -2558,10 +2534,9 @@
         wrap(nodes, others) {
             others = this._parseQuery(others);
 
-            this._nodeFilter(nodes, DOM.isNode)
-                .forEach(node =>
-                    this._wrap(node, others)
-                );
+            for (const node of this._nodeFilter(nodes, DOM.isNode)) {
+                this._wrap(node, others);
+            }
         },
 
         /**
@@ -2596,10 +2571,9 @@
         wrapInner(nodes, others) {
             others = this._parseQuery(others);
 
-            this._nodeFilter(nodes, DOM.isNode)
-                .forEach(node =>
-                    this._wrapInner(node, others)
-                );
+            for (const node of this._nodeFilter(nodes, DOM.isNode)) {
+                this._wrapInner(node, others);
+            }
         },
 
         /**
@@ -2633,9 +2607,9 @@
                 )
             );
 
-            nodes.forEach(node =>
-                range.insertNode(node)
-            );
+            for (const node of nodes) {
+                range.insertNode(node);
+            }
         },
 
         /**
@@ -2686,7 +2660,6 @@
          */
         _wrapInner(node, others) {
             const clone = this.clone(others, true);
-            const children = DOM._children(node, false, false, false);
             DOM._append(node, clone);
 
             const first = clone.shift();
@@ -2697,7 +2670,7 @@
                 ).find(node =>
                     !DOM._hasChildren(node)
                 ) || first,
-                children
+                DOM._children(node, false, false, false)
             );
         }
 
@@ -2718,10 +2691,8 @@
         filter(nodes, filter) {
             filter = this._parseFilter(filter);
 
-            return this._nodeFilter(
-                nodes,
-                (node, index) => DOM.isElement(node) && (!filter || filter(node, index))
-            );
+            return this._nodeFilter(nodes)
+                .filter((node, index) => !filter || filter(node, index));
         },
 
         /**
@@ -2733,10 +2704,8 @@
         filterOne(nodes, filter) {
             filter = this._parseFilter(filter);
 
-            return this._nodeFind(
-                nodes,
-                (node, index) => DOM.isElement(node) && (!filter || filter(node, index))
-            ) || null;
+            return this._nodeFilter(nodes)
+                .find((node, index) => !filter || filter(node, index)) || null;
         },
 
         /**
@@ -2752,10 +2721,8 @@
                 return [];
             }
 
-            return this._nodeFilter(
-                nodes,
-                (node, index) => DOM.isElement(node) && !filter(node, index)
-            );
+            return this._nodeFilter(nodes)
+                .filter((node, index) => !filter(node, index));
         },
 
         /**
@@ -2771,10 +2738,8 @@
                 return null;
             }
 
-            return this._nodeFind(
-                nodes,
-                (node, index) => DOM.isElement(node) && !filter(node, index)
-            ) || null;
+            return this._nodeFilter(nodes)
+                .find((node, index) => !filter(node, index)) || null;
         },
 
         /**
@@ -2786,10 +2751,8 @@
         has(nodes, filter) {
             filter = this._parseFilterContains(filter);
 
-            return this._nodeFilter(
-                nodes,
-                (node, index) => (DOM.isElement(node) || DOM.isDocument(node)) && (!filter || filter(node, index))
-            );
+            return this._nodeFilter(nodes, node => DOM.isElement(node) || DOM.isDocument(node))
+                .filter((node, index) => !filter || filter(node, index));
         },
 
         /**
@@ -2801,10 +2764,8 @@
         hasOne(nodes, filter) {
             filter = this._parseFilterContains(filter);
 
-            return this._nodeFind(
-                nodes,
-                (node, index) => (DOM.isElement(node) || DOM.isDocument(node)) && (!filter || filter(node, index))
-            ) || null;
+            return this._nodeFilter(nodes, node => DOM.isElement(node) || DOM.isDocument(node))
+                .find((node, index) => !filter || filter(node, index)) || null;
         },
 
         /**
@@ -2813,10 +2774,8 @@
          * @returns {HTMLElement[]} The filtered nodes.
          */
         hidden(nodes) {
-            return this._nodeFilter(
-                nodes,
-                node => (DOM.isNode(node) || DOM.isDocument(node) || Core.isWindow(node)) && this.isHidden(node)
-            );
+            return this._nodeFilter(nodes, node => DOM.isElement(node) || DOM.isDocument(node) || Core.isWindow(node))
+                .filter(node => this.isHidden(node));
         },
 
         /**
@@ -2825,10 +2784,8 @@
          * @returns {HTMLElement} The filtered node.
          */
         hiddenOne(nodes) {
-            return this._nodeFind(
-                nodes,
-                node => (DOM.isNode(node) || DOM.isDocument(node) || Core.isWindow(node)) && this.isHidden(node)
-            ) || null;
+            return this._nodeFilter(nodes, node => DOM.isElement(node) || DOM.isDocument(node) || Core.isWindow(node))
+                .find(node => this.isHidden(node)) || null;
         },
 
         /**
@@ -2837,10 +2794,8 @@
          * @returns {HTMLElement[]} The filtered nodes.
          */
         visible(nodes) {
-            return this._nodeFilter(
-                nodes,
-                node => (DOM.isNode(node) || DOM.isDocument(node) || Core.isWindow(node)) && this.isVisible(node)
-            );
+            return this._nodeFilter(nodes, node => DOM.isElement(node) || DOM.isDocument(node) || Core.isWindow(node))
+                .filter(node => this.isVisible(node));
         },
 
         /**
@@ -2849,10 +2804,8 @@
          * @returns {HTMLElement} The filtered node.
          */
         visibleOne(nodes) {
-            return this._nodeFind(
-                nodes,
-                node => (DOM.isNode(node) || DOM.isDocument(node) || Core.isWindow(node)) && this.isVisible(node)
-            ) || null;
+            return this._nodeFilter(nodes, node => DOM.isElement(node) || DOM.isDocument(node) || Core.isWindow(node))
+                .find(node => this.isVisible(node)) || null;
         }
 
     });
@@ -3674,7 +3627,7 @@
 
             return this._nodeFilter(nodes)
                 .some(node =>
-                    classes.find(className =>
+                    classes.some(className =>
                         node.classList.contains(className)
                     )
                 );
@@ -3840,44 +3793,44 @@
                 return callback(node);
             }
 
-            const elements = [];
-            const styles = [];
+            const elements = new Map;
 
             if (this._css(node, 'display') === 'none') {
-                elements.push(node);
-                styles.push(DOM._getAttribute(node, 'style'));
+                elements.set(node, DOM._getAttribute(node, 'style'));
             }
 
-            this._parents(node, parent =>
+            const parents = this._parents(node, parent =>
                 this._css(parent, 'display') === 'none'
-            )
-                .forEach(parent => {
-                    elements.push(parent);
-                    styles.push(
-                        DOM._getAttribute(parent, 'style')
-                    );
-                });
-
-            DOM._setStyle(
-                elements,
-                {
-                    display: 'initial'
-                },
-                true
             );
+
+            for (const parent of parents) {
+                elements.set(parent, DOM._getAttribute(parent, 'style'));
+            }
+
+            for (const element of elements.keys()) {
+                DOM._setStyle(
+                    element,
+                    {
+                        display: 'initial'
+                    },
+                    true
+                );
+            }
 
             const result = callback(node);
 
-            elements.forEach((node, index) =>
-                styles[index] ?
+            for (const [element, style] of elements) {
+                if (style) {
                     DOM._setStyle(
-                        node,
+                        element,
                         {
-                            display: styles[index]
+                            display: style
                         }
-                    ) :
-                    DOM._removeAttribute(node, 'style')
-            );
+                    )
+                } else {
+                    DOM._removeAttribute(element, 'style');
+                }
+            }
 
             return result;
         },
@@ -4274,6 +4227,34 @@
     });
 
     /**
+     * DOM (Static) Event Handlers
+     */
+
+    Object.assign(DOM, {
+
+        /**
+         * Trigger an event on a single element.
+         * @param {HTMLElement|Document|Window} nodes The input node.
+         * @param {string} events The event names.
+         * @param {object} [data] Additional data to attach to the Event object.
+         */
+        _triggerEvent(node, events, data) {
+            for (const event of this._parseEvents(events)) {
+                const realEvent = this._parseEvent(event);
+
+                const eventData = new Event(realEvent);
+
+                if (data) {
+                    Object.assign(eventData, data);
+                }
+
+                node.dispatchEvent(eventData);
+            }
+        }
+
+    });
+
+    /**
      * DOM (Static) Manipulation
      */
 
@@ -4309,13 +4290,12 @@
                 return;
             }
 
-            others.reverse()
-                .forEach(other =>
-                    node.parentNode.insertBefore(
-                        other,
-                        node.nextSibling
-                    )
+            for (const other of others.reverse()) {
+                node.parentNode.insertBefore(
+                    other,
+                    node.nextSibling
                 );
+            }
         },
 
         /**
@@ -4324,9 +4304,9 @@
          * @param {Node[]} others The other node(s).
          */
         _append(node, others) {
-            others.forEach(other =>
-                node.insertBefore(other, null)
-            );
+            for (const other of others) {
+                node.insertBefore(other, null);
+            }
         },
 
         /**
@@ -4339,12 +4319,12 @@
                 return;
             }
 
-            others.forEach(other =>
+            for (const other of others) {
                 node.parentNode.insertBefore(
                     other,
                     node
-                )
-            );
+                );
+            }
         },
 
         /**
@@ -4353,10 +4333,9 @@
          * @param {Node[]} others The other node(s).
          */
         _prepend(node, others) {
-            others.reverse()
-                .forEach(other =>
-                    node.insertBefore(other, node.firstChild)
-                );
+            for (const other of others.reverse()) {
+                node.insertBefore(other, node.firstChild);
+            }
         }
 
     });
@@ -4942,7 +4921,9 @@
 
             if (Array.isArray(data)) {
                 const obj = {};
-                data.forEach(value => obj[value.name] = value.value);
+                for (const value of data) {
+                    obj[value.name] = value.value;
+                }
                 data = obj;
             }
 
@@ -4971,9 +4952,9 @@
                 } else if (!Array.isArray(value)) {
                     formData.set(key, value);
                 } else {
-                    value.forEach(val =>
-                        formData.append(key, val)
-                    );
+                    for (const val of value) {
+                        formData.append(key, val);
+                    }
                 }
             }
         },
@@ -5068,39 +5049,38 @@
          * @returns {Promise} A new Promise that resolves when the request is completed, or rejects on failure.
          */
         ajax(options) {
-            const settings = {
+            options = {
                 url: window.location,
                 headers: {},
                 ...DOM.ajaxDefaults,
                 ...options
             };
 
-            if (!settings.cache) {
-                const url = new URL(settings.url);
+            if (!options.cache) {
+                const url = new URL(options.url);
                 url.searchParams.append('_', Date.now());
-                settings.url = url.toString();
+                options.url = url.toString();
             }
 
-            if (settings.contentType && !settings.headers['Content-Type']) {
-                settings.headers['Content-Type'] = settings.contentType;
+            if (options.contentType && !options.headers['Content-Type']) {
+                options.headers['Content-Type'] = options.contentType;
             }
 
-            if (!settings.headers['X-Requested-With']) {
-                settings.headers['X-Requested-With'] = 'XMLHttpRequest';
+            if (!options.headers['X-Requested-With']) {
+                options.headers['X-Requested-With'] = 'XMLHttpRequest';
             }
 
             return new Promise((resolve, reject) => {
                 const xhr = new XMLHttpRequest;
 
-                xhr.open(settings.method, settings.url, true);
+                xhr.open(options.method, options.url, true);
 
-                Object.keys(settings.headers)
-                    .forEach(key =>
-                        xhr.setRequestHeader(key, settings.headers[key])
-                    );
+                for (const key of options.headers) {
+                    xhr.setRequestHeader(key, options.headers[key]);
+                }
 
-                if (settings.responseType) {
-                    xhr.responseType = settings.responseType;
+                if (options.responseType) {
+                    xhr.responseType = options.responseType;
                 }
 
                 xhr.onload = e => {
@@ -5126,25 +5106,25 @@
                         event: e
                     });
 
-                if (settings.uploadProgress) {
+                if (options.uploadProgress) {
                     xhr.upload.onprogress = e =>
-                        settings.uploadProgress(e.loaded / e.total, xhr, e);
+                        options.uploadProgress(e.loaded / e.total, xhr, e);
                 }
 
-                if (settings.beforeSend) {
-                    settings.beforeSend(xhr);
+                if (options.beforeSend) {
+                    options.beforeSend(xhr);
                 }
 
-                if (settings.data && settings.processData) {
-                    if (settings.contentType === 'application/json') {
-                        settings.data = JSON.stringify(settings.data);
-                    } else if (settings.contentType === 'application/x-www-form-urlencoded') {
-                        settings.data = DOM._parseParams(settings.data);
+                if (options.data && options.processData) {
+                    if (options.contentType === 'application/json') {
+                        options.data = JSON.stringify(options.data);
+                    } else if (options.contentType === 'application/x-www-form-urlencoded') {
+                        options.data = DOM._parseParams(options.data);
                     } else {
                         options.data = DOM._parseFormData(options.data);
                     }
                 }
-                xhr.send(settings.data);
+                xhr.send(options.data);
             });
         },
 
@@ -5243,11 +5223,11 @@
                         this.ajax(script, { cache })
                     )
                 )
-                .then(responses =>
-                    responses.forEach(response =>
-                        eval.apply(window, response.response)
-                    )
-                );
+                .then(responses => {
+                    for (const response of responses) {
+                        eval.apply(window, response.response);
+                    }
+                });
         },
 
         /**
@@ -5259,8 +5239,8 @@
         loadStyle(stylesheet, cache = true) {
             return this.ajax(stylesheet, { cache })
                 .then(response =>
-                    this.append(
-                        this.findOne('head'),
+                    DOM._append(
+                        this.context.head,
                         this.create(
                             'style',
                             {
@@ -5285,8 +5265,8 @@
                     )
                 )
                 .then(responses =>
-                    this.append(
-                        this.findOne('head'),
+                    DOM._append(
+                        this.context.head,
                         this.create(
                             'style',
                             {

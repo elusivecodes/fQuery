@@ -15,8 +15,9 @@ Object.assign(DOM.prototype, {
      * @param {DOM~queueCallback} callback The callback to queue.
      */
     queue(nodes, callback) {
-        this._nodeFilter(nodes)
-            .forEach(node => this._queue(node, callback));
+        for (const node of this._nodeFilter(nodes)) {
+            this._queue(node, callback);
+        }
     },
 
     /**
@@ -24,8 +25,9 @@ Object.assign(DOM.prototype, {
      * @param {string|HTMLElement|HTMLCollection|HTMLElement[]} nodes The input node(s), or a query selector string.
      */
     clearQueue(nodes) {
-        this._nodeFilter(nodes)
-            .forEach(node => this._clearQueue(node));
+        for (const node of this._nodeFilter(nodes)) {
+            this._clearQueue(node);
+        }
     },
 
     /**
@@ -33,11 +35,11 @@ Object.assign(DOM.prototype, {
      * @param {HTMLElement} node The input node.
      */
     _clearQueue(node) {
-        if (!this.queues.has(node)) {
+        if (!this._queues.has(node)) {
             return;
         }
 
-        this.queues.delete(node);
+        this._queues.delete(node);
     },
 
     /**
@@ -45,14 +47,14 @@ Object.assign(DOM.prototype, {
      * @param {HTMLElement} node The input node.
      */
     _dequeueNode(node) {
-        if (!this.queues.has(node)) {
+        if (!this._queues.has(node)) {
             return;
         }
 
-        const next = this.queues.get(node).shift();
+        const next = this._queues.get(node).shift();
 
         if (!next) {
-            this.queues.delete(node);
+            this._queues.delete(node);
             return;
         }
 
@@ -68,17 +70,13 @@ Object.assign(DOM.prototype, {
      * @param {DOM~queueCallback} callback The callback to queue.
      */
     _queue(node, callback) {
-        const newQueue = !this.queues.has(node);
+        const newQueue = !this._queues.has(node);
 
-        let queue;
         if (newQueue) {
-            queue = [];
-            this.queues.set(node, queue);
-        } else {
-            queue = this.queues.get(node);
+            this._queues.set(node, []);
         }
 
-        queue.push(callback);
+        this._queues.get(node).push(callback);
 
         if (newQueue) {
             this._dequeueNode(node);

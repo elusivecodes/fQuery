@@ -56,7 +56,9 @@ Object.assign(DOM, {
 
         if (Array.isArray(data)) {
             const obj = {};
-            data.forEach(value => obj[value.name] = value.value);
+            for (const value of data) {
+                obj[value.name] = value.value;
+            }
             data = obj;
         }
 
@@ -85,9 +87,9 @@ Object.assign(DOM, {
             } else if (!Array.isArray(value)) {
                 formData.set(key, value);
             } else {
-                value.forEach(val =>
-                    formData.append(key, val)
-                );
+                for (const val of value) {
+                    formData.append(key, val);
+                }
             }
         }
     },

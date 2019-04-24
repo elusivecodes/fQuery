@@ -10,10 +10,9 @@ Object.assign(DOM.prototype, {
      * @param {string|Node|NodeList|HTMLCollection|Window|Node[]} others The other node(s), or a query selector string.
      */
     cloneData(nodes, others) {
-        this._nodeFilter(nodes, node => DOM.isNode(node) || DOM.isDocument(node) || Core.isWindow(node))
-            .forEach(node =>
-                this._cloneData(node, others)
-            );
+        for (const node of this._nodeFilter(nodes, node => DOM.isNode(node) || DOM.isDocument(node) || Core.isWindow(node))) {
+            this._cloneData(node, others);
+        }
     },
 
     /**
@@ -38,10 +37,9 @@ Object.assign(DOM.prototype, {
      * @param {string} [key] The data key.
      */
     removeData(nodes, key) {
-        this._nodeFilter(nodes, node => DOM.isNode(node) || DOM.isDocument(node) || Core.isWindow(node))
-            .forEach(node =>
-                this._removeData(node, key)
-            );
+        for (const node of this._nodeFilter(nodes, node => DOM.isNode(node) || DOM.isDocument(node) || Core.isWindow(node))) {
+            this._removeData(node, key);
+        }
     },
 
     /**
@@ -53,10 +51,9 @@ Object.assign(DOM.prototype, {
     setData(nodes, key, value) {
         const data = DOM._parseData(key, value);
 
-        this._nodeFilter(nodes, node => DOM.isNode(node) || DOM.isDocument(node) || Core.isWindow(node))
-            .forEach(node =>
-                this._setData(node, data)
-            );
+        for (const node of this._nodeFilter(nodes, node => DOM.isNode(node) || DOM.isDocument(node) || Core.isWindow(node))) {
+            this._setData(node, data);
+        }
     },
 
     /**
@@ -65,12 +62,12 @@ Object.assign(DOM.prototype, {
      * @param {string|Node|NodeList|HTMLCollection|Window|Node[]} others The other node(s), or a query selector string.
      */
     _cloneData(node, others) {
-        if (!this.nodeData.has(node)) {
+        if (!this._data.has(node)) {
             return;
         }
 
         this.setData(others, {
-            ...this.nodeData.get(node)
+            ...this._data.get(node)
         });
     },
 
@@ -81,15 +78,15 @@ Object.assign(DOM.prototype, {
      * @returns {*} The data value.
      */
     _getData(node, key) {
-        if (!this.nodeData.has(node)) {
+        if (!this._data.has(node)) {
             return;
         }
 
         if (!key) {
-            return this.nodeData.get(node);
+            return this._data.get(node);
         }
 
-        return this.nodeData.get(node)[key];
+        return this._data.get(node)[key];
     },
 
     /**
@@ -98,19 +95,19 @@ Object.assign(DOM.prototype, {
      * @param {string} [key] The data key.
      */
     _removeData(node, key) {
-        if (!this.nodeData.has(node)) {
+        if (!this._data.has(node)) {
             return;
         }
 
         if (key) {
-            const nodeData = this.nodeData.get(node);
-            delete nodeData[key];
-            if (Object.keys(nodeData).length) {
+            const data = this._data.get(node);
+            delete data[key];
+            if (Object.keys(data).length) {
                 return;
             }
         }
 
-        this.nodeData.delete(node);
+        this._data.delete(node);
     },
 
     /**
@@ -119,12 +116,12 @@ Object.assign(DOM.prototype, {
      * @param {object} data An object containing data.
      */
     _setData(node, data) {
-        if (!this.nodeData.has(node)) {
-            this.nodeData.set(node, {});
+        if (!this._data.has(node)) {
+            this._data.set(node, {});
         }
 
         Object.assign(
-            this.nodeData.get(node),
+            this._data.get(node),
             data
         );
     }

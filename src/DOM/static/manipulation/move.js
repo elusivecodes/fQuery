@@ -14,13 +14,12 @@ Object.assign(DOM, {
             return;
         }
 
-        others.reverse()
-            .forEach(other =>
-                node.parentNode.insertBefore(
-                    other,
-                    node.nextSibling
-                )
+        for (const other of others.reverse()) {
+            node.parentNode.insertBefore(
+                other,
+                node.nextSibling
             );
+        }
     },
 
     /**
@@ -29,9 +28,9 @@ Object.assign(DOM, {
      * @param {Node[]} others The other node(s).
      */
     _append(node, others) {
-        others.forEach(other =>
-            node.insertBefore(other, null)
-        );
+        for (const other of others) {
+            node.insertBefore(other, null);
+        }
     },
 
     /**
@@ -44,12 +43,12 @@ Object.assign(DOM, {
             return;
         }
 
-        others.forEach(other =>
+        for (const other of others) {
             node.parentNode.insertBefore(
                 other,
                 node
-            )
-        );
+            );
+        }
     },
 
     /**
@@ -58,10 +57,9 @@ Object.assign(DOM, {
      * @param {Node[]} others The other node(s).
      */
     _prepend(node, others) {
-        others.reverse()
-            .forEach(other =>
-                node.insertBefore(other, node.firstChild)
-            );
+        for (const other of others.reverse()) {
+            node.insertBefore(other, node.firstChild);
+        }
     }
 
 });

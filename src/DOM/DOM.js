@@ -12,15 +12,14 @@ class DOM {
     constructor(context = document) {
         this.context = context;
 
+        this._animating = false;
+        this._animations = new Map;
 
-        this.animating = false;
-        this.animations = new Map;
+        this._queues = new WeakMap;
 
-        this.queues = new WeakMap;
-
-        this.nodeData = new WeakMap;
-        this.nodeEvents = new WeakMap;
-        this.nodeStyles = new WeakMap;
+        this._data = new WeakMap;
+        this._events = new WeakMap;
+        this._styles = new WeakMap;
     }
 
     /**

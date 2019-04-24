@@ -52,10 +52,11 @@ Object.assign(DOM.prototype, {
      */
     ready(callback) {
         if (this.context.readyState === 'complete') {
-            return callback();
+            callback();
+            return;
         }
 
-        this.addEvent(
+        this._addEvent(
             window,
             'DOMContentLoaded',
             callback

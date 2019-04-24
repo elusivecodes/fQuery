@@ -13,10 +13,8 @@ Object.assign(DOM.prototype, {
     filter(nodes, filter) {
         filter = this._parseFilter(filter);
 
-        return this._nodeFilter(
-            nodes,
-            (node, index) => DOM.isElement(node) && (!filter || filter(node, index))
-        );
+        return this._nodeFilter(nodes)
+            .filter((node, index) => !filter || filter(node, index));
     },
 
     /**
@@ -28,10 +26,8 @@ Object.assign(DOM.prototype, {
     filterOne(nodes, filter) {
         filter = this._parseFilter(filter);
 
-        return this._nodeFind(
-            nodes,
-            (node, index) => DOM.isElement(node) && (!filter || filter(node, index))
-        ) || null;
+        return this._nodeFilter(nodes)
+            .find((node, index) => !filter || filter(node, index)) || null;
     },
 
     /**
@@ -47,10 +43,8 @@ Object.assign(DOM.prototype, {
             return [];
         }
 
-        return this._nodeFilter(
-            nodes,
-            (node, index) => DOM.isElement(node) && !filter(node, index)
-        );
+        return this._nodeFilter(nodes)
+            .filter((node, index) => !filter(node, index));
     },
 
     /**
@@ -66,10 +60,8 @@ Object.assign(DOM.prototype, {
             return null;
         }
 
-        return this._nodeFind(
-            nodes,
-            (node, index) => DOM.isElement(node) && !filter(node, index)
-        ) || null;
+        return this._nodeFilter(nodes)
+            .find((node, index) => !filter(node, index)) || null;
     },
 
     /**
@@ -81,10 +73,8 @@ Object.assign(DOM.prototype, {
     has(nodes, filter) {
         filter = this._parseFilterContains(filter);
 
-        return this._nodeFilter(
-            nodes,
-            (node, index) => (DOM.isElement(node) || DOM.isDocument(node)) && (!filter || filter(node, index))
-        );
+        return this._nodeFilter(nodes, node => DOM.isElement(node) || DOM.isDocument(node))
+            .filter((node, index) => !filter || filter(node, index));
     },
 
     /**
@@ -96,10 +86,8 @@ Object.assign(DOM.prototype, {
     hasOne(nodes, filter) {
         filter = this._parseFilterContains(filter);
 
-        return this._nodeFind(
-            nodes,
-            (node, index) => (DOM.isElement(node) || DOM.isDocument(node)) && (!filter || filter(node, index))
-        ) || null;
+        return this._nodeFilter(nodes, node => DOM.isElement(node) || DOM.isDocument(node))
+            .find((node, index) => !filter || filter(node, index)) || null;
     },
 
     /**
@@ -108,10 +96,8 @@ Object.assign(DOM.prototype, {
      * @returns {HTMLElement[]} The filtered nodes.
      */
     hidden(nodes) {
-        return this._nodeFilter(
-            nodes,
-            node => (DOM.isNode(node) || DOM.isDocument(node) || Core.isWindow(node)) && this.isHidden(node)
-        );
+        return this._nodeFilter(nodes, node => DOM.isElement(node) || DOM.isDocument(node) || Core.isWindow(node))
+            .filter(node => this.isHidden(node));
     },
 
     /**
@@ -120,10 +106,8 @@ Object.assign(DOM.prototype, {
      * @returns {HTMLElement} The filtered node.
      */
     hiddenOne(nodes) {
-        return this._nodeFind(
-            nodes,
-            node => (DOM.isNode(node) || DOM.isDocument(node) || Core.isWindow(node)) && this.isHidden(node)
-        ) || null;
+        return this._nodeFilter(nodes, node => DOM.isElement(node) || DOM.isDocument(node) || Core.isWindow(node))
+            .find(node => this.isHidden(node)) || null;
     },
 
     /**
@@ -132,10 +116,8 @@ Object.assign(DOM.prototype, {
      * @returns {HTMLElement[]} The filtered nodes.
      */
     visible(nodes) {
-        return this._nodeFilter(
-            nodes,
-            node => (DOM.isNode(node) || DOM.isDocument(node) || Core.isWindow(node)) && this.isVisible(node)
-        );
+        return this._nodeFilter(nodes, node => DOM.isElement(node) || DOM.isDocument(node) || Core.isWindow(node))
+            .filter(node => this.isVisible(node));
     },
 
     /**
@@ -144,10 +126,8 @@ Object.assign(DOM.prototype, {
      * @returns {HTMLElement} The filtered node.
      */
     visibleOne(nodes) {
-        return this._nodeFind(
-            nodes,
-            node => (DOM.isNode(node) || DOM.isDocument(node) || Core.isWindow(node)) && this.isVisible(node)
-        ) || null;
+        return this._nodeFilter(nodes, node => DOM.isElement(node) || DOM.isDocument(node) || Core.isWindow(node))
+            .find(node => this.isVisible(node)) || null;
     }
 
 });

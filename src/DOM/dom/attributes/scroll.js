@@ -41,8 +41,9 @@ Object.assign(DOM.prototype, {
      * @param {number} y The scroll Y position.
      */
     setScroll(nodes, x, y) {
-        this._nodeFilter(nodes, node => DOM.isElement(node) || DOM.isDocument(node) || Core.isWindow(node))
-            .forEach(node => DOM._setScroll(node, x, y));
+        for (const node of this._nodeFilter(nodes, node => DOM.isElement(node) || DOM.isDocument(node) || Core.isWindow(node))) {
+            DOM._setScroll(node, x, y);
+        }
     },
 
     /**
@@ -51,8 +52,9 @@ Object.assign(DOM.prototype, {
      * @param {number} x The scroll X position.
      */
     setScrollX(nodes, x) {
-        this._nodeFilter(nodes, node => DOM.isElement(node) || DOM.isDocument(node) || Core.isWindow(node))
-            .forEach(node => DOM._setScrollX(node, x));
+        for (const node of this._nodeFilter(nodes, node => DOM.isElement(node) || DOM.isDocument(node) || Core.isWindow(node))) {
+            DOM._setScrollX(node, x);
+        }
     },
 
     /**
@@ -61,8 +63,9 @@ Object.assign(DOM.prototype, {
      * @param {number} y The scroll Y position.
      */
     setScrollY(nodes, y) {
-        this._nodeFilter(nodes, node => DOM.isElement(node) || DOM.isDocument(node) || Core.isWindow(node))
-            .forEach(node => DOM._setScrollY(node, y));
+        for (const node of this._nodeFilter(nodes, node => DOM.isElement(node) || DOM.isDocument(node) || Core.isWindow(node))) {
+            DOM._setScrollY(node, y);
+        }
     }
 
 });

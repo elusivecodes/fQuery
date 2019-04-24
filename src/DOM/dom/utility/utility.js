@@ -26,44 +26,44 @@ Object.assign(DOM.prototype, {
             return callback(node);
         }
 
-        const elements = [];
-        const styles = [];
+        const elements = new Map;
 
         if (this._css(node, 'display') === 'none') {
-            elements.push(node);
-            styles.push(DOM._getAttribute(node, 'style'));
+            elements.set(node, DOM._getAttribute(node, 'style'));
         }
 
-        this._parents(node, parent =>
+        const parents = this._parents(node, parent =>
             this._css(parent, 'display') === 'none'
-        )
-            .forEach(parent => {
-                elements.push(parent);
-                styles.push(
-                    DOM._getAttribute(parent, 'style')
-                );
-            });
-
-        DOM._setStyle(
-            elements,
-            {
-                display: 'initial'
-            },
-            true
         );
+
+        for (const parent of parents) {
+            elements.set(parent, DOM._getAttribute(parent, 'style'));
+        }
+
+        for (const element of elements.keys()) {
+            DOM._setStyle(
+                element,
+                {
+                    display: 'initial'
+                },
+                true
+            );
+        }
 
         const result = callback(node);
 
-        elements.forEach((node, index) =>
-            styles[index] ?
+        for (const [element, style] of elements) {
+            if (style) {
                 DOM._setStyle(
-                    node,
+                    element,
                     {
-                        display: styles[index]
+                        display: style
                     }
-                ) :
-                DOM._removeAttribute(node, 'style')
-        );
+                )
+            } else {
+                DOM._removeAttribute(element, 'style');
+            }
+        }
 
         return result;
     },

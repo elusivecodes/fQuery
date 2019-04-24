@@ -16,8 +16,9 @@ Object.assign(DOM.prototype, {
             return;
         }
 
-        this._nodeFilter(nodes)
-            .forEach(node => DOM._addClass(node, classes));
+        for (const node of this._nodeFilter(nodes)) {
+            DOM._addClass(node, classes);
+        }
     },
 
     /**
@@ -32,8 +33,9 @@ Object.assign(DOM.prototype, {
             return;
         }
 
-        this._nodeFilter(nodes)
-            .forEach(node => DOM._removeClass(node, classes));
+        for (const node of this._nodeFilter(nodes)) {
+            DOM._removeClass(node, classes);
+        }
     },
 
     /**
@@ -48,8 +50,9 @@ Object.assign(DOM.prototype, {
             return;
         }
 
-        this._nodeFilter(nodes)
-            .forEach(node => DOM._toggleClass(node, classes));
+        for (const node of this._nodeFilter(nodes)) {
+            DOM._toggleClass(node, classes);
+        }
     },
 
     /**
@@ -82,21 +85,22 @@ Object.assign(DOM.prototype, {
         const styles = DOM._parseData(style, value),
             realStyles = {};
 
-        Object.keys(styles)
-            .forEach(key => {
-                let value = '' + styles[key];
-                key = Core.snakeCase(key);
+        for (let key in styles) {
+            let value = `${styles[key]}`;
+            key = Core.snakeCase(key);
 
-                // if value is numeric and not a number property, add px
-                if (value && Core.isNumeric(value) && !DOM.cssNumberProperties.includes(key)) {
-                    value = value + 'px';
-                }
+            // if value is numeric and not a number property, add px
+            if (value && Core.isNumeric(value) && !DOM.cssNumberProperties.includes(key)) {
+                value += 'px';
+            }
 
-                realStyles[key] = value;
-            });
+            realStyles[key] = value;
+        }
 
-        this._nodeFilter(nodes)
-            .forEach(node => DOM._setStyle(node, realStyles, important));
+
+        for (const node of this._nodeFilter(nodes)) {
+            DOM._setStyle(node, realStyles, important);
+        }
     },
 
     /**
@@ -144,8 +148,9 @@ Object.assign(DOM.prototype, {
      * @param {string|HTMLElement|HTMLCollection|HTMLElement[]} nodes The input node(s), or a query selector string.
      */
     toggle(nodes) {
-        this._nodeFilter(nodes)
-            .forEach(node => DOM._toggle(node));
+        for (const node of this._nodeFilter(nodes)) {
+            DOM._toggle(node);
+        }
     },
 
     /**
@@ -155,14 +160,14 @@ Object.assign(DOM.prototype, {
      * @returns {string} The CSS style value.
      */
     _css(node, style) {
-        if (!this.nodeStyles.has(node)) {
-            this.nodeStyles.set(
+        if (!this._styles.has(node)) {
+            this._styles.set(
                 node,
                 window.getComputedStyle(node)
             );
         }
 
-        return this.nodeStyles.get(node)
+        return this._styles.get(node)
             .getPropertyValue(style);
     }
 

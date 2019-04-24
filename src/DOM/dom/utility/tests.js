@@ -42,7 +42,7 @@ Object.assign(DOM.prototype, {
 
         return this._nodeFilter(nodes)
             .some(node =>
-                classes.find(className =>
+                classes.some(className =>
                     node.classList.contains(className)
                 )
             );

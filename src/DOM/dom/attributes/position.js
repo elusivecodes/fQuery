@@ -35,8 +35,9 @@ Object.assign(DOM.prototype, {
             return;
         }
 
-        this._nodeFilter(nodes)
-            .forEach(node => this._constrain(node, containerBox));
+        for (const node of this._nodeFilter(nodes)) {
+            this._constrain(node, containerBox);
+        }
     },
 
     /**
@@ -94,14 +95,13 @@ Object.assign(DOM.prototype, {
         let closest = null;
         let closestDistance = Number.MAX_VALUE;
 
-        this._nodeFilter(nodes)
-            .forEach(node => {
-                const dist = this.distTo(node, x, y, offset);
-                if (dist && dist < closestDistance) {
-                    closestDistance = dist;
-                    closest = node;
-                }
-            });
+        for (const node of this._nodeFilter(nodes)) {
+            const dist = this.distTo(node, x, y, offset);
+            if (dist && dist < closestDistance) {
+                closestDistance = dist;
+                closest = node;
+            }
+        }
 
         return closest;
     },

@@ -33,17 +33,15 @@ Object.assign(DOM.prototype, {
             return;
         }
 
-        nodes = this._parseQuery(nodes);
-
         const range = selection.getRangeAt(0);
 
         selection.removeAllRanges();
 
         range.collapse();
 
-        nodes.forEach(node =>
-            range.insertNode(node)
-        );
+        for (const node of this._parseQuery(nodes)) {
+            range.insertNode(node);
+        }
     },
 
     /**
@@ -102,15 +100,13 @@ Object.assign(DOM.prototype, {
             return;
         }
 
-        nodes = this._parseQuery(nodes);
-
         const range = selection.getRangeAt(0);
 
         selection.removeAllRanges();
 
-        nodes.forEach(node =>
-            range.insertNode(node)
-        );
+        for (const node of this._parseQuery(nodes)) {
+            range.insertNode(node);
+        }
     },
 
     /**

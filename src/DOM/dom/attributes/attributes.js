@@ -94,10 +94,9 @@ Object.assign(DOM.prototype, {
      * @param {string} attribute The attribute name.
      */
     removeAttribute(nodes, attribute) {
-        this._nodeFilter(nodes)
-            .forEach(node =>
-                DOM._removeAttribute(node, attribute)
-            );
+        for (const node of this._nodeFilter(nodes)) {
+            DOM._removeAttribute(node, attribute);
+        }
     },
 
     /**
@@ -106,10 +105,9 @@ Object.assign(DOM.prototype, {
      * @param {string} property The property name.
      */
     removeProperty(nodes, property) {
-        this._nodeFilter(nodes)
-            .forEach(node =>
-                DOM._removeProperty(node, property)
-            );
+        for (const node of this._nodeFilter(nodes)) {
+            DOM._removeProperty(node, property);
+        }
     },
 
     /**
@@ -121,10 +119,9 @@ Object.assign(DOM.prototype, {
     setAttribute(nodes, attribute, value) {
         const attributes = DOM._parseData(attribute, value);
 
-        this._nodeFilter(nodes)
-            .forEach(node =>
-                DOM._setAttribute(node, attributes)
-            );
+        for (const node of this._nodeFilter(nodes)) {
+            DOM._setAttribute(node, attributes);
+        }
     },
 
     /**
@@ -136,10 +133,9 @@ Object.assign(DOM.prototype, {
     setDataset(nodes, key, value) {
         const dataset = DOM._parseData(key, value);
 
-        this._nodeFilter(nodes)
-            .forEach(node =>
-                DOM._setDataset(node, dataset)
-            );
+        for (const node of this._nodeFilter(nodes)) {
+            DOM._setDataset(node, dataset);
+        }
     },
 
     /**
@@ -166,10 +162,9 @@ Object.assign(DOM.prototype, {
     setProperty(nodes, property, value) {
         const properties = DOM._parseData(property, value);
 
-        this._nodeFilter(nodes)
-            .forEach(node =>
-                DOM._setProperty(node, properties)
-            );
+        for (const node of this._nodeFilter(nodes)) {
+            DOM._setProperty(node, properties);
+        }
     },
 
     /**

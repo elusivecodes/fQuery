@@ -24,8 +24,9 @@ Object.assign(DOM.prototype, {
      * @param {string|Node|NodeList|HTMLCollection|Node[]} nodes The input node(s), or a query selector string.
      */
     detach(nodes) {
-        this._nodeFilter(nodes, DOM.isNode)
-            .forEach(node => DOM._detach(node));
+        for (const node of this._nodeFilter(nodes, DOM.isNode)) {
+            DOM._detach(node);
+        }
     },
 
     /**
@@ -33,8 +34,9 @@ Object.assign(DOM.prototype, {
      * @param {string|HTMLElement|HTMLCollection|Document|HTMLElement[]} nodes The input node(s), or a query selector string.
      */
     empty(nodes) {
-        this._nodeFilter(nodes, node => DOM.isElement(node) || DOM.isDocument(node))
-            .forEach(node => this._empty(node));
+        for (const node of this._nodeFilter(nodes, node => DOM.isElement(node) || DOM.isDocument(node))) {
+            this._empty(node);
+        }
     },
 
     /**
@@ -52,7 +54,7 @@ Object.assign(DOM.prototype, {
 
         selection.removeAllRanges();
 
-        return [...range.extractContents().childNodes];
+        return Core.merge([], range.extractContents().childNodes);
     },
 
     /**
@@ -60,10 +62,9 @@ Object.assign(DOM.prototype, {
      * @param {string|Node|NodeList|HTMLCollection|Node[]} nodes The input node(s), or a query selector string.
      */
     remove(nodes) {
-        this._nodeFilter(nodes, DOM.isNode)
-            .forEach(
-                node => this._remove(node)
-            );
+        for (const node of this._nodeFilter(nodes, DOM.isNode)) {
+            this._remove(node);
+        }
     },
 
     /**
@@ -83,8 +84,9 @@ Object.assign(DOM.prototype, {
     replaceWith(nodes, others) {
         others = this._parseQuery(others, DOM.isNode);
 
-        this._nodeFilter(nodes, DOM.isNode)
-            .forEach(node => this._replaceWith(node, others));
+        for (const node of this._nodeFilter(nodes, DOM.isNode)) {
+            this._replaceWith(node, others);
+        }
     },
 
     /**
@@ -125,19 +127,20 @@ Object.assign(DOM.prototype, {
      * @param {Boolean} [cloneData=false] Whether to also clone custom data.
      */
     _deepClone(node, clone, cloneEvents, cloneData) {
-        const cloneChildren = DOM._contents(clone);
+        const children = DOM._children(node, false, false, false);
+        const cloneChildren = DOM._children(clone, false, false, false);
 
-        DOM._children(node, false, false, false).forEach((child, index) => {
+        for (let i = 0; i < children.length; i++) {
             if (cloneEvents) {
-                this._cloneEvents(cloneChildren[index], child);
+                this._cloneEvents(children[i], cloneChildren[i]);
             }
 
             if (cloneData) {
-                this._cloneData(cloneChildren[index], child);
+                this._cloneData(children[i], cloneChildren[i]);
             }
 
-            this._cloneDeep(child, cloneChildren[index]);
-        });
+            this._deepClone(children[i], cloneChildren[i]);
+        }
     },
 
     /**
@@ -145,9 +148,9 @@ Object.assign(DOM.prototype, {
      * @param {HTMLElement} node The input node.
      */
     _empty(node) {
-        DOM._children(node, false, false, false).forEach(child =>
-            this._remove(child)
-        );
+        for (const child of DOM._children(node, false, false, false)) {
+            this._remove(child);
+        }
     },
 
     /**
@@ -161,15 +164,16 @@ Object.assign(DOM.prototype, {
 
         this._clearQueue(node);
         this._stop(node);
-        this._removeEvent(node);
-        this._removeData(node);
 
-        if (this.nodeStyles.has(node)) {
-            this.nodeStyles.delete(node);
+        if (this._styles.has(node)) {
+            this._styles.delete(node);
         }
 
         DOM._detach(node);
-        this._triggerEvent(node, 'remove');
+        DOM._triggerEvent(node, 'remove');
+
+        this._removeEvent(node);
+        this._removeData(node);
     },
 
     /**

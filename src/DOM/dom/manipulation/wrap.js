@@ -10,10 +10,9 @@ Object.assign(DOM.prototype, {
      * @param {string|HTMLElement|HTMLCollection|HTMLElement[]|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
      */
     unwrap(nodes, filter) {
-        this._nodeFilter(nodes, DOM.isNode)
-            .forEach(node =>
-                this._unwrap(node, filter)
-            );
+        for (const node of this._nodeFilter(nodes, DOM.isNode)) {
+            this._unwrap(node, filter);
+        }
     },
 
     /**
@@ -24,10 +23,9 @@ Object.assign(DOM.prototype, {
     wrap(nodes, others) {
         others = this._parseQuery(others);
 
-        this._nodeFilter(nodes, DOM.isNode)
-            .forEach(node =>
-                this._wrap(node, others)
-            );
+        for (const node of this._nodeFilter(nodes, DOM.isNode)) {
+            this._wrap(node, others);
+        }
     },
 
     /**
@@ -62,10 +60,9 @@ Object.assign(DOM.prototype, {
     wrapInner(nodes, others) {
         others = this._parseQuery(others);
 
-        this._nodeFilter(nodes, DOM.isNode)
-            .forEach(node =>
-                this._wrapInner(node, others)
-            );
+        for (const node of this._nodeFilter(nodes, DOM.isNode)) {
+            this._wrapInner(node, others);
+        }
     },
 
     /**
@@ -99,9 +96,9 @@ Object.assign(DOM.prototype, {
             )
         );
 
-        nodes.forEach(node =>
-            range.insertNode(node)
-        );
+        for (const node of nodes) {
+            range.insertNode(node);
+        }
     },
 
     /**
@@ -152,7 +149,6 @@ Object.assign(DOM.prototype, {
      */
     _wrapInner(node, others) {
         const clone = this.clone(others, true);
-        const children = DOM._children(node, false, false, false);
         DOM._append(node, clone);
 
         const first = clone.shift();
@@ -163,7 +159,7 @@ Object.assign(DOM.prototype, {
             ).find(node =>
                 !DOM._hasChildren(node)
             ) || first,
-            children
+            DOM._children(node, false, false, false)
         );
     }
 
