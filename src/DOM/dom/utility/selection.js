@@ -151,8 +151,8 @@ Object.assign(DOM.prototype, {
         if (nodes.length == 1) {
             DOM._select(range, nodes.shift());
         } else {
-            DOM._setStartBefore(nodes.shift());
-            DOM._setEndAfter(nodes.pop());
+            DOM._setStartBefore(range, nodes.shift());
+            DOM._setEndAfter(range, nodes.pop());
         }
 
         DOM._addRange(selection, range);

@@ -595,9 +595,9 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
           });
 
           if (!animations.length) {
-            this.animations["delete"](node);
+            this._animations["delete"](node);
           } else {
-            this.animations.set(node, animations);
+            this._animations.set(node, animations);
           }
         }
       } catch (err) {
@@ -3277,7 +3277,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
      * @returns {Range} The new range.
      */
     createRange: function createRange() {
-      return DOM._createRange();
+      return DOM._createRange(this.context);
     },
 
     /**
@@ -4937,7 +4937,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       try {
         for (var _iterator61 = nodes[Symbol.iterator](), _step61; !(_iteratorNormalCompletion61 = (_step61 = _iterator61.next()).done); _iteratorNormalCompletion61 = true) {
           var node = _step61.value;
-          Core.merge(results, DOM._siblings(node, filter, elementsOnlyt));
+          Core.merge(results, DOM._siblings(node, filter, elementsOnly));
         }
       } catch (err) {
         _didIteratorError61 = true;
@@ -5290,9 +5290,9 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       if (nodes.length == 1) {
         DOM._select(range, nodes.shift());
       } else {
-        DOM._setStartBefore(nodes.shift());
+        DOM._setStartBefore(range, nodes.shift());
 
-        DOM._setEndAfter(nodes.pop());
+        DOM._setEndAfter(range, nodes.pop());
       }
 
       DOM._addRange(selection, range);
@@ -5544,8 +5544,10 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         elements.set(node, DOM._getAttribute(node, 'style'));
       }
 
-      var parents = this._parents(node, function (parent) {
+      var parents = DOM._parents(node, function (parent) {
         return _this28._css(parent, 'display') === 'none';
+      }, function (parent) {
+        return !Core.isElement(parent);
       });
 
       var _iteratorNormalCompletion64 = true;
@@ -5742,7 +5744,9 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
      * @returns {Node[]} The sorted array of nodes.
      */
     sort: function sort(nodes) {
-      return this._nodeFilter(nodes, Core.isNode).sort(DOM._compareNodes);
+      return this._nodeFilter(nodes, Core.isNode).sort(function (node, other) {
+        return DOM._compareNodes(node, other);
+      });
     }
   });
   /**
@@ -6977,7 +6981,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
    * DOM (Static) Selection
    */
 
-  Object.assign(DOM.prototype, {
+  Object.assign(DOM, {
     /**
      * Add a range to a selection.
      * @param {Selection} selection The input selection.

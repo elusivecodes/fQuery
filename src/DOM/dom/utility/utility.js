@@ -42,8 +42,12 @@ Object.assign(DOM.prototype, {
             elements.set(node, DOM._getAttribute(node, 'style'));
         }
 
-        const parents = this._parents(node, parent =>
-            this._css(parent, 'display') === 'none'
+        const parents = DOM._parents(
+            node,
+            parent =>
+                this._css(parent, 'display') === 'none',
+            parent =>
+                !Core.isElement(parent)
         );
 
         for (const parent of parents) {
@@ -182,7 +186,7 @@ Object.assign(DOM.prototype, {
      */
     sort(nodes) {
         return this._nodeFilter(nodes, Core.isNode)
-            .sort(DOM._compareNodes);
+            .sort((node, other) => DOM._compareNodes(node, other));
     }
 
 });

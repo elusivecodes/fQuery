@@ -2,7 +2,7 @@
  * DOM (Static) Selection
  */
 
-Object.assign(DOM.prototype, {
+Object.assign(DOM, {
 
     /**
      * Add a range to a selection.

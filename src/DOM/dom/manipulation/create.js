@@ -96,7 +96,7 @@ Object.assign(DOM.prototype, {
      * @returns {Range} The new range.
      */
     createRange() {
-        return DOM._createRange();
+        return DOM._createRange(this.context);
     },
 
     /**

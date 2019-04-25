@@ -112,13 +112,13 @@ Object.assign(DOM.prototype, {
      * Run a single frame of all animations, and then queue up the next frame.
      */
     _animationFrame() {
-        for (const [node, animations] of this._animations) {
+        for (let [node, animations] of this._animations) {
             animations = animations.filter(animation => !animation());
 
             if (!animations.length) {
-                this.animations.delete(node)
+                this._animations.delete(node)
             } else {
-                this.animations.set(node, animations);
+                this._animations.set(node, animations);
             }
         }
 

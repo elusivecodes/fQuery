@@ -319,7 +319,7 @@ Object.assign(DOM.prototype, {
         for (const node of nodes) {
             Core.merge(
                 results,
-                DOM._siblings(node, filter, elementsOnlyt)
+                DOM._siblings(node, filter, elementsOnly)
             )
         }
 

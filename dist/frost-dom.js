@@ -517,13 +517,13 @@
          * Run a single frame of all animations, and then queue up the next frame.
          */
         _animationFrame() {
-            for (const [node, animations] of this._animations) {
+            for (let [node, animations] of this._animations) {
                 animations = animations.filter(animation => !animation());
 
                 if (!animations.length) {
-                    this.animations.delete(node)
+                    this._animations.delete(node)
                 } else {
-                    this.animations.set(node, animations);
+                    this._animations.set(node, animations);
                 }
             }
 
@@ -2665,7 +2665,7 @@
          * @returns {Range} The new range.
          */
         createRange() {
-            return DOM._createRange();
+            return DOM._createRange(this.context);
         },
 
         /**
@@ -3929,7 +3929,7 @@
             for (const node of nodes) {
                 Core.merge(
                     results,
-                    DOM._siblings(node, filter, elementsOnlyt)
+                    DOM._siblings(node, filter, elementsOnly)
                 )
             }
 
@@ -4222,8 +4222,8 @@
             if (nodes.length == 1) {
                 DOM._select(range, nodes.shift());
             } else {
-                DOM._setStartBefore(nodes.shift());
-                DOM._setEndAfter(nodes.pop());
+                DOM._setStartBefore(range, nodes.shift());
+                DOM._setEndAfter(range, nodes.pop());
             }
 
             DOM._addRange(selection, range);
@@ -4483,8 +4483,12 @@
                 elements.set(node, DOM._getAttribute(node, 'style'));
             }
 
-            const parents = this._parents(node, parent =>
-                this._css(parent, 'display') === 'none'
+            const parents = DOM._parents(
+                node,
+                parent =>
+                    this._css(parent, 'display') === 'none',
+                parent =>
+                    !Core.isElement(parent)
             );
 
             for (const parent of parents) {
@@ -4623,7 +4627,7 @@
          */
         sort(nodes) {
             return this._nodeFilter(nodes, Core.isNode)
-                .sort(DOM._compareNodes);
+                .sort((node, other) => DOM._compareNodes(node, other));
         }
 
     });
@@ -5727,7 +5731,7 @@
      * DOM (Static) Selection
      */
 
-    Object.assign(DOM.prototype, {
+    Object.assign(DOM, {
 
         /**
          * Add a range to a selection.
