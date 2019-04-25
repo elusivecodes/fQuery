@@ -71,7 +71,7 @@ Object.assign(DOM.prototype, {
      * @returns {HTMLElement} The common ancestor.
      */
     commonAncestor(nodes) {
-        nodes = this.sortNodes(nodes);
+        nodes = this.sort(nodes);
 
         if (!nodes.length) {
             return;

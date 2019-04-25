@@ -3677,7 +3677,7 @@
          * @returns {HTMLElement} The common ancestor.
          */
         commonAncestor(nodes) {
-            nodes = this.sortNodes(nodes);
+            nodes = this.sort(nodes);
 
             if (!nodes.length) {
                 return;
@@ -3943,6 +3943,51 @@
     Object.assign(DOM.prototype, {
 
         /**
+         * Return a filtered array of nodes.
+         * @param {string|Node|NodeList|HTMLCollection|Document|Node[]} nodes The input node(s), or a query selector string.
+         * @param {DOM~filterCallback} [filter=DOM.isElement] The filter callback.
+         * @returns {Node[]} The filtered array of nodes.
+         */
+        _nodeFilter(nodes, filter = DOM.isElement) {
+            if (Core.isString(nodes)) {
+                return this.find(nodes)
+                    .filter(filter);
+            }
+
+            if (filter(nodes)) {
+                return [nodes];
+            }
+
+            return Core.wrap(nodes)
+                .filter(filter);
+        },
+
+        /**
+         * Return the first node matching a filter.
+         * @param {string|Node|NodeList|HTMLCollection|Document|Node[]} nodes The input node(s), or a query selector string.
+         * @param {DOM~filterCallback} [filter=DOM.isElement] The filter callback.
+         * @returns {Node} The matching node.
+         */
+        _nodeFind(nodes, filter = DOM.isElement) {
+            if (Core.isString(nodes)) {
+                const node = this.findOne(nodes);
+                if (filter(node)) {
+                    return node;
+                }
+
+                return null;
+            }
+
+            const node = Core.wrap(nodes).shift();
+
+            if (filter(node)) {
+                return node;
+            }
+
+            return null;
+        },
+
+        /**
          * Return an element filter callback.
          * @param {string|Node|NodeList|HTMLCollection|Node[]|DOM~filterCallback} filter The filter node(s), a query selector string or custom filter function.
          * @returns {DOM~filterCallback} The element filter callback.
@@ -4002,79 +4047,6 @@
             }
 
             return false;
-        }
-
-    });
-
-    /**
-     * DOM Nodes
-     */
-
-    Object.assign(DOM.prototype, {
-
-        /**
-         * Normalize nodes (remove empty text nodes, and join neighbouring text nodes).
-         * @param {string|Node|NodeList|HTMLCollection|Document|Node[]} nodes The input node(s), or a query selector string.
-         */
-        normalize(nodes) {
-            for (const node of this._nodeFilter(nodes, DOM.isNode)) {
-                DOM._normalize(node);
-            }
-        },
-
-        /**
-         * Sorts nodes by their position in the document
-         * @param {string|Node|NodeList|HTMLCollection|Document|Node[]} nodes The input node(s), or a query selector string.
-         * @returns {Node[]} The sorted array of nodes.
-         */
-        sortNodes(nodes) {
-            return this._nodeFilter(nodes, DOM.isNode)
-                .sort(DOM._compareNodes);
-        },
-
-        /**
-         * Return a filtered array of nodes.
-         * @param {string|Node|NodeList|HTMLCollection|Document|Node[]} nodes The input node(s), or a query selector string.
-         * @param {DOM~filterCallback} [filter=DOM.isElement] The filter callback.
-         * @returns {Node[]} The filtered array of nodes.
-         */
-        _nodeFilter(nodes, filter = DOM.isElement) {
-            if (Core.isString(nodes)) {
-                return this.find(nodes)
-                    .filter(filter);
-            }
-
-            if (filter(nodes)) {
-                return [nodes];
-            }
-
-            return Core.wrap(nodes)
-                .filter(filter);
-        },
-
-        /**
-         * Return the first node matching a filter.
-         * @param {string|Node|NodeList|HTMLCollection|Document|Node[]} nodes The input node(s), or a query selector string.
-         * @param {DOM~filterCallback} [filter=DOM.isElement] The filter callback.
-         * @returns {Node} The matching node.
-         */
-        _nodeFind(nodes, filter = DOM.isElement) {
-            if (Core.isString(nodes)) {
-                const node = this.findOne(nodes);
-                if (filter(node)) {
-                    return node;
-                }
-
-                return null;
-            }
-
-            const node = Core.wrap(nodes).shift();
-
-            if (filter(node)) {
-                return node;
-            }
-
-            return null;
         },
 
         /**
@@ -4235,7 +4207,7 @@
                 DOM._removeRanges(selection);
             }
 
-            nodes = this.sortNodes(nodes);
+            nodes = this.sort(nodes);
 
             if (!nodes.length) {
                 return;
@@ -4576,6 +4548,16 @@
         },
 
         /**
+         * Normalize nodes (remove empty text nodes, and join neighbouring text nodes).
+         * @param {string|Node|NodeList|HTMLCollection|Document|Node[]} nodes The input node(s), or a query selector string.
+         */
+        normalize(nodes) {
+            for (const node of this._nodeFilter(nodes, DOM.isNode)) {
+                DOM._normalize(node);
+            }
+        },
+
+        /**
          * Return a serialized string containing names and values of all form elements.
          * @param {string|HTMLElement|HTMLCollection|HTMLElement[]} nodes The input node(s), or a query selector string.
          * @returns {string} The serialized string.
@@ -4628,6 +4610,16 @@
                     },
                     []
                 );
+        },
+
+        /**
+         * Sort nodes by their position in the document
+         * @param {string|Node|NodeList|HTMLCollection|Document|Node[]} nodes The input node(s), or a query selector string.
+         * @returns {Node[]} The sorted array of nodes.
+         */
+        sort(nodes) {
+            return this._nodeFilter(nodes, DOM.isNode)
+                .sort(DOM._compareNodes);
         }
 
     });

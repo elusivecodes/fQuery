@@ -4607,7 +4607,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
      * @returns {HTMLElement} The common ancestor.
      */
     commonAncestor: function commonAncestor(nodes) {
-      nodes = this.sortNodes(nodes);
+      nodes = this.sort(nodes);
 
       if (!nodes.length) {
         return;
@@ -4959,6 +4959,54 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
   Object.assign(DOM.prototype, {
     /**
+     * Return a filtered array of nodes.
+     * @param {string|Node|NodeList|HTMLCollection|Document|Node[]} nodes The input node(s), or a query selector string.
+     * @param {DOM~filterCallback} [filter=DOM.isElement] The filter callback.
+     * @returns {Node[]} The filtered array of nodes.
+     */
+    _nodeFilter: function _nodeFilter(nodes) {
+      var filter = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : DOM.isElement;
+
+      if (Core.isString(nodes)) {
+        return this.find(nodes).filter(filter);
+      }
+
+      if (filter(nodes)) {
+        return [nodes];
+      }
+
+      return Core.wrap(nodes).filter(filter);
+    },
+
+    /**
+     * Return the first node matching a filter.
+     * @param {string|Node|NodeList|HTMLCollection|Document|Node[]} nodes The input node(s), or a query selector string.
+     * @param {DOM~filterCallback} [filter=DOM.isElement] The filter callback.
+     * @returns {Node} The matching node.
+     */
+    _nodeFind: function _nodeFind(nodes) {
+      var filter = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : DOM.isElement;
+
+      if (Core.isString(nodes)) {
+        var _node = this.findOne(nodes);
+
+        if (filter(_node)) {
+          return _node;
+        }
+
+        return null;
+      }
+
+      var node = Core.wrap(nodes).shift();
+
+      if (filter(node)) {
+        return node;
+      }
+
+      return null;
+    },
+
+    /**
      * Return an element filter callback.
      * @param {string|Node|NodeList|HTMLCollection|Node[]|DOM~filterCallback} filter The filter node(s), a query selector string or custom filter function.
      * @returns {DOM~filterCallback} The element filter callback.
@@ -5034,99 +5082,6 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       }
 
       return false;
-    }
-  });
-  /**
-   * DOM Nodes
-   */
-
-  Object.assign(DOM.prototype, {
-    /**
-     * Normalize nodes (remove empty text nodes, and join neighbouring text nodes).
-     * @param {string|Node|NodeList|HTMLCollection|Document|Node[]} nodes The input node(s), or a query selector string.
-     */
-    normalize: function normalize(nodes) {
-      var _iteratorNormalCompletion62 = true;
-      var _didIteratorError62 = false;
-      var _iteratorError62 = undefined;
-
-      try {
-        for (var _iterator62 = this._nodeFilter(nodes, DOM.isNode)[Symbol.iterator](), _step62; !(_iteratorNormalCompletion62 = (_step62 = _iterator62.next()).done); _iteratorNormalCompletion62 = true) {
-          var node = _step62.value;
-
-          DOM._normalize(node);
-        }
-      } catch (err) {
-        _didIteratorError62 = true;
-        _iteratorError62 = err;
-      } finally {
-        try {
-          if (!_iteratorNormalCompletion62 && _iterator62["return"] != null) {
-            _iterator62["return"]();
-          }
-        } finally {
-          if (_didIteratorError62) {
-            throw _iteratorError62;
-          }
-        }
-      }
-    },
-
-    /**
-     * Sorts nodes by their position in the document
-     * @param {string|Node|NodeList|HTMLCollection|Document|Node[]} nodes The input node(s), or a query selector string.
-     * @returns {Node[]} The sorted array of nodes.
-     */
-    sortNodes: function sortNodes(nodes) {
-      return this._nodeFilter(nodes, DOM.isNode).sort(DOM._compareNodes);
-    },
-
-    /**
-     * Return a filtered array of nodes.
-     * @param {string|Node|NodeList|HTMLCollection|Document|Node[]} nodes The input node(s), or a query selector string.
-     * @param {DOM~filterCallback} [filter=DOM.isElement] The filter callback.
-     * @returns {Node[]} The filtered array of nodes.
-     */
-    _nodeFilter: function _nodeFilter(nodes) {
-      var filter = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : DOM.isElement;
-
-      if (Core.isString(nodes)) {
-        return this.find(nodes).filter(filter);
-      }
-
-      if (filter(nodes)) {
-        return [nodes];
-      }
-
-      return Core.wrap(nodes).filter(filter);
-    },
-
-    /**
-     * Return the first node matching a filter.
-     * @param {string|Node|NodeList|HTMLCollection|Document|Node[]} nodes The input node(s), or a query selector string.
-     * @param {DOM~filterCallback} [filter=DOM.isElement] The filter callback.
-     * @returns {Node} The matching node.
-     */
-    _nodeFind: function _nodeFind(nodes) {
-      var filter = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : DOM.isElement;
-
-      if (Core.isString(nodes)) {
-        var _node = this.findOne(nodes);
-
-        if (filter(_node)) {
-          return _node;
-        }
-
-        return null;
-      }
-
-      var node = Core.wrap(nodes).shift();
-
-      if (filter(node)) {
-        return node;
-      }
-
-      return null;
     },
 
     /**
@@ -5168,6 +5123,47 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
       DOM._collapseRange(range);
 
+      var _iteratorNormalCompletion62 = true;
+      var _didIteratorError62 = false;
+      var _iteratorError62 = undefined;
+
+      try {
+        for (var _iterator62 = this._parseQuery(nodes, DOM.isNode)[Symbol.iterator](), _step62; !(_iteratorNormalCompletion62 = (_step62 = _iterator62.next()).done); _iteratorNormalCompletion62 = true) {
+          var node = _step62.value;
+
+          DOM._insert(range, node);
+        }
+      } catch (err) {
+        _didIteratorError62 = true;
+        _iteratorError62 = err;
+      } finally {
+        try {
+          if (!_iteratorNormalCompletion62 && _iterator62["return"] != null) {
+            _iterator62["return"]();
+          }
+        } finally {
+          if (_didIteratorError62) {
+            throw _iteratorError62;
+          }
+        }
+      }
+    },
+
+    /**
+     * Insert each node before the selection.
+     * @param {string|Node|NodeList|HTMLCollection|Node[]} nodes The input node(s), or a query selector string.
+     */
+    beforeSelection: function beforeSelection(nodes) {
+      var selection = DOM._getSelection();
+
+      if (!selection.rangeCount) {
+        return;
+      }
+
+      var range = DOM._getRange(selection);
+
+      DOM._removeRanges(selection);
+
       var _iteratorNormalCompletion63 = true;
       var _didIteratorError63 = false;
       var _iteratorError63 = undefined;
@@ -5189,47 +5185,6 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         } finally {
           if (_didIteratorError63) {
             throw _iteratorError63;
-          }
-        }
-      }
-    },
-
-    /**
-     * Insert each node before the selection.
-     * @param {string|Node|NodeList|HTMLCollection|Node[]} nodes The input node(s), or a query selector string.
-     */
-    beforeSelection: function beforeSelection(nodes) {
-      var selection = DOM._getSelection();
-
-      if (!selection.rangeCount) {
-        return;
-      }
-
-      var range = DOM._getRange(selection);
-
-      DOM._removeRanges(selection);
-
-      var _iteratorNormalCompletion64 = true;
-      var _didIteratorError64 = false;
-      var _iteratorError64 = undefined;
-
-      try {
-        for (var _iterator64 = this._parseQuery(nodes, DOM.isNode)[Symbol.iterator](), _step64; !(_iteratorNormalCompletion64 = (_step64 = _iterator64.next()).done); _iteratorNormalCompletion64 = true) {
-          var node = _step64.value;
-
-          DOM._insert(range, node);
-        }
-      } catch (err) {
-        _didIteratorError64 = true;
-        _iteratorError64 = err;
-      } finally {
-        try {
-          if (!_iteratorNormalCompletion64 && _iterator64["return"] != null) {
-            _iterator64["return"]();
-          }
-        } finally {
-          if (_didIteratorError64) {
-            throw _iteratorError64;
           }
         }
       }
@@ -5320,7 +5275,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         DOM._removeRanges(selection);
       }
 
-      nodes = this.sortNodes(nodes);
+      nodes = this.sort(nodes);
 
       if (!nodes.length) {
         return;
@@ -5589,14 +5544,41 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         return _this28._css(parent, 'display') === 'none';
       });
 
+      var _iteratorNormalCompletion64 = true;
+      var _didIteratorError64 = false;
+      var _iteratorError64 = undefined;
+
+      try {
+        for (var _iterator64 = parents[Symbol.iterator](), _step64; !(_iteratorNormalCompletion64 = (_step64 = _iterator64.next()).done); _iteratorNormalCompletion64 = true) {
+          var parent = _step64.value;
+          elements.set(parent, DOM._getAttribute(parent, 'style'));
+        }
+      } catch (err) {
+        _didIteratorError64 = true;
+        _iteratorError64 = err;
+      } finally {
+        try {
+          if (!_iteratorNormalCompletion64 && _iterator64["return"] != null) {
+            _iterator64["return"]();
+          }
+        } finally {
+          if (_didIteratorError64) {
+            throw _iteratorError64;
+          }
+        }
+      }
+
       var _iteratorNormalCompletion65 = true;
       var _didIteratorError65 = false;
       var _iteratorError65 = undefined;
 
       try {
-        for (var _iterator65 = parents[Symbol.iterator](), _step65; !(_iteratorNormalCompletion65 = (_step65 = _iterator65.next()).done); _iteratorNormalCompletion65 = true) {
-          var parent = _step65.value;
-          elements.set(parent, DOM._getAttribute(parent, 'style'));
+        for (var _iterator65 = elements.keys()[Symbol.iterator](), _step65; !(_iteratorNormalCompletion65 = (_step65 = _iterator65.next()).done); _iteratorNormalCompletion65 = true) {
+          var element = _step65.value;
+
+          DOM._setStyle(element, {
+            display: 'initial'
+          }, true);
         }
       } catch (err) {
         _didIteratorError65 = true;
@@ -5613,17 +5595,24 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         }
       }
 
+      var result = callback(node);
       var _iteratorNormalCompletion66 = true;
       var _didIteratorError66 = false;
       var _iteratorError66 = undefined;
 
       try {
-        for (var _iterator66 = elements.keys()[Symbol.iterator](), _step66; !(_iteratorNormalCompletion66 = (_step66 = _iterator66.next()).done); _iteratorNormalCompletion66 = true) {
-          var element = _step66.value;
+        for (var _iterator66 = elements[Symbol.iterator](), _step66; !(_iteratorNormalCompletion66 = (_step66 = _iterator66.next()).done); _iteratorNormalCompletion66 = true) {
+          var _step66$value = _slicedToArray(_step66.value, 2),
+              _element = _step66$value[0],
+              style = _step66$value[1];
 
-          DOM._setStyle(element, {
-            display: 'initial'
-          }, true);
+          if (style) {
+            DOM._setStyle(_element, {
+              display: style
+            });
+          } else {
+            DOM._removeAttribute(_element, 'style');
+          }
         }
       } catch (err) {
         _didIteratorError66 = true;
@@ -5636,40 +5625,6 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         } finally {
           if (_didIteratorError66) {
             throw _iteratorError66;
-          }
-        }
-      }
-
-      var result = callback(node);
-      var _iteratorNormalCompletion67 = true;
-      var _didIteratorError67 = false;
-      var _iteratorError67 = undefined;
-
-      try {
-        for (var _iterator67 = elements[Symbol.iterator](), _step67; !(_iteratorNormalCompletion67 = (_step67 = _iterator67.next()).done); _iteratorNormalCompletion67 = true) {
-          var _step67$value = _slicedToArray(_step67.value, 2),
-              _element = _step67$value[0],
-              style = _step67$value[1];
-
-          if (style) {
-            DOM._setStyle(_element, {
-              display: style
-            });
-          } else {
-            DOM._removeAttribute(_element, 'style');
-          }
-        }
-      } catch (err) {
-        _didIteratorError67 = true;
-        _iteratorError67 = err;
-      } finally {
-        try {
-          if (!_iteratorNormalCompletion67 && _iterator67["return"] != null) {
-            _iterator67["return"]();
-          }
-        } finally {
-          if (_didIteratorError67) {
-            throw _iteratorError67;
           }
         }
       }
@@ -5703,6 +5658,37 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       }
 
       return this.children(this.parent(node)).indexOf(node);
+    },
+
+    /**
+     * Normalize nodes (remove empty text nodes, and join neighbouring text nodes).
+     * @param {string|Node|NodeList|HTMLCollection|Document|Node[]} nodes The input node(s), or a query selector string.
+     */
+    normalize: function normalize(nodes) {
+      var _iteratorNormalCompletion67 = true;
+      var _didIteratorError67 = false;
+      var _iteratorError67 = undefined;
+
+      try {
+        for (var _iterator67 = this._nodeFilter(nodes, DOM.isNode)[Symbol.iterator](), _step67; !(_iteratorNormalCompletion67 = (_step67 = _iterator67.next()).done); _iteratorNormalCompletion67 = true) {
+          var node = _step67.value;
+
+          DOM._normalize(node);
+        }
+      } catch (err) {
+        _didIteratorError67 = true;
+        _iteratorError67 = err;
+      } finally {
+        try {
+          if (!_iteratorNormalCompletion67 && _iterator67["return"] != null) {
+            _iterator67["return"]();
+          }
+        } finally {
+          if (_didIteratorError67) {
+            throw _iteratorError67;
+          }
+        }
+      }
     },
 
     /**
@@ -5744,6 +5730,15 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         });
         return values;
       }, []);
+    },
+
+    /**
+     * Sort nodes by their position in the document
+     * @param {string|Node|NodeList|HTMLCollection|Document|Node[]} nodes The input node(s), or a query selector string.
+     * @returns {Node[]} The sorted array of nodes.
+     */
+    sort: function sort(nodes) {
+      return this._nodeFilter(nodes, DOM.isNode).sort(DOM._compareNodes);
     }
   });
   /**

@@ -692,6 +692,8 @@ Set style properties for each element.
 dom.setStyle(nodes, style, value, important);
 ```
 
+Alternatively, you can set multiple style properties by passing a single `styles` object as the argument with key/value pairs of the styles to set.
+
 ```javascript
 dom.setStyle(nodes, styles);
 ```
@@ -889,6 +891,73 @@ const event = dom.mouseDragFactory(down, move, up, animated);
 
 #### Manipulation
 
+**Detach**
+
+Detach an element from the DOM.
+
+- `nodes` is a query selector string, a *Node*, *NodeList*, *HTMLCollection* or an array of elements.
+
+```javascript
+dom.detach(nodes);
+```
+
+**Empty**
+
+Remove all children of each node from the DOM.
+
+- `nodes` is a query selector string, a *Node*, *NodeList*, *HTMLCollection* or an array of elements.
+
+```javascript
+dom.empty(nodes);
+```
+
+**Remove**
+
+Remove each node from the DOM.
+
+- `nodes` is a query selector string, a *Node*, *NodeList*, *HTMLCollection* or an array of nodes.
+
+```javascript
+dom.remove(nodes);
+```
+
+**Replace All**
+
+Replace each other node with nodes.
+
+- `nodes` is a query selector string, a HTML string, a *Node*, *NodeList*, *HTMLCollection* or an array of nodes.
+- `others` is a query selector string, a *Node*, *NodeList*, *HTMLCollection* or an array of nodes.
+
+```javascript
+dom.replaceAll(nodes, others);
+```
+
+**Replace With**
+
+Replace each node with other nodes.
+
+- `nodes` is a query selector string, a *Node*, *NodeList*, *HTMLCollection* or an array of nodes.
+- `others` is a query selector string, a HTML string, a *Node*, *NodeList*, *HTMLCollection* or an array of nodes.
+
+```javascript
+dom.replaceWith(nodes, others);
+```
+
+##### Create
+
+**Clone**
+
+Clone each node (optionally deep, and with events and data).
+
+- `nodes` is a query selector string, a *HTMLElement*, *HTMLCollection* or an array of elements.
+- `deep` is a boolean indicating whether you wish to clone all descendent elements, and will default to *true*.
+- `cloneEvents` is a boolean indicating whether you wish to clone all events to the new nodes, and will default to *false*.
+- `cloneData` is a boolean indicating whether you wish to clone all custom data to the new nodes, and will default to *false*.
+
+```javascript
+const clones = dom.clone(nodes, deep, cloneEvents, cloneData);
+```
+
 **Create**
 
 Create a new DOM element.
@@ -944,73 +1013,6 @@ Return an array containing nodes parsed from a HTML string.
 
 ```javascript
 const nodes = dom.parseHTML(html);
-```
-
-##### Manipulation
-
-**Clone**
-
-Clone each node (optionally deep, and with events and data).
-
-- `nodes` is a query selector string, a *HTMLElement*, *HTMLCollection* or an array of elements.
-- `deep` is a boolean indicating whether you wish to clone all descendent elements, and will default to *true*.
-- `cloneEvents` is a boolean indicating whether you wish to clone all events to the new nodes, and will default to *false*.
-- `cloneData` is a boolean indicating whether you wish to clone all custom data to the new nodes, and will default to *false*.
-
-```javascript
-const clones = dom.clone(nodes, deep, cloneEvents, cloneData);
-```
-
-**Detach**
-
-Detach an element from the DOM.
-
-- `nodes` is a query selector string, a *Node*, *NodeList*, *HTMLCollection* or an array of elements.
-
-```javascript
-dom.detach(nodes);
-```
-
-**Empty**
-
-Remove all children of each node from the DOM.
-
-- `nodes` is a query selector string, a *Node*, *NodeList*, *HTMLCollection* or an array of elements.
-
-```javascript
-dom.empty(nodes);
-```
-
-**Remove**
-
-Remove each node from the DOM.
-
-- `nodes` is a query selector string, a *Node*, *NodeList*, *HTMLCollection* or an array of nodes.
-
-```javascript
-dom.remove(nodes);
-```
-
-**Replace All**
-
-Replace each other node with nodes.
-
-- `nodes` is a query selector string, a HTML string, a *Node*, *NodeList*, *HTMLCollection* or an array of nodes.
-- `others` is a query selector string, a *Node*, *NodeList*, *HTMLCollection* or an array of nodes.
-
-```javascript
-dom.replaceAll(nodes, others);
-```
-
-**Replace With**
-
-Replace each node with other nodes.
-
-- `nodes` is a query selector string, a *Node*, *NodeList*, *HTMLCollection* or an array of nodes.
-- `others` is a query selector string, a HTML string, a *Node*, *NodeList*, *HTMLCollection* or an array of nodes.
-
-```javascript
-dom.replaceWith(nodes, others);
 ```
 
 ##### Move
@@ -1738,6 +1740,16 @@ Get the index of the first element relative to it's parent element.
 const indexOf = dom.indexOf(nodes);
 ```
 
+**Normalize**
+
+Normalize nodes (remove empty text nodes, and join neighbouring text nodes).
+
+- `nodes` is a query selector string, a *Node*, *NodeList*, *HTMLCollection* or an array of elements.
+
+```javascript
+dom.normalize(nodes);
+```
+
 **Serialize**
 
 Returns a serialized string containing names and values of all form elements.
@@ -1756,6 +1768,16 @@ Returns a serialized array containing names and values of all form elements.
 
 ```javascript
 const serialArray = dom.serializeArray(nodes);
+```
+
+**Sort**
+
+Sort nodes by their position in the document
+
+- `nodes` is a query selector string, a *Node*, *NodeList*, *HTMLCollection* or an array of elements.
+
+```javascript
+const sorted = dom.sort(nodes);
 ```
 
 ##### Selection

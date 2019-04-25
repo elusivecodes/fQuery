@@ -140,7 +140,7 @@ Object.assign(DOM.prototype, {
             DOM._removeRanges(selection);
         }
 
-        nodes = this.sortNodes(nodes);
+        nodes = this.sort(nodes);
 
         if (!nodes.length) {
             return;

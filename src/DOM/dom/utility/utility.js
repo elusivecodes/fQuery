@@ -111,6 +111,16 @@ Object.assign(DOM.prototype, {
     },
 
     /**
+     * Normalize nodes (remove empty text nodes, and join neighbouring text nodes).
+     * @param {string|Node|NodeList|HTMLCollection|Document|Node[]} nodes The input node(s), or a query selector string.
+     */
+    normalize(nodes) {
+        for (const node of this._nodeFilter(nodes, DOM.isNode)) {
+            DOM._normalize(node);
+        }
+    },
+
+    /**
      * Return a serialized string containing names and values of all form elements.
      * @param {string|HTMLElement|HTMLCollection|HTMLElement[]} nodes The input node(s), or a query selector string.
      * @returns {string} The serialized string.
@@ -163,6 +173,16 @@ Object.assign(DOM.prototype, {
                 },
                 []
             );
+    },
+
+    /**
+     * Sort nodes by their position in the document
+     * @param {string|Node|NodeList|HTMLCollection|Document|Node[]} nodes The input node(s), or a query selector string.
+     * @returns {Node[]} The sorted array of nodes.
+     */
+    sort(nodes) {
+        return this._nodeFilter(nodes, DOM.isNode)
+            .sort(DOM._compareNodes);
     }
 
 });
