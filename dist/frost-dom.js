@@ -48,17 +48,356 @@
             this._styles = new WeakMap;
         }
 
+    }
+
+    /**
+     * DOM AJAX
+     */
+
+    Object.assign(DOM.prototype, {
+
         /**
-         * Execute a command in the document context.
-         * @param {string} command The command to execute.
-         * @param {string} [value] The value to give the command.
-         * @returns {Boolean} TRUE if the command was executed, otherwise FALSE.
+         * Perform an XHR request.
+         * @param {object} [options] The options to use for the request.
+         * @param {string} [options.url=window.location] The URL of the request.
+         * @param {string} [options.method=GET] The HTTP method of the request.
+         * @param {Boolean|string|array|object} [options.data=false] The data to send with the request.
+         * @param {Boolean|string} [options.contentType=application/x-www-form-urlencoded] The content type of the request.
+         * @param {Boolean|string} [options.responseType] The content type of the response.
+         * @param {Boolean} [options.cache=true] Whether to cache the request.
+         * @param {Boolean} [options.processData=true] Whether to process the data based on the content type.
+         * @param {object} [options.headers] Additional headers to send with the request.
+         * @param {Boolean|function} [options.beforeSend=false] A callback to execute before making the request.
+         * @param {Boolean|function} [options.uploadProgress=false] A callback to execute on upload progress.
+         * @returns {Promise} A new Promise that resolves when the request is completed, or rejects on failure.
          */
-        exec(command, value = null) {
-            return this.context.execCommand(command, false, value);
+        ajax(options) {
+            options = {
+                url: window.location,
+                headers: {},
+                ...DOM.ajaxDefaults,
+                ...options
+            };
+
+            if (!options.cache) {
+                const url = new URL(options.url);
+                url.searchParams.append('_', Date.now());
+                options.url = url.toString();
+            }
+
+            if ('Content-Type' in options.headers && !options.headers['Content-Type']) {
+                options.headers['Content-Type'] = options.contentType;
+            }
+
+            if (!('X-Requested-With' in options.headers)) {
+                options.headers['X-Requested-With'] = 'XMLHttpRequest';
+            }
+
+            return new Promise((resolve, reject) => {
+                const xhr = new XMLHttpRequest;
+
+                xhr.open(options.method, options.url, true);
+
+                for (const key of options.headers) {
+                    xhr.setRequestHeader(key, options.headers[key]);
+                }
+
+                if (options.responseType) {
+                    xhr.responseType = options.responseType;
+                }
+
+                xhr.onload = e => {
+                    if (xhr.status > 400) {
+                        reject({
+                            status: xhr.status,
+                            xhr: xhr,
+                            event: e
+                        });
+                    } else {
+                        resolve({
+                            response: xhr.response,
+                            xhr: xhr,
+                            event: e
+                        });
+                    }
+                };
+
+                xhr.onerror = e =>
+                    reject({
+                        status: xhr.status,
+                        xhr: xhr,
+                        event: e
+                    });
+
+                if (options.uploadProgress) {
+                    xhr.upload.onprogress = e =>
+                        options.uploadProgress(e.loaded / e.total, xhr, e);
+                }
+
+                if (options.beforeSend) {
+                    options.beforeSend(xhr);
+                }
+
+                if (options.data && options.processData) {
+                    if (options.contentType === 'application/json') {
+                        options.data = JSON.stringify(options.data);
+                    } else if (options.contentType === 'application/x-www-form-urlencoded') {
+                        options.data = DOM._parseParams(options.data);
+                    } else {
+                        options.data = DOM._parseFormData(options.data);
+                    }
+                }
+                xhr.send(options.data);
+            });
+        },
+
+        /**
+         * Perform an XHR GET request.
+         * @param {string} url The URL of the request.
+         * @param {object} [options] The options to use for the request.
+         * @param {string} [options.method=GET] The HTTP method of the request.
+         * @param {Boolean|string|array|object} [options.data=false] The data to send with the request.
+         * @param {Boolean|string} [options.contentType=application/x-www-form-urlencoded] The content type of the request.
+         * @param {Boolean|string} [options.responseType] The content type of the response.
+         * @param {Boolean} [options.cache=true] Whether to cache the request.
+         * @param {Boolean} [options.processData=true] Whether to process the data based on the content type.
+         * @param {object} [options.headers] Additional headers to send with the request.
+         * @param {Boolean|function} [options.beforeSend=false] A callback to execute before making the request.
+         * @param {Boolean|function} [options.uploadProgress=false] A callback to execute on upload progress.
+         * @returns {Promise} A new Promise that resolves when the request is completed, or rejects on failure.
+         */
+        get(url, options) {
+            return this.ajax({
+                url,
+                ...options
+            });
+        },
+
+        /**
+         * Perform an XHR POST request.
+         * @param {string} url The URL of the request.
+         * @param {Boolean|string|array|object} data The data to send with the request.
+         * @param {object} [options] The options to use for the request.
+         * @param {string} [options.method=POST] The HTTP method of the request.
+         * @param {Boolean|string} [options.contentType=application/x-www-form-urlencoded] The content type of the request.
+         * @param {Boolean|string} [options.responseType] The content type of the response.
+         * @param {Boolean} [options.cache=true] Whether to cache the request.
+         * @param {Boolean} [options.processData=true] Whether to process the data based on the content type.
+         * @param {object} [options.headers] Additional headers to send with the request.
+         * @param {Boolean|function} [options.beforeSend=false] A callback to execute before making the request.
+         * @param {Boolean|function} [options.uploadProgress=false] A callback to execute on upload progress.
+         * @returns {Promise} A new Promise that resolves when the request is completed, or rejects on failure.
+         */
+        post(url, data, options) {
+            return this.ajax({
+                url,
+                data,
+                method: 'POST',
+                ...options
+            });
+        },
+
+        /**
+         * Perform an XHR request for a file upload.
+         * @param {string} url The URL of the request.
+         * @param {Boolean|string|array|object} data The data to send with the request.
+         * @param {object} [options] The options to use for the request.
+         * @param {string} [options.method=POST] The HTTP method of the request.
+         * @param {Boolean|string} [options.contentType=false] The content type of the request.
+         * @param {Boolean|string} [options.responseType] The content type of the response.
+         * @param {Boolean} [options.cache=true] Whether to cache the request.
+         * @param {Boolean} [options.processData=false] Whether to process the data based on the content type.
+         * @param {object} [options.headers] Additional headers to send with the request.
+         * @param {Boolean|function} [options.beforeSend=false] A callback to execute before making the request.
+         * @param {Boolean|function} [options.uploadProgress=false] A callback to execute on upload progress.
+         * @returns {Promise} A new Promise that resolves when the request is completed, or rejects on failure.
+         */
+        upload(url, data, options) {
+            return this.ajax({
+                url,
+                data,
+                method: 'POST',
+                contentType: false,
+                ...options
+            });
+        },
+
+        /**
+         * Load and execute a JavaScript file.
+         * @param {string} script The URL of the script.
+         * @param {Boolean} [cache=true] Whether to cache the request.
+         * @returns {Promise} A new Promise that resolves when the request is completed, or rejects on failure.
+         */
+        loadScript(script, cache = true) {
+            return this.ajax(script, { cache })
+                .then(response =>
+                    eval.apply(window, response.response)
+                );
+        },
+
+        /**
+         * Load and executes multiple JavaScript files (in order).
+         * @param {string[]} scripts An array of script URLs.
+         * @param {Boolean} [cache=true] Whether to cache the requests.
+         * @returns {Promise} A new Promise that resolves when the request is completed, or rejects on failure.
+         */
+        loadScripts(scripts, cache = true) {
+            return Promise.all
+                (
+                    scripts.map(script =>
+                        this.ajax(script, { cache })
+                    )
+                )
+                .then(responses => {
+                    for (const response of responses) {
+                        eval.apply(window, response.response);
+                    }
+                });
+        },
+
+        /**
+         * Import a CSS Stylesheet file.
+         * @param {string} stylesheet The URL of the stylesheet.
+         * @param {Boolean} [cache=true] Whether to cache the request.
+         * @returns {Promise} A new Promise that resolves when the request is completed, or rejects on failure.
+         */
+        loadStyle(stylesheet, cache = true) {
+            return this.ajax(stylesheet, { cache })
+                .then(response =>
+                    DOM._append(
+                        this.context.head,
+                        this.create(
+                            'style',
+                            {
+                                text: response.response
+                            }
+                        )
+                    )
+                );
+        },
+
+        /**
+         * Import multiple CSS Stylesheet files.
+         * @param {string[]} stylesheets An array of stylesheet URLs.
+         * @param {Boolean} [cache=true] Whether to cache the requests.
+         * @returns {Promise} A new Promise that resolves when the request is completed, or rejects on failure.
+         */
+        loadStyles(stylesheets, cache = true) {
+            return Promise.all
+                (
+                    stylesheets.map(stylesheet =>
+                        this.ajax(stylesheet, { cache })
+                    )
+                )
+                .then(responses =>
+                    DOM._append(
+                        this.context.head,
+                        this.create(
+                            'style',
+                            {
+                                text: responses
+                                    .map(response => response.response)
+                                    .join("\r\n")
+                            }
+                        )
+                    )
+                );
         }
 
-    }
+    });
+
+    /**
+     * DOM Cookie
+     */
+
+    Object.assign(DOM.prototype, {
+
+        /**
+         * Get a cookie value.
+         * @param {string} name The cookie name.
+         * @param {Boolean} [json=false] Whether the cookie value is in JSON.
+         * @returns {*} The cookie value.
+         */
+        getCookie(name, json = false) {
+            const cookie = decodeURIComponent(this.context.cookie)
+                .split(';')
+                .find(cookie =>
+                    cookie.trimStart()
+                        .substring(0, name.length) === name
+                );
+
+            if (!cookie) {
+                return null;
+            }
+
+            const value = cookie.trimStart().
+                substring(name.length + 1);
+
+            return json ?
+                JSON.parse(value) :
+                value;
+        },
+
+        /**
+         * Remove a cookie.
+         * @param {string} name The cookie name.
+         * @param {object} [options] The options to use for the cookie.
+         * @param {number} [options.expires=-1] The number of seconds until the cookie will expire.
+         * @param {string} [options.path] The cookie path.
+         * @param {Boolean} [options.secure] Whether the cookie is secure.
+         */
+        removeCookie(name, options) {
+            this.setCookie(
+                name,
+                '',
+                {
+                    expires: -1,
+                    ...options
+                }
+            );
+        },
+
+        /**
+         * Set a cookie value.
+         * @param {string} name The cookie name.
+         * @param {*} value The cookie value.
+         * @param {object} [options] The options to use for the cookie.
+         * @param {number} [options.expires] The number of seconds until the cookie will expire.
+         * @param {string} [options.path] The path to use for the cookie.
+         * @param {Boolean} [options.secure] Whether the cookie is secure.
+         * @param {Boolean} [json=false] Whether to JSON encode the cookie value.
+         */
+        setCookie(name, value, options, json = false) {
+            if (!name) {
+                return;
+            }
+
+            if (json) {
+                value = JSON.stringify(value);
+            }
+
+            let cookie = `${name}=${value}`;
+
+            if (options) {
+                if (options.expires) {
+                    let date = new Date;
+                    date.setTime(date.getTime() + (options.expires * 1000));
+                    cookie += `;expires=${date.toUTCString()}`;
+                }
+
+                if (options.path) {
+                    cookie += `;path=${options.path}`;
+                }
+
+                if (options.secure) {
+                    cookie += ';secure';
+                }
+            }
+
+            this.context.cookie = cookie;
+        }
+
+    });
 
     /**
      * DOM Animate
@@ -1605,37 +1944,19 @@
         },
 
         /**
-         * Remove classes from each element.
+         * Get a computed CSS style value for the first element.
          * @param {string|HTMLElement|HTMLCollection|HTMLElement[]} nodes The input node(s), or a query selector string.
-         * @param {...string|string[]} classes The classes.
+         * @param {string} style The CSS style name.
+         * @returns {string} The CSS style value.
          */
-        removeClass(nodes, ...classes) {
-            classes = DOM._parseClasses(classes);
+        css(nodes, style) {
+            const node = this._nodeFind(nodes);
 
-            if (!classes.length) {
+            if (!node) {
                 return;
             }
 
-            for (const node of this._nodeFilter(nodes)) {
-                DOM._removeClass(node, classes);
-            }
-        },
-
-        /**
-         * Toggle classes for each element.
-         * @param {string|HTMLElement|HTMLCollection|HTMLElement[]} nodes The input node(s), or a query selector string.
-         * @param {...string|string[]} classes The classes.
-         */
-        toggleClass(nodes, ...classes) {
-            classes = DOM._parseClasses(classes);
-
-            if (!classes.length) {
-                return;
-            }
-
-            for (const node of this._nodeFilter(nodes)) {
-                DOM._toggleClass(node, classes);
-            }
+            return this._css(node, style);
         },
 
         /**
@@ -1655,6 +1976,35 @@
             }
 
             return DOM._getStyle(node, style);
+        },
+
+        /**
+         * Hide each element from display.
+         * @param {string|HTMLElement|HTMLCollection|HTMLElement[]} nodes The input node(s), or a query selector string.
+         */
+        hide(nodes) {
+            this.setStyle(
+                nodes,
+                'display',
+                'none'
+            );
+        },
+
+        /**
+         * Remove classes from each element.
+         * @param {string|HTMLElement|HTMLCollection|HTMLElement[]} nodes The input node(s), or a query selector string.
+         * @param {...string|string[]} classes The classes.
+         */
+        removeClass(nodes, ...classes) {
+            classes = DOM._parseClasses(classes);
+
+            if (!classes.length) {
+                return;
+            }
+
+            for (const node of this._nodeFilter(nodes)) {
+                DOM._removeClass(node, classes);
+            }
         },
 
         /**
@@ -1687,34 +2037,6 @@
         },
 
         /**
-         * Get a computed CSS style value for the first element.
-         * @param {string|HTMLElement|HTMLCollection|HTMLElement[]} nodes The input node(s), or a query selector string.
-         * @param {string} style The CSS style name.
-         * @returns {string} The CSS style value.
-         */
-        css(nodes, style) {
-            const node = this._nodeFind(nodes);
-
-            if (!node) {
-                return;
-            }
-
-            return this._css(node, style);
-        },
-
-        /**
-         * Hide each element from display.
-         * @param {string|HTMLElement|HTMLCollection|HTMLElement[]} nodes The input node(s), or a query selector string.
-         */
-        hide(nodes) {
-            this.setStyle(
-                nodes,
-                'display',
-                'none'
-            );
-        },
-
-        /**
          * Display each hidden element.
          * @param {string|HTMLElement|HTMLCollection|HTMLElement[]} nodes The input node(s), or a query selector string.
          */
@@ -1733,6 +2055,23 @@
         toggle(nodes) {
             for (const node of this._nodeFilter(nodes)) {
                 DOM._toggle(node);
+            }
+        },
+
+        /**
+         * Toggle classes for each element.
+         * @param {string|HTMLElement|HTMLCollection|HTMLElement[]} nodes The input node(s), or a query selector string.
+         * @param {...string|string[]} classes The classes.
+         */
+        toggleClass(nodes, ...classes) {
+            classes = DOM._parseClasses(classes);
+
+            if (!classes.length) {
+                return;
+            }
+
+            for (const node of this._nodeFilter(nodes)) {
+                DOM._toggleClass(node, classes);
             }
         },
 
@@ -1819,6 +2158,18 @@
                 'DOMContentLoaded',
                 callback
             );
+        },
+
+        /**
+         * Trigger events on each element.
+         * @param {string|HTMLElement|HTMLCollection|Document|Window|HTMLElement[]} nodes The input node(s), or a query selector string.
+         * @param {string} events The event names.
+         * @param {object} [data] Additional data to attach to the event.
+         */
+        triggerEvent(nodes, events, data) {
+            for (const node of this._nodeFilter(nodes, node => DOM.isElement(node) || DOM.isDocument(node) || Core.isWindow(node))) {
+                DOM._triggerEvent(node, events, data);
+            }
         }
 
     });
@@ -1917,18 +2268,6 @@
         removeEventDelegate(nodes, events, delegate, callback) {
             for (const node of this._nodeFilter(nodes, node => DOM.isElement(node) || DOM.isDocument(node) || Core.isWindow(node))) {
                 this._removeEvent(node, events, callback, delegate);
-            }
-        },
-
-        /**
-         * Trigger an event on each element.
-         * @param {string|HTMLElement|HTMLCollection|Document|Window|HTMLElement[]} nodes The input node(s), or a query selector string.
-         * @param {string} events The event names.
-         * @param {object} [data] Additional data to attach to the event.
-         */
-        triggerEvent(nodes, events, data) {
-            for (const node of this._nodeFilter(nodes, node => DOM.isElement(node) || DOM.isDocument(node) || Core.isWindow(node))) {
-                DOM._triggerEvent(node, events, data);
             }
         },
 
@@ -2392,7 +2731,7 @@
 
             range.collapse();
 
-            for (const node of this._parseQuery(nodes)) {
+            for (const node of this._parseQuery(nodes, DOM.isNode)) {
                 range.insertNode(node);
             }
         },
@@ -2457,7 +2796,7 @@
 
             selection.removeAllRanges();
 
-            for (const node of this._parseQuery(nodes)) {
+            for (const node of this._parseQuery(nodes, DOM.isNode)) {
                 range.insertNode(node);
             }
         },
@@ -2843,37 +3182,7 @@
             }
 
             // standard selector
-            return this.findBySelector(selector, nodes);
-        },
-
-        /**
-         * Return a single element matching a selector.
-         * @param {string} selector The query selector.
-         * @param {string|HTMLElement|HTMLCollection|Document|HTMLElement[]} [nodes] The input node(s), or a query selector string.
-         * @returns {HTMLElement} The matching node.
-         */
-        findOne(selector, nodes = this.context) {
-            // fast selector
-            const match = selector.match(DOM.fastRegex);
-            if (match) {
-                if (match[1] === '#') {
-                    return this.findOneById(match[2]);
-                }
-
-                if (match[1] === '.') {
-                    return this.findOneByClass(match[2], nodes);
-                }
-
-                return this.findOneByTag(match[2], nodes);
-            }
-
-            // custom selector
-            if (selector.match(DOM.complexRegex)) {
-                return this._findOneByCustom(selector, nodes);
-            }
-
-            // standard selector
-            return this.findOneBySelector(selector, nodes);
+            return this._findBySelector(selector, nodes);
         },
 
         /**
@@ -2905,30 +3214,6 @@
         },
 
         /**
-         * Return a single element with a specific class.
-         * @param {string} className The class name.
-         * @param {string|HTMLElement|HTMLCollection|Document|HTMLElement[]} [nodes] The input node(s), or a query selector string.
-         * @returns {HTMLElement} The matching node.
-         */
-        findOneByClass(className, nodes = this.context) {
-            // single node case
-            if (DOM.isElement(nodes) || DOM.isDocument(nodes)) {
-                return DOM._findByClass(className, nodes).item(0);
-            }
-
-            nodes = this._nodeFilter(nodes, node => DOM.isElement(node) || DOM.isDocument(node));
-
-            for (const node of nodes) {
-                const result = DOM._findByClass(className, node).item(0);
-                if (result) {
-                    return result;
-                }
-            }
-
-            return null;
-        },
-
-        /**
          * Return all elements with a specific ID.
          * @param {string} id The id.
          * @param {string|HTMLElement|HTMLCollection|Document|HTMLElement[]} [nodes] The input node(s), or a query selector string.
@@ -2947,27 +3232,6 @@
             }
 
             return [result];
-        },
-
-        /**
-         * Return a single element with a specific ID.
-         * @param {string} id The id.
-         * @param {string|HTMLElement|HTMLCollection|Document|HTMLElement[]} [nodes] The input node(s), or a query selector string.
-         * @returns {HTMLElement} The matching element.
-         */
-        findOneById(id, nodes = this.context) {
-            const result = DOM._findById(id, this.context);
-
-            if (!result ||
-                (
-                    nodes !== this.context &&
-                    !this.hasOne(nodes, result)
-                )
-            ) {
-                return null;
-            }
-
-            return result;
         },
 
         /**
@@ -2999,6 +3263,81 @@
         },
 
         /**
+         * Return a single element matching a selector.
+         * @param {string} selector The query selector.
+         * @param {string|HTMLElement|HTMLCollection|Document|HTMLElement[]} [nodes] The input node(s), or a query selector string.
+         * @returns {HTMLElement} The matching node.
+         */
+        findOne(selector, nodes = this.context) {
+            // fast selector
+            const match = selector.match(DOM.fastRegex);
+            if (match) {
+                if (match[1] === '#') {
+                    return this.findOneById(match[2]);
+                }
+
+                if (match[1] === '.') {
+                    return this.findOneByClass(match[2], nodes);
+                }
+
+                return this.findOneByTag(match[2], nodes);
+            }
+
+            // custom selector
+            if (selector.match(DOM.complexRegex)) {
+                return this._findOneByCustom(selector, nodes);
+            }
+
+            // standard selector
+            return this._findOneBySelector(selector, nodes);
+        },
+
+        /**
+         * Return a single element with a specific class.
+         * @param {string} className The class name.
+         * @param {string|HTMLElement|HTMLCollection|Document|HTMLElement[]} [nodes] The input node(s), or a query selector string.
+         * @returns {HTMLElement} The matching node.
+         */
+        findOneByClass(className, nodes = this.context) {
+            // single node case
+            if (DOM.isElement(nodes) || DOM.isDocument(nodes)) {
+                return DOM._findByClass(className, nodes).item(0);
+            }
+
+            nodes = this._nodeFilter(nodes, node => DOM.isElement(node) || DOM.isDocument(node));
+
+            for (const node of nodes) {
+                const result = DOM._findByClass(className, node).item(0);
+                if (result) {
+                    return result;
+                }
+            }
+
+            return null;
+        },
+
+        /**
+         * Return a single element with a specific ID.
+         * @param {string} id The id.
+         * @param {string|HTMLElement|HTMLCollection|Document|HTMLElement[]} [nodes] The input node(s), or a query selector string.
+         * @returns {HTMLElement} The matching element.
+         */
+        findOneById(id, nodes = this.context) {
+            const result = DOM._findById(id, this.context);
+
+            if (!result ||
+                (
+                    nodes !== this.context &&
+                    !this.hasOne(nodes, result)
+                )
+            ) {
+                return null;
+            }
+
+            return result;
+        },
+
+        /**
          * Return a single element with a specific tag.
          * @param {string} tagName The tag name.
          * @param {string|HTMLElement|HTMLCollection|Document|HTMLElement[]} [nodes] The input node(s), or a query selector string.
@@ -3014,58 +3353,6 @@
 
             for (const node of nodes) {
                 const result = DOM._findByTag(tagName, node).item(0);
-                if (result) {
-                    return result;
-                }
-            }
-
-            return null;
-        },
-
-        /**
-         * Return all elements matching a standard CSS selector.
-         * @param {string} selector The query selector.
-         * @param {string|HTMLElement|HTMLCollection|Document|HTMLElement[]} [nodes] The input node(s), or a query selector string.
-         * @returns {HTMLElement[]} The matching nodes.
-         */
-        findBySelector(selector, nodes = this.context) {
-            // single node case
-            if (DOM.isElement(nodes) || DOM.isDocument(nodes)) {
-                return Core.merge([], DOM._findBySelector(selector, nodes));
-            }
-
-            nodes = this._nodeFilter(nodes, node => DOM.isElement(node) || DOM.isDocument(node));
-
-            const results = [];
-
-            for (const node of nodes) {
-                Core.merge(
-                    results,
-                    DOM._findBySelector(selector, node)
-                );
-            }
-
-            return nodes.length > 1 && results.length > 1 ?
-                Core.unique(results) :
-                results;
-        },
-
-        /**
-         * Return a single element matching a standard CSS selector.
-         * @param {string} selector The query selector.
-         * @param {string|HTMLElement|HTMLCollection|Document|HTMLElement[]} [nodes] The input node(s), or a query selector string.
-         * @returns {HTMLElement} The matching node.
-         */
-        findOneBySelector(selector, nodes = this.context) {
-            // single node case
-            if (DOM.isElement(nodes) || DOM.isDocument(nodes)) {
-                return DOM._findOneBySelector(selector, nodes);
-            }
-
-            nodes = this._nodeFilter(nodes, node => DOM.isElement(node) || DOM.isDocument(node));
-
-            for (const node of nodes) {
-                const result = DOM._findOneBySelector(selector, node);
                 if (result) {
                     return result;
                 }
@@ -3113,6 +3400,34 @@
         },
 
         /**
+         * Return all elements matching a standard CSS selector.
+         * @param {string} selector The query selector.
+         * @param {string|HTMLElement|HTMLCollection|Document|HTMLElement[]} [nodes] The input node(s), or a query selector string.
+         * @returns {HTMLElement[]} The matching nodes.
+         */
+        _findBySelector(selector, nodes = this.context) {
+            // single node case
+            if (DOM.isElement(nodes) || DOM.isDocument(nodes)) {
+                return Core.merge([], DOM._findBySelector(selector, nodes));
+            }
+
+            nodes = this._nodeFilter(nodes, node => DOM.isElement(node) || DOM.isDocument(node));
+
+            const results = [];
+
+            for (const node of nodes) {
+                Core.merge(
+                    results,
+                    DOM._findBySelector(selector, node)
+                );
+            }
+
+            return nodes.length > 1 && results.length > 1 ?
+                Core.unique(results) :
+                results;
+        },
+
+        /**
          * Return a single element matching a custom CSS selector.
          * @param {string} selector The custom query selector.
          * @param {string|HTMLElement|HTMLCollection|Document|HTMLElement[]} [nodes] The input node(s), or a query selector string.
@@ -3138,6 +3453,30 @@
 
             for (const node of nodes) {
                 const result = DOM._findOneByCustom(selectors, node);
+                if (result) {
+                    return result;
+                }
+            }
+
+            return null;
+        },
+
+        /**
+         * Return a single element matching a standard CSS selector.
+         * @param {string} selector The query selector.
+         * @param {string|HTMLElement|HTMLCollection|Document|HTMLElement[]} [nodes] The input node(s), or a query selector string.
+         * @returns {HTMLElement} The matching node.
+         */
+        _findOneBySelector(selector, nodes = this.context) {
+            // single node case
+            if (DOM.isElement(nodes) || DOM.isDocument(nodes)) {
+                return DOM._findOneBySelector(selector, nodes);
+            }
+
+            nodes = this._nodeFilter(nodes, node => DOM.isElement(node) || DOM.isDocument(node));
+
+            for (const node of nodes) {
+                const result = DOM._findOneBySelector(selector, node);
                 if (result) {
                     return result;
                 }
@@ -3200,6 +3539,22 @@
         },
 
         /**
+         * Return the closest ancestor to each element (optionally matching a filter, and before a limit).
+         * @param {string|Node|NodeList|HTMLCollection|Node[]} nodes The input node(s), or a query selector string.
+         * @param {string|Node|NodeList|HTMLCollection|Node[]|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
+         * @param {string|Node|NodeList|HTMLCollection|Node[]|DOM~filterCallback} [limit] The limit node(s), a query selector string or custom filter function.
+         * @returns {HTMLElement[]} The matching nodes.
+         */
+        closest(nodes, filter, limit) {
+            return this.parents(
+                nodes,
+                filter,
+                limit,
+                true
+            );
+        },
+
+        /**
          * Return the common ancestor of all elements.
          * @param {string|HTMLElement|HTMLCollection|HTMLElement[]} nodes The input node(s), or a query selector string.
          * @returns {HTMLElement} The common ancestor.
@@ -3234,22 +3589,6 @@
                 false,
                 false,
                 false
-            );
-        },
-
-        /**
-         * Return the closest ancestor to each element (optionally matching a filter, and before a limit).
-         * @param {string|Node|NodeList|HTMLCollection|Node[]} nodes The input node(s), or a query selector string.
-         * @param {string|Node|NodeList|HTMLCollection|Node[]|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
-         * @param {string|Node|NodeList|HTMLCollection|Node[]|DOM~filterCallback} [limit] The limit node(s), a query selector string or custom filter function.
-         * @returns {HTMLElement[]} The matching nodes.
-         */
-        closest(nodes, filter, until) {
-            return this.parents(
-                nodes,
-                filter,
-                until,
-                true
             );
         },
 
@@ -3590,6 +3929,22 @@
     Object.assign(DOM.prototype, {
 
         /**
+         * Returns true if any of the elements contains a descendent matching a filter.
+         * @param {string|HTMLElement|HTMLCollection|Document|HTMLElement[]} nodes The input node(s), or a query selector string.
+         * @param {string|Node|NodeList|HTMLCollection|HTMLElement[]|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
+         * @returns {Boolean} TRUE if any of the nodes contains a descendent matching the filter, otherwise FALSE.
+         */
+        contains(nodes, filter) {
+            filter = this._parseFilterContains(filter);
+
+            return this._nodeFilter(nodes, node => DOM.isElement(node) || DOM.isDocument(node))
+                .some(node =>
+                    !filter ||
+                    filter(node)
+                );
+        },
+
+        /**
          * Returns true if any of the elements has a CSS animation.
          * @param {string|HTMLElement|HTMLCollection|HTMLElement[]} nodes The input node(s), or a query selector string.
          * @returns {Boolean} TRUE if any of the nodes has a CSS animation, otherwise FALSE.
@@ -3679,22 +4034,6 @@
         },
 
         /**
-         * Returns true if any of the elements contains a descendent matching a filter.
-         * @param {string|HTMLElement|HTMLCollection|Document|HTMLElement[]} nodes The input node(s), or a query selector string.
-         * @param {string|Node|NodeList|HTMLCollection|HTMLElement[]|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
-         * @returns {Boolean} TRUE if any of the nodes contains a descendent matching the filter, otherwise FALSE.
-         */
-        contains(nodes, filter) {
-            filter = this._parseFilterContains(filter);
-
-            return this._nodeFilter(nodes, node => DOM.isElement(node) || DOM.isDocument(node))
-                .some(node =>
-                    !filter ||
-                    filter(node)
-                );
-        },
-
-        /**
          * Returns true if any of the elements matches a filter.
          * @param {string|HTMLElement|HTMLCollection|HTMLElement[]} nodes The input node(s), or a query selector string.
          * @param {string|Node|NodeList|HTMLCollection|HTMLElement[]|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
@@ -3770,6 +4109,16 @@
      */
 
     Object.assign(DOM.prototype, {
+
+        /**
+         * Execute a command in the document context.
+         * @param {string} command The command to execute.
+         * @param {string} [value] The value to give the command.
+         * @returns {Boolean} TRUE if the command was executed, otherwise FALSE.
+         */
+        exec(command, value = null) {
+            return this.context.execCommand(command, false, value);
+        },
 
         /**
          * @callback DOM~nodeCallback
@@ -5023,353 +5372,6 @@
                 .filter(select => !!select)
                 .map(select => `${prefix} ${select}`)
                 .join(', ');
-        }
-
-    });
-
-    /**
-     * DOM AJAX
-     */
-
-    Object.assign(DOM.prototype, {
-
-        /**
-         * Perform an XHR request.
-         * @param {object} [options] The options to use for the request.
-         * @param {string} [options.url=window.location] The URL of the request.
-         * @param {string} [options.method=GET] The HTTP method of the request.
-         * @param {Boolean|string|array|object} [options.data=false] The data to send with the request.
-         * @param {Boolean|string} [options.contentType=application/x-www-form-urlencoded] The content type of the request.
-         * @param {Boolean|string} [options.responseType] The content type of the response.
-         * @param {Boolean} [options.cache=true] Whether to cache the request.
-         * @param {Boolean} [options.processData=true] Whether to process the data based on the content type.
-         * @param {object} [options.headers] Additional headers to send with the request.
-         * @param {Boolean|function} [options.beforeSend=false] A callback to execute before making the request.
-         * @param {Boolean|function} [options.uploadProgress=false] A callback to execute on upload progress.
-         * @returns {Promise} A new Promise that resolves when the request is completed, or rejects on failure.
-         */
-        ajax(options) {
-            options = {
-                url: window.location,
-                headers: {},
-                ...DOM.ajaxDefaults,
-                ...options
-            };
-
-            if (!options.cache) {
-                const url = new URL(options.url);
-                url.searchParams.append('_', Date.now());
-                options.url = url.toString();
-            }
-
-            if (options.contentType && !options.headers['Content-Type']) {
-                options.headers['Content-Type'] = options.contentType;
-            }
-
-            if (!options.headers['X-Requested-With']) {
-                options.headers['X-Requested-With'] = 'XMLHttpRequest';
-            }
-
-            return new Promise((resolve, reject) => {
-                const xhr = new XMLHttpRequest;
-
-                xhr.open(options.method, options.url, true);
-
-                for (const key of options.headers) {
-                    xhr.setRequestHeader(key, options.headers[key]);
-                }
-
-                if (options.responseType) {
-                    xhr.responseType = options.responseType;
-                }
-
-                xhr.onload = e => {
-                    if (xhr.status > 400) {
-                        reject({
-                            status: xhr.status,
-                            xhr: xhr,
-                            event: e
-                        });
-                    } else {
-                        resolve({
-                            response: xhr.response,
-                            xhr: xhr,
-                            event: e
-                        });
-                    }
-                };
-
-                xhr.onerror = e =>
-                    reject({
-                        status: xhr.status,
-                        xhr: xhr,
-                        event: e
-                    });
-
-                if (options.uploadProgress) {
-                    xhr.upload.onprogress = e =>
-                        options.uploadProgress(e.loaded / e.total, xhr, e);
-                }
-
-                if (options.beforeSend) {
-                    options.beforeSend(xhr);
-                }
-
-                if (options.data && options.processData) {
-                    if (options.contentType === 'application/json') {
-                        options.data = JSON.stringify(options.data);
-                    } else if (options.contentType === 'application/x-www-form-urlencoded') {
-                        options.data = DOM._parseParams(options.data);
-                    } else {
-                        options.data = DOM._parseFormData(options.data);
-                    }
-                }
-                xhr.send(options.data);
-            });
-        },
-
-        /**
-         * Perform an XHR GET request.
-         * @param {string} url The URL of the request.
-         * @param {object} [options] The options to use for the request.
-         * @param {string} [options.method=GET] The HTTP method of the request.
-         * @param {Boolean|string|array|object} [options.data=false] The data to send with the request.
-         * @param {Boolean|string} [options.contentType=application/x-www-form-urlencoded] The content type of the request.
-         * @param {Boolean|string} [options.responseType] The content type of the response.
-         * @param {Boolean} [options.cache=true] Whether to cache the request.
-         * @param {Boolean} [options.processData=true] Whether to process the data based on the content type.
-         * @param {object} [options.headers] Additional headers to send with the request.
-         * @param {Boolean|function} [options.beforeSend=false] A callback to execute before making the request.
-         * @param {Boolean|function} [options.uploadProgress=false] A callback to execute on upload progress.
-         * @returns {Promise} A new Promise that resolves when the request is completed, or rejects on failure.
-         */
-        get(url, options) {
-            return this.ajax({
-                url,
-                ...options
-            });
-        },
-
-        /**
-         * Perform an XHR POST request.
-         * @param {string} url The URL of the request.
-         * @param {Boolean|string|array|object} data The data to send with the request.
-         * @param {object} [options] The options to use for the request.
-         * @param {string} [options.method=POST] The HTTP method of the request.
-         * @param {Boolean|string} [options.contentType=application/x-www-form-urlencoded] The content type of the request.
-         * @param {Boolean|string} [options.responseType] The content type of the response.
-         * @param {Boolean} [options.cache=true] Whether to cache the request.
-         * @param {Boolean} [options.processData=true] Whether to process the data based on the content type.
-         * @param {object} [options.headers] Additional headers to send with the request.
-         * @param {Boolean|function} [options.beforeSend=false] A callback to execute before making the request.
-         * @param {Boolean|function} [options.uploadProgress=false] A callback to execute on upload progress.
-         * @returns {Promise} A new Promise that resolves when the request is completed, or rejects on failure.
-         */
-        post(url, data, options) {
-            return this.ajax({
-                url,
-                data,
-                method: 'POST',
-                ...options
-            });
-        },
-
-        /**
-         * Perform an XHR request for a file upload.
-         * @param {object} [options] The options to use for the request.
-         * @param {string} [options.url=window.location] The URL of the request.
-         * @param {string} [options.method=POST] The HTTP method of the request.
-         * @param {Boolean|string|array|object} [options.data=false] The data to send with the request.
-         * @param {Boolean|string} [options.contentType=false] The content type of the request.
-         * @param {Boolean|string} [options.responseType] The content type of the response.
-         * @param {Boolean} [options.cache=true] Whether to cache the request.
-         * @param {Boolean} [options.processData=false] Whether to process the data based on the content type.
-         * @param {object} [options.headers] Additional headers to send with the request.
-         * @param {Boolean|function} [options.beforeSend=false] A callback to execute before making the request.
-         * @param {Boolean|function} [options.uploadProgress=false] A callback to execute on upload progress.
-         * @returns {Promise} A new Promise that resolves when the request is completed, or rejects on failure.
-         */
-        upload(options) {
-            return this.ajax({
-                method: 'POST',
-                contentType: false,
-                ...options
-            });
-        },
-
-        /**
-         * Load and executes a JavaScript file.
-         * @param {string} script The URL of the script.
-         * @param {Boolean} [cache=true] Whether to cache the request.
-         * @returns {Promise} A new Promise that resolves when the request is completed, or rejects on failure.
-         */
-        loadScript(script, cache = true) {
-            return this.ajax(script, { cache })
-                .then(response =>
-                    eval.apply(window, response.response)
-                );
-        },
-
-        /**
-         * Load and executes multiple JavaScript files (in order).
-         * @param {string[]} scripts An array of script URLs.
-         * @param {Boolean} [cache=true] Whether to cache the requests.
-         * @returns {Promise} A new Promise that resolves when the request is completed, or rejects on failure.
-         */
-        loadScripts(scripts, cache = true) {
-            return Promise.all
-                (
-                    scripts.map(script =>
-                        this.ajax(script, { cache })
-                    )
-                )
-                .then(responses => {
-                    for (const response of responses) {
-                        eval.apply(window, response.response);
-                    }
-                });
-        },
-
-        /**
-         * Import a CSS Stylesheet file.
-         * @param {string} stylesheet The URL of the stylesheet.
-         * @param {Boolean} [cache=true] Whether to cache the request.
-         * @returns {Promise} A new Promise that resolves when the request is completed, or rejects on failure.
-         */
-        loadStyle(stylesheet, cache = true) {
-            return this.ajax(stylesheet, { cache })
-                .then(response =>
-                    DOM._append(
-                        this.context.head,
-                        this.create(
-                            'style',
-                            {
-                                text: response.response
-                            }
-                        )
-                    )
-                );
-        },
-
-        /**
-         * Import multiple CSS Stylesheet files.
-         * @param {string[]} stylesheets An array of stylesheet URLs.
-         * @param {Boolean} [cache=true] Whether to cache the requests.
-         * @returns {Promise} A new Promise that resolves when the request is completed, or rejects on failure.
-         */
-        loadStyles(stylesheets, cache = true) {
-            return Promise.all
-                (
-                    stylesheets.map(stylesheet =>
-                        this.ajax(stylesheet, { cache })
-                    )
-                )
-                .then(responses =>
-                    DOM._append(
-                        this.context.head,
-                        this.create(
-                            'style',
-                            {
-                                text: responses
-                                    .map(response => response.response)
-                                    .join("\r\n")
-                            }
-                        )
-                    )
-                );
-        }
-
-    });
-
-    /**
-     * DOM Cookie
-     */
-
-    Object.assign(DOM.prototype, {
-
-        /**
-         * Get a cookie value.
-         * @param {string} name The cookie name.
-         * @param {Boolean} [json=false] Whether the cookie value is in JSON.
-         * @returns {*} The cookie value.
-         */
-        getCookie(name, json = false) {
-            const cookie = decodeURIComponent(this.context.cookie)
-                .split(';')
-                .find(cookie =>
-                    cookie.trimStart()
-                        .substring(0, name.length) === name
-                );
-
-            if (!cookie) {
-                return null;
-            }
-
-            const value = cookie.trimStart().
-                substring(name.length + 1);
-
-            return json ?
-                JSON.parse(value) :
-                value;
-        },
-
-        /**
-         * Remove a cookie.
-         * @param {string} name The cookie name.
-         * @param {object} [options] The options to use for the cookie.
-         * @param {number} [options.expires=-1] The number of seconds until the cookie will expire.
-         * @param {string} [options.path] The cookie path.
-         * @param {Boolean} [options.secure] Whether the cookie is secure.
-         */
-        removeCookie(name, options) {
-            this.setCookie(
-                name,
-                '',
-                {
-                    expires: -1,
-                    ...options
-                }
-            );
-        },
-
-        /**
-         * Set a cookie value.
-         * @param {string} name The cookie name.
-         * @param {*} value The cookie value.
-         * @param {object} [options] The options to use for the cookie.
-         * @param {number} [options.expires] The number of seconds until the cookie will expire.
-         * @param {string} [options.path] The path to use for the cookie.
-         * @param {Boolean} [options.secure] Whether the cookie is secure.
-         * @param {Boolean} [json=false] Whether to JSON encode the cookie value.
-         */
-        setCookie(name, value, options, json = false) {
-            if (!name) {
-                return;
-            }
-
-            if (json) {
-                value = JSON.stringify(value);
-            }
-
-            let cookie = `${name}=${value}`;
-
-            if (options) {
-                if (options.expires) {
-                    let date = new Date;
-                    date.setTime(date.getTime() + (options.expires * 1000));
-                    cookie += `;expires=${date.toUTCString()}`;
-                }
-
-                if (options.path) {
-                    cookie += `;path=${options.path}`;
-                }
-
-                if (options.secure) {
-                    cookie += ';secure';
-                }
-            }
-
-            this.context.cookie = cookie;
         }
 
     });

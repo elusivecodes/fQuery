@@ -50,6 +50,22 @@ Object.assign(DOM.prototype, {
     },
 
     /**
+     * Return the closest ancestor to each element (optionally matching a filter, and before a limit).
+     * @param {string|Node|NodeList|HTMLCollection|Node[]} nodes The input node(s), or a query selector string.
+     * @param {string|Node|NodeList|HTMLCollection|Node[]|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
+     * @param {string|Node|NodeList|HTMLCollection|Node[]|DOM~filterCallback} [limit] The limit node(s), a query selector string or custom filter function.
+     * @returns {HTMLElement[]} The matching nodes.
+     */
+    closest(nodes, filter, limit) {
+        return this.parents(
+            nodes,
+            filter,
+            limit,
+            true
+        );
+    },
+
+    /**
      * Return the common ancestor of all elements.
      * @param {string|HTMLElement|HTMLCollection|HTMLElement[]} nodes The input node(s), or a query selector string.
      * @returns {HTMLElement} The common ancestor.
@@ -84,22 +100,6 @@ Object.assign(DOM.prototype, {
             false,
             false,
             false
-        );
-    },
-
-    /**
-     * Return the closest ancestor to each element (optionally matching a filter, and before a limit).
-     * @param {string|Node|NodeList|HTMLCollection|Node[]} nodes The input node(s), or a query selector string.
-     * @param {string|Node|NodeList|HTMLCollection|Node[]|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
-     * @param {string|Node|NodeList|HTMLCollection|Node[]|DOM~filterCallback} [limit] The limit node(s), a query selector string or custom filter function.
-     * @returns {HTMLElement[]} The matching nodes.
-     */
-    closest(nodes, filter, until) {
-        return this.parents(
-            nodes,
-            filter,
-            until,
-            true
         );
     },
 

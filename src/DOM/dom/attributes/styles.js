@@ -22,37 +22,19 @@ Object.assign(DOM.prototype, {
     },
 
     /**
-     * Remove classes from each element.
+     * Get a computed CSS style value for the first element.
      * @param {string|HTMLElement|HTMLCollection|HTMLElement[]} nodes The input node(s), or a query selector string.
-     * @param {...string|string[]} classes The classes.
+     * @param {string} style The CSS style name.
+     * @returns {string} The CSS style value.
      */
-    removeClass(nodes, ...classes) {
-        classes = DOM._parseClasses(classes);
+    css(nodes, style) {
+        const node = this._nodeFind(nodes);
 
-        if (!classes.length) {
+        if (!node) {
             return;
         }
 
-        for (const node of this._nodeFilter(nodes)) {
-            DOM._removeClass(node, classes);
-        }
-    },
-
-    /**
-     * Toggle classes for each element.
-     * @param {string|HTMLElement|HTMLCollection|HTMLElement[]} nodes The input node(s), or a query selector string.
-     * @param {...string|string[]} classes The classes.
-     */
-    toggleClass(nodes, ...classes) {
-        classes = DOM._parseClasses(classes);
-
-        if (!classes.length) {
-            return;
-        }
-
-        for (const node of this._nodeFilter(nodes)) {
-            DOM._toggleClass(node, classes);
-        }
+        return this._css(node, style);
     },
 
     /**
@@ -72,6 +54,35 @@ Object.assign(DOM.prototype, {
         }
 
         return DOM._getStyle(node, style);
+    },
+
+    /**
+     * Hide each element from display.
+     * @param {string|HTMLElement|HTMLCollection|HTMLElement[]} nodes The input node(s), or a query selector string.
+     */
+    hide(nodes) {
+        this.setStyle(
+            nodes,
+            'display',
+            'none'
+        );
+    },
+
+    /**
+     * Remove classes from each element.
+     * @param {string|HTMLElement|HTMLCollection|HTMLElement[]} nodes The input node(s), or a query selector string.
+     * @param {...string|string[]} classes The classes.
+     */
+    removeClass(nodes, ...classes) {
+        classes = DOM._parseClasses(classes);
+
+        if (!classes.length) {
+            return;
+        }
+
+        for (const node of this._nodeFilter(nodes)) {
+            DOM._removeClass(node, classes);
+        }
     },
 
     /**
@@ -104,34 +115,6 @@ Object.assign(DOM.prototype, {
     },
 
     /**
-     * Get a computed CSS style value for the first element.
-     * @param {string|HTMLElement|HTMLCollection|HTMLElement[]} nodes The input node(s), or a query selector string.
-     * @param {string} style The CSS style name.
-     * @returns {string} The CSS style value.
-     */
-    css(nodes, style) {
-        const node = this._nodeFind(nodes);
-
-        if (!node) {
-            return;
-        }
-
-        return this._css(node, style);
-    },
-
-    /**
-     * Hide each element from display.
-     * @param {string|HTMLElement|HTMLCollection|HTMLElement[]} nodes The input node(s), or a query selector string.
-     */
-    hide(nodes) {
-        this.setStyle(
-            nodes,
-            'display',
-            'none'
-        );
-    },
-
-    /**
      * Display each hidden element.
      * @param {string|HTMLElement|HTMLCollection|HTMLElement[]} nodes The input node(s), or a query selector string.
      */
@@ -150,6 +133,23 @@ Object.assign(DOM.prototype, {
     toggle(nodes) {
         for (const node of this._nodeFilter(nodes)) {
             DOM._toggle(node);
+        }
+    },
+
+    /**
+     * Toggle classes for each element.
+     * @param {string|HTMLElement|HTMLCollection|HTMLElement[]} nodes The input node(s), or a query selector string.
+     * @param {...string|string[]} classes The classes.
+     */
+    toggleClass(nodes, ...classes) {
+        classes = DOM._parseClasses(classes);
+
+        if (!classes.length) {
+            return;
+        }
+
+        for (const node of this._nodeFilter(nodes)) {
+            DOM._toggleClass(node, classes);
         }
     },
 

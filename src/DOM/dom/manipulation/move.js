@@ -39,7 +39,7 @@ Object.assign(DOM.prototype, {
 
         range.collapse();
 
-        for (const node of this._parseQuery(nodes)) {
+        for (const node of this._parseQuery(nodes, DOM.isNode)) {
             range.insertNode(node);
         }
     },
@@ -104,7 +104,7 @@ Object.assign(DOM.prototype, {
 
         selection.removeAllRanges();
 
-        for (const node of this._parseQuery(nodes)) {
+        for (const node of this._parseQuery(nodes, DOM.isNode)) {
             range.insertNode(node);
         }
     },

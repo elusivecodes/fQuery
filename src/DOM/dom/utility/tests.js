@@ -5,6 +5,22 @@
 Object.assign(DOM.prototype, {
 
     /**
+     * Returns true if any of the elements contains a descendent matching a filter.
+     * @param {string|HTMLElement|HTMLCollection|Document|HTMLElement[]} nodes The input node(s), or a query selector string.
+     * @param {string|Node|NodeList|HTMLCollection|HTMLElement[]|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
+     * @returns {Boolean} TRUE if any of the nodes contains a descendent matching the filter, otherwise FALSE.
+     */
+    contains(nodes, filter) {
+        filter = this._parseFilterContains(filter);
+
+        return this._nodeFilter(nodes, node => DOM.isElement(node) || DOM.isDocument(node))
+            .some(node =>
+                !filter ||
+                filter(node)
+            );
+    },
+
+    /**
      * Returns true if any of the elements has a CSS animation.
      * @param {string|HTMLElement|HTMLCollection|HTMLElement[]} nodes The input node(s), or a query selector string.
      * @returns {Boolean} TRUE if any of the nodes has a CSS animation, otherwise FALSE.
@@ -90,22 +106,6 @@ Object.assign(DOM.prototype, {
                 !!parseFloat(
                     this._css(node, 'transition-duration')
                 )
-            );
-    },
-
-    /**
-     * Returns true if any of the elements contains a descendent matching a filter.
-     * @param {string|HTMLElement|HTMLCollection|Document|HTMLElement[]} nodes The input node(s), or a query selector string.
-     * @param {string|Node|NodeList|HTMLCollection|HTMLElement[]|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
-     * @returns {Boolean} TRUE if any of the nodes contains a descendent matching the filter, otherwise FALSE.
-     */
-    contains(nodes, filter) {
-        filter = this._parseFilterContains(filter);
-
-        return this._nodeFilter(nodes, node => DOM.isElement(node) || DOM.isDocument(node))
-            .some(node =>
-                !filter ||
-                filter(node)
             );
     },
 

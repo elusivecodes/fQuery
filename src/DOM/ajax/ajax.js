@@ -33,11 +33,11 @@ Object.assign(DOM.prototype, {
             options.url = url.toString();
         }
 
-        if (options.contentType && !options.headers['Content-Type']) {
+        if ('Content-Type' in options.headers && !options.headers['Content-Type']) {
             options.headers['Content-Type'] = options.contentType;
         }
 
-        if (!options.headers['X-Requested-With']) {
+        if (!('X-Requested-With' in options.headers)) {
             options.headers['X-Requested-With'] = 'XMLHttpRequest';
         }
 
@@ -147,10 +147,10 @@ Object.assign(DOM.prototype, {
 
     /**
      * Perform an XHR request for a file upload.
+     * @param {string} url The URL of the request.
+     * @param {Boolean|string|array|object} data The data to send with the request.
      * @param {object} [options] The options to use for the request.
-     * @param {string} [options.url=window.location] The URL of the request.
      * @param {string} [options.method=POST] The HTTP method of the request.
-     * @param {Boolean|string|array|object} [options.data=false] The data to send with the request.
      * @param {Boolean|string} [options.contentType=false] The content type of the request.
      * @param {Boolean|string} [options.responseType] The content type of the response.
      * @param {Boolean} [options.cache=true] Whether to cache the request.
@@ -160,8 +160,10 @@ Object.assign(DOM.prototype, {
      * @param {Boolean|function} [options.uploadProgress=false] A callback to execute on upload progress.
      * @returns {Promise} A new Promise that resolves when the request is completed, or rejects on failure.
      */
-    upload(options) {
+    upload(url, data, options) {
         return this.ajax({
+            url,
+            data,
             method: 'POST',
             contentType: false,
             ...options
@@ -169,7 +171,7 @@ Object.assign(DOM.prototype, {
     },
 
     /**
-     * Load and executes a JavaScript file.
+     * Load and execute a JavaScript file.
      * @param {string} script The URL of the script.
      * @param {Boolean} [cache=true] Whether to cache the request.
      * @returns {Promise} A new Promise that resolves when the request is completed, or rejects on failure.

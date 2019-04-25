@@ -5,6 +5,16 @@
 Object.assign(DOM.prototype, {
 
     /**
+     * Execute a command in the document context.
+     * @param {string} command The command to execute.
+     * @param {string} [value] The value to give the command.
+     * @returns {Boolean} TRUE if the command was executed, otherwise FALSE.
+     */
+    exec(command, value = null) {
+        return this.context.execCommand(command, false, value);
+    },
+
+    /**
      * @callback DOM~nodeCallback
      * @param {HTMLElement} node The input node.
      */
