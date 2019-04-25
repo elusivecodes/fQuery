@@ -24,6 +24,10 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
+/**
+ * FrostDOM v1.0
+ * https://github.com/elusivecodes/FrostDOM
+ */
 (function (global, factory) {
   if ((typeof module === "undefined" ? "undefined" : _typeof(module)) === 'object' && _typeof(module.exports) === 'object') {
     module.exports = factory;
@@ -1464,7 +1468,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
       try {
         for (var _iterator13 = this._nodeFilter(nodes, function (node) {
-          return DOM.isNode(node) || DOM.isDocument(node) || Core.isWindow(node);
+          return Core.isNode(node) || Core.isDocument(node) || Core.isWindow(node);
         })[Symbol.iterator](), _step13; !(_iteratorNormalCompletion13 = (_step13 = _iterator13.next()).done); _iteratorNormalCompletion13 = true) {
           var node = _step13.value;
 
@@ -1494,7 +1498,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
      */
     getData: function getData(nodes, key) {
       var node = this._nodeFind(nodes, function (node) {
-        return DOM.isNode(node) || DOM.isDocument(node) || Core.isWindow(node);
+        return Core.isNode(node) || Core.isDocument(node) || Core.isWindow(node);
       });
 
       if (!node) {
@@ -1516,7 +1520,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
       try {
         for (var _iterator14 = this._nodeFilter(nodes, function (node) {
-          return DOM.isNode(node) || DOM.isDocument(node) || Core.isWindow(node);
+          return Core.isNode(node) || Core.isDocument(node) || Core.isWindow(node);
         })[Symbol.iterator](), _step14; !(_iteratorNormalCompletion14 = (_step14 = _iterator14.next()).done); _iteratorNormalCompletion14 = true) {
           var node = _step14.value;
 
@@ -1553,7 +1557,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
       try {
         for (var _iterator15 = this._nodeFilter(nodes, function (node) {
-          return DOM.isNode(node) || DOM.isDocument(node) || Core.isWindow(node);
+          return Core.isNode(node) || Core.isDocument(node) || Core.isWindow(node);
         })[Symbol.iterator](), _step15; !(_iteratorNormalCompletion15 = (_step15 = _iterator15.next()).done); _iteratorNormalCompletion15 = true) {
           var node = _step15.value;
 
@@ -1965,7 +1969,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
      */
     getScrollX: function getScrollX(nodes) {
       var node = this._nodeFind(nodes, function (node) {
-        return DOM.isElement(node) || DOM.isDocument(node) || Core.isWindow(node);
+        return Core.isElement(node) || Core.isDocument(node) || Core.isWindow(node);
       });
 
       if (!node) {
@@ -1982,7 +1986,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
      */
     getScrollY: function getScrollY(nodes) {
       var node = this._nodeFind(nodes, function (node) {
-        return DOM.isElement(node) || DOM.isDocument(node) || Core.isWindow(node);
+        return Core.isElement(node) || Core.isDocument(node) || Core.isWindow(node);
       });
 
       if (!node) {
@@ -2005,7 +2009,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
       try {
         for (var _iterator18 = this._nodeFilter(nodes, function (node) {
-          return DOM.isElement(node) || DOM.isDocument(node) || Core.isWindow(node);
+          return Core.isElement(node) || Core.isDocument(node) || Core.isWindow(node);
         })[Symbol.iterator](), _step18; !(_iteratorNormalCompletion18 = (_step18 = _iterator18.next()).done); _iteratorNormalCompletion18 = true) {
           var node = _step18.value;
 
@@ -2039,7 +2043,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
       try {
         for (var _iterator19 = this._nodeFilter(nodes, function (node) {
-          return DOM.isElement(node) || DOM.isDocument(node) || Core.isWindow(node);
+          return Core.isElement(node) || Core.isDocument(node) || Core.isWindow(node);
         })[Symbol.iterator](), _step19; !(_iteratorNormalCompletion19 = (_step19 = _iterator19.next()).done); _iteratorNormalCompletion19 = true) {
           var node = _step19.value;
 
@@ -2073,7 +2077,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
       try {
         for (var _iterator20 = this._nodeFilter(nodes, function (node) {
-          return DOM.isElement(node) || DOM.isDocument(node) || Core.isWindow(node);
+          return Core.isElement(node) || Core.isDocument(node) || Core.isWindow(node);
         })[Symbol.iterator](), _step20; !(_iteratorNormalCompletion20 = (_step20 = _iterator20.next()).done); _iteratorNormalCompletion20 = true) {
           var node = _step20.value;
 
@@ -2114,7 +2118,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       var margin = arguments.length > 3 ? arguments[3] : undefined;
 
       var node = this._nodeFind(nodes, function (node) {
-        return DOM.isElement(node) || DOM.isDocument(node) || Core.isWindow(node);
+        return Core.isElement(node) || Core.isDocument(node) || Core.isWindow(node);
       });
 
       if (!node) {
@@ -2138,7 +2142,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       var margin = arguments.length > 3 ? arguments[3] : undefined;
 
       var node = this._nodeFind(nodes, function (node) {
-        return DOM.isElement(node) || DOM.isDocument(node) || Core.isWindow(node);
+        return Core.isElement(node) || Core.isDocument(node) || Core.isWindow(node);
       });
 
       if (!node) {
@@ -2167,7 +2171,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         return padding ? node.outerHeight : node.innerHeight;
       }
 
-      if (DOM.isDocument(node)) {
+      if (Core.isDocument(node)) {
         node = node.documentElement;
       }
 
@@ -2209,7 +2213,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         return padding ? node.outerWidth : node.innerWidth;
       }
 
-      if (DOM.isDocument(node)) {
+      if (Core.isDocument(node)) {
         node = node.documentElement;
       }
 
@@ -2716,7 +2720,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
       try {
         for (var _iterator26 = this._nodeFilter(nodes, function (node) {
-          return DOM.isElement(node) || DOM.isDocument(node) || Core.isWindow(node);
+          return Core.isElement(node) || Core.isDocument(node) || Core.isWindow(node);
         })[Symbol.iterator](), _step26; !(_iteratorNormalCompletion26 = (_step26 = _iterator26.next()).done); _iteratorNormalCompletion26 = true) {
           var node = _step26.value;
 
@@ -2761,7 +2765,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
       try {
         for (var _iterator27 = this._nodeFilter(nodes, function (node) {
-          return DOM.isElement(node) || DOM.isDocument(node) || Core.isWindow(node);
+          return Core.isElement(node) || Core.isDocument(node) || Core.isWindow(node);
         })[Symbol.iterator](), _step27; !(_iteratorNormalCompletion27 = (_step27 = _iterator27.next()).done); _iteratorNormalCompletion27 = true) {
           var node = _step27.value;
 
@@ -2797,7 +2801,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
       try {
         for (var _iterator28 = this._nodeFilter(nodes, function (node) {
-          return DOM.isElement(node) || DOM.isDocument(node) || Core.isWindow(node);
+          return Core.isElement(node) || Core.isDocument(node) || Core.isWindow(node);
         })[Symbol.iterator](), _step28; !(_iteratorNormalCompletion28 = (_step28 = _iterator28.next()).done); _iteratorNormalCompletion28 = true) {
           var node = _step28.value;
 
@@ -2833,7 +2837,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
       try {
         for (var _iterator29 = this._nodeFilter(nodes, function (node) {
-          return DOM.isElement(node) || DOM.isDocument(node) || Core.isWindow(node);
+          return Core.isElement(node) || Core.isDocument(node) || Core.isWindow(node);
         })[Symbol.iterator](), _step29; !(_iteratorNormalCompletion29 = (_step29 = _iterator29.next()).done); _iteratorNormalCompletion29 = true) {
           var node = _step29.value;
 
@@ -2868,7 +2872,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
       try {
         for (var _iterator30 = this._nodeFilter(nodes, function (node) {
-          return DOM.isElement(node) || DOM.isDocument(node) || Core.isWindow(node);
+          return Core.isElement(node) || Core.isDocument(node) || Core.isWindow(node);
         })[Symbol.iterator](), _step30; !(_iteratorNormalCompletion30 = (_step30 = _iterator30.next()).done); _iteratorNormalCompletion30 = true) {
           var node = _step30.value;
 
@@ -2902,7 +2906,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
       try {
         for (var _iterator31 = this._nodeFilter(nodes, function (node) {
-          return DOM.isElement(node) || DOM.isDocument(node) || Core.isWindow(node);
+          return Core.isElement(node) || Core.isDocument(node) || Core.isWindow(node);
         })[Symbol.iterator](), _step31; !(_iteratorNormalCompletion31 = (_step31 = _iterator31.next()).done); _iteratorNormalCompletion31 = true) {
           var node = _step31.value;
 
@@ -2937,7 +2941,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
       try {
         for (var _iterator32 = this._nodeFilter(nodes, function (node) {
-          return DOM.isElement(node) || DOM.isDocument(node) || Core.isWindow(node);
+          return Core.isElement(node) || Core.isDocument(node) || Core.isWindow(node);
         })[Symbol.iterator](), _step32; !(_iteratorNormalCompletion32 = (_step32 = _iterator32.next()).done); _iteratorNormalCompletion32 = true) {
           var node = _step32.value;
 
@@ -2973,7 +2977,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
       try {
         for (var _iterator33 = this._nodeFilter(nodes, function (node) {
-          return DOM.isElement(node) || DOM.isDocument(node) || Core.isWindow(node);
+          return Core.isElement(node) || Core.isDocument(node) || Core.isWindow(node);
         })[Symbol.iterator](), _step33; !(_iteratorNormalCompletion33 = (_step33 = _iterator33.next()).done); _iteratorNormalCompletion33 = true) {
           var node = _step33.value;
 
@@ -3194,7 +3198,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       var deep = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
       var cloneEvents = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
       var cloneData = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : false;
-      return this._nodeFilter(nodes, DOM.isNode).map(function (node) {
+      return this._nodeFilter(nodes, Core.isNode).map(function (node) {
         return _this18._clone(node, deep, cloneEvents, cloneData);
       });
     },
@@ -3214,7 +3218,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
      * @returns {HTMLElement} The new element.
      */
     create: function create(tagName, options) {
-      var node = this.context.createElement(tagName);
+      var node = DOM._create(this.context, tagName);
 
       if (!options) {
         return node;
@@ -3265,7 +3269,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
      * @returns {Node} The new comment node.
      */
     createComment: function createComment(comment) {
-      return this.context.createComment(comment);
+      return DOM._createComment(this.context, comment);
     },
 
     /**
@@ -3273,7 +3277,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
      * @returns {Range} The new range.
      */
     createRange: function createRange() {
-      return this.context.createRange();
+      return DOM._createRange();
     },
 
     /**
@@ -3282,7 +3286,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
      * @returns {Node} The new text node.
      */
     createText: function createText(text) {
-      return this.context.createTextNode(text);
+      return DOM._createText(this.context, text);
     },
 
     /**
@@ -3364,7 +3368,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       var _iteratorError37 = undefined;
 
       try {
-        for (var _iterator37 = this._nodeFilter(nodes, DOM.isNode)[Symbol.iterator](), _step37; !(_iteratorNormalCompletion37 = (_step37 = _iterator37.next()).done); _iteratorNormalCompletion37 = true) {
+        for (var _iterator37 = this._nodeFilter(nodes, Core.isNode)[Symbol.iterator](), _step37; !(_iteratorNormalCompletion37 = (_step37 = _iterator37.next()).done); _iteratorNormalCompletion37 = true) {
           var node = _step37.value;
 
           DOM._detach(node);
@@ -3396,7 +3400,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
       try {
         for (var _iterator38 = this._nodeFilter(nodes, function (node) {
-          return DOM.isElement(node) || DOM.isDocument(node);
+          return Core.isElement(node) || Core.isDocument(node);
         })[Symbol.iterator](), _step38; !(_iteratorNormalCompletion38 = (_step38 = _iterator38.next()).done); _iteratorNormalCompletion38 = true) {
           var node = _step38.value;
 
@@ -3428,7 +3432,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       var _iteratorError39 = undefined;
 
       try {
-        for (var _iterator39 = this._nodeFilter(nodes, DOM.isNode)[Symbol.iterator](), _step39; !(_iteratorNormalCompletion39 = (_step39 = _iterator39.next()).done); _iteratorNormalCompletion39 = true) {
+        for (var _iterator39 = this._nodeFilter(nodes, Core.isNode)[Symbol.iterator](), _step39; !(_iteratorNormalCompletion39 = (_step39 = _iterator39.next()).done); _iteratorNormalCompletion39 = true) {
           var node = _step39.value;
 
           this._remove(node);
@@ -3464,13 +3468,13 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
      * @param {string|Node|NodeList|HTMLCollection|Node[]} others The other node(s), or a query selector or HTML string.
      */
     replaceWith: function replaceWith(nodes, others) {
-      others = this._parseQuery(others, DOM.isNode);
+      others = this._parseQuery(others, Core.isNode);
       var _iteratorNormalCompletion40 = true;
       var _didIteratorError40 = false;
       var _iteratorError40 = undefined;
 
       try {
-        for (var _iterator40 = this._nodeFilter(nodes, DOM.isNode)[Symbol.iterator](), _step40; !(_iteratorNormalCompletion40 = (_step40 = _iterator40.next()).done); _iteratorNormalCompletion40 = true) {
+        for (var _iterator40 = this._nodeFilter(nodes, Core.isNode)[Symbol.iterator](), _step40; !(_iteratorNormalCompletion40 = (_step40 = _iterator40.next()).done); _iteratorNormalCompletion40 = true) {
           var node = _step40.value;
 
           this._replaceWith(node, others);
@@ -3527,7 +3531,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
      * @param {Node} node The input node.
      */
     _remove: function _remove(node) {
-      if (DOM.isElement(node)) {
+      if (Core.isElement(node)) {
         this._empty(node);
       }
 
@@ -3570,13 +3574,13 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
      * @param {string|Node|NodeList|HTMLCollection|Node[]} others The other node(s), or a query selector or HTML string.
      */
     after: function after(nodes, others) {
-      var node = this._nodeFind(nodes, DOM.isNode);
+      var node = this._nodeFind(nodes, Core.isNode);
 
       if (!node) {
         return;
       }
 
-      DOM._after(node, this._parseQuery(others, DOM.isNode));
+      DOM._after(node, this._parseQuery(others, Core.isNode));
     },
 
     /**
@@ -3591,7 +3595,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         return;
       }
 
-      DOM._append(node, this._parseQuery(others, DOM.isNode));
+      DOM._append(node, this._parseQuery(others, Core.isNode));
     },
 
     /**
@@ -3609,13 +3613,13 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
      * @param {string|Node|NodeList|HTMLCollection|Node[]} others The other node(s), or a query selector or HTML string.
      */
     before: function before(nodes, others) {
-      var node = this._nodeFind(nodes, DOM.isNode);
+      var node = this._nodeFind(nodes, Core.isNode);
 
       if (!node) {
         return;
       }
 
-      DOM._before(node, this._parseQuery(others, DOM.isNode));
+      DOM._before(node, this._parseQuery(others, Core.isNode));
     },
 
     /**
@@ -3648,7 +3652,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         return;
       }
 
-      DOM._prepend(node, this._parseQuery(others, DOM.isNode));
+      DOM._prepend(node, this._parseQuery(others, Core.isNode));
     },
 
     /**
@@ -3676,7 +3680,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       var _iteratorError42 = undefined;
 
       try {
-        for (var _iterator42 = this._nodeFilter(nodes, DOM.isNode)[Symbol.iterator](), _step42; !(_iteratorNormalCompletion42 = (_step42 = _iterator42.next()).done); _iteratorNormalCompletion42 = true) {
+        for (var _iterator42 = this._nodeFilter(nodes, Core.isNode)[Symbol.iterator](), _step42; !(_iteratorNormalCompletion42 = (_step42 = _iterator42.next()).done); _iteratorNormalCompletion42 = true) {
           var node = _step42.value;
 
           this._unwrap(node, filter);
@@ -3709,7 +3713,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       var _iteratorError43 = undefined;
 
       try {
-        for (var _iterator43 = this._nodeFilter(nodes, DOM.isNode)[Symbol.iterator](), _step43; !(_iteratorNormalCompletion43 = (_step43 = _iterator43.next()).done); _iteratorNormalCompletion43 = true) {
+        for (var _iterator43 = this._nodeFilter(nodes, Core.isNode)[Symbol.iterator](), _step43; !(_iteratorNormalCompletion43 = (_step43 = _iterator43.next()).done); _iteratorNormalCompletion43 = true) {
           var node = _step43.value;
 
           this._wrap(node, others);
@@ -3760,7 +3764,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       var _iteratorError44 = undefined;
 
       try {
-        for (var _iterator44 = this._nodeFilter(nodes, DOM.isNode)[Symbol.iterator](), _step44; !(_iteratorNormalCompletion44 = (_step44 = _iterator44.next()).done); _iteratorNormalCompletion44 = true) {
+        for (var _iterator44 = this._nodeFilter(nodes, Core.isNode)[Symbol.iterator](), _step44; !(_iteratorNormalCompletion44 = (_step44 = _iterator44.next()).done); _iteratorNormalCompletion44 = true) {
           var node = _step44.value;
 
           this._wrapInner(node, others);
@@ -3953,7 +3957,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
     has: function has(nodes, filter) {
       filter = this._parseFilterContains(filter);
       return this._nodeFilter(nodes, function (node) {
-        return DOM.isElement(node) || DOM.isDocument(node);
+        return Core.isElement(node) || Core.isDocument(node);
       }).filter(function (node, index) {
         return !filter || filter(node, index);
       });
@@ -3968,7 +3972,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
     hasOne: function hasOne(nodes, filter) {
       filter = this._parseFilterContains(filter);
       return this._nodeFilter(nodes, function (node) {
-        return DOM.isElement(node) || DOM.isDocument(node);
+        return Core.isElement(node) || Core.isDocument(node);
       }).find(function (node, index) {
         return !filter || filter(node, index);
       }) || null;
@@ -3983,7 +3987,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       var _this19 = this;
 
       return this._nodeFilter(nodes, function (node) {
-        return DOM.isElement(node) || DOM.isDocument(node) || Core.isWindow(node);
+        return Core.isElement(node) || Core.isDocument(node) || Core.isWindow(node);
       }).filter(function (node) {
         return _this19.isHidden(node);
       });
@@ -3998,7 +4002,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       var _this20 = this;
 
       return this._nodeFilter(nodes, function (node) {
-        return DOM.isElement(node) || DOM.isDocument(node) || Core.isWindow(node);
+        return Core.isElement(node) || Core.isDocument(node) || Core.isWindow(node);
       }).find(function (node) {
         return _this20.isHidden(node);
       }) || null;
@@ -4013,7 +4017,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       var _this21 = this;
 
       return this._nodeFilter(nodes, function (node) {
-        return DOM.isElement(node) || DOM.isDocument(node) || Core.isWindow(node);
+        return Core.isElement(node) || Core.isDocument(node) || Core.isWindow(node);
       }).filter(function (node) {
         return _this21.isVisible(node);
       });
@@ -4028,7 +4032,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       var _this22 = this;
 
       return this._nodeFilter(nodes, function (node) {
-        return DOM.isElement(node) || DOM.isDocument(node) || Core.isWindow(node);
+        return Core.isElement(node) || Core.isDocument(node) || Core.isWindow(node);
       }).find(function (node) {
         return _this22.isVisible(node);
       }) || null;
@@ -4081,12 +4085,12 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       var nodes = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : this.context;
 
       // single node case
-      if (DOM.isElement(nodes) || DOM.isDocument(nodes)) {
+      if (Core.isElement(nodes) || Core.isDocument(nodes)) {
         return Core.merge([], DOM._findByClass(className, nodes));
       }
 
       nodes = this._nodeFilter(nodes, function (node) {
-        return DOM.isElement(node) || DOM.isDocument(node);
+        return Core.isElement(node) || Core.isDocument(node);
       });
       var results = [];
       var _iteratorNormalCompletion46 = true;
@@ -4144,12 +4148,12 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       var nodes = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : this.context;
 
       // single node case
-      if (DOM.isElement(nodes) || DOM.isDocument(nodes)) {
+      if (Core.isElement(nodes) || Core.isDocument(nodes)) {
         return Core.merge([], DOM._findByTag(tagName, nodes));
       }
 
       nodes = this._nodeFilter(nodes, function (node) {
-        return DOM.isElement(node) || DOM.isDocument(node);
+        return Core.isElement(node) || Core.isDocument(node);
       });
       var results = [];
       var _iteratorNormalCompletion47 = true;
@@ -4221,12 +4225,12 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       var nodes = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : this.context;
 
       // single node case
-      if (DOM.isElement(nodes) || DOM.isDocument(nodes)) {
+      if (Core.isElement(nodes) || Core.isDocument(nodes)) {
         return DOM._findByClass(className, nodes).item(0);
       }
 
       nodes = this._nodeFilter(nodes, function (node) {
-        return DOM.isElement(node) || DOM.isDocument(node);
+        return Core.isElement(node) || Core.isDocument(node);
       });
       var _iteratorNormalCompletion48 = true;
       var _didIteratorError48 = false;
@@ -4288,12 +4292,12 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       var nodes = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : this.context;
 
       // single node case
-      if (DOM.isElement(nodes) || DOM.isDocument(nodes)) {
+      if (Core.isElement(nodes) || Core.isDocument(nodes)) {
         return DOM._findByTag(tagName, nodes).item(0);
       }
 
       nodes = this._nodeFilter(nodes, function (node) {
-        return DOM.isElement(node) || DOM.isDocument(node);
+        return Core.isElement(node) || Core.isDocument(node);
       });
       var _iteratorNormalCompletion49 = true;
       var _didIteratorError49 = false;
@@ -4344,12 +4348,12 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       var selectors = DOM._prefixSelectors(selector, "#".concat(DOM.tempId, " ")); // single node case
 
 
-      if (DOM.isElement(nodes) || DOM.isDocument(nodes)) {
+      if (Core.isElement(nodes) || Core.isDocument(nodes)) {
         return Core.merge([], DOM._findByCustom(selectors, nodes));
       }
 
       nodes = this._nodeFilter(nodes, function (node) {
-        return DOM.isElement(node) || DOM.isDocument(node);
+        return Core.isElement(node) || Core.isDocument(node);
       });
       var results = [];
       var _iteratorNormalCompletion50 = true;
@@ -4389,12 +4393,12 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       var nodes = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : this.context;
 
       // single node case
-      if (DOM.isElement(nodes) || DOM.isDocument(nodes)) {
+      if (Core.isElement(nodes) || nodes) {
         return Core.merge([], DOM._findBySelector(selector, nodes));
       }
 
       nodes = this._nodeFilter(nodes, function (node) {
-        return DOM.isElement(node) || DOM.isDocument(node);
+        return Core.isElement(node) || Core.isDocument(node);
       });
       var results = [];
       var _iteratorNormalCompletion51 = true;
@@ -4441,12 +4445,12 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       var selectors = DOM._prefixSelectors(selector, "#".concat(DOM.tempId, " ")); // single node case
 
 
-      if (DOM.isElement(nodes) || DOM.isDocument(nodes)) {
+      if (Core.isElement(nodes) || Core.isDocument(nodes)) {
         return DOM._findOneByCustom(selectors, nodes);
       }
 
       nodes = this._nodeFilter(nodes, function (node) {
-        return DOM.isElement(node) || DOM.isDocument(node);
+        return Core.isElement(node) || Core.isDocument(node);
       });
       var _iteratorNormalCompletion52 = true;
       var _didIteratorError52 = false;
@@ -4490,12 +4494,12 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       var nodes = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : this.context;
 
       // single node case
-      if (DOM.isElement(nodes) || DOM.isDocument(nodes)) {
+      if (Core.isElement(nodes) || Core.isDocument(nodes)) {
         return DOM._findOneBySelector(selector, nodes);
       }
 
       nodes = this._nodeFilter(nodes, function (node) {
-        return DOM.isElement(node) || DOM.isDocument(node);
+        return Core.isElement(node) || Core.isDocument(node);
       });
       var _iteratorNormalCompletion53 = true;
       var _didIteratorError53 = false;
@@ -4557,7 +4561,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       var elementsOnly = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : true;
       filter = this._parseFilter(filter);
 
-      if (DOM.isElement(nodes)) {
+      if (Core.isElement(nodes)) {
         return DOM._children(nodes, filter, first, elementsOnly);
       }
 
@@ -4643,11 +4647,11 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
     parent: function parent(nodes, filter) {
       filter = this._parseFilter(filter);
 
-      if (DOM.isNode(nodes)) {
+      if (Core.isNode(nodes)) {
         return DOM._parent(nodes, filter);
       }
 
-      nodes = this._nodeFilter(nodes, DOM.isNode);
+      nodes = this._nodeFilter(nodes, Core.isNode);
       var results = [];
       var _iteratorNormalCompletion55 = true;
       var _didIteratorError55 = false;
@@ -4689,11 +4693,11 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       filter = this._parseFilter(filter);
       limit = this._parseFilter(limit);
 
-      if (DOM.isNode(nodes)) {
+      if (Core.isNode(nodes)) {
         return DOM._parent(nodes, filter, limit, first);
       }
 
-      nodes = this._nodeFilter(nodes, DOM.isNode);
+      nodes = this._nodeFilter(nodes, Core.isNode);
       var results = [];
       var _iteratorNormalCompletion56 = true;
       var _didIteratorError56 = false;
@@ -4742,7 +4746,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
     next: function next(nodes, filter) {
       filter = this._parseFilter(filter);
 
-      if (DOM.isElement(nodes)) {
+      if (Core.isElement(nodes)) {
         return DOM._next(nodes, filter);
       }
 
@@ -4788,7 +4792,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       filter = this._parseFilter(filter);
       limit = this._parseFilter(limit);
 
-      if (DOM.isElement(nodes)) {
+      if (Core.isElement(nodes)) {
         return DOM._nextAll(nodes, filter, limit, first);
       }
 
@@ -4830,7 +4834,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
     prev: function prev(nodes, filter) {
       filter = this._parseFilter(filter);
 
-      if (DOM.isElement(nodes)) {
+      if (Core.isElement(nodes)) {
         return DOM._prev(nodes, filter);
       }
 
@@ -4876,7 +4880,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       filter = this._parseFilter(filter);
       limit = this._parseFilter(limit);
 
-      if (DOM.isElement(nodes)) {
+      if (Core.isElement(nodes)) {
         return DOM._prevAll(nodes, filter, limit, first);
       }
 
@@ -4920,7 +4924,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       var elementsOnly = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : true;
       filter = this._parseFilter(filter);
 
-      if (DOM.isElement(nodes)) {
+      if (Core.isElement(nodes)) {
         return DOM._siblings(nodes, filter, elementsOnly);
       }
 
@@ -4961,11 +4965,11 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
     /**
      * Return a filtered array of nodes.
      * @param {string|Node|NodeList|HTMLCollection|Document|Node[]} nodes The input node(s), or a query selector string.
-     * @param {DOM~filterCallback} [filter=DOM.isElement] The filter callback.
+     * @param {DOM~filterCallback} [filter=Core.isElement] The filter callback.
      * @returns {Node[]} The filtered array of nodes.
      */
     _nodeFilter: function _nodeFilter(nodes) {
-      var filter = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : DOM.isElement;
+      var filter = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : Core.isElement;
 
       if (Core.isString(nodes)) {
         return this.find(nodes).filter(filter);
@@ -4981,11 +4985,11 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
     /**
      * Return the first node matching a filter.
      * @param {string|Node|NodeList|HTMLCollection|Document|Node[]} nodes The input node(s), or a query selector string.
-     * @param {DOM~filterCallback} [filter=DOM.isElement] The filter callback.
+     * @param {DOM~filterCallback} [filter=Core.isElement] The filter callback.
      * @returns {Node} The matching node.
      */
     _nodeFind: function _nodeFind(nodes) {
-      var filter = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : DOM.isElement;
+      var filter = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : Core.isElement;
 
       if (Core.isString(nodes)) {
         var _node = this.findOne(nodes);
@@ -5022,11 +5026,11 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
       if (Core.isString(filter)) {
         return function (node) {
-          return DOM.isElement(node) && DOM._is(node, filter);
+          return Core.isElement(node) && DOM._is(node, filter);
         };
       }
 
-      if (DOM.isNode(filter)) {
+      if (Core.isNode(filter)) {
         return function (node) {
           return DOM._isSame(node, filter);
         };
@@ -5065,7 +5069,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         };
       }
 
-      if (DOM.isElement(filter)) {
+      if (Core.isElement(filter)) {
         return function (node) {
           return DOM._has(node, filter);
         };
@@ -5087,12 +5091,12 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
     /**
      * Return a filtered array of nodes from a query.
      * @param {string|Node|NodeList|HTMLCollection|Document|Node[]} nodes The input node(s), or a query selector or HTML string.
-     * @param {DOM~filterCallback} [filter=DOM.isElement] The filter callback.
+     * @param {DOM~filterCallback} [filter=Core.isElement] The filter callback.
      * @returns {Node[]} The filtered array of nodes.
      */
     _parseQuery: function _parseQuery() {
       var query = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '*';
-      var filter = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : DOM.isElement;
+      var filter = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : Core.isElement;
 
       if (Core.isString(query) && query.trim().charAt(0) === '<') {
         return this.parseHTML(query);
@@ -5128,7 +5132,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       var _iteratorError62 = undefined;
 
       try {
-        for (var _iterator62 = this._parseQuery(nodes, DOM.isNode)[Symbol.iterator](), _step62; !(_iteratorNormalCompletion62 = (_step62 = _iterator62.next()).done); _iteratorNormalCompletion62 = true) {
+        for (var _iterator62 = this._parseQuery(nodes, Core.isNode)[Symbol.iterator](), _step62; !(_iteratorNormalCompletion62 = (_step62 = _iterator62.next()).done); _iteratorNormalCompletion62 = true) {
           var node = _step62.value;
 
           DOM._insert(range, node);
@@ -5169,7 +5173,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       var _iteratorError63 = undefined;
 
       try {
-        for (var _iterator63 = this._parseQuery(nodes, DOM.isNode)[Symbol.iterator](), _step63; !(_iteratorNormalCompletion63 = (_step63 = _iterator63.next()).done); _iteratorNormalCompletion63 = true) {
+        for (var _iterator63 = this._parseQuery(nodes, Core.isNode)[Symbol.iterator](), _step63; !(_iteratorNormalCompletion63 = (_step63 = _iterator63.next()).done); _iteratorNormalCompletion63 = true) {
           var node = _step63.value;
 
           DOM._insert(range, node);
@@ -5231,8 +5235,8 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         return nodes;
       }
 
-      var start = DOM.isElement(range.startContainer) ? range.startContainer : DOM._parent(range.startContainer).shift();
-      var end = DOM.isElement(range.endContainer) ? range.endContainer : DOM._parent(range.endContainer).shift();
+      var start = Core.isElement(range.startContainer) ? range.startContainer : DOM._parent(range.startContainer).shift();
+      var end = Core.isElement(range.endContainer) ? range.endContainer : DOM._parent(range.endContainer).shift();
       return nodes.slice(nodes.indexOf(start), nodes.indexOf(end) + 1);
     },
 
@@ -5241,7 +5245,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
      * @param {string|Node|NodeList|HTMLCollection|Node[]} nodes The input node(s), or a query selector string.
      */
     select: function select(nodes) {
-      var node = this._nodeFind(nodes, DOM.isNode);
+      var node = this._nodeFind(nodes, Core.isNode);
 
       if (node && 'select' in node) {
         return node.select();
@@ -5308,7 +5312,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
     contains: function contains(nodes, filter) {
       filter = this._parseFilterContains(filter);
       return this._nodeFilter(nodes, function (node) {
-        return DOM.isElement(node) || DOM.isDocument(node);
+        return Core.isElement(node) || Core.isDocument(node);
       }).some(function (node) {
         return !filter || filter(node);
       });
@@ -5368,7 +5372,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       var _this25 = this;
 
       return this._nodeFilter(nodes, function (node) {
-        return DOM.isElement(node) || DOM.isDocument(node) || Core.isWindow(node);
+        return Core.isElement(node) || Core.isDocument(node) || Core.isWindow(node);
       }).some(function (node) {
         return _this25.nodeData.has(node) && (!key || _this25.nodeData.get(node).hasOwnProperty(key));
       });
@@ -5418,7 +5422,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
      * @returns {Boolean} TRUE if any of the nodes is connected to the DOM, otherwise FALSE.
      */
     isConnected: function isConnected(nodes) {
-      return this._nodeFilter(nodes, DOM.isNode).some(function (node) {
+      return this._nodeFilter(nodes, Core.isNode).some(function (node) {
         return DOM._isConnected(node);
       });
     },
@@ -5429,8 +5433,8 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
      * @returns {Boolean} TRUE if any of the nodes is considered equal to any of the other nodes, otherwise FALSE.
      */
     isEqual: function isEqual(nodes, others) {
-      others = this._nodeFilter(others, DOM.isNode);
-      return this._nodeFilter(nodes, DOM.isNode).some(function (node) {
+      others = this._nodeFilter(others, Core.isNode);
+      return this._nodeFilter(nodes, Core.isNode).some(function (node) {
         return others.find(function (other) {
           return DOM._isEqual(node, other);
         });
@@ -5459,7 +5463,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
      */
     isHidden: function isHidden(nodes) {
       return this._nodeFilter(nodes, function (node) {
-        return DOM.isNode(node) || DOM.isDocument(node) || Core.isWindow(node);
+        return Core.isNode(node) || Core.isDocument(node) || Core.isWindow(node);
       }).some(function (node) {
         return !DOM._isVisible(node);
       });
@@ -5471,8 +5475,8 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
      * @returns {Boolean} TRUE if any of the nodes is considered identical to any of the other nodes, otherwise FALSE.
      */
     isSame: function isSame(nodes, others) {
-      others = this._nodeFilter(others, DOM.isNode);
-      return this._nodeFilter(nodes, DOM.isNode).some(function (node) {
+      others = this._nodeFilter(others, Core.isNode);
+      return this._nodeFilter(nodes, Core.isNode).some(function (node) {
         return others.find(function (other) {
           return DOM._isSame(node, other);
         });
@@ -5486,7 +5490,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
      */
     isVisible: function isVisible(nodes) {
       return this._nodeFilter(nodes, function (node) {
-        return DOM.isNode(node) || DOM.isDocument(node) || Core.isWindow(node);
+        return Core.isNode(node) || Core.isDocument(node) || Core.isWindow(node);
       }).some(function (node) {
         return DOM._isVisible(node);
       });
@@ -5523,7 +5527,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       var _this28 = this;
 
       var node = this._nodeFind(nodes, function (node) {
-        return DOM.isNode(node) || DOM.isDocument(node) || Core.isWindow(node);
+        return Core.isNode(node) || Core.isDocument(node) || Core.isWindow(node);
       });
 
       if (!node) {
@@ -5670,7 +5674,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       var _iteratorError67 = undefined;
 
       try {
-        for (var _iterator67 = this._nodeFilter(nodes, DOM.isNode)[Symbol.iterator](), _step67; !(_iteratorNormalCompletion67 = (_step67 = _iterator67.next()).done); _iteratorNormalCompletion67 = true) {
+        for (var _iterator67 = this._nodeFilter(nodes, Core.isNode)[Symbol.iterator](), _step67; !(_iteratorNormalCompletion67 = (_step67 = _iterator67.next()).done); _iteratorNormalCompletion67 = true) {
           var node = _step67.value;
 
           DOM._normalize(node);
@@ -5738,7 +5742,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
      * @returns {Node[]} The sorted array of nodes.
      */
     sort: function sort(nodes) {
-      return this._nodeFilter(nodes, DOM.isNode).sort(DOM._compareNodes);
+      return this._nodeFilter(nodes, Core.isNode).sort(DOM._compareNodes);
     }
   });
   /**
@@ -5842,7 +5846,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         return node.scrollX;
       }
 
-      if (this.isDocument(node)) {
+      if (Core.isDocument(node)) {
         return node.scrollingElement.scrollLeft;
       }
 
@@ -5859,7 +5863,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         return node.scrollY;
       }
 
-      if (this.isDocument(node)) {
+      if (Core.isDocument(node)) {
         return node.scrollingElement.scrollTop;
       }
 
@@ -5877,7 +5881,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         return node.scroll(x, y);
       }
 
-      if (this.isDocument(node)) {
+      if (Core.isDocument(node)) {
         node.scrollingElement.scrollLeft = x;
         node.scrollingElement.scrollTop = y;
         return;
@@ -5897,7 +5901,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         return node.scroll(x, node.scrollY);
       }
 
-      if (this.isDocument(node)) {
+      if (Core.isDocument(node)) {
         node.scrollingElement.scrollLeft = x;
         return;
       }
@@ -5915,7 +5919,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         return node.scroll(node.scrollX, y);
       }
 
-      if (this.isDocument(node)) {
+      if (Core.isDocument(node)) {
         node.scrollingElement.scrollTop = y;
         return;
       }
@@ -6073,6 +6077,255 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
     }
   });
   /**
+   * DOM (Static) Helpers
+   */
+
+  Object.assign(DOM, {
+    /**
+     * Return a single dimensional array of classes (from a multi-dimensional array or space-separated strings).
+     * @param {array} classList The classes to parse.
+     * @returns {string[]} The parsed classes.
+     */
+    _parseClasses: function _parseClasses(classList) {
+      return classList.flat().flatMap(function (val) {
+        return val.split(' ');
+      });
+    },
+
+    /**
+     * Return a data object from a key and value, or a data object.
+     * @param {string|object} key The data key, or an object containing data.
+     * @param {*} [value] The data value.
+     * @returns {object} The data object.
+     */
+    _parseData: function _parseData(key, value) {
+      return Core.isObject(key) ? key : _defineProperty({}, key, value);
+    },
+
+    /**
+     * Return a "real" event from a namespaced event.
+     * @param {string} event The namespaced event.
+     * @returns {string} The real event.
+     */
+    _parseEvent: function _parseEvent(event) {
+      return event.split('.').shift();
+    },
+
+    /**
+     * Return an array of events from a space-separated string.
+     * @param {string} events The events.
+     * @returns {array} The parsed events.
+     */
+    _parseEvents: function _parseEvents(events) {
+      return events.split(' ');
+    },
+
+    /**
+     * Return a FormData object from an array or object.
+     * @param {array|object} data The input data.
+     * @returns {FormData} The FormData object.
+     */
+    _parseFormData: function _parseFormData(data) {
+      var formData = new FormData();
+
+      if (Array.isArray(data)) {
+        var obj = {};
+        var _iteratorNormalCompletion69 = true;
+        var _didIteratorError69 = false;
+        var _iteratorError69 = undefined;
+
+        try {
+          for (var _iterator69 = data[Symbol.iterator](), _step69; !(_iteratorNormalCompletion69 = (_step69 = _iterator69.next()).done); _iteratorNormalCompletion69 = true) {
+            var value = _step69.value;
+            obj[value.name] = value.value;
+          }
+        } catch (err) {
+          _didIteratorError69 = true;
+          _iteratorError69 = err;
+        } finally {
+          try {
+            if (!_iteratorNormalCompletion69 && _iterator69["return"] != null) {
+              _iterator69["return"]();
+            }
+          } finally {
+            if (_didIteratorError69) {
+              throw _iteratorError69;
+            }
+          }
+        }
+
+        data = obj;
+      }
+
+      this._parseFormValues(data, formData);
+
+      return formData;
+    },
+
+    /**
+     * Recursively append an object to a FormData object.
+     * @param {object} data The input object.
+     * @param {FormData} formData The FormData object to append to.
+     * @param {string} [prevKey] The previous key value.
+     */
+    _parseFormValues: function _parseFormValues(data, formData, prevKey) {
+      var key;
+
+      for (key in data) {
+        var value = data[key];
+
+        if (prevKey) {
+          key = "".concat(prevKey, "[").concat(key, "]");
+        }
+
+        if (Core.isPlainObject(value)) {
+          this._parseFormValues(value, formData, key);
+        } else if (!Array.isArray(value)) {
+          formData.set(key, value);
+        } else {
+          var _iteratorNormalCompletion70 = true;
+          var _didIteratorError70 = false;
+          var _iteratorError70 = undefined;
+
+          try {
+            for (var _iterator70 = value[Symbol.iterator](), _step70; !(_iteratorNormalCompletion70 = (_step70 = _iterator70.next()).done); _iteratorNormalCompletion70 = true) {
+              var val = _step70.value;
+              formData.append(key, val);
+            }
+          } catch (err) {
+            _didIteratorError70 = true;
+            _iteratorError70 = err;
+          } finally {
+            try {
+              if (!_iteratorNormalCompletion70 && _iterator70["return"] != null) {
+                _iterator70["return"]();
+              }
+            } finally {
+              if (_didIteratorError70) {
+                throw _iteratorError70;
+              }
+            }
+          }
+        }
+      }
+    },
+
+    /**
+     * Return a URI-encoded attribute string from an array or object.
+     * @param {array|object} data The input data.
+     * @returns {string} The URI-encoded attribute string.
+     */
+    _parseParams: function _parseParams(data) {
+      var _this30 = this;
+
+      var values = [];
+
+      if (Array.isArray(data)) {
+        values = data.map(function (value) {
+          return _this30._parseParam(value.name, value.value);
+        });
+      } else if (Core.isObject(data)) {
+        values = Object.keys(data).map(function (key) {
+          return _this30._parseParam(key, data[key]);
+        });
+      }
+
+      return values.flatMap(encodeURI).join('&');
+    },
+
+    /**
+     * Return a string attribute, or a flat array of attributes from a key and value.
+     * @param {string} key The input key.
+     * @param {array|object|string} value The input value.
+     * @returns {string|array} The parsed attributes.
+     */
+    _parseParam: function _parseParam(key, value) {
+      var _this31 = this;
+
+      if (Array.isArray(value)) {
+        return value.map(function (val) {
+          return _this31._parseParam(key, val);
+        }).flat();
+      }
+
+      if (Core.isObject(value)) {
+        return Object.keys(value).map(function (subKey) {
+          return _this31._parseParam(key + '[' + subKey + ']', value[subKey]);
+        }).flat();
+      }
+
+      return key + '=' + value;
+    },
+
+    /**
+     * Return a prefixed selector string.
+     * @param {string} selectors The input selectors.
+     * @param {string} prefix The input prefix.
+     * @returns {string} The prefixed selector.
+     */
+    _prefixSelectors: function _prefixSelectors(selectors, prefix) {
+      return selectors.split(this.splitRegex).filter(function (select) {
+        return !!select;
+      }).map(function (select) {
+        return "".concat(prefix, " ").concat(select);
+      }).join(', ');
+    }
+  });
+  /**
+   * DOM (Static) Create
+   */
+
+  Object.assign(DOM, {
+    /**
+     * Create a clone of a node.
+     * @param {Node} node The input node.
+     * @param {Boolean} deep Whether to deep clone the node.
+     * @returns {Node} The cloned node.
+     */
+    _clone: function _clone(node, deep) {
+      return node.cloneNode(deep);
+    },
+
+    /**
+     * Create a new DOM element.
+     * @param {Document} context The document context.
+     * @param {string} tagName The type of HTML element to create.
+     * @returns {HTMLElement} The new element.
+     */
+    _create: function _create(context, tagName) {
+      return context.createElement(tagName);
+    },
+
+    /**
+     * Create a new comment node.
+     * @param {Document} context The document context.
+     * @param {string} comment The comment contents.
+     * @returns {Node} The new comment node.
+     */
+    _createComment: function _createComment(context, comment) {
+      return context.createCommentNode(comment);
+    },
+
+    /**
+     * Create a new range object.
+     * @param {Document} context The document context.
+     * @returns {Range} The new range.
+     */
+    _createRange: function _createRange(context) {
+      return context.createRange();
+    },
+
+    /**
+     * Create a new text node.
+     * @param {Document} context The document context.
+     * @param {string} text The text contents.
+     * @returns {Node} The new text node.
+     */
+    _createText: function _createText(context, text) {
+      return context.createTextNode(text);
+    }
+  });
+  /**
    * DOM (Static) Manipulation
    */
 
@@ -6104,80 +6357,14 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         return;
       }
 
-      var _iteratorNormalCompletion69 = true;
-      var _didIteratorError69 = false;
-      var _iteratorError69 = undefined;
-
-      try {
-        for (var _iterator69 = others.reverse()[Symbol.iterator](), _step69; !(_iteratorNormalCompletion69 = (_step69 = _iterator69.next()).done); _iteratorNormalCompletion69 = true) {
-          var other = _step69.value;
-          node.parentNode.insertBefore(other, node.nextSibling);
-        }
-      } catch (err) {
-        _didIteratorError69 = true;
-        _iteratorError69 = err;
-      } finally {
-        try {
-          if (!_iteratorNormalCompletion69 && _iterator69["return"] != null) {
-            _iterator69["return"]();
-          }
-        } finally {
-          if (_didIteratorError69) {
-            throw _iteratorError69;
-          }
-        }
-      }
-    },
-
-    /**
-     * Append each other node to a single node.
-     * @param {Node} node The input node.
-     * @param {Node[]} others The other node(s).
-     */
-    _append: function _append(node, others) {
-      var _iteratorNormalCompletion70 = true;
-      var _didIteratorError70 = false;
-      var _iteratorError70 = undefined;
-
-      try {
-        for (var _iterator70 = others[Symbol.iterator](), _step70; !(_iteratorNormalCompletion70 = (_step70 = _iterator70.next()).done); _iteratorNormalCompletion70 = true) {
-          var other = _step70.value;
-          node.insertBefore(other, null);
-        }
-      } catch (err) {
-        _didIteratorError70 = true;
-        _iteratorError70 = err;
-      } finally {
-        try {
-          if (!_iteratorNormalCompletion70 && _iterator70["return"] != null) {
-            _iterator70["return"]();
-          }
-        } finally {
-          if (_didIteratorError70) {
-            throw _iteratorError70;
-          }
-        }
-      }
-    },
-
-    /**
-     * Insert each other node before a single node.
-     * @param {Node} node The input node.
-     * @param {Node[]} others The other node(s).
-     */
-    _before: function _before(node, others) {
-      if (!node.parentNode) {
-        return;
-      }
-
       var _iteratorNormalCompletion71 = true;
       var _didIteratorError71 = false;
       var _iteratorError71 = undefined;
 
       try {
-        for (var _iterator71 = others[Symbol.iterator](), _step71; !(_iteratorNormalCompletion71 = (_step71 = _iterator71.next()).done); _iteratorNormalCompletion71 = true) {
+        for (var _iterator71 = others.reverse()[Symbol.iterator](), _step71; !(_iteratorNormalCompletion71 = (_step71 = _iterator71.next()).done); _iteratorNormalCompletion71 = true) {
           var other = _step71.value;
-          node.parentNode.insertBefore(other, node);
+          node.parentNode.insertBefore(other, node.nextSibling);
         }
       } catch (err) {
         _didIteratorError71 = true;
@@ -6196,19 +6383,19 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
     },
 
     /**
-     * Prepend each other node to a single node.
+     * Append each other node to a single node.
      * @param {Node} node The input node.
      * @param {Node[]} others The other node(s).
      */
-    _prepend: function _prepend(node, others) {
+    _append: function _append(node, others) {
       var _iteratorNormalCompletion72 = true;
       var _didIteratorError72 = false;
       var _iteratorError72 = undefined;
 
       try {
-        for (var _iterator72 = others.reverse()[Symbol.iterator](), _step72; !(_iteratorNormalCompletion72 = (_step72 = _iterator72.next()).done); _iteratorNormalCompletion72 = true) {
+        for (var _iterator72 = others[Symbol.iterator](), _step72; !(_iteratorNormalCompletion72 = (_step72 = _iterator72.next()).done); _iteratorNormalCompletion72 = true) {
           var other = _step72.value;
-          node.insertBefore(other, node.firstChild);
+          node.insertBefore(other, null);
         }
       } catch (err) {
         _didIteratorError72 = true;
@@ -6224,74 +6411,102 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
           }
         }
       }
+    },
+
+    /**
+     * Insert each other node before a single node.
+     * @param {Node} node The input node.
+     * @param {Node[]} others The other node(s).
+     */
+    _before: function _before(node, others) {
+      if (!node.parentNode) {
+        return;
+      }
+
+      var _iteratorNormalCompletion73 = true;
+      var _didIteratorError73 = false;
+      var _iteratorError73 = undefined;
+
+      try {
+        for (var _iterator73 = others[Symbol.iterator](), _step73; !(_iteratorNormalCompletion73 = (_step73 = _iterator73.next()).done); _iteratorNormalCompletion73 = true) {
+          var other = _step73.value;
+          node.parentNode.insertBefore(other, node);
+        }
+      } catch (err) {
+        _didIteratorError73 = true;
+        _iteratorError73 = err;
+      } finally {
+        try {
+          if (!_iteratorNormalCompletion73 && _iterator73["return"] != null) {
+            _iterator73["return"]();
+          }
+        } finally {
+          if (_didIteratorError73) {
+            throw _iteratorError73;
+          }
+        }
+      }
+    },
+
+    /**
+     * Prepend each other node to a single node.
+     * @param {Node} node The input node.
+     * @param {Node[]} others The other node(s).
+     */
+    _prepend: function _prepend(node, others) {
+      var _iteratorNormalCompletion74 = true;
+      var _didIteratorError74 = false;
+      var _iteratorError74 = undefined;
+
+      try {
+        for (var _iterator74 = others.reverse()[Symbol.iterator](), _step74; !(_iteratorNormalCompletion74 = (_step74 = _iterator74.next()).done); _iteratorNormalCompletion74 = true) {
+          var other = _step74.value;
+          node.insertBefore(other, node.firstChild);
+        }
+      } catch (err) {
+        _didIteratorError74 = true;
+        _iteratorError74 = err;
+      } finally {
+        try {
+          if (!_iteratorNormalCompletion74 && _iterator74["return"] != null) {
+            _iterator74["return"]();
+          }
+        } finally {
+          if (_didIteratorError74) {
+            throw _iteratorError74;
+          }
+        }
+      }
     }
   });
   /**
-   * DOM (Static) Nodes
+   * DOM (Static) Parsing
    */
 
   Object.assign(DOM, {
     /**
-     * Returns true if the value is a Document.
-     * @param {*} value The value to test.
-     * @returns {Boolean} TRUE if the value is a Document, otherwise FALSE.
+     * Create a Document object from a HTML string.
+     * @param {string} html The HTML input string.
+     * @returns {Document} A new Document object.
      */
-    isDocument: function isDocument(node) {
-      return Core.isObject(node) && 'nodeType' in node && node.nodeType === Node.DOCUMENT_NODE;
+    parseHTML: function parseHTML(html) {
+      return new DOMParser().parseFromString(html, 'text/html');
     },
 
     /**
-     * Returns true if the value is a HTMLElement.
-     * @param {*} value The value to test.
-     * @returns {Boolean} TRUE if the value is a HTMLElement, otherwise FALSE.
+     * Create a Document object from an XML string.
+     * @param {string} xml The XML input string.
+     * @returns {Document} A new Document object.
      */
-    isElement: function isElement(node) {
-      return Core.isObject(node) && 'nodeType' in node && node.nodeType === Node.ELEMENT_NODE;
-    },
+    parseXML: function parseXML(xml) {
+      return new DOMParser().parseFromString(xml, 'application/xml');
+    }
+  });
+  /**
+   * DOM (Static) Filter
+   */
 
-    /**
-     * Returns true if the value is a Node.
-     * @param {*} value The value to test.
-     * @returns {Boolean} TRUE if the value is a Node, otherwise FALSE.
-     */
-    isNode: function isNode(node) {
-      return Core.isObject(node) && 'nodeType' in node && (node.nodeType === Node.ELEMENT_NODE || node.nodeType === Node.TEXT_NODE || node.nodeType === Node.COMMENT_NODE);
-    },
-
-    /**
-     * Create a clone of a node.
-     * @param {Node} node The input node.
-     * @param {Boolean} deep Whether to deep clone the node.
-     * @returns {Node} The cloned node.
-     */
-    _clone: function _clone(node, deep) {
-      return node.cloneNode(deep);
-    },
-
-    /**
-     * Compare the position of two nodes in the DOM.
-     * @param {Node} node The input node.
-     * @param {Node} other The other node.
-     * @returns {number} -1 if node is before other, 1 if other is before node, otherwise 0.
-     */
-    _compareNodes: function _compareNodes(node, other) {
-      if (this._isSame(node, other)) {
-        return 0;
-      }
-
-      var pos = node.compareDocumentPosition(other);
-
-      if (pos & Node.DOCUMENT_POSITION_FOLLOWING || pos & Node.DOCUMENT_POSITION_CONTAINED_BY) {
-        return -1;
-      }
-
-      if (pos & Node.DOCUMENT_POSITION_PRECEDING || pos & Node.DOCUMENT_POSITION_CONTAINS) {
-        return 1;
-      }
-
-      return 0;
-    },
-
+  Object.assign(DOM, {
     /**
      * Returns true if a single node has another node as a descendent.
      * @param {HTMLElement} node The input node.
@@ -6360,42 +6575,11 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         return dom.context.visibilityState === 'visible';
       }
 
-      if (DOM.isDocument(node)) {
+      if (Core.isDocument(node)) {
         return node.visibilityState === 'visible';
       }
 
       return !!node.offsetParent;
-    },
-
-    /**
-     * Normalize a single node (remove empty text nodes, and join neighbouring text nodes).
-     * @param {HTMLElement} node The input node.
-     */
-    _normalize: function _normalize(node) {
-      node.normalize();
-    }
-  });
-  /**
-   * DOM (Static) Parsing
-   */
-
-  Object.assign(DOM, {
-    /**
-     * Create a Document object from a HTML string.
-     * @param {string} html The HTML input string.
-     * @returns {Document} A new Document object.
-     */
-    parseHTML: function parseHTML(html) {
-      return new DOMParser().parseFromString(html, 'text/html');
-    },
-
-    /**
-     * Create a Document object from an XML string.
-     * @param {string} xml The XML input string.
-     * @returns {Document} A new Document object.
-     */
-    parseXML: function parseXML(xml) {
-      return new DOMParser().parseFromString(xml, 'application/xml');
     }
   });
   /**
@@ -6524,13 +6708,13 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       var children = elementsOnly ? node.children : node.childNodes,
           results = [];
       var child;
-      var _iteratorNormalCompletion73 = true;
-      var _didIteratorError73 = false;
-      var _iteratorError73 = undefined;
+      var _iteratorNormalCompletion75 = true;
+      var _didIteratorError75 = false;
+      var _iteratorError75 = undefined;
 
       try {
-        for (var _iterator73 = children[Symbol.iterator](), _step73; !(_iteratorNormalCompletion73 = (_step73 = _iterator73.next()).done); _iteratorNormalCompletion73 = true) {
-          child = _step73.value;
+        for (var _iterator75 = children[Symbol.iterator](), _step75; !(_iteratorNormalCompletion75 = (_step75 = _iterator75.next()).done); _iteratorNormalCompletion75 = true) {
+          child = _step75.value;
 
           if (filter && !filter(child)) {
             continue;
@@ -6543,16 +6727,16 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
           }
         }
       } catch (err) {
-        _didIteratorError73 = true;
-        _iteratorError73 = err;
+        _didIteratorError75 = true;
+        _iteratorError75 = err;
       } finally {
         try {
-          if (!_iteratorNormalCompletion73 && _iterator73["return"] != null) {
-            _iterator73["return"]();
+          if (!_iteratorNormalCompletion75 && _iterator75["return"] != null) {
+            _iterator75["return"]();
           }
         } finally {
-          if (_didIteratorError73) {
-            throw _iteratorError73;
+          if (_didIteratorError75) {
+            throw _iteratorError75;
           }
         }
       }
@@ -6622,7 +6806,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       var results = [];
 
       while (node = node.nextSibling) {
-        if (this.isElement(node)) {
+        if (Core.isElement(node)) {
           break;
         }
       }
@@ -6652,7 +6836,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       var results = [];
 
       while (node = node.nextSibling) {
-        if (!this.isElement(node)) {
+        if (!Core.isElement(node)) {
           continue;
         }
 
@@ -6684,7 +6868,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       var results = [];
 
       while (node = node.previousSibling) {
-        if (this.isElement(node)) {
+        if (Core.isElement(node)) {
           break;
         }
       }
@@ -6714,7 +6898,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       var results = [];
 
       while (node = node.previousSibling) {
-        if (!this.isElement(node)) {
+        if (!Core.isElement(node)) {
           continue;
         }
 
@@ -6753,13 +6937,13 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
       var siblings = elementsOnly ? node.parentNode.children : node.parentNode.childNodes;
       var sibling;
-      var _iteratorNormalCompletion74 = true;
-      var _didIteratorError74 = false;
-      var _iteratorError74 = undefined;
+      var _iteratorNormalCompletion76 = true;
+      var _didIteratorError76 = false;
+      var _iteratorError76 = undefined;
 
       try {
-        for (var _iterator74 = siblings[Symbol.iterator](), _step74; !(_iteratorNormalCompletion74 = (_step74 = _iterator74.next()).done); _iteratorNormalCompletion74 = true) {
-          sibling = _step74.value;
+        for (var _iterator76 = siblings[Symbol.iterator](), _step76; !(_iteratorNormalCompletion76 = (_step76 = _iterator76.next()).done); _iteratorNormalCompletion76 = true) {
+          sibling = _step76.value;
 
           if (DOM._isSame(node, sibling)) {
             continue;
@@ -6772,16 +6956,16 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
           results.push(sibling);
         }
       } catch (err) {
-        _didIteratorError74 = true;
-        _iteratorError74 = err;
+        _didIteratorError76 = true;
+        _iteratorError76 = err;
       } finally {
         try {
-          if (!_iteratorNormalCompletion74 && _iterator74["return"] != null) {
-            _iterator74["return"]();
+          if (!_iteratorNormalCompletion76 && _iterator76["return"] != null) {
+            _iterator76["return"]();
           }
         } finally {
-          if (_didIteratorError74) {
-            throw _iteratorError74;
+          if (_didIteratorError76) {
+            throw _iteratorError76;
           }
         }
       }
@@ -6889,193 +7073,35 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
   Object.assign(DOM, {
     /**
-     * Return a single dimensional array of classes (from a multi-dimensional array or space-separated strings).
-     * @param {array} classList The classes to parse.
-     * @returns {string[]} The parsed classes.
+     * Compare the position of two nodes in the DOM.
+     * @param {Node} node The input node.
+     * @param {Node} other The other node.
+     * @returns {number} -1 if node is before other, 1 if other is before node, otherwise 0.
      */
-    _parseClasses: function _parseClasses(classList) {
-      return classList.flat().flatMap(function (val) {
-        return val.split(' ');
-      });
-    },
-
-    /**
-     * Return a data object from a key and value, or a data object.
-     * @param {string|object} key The data key, or an object containing data.
-     * @param {*} [value] The data value.
-     * @returns {object} The data object.
-     */
-    _parseData: function _parseData(key, value) {
-      return Core.isObject(key) ? key : _defineProperty({}, key, value);
-    },
-
-    /**
-     * Return a "real" event from a namespaced event.
-     * @param {string} event The namespaced event.
-     * @returns {string} The real event.
-     */
-    _parseEvent: function _parseEvent(event) {
-      return event.split('.').shift();
-    },
-
-    /**
-     * Return an array of events from a space-separated string.
-     * @param {string} events The events.
-     * @returns {array} The parsed events.
-     */
-    _parseEvents: function _parseEvents(events) {
-      return events.split(' ');
-    },
-
-    /**
-     * Return a FormData object from an array or object.
-     * @param {array|object} data The input data.
-     * @returns {FormData} The FormData object.
-     */
-    _parseFormData: function _parseFormData(data) {
-      var formData = new FormData();
-
-      if (Array.isArray(data)) {
-        var obj = {};
-        var _iteratorNormalCompletion75 = true;
-        var _didIteratorError75 = false;
-        var _iteratorError75 = undefined;
-
-        try {
-          for (var _iterator75 = data[Symbol.iterator](), _step75; !(_iteratorNormalCompletion75 = (_step75 = _iterator75.next()).done); _iteratorNormalCompletion75 = true) {
-            var value = _step75.value;
-            obj[value.name] = value.value;
-          }
-        } catch (err) {
-          _didIteratorError75 = true;
-          _iteratorError75 = err;
-        } finally {
-          try {
-            if (!_iteratorNormalCompletion75 && _iterator75["return"] != null) {
-              _iterator75["return"]();
-            }
-          } finally {
-            if (_didIteratorError75) {
-              throw _iteratorError75;
-            }
-          }
-        }
-
-        data = obj;
+    _compareNodes: function _compareNodes(node, other) {
+      if (this._isSame(node, other)) {
+        return 0;
       }
 
-      this._parseFormValues(data, formData);
+      var pos = node.compareDocumentPosition(other);
 
-      return formData;
+      if (pos & Node.DOCUMENT_POSITION_FOLLOWING || pos & Node.DOCUMENT_POSITION_CONTAINED_BY) {
+        return -1;
+      }
+
+      if (pos & Node.DOCUMENT_POSITION_PRECEDING || pos & Node.DOCUMENT_POSITION_CONTAINS) {
+        return 1;
+      }
+
+      return 0;
     },
 
     /**
-     * Recursively append an object to a FormData object.
-     * @param {object} data The input object.
-     * @param {FormData} formData The FormData object to append to.
-     * @param {string} [prevKey] The previous key value.
+     * Normalize a single node (remove empty text nodes, and join neighbouring text nodes).
+     * @param {HTMLElement} node The input node.
      */
-    _parseFormValues: function _parseFormValues(data, formData, prevKey) {
-      var key;
-
-      for (key in data) {
-        var value = data[key];
-
-        if (prevKey) {
-          key = "".concat(prevKey, "[").concat(key, "]");
-        }
-
-        if (Core.isPlainObject(value)) {
-          this._parseFormValues(value, formData, key);
-        } else if (!Array.isArray(value)) {
-          formData.set(key, value);
-        } else {
-          var _iteratorNormalCompletion76 = true;
-          var _didIteratorError76 = false;
-          var _iteratorError76 = undefined;
-
-          try {
-            for (var _iterator76 = value[Symbol.iterator](), _step76; !(_iteratorNormalCompletion76 = (_step76 = _iterator76.next()).done); _iteratorNormalCompletion76 = true) {
-              var val = _step76.value;
-              formData.append(key, val);
-            }
-          } catch (err) {
-            _didIteratorError76 = true;
-            _iteratorError76 = err;
-          } finally {
-            try {
-              if (!_iteratorNormalCompletion76 && _iterator76["return"] != null) {
-                _iterator76["return"]();
-              }
-            } finally {
-              if (_didIteratorError76) {
-                throw _iteratorError76;
-              }
-            }
-          }
-        }
-      }
-    },
-
-    /**
-     * Return a URI-encoded attribute string from an array or object.
-     * @param {array|object} data The input data.
-     * @returns {string} The URI-encoded attribute string.
-     */
-    _parseParams: function _parseParams(data) {
-      var _this30 = this;
-
-      var values = [];
-
-      if (Array.isArray(data)) {
-        values = data.map(function (value) {
-          return _this30._parseParam(value.name, value.value);
-        });
-      } else if (Core.isObject(data)) {
-        values = Object.keys(data).map(function (key) {
-          return _this30._parseParam(key, data[key]);
-        });
-      }
-
-      return values.flatMap(encodeURI).join('&');
-    },
-
-    /**
-     * Return a string attribute, or a flat array of attributes from a key and value.
-     * @param {string} key The input key.
-     * @param {array|object|string} value The input value.
-     * @returns {string|array} The parsed attributes.
-     */
-    _parseParam: function _parseParam(key, value) {
-      var _this31 = this;
-
-      if (Array.isArray(value)) {
-        return value.map(function (val) {
-          return _this31._parseParam(key, val);
-        }).flat();
-      }
-
-      if (Core.isObject(value)) {
-        return Object.keys(value).map(function (subKey) {
-          return _this31._parseParam(key + '[' + subKey + ']', value[subKey]);
-        }).flat();
-      }
-
-      return key + '=' + value;
-    },
-
-    /**
-     * Return a prefixed selector string.
-     * @param {string} selectors The input selectors.
-     * @param {string} prefix The input prefix.
-     * @returns {string} The prefixed selector.
-     */
-    _prefixSelectors: function _prefixSelectors(selectors, prefix) {
-      return selectors.split(this.splitRegex).filter(function (select) {
-        return !!select;
-      }).map(function (select) {
-        return "".concat(prefix, " ").concat(select);
-      }).join(', ');
+    _normalize: function _normalize(node) {
+      node.normalize();
     }
   });
   /**

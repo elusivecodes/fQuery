@@ -1,5 +1,5 @@
 /**
- * DOM (Static) Utility
+ * DOM (Static) Helpers
  */
 
 Object.assign(DOM, {

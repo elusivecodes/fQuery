@@ -34,7 +34,7 @@ Object.assign(DOM.prototype, {
      * @returns {HTMLElement} The new element.
      */
     create(tagName, options) {
-        const node = this.context.createElement(tagName);
+        const node = DOM._create(this.context, tagName);
 
         if (!options) {
             return node;
@@ -88,7 +88,7 @@ Object.assign(DOM.prototype, {
      * @returns {Node} The new comment node.
      */
     createComment(comment) {
-        return this.context.createComment(comment);
+        return DOM._createComment(this.context, comment);
     },
 
     /**
@@ -96,7 +96,7 @@ Object.assign(DOM.prototype, {
      * @returns {Range} The new range.
      */
     createRange() {
-        return this.context.createRange();
+        return DOM._createRange();
     },
 
     /**
@@ -105,7 +105,7 @@ Object.assign(DOM.prototype, {
      * @returns {Node} The new text node.
      */
     createText(text) {
-        return this.context.createTextNode(text);
+        return DOM._createText(this.context, text);
     },
 
     /**

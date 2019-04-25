@@ -1,3 +1,7 @@
+/**
+ * FrostDOM v1.0
+ * https://github.com/elusivecodes/FrostDOM
+ */
 (function(global, factory) {
 
     if (typeof module === 'object' && typeof module.exports === 'object') {
@@ -1292,7 +1296,7 @@
          * @param {string|Node|NodeList|HTMLCollection|Window|Node[]} others The other node(s), or a query selector string.
          */
         cloneData(nodes, others) {
-            for (const node of this._nodeFilter(nodes, node => DOM.isNode(node) || DOM.isDocument(node) || Core.isWindow(node))) {
+            for (const node of this._nodeFilter(nodes, node => Core.isNode(node) || Core.isDocument(node) || Core.isWindow(node))) {
                 this._cloneData(node, others);
             }
         },
@@ -1304,7 +1308,7 @@
          * @returns {*} The data value.
          */
         getData(nodes, key) {
-            const node = this._nodeFind(nodes, node => DOM.isNode(node) || DOM.isDocument(node) || Core.isWindow(node));
+            const node = this._nodeFind(nodes, node => Core.isNode(node) || Core.isDocument(node) || Core.isWindow(node));
 
             if (!node) {
                 return;
@@ -1319,7 +1323,7 @@
          * @param {string} [key] The data key.
          */
         removeData(nodes, key) {
-            for (const node of this._nodeFilter(nodes, node => DOM.isNode(node) || DOM.isDocument(node) || Core.isWindow(node))) {
+            for (const node of this._nodeFilter(nodes, node => Core.isNode(node) || Core.isDocument(node) || Core.isWindow(node))) {
                 this._removeData(node, key);
             }
         },
@@ -1333,7 +1337,7 @@
         setData(nodes, key, value) {
             const data = DOM._parseData(key, value);
 
-            for (const node of this._nodeFilter(nodes, node => DOM.isNode(node) || DOM.isDocument(node) || Core.isWindow(node))) {
+            for (const node of this._nodeFilter(nodes, node => Core.isNode(node) || Core.isDocument(node) || Core.isWindow(node))) {
                 this._setData(node, data);
             }
         },
@@ -1728,7 +1732,7 @@
          * @returns {number} The scroll X position.
          */
         getScrollX(nodes) {
-            const node = this._nodeFind(nodes, node => DOM.isElement(node) || DOM.isDocument(node) || Core.isWindow(node));
+            const node = this._nodeFind(nodes, node => Core.isElement(node) || Core.isDocument(node) || Core.isWindow(node));
 
             if (!node) {
                 return;
@@ -1743,7 +1747,7 @@
          * @returns {number} The scroll Y position.
          */
         getScrollY(nodes) {
-            const node = this._nodeFind(nodes, node => DOM.isElement(node) || DOM.isDocument(node) || Core.isWindow(node));
+            const node = this._nodeFind(nodes, node => Core.isElement(node) || Core.isDocument(node) || Core.isWindow(node));
 
             if (!node) {
                 return;
@@ -1759,7 +1763,7 @@
          * @param {number} y The scroll Y position.
          */
         setScroll(nodes, x, y) {
-            for (const node of this._nodeFilter(nodes, node => DOM.isElement(node) || DOM.isDocument(node) || Core.isWindow(node))) {
+            for (const node of this._nodeFilter(nodes, node => Core.isElement(node) || Core.isDocument(node) || Core.isWindow(node))) {
                 DOM._setScroll(node, x, y);
             }
         },
@@ -1770,7 +1774,7 @@
          * @param {number} x The scroll X position.
          */
         setScrollX(nodes, x) {
-            for (const node of this._nodeFilter(nodes, node => DOM.isElement(node) || DOM.isDocument(node) || Core.isWindow(node))) {
+            for (const node of this._nodeFilter(nodes, node => Core.isElement(node) || Core.isDocument(node) || Core.isWindow(node))) {
                 DOM._setScrollX(node, x);
             }
         },
@@ -1781,7 +1785,7 @@
          * @param {number} y The scroll Y position.
          */
         setScrollY(nodes, y) {
-            for (const node of this._nodeFilter(nodes, node => DOM.isElement(node) || DOM.isDocument(node) || Core.isWindow(node))) {
+            for (const node of this._nodeFilter(nodes, node => Core.isElement(node) || Core.isDocument(node) || Core.isWindow(node))) {
                 DOM._setScrollY(node, y);
             }
         }
@@ -1803,7 +1807,7 @@
          * @returns {number} The height.
          */
         height(nodes, padding = true, border, margin) {
-            const node = this._nodeFind(nodes, node => DOM.isElement(node) || DOM.isDocument(node) || Core.isWindow(node));
+            const node = this._nodeFind(nodes, node => Core.isElement(node) || Core.isDocument(node) || Core.isWindow(node));
 
             if (!node) {
                 return;
@@ -1821,7 +1825,7 @@
          * @returns {number} The width.
          */
         width(nodes, padding = true, border, margin) {
-            const node = this._nodeFind(nodes, node => DOM.isElement(node) || DOM.isDocument(node) || Core.isWindow(node));
+            const node = this._nodeFind(nodes, node => Core.isElement(node) || Core.isDocument(node) || Core.isWindow(node));
 
             if (!node) {
                 return;
@@ -1845,7 +1849,7 @@
                     node.innerHeight;
             }
 
-            if (DOM.isDocument(node)) {
+            if (Core.isDocument(node)) {
                 node = node.documentElement;
             }
 
@@ -1889,7 +1893,7 @@
                     node.innerWidth;
             }
 
-            if (DOM.isDocument(node)) {
+            if (Core.isDocument(node)) {
                 node = node.documentElement;
             }
 
@@ -2313,7 +2317,7 @@
          * @param {object} [data] Additional data to attach to the event.
          */
         triggerEvent(nodes, events, data) {
-            for (const node of this._nodeFilter(nodes, node => DOM.isElement(node) || DOM.isDocument(node) || Core.isWindow(node))) {
+            for (const node of this._nodeFilter(nodes, node => Core.isElement(node) || Core.isDocument(node) || Core.isWindow(node))) {
                 DOM._triggerEvent(node, events, data);
             }
         }
@@ -2338,7 +2342,7 @@
          * @param {DOM~eventCallback} callback The callback to execute.
          */
         addEvent(nodes, events, callback) {
-            for (const node of this._nodeFilter(nodes, node => DOM.isElement(node) || DOM.isDocument(node) || Core.isWindow(node))) {
+            for (const node of this._nodeFilter(nodes, node => Core.isElement(node) || Core.isDocument(node) || Core.isWindow(node))) {
                 this._addEvent(node, events, callback);
             }
         },
@@ -2351,7 +2355,7 @@
          * @param {DOM~eventCallback} callback The callback to execute.
          */
         addEventDelegate(nodes, events, delegate, callback) {
-            for (const node of this._nodeFilter(nodes, node => DOM.isElement(node) || DOM.isDocument(node) || Core.isWindow(node))) {
+            for (const node of this._nodeFilter(nodes, node => Core.isElement(node) || Core.isDocument(node) || Core.isWindow(node))) {
                 this._addEvent(node, events, callback, delegate);
             }
         },
@@ -2364,7 +2368,7 @@
          * @param {DOM~eventCallback} callback The callback to execute.
          */
         addEventDelegateOnce(nodes, events, delegate, callback) {
-            for (const node of this._nodeFilter(nodes, node => DOM.isElement(node) || DOM.isDocument(node) || Core.isWindow(node))) {
+            for (const node of this._nodeFilter(nodes, node => Core.isElement(node) || Core.isDocument(node) || Core.isWindow(node))) {
                 this._addEvent(node, events, callback, delegate, true);
             }
         },
@@ -2376,7 +2380,7 @@
          * @param {DOM~eventCallback} callback The callback to execute.
          */
         addEventOnce(nodes, events, callback) {
-            for (const node of this._nodeFilter(nodes, node => DOM.isElement(node) || DOM.isDocument(node) || Core.isWindow(node))) {
+            for (const node of this._nodeFilter(nodes, node => Core.isElement(node) || Core.isDocument(node) || Core.isWindow(node))) {
                 this._addEvent(node, events, callback, null, true);
             }
         },
@@ -2387,7 +2391,7 @@
          * @param {string|HTMLElement|HTMLCollection|Document|Window|HTMLElement[]} others The other node(s), or a query selector string.
          */
         cloneEvents(nodes, others) {
-            for (const node of this._nodeFilter(nodes, node => DOM.isElement(node) || DOM.isDocument(node) || Core.isWindow(node))) {
+            for (const node of this._nodeFilter(nodes, node => Core.isElement(node) || Core.isDocument(node) || Core.isWindow(node))) {
                 this._cloneEvents(node, others);
             }
         },
@@ -2399,7 +2403,7 @@
          * @param {DOM~eventCallback} [callback] The callback to remove.
          */
         removeEvent(nodes, events, callback) {
-            for (const node of this._nodeFilter(nodes, node => DOM.isElement(node) || DOM.isDocument(node) || Core.isWindow(node))) {
+            for (const node of this._nodeFilter(nodes, node => Core.isElement(node) || Core.isDocument(node) || Core.isWindow(node))) {
                 this._removeEvent(node, events, callback);
             }
         },
@@ -2412,7 +2416,7 @@
          * @param {DOM~eventCallback} [callback] The callback to remove.
          */
         removeEventDelegate(nodes, events, delegate, callback) {
-            for (const node of this._nodeFilter(nodes, node => DOM.isElement(node) || DOM.isDocument(node) || Core.isWindow(node))) {
+            for (const node of this._nodeFilter(nodes, node => Core.isElement(node) || Core.isDocument(node) || Core.isWindow(node))) {
                 this._removeEvent(node, events, callback, delegate);
             }
         },
@@ -2578,7 +2582,7 @@
          * @returns {Node[]} The cloned nodes.
          */
         clone(nodes, deep = true, cloneEvents = false, cloneData = false) {
-            return this._nodeFilter(nodes, DOM.isNode)
+            return this._nodeFilter(nodes, Core.isNode)
                 .map(node =>
                     this._clone(node, deep, cloneEvents, cloneData)
                 );
@@ -2599,7 +2603,7 @@
          * @returns {HTMLElement} The new element.
          */
         create(tagName, options) {
-            const node = this.context.createElement(tagName);
+            const node = DOM._create(this.context, tagName);
 
             if (!options) {
                 return node;
@@ -2653,7 +2657,7 @@
          * @returns {Node} The new comment node.
          */
         createComment(comment) {
-            return this.context.createComment(comment);
+            return DOM._createComment(this.context, comment);
         },
 
         /**
@@ -2661,7 +2665,7 @@
          * @returns {Range} The new range.
          */
         createRange() {
-            return this.context.createRange();
+            return DOM._createRange();
         },
 
         /**
@@ -2670,7 +2674,7 @@
          * @returns {Node} The new text node.
          */
         createText(text) {
-            return this.context.createTextNode(text);
+            return DOM._createText(this.context, text);
         },
 
         /**
@@ -2754,7 +2758,7 @@
          * @param {string|Node|NodeList|HTMLCollection|Node[]} nodes The input node(s), or a query selector string.
          */
         detach(nodes) {
-            for (const node of this._nodeFilter(nodes, DOM.isNode)) {
+            for (const node of this._nodeFilter(nodes, Core.isNode)) {
                 DOM._detach(node);
             }
         },
@@ -2764,7 +2768,7 @@
          * @param {string|HTMLElement|HTMLCollection|Document|HTMLElement[]} nodes The input node(s), or a query selector string.
          */
         empty(nodes) {
-            for (const node of this._nodeFilter(nodes, node => DOM.isElement(node) || DOM.isDocument(node))) {
+            for (const node of this._nodeFilter(nodes, node => Core.isElement(node) || Core.isDocument(node))) {
                 this._empty(node);
             }
         },
@@ -2774,7 +2778,7 @@
          * @param {string|Node|NodeList|HTMLCollection|Node[]} nodes The input node(s), or a query selector string.
          */
         remove(nodes) {
-            for (const node of this._nodeFilter(nodes, DOM.isNode)) {
+            for (const node of this._nodeFilter(nodes, Core.isNode)) {
                 this._remove(node);
             }
         },
@@ -2794,9 +2798,9 @@
          * @param {string|Node|NodeList|HTMLCollection|Node[]} others The other node(s), or a query selector or HTML string.
          */
         replaceWith(nodes, others) {
-            others = this._parseQuery(others, DOM.isNode);
+            others = this._parseQuery(others, Core.isNode);
 
-            for (const node of this._nodeFilter(nodes, DOM.isNode)) {
+            for (const node of this._nodeFilter(nodes, Core.isNode)) {
                 this._replaceWith(node, others);
             }
         },
@@ -2816,7 +2820,7 @@
          * @param {Node} node The input node.
          */
         _remove(node) {
-            if (DOM.isElement(node)) {
+            if (Core.isElement(node)) {
                 this._empty(node);
             }
 
@@ -2861,7 +2865,7 @@
          * @param {string|Node|NodeList|HTMLCollection|Node[]} others The other node(s), or a query selector or HTML string.
          */
         after(nodes, others) {
-            const node = this._nodeFind(nodes, DOM.isNode);
+            const node = this._nodeFind(nodes, Core.isNode);
 
             if (!node) {
                 return;
@@ -2869,7 +2873,7 @@
 
             DOM._after(
                 node,
-                this._parseQuery(others, DOM.isNode)
+                this._parseQuery(others, Core.isNode)
             );
         },
 
@@ -2887,7 +2891,7 @@
 
             DOM._append(
                 node,
-                this._parseQuery(others, DOM.isNode)
+                this._parseQuery(others, Core.isNode)
             );
         },
 
@@ -2906,7 +2910,7 @@
          * @param {string|Node|NodeList|HTMLCollection|Node[]} others The other node(s), or a query selector or HTML string.
          */
         before(nodes, others) {
-            const node = this._nodeFind(nodes, DOM.isNode);
+            const node = this._nodeFind(nodes, Core.isNode);
 
             if (!node) {
                 return;
@@ -2914,7 +2918,7 @@
 
             DOM._before(
                 node,
-                this._parseQuery(others, DOM.isNode)
+                this._parseQuery(others, Core.isNode)
             );
         },
 
@@ -2950,7 +2954,7 @@
 
             DOM._prepend(
                 node,
-                this._parseQuery(others, DOM.isNode)
+                this._parseQuery(others, Core.isNode)
             );
         },
 
@@ -2977,7 +2981,7 @@
          * @param {string|HTMLElement|HTMLCollection|HTMLElement[]|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
          */
         unwrap(nodes, filter) {
-            for (const node of this._nodeFilter(nodes, DOM.isNode)) {
+            for (const node of this._nodeFilter(nodes, Core.isNode)) {
                 this._unwrap(node, filter);
             }
         },
@@ -2990,7 +2994,7 @@
         wrap(nodes, others) {
             others = this._parseQuery(others);
 
-            for (const node of this._nodeFilter(nodes, DOM.isNode)) {
+            for (const node of this._nodeFilter(nodes, Core.isNode)) {
                 this._wrap(node, others);
             }
         },
@@ -3027,7 +3031,7 @@
         wrapInner(nodes, others) {
             others = this._parseQuery(others);
 
-            for (const node of this._nodeFilter(nodes, DOM.isNode)) {
+            for (const node of this._nodeFilter(nodes, Core.isNode)) {
                 this._wrapInner(node, others);
             }
         },
@@ -3207,7 +3211,7 @@
         has(nodes, filter) {
             filter = this._parseFilterContains(filter);
 
-            return this._nodeFilter(nodes, node => DOM.isElement(node) || DOM.isDocument(node))
+            return this._nodeFilter(nodes, node => Core.isElement(node) || Core.isDocument(node))
                 .filter((node, index) => !filter || filter(node, index));
         },
 
@@ -3220,7 +3224,7 @@
         hasOne(nodes, filter) {
             filter = this._parseFilterContains(filter);
 
-            return this._nodeFilter(nodes, node => DOM.isElement(node) || DOM.isDocument(node))
+            return this._nodeFilter(nodes, node => Core.isElement(node) || Core.isDocument(node))
                 .find((node, index) => !filter || filter(node, index)) || null;
         },
 
@@ -3230,7 +3234,7 @@
          * @returns {HTMLElement[]} The filtered nodes.
          */
         hidden(nodes) {
-            return this._nodeFilter(nodes, node => DOM.isElement(node) || DOM.isDocument(node) || Core.isWindow(node))
+            return this._nodeFilter(nodes, node => Core.isElement(node) || Core.isDocument(node) || Core.isWindow(node))
                 .filter(node => this.isHidden(node));
         },
 
@@ -3240,7 +3244,7 @@
          * @returns {HTMLElement} The filtered node.
          */
         hiddenOne(nodes) {
-            return this._nodeFilter(nodes, node => DOM.isElement(node) || DOM.isDocument(node) || Core.isWindow(node))
+            return this._nodeFilter(nodes, node => Core.isElement(node) || Core.isDocument(node) || Core.isWindow(node))
                 .find(node => this.isHidden(node)) || null;
         },
 
@@ -3250,7 +3254,7 @@
          * @returns {HTMLElement[]} The filtered nodes.
          */
         visible(nodes) {
-            return this._nodeFilter(nodes, node => DOM.isElement(node) || DOM.isDocument(node) || Core.isWindow(node))
+            return this._nodeFilter(nodes, node => Core.isElement(node) || Core.isDocument(node) || Core.isWindow(node))
                 .filter(node => this.isVisible(node));
         },
 
@@ -3260,7 +3264,7 @@
          * @returns {HTMLElement} The filtered node.
          */
         visibleOne(nodes) {
-            return this._nodeFilter(nodes, node => DOM.isElement(node) || DOM.isDocument(node) || Core.isWindow(node))
+            return this._nodeFilter(nodes, node => Core.isElement(node) || Core.isDocument(node) || Core.isWindow(node))
                 .find(node => this.isVisible(node)) || null;
         }
 
@@ -3310,11 +3314,11 @@
          */
         findByClass(className, nodes = this.context) {
             // single node case
-            if (DOM.isElement(nodes) || DOM.isDocument(nodes)) {
+            if (Core.isElement(nodes) || Core.isDocument(nodes)) {
                 return Core.merge([], DOM._findByClass(className, nodes));
             }
 
-            nodes = this._nodeFilter(nodes, node => DOM.isElement(node) || DOM.isDocument(node));
+            nodes = this._nodeFilter(nodes, node => Core.isElement(node) || Core.isDocument(node));
 
             const results = [];
 
@@ -3359,11 +3363,11 @@
          */
         findByTag(tagName, nodes = this.context) {
             // single node case
-            if (DOM.isElement(nodes) || DOM.isDocument(nodes)) {
+            if (Core.isElement(nodes) || Core.isDocument(nodes)) {
                 return Core.merge([], DOM._findByTag(tagName, nodes));
             }
 
-            nodes = this._nodeFilter(nodes, node => DOM.isElement(node) || DOM.isDocument(node));
+            nodes = this._nodeFilter(nodes, node => Core.isElement(node) || Core.isDocument(node));
 
             const results = [];
 
@@ -3417,11 +3421,11 @@
          */
         findOneByClass(className, nodes = this.context) {
             // single node case
-            if (DOM.isElement(nodes) || DOM.isDocument(nodes)) {
+            if (Core.isElement(nodes) || Core.isDocument(nodes)) {
                 return DOM._findByClass(className, nodes).item(0);
             }
 
-            nodes = this._nodeFilter(nodes, node => DOM.isElement(node) || DOM.isDocument(node));
+            nodes = this._nodeFilter(nodes, node => Core.isElement(node) || Core.isDocument(node));
 
             for (const node of nodes) {
                 const result = DOM._findByClass(className, node).item(0);
@@ -3462,11 +3466,11 @@
          */
         findOneByTag(tagName, nodes = this.context) {
             // single node case
-            if (DOM.isElement(nodes) || DOM.isDocument(nodes)) {
+            if (Core.isElement(nodes) || Core.isDocument(nodes)) {
                 return DOM._findByTag(tagName, nodes).item(0);
             }
 
-            nodes = this._nodeFilter(nodes, node => DOM.isElement(node) || DOM.isDocument(node));
+            nodes = this._nodeFilter(nodes, node => Core.isElement(node) || Core.isDocument(node));
 
             for (const node of nodes) {
                 const result = DOM._findByTag(tagName, node).item(0);
@@ -3496,11 +3500,11 @@
             const selectors = DOM._prefixSelectors(selector, `#${DOM.tempId} `);
 
             // single node case
-            if (DOM.isElement(nodes) || DOM.isDocument(nodes)) {
+            if (Core.isElement(nodes) || Core.isDocument(nodes)) {
                 return Core.merge([], DOM._findByCustom(selectors, nodes));
             }
 
-            nodes = this._nodeFilter(nodes, node => DOM.isElement(node) || DOM.isDocument(node));
+            nodes = this._nodeFilter(nodes, node => Core.isElement(node) || Core.isDocument(node));
 
             const results = [];
 
@@ -3524,11 +3528,11 @@
          */
         _findBySelector(selector, nodes = this.context) {
             // single node case
-            if (DOM.isElement(nodes) || DOM.isDocument(nodes)) {
+            if (Core.isElement(nodes) || (nodes)) {
                 return Core.merge([], DOM._findBySelector(selector, nodes));
             }
 
-            nodes = this._nodeFilter(nodes, node => DOM.isElement(node) || DOM.isDocument(node));
+            nodes = this._nodeFilter(nodes, node => Core.isElement(node) || Core.isDocument(node));
 
             const results = [];
 
@@ -3562,11 +3566,11 @@
             const selectors = DOM._prefixSelectors(selector, `#${DOM.tempId} `);
 
             // single node case
-            if (DOM.isElement(nodes) || DOM.isDocument(nodes)) {
+            if (Core.isElement(nodes) || Core.isDocument(nodes)) {
                 return DOM._findOneByCustom(selectors, nodes);
             }
 
-            nodes = this._nodeFilter(nodes, node => DOM.isElement(node) || DOM.isDocument(node));
+            nodes = this._nodeFilter(nodes, node => Core.isElement(node) || Core.isDocument(node));
 
             for (const node of nodes) {
                 const result = DOM._findOneByCustom(selectors, node);
@@ -3586,11 +3590,11 @@
          */
         _findOneBySelector(selector, nodes = this.context) {
             // single node case
-            if (DOM.isElement(nodes) || DOM.isDocument(nodes)) {
+            if (Core.isElement(nodes) || Core.isDocument(nodes)) {
                 return DOM._findOneBySelector(selector, nodes);
             }
 
-            nodes = this._nodeFilter(nodes, node => DOM.isElement(node) || DOM.isDocument(node));
+            nodes = this._nodeFilter(nodes, node => Core.isElement(node) || Core.isDocument(node));
 
             for (const node of nodes) {
                 const result = DOM._findOneBySelector(selector, node);
@@ -3635,7 +3639,7 @@
         children(nodes, filter, first = false, elementsOnly = true) {
             filter = this._parseFilter(filter);
 
-            if (DOM.isElement(nodes)) {
+            if (Core.isElement(nodes)) {
                 return DOM._children(nodes, filter, first, elementsOnly);
             }
 
@@ -3718,11 +3722,11 @@
         parent(nodes, filter) {
             filter = this._parseFilter(filter);
 
-            if (DOM.isNode(nodes)) {
+            if (Core.isNode(nodes)) {
                 return DOM._parent(nodes, filter);
             }
 
-            nodes = this._nodeFilter(nodes, DOM.isNode);
+            nodes = this._nodeFilter(nodes, Core.isNode);
 
             const results = [];
 
@@ -3750,11 +3754,11 @@
             filter = this._parseFilter(filter);
             limit = this._parseFilter(limit);
 
-            if (DOM.isNode(nodes)) {
+            if (Core.isNode(nodes)) {
                 return DOM._parent(nodes, filter, limit, first);
             }
 
-            nodes = this._nodeFilter(nodes, DOM.isNode);
+            nodes = this._nodeFilter(nodes, Core.isNode);
 
             const results = [];
 
@@ -3791,7 +3795,7 @@
         next(nodes, filter) {
             filter = this._parseFilter(filter);
 
-            if (DOM.isElement(nodes)) {
+            if (Core.isElement(nodes)) {
                 return DOM._next(nodes, filter);
             }
 
@@ -3823,7 +3827,7 @@
             filter = this._parseFilter(filter);
             limit = this._parseFilter(limit);
 
-            if (DOM.isElement(nodes)) {
+            if (Core.isElement(nodes)) {
                 return DOM._nextAll(nodes, filter, limit, first);
             }
 
@@ -3852,7 +3856,7 @@
         prev(nodes, filter) {
             filter = this._parseFilter(filter);
 
-            if (DOM.isElement(nodes)) {
+            if (Core.isElement(nodes)) {
                 return DOM._prev(nodes, filter);
             }
 
@@ -3884,7 +3888,7 @@
             filter = this._parseFilter(filter);
             limit = this._parseFilter(limit);
 
-            if (DOM.isElement(nodes)) {
+            if (Core.isElement(nodes)) {
                 return DOM._prevAll(nodes, filter, limit, first);
             }
 
@@ -3914,7 +3918,7 @@
         siblings(nodes, filter, elementsOnly = true) {
             filter = this._parseFilter(filter);
 
-            if (DOM.isElement(nodes)) {
+            if (Core.isElement(nodes)) {
                 return DOM._siblings(nodes, filter, elementsOnly);
             }
 
@@ -3945,10 +3949,10 @@
         /**
          * Return a filtered array of nodes.
          * @param {string|Node|NodeList|HTMLCollection|Document|Node[]} nodes The input node(s), or a query selector string.
-         * @param {DOM~filterCallback} [filter=DOM.isElement] The filter callback.
+         * @param {DOM~filterCallback} [filter=Core.isElement] The filter callback.
          * @returns {Node[]} The filtered array of nodes.
          */
-        _nodeFilter(nodes, filter = DOM.isElement) {
+        _nodeFilter(nodes, filter = Core.isElement) {
             if (Core.isString(nodes)) {
                 return this.find(nodes)
                     .filter(filter);
@@ -3965,10 +3969,10 @@
         /**
          * Return the first node matching a filter.
          * @param {string|Node|NodeList|HTMLCollection|Document|Node[]} nodes The input node(s), or a query selector string.
-         * @param {DOM~filterCallback} [filter=DOM.isElement] The filter callback.
+         * @param {DOM~filterCallback} [filter=Core.isElement] The filter callback.
          * @returns {Node} The matching node.
          */
-        _nodeFind(nodes, filter = DOM.isElement) {
+        _nodeFind(nodes, filter = Core.isElement) {
             if (Core.isString(nodes)) {
                 const node = this.findOne(nodes);
                 if (filter(node)) {
@@ -4003,11 +4007,11 @@
 
             if (Core.isString(filter)) {
                 return node =>
-                    DOM.isElement(node) &&
+                    Core.isElement(node) &&
                     DOM._is(node, filter);
             }
 
-            if (DOM.isNode(filter)) {
+            if (Core.isNode(filter)) {
                 return node => DOM._isSame(node, filter);
             }
 
@@ -4037,7 +4041,7 @@
                 return node => !!this.findOne(filter, node);
             }
 
-            if (DOM.isElement(filter)) {
+            if (Core.isElement(filter)) {
                 return node => DOM._has(node, filter);
             }
 
@@ -4052,10 +4056,10 @@
         /**
          * Return a filtered array of nodes from a query.
          * @param {string|Node|NodeList|HTMLCollection|Document|Node[]} nodes The input node(s), or a query selector or HTML string.
-         * @param {DOM~filterCallback} [filter=DOM.isElement] The filter callback.
+         * @param {DOM~filterCallback} [filter=Core.isElement] The filter callback.
          * @returns {Node[]} The filtered array of nodes.
          */
-        _parseQuery(query = '*', filter = DOM.isElement) {
+        _parseQuery(query = '*', filter = Core.isElement) {
             if (Core.isString(query) && query.trim().charAt(0) === '<') {
                 return this.parseHTML(query);
             }
@@ -4087,7 +4091,7 @@
             DOM._removeRanges(selection);
             DOM._collapseRange(range);
 
-            for (const node of this._parseQuery(nodes, DOM.isNode)) {
+            for (const node of this._parseQuery(nodes, Core.isNode)) {
                 DOM._insert(range, node);
             }
         },
@@ -4107,7 +4111,7 @@
 
             DOM._removeRanges(selection);
 
-            for (const node of this._parseQuery(nodes, DOM.isNode)) {
+            for (const node of this._parseQuery(nodes, Core.isNode)) {
                 DOM._insert(range, node);
             }
         },
@@ -4156,11 +4160,11 @@
                 return nodes;
             }
 
-            const start = DOM.isElement(range.startContainer) ?
+            const start = Core.isElement(range.startContainer) ?
                 range.startContainer :
                 DOM._parent(range.startContainer).shift();
 
-            const end = DOM.isElement(range.endContainer) ?
+            const end = Core.isElement(range.endContainer) ?
                 range.endContainer :
                 DOM._parent(range.endContainer).shift();
 
@@ -4175,7 +4179,7 @@
          * @param {string|Node|NodeList|HTMLCollection|Node[]} nodes The input node(s), or a query selector string.
          */
         select(nodes) {
-            const node = this._nodeFind(nodes, DOM.isNode);
+            const node = this._nodeFind(nodes, Core.isNode);
 
             if (node && 'select' in node) {
                 return node.select();
@@ -4242,7 +4246,7 @@
         contains(nodes, filter) {
             filter = this._parseFilterContains(filter);
 
-            return this._nodeFilter(nodes, node => DOM.isElement(node) || DOM.isDocument(node))
+            return this._nodeFilter(nodes, node => Core.isElement(node) || Core.isDocument(node))
                 .some(node =>
                     !filter ||
                     filter(node)
@@ -4300,7 +4304,7 @@
          * @returns {Boolean} TRUE if any of the nodes has custom data, otherwise FALSE.
          */
         hasData(nodes, key) {
-            return this._nodeFilter(nodes, node => DOM.isElement(node) || DOM.isDocument(node) || Core.isWindow(node))
+            return this._nodeFilter(nodes, node => Core.isElement(node) || Core.isDocument(node) || Core.isWindow(node))
                 .some(node =>
                     this.nodeData.has(node) &&
                     (
@@ -4360,7 +4364,7 @@
          * @returns {Boolean} TRUE if any of the nodes is connected to the DOM, otherwise FALSE.
          */
         isConnected(nodes) {
-            return this._nodeFilter(nodes, DOM.isNode)
+            return this._nodeFilter(nodes, Core.isNode)
                 .some(node => DOM._isConnected(node));
         },
 
@@ -4370,8 +4374,8 @@
          * @returns {Boolean} TRUE if any of the nodes is considered equal to any of the other nodes, otherwise FALSE.
          */
         isEqual(nodes, others) {
-            others = this._nodeFilter(others, DOM.isNode);
-            return this._nodeFilter(nodes, DOM.isNode)
+            others = this._nodeFilter(others, Core.isNode);
+            return this._nodeFilter(nodes, Core.isNode)
                 .some(node =>
                     others.find(other => DOM._isEqual(node, other))
                 );
@@ -4402,7 +4406,7 @@
          * @returns {Boolean} TRUE if any of the nodes is hidden, otherwise FALSE.
          */
         isHidden(nodes) {
-            return this._nodeFilter(nodes, node => DOM.isNode(node) || DOM.isDocument(node) || Core.isWindow(node))
+            return this._nodeFilter(nodes, node => Core.isNode(node) || Core.isDocument(node) || Core.isWindow(node))
                 .some(node =>
                     !DOM._isVisible(node)
                 );
@@ -4414,8 +4418,8 @@
          * @returns {Boolean} TRUE if any of the nodes is considered identical to any of the other nodes, otherwise FALSE.
          */
         isSame(nodes, others) {
-            others = this._nodeFilter(others, DOM.isNode);
-            return this._nodeFilter(nodes, DOM.isNode)
+            others = this._nodeFilter(others, Core.isNode);
+            return this._nodeFilter(nodes, Core.isNode)
                 .some(node =>
                     others.find(other => DOM._isSame(node, other))
                 );
@@ -4427,7 +4431,7 @@
          * @returns {Boolean} TRUE if any of the nodes is visible, otherwise FALSE.
          */
         isVisible(nodes) {
-            return this._nodeFilter(nodes, node => DOM.isNode(node) || DOM.isDocument(node) || Core.isWindow(node))
+            return this._nodeFilter(nodes, node => Core.isNode(node) || Core.isDocument(node) || Core.isWindow(node))
                 .some(node =>
                     DOM._isVisible(node)
                 );
@@ -4463,7 +4467,7 @@
          * @returns {*} The result of the callback.
          */
         forceShow(nodes, callback) {
-            const node = this._nodeFind(nodes, node => DOM.isNode(node) || DOM.isDocument(node) || Core.isWindow(node));
+            const node = this._nodeFind(nodes, node => Core.isNode(node) || Core.isDocument(node) || Core.isWindow(node));
 
             if (!node) {
                 return;
@@ -4552,7 +4556,7 @@
          * @param {string|Node|NodeList|HTMLCollection|Document|Node[]} nodes The input node(s), or a query selector string.
          */
         normalize(nodes) {
-            for (const node of this._nodeFilter(nodes, DOM.isNode)) {
+            for (const node of this._nodeFilter(nodes, Core.isNode)) {
                 DOM._normalize(node);
             }
         },
@@ -4618,7 +4622,7 @@
          * @returns {Node[]} The sorted array of nodes.
          */
         sort(nodes) {
-            return this._nodeFilter(nodes, DOM.isNode)
+            return this._nodeFilter(nodes, Core.isNode)
                 .sort(DOM._compareNodes);
         }
 
@@ -4738,7 +4742,7 @@
                 return node.scrollX;
             }
 
-            if (this.isDocument(node)) {
+            if (Core.isDocument(node)) {
                 return node.scrollingElement.scrollLeft;
             }
 
@@ -4755,7 +4759,7 @@
                 return node.scrollY;
             }
 
-            if (this.isDocument(node)) {
+            if (Core.isDocument(node)) {
                 return node.scrollingElement.scrollTop;
             }
 
@@ -4773,7 +4777,7 @@
                 return node.scroll(x, y);
             }
 
-            if (this.isDocument(node)) {
+            if (Core.isDocument(node)) {
                 node.scrollingElement.scrollLeft = x;
                 node.scrollingElement.scrollTop = y;
                 return;
@@ -4793,7 +4797,7 @@
                 return node.scroll(x, node.scrollY);
             }
 
-            if (this.isDocument(node)) {
+            if (Core.isDocument(node)) {
                 node.scrollingElement.scrollLeft = x;
                 return;
             }
@@ -4811,7 +4815,7 @@
                 return node.scroll(node.scrollX, y);
             }
 
-            if (this.isDocument(node)) {
+            if (Core.isDocument(node)) {
                 node.scrollingElement.scrollTop = y;
                 return;
             }
@@ -4955,6 +4959,227 @@
     });
 
     /**
+     * DOM (Static) Helpers
+     */
+
+    Object.assign(DOM, {
+
+        /**
+         * Return a single dimensional array of classes (from a multi-dimensional array or space-separated strings).
+         * @param {array} classList The classes to parse.
+         * @returns {string[]} The parsed classes.
+         */
+        _parseClasses(classList) {
+            return classList
+                .flat()
+                .flatMap(val => val.split(' '));
+        },
+
+        /**
+         * Return a data object from a key and value, or a data object.
+         * @param {string|object} key The data key, or an object containing data.
+         * @param {*} [value] The data value.
+         * @returns {object} The data object.
+         */
+        _parseData(key, value) {
+            return Core.isObject(key) ?
+                key :
+                { [key]: value };
+        },
+
+        /**
+         * Return a "real" event from a namespaced event.
+         * @param {string} event The namespaced event.
+         * @returns {string} The real event.
+         */
+        _parseEvent(event) {
+            return event.split('.')
+                .shift();
+        },
+
+        /**
+         * Return an array of events from a space-separated string.
+         * @param {string} events The events.
+         * @returns {array} The parsed events.
+         */
+        _parseEvents(events) {
+            return events.split(' ');
+        },
+
+        /**
+         * Return a FormData object from an array or object.
+         * @param {array|object} data The input data.
+         * @returns {FormData} The FormData object.
+         */
+        _parseFormData(data) {
+            const formData = new FormData;
+
+            if (Array.isArray(data)) {
+                const obj = {};
+                for (const value of data) {
+                    obj[value.name] = value.value;
+                }
+                data = obj;
+            }
+
+            this._parseFormValues(data, formData);
+
+            return formData;
+        },
+
+        /**
+         * Recursively append an object to a FormData object.
+         * @param {object} data The input object.
+         * @param {FormData} formData The FormData object to append to.
+         * @param {string} [prevKey] The previous key value.
+         */
+        _parseFormValues(data, formData, prevKey) {
+            let key;
+            for (key in data) {
+                const value = data[key];
+
+                if (prevKey) {
+                    key = `${prevKey}[${key}]`;
+                }
+
+                if (Core.isPlainObject(value)) {
+                    this._parseFormValues(value, formData, key);
+                } else if (!Array.isArray(value)) {
+                    formData.set(key, value);
+                } else {
+                    for (const val of value) {
+                        formData.append(key, val);
+                    }
+                }
+            }
+        },
+
+        /**
+         * Return a URI-encoded attribute string from an array or object.
+         * @param {array|object} data The input data.
+         * @returns {string} The URI-encoded attribute string.
+         */
+        _parseParams(data) {
+            let values = [];
+
+            if (Array.isArray(data)) {
+                values = data.map(value =>
+                    this._parseParam(
+                        value.name,
+                        value.value
+                    )
+                );
+            } else if (Core.isObject(data)) {
+                values = Object.keys(data)
+                    .map(key =>
+                        this._parseParam(key, data[key])
+                    );
+            }
+
+            return values
+                .flatMap(encodeURI)
+                .join('&');
+        },
+
+        /**
+         * Return a string attribute, or a flat array of attributes from a key and value.
+         * @param {string} key The input key.
+         * @param {array|object|string} value The input value.
+         * @returns {string|array} The parsed attributes.
+         */
+        _parseParam(key, value) {
+            if (Array.isArray(value)) {
+                return value.map(val =>
+                    this._parseParam(key, val)
+                ).flat();
+            }
+
+            if (Core.isObject(value)) {
+                return Object.keys(value)
+                    .map(subKey =>
+                        this._parseParam(
+                            key + '[' + subKey + ']',
+                            value[subKey]
+                        )
+                    ).flat();
+            }
+
+            return key + '=' + value;
+        },
+
+        /**
+         * Return a prefixed selector string.
+         * @param {string} selectors The input selectors.
+         * @param {string} prefix The input prefix.
+         * @returns {string} The prefixed selector.
+         */
+        _prefixSelectors(selectors, prefix) {
+            return selectors.split(this.splitRegex)
+                .filter(select => !!select)
+                .map(select => `${prefix} ${select}`)
+                .join(', ');
+        }
+
+    });
+
+    /**
+     * DOM (Static) Create
+     */
+
+    Object.assign(DOM, {
+
+        /**
+         * Create a clone of a node.
+         * @param {Node} node The input node.
+         * @param {Boolean} deep Whether to deep clone the node.
+         * @returns {Node} The cloned node.
+         */
+        _clone(node, deep) {
+            return node.cloneNode(deep);
+        },
+
+        /**
+         * Create a new DOM element.
+         * @param {Document} context The document context.
+         * @param {string} tagName The type of HTML element to create.
+         * @returns {HTMLElement} The new element.
+         */
+        _create(context, tagName) {
+            return context.createElement(tagName);
+        },
+
+        /**
+         * Create a new comment node.
+         * @param {Document} context The document context.
+         * @param {string} comment The comment contents.
+         * @returns {Node} The new comment node.
+         */
+        _createComment(context, comment) {
+            return context.createCommentNode(comment);
+        },
+
+        /**
+         * Create a new range object.
+         * @param {Document} context The document context.
+         * @returns {Range} The new range.
+         */
+        _createRange(context) {
+            return context.createRange();
+        },
+
+        /**
+         * Create a new text node.
+         * @param {Document} context The document context.
+         * @param {string} text The text contents.
+         * @returns {Node} The new text node.
+         */
+        _createText(context, text) {
+            return context.createTextNode(text);
+        }
+
+    });
+
+    /**
      * DOM (Static) Manipulation
      */
 
@@ -5041,83 +5266,38 @@
     });
 
     /**
-     * DOM (Static) Nodes
+     * DOM (Static) Parsing
      */
 
     Object.assign(DOM, {
 
         /**
-         * Returns true if the value is a Document.
-         * @param {*} value The value to test.
-         * @returns {Boolean} TRUE if the value is a Document, otherwise FALSE.
+         * Create a Document object from a HTML string.
+         * @param {string} html The HTML input string.
+         * @returns {Document} A new Document object.
          */
-        isDocument(node) {
-            return Core.isObject(node) &&
-                'nodeType' in node &&
-                node.nodeType === Node.DOCUMENT_NODE;
+        parseHTML(html) {
+            return new DOMParser()
+                .parseFromString(html, 'text/html');
         },
 
         /**
-         * Returns true if the value is a HTMLElement.
-         * @param {*} value The value to test.
-         * @returns {Boolean} TRUE if the value is a HTMLElement, otherwise FALSE.
+         * Create a Document object from an XML string.
+         * @param {string} xml The XML input string.
+         * @returns {Document} A new Document object.
          */
-        isElement(node) {
-            return Core.isObject(node) &&
-                'nodeType' in node &&
-                node.nodeType === Node.ELEMENT_NODE;
-        },
+        parseXML(xml) {
+            return new DOMParser()
+                .parseFromString(xml, 'application/xml');
+        }
 
-        /**
-         * Returns true if the value is a Node.
-         * @param {*} value The value to test.
-         * @returns {Boolean} TRUE if the value is a Node, otherwise FALSE.
-         */
-        isNode(node) {
-            return Core.isObject(node) &&
-                'nodeType' in node &&
-                (
-                    node.nodeType === Node.ELEMENT_NODE ||
-                    node.nodeType === Node.TEXT_NODE ||
-                    node.nodeType === Node.COMMENT_NODE
-                );
-        },
+    });
 
-        /**
-         * Create a clone of a node.
-         * @param {Node} node The input node.
-         * @param {Boolean} deep Whether to deep clone the node.
-         * @returns {Node} The cloned node.
-         */
-        _clone(node, deep) {
-            return node.cloneNode(deep);
-        },
+    /**
+     * DOM (Static) Filter
+     */
 
-        /**
-         * Compare the position of two nodes in the DOM.
-         * @param {Node} node The input node.
-         * @param {Node} other The other node.
-         * @returns {number} -1 if node is before other, 1 if other is before node, otherwise 0.
-         */
-        _compareNodes(node, other) {
-            if (this._isSame(node, other)) {
-                return 0;
-            }
-
-            const pos = node.compareDocumentPosition(other);
-
-            if (pos & Node.DOCUMENT_POSITION_FOLLOWING ||
-                pos & Node.DOCUMENT_POSITION_CONTAINED_BY) {
-                return -1;
-            }
-
-            if (pos & Node.DOCUMENT_POSITION_PRECEDING ||
-                pos & Node.DOCUMENT_POSITION_CONTAINS) {
-                return 1;
-            }
-
-            return 0;
-        },
+    Object.assign(DOM, {
 
         /**
          * Returns true if a single node has another node as a descendent.
@@ -5187,47 +5367,11 @@
                 return dom.context.visibilityState === 'visible';
             }
 
-            if (DOM.isDocument(node)) {
+            if (Core.isDocument(node)) {
                 return node.visibilityState === 'visible';
             }
 
             return !!node.offsetParent;
-        },
-
-        /**
-         * Normalize a single node (remove empty text nodes, and join neighbouring text nodes).
-         * @param {HTMLElement} node The input node.
-         */
-        _normalize(node) {
-            node.normalize();
-        }
-
-    });
-
-    /**
-     * DOM (Static) Parsing
-     */
-
-    Object.assign(DOM, {
-
-        /**
-         * Create a Document object from a HTML string.
-         * @param {string} html The HTML input string.
-         * @returns {Document} A new Document object.
-         */
-        parseHTML(html) {
-            return new DOMParser()
-                .parseFromString(html, 'text/html');
-        },
-
-        /**
-         * Create a Document object from an XML string.
-         * @param {string} xml The XML input string.
-         * @returns {Document} A new Document object.
-         */
-        parseXML(xml) {
-            return new DOMParser()
-                .parseFromString(xml, 'application/xml');
         }
 
     });
@@ -5429,7 +5573,7 @@
             const results = [];
 
             while (node = node.nextSibling) {
-                if (this.isElement(node)) {
+                if (Core.isElement(node)) {
                     break;
                 }
             }
@@ -5459,7 +5603,7 @@
             const results = [];
 
             while (node = node.nextSibling) {
-                if (!this.isElement(node)) {
+                if (!Core.isElement(node)) {
                     continue;
                 }
 
@@ -5491,7 +5635,7 @@
             const results = [];
 
             while (node = node.previousSibling) {
-                if (this.isElement(node)) {
+                if (Core.isElement(node)) {
                     break;
                 }
             }
@@ -5521,7 +5665,7 @@
             const results = [];
 
             while (node = node.previousSibling) {
-                if (!this.isElement(node)) {
+                if (!Core.isElement(node)) {
                     continue;
                 }
 
@@ -5681,159 +5825,37 @@
     Object.assign(DOM, {
 
         /**
-         * Return a single dimensional array of classes (from a multi-dimensional array or space-separated strings).
-         * @param {array} classList The classes to parse.
-         * @returns {string[]} The parsed classes.
+         * Compare the position of two nodes in the DOM.
+         * @param {Node} node The input node.
+         * @param {Node} other The other node.
+         * @returns {number} -1 if node is before other, 1 if other is before node, otherwise 0.
          */
-        _parseClasses(classList) {
-            return classList
-                .flat()
-                .flatMap(val => val.split(' '));
-        },
-
-        /**
-         * Return a data object from a key and value, or a data object.
-         * @param {string|object} key The data key, or an object containing data.
-         * @param {*} [value] The data value.
-         * @returns {object} The data object.
-         */
-        _parseData(key, value) {
-            return Core.isObject(key) ?
-                key :
-                { [key]: value };
-        },
-
-        /**
-         * Return a "real" event from a namespaced event.
-         * @param {string} event The namespaced event.
-         * @returns {string} The real event.
-         */
-        _parseEvent(event) {
-            return event.split('.')
-                .shift();
-        },
-
-        /**
-         * Return an array of events from a space-separated string.
-         * @param {string} events The events.
-         * @returns {array} The parsed events.
-         */
-        _parseEvents(events) {
-            return events.split(' ');
-        },
-
-        /**
-         * Return a FormData object from an array or object.
-         * @param {array|object} data The input data.
-         * @returns {FormData} The FormData object.
-         */
-        _parseFormData(data) {
-            const formData = new FormData;
-
-            if (Array.isArray(data)) {
-                const obj = {};
-                for (const value of data) {
-                    obj[value.name] = value.value;
-                }
-                data = obj;
+        _compareNodes(node, other) {
+            if (this._isSame(node, other)) {
+                return 0;
             }
 
-            this._parseFormValues(data, formData);
+            const pos = node.compareDocumentPosition(other);
 
-            return formData;
+            if (pos & Node.DOCUMENT_POSITION_FOLLOWING ||
+                pos & Node.DOCUMENT_POSITION_CONTAINED_BY) {
+                return -1;
+            }
+
+            if (pos & Node.DOCUMENT_POSITION_PRECEDING ||
+                pos & Node.DOCUMENT_POSITION_CONTAINS) {
+                return 1;
+            }
+
+            return 0;
         },
 
         /**
-         * Recursively append an object to a FormData object.
-         * @param {object} data The input object.
-         * @param {FormData} formData The FormData object to append to.
-         * @param {string} [prevKey] The previous key value.
+         * Normalize a single node (remove empty text nodes, and join neighbouring text nodes).
+         * @param {HTMLElement} node The input node.
          */
-        _parseFormValues(data, formData, prevKey) {
-            let key;
-            for (key in data) {
-                const value = data[key];
-
-                if (prevKey) {
-                    key = `${prevKey}[${key}]`;
-                }
-
-                if (Core.isPlainObject(value)) {
-                    this._parseFormValues(value, formData, key);
-                } else if (!Array.isArray(value)) {
-                    formData.set(key, value);
-                } else {
-                    for (const val of value) {
-                        formData.append(key, val);
-                    }
-                }
-            }
-        },
-
-        /**
-         * Return a URI-encoded attribute string from an array or object.
-         * @param {array|object} data The input data.
-         * @returns {string} The URI-encoded attribute string.
-         */
-        _parseParams(data) {
-            let values = [];
-
-            if (Array.isArray(data)) {
-                values = data.map(value =>
-                    this._parseParam(
-                        value.name,
-                        value.value
-                    )
-                );
-            } else if (Core.isObject(data)) {
-                values = Object.keys(data)
-                    .map(key =>
-                        this._parseParam(key, data[key])
-                    );
-            }
-
-            return values
-                .flatMap(encodeURI)
-                .join('&');
-        },
-
-        /**
-         * Return a string attribute, or a flat array of attributes from a key and value.
-         * @param {string} key The input key.
-         * @param {array|object|string} value The input value.
-         * @returns {string|array} The parsed attributes.
-         */
-        _parseParam(key, value) {
-            if (Array.isArray(value)) {
-                return value.map(val =>
-                    this._parseParam(key, val)
-                ).flat();
-            }
-
-            if (Core.isObject(value)) {
-                return Object.keys(value)
-                    .map(subKey =>
-                        this._parseParam(
-                            key + '[' + subKey + ']',
-                            value[subKey]
-                        )
-                    ).flat();
-            }
-
-            return key + '=' + value;
-        },
-
-        /**
-         * Return a prefixed selector string.
-         * @param {string} selectors The input selectors.
-         * @param {string} prefix The input prefix.
-         * @returns {string} The prefixed selector.
-         */
-        _prefixSelectors(selectors, prefix) {
-            return selectors.split(this.splitRegex)
-                .filter(select => !!select)
-                .map(select => `${prefix} ${select}`)
-                .join(', ');
+        _normalize(node) {
+            node.normalize();
         }
 
     });
