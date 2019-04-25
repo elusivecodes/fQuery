@@ -9,7 +9,7 @@ Object.assign(DOM.prototype, {
      * @param {string|Node|NodeList|HTMLCollection|Node[]} nodes The input node(s), or a query selector string.
      */
     detach(nodes) {
-        for (const node of this._nodeFilter(nodes, DOM.isNode)) {
+        for (const node of this._nodeFilter(nodes, Core.isNode)) {
             DOM._detach(node);
         }
     },
@@ -19,7 +19,7 @@ Object.assign(DOM.prototype, {
      * @param {string|HTMLElement|HTMLCollection|Document|HTMLElement[]} nodes The input node(s), or a query selector string.
      */
     empty(nodes) {
-        for (const node of this._nodeFilter(nodes, node => DOM.isElement(node) || DOM.isDocument(node))) {
+        for (const node of this._nodeFilter(nodes, node => Core.isElement(node) || Core.isDocument(node))) {
             this._empty(node);
         }
     },
@@ -29,7 +29,7 @@ Object.assign(DOM.prototype, {
      * @param {string|Node|NodeList|HTMLCollection|Node[]} nodes The input node(s), or a query selector string.
      */
     remove(nodes) {
-        for (const node of this._nodeFilter(nodes, DOM.isNode)) {
+        for (const node of this._nodeFilter(nodes, Core.isNode)) {
             this._remove(node);
         }
     },
@@ -49,9 +49,9 @@ Object.assign(DOM.prototype, {
      * @param {string|Node|NodeList|HTMLCollection|Node[]} others The other node(s), or a query selector or HTML string.
      */
     replaceWith(nodes, others) {
-        others = this._parseQuery(others, DOM.isNode);
+        others = this._parseQuery(others, Core.isNode);
 
-        for (const node of this._nodeFilter(nodes, DOM.isNode)) {
+        for (const node of this._nodeFilter(nodes, Core.isNode)) {
             this._replaceWith(node, others);
         }
     },
@@ -71,7 +71,7 @@ Object.assign(DOM.prototype, {
      * @param {Node} node The input node.
      */
     _remove(node) {
-        if (DOM.isElement(node)) {
+        if (Core.isElement(node)) {
             this._empty(node);
         }
 

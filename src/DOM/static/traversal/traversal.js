@@ -95,7 +95,7 @@ Object.assign(DOM, {
         const results = [];
 
         while (node = node.nextSibling) {
-            if (this.isElement(node)) {
+            if (Core.isElement(node)) {
                 break;
             }
         }
@@ -125,7 +125,7 @@ Object.assign(DOM, {
         const results = [];
 
         while (node = node.nextSibling) {
-            if (!this.isElement(node)) {
+            if (!Core.isElement(node)) {
                 continue;
             }
 
@@ -157,7 +157,7 @@ Object.assign(DOM, {
         const results = [];
 
         while (node = node.previousSibling) {
-            if (this.isElement(node)) {
+            if (Core.isElement(node)) {
                 break;
             }
         }
@@ -187,7 +187,7 @@ Object.assign(DOM, {
         const results = [];
 
         while (node = node.previousSibling) {
-            if (!this.isElement(node)) {
+            if (!Core.isElement(node)) {
                 continue;
             }
 

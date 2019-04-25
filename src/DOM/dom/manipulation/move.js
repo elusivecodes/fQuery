@@ -10,7 +10,7 @@ Object.assign(DOM.prototype, {
      * @param {string|Node|NodeList|HTMLCollection|Node[]} others The other node(s), or a query selector or HTML string.
      */
     after(nodes, others) {
-        const node = this._nodeFind(nodes, DOM.isNode);
+        const node = this._nodeFind(nodes, Core.isNode);
 
         if (!node) {
             return;
@@ -18,7 +18,7 @@ Object.assign(DOM.prototype, {
 
         DOM._after(
             node,
-            this._parseQuery(others, DOM.isNode)
+            this._parseQuery(others, Core.isNode)
         );
     },
 
@@ -36,7 +36,7 @@ Object.assign(DOM.prototype, {
 
         DOM._append(
             node,
-            this._parseQuery(others, DOM.isNode)
+            this._parseQuery(others, Core.isNode)
         );
     },
 
@@ -55,7 +55,7 @@ Object.assign(DOM.prototype, {
      * @param {string|Node|NodeList|HTMLCollection|Node[]} others The other node(s), or a query selector or HTML string.
      */
     before(nodes, others) {
-        const node = this._nodeFind(nodes, DOM.isNode);
+        const node = this._nodeFind(nodes, Core.isNode);
 
         if (!node) {
             return;
@@ -63,7 +63,7 @@ Object.assign(DOM.prototype, {
 
         DOM._before(
             node,
-            this._parseQuery(others, DOM.isNode)
+            this._parseQuery(others, Core.isNode)
         );
     },
 
@@ -99,7 +99,7 @@ Object.assign(DOM.prototype, {
 
         DOM._prepend(
             node,
-            this._parseQuery(others, DOM.isNode)
+            this._parseQuery(others, Core.isNode)
         );
     },
 

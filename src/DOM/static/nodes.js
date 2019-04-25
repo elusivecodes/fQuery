@@ -5,43 +5,6 @@
 Object.assign(DOM, {
 
     /**
-     * Returns true if the value is a Document.
-     * @param {*} value The value to test.
-     * @returns {Boolean} TRUE if the value is a Document, otherwise FALSE.
-     */
-    isDocument(node) {
-        return Core.isObject(node) &&
-            'nodeType' in node &&
-            node.nodeType === Node.DOCUMENT_NODE;
-    },
-
-    /**
-     * Returns true if the value is a HTMLElement.
-     * @param {*} value The value to test.
-     * @returns {Boolean} TRUE if the value is a HTMLElement, otherwise FALSE.
-     */
-    isElement(node) {
-        return Core.isObject(node) &&
-            'nodeType' in node &&
-            node.nodeType === Node.ELEMENT_NODE;
-    },
-
-    /**
-     * Returns true if the value is a Node.
-     * @param {*} value The value to test.
-     * @returns {Boolean} TRUE if the value is a Node, otherwise FALSE.
-     */
-    isNode(node) {
-        return Core.isObject(node) &&
-            'nodeType' in node &&
-            (
-                node.nodeType === Node.ELEMENT_NODE ||
-                node.nodeType === Node.TEXT_NODE ||
-                node.nodeType === Node.COMMENT_NODE
-            );
-    },
-
-    /**
      * Create a clone of a node.
      * @param {Node} node The input node.
      * @param {Boolean} deep Whether to deep clone the node.
@@ -145,7 +108,7 @@ Object.assign(DOM, {
             return dom.context.visibilityState === 'visible';
         }
 
-        if (DOM.isDocument(node)) {
+        if (Core.isDocument(node)) {
             return node.visibilityState === 'visible';
         }
 

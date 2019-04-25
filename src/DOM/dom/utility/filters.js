@@ -7,10 +7,10 @@ Object.assign(DOM.prototype, {
     /**
      * Return a filtered array of nodes.
      * @param {string|Node|NodeList|HTMLCollection|Document|Node[]} nodes The input node(s), or a query selector string.
-     * @param {DOM~filterCallback} [filter=DOM.isElement] The filter callback.
+     * @param {DOM~filterCallback} [filter=Core.isElement] The filter callback.
      * @returns {Node[]} The filtered array of nodes.
      */
-    _nodeFilter(nodes, filter = DOM.isElement) {
+    _nodeFilter(nodes, filter = Core.isElement) {
         if (Core.isString(nodes)) {
             return this.find(nodes)
                 .filter(filter);
@@ -27,10 +27,10 @@ Object.assign(DOM.prototype, {
     /**
      * Return the first node matching a filter.
      * @param {string|Node|NodeList|HTMLCollection|Document|Node[]} nodes The input node(s), or a query selector string.
-     * @param {DOM~filterCallback} [filter=DOM.isElement] The filter callback.
+     * @param {DOM~filterCallback} [filter=Core.isElement] The filter callback.
      * @returns {Node} The matching node.
      */
-    _nodeFind(nodes, filter = DOM.isElement) {
+    _nodeFind(nodes, filter = Core.isElement) {
         if (Core.isString(nodes)) {
             const node = this.findOne(nodes);
             if (filter(node)) {
@@ -65,11 +65,11 @@ Object.assign(DOM.prototype, {
 
         if (Core.isString(filter)) {
             return node =>
-                DOM.isElement(node) &&
+                Core.isElement(node) &&
                 DOM._is(node, filter);
         }
 
-        if (DOM.isNode(filter)) {
+        if (Core.isNode(filter)) {
             return node => DOM._isSame(node, filter);
         }
 
@@ -99,7 +99,7 @@ Object.assign(DOM.prototype, {
             return node => !!this.findOne(filter, node);
         }
 
-        if (DOM.isElement(filter)) {
+        if (Core.isElement(filter)) {
             return node => DOM._has(node, filter);
         }
 
@@ -114,10 +114,10 @@ Object.assign(DOM.prototype, {
     /**
      * Return a filtered array of nodes from a query.
      * @param {string|Node|NodeList|HTMLCollection|Document|Node[]} nodes The input node(s), or a query selector or HTML string.
-     * @param {DOM~filterCallback} [filter=DOM.isElement] The filter callback.
+     * @param {DOM~filterCallback} [filter=Core.isElement] The filter callback.
      * @returns {Node[]} The filtered array of nodes.
      */
-    _parseQuery(query = '*', filter = DOM.isElement) {
+    _parseQuery(query = '*', filter = Core.isElement) {
         if (Core.isString(query) && query.trim().charAt(0) === '<') {
             return this.parseHTML(query);
         }

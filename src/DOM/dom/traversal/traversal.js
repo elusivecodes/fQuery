@@ -29,7 +29,7 @@ Object.assign(DOM.prototype, {
     children(nodes, filter, first = false, elementsOnly = true) {
         filter = this._parseFilter(filter);
 
-        if (DOM.isElement(nodes)) {
+        if (Core.isElement(nodes)) {
             return DOM._children(nodes, filter, first, elementsOnly);
         }
 
@@ -112,11 +112,11 @@ Object.assign(DOM.prototype, {
     parent(nodes, filter) {
         filter = this._parseFilter(filter);
 
-        if (DOM.isNode(nodes)) {
+        if (Core.isNode(nodes)) {
             return DOM._parent(nodes, filter);
         }
 
-        nodes = this._nodeFilter(nodes, DOM.isNode);
+        nodes = this._nodeFilter(nodes, Core.isNode);
 
         const results = [];
 
@@ -144,11 +144,11 @@ Object.assign(DOM.prototype, {
         filter = this._parseFilter(filter);
         limit = this._parseFilter(limit);
 
-        if (DOM.isNode(nodes)) {
+        if (Core.isNode(nodes)) {
             return DOM._parent(nodes, filter, limit, first);
         }
 
-        nodes = this._nodeFilter(nodes, DOM.isNode);
+        nodes = this._nodeFilter(nodes, Core.isNode);
 
         const results = [];
 
@@ -185,7 +185,7 @@ Object.assign(DOM.prototype, {
     next(nodes, filter) {
         filter = this._parseFilter(filter);
 
-        if (DOM.isElement(nodes)) {
+        if (Core.isElement(nodes)) {
             return DOM._next(nodes, filter);
         }
 
@@ -217,7 +217,7 @@ Object.assign(DOM.prototype, {
         filter = this._parseFilter(filter);
         limit = this._parseFilter(limit);
 
-        if (DOM.isElement(nodes)) {
+        if (Core.isElement(nodes)) {
             return DOM._nextAll(nodes, filter, limit, first);
         }
 
@@ -246,7 +246,7 @@ Object.assign(DOM.prototype, {
     prev(nodes, filter) {
         filter = this._parseFilter(filter);
 
-        if (DOM.isElement(nodes)) {
+        if (Core.isElement(nodes)) {
             return DOM._prev(nodes, filter);
         }
 
@@ -278,7 +278,7 @@ Object.assign(DOM.prototype, {
         filter = this._parseFilter(filter);
         limit = this._parseFilter(limit);
 
-        if (DOM.isElement(nodes)) {
+        if (Core.isElement(nodes)) {
             return DOM._prevAll(nodes, filter, limit, first);
         }
 
@@ -308,7 +308,7 @@ Object.assign(DOM.prototype, {
     siblings(nodes, filter, elementsOnly = true) {
         filter = this._parseFilter(filter);
 
-        if (DOM.isElement(nodes)) {
+        if (Core.isElement(nodes)) {
             return DOM._siblings(nodes, filter, elementsOnly);
         }
 

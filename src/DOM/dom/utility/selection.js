@@ -20,7 +20,7 @@ Object.assign(DOM.prototype, {
         DOM._removeRanges(selection);
         DOM._collapseRange(range);
 
-        for (const node of this._parseQuery(nodes, DOM.isNode)) {
+        for (const node of this._parseQuery(nodes, Core.isNode)) {
             DOM._insert(range, node);
         }
     },
@@ -40,7 +40,7 @@ Object.assign(DOM.prototype, {
 
         DOM._removeRanges(selection);
 
-        for (const node of this._parseQuery(nodes, DOM.isNode)) {
+        for (const node of this._parseQuery(nodes, Core.isNode)) {
             DOM._insert(range, node);
         }
     },
@@ -89,11 +89,11 @@ Object.assign(DOM.prototype, {
             return nodes;
         }
 
-        const start = DOM.isElement(range.startContainer) ?
+        const start = Core.isElement(range.startContainer) ?
             range.startContainer :
             DOM._parent(range.startContainer).shift();
 
-        const end = DOM.isElement(range.endContainer) ?
+        const end = Core.isElement(range.endContainer) ?
             range.endContainer :
             DOM._parent(range.endContainer).shift();
 
@@ -108,7 +108,7 @@ Object.assign(DOM.prototype, {
      * @param {string|Node|NodeList|HTMLCollection|Node[]} nodes The input node(s), or a query selector string.
      */
     select(nodes) {
-        const node = this._nodeFind(nodes, DOM.isNode);
+        const node = this._nodeFind(nodes, Core.isNode);
 
         if (node && 'select' in node) {
             return node.select();

@@ -10,7 +10,7 @@ Object.assign(DOM.prototype, {
      * @param {string|HTMLElement|HTMLCollection|HTMLElement[]|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
      */
     unwrap(nodes, filter) {
-        for (const node of this._nodeFilter(nodes, DOM.isNode)) {
+        for (const node of this._nodeFilter(nodes, Core.isNode)) {
             this._unwrap(node, filter);
         }
     },
@@ -23,7 +23,7 @@ Object.assign(DOM.prototype, {
     wrap(nodes, others) {
         others = this._parseQuery(others);
 
-        for (const node of this._nodeFilter(nodes, DOM.isNode)) {
+        for (const node of this._nodeFilter(nodes, Core.isNode)) {
             this._wrap(node, others);
         }
     },
@@ -60,7 +60,7 @@ Object.assign(DOM.prototype, {
     wrapInner(nodes, others) {
         others = this._parseQuery(others);
 
-        for (const node of this._nodeFilter(nodes, DOM.isNode)) {
+        for (const node of this._nodeFilter(nodes, Core.isNode)) {
             this._wrapInner(node, others);
         }
     },

@@ -26,7 +26,7 @@ Object.assign(DOM.prototype, {
      * @returns {*} The result of the callback.
      */
     forceShow(nodes, callback) {
-        const node = this._nodeFind(nodes, node => DOM.isNode(node) || DOM.isDocument(node) || Core.isWindow(node));
+        const node = this._nodeFind(nodes, node => Core.isNode(node) || Core.isDocument(node) || Core.isWindow(node));
 
         if (!node) {
             return;
@@ -115,7 +115,7 @@ Object.assign(DOM.prototype, {
      * @param {string|Node|NodeList|HTMLCollection|Document|Node[]} nodes The input node(s), or a query selector string.
      */
     normalize(nodes) {
-        for (const node of this._nodeFilter(nodes, DOM.isNode)) {
+        for (const node of this._nodeFilter(nodes, Core.isNode)) {
             DOM._normalize(node);
         }
     },
@@ -181,7 +181,7 @@ Object.assign(DOM.prototype, {
      * @returns {Node[]} The sorted array of nodes.
      */
     sort(nodes) {
-        return this._nodeFilter(nodes, DOM.isNode)
+        return this._nodeFilter(nodes, Core.isNode)
             .sort(DOM._compareNodes);
     }
 

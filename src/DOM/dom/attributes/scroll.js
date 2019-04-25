@@ -10,7 +10,7 @@ Object.assign(DOM.prototype, {
      * @returns {number} The scroll X position.
      */
     getScrollX(nodes) {
-        const node = this._nodeFind(nodes, node => DOM.isElement(node) || DOM.isDocument(node) || Core.isWindow(node));
+        const node = this._nodeFind(nodes, node => Core.isElement(node) || Core.isDocument(node) || Core.isWindow(node));
 
         if (!node) {
             return;
@@ -25,7 +25,7 @@ Object.assign(DOM.prototype, {
      * @returns {number} The scroll Y position.
      */
     getScrollY(nodes) {
-        const node = this._nodeFind(nodes, node => DOM.isElement(node) || DOM.isDocument(node) || Core.isWindow(node));
+        const node = this._nodeFind(nodes, node => Core.isElement(node) || Core.isDocument(node) || Core.isWindow(node));
 
         if (!node) {
             return;
@@ -41,7 +41,7 @@ Object.assign(DOM.prototype, {
      * @param {number} y The scroll Y position.
      */
     setScroll(nodes, x, y) {
-        for (const node of this._nodeFilter(nodes, node => DOM.isElement(node) || DOM.isDocument(node) || Core.isWindow(node))) {
+        for (const node of this._nodeFilter(nodes, node => Core.isElement(node) || Core.isDocument(node) || Core.isWindow(node))) {
             DOM._setScroll(node, x, y);
         }
     },
@@ -52,7 +52,7 @@ Object.assign(DOM.prototype, {
      * @param {number} x The scroll X position.
      */
     setScrollX(nodes, x) {
-        for (const node of this._nodeFilter(nodes, node => DOM.isElement(node) || DOM.isDocument(node) || Core.isWindow(node))) {
+        for (const node of this._nodeFilter(nodes, node => Core.isElement(node) || Core.isDocument(node) || Core.isWindow(node))) {
             DOM._setScrollX(node, x);
         }
     },
@@ -63,7 +63,7 @@ Object.assign(DOM.prototype, {
      * @param {number} y The scroll Y position.
      */
     setScrollY(nodes, y) {
-        for (const node of this._nodeFilter(nodes, node => DOM.isElement(node) || DOM.isDocument(node) || Core.isWindow(node))) {
+        for (const node of this._nodeFilter(nodes, node => Core.isElement(node) || Core.isDocument(node) || Core.isWindow(node))) {
             DOM._setScrollY(node, y);
         }
     }

@@ -13,7 +13,7 @@ Object.assign(DOM.prototype, {
     contains(nodes, filter) {
         filter = this._parseFilterContains(filter);
 
-        return this._nodeFilter(nodes, node => DOM.isElement(node) || DOM.isDocument(node))
+        return this._nodeFilter(nodes, node => Core.isElement(node) || Core.isDocument(node))
             .some(node =>
                 !filter ||
                 filter(node)
@@ -71,7 +71,7 @@ Object.assign(DOM.prototype, {
      * @returns {Boolean} TRUE if any of the nodes has custom data, otherwise FALSE.
      */
     hasData(nodes, key) {
-        return this._nodeFilter(nodes, node => DOM.isElement(node) || DOM.isDocument(node) || Core.isWindow(node))
+        return this._nodeFilter(nodes, node => Core.isElement(node) || Core.isDocument(node) || Core.isWindow(node))
             .some(node =>
                 this.nodeData.has(node) &&
                 (
@@ -131,7 +131,7 @@ Object.assign(DOM.prototype, {
      * @returns {Boolean} TRUE if any of the nodes is connected to the DOM, otherwise FALSE.
      */
     isConnected(nodes) {
-        return this._nodeFilter(nodes, DOM.isNode)
+        return this._nodeFilter(nodes, Core.isNode)
             .some(node => DOM._isConnected(node));
     },
 
@@ -141,8 +141,8 @@ Object.assign(DOM.prototype, {
      * @returns {Boolean} TRUE if any of the nodes is considered equal to any of the other nodes, otherwise FALSE.
      */
     isEqual(nodes, others) {
-        others = this._nodeFilter(others, DOM.isNode);
-        return this._nodeFilter(nodes, DOM.isNode)
+        others = this._nodeFilter(others, Core.isNode);
+        return this._nodeFilter(nodes, Core.isNode)
             .some(node =>
                 others.find(other => DOM._isEqual(node, other))
             );
@@ -173,7 +173,7 @@ Object.assign(DOM.prototype, {
      * @returns {Boolean} TRUE if any of the nodes is hidden, otherwise FALSE.
      */
     isHidden(nodes) {
-        return this._nodeFilter(nodes, node => DOM.isNode(node) || DOM.isDocument(node) || Core.isWindow(node))
+        return this._nodeFilter(nodes, node => Core.isNode(node) || Core.isDocument(node) || Core.isWindow(node))
             .some(node =>
                 !DOM._isVisible(node)
             );
@@ -185,8 +185,8 @@ Object.assign(DOM.prototype, {
      * @returns {Boolean} TRUE if any of the nodes is considered identical to any of the other nodes, otherwise FALSE.
      */
     isSame(nodes, others) {
-        others = this._nodeFilter(others, DOM.isNode);
-        return this._nodeFilter(nodes, DOM.isNode)
+        others = this._nodeFilter(others, Core.isNode);
+        return this._nodeFilter(nodes, Core.isNode)
             .some(node =>
                 others.find(other => DOM._isSame(node, other))
             );
@@ -198,7 +198,7 @@ Object.assign(DOM.prototype, {
      * @returns {Boolean} TRUE if any of the nodes is visible, otherwise FALSE.
      */
     isVisible(nodes) {
-        return this._nodeFilter(nodes, node => DOM.isNode(node) || DOM.isDocument(node) || Core.isWindow(node))
+        return this._nodeFilter(nodes, node => Core.isNode(node) || Core.isDocument(node) || Core.isWindow(node))
             .some(node =>
                 DOM._isVisible(node)
             );

@@ -1,3 +1,7 @@
+/**
+ * FrostDOM v1.0
+ * https://github.com/elusivecodes/FrostDOM
+ */
 (function(global, factory) {
 
     if (typeof module === 'object' && typeof module.exports === 'object') {

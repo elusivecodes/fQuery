@@ -70,7 +70,7 @@ Object.assign(DOM.prototype, {
      * @param {object} [data] Additional data to attach to the event.
      */
     triggerEvent(nodes, events, data) {
-        for (const node of this._nodeFilter(nodes, node => DOM.isElement(node) || DOM.isDocument(node) || Core.isWindow(node))) {
+        for (const node of this._nodeFilter(nodes, node => Core.isElement(node) || Core.isDocument(node) || Core.isWindow(node))) {
             DOM._triggerEvent(node, events, data);
         }
     }

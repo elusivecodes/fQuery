@@ -42,11 +42,11 @@ Object.assign(DOM.prototype, {
      */
     findByClass(className, nodes = this.context) {
         // single node case
-        if (DOM.isElement(nodes) || DOM.isDocument(nodes)) {
+        if (Core.isElement(nodes) || Core.isDocument(nodes)) {
             return Core.merge([], DOM._findByClass(className, nodes));
         }
 
-        nodes = this._nodeFilter(nodes, node => DOM.isElement(node) || DOM.isDocument(node));
+        nodes = this._nodeFilter(nodes, node => Core.isElement(node) || Core.isDocument(node));
 
         const results = [];
 
@@ -91,11 +91,11 @@ Object.assign(DOM.prototype, {
      */
     findByTag(tagName, nodes = this.context) {
         // single node case
-        if (DOM.isElement(nodes) || DOM.isDocument(nodes)) {
+        if (Core.isElement(nodes) || Core.isDocument(nodes)) {
             return Core.merge([], DOM._findByTag(tagName, nodes));
         }
 
-        nodes = this._nodeFilter(nodes, node => DOM.isElement(node) || DOM.isDocument(node));
+        nodes = this._nodeFilter(nodes, node => Core.isElement(node) || Core.isDocument(node));
 
         const results = [];
 
@@ -149,11 +149,11 @@ Object.assign(DOM.prototype, {
      */
     findOneByClass(className, nodes = this.context) {
         // single node case
-        if (DOM.isElement(nodes) || DOM.isDocument(nodes)) {
+        if (Core.isElement(nodes) || Core.isDocument(nodes)) {
             return DOM._findByClass(className, nodes).item(0);
         }
 
-        nodes = this._nodeFilter(nodes, node => DOM.isElement(node) || DOM.isDocument(node));
+        nodes = this._nodeFilter(nodes, node => Core.isElement(node) || Core.isDocument(node));
 
         for (const node of nodes) {
             const result = DOM._findByClass(className, node).item(0);
@@ -194,11 +194,11 @@ Object.assign(DOM.prototype, {
      */
     findOneByTag(tagName, nodes = this.context) {
         // single node case
-        if (DOM.isElement(nodes) || DOM.isDocument(nodes)) {
+        if (Core.isElement(nodes) || Core.isDocument(nodes)) {
             return DOM._findByTag(tagName, nodes).item(0);
         }
 
-        nodes = this._nodeFilter(nodes, node => DOM.isElement(node) || DOM.isDocument(node));
+        nodes = this._nodeFilter(nodes, node => Core.isElement(node) || Core.isDocument(node));
 
         for (const node of nodes) {
             const result = DOM._findByTag(tagName, node).item(0);
@@ -228,11 +228,11 @@ Object.assign(DOM.prototype, {
         const selectors = DOM._prefixSelectors(selector, `#${DOM.tempId} `);
 
         // single node case
-        if (DOM.isElement(nodes) || DOM.isDocument(nodes)) {
+        if (Core.isElement(nodes) || Core.isDocument(nodes)) {
             return Core.merge([], DOM._findByCustom(selectors, nodes));
         }
 
-        nodes = this._nodeFilter(nodes, node => DOM.isElement(node) || DOM.isDocument(node));
+        nodes = this._nodeFilter(nodes, node => Core.isElement(node) || Core.isDocument(node));
 
         const results = [];
 
@@ -256,11 +256,11 @@ Object.assign(DOM.prototype, {
      */
     _findBySelector(selector, nodes = this.context) {
         // single node case
-        if (DOM.isElement(nodes) || DOM.isDocument(nodes)) {
+        if (Core.isElement(nodes) || (nodes)) {
             return Core.merge([], DOM._findBySelector(selector, nodes));
         }
 
-        nodes = this._nodeFilter(nodes, node => DOM.isElement(node) || DOM.isDocument(node));
+        nodes = this._nodeFilter(nodes, node => Core.isElement(node) || Core.isDocument(node));
 
         const results = [];
 
@@ -294,11 +294,11 @@ Object.assign(DOM.prototype, {
         const selectors = DOM._prefixSelectors(selector, `#${DOM.tempId} `);
 
         // single node case
-        if (DOM.isElement(nodes) || DOM.isDocument(nodes)) {
+        if (Core.isElement(nodes) || Core.isDocument(nodes)) {
             return DOM._findOneByCustom(selectors, nodes);
         }
 
-        nodes = this._nodeFilter(nodes, node => DOM.isElement(node) || DOM.isDocument(node));
+        nodes = this._nodeFilter(nodes, node => Core.isElement(node) || Core.isDocument(node));
 
         for (const node of nodes) {
             const result = DOM._findOneByCustom(selectors, node);
@@ -318,11 +318,11 @@ Object.assign(DOM.prototype, {
      */
     _findOneBySelector(selector, nodes = this.context) {
         // single node case
-        if (DOM.isElement(nodes) || DOM.isDocument(nodes)) {
+        if (Core.isElement(nodes) || Core.isDocument(nodes)) {
             return DOM._findOneBySelector(selector, nodes);
         }
 
-        nodes = this._nodeFilter(nodes, node => DOM.isElement(node) || DOM.isDocument(node));
+        nodes = this._nodeFilter(nodes, node => Core.isElement(node) || Core.isDocument(node));
 
         for (const node of nodes) {
             const result = DOM._findOneBySelector(selector, node);

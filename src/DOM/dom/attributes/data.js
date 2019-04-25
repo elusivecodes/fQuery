@@ -10,7 +10,7 @@ Object.assign(DOM.prototype, {
      * @param {string|Node|NodeList|HTMLCollection|Window|Node[]} others The other node(s), or a query selector string.
      */
     cloneData(nodes, others) {
-        for (const node of this._nodeFilter(nodes, node => DOM.isNode(node) || DOM.isDocument(node) || Core.isWindow(node))) {
+        for (const node of this._nodeFilter(nodes, node => Core.isNode(node) || Core.isDocument(node) || Core.isWindow(node))) {
             this._cloneData(node, others);
         }
     },
@@ -22,7 +22,7 @@ Object.assign(DOM.prototype, {
      * @returns {*} The data value.
      */
     getData(nodes, key) {
-        const node = this._nodeFind(nodes, node => DOM.isNode(node) || DOM.isDocument(node) || Core.isWindow(node));
+        const node = this._nodeFind(nodes, node => Core.isNode(node) || Core.isDocument(node) || Core.isWindow(node));
 
         if (!node) {
             return;
@@ -37,7 +37,7 @@ Object.assign(DOM.prototype, {
      * @param {string} [key] The data key.
      */
     removeData(nodes, key) {
-        for (const node of this._nodeFilter(nodes, node => DOM.isNode(node) || DOM.isDocument(node) || Core.isWindow(node))) {
+        for (const node of this._nodeFilter(nodes, node => Core.isNode(node) || Core.isDocument(node) || Core.isWindow(node))) {
             this._removeData(node, key);
         }
     },
@@ -51,7 +51,7 @@ Object.assign(DOM.prototype, {
     setData(nodes, key, value) {
         const data = DOM._parseData(key, value);
 
-        for (const node of this._nodeFilter(nodes, node => DOM.isNode(node) || DOM.isDocument(node) || Core.isWindow(node))) {
+        for (const node of this._nodeFilter(nodes, node => Core.isNode(node) || Core.isDocument(node) || Core.isWindow(node))) {
             this._setData(node, data);
         }
     },

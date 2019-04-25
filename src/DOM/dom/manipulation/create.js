@@ -13,7 +13,7 @@ Object.assign(DOM.prototype, {
      * @returns {Node[]} The cloned nodes.
      */
     clone(nodes, deep = true, cloneEvents = false, cloneData = false) {
-        return this._nodeFilter(nodes, DOM.isNode)
+        return this._nodeFilter(nodes, Core.isNode)
             .map(node =>
                 this._clone(node, deep, cloneEvents, cloneData)
             );

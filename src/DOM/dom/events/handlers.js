@@ -16,7 +16,7 @@ Object.assign(DOM.prototype, {
      * @param {DOM~eventCallback} callback The callback to execute.
      */
     addEvent(nodes, events, callback) {
-        for (const node of this._nodeFilter(nodes, node => DOM.isElement(node) || DOM.isDocument(node) || Core.isWindow(node))) {
+        for (const node of this._nodeFilter(nodes, node => Core.isElement(node) || Core.isDocument(node) || Core.isWindow(node))) {
             this._addEvent(node, events, callback);
         }
     },
@@ -29,7 +29,7 @@ Object.assign(DOM.prototype, {
      * @param {DOM~eventCallback} callback The callback to execute.
      */
     addEventDelegate(nodes, events, delegate, callback) {
-        for (const node of this._nodeFilter(nodes, node => DOM.isElement(node) || DOM.isDocument(node) || Core.isWindow(node))) {
+        for (const node of this._nodeFilter(nodes, node => Core.isElement(node) || Core.isDocument(node) || Core.isWindow(node))) {
             this._addEvent(node, events, callback, delegate);
         }
     },
@@ -42,7 +42,7 @@ Object.assign(DOM.prototype, {
      * @param {DOM~eventCallback} callback The callback to execute.
      */
     addEventDelegateOnce(nodes, events, delegate, callback) {
-        for (const node of this._nodeFilter(nodes, node => DOM.isElement(node) || DOM.isDocument(node) || Core.isWindow(node))) {
+        for (const node of this._nodeFilter(nodes, node => Core.isElement(node) || Core.isDocument(node) || Core.isWindow(node))) {
             this._addEvent(node, events, callback, delegate, true);
         }
     },
@@ -54,7 +54,7 @@ Object.assign(DOM.prototype, {
      * @param {DOM~eventCallback} callback The callback to execute.
      */
     addEventOnce(nodes, events, callback) {
-        for (const node of this._nodeFilter(nodes, node => DOM.isElement(node) || DOM.isDocument(node) || Core.isWindow(node))) {
+        for (const node of this._nodeFilter(nodes, node => Core.isElement(node) || Core.isDocument(node) || Core.isWindow(node))) {
             this._addEvent(node, events, callback, null, true);
         }
     },
@@ -65,7 +65,7 @@ Object.assign(DOM.prototype, {
      * @param {string|HTMLElement|HTMLCollection|Document|Window|HTMLElement[]} others The other node(s), or a query selector string.
      */
     cloneEvents(nodes, others) {
-        for (const node of this._nodeFilter(nodes, node => DOM.isElement(node) || DOM.isDocument(node) || Core.isWindow(node))) {
+        for (const node of this._nodeFilter(nodes, node => Core.isElement(node) || Core.isDocument(node) || Core.isWindow(node))) {
             this._cloneEvents(node, others);
         }
     },
@@ -77,7 +77,7 @@ Object.assign(DOM.prototype, {
      * @param {DOM~eventCallback} [callback] The callback to remove.
      */
     removeEvent(nodes, events, callback) {
-        for (const node of this._nodeFilter(nodes, node => DOM.isElement(node) || DOM.isDocument(node) || Core.isWindow(node))) {
+        for (const node of this._nodeFilter(nodes, node => Core.isElement(node) || Core.isDocument(node) || Core.isWindow(node))) {
             this._removeEvent(node, events, callback);
         }
     },
@@ -90,7 +90,7 @@ Object.assign(DOM.prototype, {
      * @param {DOM~eventCallback} [callback] The callback to remove.
      */
     removeEventDelegate(nodes, events, delegate, callback) {
-        for (const node of this._nodeFilter(nodes, node => DOM.isElement(node) || DOM.isDocument(node) || Core.isWindow(node))) {
+        for (const node of this._nodeFilter(nodes, node => Core.isElement(node) || Core.isDocument(node) || Core.isWindow(node))) {
             this._removeEvent(node, events, callback, delegate);
         }
     },

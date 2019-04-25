@@ -2021,36 +2021,6 @@ dom.setCookie(name, value, options, json);
 
 ## Static Methods
 
-**Is Document**
-
-Returns *true* is the value is a Document.
-
-- `value` is the value you wish to test.
-
-```javascript
-const isDocument = DOM.isDocument(value);
-```
-
-**Is Element**
-
-Returns *true* is the value is a HTMLElement.
-
-- `value` is the value you wish to test.
-
-```javascript
-const isElement = DOM.isElement(value);
-```
-
-**Is Node**
-
-Returns *true* is the value is a Node.
-
-- `value` is the value you wish to test.
-
-```javascript
-const isNode = DOM.isNode(value);
-```
-
 ### Parsing
 
 **Parse HTML**
