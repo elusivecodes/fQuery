@@ -5,17 +5,76 @@
 Object.assign(DOM.prototype, {
 
     /**
-     * Return all selected nodes.
+     * Insert each node after the selection.
+     * @param {string|Node|NodeList|HTMLCollection|Node[]} nodes The input node(s), or a query selector string.
+     */
+    afterSelection(nodes) {
+        const selection = DOM._getSelection();
+
+        if (!selection.rangeCount) {
+            return;
+        }
+
+        const range = DOM._getRange(selection);
+
+        DOM._removeRanges(selection);
+        DOM._collapseRange(range);
+
+        for (const node of this._parseQuery(nodes, DOM.isNode)) {
+            DOM._insert(range, node);
+        }
+    },
+
+    /**
+     * Insert each node before the selection.
+     * @param {string|Node|NodeList|HTMLCollection|Node[]} nodes The input node(s), or a query selector string.
+     */
+    beforeSelection(nodes) {
+        const selection = DOM._getSelection();
+
+        if (!selection.rangeCount) {
+            return;
+        }
+
+        const range = DOM._getRange(selection);
+
+        DOM._removeRanges(selection);
+
+        for (const node of this._parseQuery(nodes, DOM.isNode)) {
+            DOM._insert(range, node);
+        }
+    },
+
+    /**
+     * Extract selected nodes from the DOM.
      * @returns {Node[]} The selected nodes.
      */
-    getSelection() {
-        const selection = window.getSelection();
+    extractSelection() {
+        const selection = DOM._getSelection();
 
         if (!selection.rangeCount) {
             return [];
         }
 
-        const range = selection.getRangeAt(0);
+        const range = DOM._getRange(selection);
+
+        DOM._removeRanges(selection);
+
+        return Core.merge([], DOM._extract(range));
+    },
+
+    /**
+     * Return all selected nodes.
+     * @returns {Node[]} The selected nodes.
+     */
+    getSelection() {
+        const selection = DOM._getSelection();
+
+        if (!selection.rangeCount) {
+            return [];
+        }
+
+        const range = DOM._getRange(selection);
 
         const nodes = Core.merge(
             [],
@@ -51,23 +110,23 @@ Object.assign(DOM.prototype, {
     select(nodes) {
         const node = this._nodeFind(nodes, DOM.isNode);
 
-        if (node && node.select) {
+        if (node && 'select' in node) {
             return node.select();
         }
 
-        const selection = window.getSelection();
+        const selection = DOM._getSelection();
 
         if (selection.rangeCount > 0) {
-            selection.removeAllRanges();
+            DOM._removeRanges(selection);
         }
 
         if (!node) {
             return;
         }
 
-        const range = this.context.createRange();
-        range.selectNode(node);
-        selection.addRange(range);
+        const range = this.createRange();
+        DOM._select(range, node);
+        DOM._addRange(selection, range);
     },
 
     /**
@@ -75,10 +134,10 @@ Object.assign(DOM.prototype, {
      * @param {string|Node|NodeList|HTMLCollection|Node[]} nodes The input node(s), or a query selector string.
      */
     selectAll(nodes) {
-        const selection = window.getSelection();
+        const selection = DOM._getSelection();
 
         if (selection.rangeCount) {
-            selection.removeAllRanges();
+            DOM._removeRanges(selection);
         }
 
         nodes = this.sortNodes(nodes);
@@ -87,16 +146,16 @@ Object.assign(DOM.prototype, {
             return;
         }
 
-        const range = this.context.createRange();
+        const range = this.createRange();
 
         if (nodes.length == 1) {
-            range.selectNode(nodes.shift());
+            DOM._select(range, nodes.shift());
         } else {
-            range.setStartBefore(nodes.shift());
-            range.setEndAfter(nodes.pop());
+            DOM._setStartBefore(nodes.shift());
+            DOM._setEndAfter(nodes.pop());
         }
 
-        selection.addRange(range);
+        DOM._addRange(selection, range);
     }
 
 });

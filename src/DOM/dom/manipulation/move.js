@@ -23,28 +23,6 @@ Object.assign(DOM.prototype, {
     },
 
     /**
-     * Insert each node after the selection.
-     * @param {string|Node|NodeList|HTMLCollection|Node[]} nodes The input node(s), or a query selector string.
-     */
-    afterSelection(nodes) {
-        const selection = window.getSelection();
-
-        if (!selection.rangeCount) {
-            return;
-        }
-
-        const range = selection.getRangeAt(0);
-
-        selection.removeAllRanges();
-
-        range.collapse();
-
-        for (const node of this._parseQuery(nodes, DOM.isNode)) {
-            range.insertNode(node);
-        }
-    },
-
-    /**
      * Append each other node to the first node.
      * @param {string|HTMLElement|HTMLCollection|HTMLElement[]} nodes The input node(s), or a query selector string.
      * @param {string|Node|NodeList|HTMLCollection|Node[]} others The other node(s), or a query selector or HTML string.
@@ -87,26 +65,6 @@ Object.assign(DOM.prototype, {
             node,
             this._parseQuery(others, DOM.isNode)
         );
-    },
-
-    /**
-     * Insert each node before the selection.
-     * @param {string|Node|NodeList|HTMLCollection|Node[]} nodes The input node(s), or a query selector string.
-     */
-    beforeSelection(nodes) {
-        const selection = window.getSelection();
-
-        if (!selection.rangeCount) {
-            return;
-        }
-
-        const range = selection.getRangeAt(0);
-
-        selection.removeAllRanges();
-
-        for (const node of this._parseQuery(nodes, DOM.isNode)) {
-            range.insertNode(node);
-        }
     },
 
     /**

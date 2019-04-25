@@ -41,12 +41,28 @@ Object.assign(DOM, {
             );
     },
 
-    _compareNodes(a, b) {
-        if (DOM._isSame(a, b)) {
+    /**
+     * Create a clone of a node.
+     * @param {Node} node The input node.
+     * @param {Boolean} deep Whether to deep clone the node.
+     * @returns {Node} The cloned node.
+     */
+    _clone(node, deep) {
+        return node.cloneNode(deep);
+    },
+
+    /**
+     * Compare the position of two nodes in the DOM.
+     * @param {Node} node The input node.
+     * @param {Node} other The other node.
+     * @returns {number} -1 if node is before other, 1 if other is before node, otherwise 0.
+     */
+    _compareNodes(node, other) {
+        if (this._isSame(node, other)) {
             return 0;
         }
 
-        const pos = a.compareDocumentPosition(b);
+        const pos = node.compareDocumentPosition(other);
 
         if (pos & Node.DOCUMENT_POSITION_FOLLOWING ||
             pos & Node.DOCUMENT_POSITION_CONTAINED_BY) {
@@ -137,7 +153,7 @@ Object.assign(DOM, {
     },
 
     /**
-     * Normalize a single node (remove empty Text nodes, and join neighbouring Text nodes).
+     * Normalize a single node (remove empty text nodes, and join neighbouring text nodes).
      * @param {HTMLElement} node The input node.
      */
     _normalize(node) {

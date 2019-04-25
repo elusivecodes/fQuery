@@ -136,6 +136,19 @@ Object.assign(DOM.prototype, {
     },
 
     /**
+     * Returns true if any of the nodes is considered equal to any of the other nodes.
+     * @param {string|Node|NodeList|HTMLCollection|Node[]} nodes The input node(s), or a query selector string.
+     * @returns {Boolean} TRUE if any of the nodes is considered equal to any of the other nodes, otherwise FALSE.
+     */
+    isEqual(nodes, others) {
+        others = this._nodeFilter(others, DOM.isNode);
+        return this._nodeFilter(nodes, DOM.isNode)
+            .some(node =>
+                others.find(other => DOM._isEqual(node, other))
+            );
+    },
+
+    /**
      * Returns true if any of the elements or a parent of any of the elements is "fixed".
      * @param {string|HTMLElement|HTMLCollection|HTMLElement[]} nodes The input node(s), or a query selector string.
      * @returns {Boolean} TRUE if any of the nodes is "fixed", otherwise FALSE.
@@ -163,6 +176,19 @@ Object.assign(DOM.prototype, {
         return this._nodeFilter(nodes, node => DOM.isNode(node) || DOM.isDocument(node) || Core.isWindow(node))
             .some(node =>
                 !DOM._isVisible(node)
+            );
+    },
+
+    /**
+     * Returns true if any of the nodes is considered identical to any of the other nodes.
+     * @param {string|Node|NodeList|HTMLCollection|Node[]} nodes The input node(s), or a query selector string.
+     * @returns {Boolean} TRUE if any of the nodes is considered identical to any of the other nodes, otherwise FALSE.
+     */
+    isSame(nodes, others) {
+        others = this._nodeFilter(others, DOM.isNode);
+        return this._nodeFilter(nodes, DOM.isNode)
+            .some(node =>
+                others.find(other => DOM._isSame(node, other))
             );
     },
 

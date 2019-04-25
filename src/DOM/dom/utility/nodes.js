@@ -5,6 +5,16 @@
 Object.assign(DOM.prototype, {
 
     /**
+     * Normalize nodes (remove empty text nodes, and join neighbouring text nodes).
+     * @param {string|Node|NodeList|HTMLCollection|Document|Node[]} nodes The input node(s), or a query selector string.
+     */
+    normalize(nodes) {
+        for (const node of this._nodeFilter(nodes, DOM.isNode)) {
+            DOM._normalize(node);
+        }
+    },
+
+    /**
      * Sorts nodes by their position in the document
      * @param {string|Node|NodeList|HTMLCollection|Document|Node[]} nodes The input node(s), or a query selector string.
      * @returns {Node[]} The sorted array of nodes.

@@ -5,6 +5,21 @@
 Object.assign(DOM.prototype, {
 
     /**
+     * Clone each node.
+     * @param {string|Node|NodeList|HTMLCollection|Node[]} nodes The input node(s), or a query selector string.
+     * @param {Boolean} [deep=true] Whether to also clone all descendent nodes.
+     * @param {Boolean} [cloneEvents=false] Whether to also clone events.
+     * @param {Boolean} [cloneData=false] Whether to also clone custom data.
+     * @returns {Node[]} The cloned nodes.
+     */
+    clone(nodes, deep = true, cloneEvents = false, cloneData = false) {
+        return this._nodeFilter(nodes, DOM.isNode)
+            .map(node =>
+                this._clone(node, deep, cloneEvents, cloneData)
+            );
+    },
+
+    /**
      * Create a new DOM element.
      * @param {string} tagName The type of HTML element to create.
      * @param {object} options The options to use for creating the element.
@@ -26,33 +41,42 @@ Object.assign(DOM.prototype, {
         }
 
         if ('html' in options) {
-            this.setHTML(node, options.html);
+            DOM._setProperty(node, {
+                innerHTML: options.html
+            });
         } else if ('text' in options) {
-            this.setText(node, options.text);
+            DOM._setProperty(node, {
+                innerText: options.text
+            });
         }
 
         if ('class' in options) {
-            this.addClass(node, options.class);
+            DOM._addClass(
+                node,
+                DOM._parseClasses(options.class)
+            );
         }
 
         if ('style' in options) {
-            this.setStyle(node, options.style);
+            DOM._setStyle(node, options.style);
         }
 
         if ('value' in options) {
-            this.setValue(node, options.value);
+            DOM._setProperty(node, {
+                value: options.value
+            });
         }
 
         if ('attributes' in options) {
-            this.setAttribute(node, options.attributes);
+            DOM._setAttribute(node, options.attributes);
         }
 
         if ('properties' in options) {
-            this.setProperty(node, options.properties);
+            DOM._setProperty(node, options.properties);
         }
 
         if ('dataset' in options) {
-            this.setDataset(node, options.dataset);
+            DOM._setDataset(node, options.dataset);
         }
 
         return node;
@@ -68,12 +92,88 @@ Object.assign(DOM.prototype, {
     },
 
     /**
+     * Create a new range object.
+     * @returns {Range} The new range.
+     */
+    createRange() {
+        return this.context.createRange();
+    },
+
+    /**
      * Create a new text node.
      * @param {string} text The text contents.
      * @returns {Node} The new text node.
      */
     createText(text) {
         return this.context.createTextNode(text);
+    },
+
+    /**
+     * Create an Array containing nodes parsed from a HTML string.
+     * @param {string} html The HTML input string.
+     * @returns {Node[]} An array of nodes.
+     */
+    parseHTML(html) {
+        return Core.merge(
+            [],
+            this.createRange()
+                .createContextualFragment(html)
+                .childNodes
+        );
+    },
+
+    /**
+     * Clone a single node.
+     * @param {Node} node The input node.
+     * @param {Boolean} [deep=true] Whether to also clone all descendent nodes.
+     * @param {Boolean} [cloneEvents=false] Whether to also clone events.
+     * @param {Boolean} [cloneData=false] Whether to also clone custom data.
+     * @returns {Node} The cloned node.
+     */
+    _clone(node, deep, cloneEvents, cloneData) {
+        const clone = DOM._clone(node, deep);
+
+        if (!cloneEvents && !cloneData) {
+            return clone;
+        }
+
+        if (cloneEvents) {
+            this._cloneEvents(node, clone);
+        }
+
+        if (cloneData) {
+            this._cloneData(node, clone);
+        }
+
+        if (deep) {
+            this._deepClone(node, clone, cloneEvents, cloneData);
+        }
+
+        return clone;
+    },
+
+    /**
+     * Deep clone a node.
+     * @param {Node} node The input node.
+     * @param {Node} clone The cloned node.
+     * @param {Boolean} [cloneEvents=false] Whether to also clone events.
+     * @param {Boolean} [cloneData=false] Whether to also clone custom data.
+     */
+    _deepClone(node, clone, cloneEvents, cloneData) {
+        const children = DOM._children(node, false, false, false);
+        const cloneChildren = DOM._children(clone, false, false, false);
+
+        for (let i = 0; i < children.length; i++) {
+            if (cloneEvents) {
+                this._cloneEvents(children[i], cloneChildren[i]);
+            }
+
+            if (cloneData) {
+                this._cloneData(children[i], cloneChildren[i]);
+            }
+
+            this._deepClone(children[i], cloneChildren[i]);
+        }
     }
 
 });

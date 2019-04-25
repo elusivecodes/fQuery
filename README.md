@@ -14,9 +14,11 @@ It is heavily inspired by jQuery, but utilizes ES6 syntax and features including
     - [Traversal](#traversal)
     - [Utility](#utility)
 - [AJAX](#ajax)
+    - [Scripts](#scripts)
+    - [Stylesheets](#stylesheets)
 - [Cookie](#cookie)
-- [Utility](#utility)
 - [Static Methods](#static-methods)
+    - [Parsing](#parsing)
 
 
 
@@ -29,7 +31,6 @@ By default, a `DOM` class is created on the document context, and is assigned to
 However, it is possible to create additional instances of the class on any Document context.
 
 ```javascript
-const context = DOM.parseHTML(html);
 const myDOM = new DOM(context);
 ```
 
@@ -410,11 +411,14 @@ Set custom data for each node.
 - `key` is a string indicating the custom data value to set.
 - `value` is the value you want to set the attribute to.
 
+```javascript
+dom.setData(nodes, key, value);
+```
+
 Alternatively, you can set multiple data values by passing a single `data` object as the argument with key/value pairs of the data to set.
 
 ```javascript
 dom.setData(nodes, data);
-dom.setData(nodes, key, value);
 ```
 
 ##### Position
@@ -685,8 +689,11 @@ Set style properties for each element.
 - `important` is a boolean indicating the style should be set as important, and will default to *false*.
 
 ```javascript
-dom.setStyle(nodes, styles);
 dom.setStyle(nodes, style, value, important);
+```
+
+```javascript
+dom.setStyle(nodes, styles);
 ```
 
 **Show**
@@ -864,6 +871,21 @@ Remove delegated events from each element.
 dom.removeEventDelegate(nodes, events, delegate, callback);
 ```
 
+##### Event Factory
+
+**Mouse Drag Event Factory**
+
+Create a mouse drag event (optionally limited by animation frame).
+
+- `down` is a function that accepts an *event* argument, which will be called when the event is started.
+- `move` is a function that accepts an *event* argument, which will be called when the mouse is moved during the event.
+- `up` is a function that accepts an *event* argument, which will be called when the event has ended (mouse button has been released).
+- `animated` is a boolean indicating whether to limit the move event to once per animation frame, and will default to *true*.
+
+```javascript
+const event = dom.mouseDragFactory(down, move, up, animated);
+```
+
 
 #### Manipulation
 
@@ -896,6 +918,14 @@ Create a new comment node.
 const node = dom.createComment(comment);
 ```
 
+**Create Range**
+
+Create a new range object.
+
+```javascript
+const range = dom.createRange();
+```
+
 **Create Text**
 
 Create a new text node.
@@ -904,6 +934,16 @@ Create a new text node.
 
 ```javascript
 const node = dom.createText(text);
+```
+
+**Parse HTML**
+
+Return an array containing nodes parsed from a HTML string.
+
+- `html` is a string containing the HTML data to parse.
+
+```javascript
+const nodes = dom.parseHTML(html);
 ```
 
 ##### Manipulation
@@ -939,14 +979,6 @@ Remove all children of each node from the DOM.
 
 ```javascript
 dom.empty(nodes);
-```
-
-**Extract Selection**
-
-Extract selected nodes from the DOM.
-
-```javascript
-const extracted = dom.extractSelection();
 ```
 
 **Remove**
@@ -994,16 +1026,6 @@ Insert each other node after the first node.
 dom.after(nodes, others);
 ```
 
-**After Selection**
-
-Insert each node after the selection.
-
-- `nodes` is a query selector string, a HTML string, a *Node*, *NodeList*, *HTMLCollection* or an array of nodes.
-
-```javascript
-dom.afterSelection(nodes);
-```
-
 **Append**
 
 Append each other node to the first node.
@@ -1035,16 +1057,6 @@ Insert each other node before the first node.
 
 ```javascript
 dom.before(nodes, others);
-```
-
-**Before Selection**
-
-Insert each node before the selection.
-
-- `nodes` is a query selector string, a HTML string, a *Node*, *NodeList*, *HTMLCollection* or an array of nodes.
-
-```javascript
-dom.beforeSelection(nodes);
 ```
 
 **Insert After**
@@ -1554,7 +1566,7 @@ Returns *true* if any of the elements contains a descendent matching a filter.
 - `filter` is either a function that accepts a `node` argument, a query selector string, a *Node*, *NodeList*, *HTMLCollection* or an array of nodes that the nodes will be tested for.
 
 ```javascript
-dom.contains(nodes, filter);
+const contains = dom.contains(nodes, filter);
 ```
 
 **Has Attribute**
@@ -1565,7 +1577,7 @@ Returns true if any of the elements has a specified attribute.
 - `attribute` is a string indicating the attribute value to test for.
 
 ```javascript
-dom.hasAttribute(nodes, attribute);
+const hasAttribute = dom.hasAttribute(nodes, attribute);
 ```
 
 **Has Class**
@@ -1576,7 +1588,7 @@ Returns *true* if any of the elements has any of the specified classes.
 - `classes` is an array of classes, or a space seperated string of class names to test for.
 
 ```javascript
-dom.hasClass(nodes, ...classes);
+const hasClass = dom.hasClass(nodes, ...classes);
 ```
 
 **Has Data**
@@ -1587,7 +1599,7 @@ Returns *true* if any of the nodes has custom data.
 - `key` is a string indicating the custom data value to test for.
 
 ```javascript
-dom.hasData(nodes, key);
+const hasData = dom.hasData(nodes, key);
 ```
 
 If the `key` argument is omitted, this method will return *true* if any of the nodes has any custom data.
@@ -1604,7 +1616,7 @@ Returns *true* if any of the elements has a specified property.
 - `property` is a string indicating the property value to test for.
 
 ```javascript
-dom.hasProperty(nodes, property);
+const hasProperty = dom.hasProperty(nodes, property);
 ```
 
 **Is**
@@ -1615,7 +1627,28 @@ Returns *true* if any of the elements matches a filter.
 - `filter` is either a function that accepts a `node` argument, a query selector string, a *Node*, *NodeList*, *HTMLCollection* or an array of nodes that the nodes will be tested for.
 
 ```javascript
-dom.is(nodes, filter);
+const is = dom.is(nodes, filter);
+```
+
+**Is Connected**
+
+Returns *true* if any of the nodes is connected to the DOM.
+
+- `nodes` is a query selector string, a *Node*, *NodeList*, *HTMLCollection* or an array of elements.
+
+```javascript
+const isConnected = dom.isConnected(nodes);
+```
+
+**Is Equal**
+
+Returns *true* if any of the nodes is considered equal to any of the other nodes.
+
+- `nodes` is a query selector string, a *Node*, *NodeList*, *HTMLCollection* or an array of elements.
+- `others` is a query selector string, a *Node*, *NodeList*, *HTMLCollection* or an array of elements.
+
+```javascript
+const isEqual = dom.isEqual(nodes, others);
 ```
 
 **Is Fixed**
@@ -1625,7 +1658,7 @@ Returns *true* if any of the elements or a parent of any of the elements is "fix
 - `nodes` is a query selector string, a *HTMLElement*, *HTMLCollection* or an array of elements.
 
 ```javascript
-dom.isFixed(nodes);
+const isFixed = dom.isFixed(nodes);
 ```
 
 **Is Hidden**
@@ -1635,7 +1668,18 @@ Returns *true* if any of the elements is hidden.
 - `nodes` is a query selector string, a *Node*, *NodeList*, *HTMLCollection*, *Document*, *Window* or an array of elements.
 
 ```javascript
-dom.isHidden(nodes);
+const isHidden = dom.isHidden(nodes);
+```
+
+**Is Same**
+
+Returns *true* if any of the nodes is considered identical to any of the other nodes.
+
+- `nodes` is a query selector string, a *Node*, *NodeList*, *HTMLCollection* or an array of elements.
+- `others` is a query selector string, a *Node*, *NodeList*, *HTMLCollection* or an array of elements.
+
+```javascript
+const isSame = dom.isSame(nodes, others);
 ```
 
 **Is Visible**
@@ -1645,7 +1689,7 @@ Returns *true* if any of the elements is visible.
 - `nodes` is a query selector string, a *Node*, *NodeList*, *HTMLCollection*, *Document*, *Window* or an array of elements.
 
 ```javascript
-dom.isVisible(nodes);
+const isVisible = dom.isVisible(nodes);
 ```
 
 
@@ -1715,6 +1759,34 @@ const serialArray = dom.serializeArray(nodes);
 ```
 
 ##### Selection
+
+**After Selection**
+
+Insert each node after the selection.
+
+- `nodes` is a query selector string, a HTML string, a *Node*, *NodeList*, *HTMLCollection* or an array of nodes.
+
+```javascript
+dom.afterSelection(nodes);
+```
+
+**Before Selection**
+
+Insert each node before the selection.
+
+- `nodes` is a query selector string, a HTML string, a *Node*, *NodeList*, *HTMLCollection* or an array of nodes.
+
+```javascript
+dom.beforeSelection(nodes);
+```
+
+**Extract Selection**
+
+Extract selected nodes from the DOM.
+
+```javascript
+const extracted = dom.extractSelection();
+```
 
 **Get Selection**
 
@@ -1925,40 +1997,56 @@ dom.setCookie(name, value, options, json);
 ```
 
 
-## Utility
-
-**Mouse Drag Event Factory**
-
-Create a mouse drag event (optionally limited by animation frame).
-
-- `down` is a function that accepts an *event* argument, which will be called when the event is started.
-- `move` is a function that accepts an *event* argument, which will be called when the mouse is moved during the event.
-- `up` is a function that accepts an *event* argument, which will be called when the event has ended (mouse button has been released).
-- `animated` is a boolean indicating whether to limit the move event to once per animation frame, and will default to *true*.
-
-```javascript
-const event = dom.mouseDragFactory(down, move, up, animated);
-```
-
-**Parse HTML**
-
-Return an array containing nodes parsed from a HTML string.
-
-- `html` is a string containing the HTML data to parse.
-
-```javascript
-const nodes = dom.parseHTML(html);
-```
-
-
 ## Static Methods
 
 **Is Document**
 
+Returns *true* is the value is a Document.
+
+- `value` is the value you wish to test.
+
+```javascript
+const isDocument = DOM.isDocument(value);
+```
+
 **Is Element**
+
+Returns *true* is the value is a HTMLElement.
+
+- `value` is the value you wish to test.
+
+```javascript
+const isElement = DOM.isElement(value);
+```
 
 **Is Node**
 
+Returns *true* is the value is a Node.
+
+- `value` is the value you wish to test.
+
+```javascript
+const isNode = DOM.isNode(value);
+```
+
+### Parsing
+
 **Parse HTML**
 
+Create a Document object from a HTML string.
+
+- `html` is the HTML string.
+
+```javascript
+const doc = DOM.parseHTML(html);
+```
+
 **Parse XML**
+
+Create a Document object from an XML string.
+
+- `xml` is the XML string.
+
+```javascript
+const doc = DOM.parseXML(xml);
+```
