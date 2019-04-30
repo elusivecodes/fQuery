@@ -10,7 +10,7 @@ class DOM {
      * @returns {DOM} A new DOM object.
      */
     constructor(context = document) {
-        this.context = context;
+        this._context = context;
 
         this._animating = false;
         this._animations = new Map;

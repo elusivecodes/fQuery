@@ -13,7 +13,7 @@ Object.assign(DOM.prototype, {
      * @returns {number} The height.
      */
     height(nodes, padding = true, border, margin) {
-        const node = this._nodeFind(nodes, node => Core.isElement(node) || Core.isDocument(node) || Core.isWindow(node));
+        const node = this._nodeFind(nodes, { document: true, window: true });
 
         if (!node) {
             return;
@@ -31,7 +31,7 @@ Object.assign(DOM.prototype, {
      * @returns {number} The width.
      */
     width(nodes, padding = true, border, margin) {
-        const node = this._nodeFind(nodes, node => Core.isElement(node) || Core.isDocument(node) || Core.isWindow(node));
+        const node = this._nodeFind(nodes, { document: true, window: true });
 
         if (!node) {
             return;

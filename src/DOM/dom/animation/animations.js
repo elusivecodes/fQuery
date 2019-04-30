@@ -271,15 +271,21 @@ Object.assign(DOM.prototype, {
      * @returns {Promise} A new Promise that resolves when the animation has completed.
      */
     squeezeIn(nodes, options) {
+        nodes = this._nodeFilter(nodes);
+
         options = {
+            ...DOM.animationDefaults,
             direction: 'bottom',
             ...options
         };
 
-        return Promise.all(
-            this._nodeFilter(nodes)
-                .map(node => this._squeezeIn(node, options))
+        const promises = nodes.map(node =>
+            this._squeezeIn(node, options)
         );
+
+        this._start();
+
+        return Promise.all(promises);
     },
 
     /**
@@ -293,15 +299,21 @@ Object.assign(DOM.prototype, {
      * @returns {Promise} A new Promise that resolves when the animation has completed.
      */
     squeezeOut(nodes, options) {
+        nodes = this._nodeFilter(nodes);
+
         options = {
+            ...DOM.animationDefaults,
             direction: 'bottom',
             ...options
         };
 
-        return Promise.all(
-            this._nodeFilter(nodes)
-                .map(node => this._squeezeOut(node, options))
+        const promises = nodes.map(node =>
+            this._squeezeOut(node, options)
         );
+
+        this._start();
+
+        return Promise.all(promises);
     },
 
     /**
@@ -325,7 +337,7 @@ Object.assign(DOM.prototype, {
         this._wrap(node, wrapper);
         const parent = DOM._parent(node).shift();
 
-        return this.animate(
+        return this._animate(
             node,
             (node, progress, options) => {
                 if (progress === 1) {
@@ -386,7 +398,7 @@ Object.assign(DOM.prototype, {
         this._wrap(node, wrapper);
         const parent = DOM._parent(node).shift();
 
-        return this.animate(
+        return this._animate(
             node,
             (node, progress, options) => {
                 if (progress === 1) {

@@ -54,7 +54,7 @@ Object.assign(DOM, {
     _parseFormData(data) {
         const formData = new FormData;
 
-        if (Array.isArray(data)) {
+        if (Core.isArray(data)) {
             const obj = {};
             for (const value of data) {
                 obj[value.name] = value.value;
@@ -84,7 +84,7 @@ Object.assign(DOM, {
 
             if (Core.isPlainObject(value)) {
                 this._parseFormValues(value, formData, key);
-            } else if (!Array.isArray(value)) {
+            } else if (!Core.isArray(value)) {
                 formData.set(key, value);
             } else {
                 for (const val of value) {
@@ -102,7 +102,7 @@ Object.assign(DOM, {
     _parseParams(data) {
         let values = [];
 
-        if (Array.isArray(data)) {
+        if (Core.isArray(data)) {
             values = data.map(value =>
                 this._parseParam(
                     value.name,
@@ -128,7 +128,7 @@ Object.assign(DOM, {
      * @returns {string|array} The parsed attributes.
      */
     _parseParam(key, value) {
-        if (Array.isArray(value)) {
+        if (Core.isArray(value)) {
             return value.map(val =>
                 this._parseParam(key, val)
             ).flat();

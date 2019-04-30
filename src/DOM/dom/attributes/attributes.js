@@ -94,7 +94,9 @@ Object.assign(DOM.prototype, {
      * @param {string} attribute The attribute name.
      */
     removeAttribute(nodes, attribute) {
-        for (const node of this._nodeFilter(nodes)) {
+        nodes = this._nodeFilter(nodes);
+
+        for (const node of nodes) {
             DOM._removeAttribute(node, attribute);
         }
     },
@@ -105,7 +107,9 @@ Object.assign(DOM.prototype, {
      * @param {string} property The property name.
      */
     removeProperty(nodes, property) {
-        for (const node of this._nodeFilter(nodes)) {
+        nodes = this._nodeFilter(nodes);
+
+        for (const node of nodes) {
             DOM._removeProperty(node, property);
         }
     },
@@ -117,9 +121,11 @@ Object.assign(DOM.prototype, {
      * @param {string} [value] The attribute value.
      */
     setAttribute(nodes, attribute, value) {
+        nodes = this._nodeFilter(nodes);
+
         const attributes = DOM._parseData(attribute, value);
 
-        for (const node of this._nodeFilter(nodes)) {
+        for (const node of nodes) {
             DOM._setAttribute(node, attributes);
         }
     },
@@ -131,9 +137,11 @@ Object.assign(DOM.prototype, {
      * @param {string} [value] The dataset value.
      */
     setDataset(nodes, key, value) {
+        nodes = this._nodeFilter(nodes);
+
         const dataset = DOM._parseData(key, value);
 
-        for (const node of this._nodeFilter(nodes)) {
+        for (const node of nodes) {
             DOM._setDataset(node, dataset);
         }
     },
@@ -160,9 +168,11 @@ Object.assign(DOM.prototype, {
      * @param {string} [value] The property value.
      */
     setProperty(nodes, property, value) {
+        nodes = this._nodeFilter(nodes);
+
         const properties = DOM._parseData(property, value);
 
-        for (const node of this._nodeFilter(nodes)) {
+        for (const node of nodes) {
             DOM._setProperty(node, properties);
         }
     },

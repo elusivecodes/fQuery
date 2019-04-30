@@ -8,6 +8,7 @@ Object.assign(DOM.prototype, {
      * @callback DOM~animationCallback
      * @param {HTMLElement} node The input node.
      * @param {number} progress The animation progress.
+     * @param {object} options The options to use for animating.
      */
 
     /**
@@ -21,15 +22,16 @@ Object.assign(DOM.prototype, {
      * @returns {Promise} A new Promise that resolves when the animation has completed.
      */
     animate(nodes, callback, options) {
+        nodes = this._nodeFilter(nodes);
+
         options = {
             ...DOM.animationDefaults,
             ...options
         };
 
-        const promises = this._nodeFilter(nodes)
-            .map(node =>
-                this._animate(node, callback, options)
-            );
+        const promises = nodes.map(node =>
+            this._animate(node, callback, options)
+        );
 
         this._start();
 
@@ -42,7 +44,9 @@ Object.assign(DOM.prototype, {
      * @param {Boolean} [finish=true] Whether to complete all current animations.
      */
     stop(nodes, finish = true) {
-        for (const node of this._nodeFilter(nodes)) {
+        nodes = this._nodeFilter(nodes);
+
+        for (const node of nodes) {
             this._stop(node, finish);
         }
     },

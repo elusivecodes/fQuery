@@ -7,15 +7,15 @@ Object.assign(DOM.prototype, {
     /**
      * Return all elements matching a selector.
      * @param {string} selector The query selector.
-     * @param {string|HTMLElement|HTMLCollection|Document|HTMLElement[]} [nodes] The input node(s), or a query selector string.
+     * @param {string|HTMLElement|HTMLCollection|Document|HTMLElement[]} [nodes=this._context] The input node(s), or a query selector string.
      * @returns {HTMLElement[]} The matching nodes.
      */
-    find(selector, nodes = this.context) {
+    find(selector, nodes = this._context) {
         // fast selector
         const match = selector.match(DOM.fastRegex);
         if (match) {
             if (match[1] === '#') {
-                return this.findById(match[2]);
+                return this.findById(match[2], nodes);
             }
 
             if (match[1] === '.') {
@@ -37,16 +37,15 @@ Object.assign(DOM.prototype, {
     /**
      * Return all elements with a specific class.
      * @param {string} className The class name.
-     * @param {string|HTMLElement|HTMLCollection|Document|HTMLElement[]} [nodes] The input node(s), or a query selector string.
+     * @param {string|HTMLElement|HTMLCollection|Document|HTMLElement[]} [nodes=this._context] The input node(s), or a query selector string.
      * @returns {HTMLElement[]} The matching nodes.
      */
-    findByClass(className, nodes = this.context) {
-        // single node case
-        if (Core.isElement(nodes) || Core.isDocument(nodes)) {
+    findByClass(className, nodes = this._context) {
+        if (Core.isDocument(nodes) || Core.isElement(nodes)) {
             return Core.merge([], DOM._findByClass(className, nodes));
         }
 
-        nodes = this._nodeFilter(nodes, node => Core.isElement(node) || Core.isDocument(node));
+        nodes = this._nodeFilter(nodes, { document: true });
 
         const results = [];
 
@@ -65,37 +64,43 @@ Object.assign(DOM.prototype, {
     /**
      * Return all elements with a specific ID.
      * @param {string} id The id.
-     * @param {string|HTMLElement|HTMLCollection|Document|HTMLElement[]} [nodes] The input node(s), or a query selector string.
+     * @param {string|HTMLElement|HTMLCollection|Document|HTMLElement[]} [nodes=this._context] The input node(s), or a query selector string.
      * @returns {HTMLElement[]} The matching nodes.
      */
-    findById(id, nodes = this.context) {
-        const result = DOM._findById(id, this.context);
+    findById(id, nodes = this._context) {
+        const result = DOM._findById(id, this._context);
 
-        if (!result ||
-            (
-                nodes !== this.context &&
-                !this.hasOne(nodes, result)
-            )
-        ) {
+        if (!result) {
             return [];
         }
 
-        return [result];
+        if (Core.isDocument(nodes)) {
+            return [result];
+        }
+
+        if (Core.isElement(nodes)) {
+            return DOM._has(nodes, result) ?
+                [result] :
+                [];
+        }
+
+        return this.contains(nodes, result) ?
+            [result] :
+            [];
     },
 
     /**
      * Return all elements with a specific tag.
      * @param {string} tagName The tag name.
-     * @param {string|HTMLElement|HTMLCollection|Document|HTMLElement[]} [nodes] The input node(s), or a query selector string.
+     * @param {string|HTMLElement|HTMLCollection|Document|HTMLElement[]} [nodes=this._context] The input node(s), or a query selector string.
      * @returns {HTMLElement[]} The matching nodes.
      */
-    findByTag(tagName, nodes = this.context) {
-        // single node case
-        if (Core.isElement(nodes) || Core.isDocument(nodes)) {
+    findByTag(tagName, nodes = this._context) {
+        if (Core.isDocument(nodes) || Core.isElement(nodes)) {
             return Core.merge([], DOM._findByTag(tagName, nodes));
         }
 
-        nodes = this._nodeFilter(nodes, node => Core.isElement(node) || Core.isDocument(node));
+        nodes = this._nodeFilter(nodes, { document: true });
 
         const results = [];
 
@@ -114,15 +119,15 @@ Object.assign(DOM.prototype, {
     /**
      * Return a single element matching a selector.
      * @param {string} selector The query selector.
-     * @param {string|HTMLElement|HTMLCollection|Document|HTMLElement[]} [nodes] The input node(s), or a query selector string.
+     * @param {string|HTMLElement|HTMLCollection|Document|HTMLElement[]} [nodes=this._context] The input node(s), or a query selector string.
      * @returns {HTMLElement} The matching node.
      */
-    findOne(selector, nodes = this.context) {
+    findOne(selector, nodes = this._context) {
         // fast selector
         const match = selector.match(DOM.fastRegex);
         if (match) {
             if (match[1] === '#') {
-                return this.findOneById(match[2]);
+                return this.findOneById(match[2], nodes);
             }
 
             if (match[1] === '.') {
@@ -144,16 +149,15 @@ Object.assign(DOM.prototype, {
     /**
      * Return a single element with a specific class.
      * @param {string} className The class name.
-     * @param {string|HTMLElement|HTMLCollection|Document|HTMLElement[]} [nodes] The input node(s), or a query selector string.
+     * @param {string|HTMLElement|HTMLCollection|Document|HTMLElement[]} [nodes=this._context] The input node(s), or a query selector string.
      * @returns {HTMLElement} The matching node.
      */
-    findOneByClass(className, nodes = this.context) {
-        // single node case
-        if (Core.isElement(nodes) || Core.isDocument(nodes)) {
+    findOneByClass(className, nodes = this._context) {
+        if (Core.isDocument(nodes) || Core.isElement(nodes)) {
             return DOM._findByClass(className, nodes).item(0);
         }
 
-        nodes = this._nodeFilter(nodes, node => Core.isElement(node) || Core.isDocument(node));
+        nodes = this._nodeFilter(nodes, { document: true });
 
         for (const node of nodes) {
             const result = DOM._findByClass(className, node).item(0);
@@ -168,37 +172,43 @@ Object.assign(DOM.prototype, {
     /**
      * Return a single element with a specific ID.
      * @param {string} id The id.
-     * @param {string|HTMLElement|HTMLCollection|Document|HTMLElement[]} [nodes] The input node(s), or a query selector string.
+     * @param {string|HTMLElement|HTMLCollection|Document|HTMLElement[]} [nodes=this._context] The input node(s), or a query selector string.
      * @returns {HTMLElement} The matching element.
      */
-    findOneById(id, nodes = this.context) {
-        const result = DOM._findById(id, this.context);
+    findOneById(id, nodes = this._context) {
+        const result = DOM._findById(id, this._context);
 
-        if (!result ||
-            (
-                nodes !== this.context &&
-                !this.hasOne(nodes, result)
-            )
-        ) {
+        if (!result) {
             return null;
         }
 
-        return result;
+        if (Core.isDocument(nodes)) {
+            return result;
+        }
+
+        if (Core.isElement(nodes)) {
+            return DOM._has(nodes, result) ?
+                result :
+                null;
+        }
+
+        return this.contains(nodes, result) ?
+            result :
+            null;
     },
 
     /**
      * Return a single element with a specific tag.
      * @param {string} tagName The tag name.
-     * @param {string|HTMLElement|HTMLCollection|Document|HTMLElement[]} [nodes] The input node(s), or a query selector string.
+     * @param {string|HTMLElement|HTMLCollection|Document|HTMLElement[]} [nodes=this._context] The input node(s), or a query selector string.
      * @returns {HTMLElement} The matching node.
      */
-    findOneByTag(tagName, nodes = this.context) {
-        // single node case
-        if (Core.isElement(nodes) || Core.isDocument(nodes)) {
+    findOneByTag(tagName, nodes = this._context) {
+        if (Core.isDocument(nodes) || Core.isElement(nodes)) {
             return DOM._findByTag(tagName, nodes).item(0);
         }
 
-        nodes = this._nodeFilter(nodes, node => Core.isElement(node) || Core.isDocument(node));
+        nodes = this._nodeFilter(nodes, { document: true });
 
         for (const node of nodes) {
             const result = DOM._findByTag(tagName, node).item(0);
@@ -213,26 +223,25 @@ Object.assign(DOM.prototype, {
     /**
      * Return all elements matching a custom CSS selector.
      * @param {string} selector The custom query selector.
-     * @param {string|HTMLElement|HTMLCollection|Document|HTMLElement[]} [nodes] The input node(s), or a query selector string.
+     * @param {string|HTMLElement|HTMLCollection|Document|HTMLElement[]} [nodes=this._context] The input node(s), or a query selector string.
      * @returns {HTMLElement[]} The matching nodes.
      */
-    _findByCustom(selector, nodes = this.context) {
+    _findByCustom(selector, nodes = this._context) {
         // string case
         if (Core.isString(nodes)) {
             return DOM._findBySelector(
                 DOM._prefixSelectors(selector, `${nodes} `),
-                this.context
+                this._context
             );
         }
 
         const selectors = DOM._prefixSelectors(selector, `#${DOM.tempId} `);
 
-        // single node case
-        if (Core.isElement(nodes) || Core.isDocument(nodes)) {
+        if (Core.isElement(nodes)) {
             return Core.merge([], DOM._findByCustom(selectors, nodes));
         }
 
-        nodes = this._nodeFilter(nodes, node => Core.isElement(node) || Core.isDocument(node));
+        nodes = this._nodeFilter(nodes, { document: true });
 
         const results = [];
 
@@ -251,16 +260,15 @@ Object.assign(DOM.prototype, {
     /**
      * Return all elements matching a standard CSS selector.
      * @param {string} selector The query selector.
-     * @param {string|HTMLElement|HTMLCollection|Document|HTMLElement[]} [nodes] The input node(s), or a query selector string.
+     * @param {string|HTMLElement|HTMLCollection|Document|HTMLElement[]} [nodes=this._context] The input node(s), or a query selector string.
      * @returns {HTMLElement[]} The matching nodes.
      */
-    _findBySelector(selector, nodes = this.context) {
-        // single node case
-        if (Core.isElement(nodes) || (nodes)) {
+    _findBySelector(selector, nodes = this._context) {
+        if (Core.isDocument(nodes) || Core.isElement(nodes)) {
             return Core.merge([], DOM._findBySelector(selector, nodes));
         }
 
-        nodes = this._nodeFilter(nodes, node => Core.isElement(node) || Core.isDocument(node));
+        nodes = this._nodeFilter(nodes, { document: true });
 
         const results = [];
 
@@ -279,29 +287,29 @@ Object.assign(DOM.prototype, {
     /**
      * Return a single element matching a custom CSS selector.
      * @param {string} selector The custom query selector.
-     * @param {string|HTMLElement|HTMLCollection|Document|HTMLElement[]} [nodes] The input node(s), or a query selector string.
+     * @param {string|HTMLElement|HTMLCollection|Document|HTMLElement[]} [nodes=this._context] The input node(s), or a query selector string.
      * @returns {HTMLElement} The matching node.
      */
-    _findOneByCustom(selector, nodes = this.context) {
+    _findOneByCustom(selector, nodes = this._context) {
         // string case
         if (Core.isString(nodes)) {
             return DOM._findOneBySelector(
                 DOM._prefixSelectors(selector, `${nodes} `),
-                this.context
+                this._context
             );
         }
 
         const selectors = DOM._prefixSelectors(selector, `#${DOM.tempId} `);
 
-        // single node case
-        if (Core.isElement(nodes) || Core.isDocument(nodes)) {
+        if (Core.isElement(nodes)) {
             return DOM._findOneByCustom(selectors, nodes);
         }
 
-        nodes = this._nodeFilter(nodes, node => Core.isElement(node) || Core.isDocument(node));
+        nodes = this._nodeFilter(nodes, { document: true });
 
         for (const node of nodes) {
             const result = DOM._findOneByCustom(selectors, node);
+
             if (result) {
                 return result;
             }
@@ -313,16 +321,15 @@ Object.assign(DOM.prototype, {
     /**
      * Return a single element matching a standard CSS selector.
      * @param {string} selector The query selector.
-     * @param {string|HTMLElement|HTMLCollection|Document|HTMLElement[]} [nodes] The input node(s), or a query selector string.
+     * @param {string|HTMLElement|HTMLCollection|Document|HTMLElement[]} [nodes=this._context] The input node(s), or a query selector string.
      * @returns {HTMLElement} The matching node.
      */
-    _findOneBySelector(selector, nodes = this.context) {
-        // single node case
-        if (Core.isElement(nodes) || Core.isDocument(nodes)) {
-            return DOM._findOneBySelector(selector, nodes);
+    _findOneBySelector(selector, nodes = this._context) {
+        if (Core.isDocument(nodes) || Core.isElement(nodes)) {
+            return DOM._findBySelector(selector, nodes).item(0);
         }
 
-        nodes = this._nodeFilter(nodes, node => Core.isElement(node) || Core.isDocument(node));
+        nodes = this._nodeFilter(nodes, { document: true });
 
         for (const node of nodes) {
             const result = DOM._findOneBySelector(selector, node);

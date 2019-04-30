@@ -35,7 +35,9 @@ Object.assign(DOM.prototype, {
             return;
         }
 
-        for (const node of this._nodeFilter(nodes)) {
+        nodes = this._nodeFilter(nodes);
+
+        for (const node of nodes) {
             this._constrain(node, containerBox);
         }
     },
@@ -92,10 +94,12 @@ Object.assign(DOM.prototype, {
      * @returns {HTMLElement} The nearest node.
      */
     nearestTo(nodes, x, y, offset) {
-        let closest = null;
-        let closestDistance = Number.MAX_VALUE;
+        let closest = null,
+            closestDistance = Number.MAX_VALUE;
 
-        for (const node of this._nodeFilter(nodes)) {
+        nodes = this._nodeFilter(nodes);
+
+        for (const node of nodes) {
             const dist = this.distTo(node, x, y, offset);
             if (dist && dist < closestDistance) {
                 closestDistance = dist;

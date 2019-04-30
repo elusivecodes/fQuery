@@ -10,7 +10,9 @@ Object.assign(DOM.prototype, {
      * @param {string|Node|NodeList|HTMLCollection|Window|Node[]} others The other node(s), or a query selector string.
      */
     cloneData(nodes, others) {
-        for (const node of this._nodeFilter(nodes, node => Core.isNode(node) || Core.isDocument(node) || Core.isWindow(node))) {
+        nodes = this._nodeFilter(nodes, { node: true, document: true, window: true });
+
+        for (const node of nodes) {
             this._cloneData(node, others);
         }
     },
@@ -22,7 +24,7 @@ Object.assign(DOM.prototype, {
      * @returns {*} The data value.
      */
     getData(nodes, key) {
-        const node = this._nodeFind(nodes, node => Core.isNode(node) || Core.isDocument(node) || Core.isWindow(node));
+        const node = this._nodeFind(nodes, { node: true, document: true, window: true });
 
         if (!node) {
             return;
@@ -37,7 +39,9 @@ Object.assign(DOM.prototype, {
      * @param {string} [key] The data key.
      */
     removeData(nodes, key) {
-        for (const node of this._nodeFilter(nodes, node => Core.isNode(node) || Core.isDocument(node) || Core.isWindow(node))) {
+        nodes = this._nodeFilter(nodes, { node: true, document: true, window: true });
+
+        for (const node of nodes) {
             this._removeData(node, key);
         }
     },
@@ -49,9 +53,11 @@ Object.assign(DOM.prototype, {
      * @param {*} [value] The data value.
      */
     setData(nodes, key, value) {
+        nodes = this._nodeFilter(nodes, { node: true, document: true, window: true });
+
         const data = DOM._parseData(key, value);
 
-        for (const node of this._nodeFilter(nodes, node => Core.isNode(node) || Core.isDocument(node) || Core.isWindow(node))) {
+        for (const node of nodes) {
             this._setData(node, data);
         }
     },
@@ -101,7 +107,9 @@ Object.assign(DOM.prototype, {
 
         if (key) {
             const data = this._data.get(node);
+
             delete data[key];
+
             if (Object.keys(data).length) {
                 return;
             }

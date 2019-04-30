@@ -9,6 +9,8 @@ Object.assign(DOM.prototype, {
      * @param {string|Node|NodeList|HTMLCollection|Node[]} nodes The input node(s), or a query selector string.
      */
     afterSelection(nodes) {
+        nodes = this._nodeFilter(nodes, { node: true, html: true });
+
         const selection = DOM._getSelection();
 
         if (!selection.rangeCount) {
@@ -20,7 +22,7 @@ Object.assign(DOM.prototype, {
         DOM._removeRanges(selection);
         DOM._collapseRange(range);
 
-        for (const node of this._parseQuery(nodes, Core.isNode)) {
+        for (const node of nodes) {
             DOM._insert(range, node);
         }
     },
@@ -30,6 +32,8 @@ Object.assign(DOM.prototype, {
      * @param {string|Node|NodeList|HTMLCollection|Node[]} nodes The input node(s), or a query selector string.
      */
     beforeSelection(nodes) {
+        nodes = this._nodeFilter(nodes, { node: true, html: true });
+
         const selection = DOM._getSelection();
 
         if (!selection.rangeCount) {
@@ -40,7 +44,7 @@ Object.assign(DOM.prototype, {
 
         DOM._removeRanges(selection);
 
-        for (const node of this._parseQuery(nodes, Core.isNode)) {
+        for (const node of nodes) {
             DOM._insert(range, node);
         }
     },
@@ -108,7 +112,7 @@ Object.assign(DOM.prototype, {
      * @param {string|Node|NodeList|HTMLCollection|Node[]} nodes The input node(s), or a query selector string.
      */
     select(nodes) {
-        const node = this._nodeFind(nodes, Core.isNode);
+        const node = this._nodeFind(nodes, { node: true });
 
         if (node && 'select' in node) {
             return node.select();
@@ -134,13 +138,13 @@ Object.assign(DOM.prototype, {
      * @param {string|Node|NodeList|HTMLCollection|Node[]} nodes The input node(s), or a query selector string.
      */
     selectAll(nodes) {
+        nodes = this.sort(nodes);
+
         const selection = DOM._getSelection();
 
         if (selection.rangeCount) {
             DOM._removeRanges(selection);
         }
-
-        nodes = this.sort(nodes);
 
         if (!nodes.length) {
             return;
@@ -156,6 +160,39 @@ Object.assign(DOM.prototype, {
         }
 
         DOM._addRange(selection, range);
+    },
+
+    /**
+     * Wrap selected nodes with other nodes.
+     * @param {string|Node|NodeList|HTMLCollection|Node[]} nodes The input node(s), or a query selector string.
+     */
+    wrapSelection(nodes) {
+        nodes = this._nodeFilter(nodes, { html: true });
+
+        const selection = window.getSelection();
+
+        if (!selection.rangeCount) {
+            return;
+        }
+
+        const range = selection.getRangeAt(0);
+
+        selection.removeAllRanges();
+
+        const first = nodes.slice().shift(),
+            deepest = Core.merge(
+                [],
+                DOM._findBySelector('*', first)
+            ).find(node =>
+                !DOM._hasChildren(node)
+            ) || first,
+            children = Core.merge([], range.extractContents().childNodes);
+
+        DOM._append(deepest, children);
+
+        for (const node of nodes) {
+            range.insertNode(node);
+        }
     }
 
 });

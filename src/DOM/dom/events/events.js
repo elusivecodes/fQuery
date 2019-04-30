@@ -51,7 +51,7 @@ Object.assign(DOM.prototype, {
      * @param {DOM~eventCallback} callback The callback to execute.
      */
     ready(callback) {
-        if (this.context.readyState === 'complete') {
+        if (this._context.readyState === 'complete') {
             callback();
             return;
         }
@@ -70,7 +70,9 @@ Object.assign(DOM.prototype, {
      * @param {object} [data] Additional data to attach to the event.
      */
     triggerEvent(nodes, events, data) {
-        for (const node of this._nodeFilter(nodes, node => Core.isElement(node) || Core.isDocument(node) || Core.isWindow(node))) {
+        nodes = this._nodeFilter(nodes, { document: true, window: true });
+
+        for (const node of nodes) {
             DOM._triggerEvent(node, events, data);
         }
     }

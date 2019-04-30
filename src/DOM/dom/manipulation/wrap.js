@@ -10,7 +10,9 @@ Object.assign(DOM.prototype, {
      * @param {string|HTMLElement|HTMLCollection|HTMLElement[]|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
      */
     unwrap(nodes, filter) {
-        for (const node of this._nodeFilter(nodes, Core.isNode)) {
+        nodes = this._nodeFilter(nodes, { node: true });
+
+        for (const node of nodes) {
             this._unwrap(node, filter);
         }
     },
@@ -21,9 +23,11 @@ Object.assign(DOM.prototype, {
      * @param {string|HTMLElement|HTMLCollection|HTMLElement[]} others The other node(s), or a query selector or HTML string.
      */
     wrap(nodes, others) {
-        others = this._parseQuery(others);
+        nodes = this._nodeFilter(nodes, { node: true });
 
-        for (const node of this._nodeFilter(nodes, Core.isNode)) {
+        others = this._nodeFilter(others, { html: true });
+
+        for (const node of nodes) {
             this._wrap(node, others);
         }
     },
@@ -34,22 +38,23 @@ Object.assign(DOM.prototype, {
      * @param {string|HTMLElement|HTMLCollection|HTMLElement[]} others The other node(s), or a query selector or HTML string.
      */
     wrapAll(nodes, others) {
-        others = this._parseQuery(others);
+        nodes = this._nodeFilter(nodes, { node: true });
+
+        others = this._nodeFilter(others, { html: true });
 
         const clone = this.clone(others, true);
 
         DOM._before(nodes, clone);
-        const first = clone.shift();
 
-        DOM._append(
-            Core.merge(
+        const first = clone.shift(),
+            deepest = Core.merge(
                 [],
                 DOM._findBySelector('*', first)
             ).find(node =>
                 !DOM._hasChildren(node)
-            ) || first,
-            nodes
-        );
+            ) || first;
+
+        DOM._append(deepest, nodes);
     },
 
     /**
@@ -58,46 +63,12 @@ Object.assign(DOM.prototype, {
      * @param {string|HTMLElement|HTMLCollection|HTMLElement[]} others The other node(s), or a query selector or HTML string.
      */
     wrapInner(nodes, others) {
-        others = this._parseQuery(others);
+        nodes = this._nodeFilter(nodes, { node: true });
 
-        for (const node of this._nodeFilter(nodes, Core.isNode)) {
-            this._wrapInner(node, others);
-        }
-    },
-
-    /**
-     * Wrap selected nodes with other nodes.
-     * @param {string|Node|NodeList|HTMLCollection|Node[]} nodes The input node(s), or a query selector string.
-     */
-    wrapSelection(nodes) {
-        const selection = window.getSelection();
-
-        if (!selection.rangeCount) {
-            return;
-        }
-
-        nodes = this._parseQuery(nodes);
-
-        const range = selection.getRangeAt(0);
-
-        selection.removeAllRanges();
-
-        const first = nodes.slice().shift();
-        DOM._append(
-            Core.merge(
-                [],
-                DOM._findBySelector('*', first)
-            ).find(node =>
-                !DOM._hasChildren(node)
-            ) || first,
-            Core.merge(
-                [],
-                range.extractContents().childNodes
-            )
-        );
+        others = this._nodeFilter(others, { html: true });
 
         for (const node of nodes) {
-            range.insertNode(node);
+            this._wrapInner(node, others);
         }
     },
 
@@ -113,10 +84,9 @@ Object.assign(DOM.prototype, {
             return;
         }
 
-        DOM._before(
-            parent,
-            DOM._children(parent, false, false, false)
-        );
+        const children = DOM._children(parent, false, false, false);
+
+        DOM._before(parent, children);
 
         this._remove(parent);
     },
@@ -130,16 +100,15 @@ Object.assign(DOM.prototype, {
         const clone = this.clone(others, true);
         DOM._before(node, clone);
 
-        const first = clone.shift();
-        DOM._append(
-            Core.merge(
+        const first = clone.shift(),
+            deepest = Core.merge(
                 [],
                 DOM._findBySelector('*', first)
             ).find(node =>
                 !DOM._hasChildren(node)
-            ) || first,
-            [node]
-        );
+            ) || first;
+
+        DOM._append(deepest, [node]);
     },
 
     /**
@@ -148,19 +117,19 @@ Object.assign(DOM.prototype, {
      * @param {string|HTMLElement|HTMLCollection|HTMLElement[]} others The other node(s), or a query selector or HTML string.
      */
     _wrapInner(node, others) {
-        const clone = this.clone(others, true);
+        const children = DOM._children(node, false, false, false),
+            clone = this.clone(others, true);
         DOM._append(node, clone);
 
-        const first = clone.shift();
-        DOM._append(
-            Core.merge(
+        const first = clone.shift(),
+            deepest = Core.merge(
                 [],
                 DOM._findBySelector('*', first)
             ).find(node =>
                 !DOM._hasChildren(node)
-            ) || first,
-            DOM._children(node, false, false, false)
-        );
+            ) || first;
+
+        DOM._append(deepest, children);
     }
 
 });

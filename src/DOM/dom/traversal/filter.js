@@ -31,6 +31,52 @@ Object.assign(DOM.prototype, {
     },
 
     /**
+     * Return all elements with a descendent matching a filter.
+     * @param {string|HTMLElement|HTMLCollection|HTMLElement[]} nodes The input node(s), or a query selector string.
+     * @param {string|Node|NodeList|HTMLCollection|Node[]|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
+     * @returns {HTMLElement[]} The filtered nodes.
+     */
+    has(nodes, filter) {
+        filter = this._parseFilterContains(filter);
+
+        return this._nodeFilter(nodes, { document: true })
+            .filter((node, index) => !filter || filter(node, index));
+    },
+
+    /**
+     * Return the first element with a descendent matching a filter.
+     * @param {string|HTMLElement|HTMLCollection|HTMLElement[]} nodes The input node(s), or a query selector string.
+     * @param {string|Node|NodeList|HTMLCollection|Node[]|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
+     * @returns {HTMLElement} The filtered node.
+     */
+    hasOne(nodes, filter) {
+        filter = this._parseFilterContains(filter);
+
+        return this._nodeFilter(nodes, { document: true })
+            .find((node, index) => !filter || filter(node, index)) || null;
+    },
+
+    /**
+     * Return all hidden elements.
+     * @param {string|HTMLElement|HTMLCollection|HTMLElement[]} nodes The input node(s), or a query selector string.
+     * @returns {HTMLElement[]} The filtered nodes.
+     */
+    hidden(nodes) {
+        return this._nodeFilter(nodes, { document: true, window: true })
+            .filter(node => this.isHidden(node));
+    },
+
+    /**
+     * Return the first hidden element.
+     * @param {string|HTMLElement|HTMLCollection|HTMLElement[]} nodes The input node(s), or a query selector string.
+     * @returns {HTMLElement} The filtered node.
+     */
+    hiddenOne(nodes) {
+        return this._nodeFilter(nodes, { document: true, window: true })
+            .find(node => this.isHidden(node)) || null;
+    },
+
+    /**
      * Return all elements not matching a filter.
      * @param {string|HTMLElement|HTMLCollection|HTMLElement[]} nodes The input node(s), or a query selector string.
      * @param {string|Node|NodeList|HTMLCollection|Node[]|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
@@ -65,58 +111,12 @@ Object.assign(DOM.prototype, {
     },
 
     /**
-     * Return all elements with a descendent matching a filter.
-     * @param {string|HTMLElement|HTMLCollection|HTMLElement[]} nodes The input node(s), or a query selector string.
-     * @param {string|Node|NodeList|HTMLCollection|Node[]|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
-     * @returns {HTMLElement[]} The filtered nodes.
-     */
-    has(nodes, filter) {
-        filter = this._parseFilterContains(filter);
-
-        return this._nodeFilter(nodes, node => Core.isElement(node) || Core.isDocument(node))
-            .filter((node, index) => !filter || filter(node, index));
-    },
-
-    /**
-     * Return the first element with a descendent matching a filter.
-     * @param {string|HTMLElement|HTMLCollection|HTMLElement[]} nodes The input node(s), or a query selector string.
-     * @param {string|Node|NodeList|HTMLCollection|Node[]|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
-     * @returns {HTMLElement} The filtered node.
-     */
-    hasOne(nodes, filter) {
-        filter = this._parseFilterContains(filter);
-
-        return this._nodeFilter(nodes, node => Core.isElement(node) || Core.isDocument(node))
-            .find((node, index) => !filter || filter(node, index)) || null;
-    },
-
-    /**
-     * Return all hidden elements.
-     * @param {string|HTMLElement|HTMLCollection|HTMLElement[]} nodes The input node(s), or a query selector string.
-     * @returns {HTMLElement[]} The filtered nodes.
-     */
-    hidden(nodes) {
-        return this._nodeFilter(nodes, node => Core.isElement(node) || Core.isDocument(node) || Core.isWindow(node))
-            .filter(node => this.isHidden(node));
-    },
-
-    /**
-     * Return the first hidden element.
-     * @param {string|HTMLElement|HTMLCollection|HTMLElement[]} nodes The input node(s), or a query selector string.
-     * @returns {HTMLElement} The filtered node.
-     */
-    hiddenOne(nodes) {
-        return this._nodeFilter(nodes, node => Core.isElement(node) || Core.isDocument(node) || Core.isWindow(node))
-            .find(node => this.isHidden(node)) || null;
-    },
-
-    /**
      * Return all visible elements.
      * @param {string|HTMLElement|HTMLCollection|HTMLElement[]} nodes The input node(s), or a query selector string.
      * @returns {HTMLElement[]} The filtered nodes.
      */
     visible(nodes) {
-        return this._nodeFilter(nodes, node => Core.isElement(node) || Core.isDocument(node) || Core.isWindow(node))
+        return this._nodeFilter(nodes, { document: true, window: true })
             .filter(node => this.isVisible(node));
     },
 
@@ -126,7 +126,7 @@ Object.assign(DOM.prototype, {
      * @returns {HTMLElement} The filtered node.
      */
     visibleOne(nodes) {
-        return this._nodeFilter(nodes, node => Core.isElement(node) || Core.isDocument(node) || Core.isWindow(node))
+        return this._nodeFilter(nodes, { document: true, window: true })
             .find(node => this.isVisible(node)) || null;
     }
 

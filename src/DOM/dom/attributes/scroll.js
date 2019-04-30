@@ -10,7 +10,7 @@ Object.assign(DOM.prototype, {
      * @returns {number} The scroll X position.
      */
     getScrollX(nodes) {
-        const node = this._nodeFind(nodes, node => Core.isElement(node) || Core.isDocument(node) || Core.isWindow(node));
+        const node = this._nodeFind(nodes, { document: true, window: true });
 
         if (!node) {
             return;
@@ -25,7 +25,7 @@ Object.assign(DOM.prototype, {
      * @returns {number} The scroll Y position.
      */
     getScrollY(nodes) {
-        const node = this._nodeFind(nodes, node => Core.isElement(node) || Core.isDocument(node) || Core.isWindow(node));
+        const node = this._nodeFind(nodes, { document: true, window: true });
 
         if (!node) {
             return;
@@ -41,7 +41,9 @@ Object.assign(DOM.prototype, {
      * @param {number} y The scroll Y position.
      */
     setScroll(nodes, x, y) {
-        for (const node of this._nodeFilter(nodes, node => Core.isElement(node) || Core.isDocument(node) || Core.isWindow(node))) {
+        nodes = this._nodeFilter(nodes, { document: true, window: true });
+
+        for (const node of nodes) {
             DOM._setScroll(node, x, y);
         }
     },
@@ -52,7 +54,9 @@ Object.assign(DOM.prototype, {
      * @param {number} x The scroll X position.
      */
     setScrollX(nodes, x) {
-        for (const node of this._nodeFilter(nodes, node => Core.isElement(node) || Core.isDocument(node) || Core.isWindow(node))) {
+        nodes = this._nodeFilter(nodes, { document: true, window: true });
+
+        for (const node of nodes) {
             DOM._setScrollX(node, x);
         }
     },
@@ -63,7 +67,9 @@ Object.assign(DOM.prototype, {
      * @param {number} y The scroll Y position.
      */
     setScrollY(nodes, y) {
-        for (const node of this._nodeFilter(nodes, node => Core.isElement(node) || Core.isDocument(node) || Core.isWindow(node))) {
+        nodes = this._nodeFilter(nodes, { document: true, window: true });
+
+        for (const node of nodes) {
             DOM._setScrollY(node, y);
         }
     }

@@ -77,7 +77,7 @@ Object.assign(DOM.prototype, {
             return;
         }
 
-        const range = this.context.createRange();
+        const range = this._context.createRange();
 
         if (nodes.length == 1) {
             range.selectNode(nodes.shift());
@@ -100,79 +100,6 @@ Object.assign(DOM.prototype, {
             false,
             false,
             false
-        );
-    },
-
-    /**
-     * Return the parent of each element (optionally matching a filter).
-     * @param {string|Node|NodeList|HTMLCollection|Node[]} nodes The input node(s), or a query selector string.
-     * @param {string|Node|NodeList|HTMLCollection|Node[]|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
-     * @returns {HTMLElement[]} The matching nodes.
-     */
-    parent(nodes, filter) {
-        filter = this._parseFilter(filter);
-
-        if (Core.isNode(nodes)) {
-            return DOM._parent(nodes, filter);
-        }
-
-        nodes = this._nodeFilter(nodes, Core.isNode);
-
-        const results = [];
-
-        for (const node of nodes) {
-            Core.merge(
-                results,
-                DOM._parent(node, filter)
-            )
-        }
-
-        return nodes.length > 1 && results.length > 1 ?
-            Core.unique(results) :
-            results;
-    },
-
-    /**
-     * Return all parents of each element (optionally matching a filter, and before a limit).
-     * @param {string|Node|NodeList|HTMLCollection|Node[]} nodes The input node(s), or a query selector string.
-     * @param {string|Array|Node|NodeList|HTMLCollection|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
-     * @param {string|Array|Node|NodeList|HTMLCollection|DOM~filterCallback} [limit] The limit node(s), a query selector string or custom filter function.
-     * @param {Boolean} [first=false] Whether to only return the first matching node for each node.
-     * @returns {HTMLElement[]} The matching nodes.
-     */
-    parents(nodes, filter, limit, first = false) {
-        filter = this._parseFilter(filter);
-        limit = this._parseFilter(limit);
-
-        if (Core.isNode(nodes)) {
-            return DOM._parent(nodes, filter, limit, first);
-        }
-
-        nodes = this._nodeFilter(nodes, Core.isNode);
-
-        const results = [];
-
-        for (const node of nodes) {
-            Core.merge(
-                results,
-                DOM._parents(node, filter, limit, first)
-            )
-        }
-
-        return nodes.length > 1 && results.length > 1 ?
-            Core.unique(results) :
-            results;
-    },
-
-    /**
-     * Return the offset parent (relatively positioned) of the first element.
-     * @param {string|Node|NodeList|HTMLCollection|Node[]|QuerySet} nodes The input node(s), or a query selector string.
-     * @returns {HTMLElement} The offset parent.
-     */
-    offsetParent(nodes) {
-        return this.forceShow(
-            nodes,
-            node => node.offsetParent
         );
     },
 
@@ -229,6 +156,79 @@ Object.assign(DOM.prototype, {
             Core.merge(
                 results,
                 DOM._nextAll(node, filter, limit, first)
+            )
+        }
+
+        return nodes.length > 1 && results.length > 1 ?
+            Core.unique(results) :
+            results;
+    },
+
+    /**
+     * Return the offset parent (relatively positioned) of the first element.
+     * @param {string|Node|NodeList|HTMLCollection|Node[]|QuerySet} nodes The input node(s), or a query selector string.
+     * @returns {HTMLElement} The offset parent.
+     */
+    offsetParent(nodes) {
+        return this.forceShow(
+            nodes,
+            node => node.offsetParent
+        );
+    },
+
+    /**
+     * Return the parent of each element (optionally matching a filter).
+     * @param {string|Node|NodeList|HTMLCollection|Node[]} nodes The input node(s), or a query selector string.
+     * @param {string|Node|NodeList|HTMLCollection|Node[]|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
+     * @returns {HTMLElement[]} The matching nodes.
+     */
+    parent(nodes, filter) {
+        filter = this._parseFilter(filter);
+
+        if (Core.isElement(nodes)) {
+            return DOM._parent(nodes, filter);
+        }
+
+        nodes = this._nodeFilter(nodes, { node: true });
+
+        const results = [];
+
+        for (const node of nodes) {
+            Core.merge(
+                results,
+                DOM._parent(node, filter)
+            )
+        }
+
+        return nodes.length > 1 && results.length > 1 ?
+            Core.unique(results) :
+            results;
+    },
+
+    /**
+     * Return all parents of each element (optionally matching a filter, and before a limit).
+     * @param {string|Node|NodeList|HTMLCollection|Node[]} nodes The input node(s), or a query selector string.
+     * @param {string|Array|Node|NodeList|HTMLCollection|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
+     * @param {string|Array|Node|NodeList|HTMLCollection|DOM~filterCallback} [limit] The limit node(s), a query selector string or custom filter function.
+     * @param {Boolean} [first=false] Whether to only return the first matching node for each node.
+     * @returns {HTMLElement[]} The matching nodes.
+     */
+    parents(nodes, filter, limit, first = false) {
+        filter = this._parseFilter(filter);
+        limit = this._parseFilter(limit);
+
+        if (Core.isElement(nodes)) {
+            return DOM._parents(nodes, filter, limit, first);
+        }
+
+        nodes = this._nodeFilter(nodes, { node: true });
+
+        const results = [];
+
+        for (const node of nodes) {
+            Core.merge(
+                results,
+                DOM._parents(node, filter, limit, first)
             )
         }
 

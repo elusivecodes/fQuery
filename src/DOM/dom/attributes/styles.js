@@ -10,13 +10,15 @@ Object.assign(DOM.prototype, {
      * @param {...string|string[]} classes The classes.
      */
     addClass(nodes, ...classes) {
+        nodes = this._nodeFilter(nodes);
+
         classes = DOM._parseClasses(classes);
 
         if (!classes.length) {
             return;
         }
 
-        for (const node of this._nodeFilter(nodes)) {
+        for (const node of nodes) {
             DOM._addClass(node, classes);
         }
     },
@@ -44,14 +46,14 @@ Object.assign(DOM.prototype, {
      * @returns {string} The style value.
      */
     getStyle(nodes, style) {
-        // camelize style property
-        style = Core.snakeCase(style);
-
         const node = this._nodeFind(nodes);
 
         if (!node) {
             return;
         }
+
+        // camelize style property
+        style = Core.snakeCase(style);
 
         return DOM._getStyle(node, style);
     },
@@ -74,13 +76,15 @@ Object.assign(DOM.prototype, {
      * @param {...string|string[]} classes The classes.
      */
     removeClass(nodes, ...classes) {
+        nodes = this._nodeFilter(nodes);
+
         classes = DOM._parseClasses(classes);
 
         if (!classes.length) {
             return;
         }
 
-        for (const node of this._nodeFilter(nodes)) {
+        for (const node of nodes) {
             DOM._removeClass(node, classes);
         }
     },
@@ -93,6 +97,8 @@ Object.assign(DOM.prototype, {
      * @param {Boolean} [important] Whether the style should be !important.
      */
     setStyle(nodes, style, value, important) {
+        nodes = this._nodeFilter(nodes);
+
         const styles = DOM._parseData(style, value),
             realStyles = {};
 
@@ -108,8 +114,7 @@ Object.assign(DOM.prototype, {
             realStyles[key] = value;
         }
 
-
-        for (const node of this._nodeFilter(nodes)) {
+        for (const node of nodes) {
             DOM._setStyle(node, realStyles, important);
         }
     },
@@ -131,7 +136,9 @@ Object.assign(DOM.prototype, {
      * @param {string|HTMLElement|HTMLCollection|HTMLElement[]} nodes The input node(s), or a query selector string.
      */
     toggle(nodes) {
-        for (const node of this._nodeFilter(nodes)) {
+        nodes = this._nodeFilter(nodes);
+
+        for (const node of nodes) {
             DOM._toggle(node);
         }
     },
@@ -142,13 +149,15 @@ Object.assign(DOM.prototype, {
      * @param {...string|string[]} classes The classes.
      */
     toggleClass(nodes, ...classes) {
+        nodes = this._nodeFilter(nodes);
+
         classes = DOM._parseClasses(classes);
 
         if (!classes.length) {
             return;
         }
 
-        for (const node of this._nodeFilter(nodes)) {
+        for (const node of nodes) {
             DOM._toggleClass(node, classes);
         }
     },

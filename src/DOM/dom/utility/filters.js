@@ -7,46 +7,112 @@ Object.assign(DOM.prototype, {
     /**
      * Return a filtered array of nodes.
      * @param {string|Node|NodeList|HTMLCollection|Document|Node[]} nodes The input node(s), or a query selector string.
-     * @param {DOM~filterCallback} [filter=Core.isElement] The filter callback.
+     * @param {object} [options] The options for filtering.
+     * @param {Boolean} [options.node=false] Whether to allow text and comment nodes.
+     * @param {Boolean} [options.document=false] Whether to allow Document.
+     * @param {Boolean} [options.window=false] Whether to allow Window.
+     * @param {Boolean} [options.html=false] Whether to allow HTML strings.
+     * @param {HTMLElement|Document} [options.context=this._context] The Document context.
      * @returns {Node[]} The filtered array of nodes.
      */
-    _nodeFilter(nodes, filter = Core.isElement) {
+    _nodeFilter(nodes, options) {
         if (Core.isString(nodes)) {
-            return this.find(nodes)
-                .filter(filter);
+            if ('html' in options && options.html) {
+                return this.parseHTML(query);
+            }
+
+            return this.find(
+                nodes,
+                'context' in options ?
+                    options.context :
+                    this._context
+            );
         }
 
-        if (filter(nodes)) {
+        const nodeFilter = this._nodeFilterFactory(options);
+
+        if (nodeFilter(nodes)) {
             return [nodes];
         }
 
         return Core.wrap(nodes)
-            .filter(filter);
+            .filter(nodeFilter);
+    },
+
+    /**
+     * Return a function for filtering nodes.
+     * @param {object} [options] The options for filtering.
+     * @param {Boolean} [options.node=false] Whether to allow text and comment nodes.
+     * @param {Boolean} [options.document=false] Whether to allow Document.
+     * @param {Boolean} [options.window=false] Whether to allow Window.
+     * @returns {DOM~nodeCallback} The node filter function.
+     */
+    _nodeFilterFactory(options) {
+        options = {
+            node: false,
+            document: false,
+            window: false,
+            ...options
+        };
+
+        if (options.window && options.document) {
+            return options.node ?
+                node => Core.isNode(node) || Core.isDocument(node) || Core.isWindow(node) :
+                node => Core.isElement(node) || Core.isDocument(node) || Core.isWindow(node);
+        }
+
+        if (options.window) {
+            return options.node ?
+                node => Core.isNode(node) || Core.isWindow(node) :
+                node => Core.isElement(node) || Core.isWindow(node);
+        }
+
+        if (options.document) {
+            return options.node ?
+                node => Core.isNode(node) || Core.isDocument(node) :
+                node => Core.isElement(node) || Core.isDocument(node);
+        }
+
+        return options.node ?
+            Core.isNode :
+            Core.isElement;
     },
 
     /**
      * Return the first node matching a filter.
      * @param {string|Node|NodeList|HTMLCollection|Document|Node[]} nodes The input node(s), or a query selector string.
-     * @param {DOM~filterCallback} [filter=Core.isElement] The filter callback.
+     * @param {object} [options] The options for filtering.
+     * @param {Boolean} [options.node=false] Whether to allow text and comment nodes.
+     * @param {Boolean} [options.document=false] Whether to allow Document.
+     * @param {Boolean} [options.window=false] Whether to allow Window.
+     * @param {Boolean} [options.html=false] Whether to allow HTML strings.
+     * @param {HTMLElement|Document} [options.context=this._context] The Document context.
      * @returns {Node} The matching node.
      */
-    _nodeFind(nodes, filter = Core.isElement) {
+    _nodeFind(nodes, options) {
         if (Core.isString(nodes)) {
-            const node = this.findOne(nodes);
-            if (filter(node)) {
-                return node;
+            if ('html' in options && options.html) {
+                return this.parseHTML(query).shift();
             }
 
-            return null;
+            const node = this.findOne(
+                nodes,
+                'context' in options ?
+                    options.context :
+                    this._context
+            );
+
+            return node ?
+                node :
+                null;
         }
 
-        const node = Core.wrap(nodes).shift();
+        const nodeFilter = this._nodeFilterFactory(options),
+            node = Core.wrap(nodes).shift();
 
-        if (filter(node)) {
-            return node;
-        }
-
-        return null;
+        return nodeFilter(node) ?
+            node :
+            null;
     },
 
     /**
@@ -105,24 +171,10 @@ Object.assign(DOM.prototype, {
 
         filter = this._nodeFilter(filter);
         if (filter.length) {
-            return node => !!filter.find(other => DOM._has(node, other));
+            return node => filter.some(other => DOM._has(node, other));
         }
 
         return false;
-    },
-
-    /**
-     * Return a filtered array of nodes from a query.
-     * @param {string|Node|NodeList|HTMLCollection|Document|Node[]} nodes The input node(s), or a query selector or HTML string.
-     * @param {DOM~filterCallback} [filter=Core.isElement] The filter callback.
-     * @returns {Node[]} The filtered array of nodes.
-     */
-    _parseQuery(query = '*', filter = Core.isElement) {
-        if (Core.isString(query) && query.trim().charAt(0) === '<') {
-            return this.parseHTML(query);
-        }
-
-        return this._nodeFilter(query, filter);
     }
 
 });

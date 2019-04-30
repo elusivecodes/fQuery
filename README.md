@@ -160,6 +160,16 @@ dom.squeezeOut(nodes, options);
 
 #### Queue
 
+**Clear Queue**
+
+Clear the queue of each element.
+
+- `nodes` is a query selector string, a *HTMLElement*, *HTMLCollection* or an array of elements.
+
+```javascript
+dom.clearQueue(nodes);
+```
+
 **Queue**
 
 Queue a callback on each element.
@@ -169,16 +179,6 @@ Queue a callback on each element.
 
 ```javascript
 dom.queue(nodes, callback);
-```
-
-**Clear Queue**
-
-Clear the queue of each element.
-
-- `nodes` is a query selector string, a *HTMLElement*, *HTMLCollection* or an array of elements.
-
-```javascript
-dom.clearQueue(nodes);
 ```
 
 
@@ -891,6 +891,19 @@ const event = dom.mouseDragFactory(down, move, up, animated);
 
 #### Manipulation
 
+**Clone**
+
+Clone each node (optionally deep, and with events and data).
+
+- `nodes` is a query selector string, a *HTMLElement*, *HTMLCollection* or an array of elements.
+- `deep` is a boolean indicating whether you wish to clone all descendent elements, and will default to *true*.
+- `cloneEvents` is a boolean indicating whether you wish to clone all events to the new nodes, and will default to *false*.
+- `cloneData` is a boolean indicating whether you wish to clone all custom data to the new nodes, and will default to *false*.
+
+```javascript
+const clones = dom.clone(nodes, deep, cloneEvents, cloneData);
+```
+
 **Detach**
 
 Detach an element from the DOM.
@@ -944,19 +957,6 @@ dom.replaceWith(nodes, others);
 ```
 
 ##### Create
-
-**Clone**
-
-Clone each node (optionally deep, and with events and data).
-
-- `nodes` is a query selector string, a *HTMLElement*, *HTMLCollection* or an array of elements.
-- `deep` is a boolean indicating whether you wish to clone all descendent elements, and will default to *true*.
-- `cloneEvents` is a boolean indicating whether you wish to clone all events to the new nodes, and will default to *false*.
-- `cloneData` is a boolean indicating whether you wish to clone all custom data to the new nodes, and will default to *false*.
-
-```javascript
-const clones = dom.clone(nodes, deep, cloneEvents, cloneData);
-```
 
 **Create**
 
@@ -1151,16 +1151,6 @@ Wrap the contents of each node with other nodes.
 dom.wrapInner(nodes, others);
 ```
 
-**Wrap Selection**
-
-Wrap selected nodes with other nodes.
-
-- `nodes` is a query selector string, a HTML string, a *HTMLElement*, *HTMLCollection* or an array of elements.
-
-```javascript
-dom.wrapSelection(nodes);
-```
-
 
 #### Traversal
 
@@ -1279,15 +1269,10 @@ const filtered = dom.visibleOne(nodes);
 Find all elements matching a selector.
 
 - `selector` is a query selector string to search for.
+- `nodes` is a query selector string, a *HTMLElement*, *HTMLCollection*, *Document* or an array of elements, and will default to the *Document* context.
 
 ```javascript
-const elements = dom.find(selector);
-```
-
-You can also provide `nodes` as a second argument, where `nodes` is a query selector string, a *HTMLElement*, *HTMLCollection*, *Document* or an array of elements, which will restrict the search to descendents of these elements.
-
-```javascript
-const descendents = dom.find(selector, nodes);
+const elements = dom.find(selector, nodes);
 ```
 
 **Find By Class**
@@ -1295,15 +1280,10 @@ const descendents = dom.find(selector, nodes);
 Find all elements with a specific class.
 
 - `className` is a string indicating the class name to search for.
+- `nodes` is a query selector string, a *HTMLElement*, *HTMLCollection*, *Document* or an array of elements, and will default to the *Document* context.
 
 ```javascript
-const elements = dom.findByClass(className);
-```
-
-You can also provide `nodes` as a second argument, where `nodes` is a query selector string, a *HTMLElement*, *HTMLCollection*, *Document* or an array of elements, which will restrict the search to descendents of these elements.
-
-```javascript
-const descendents = dom.findByClass(className, nodes);
+const elements = dom.findByClass(className, nodes);
 ```
 
 **Find By ID**
@@ -1311,15 +1291,10 @@ const descendents = dom.findByClass(className, nodes);
 Find all elements with a specific ID.
 
 - `id` is a string indicating the id to search for.
+- `nodes` is a query selector string, a *HTMLElement*, *HTMLCollection*, *Document* or an array of elements, and will default to the *Document* context.
 
 ```javascript
-const elements = dom.findById(id);
-```
-
-You can also provide `nodes` as a second argument, where `nodes` is a query selector string, a *HTMLElement*, *HTMLCollection*, *Document* or an array of elements, which will restrict the search to descendents of these elements.
-
-```javascript
-const descendents = dom.findById(id, nodes);
+const elements = dom.findById(id, nodes);
 ```
 
 **Find By Tag**
@@ -1327,15 +1302,10 @@ const descendents = dom.findById(id, nodes);
 Find all elements with a specific tag.
 
 - `tagName` is a string indicating the tag name to search for.
+- `nodes` is a query selector string, a *HTMLElement*, *HTMLCollection*, *Document* or an array of elements, and will default to the *Document* context.
 
 ```javascript
-const elements = dom.findByTag(tagName);
-```
-
-You can also provide `nodes` as a second argument, where `nodes` is a query selector string, a *HTMLElement*, *HTMLCollection*, *Document* or an array of elements, which will restrict the search to descendents of these elements.
-
-```javascript
-const descendents = dom.findByTag(tagName, nodes);
+const elements = dom.findByTag(tagName, nodes);
 ```
 
 **Find One**
@@ -1343,15 +1313,10 @@ const descendents = dom.findByTag(tagName, nodes);
 Find a single element matching a selector.
 
 - `selector` is a query selector string to search for.
+- `nodes` is a query selector string, a *HTMLElement*, *HTMLCollection*, *Document* or an array of elements, and will default to the *Document* context.
 
 ```javascript
-const element = dom.findOne(selectors);
-```
-
-You can also provide `nodes` as a second argument, where `nodes` is a query selector string, a *HTMLElement*, *HTMLCollection*, *Document* or an array of elements, which will restrict the search to descendents of these elements.
-
-```javascript
-const descendent = dom.findOne(selectors, nodes);
+const element = dom.findOne(selectors, nodes);
 ```
 
 **Find One By Class**
@@ -1359,15 +1324,10 @@ const descendent = dom.findOne(selectors, nodes);
 Find the first element with a specific class.
 
 - `className` is a string indicating the class name to search for.
+- `nodes` is a query selector string, a *HTMLElement*, *HTMLCollection*, *Document* or an array of elements, and will default to the *Document* context.
 
 ```javascript
-const element = dom.findOneByClass(className);
-```
-
-You can also provide `nodes` as a second argument, where `nodes` is a query selector string, a *HTMLElement*, *HTMLCollection*, *Document* or an array of elements, which will restrict the search to descendents of these elements.
-
-```javascript
-const descendent = dom.findOneByClass(className, nodes);
+const element = dom.findOneByClass(className, nodes);
 ```
 
 **Find One By ID**
@@ -1375,15 +1335,10 @@ const descendent = dom.findOneByClass(className, nodes);
 Find the first element with a specific ID.
 
 - `id` is a string indicating the id to search for.
+- `nodes` is a query selector string, a *HTMLElement*, *HTMLCollection*, *Document* or an array of elements, and will default to the *Document* context.
 
 ```javascript
-const element = dom.findOneById(id);
-```
-
-You can also provide `nodes` as a second argument, where `nodes` is a query selector string, a *HTMLElement*, *HTMLCollection*, *Document* or an array of elements, which will restrict the search to descendents of these elements.
-
-```javascript
-const descendent = dom.findOneById(id, nodes);
+const element = dom.findOneById(id, nodes);
 ```
 
 **Find One By Tag**
@@ -1391,15 +1346,10 @@ const descendent = dom.findOneById(id, nodes);
 Find the first element with a specific tag.
 
 - `tagName` is a string indicating the tag name to search for.
+- `nodes` is a query selector string, a *HTMLElement*, *HTMLCollection*, *Document* or an array of elements, and will default to the *Document* context.
 
 ```javascript
-const element = dom.findOneByTag(tagName);
-```
-
-You can also provide `nodes` as a second argument, where `nodes` is a query selector string, a *HTMLElement*, *HTMLCollection*, *Document* or an array of elements, which will restrict the search to descendents of these elements.
-
-```javascript
-const descendent = dom.findOneByTag(tagName, nodes);
+const element = dom.findOneByTag(tagName, nodes);
 ```
 
 
@@ -1410,7 +1360,7 @@ const descendent = dom.findOneByTag(tagName, nodes);
 Find the first child of each element (optionally matching a filter).
 
 - `nodes` is a query selector string, a *HTMLElement*, *HTMLCollection* or an array of elements.
-- `filter` is either a function that accepts a `node` argument, a query selector string, a *Node*, *NodeList*, *HTMLCollection* or an array of nodes that the nodes will be filtered by.
+- `filter` is either a function that accepts a `node` argument, a query selector string, a *Node*, *NodeList*, *HTMLCollection* or an array of nodes that the nodes will be filtered by, and will default to *false*.
 
 ```javascript
 const child = dom.child(nodes, filter);
@@ -1421,7 +1371,7 @@ const child = dom.child(nodes, filter);
 Find all children of each element (optionally matching a filter).
 
 - `nodes` is a query selector string, a *HTMLElement*, *HTMLCollection* or an array of elements.
-- `filter` is either a function that accepts a `node` argument, a query selector string, a *Node*, *NodeList*, *HTMLCollection* or an array of nodes that the nodes will be filtered by.
+- `filter` is either a function that accepts a `node` argument, a query selector string, a *Node*, *NodeList*, *HTMLCollection* or an array of nodes that the nodes will be filtered by, and will default to *false*.
 - `first` is a boolean indicating whether to only return the first matching node for each node, and will default to *false*.
 - `elementsOnly` is a boolean indicating whether to only return elements, and will default to *true*.
 
@@ -1434,8 +1384,8 @@ const children = dom.children(nodes, filter, first, elementsOnly);
 Find the closest ancestor to each element (optionally matching a filter, and before a limit).
 
 - `nodes` is a query selector string, a *Node*, *NodeList*, *HTMLCollection* or an array of nodes.
-- `filter` is either a function that accepts a `node` argument, a query selector string, a *Node*, *NodeList*, *HTMLCollection* or an array of nodes that the nodes will be filtered by.
-- `limit` is either a function that accepts a `node` argument, a query selector string, a *Node*, *NodeList*, *HTMLCollection* or an array of nodes that when matched will stop the search.
+- `filter` is either a function that accepts a `node` argument, a query selector string, a *Node*, *NodeList*, *HTMLCollection* or an array of nodes that the nodes will be filtered by, and will default to *false*.
+- `limit` is either a function that accepts a `node` argument, a query selector string, a *Node*, *NodeList*, *HTMLCollection* or an array of nodes that when matched will stop the search, and will default to *false*.
 
 ```javascript
 const closest = dom.closest(nodes, filter, limit);
@@ -1461,28 +1411,28 @@ Find all children of each element (including text and comment nodes).
 const contents = dom.contents(nodes);
 ```
 
-**Parent**
+**Next**
 
-Find the parent of each element (optionally matching a filter).
+Find the next sibling for each element (optionally matching a filter).
 
 - `nodes` is a query selector string, a *Node*, *NodeList*, *HTMLCollection* or an array of nodes.
-- `filter` is either a function that accepts a `node` argument, a query selector string, a *Node*, *NodeList*, *HTMLCollection* or an array of nodes that the nodes will be filtered by.
+- `filter` is either a function that accepts a `node` argument, a query selector string, a *Node*, *NodeList*, *HTMLCollection* or an array of nodes that the nodes will be filtered by, and will default to *false*.
 
 ```javascript
-const parent = dom.parent(nodes, filter);
+const next = dom.next(nodes, filter);
 ```
 
-**Parents**
+**Next All**
 
-Find all parents of each element (optionally matching a filter, and before a limit).
+Find all next siblings for each element (optionally matching a filter, and before a limit).
 
 - `nodes` is a query selector string, a *Node*, *NodeList*, *HTMLCollection* or an array of nodes.
-- `filter` is either a function that accepts a `node` argument, a query selector string, a *Node*, *NodeList*, *HTMLCollection* or an array of nodes that the nodes will be filtered by.
-- `limit` is either a function that accepts a `node` argument, a query selector string, a *Node*, *NodeList*, *HTMLCollection* or an array of nodes that when matched will stop the search.
+- `filter` is either a function that accepts a `node` argument, a query selector string, a *Node*, *NodeList*, *HTMLCollection* or an array of nodes that the nodes will be filtered by, and will default to *false*.
+- `limit` is either a function that accepts a `node` argument, a query selector string, a *Node*, *NodeList*, *HTMLCollection* or an array of nodes that when matched will stop the search, and will default to *false*.
 - `first` is a boolean indicating whether to only return the first matching node for each node, and will default to *false*.
 
 ```javascript
-const parents = dom.parents(nodes, filter, limit, first);
+const nextAll = dom.nextAll(nodes, filter, limit, first);
 ```
 
 **Offset Parent**
@@ -1495,28 +1445,28 @@ Find the offset parent (relatively positioned) of the first element.
 const offsetParent = dom.offsetParent(nodes);
 ```
 
-**Next**
+**Parent**
 
-Find the next sibling for each element (optionally matching a filter).
+Find the parent of each element (optionally matching a filter).
 
 - `nodes` is a query selector string, a *Node*, *NodeList*, *HTMLCollection* or an array of nodes.
-- `filter` is either a function that accepts a `node` argument, a query selector string, a *Node*, *NodeList*, *HTMLCollection* or an array of nodes that the nodes will be filtered by.
+- `filter` is either a function that accepts a `node` argument, a query selector string, a *Node*, *NodeList*, *HTMLCollection* or an array of nodes that the nodes will be filtered by, and will default to *false*.
 
 ```javascript
-const next = dom.next(nodes, filter);
+const parent = dom.parent(nodes, filter);
 ```
 
-**Next All**
+**Parents**
 
-Find all next siblings for each element (optionally matching a filter, and before a limit).
+Find all parents of each element (optionally matching a filter, and before a limit).
 
 - `nodes` is a query selector string, a *Node*, *NodeList*, *HTMLCollection* or an array of nodes.
-- `filter` is either a function that accepts a `node` argument, a query selector string, a *Node*, *NodeList*, *HTMLCollection* or an array of nodes that the nodes will be filtered by.
-- `limit` is either a function that accepts a `node` argument, a query selector string, a *Node*, *NodeList*, *HTMLCollection* or an array of nodes that when matched will stop the search.
+- `filter` is either a function that accepts a `node` argument, a query selector string, a *Node*, *NodeList*, *HTMLCollection* or an array of nodes that the nodes will be filtered by, and will default to *false*.
+- `limit` is either a function that accepts a `node` argument, a query selector string, a *Node*, *NodeList*, *HTMLCollection* or an array of nodes that when matched will stop the search, and will default to *false*.
 - `first` is a boolean indicating whether to only return the first matching node for each node, and will default to *false*.
 
 ```javascript
-const nextAll = dom.nextAll(nodes, filter, limit, first);
+const parents = dom.parents(nodes, filter, limit, first);
 ```
 
 **Previous**
@@ -1524,7 +1474,7 @@ const nextAll = dom.nextAll(nodes, filter, limit, first);
 Find the previous sibling for each element (optionally matching a filter).
 
 - `nodes` is a query selector string, a *Node*, *NodeList*, *HTMLCollection* or an array of nodes.
-- `filter` is either a function that accepts a `node` argument, a query selector string, a *Node*, *NodeList*, *HTMLCollection* or an array of nodes that the nodes will be filtered by.
+- `filter` is either a function that accepts a `node` argument, a query selector string, a *Node*, *NodeList*, *HTMLCollection* or an array of nodes that the nodes will be filtered by, and will default to *false*.
 
 ```javascript
 const prev = dom.prev(nodes, filter);
@@ -1535,8 +1485,8 @@ const prev = dom.prev(nodes, filter);
 Find all previous siblings for each element (optionally matching a filter, and before a limit).
 
 - `nodes` is a query selector string, a *Node*, *NodeList*, *HTMLCollection* or an array of nodes.
-- `filter` is either a function that accepts a `node` argument, a query selector string, a *Node*, *NodeList*, *HTMLCollection* or an array of nodes that the nodes will be filtered by.
-- `limit` is either a function that accepts a `node` argument, a query selector string, a *Node*, *NodeList*, *HTMLCollection* or an array of nodes that when matched will stop the search.
+- `filter` is either a function that accepts a `node` argument, a query selector string, a *Node*, *NodeList*, *HTMLCollection* or an array of nodes that the nodes will be filtered by, and will default to *false*.
+- `limit` is either a function that accepts a `node` argument, a query selector string, a *Node*, *NodeList*, *HTMLCollection* or an array of nodes that when matched will stop the search, and will default to *false*.
 - `first` is a boolean indicating whether to only return the first matching node for each node, and will default to *false*.
 
 ```javascript
@@ -1548,7 +1498,7 @@ const prevAll = dom.prevAll(nodes, filter, limit, first);
 Find all siblings for each element (optionally matching a filter).
 
 - `nodes` is a query selector string, a *Node*, *NodeList*, *HTMLCollection* or an array of nodes.
-- `filter` is either a function that accepts a `node` argument, a query selector string, a *Node*, *NodeList*, *HTMLCollection* or an array of nodes that the nodes will be filtered by.
+- `filter` is either a function that accepts a `node` argument, a query selector string, a *Node*, *NodeList*, *HTMLCollection* or an array of nodes that the nodes will be filtered by, and will default to *false*.
 - `elementsOnly` is a boolean indicating whether to only return elements, and will default to *true*.
 
 ```javascript
@@ -1571,9 +1521,19 @@ Returns *true* if any of the elements contains a descendent matching a filter.
 const contains = dom.contains(nodes, filter);
 ```
 
+**Has Animation**
+
+Returns *true* if any of the elements has a CSS animation.
+
+- `nodes` is a query selector string, a *HTMLElement*, *HTMLCollection* or an array of elements.
+
+```javascript
+const hasAnimation = dom.hasAnimation(nodes);
+```
+
 **Has Attribute**
 
-Returns true if any of the elements has a specified attribute.
+Returns *true* if any of the elements has a specified attribute.
 
 - `nodes` is a query selector string, a *HTMLElement*, *HTMLCollection* or an array of elements.
 - `attribute` is a string indicating the attribute value to test for.
@@ -1619,6 +1579,16 @@ Returns *true* if any of the elements has a specified property.
 
 ```javascript
 const hasProperty = dom.hasProperty(nodes, property);
+```
+
+**Has Transition**
+
+Returns *true* if any of the elements has a CSS transition.
+
+- `nodes` is a query selector string, a *HTMLElement*, *HTMLCollection* or an array of elements.
+
+```javascript
+const hasTransition = dom.hasTransition(nodes);
 ```
 
 **Is**
@@ -1694,6 +1664,73 @@ Returns *true* if any of the elements is visible.
 const isVisible = dom.isVisible(nodes);
 ```
 
+##### Selection
+
+**After Selection**
+
+Insert each node after the selection.
+
+- `nodes` is a query selector string, a HTML string, a *Node*, *NodeList*, *HTMLCollection* or an array of nodes.
+
+```javascript
+dom.afterSelection(nodes);
+```
+
+**Before Selection**
+
+Insert each node before the selection.
+
+- `nodes` is a query selector string, a HTML string, a *Node*, *NodeList*, *HTMLCollection* or an array of nodes.
+
+```javascript
+dom.beforeSelection(nodes);
+```
+
+**Extract Selection**
+
+Extract selected nodes from the DOM.
+
+```javascript
+const extracted = dom.extractSelection();
+```
+
+**Get Selection**
+
+Return all selected nodes.
+
+```javascript
+const selected = dom.getSelection();
+```
+
+**Select**
+
+Create a selection on the first node.
+
+- `nodes` is a query selector string, a *Node*, *NodeList*, *HTMLCollection* or an array of elements.
+
+```javascript
+dom.select(nodes);
+```
+
+**Select All**
+
+Create a selection on all nodes.
+
+- `nodes` is a query selector string, a *Node*, *NodeList*, *HTMLCollection* or an array of elements.
+
+```javascript
+dom.selectAll(nodes);
+```
+
+**Wrap Selection**
+
+Wrap selected nodes with other nodes.
+
+- `nodes` is a query selector string, a HTML string, a *HTMLElement*, *HTMLCollection* or an array of elements.
+
+```javascript
+dom.wrapSelection(nodes);
+```
 
 ##### Utility
 
@@ -1778,64 +1815,6 @@ Sort nodes by their position in the document
 
 ```javascript
 const sorted = dom.sort(nodes);
-```
-
-##### Selection
-
-**After Selection**
-
-Insert each node after the selection.
-
-- `nodes` is a query selector string, a HTML string, a *Node*, *NodeList*, *HTMLCollection* or an array of nodes.
-
-```javascript
-dom.afterSelection(nodes);
-```
-
-**Before Selection**
-
-Insert each node before the selection.
-
-- `nodes` is a query selector string, a HTML string, a *Node*, *NodeList*, *HTMLCollection* or an array of nodes.
-
-```javascript
-dom.beforeSelection(nodes);
-```
-
-**Extract Selection**
-
-Extract selected nodes from the DOM.
-
-```javascript
-const extracted = dom.extractSelection();
-```
-
-**Get Selection**
-
-Return all selected nodes.
-
-```javascript
-const selected = dom.getSelection();
-```
-
-**Select**
-
-Create a selection on the first node.
-
-- `nodes` is a query selector string, a *Node*, *NodeList*, *HTMLCollection* or an array of elements.
-
-```javascript
-dom.select(nodes);
-```
-
-**Select All**
-
-Create a selection on all nodes.
-
-- `nodes` is a query selector string, a *Node*, *NodeList*, *HTMLCollection* or an array of elements.
-
-```javascript
-dom.selectAll(nodes);
 ```
 
 

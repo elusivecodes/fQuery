@@ -5,11 +5,29 @@
 Object.assign(DOM.prototype, {
 
     /**
+     * Clone each node.
+     * @param {string|Node|NodeList|HTMLCollection|Node[]} nodes The input node(s), or a query selector string.
+     * @param {Boolean} [deep=true] Whether to also clone all descendent nodes.
+     * @param {Boolean} [cloneEvents=false] Whether to also clone events.
+     * @param {Boolean} [cloneData=false] Whether to also clone custom data.
+     * @returns {Node[]} The cloned nodes.
+     */
+    clone(nodes, deep = true, cloneEvents = false, cloneData = false) {
+        nodes = this._nodeFilter(nodes, { node: true });
+
+        return nodes.map(node =>
+            this._clone(node, deep, cloneEvents, cloneData)
+        );
+    },
+
+    /**
      * Detach each node from the DOM.
      * @param {string|Node|NodeList|HTMLCollection|Node[]} nodes The input node(s), or a query selector string.
      */
     detach(nodes) {
-        for (const node of this._nodeFilter(nodes, Core.isNode)) {
+        nodes = this._nodeFilter(nodes, { node: true });
+
+        for (const node of nodes) {
             DOM._detach(node);
         }
     },
@@ -19,7 +37,9 @@ Object.assign(DOM.prototype, {
      * @param {string|HTMLElement|HTMLCollection|Document|HTMLElement[]} nodes The input node(s), or a query selector string.
      */
     empty(nodes) {
-        for (const node of this._nodeFilter(nodes, node => Core.isElement(node) || Core.isDocument(node))) {
+        nodes = this._nodeFilter(nodes, { document: true });
+
+        for (const node of nodes) {
             this._empty(node);
         }
     },
@@ -29,7 +49,9 @@ Object.assign(DOM.prototype, {
      * @param {string|Node|NodeList|HTMLCollection|Node[]} nodes The input node(s), or a query selector string.
      */
     remove(nodes) {
-        for (const node of this._nodeFilter(nodes, Core.isNode)) {
+        nodes = this._nodeFilter(nodes, { node: true });
+
+        for (const node of nodes) {
             this._remove(node);
         }
     },
@@ -49,10 +71,66 @@ Object.assign(DOM.prototype, {
      * @param {string|Node|NodeList|HTMLCollection|Node[]} others The other node(s), or a query selector or HTML string.
      */
     replaceWith(nodes, others) {
-        others = this._parseQuery(others, Core.isNode);
+        nodes = this._nodeFilter(nodes, { node: true });
 
-        for (const node of this._nodeFilter(nodes, Core.isNode)) {
+        others = this._nodeFilter(others, { node: true, html: true });
+
+        for (const node of nodes) {
             this._replaceWith(node, others);
+        }
+    },
+
+    /**
+     * Clone a single node.
+     * @param {Node} node The input node.
+     * @param {Boolean} [deep=true] Whether to also clone all descendent nodes.
+     * @param {Boolean} [cloneEvents=false] Whether to also clone events.
+     * @param {Boolean} [cloneData=false] Whether to also clone custom data.
+     * @returns {Node} The cloned node.
+     */
+    _clone(node, deep, cloneEvents, cloneData) {
+        const clone = DOM._clone(node, deep);
+
+        if (!cloneEvents && !cloneData) {
+            return clone;
+        }
+
+        if (cloneEvents) {
+            this._cloneEvents(node, clone);
+        }
+
+        if (cloneData) {
+            this._cloneData(node, clone);
+        }
+
+        if (deep) {
+            this._deepClone(node, clone, cloneEvents, cloneData);
+        }
+
+        return clone;
+    },
+
+    /**
+     * Deep clone a node.
+     * @param {Node} node The input node.
+     * @param {Node} clone The cloned node.
+     * @param {Boolean} [cloneEvents=false] Whether to also clone events.
+     * @param {Boolean} [cloneData=false] Whether to also clone custom data.
+     */
+    _deepClone(node, clone, cloneEvents, cloneData) {
+        const children = DOM._children(node, false, false, false);
+        const cloneChildren = DOM._children(clone, false, false, false);
+
+        for (let i = 0; i < children.length; i++) {
+            if (cloneEvents) {
+                this._cloneEvents(children[i], cloneChildren[i]);
+            }
+
+            if (cloneData) {
+                this._cloneData(children[i], cloneChildren[i]);
+            }
+
+            this._deepClone(children[i], cloneChildren[i]);
         }
     },
 
@@ -61,7 +139,9 @@ Object.assign(DOM.prototype, {
      * @param {HTMLElement} node The input node.
      */
     _empty(node) {
-        for (const child of DOM._children(node, false, false, false)) {
+        const children = DOM._children(node, false, false, false);
+
+        for (const child of children) {
             this._remove(child);
         }
     },

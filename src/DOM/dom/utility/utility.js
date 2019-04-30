@@ -11,7 +11,7 @@ Object.assign(DOM.prototype, {
      * @returns {Boolean} TRUE if the command was executed, otherwise FALSE.
      */
     exec(command, value = null) {
-        return this.context.execCommand(command, false, value);
+        return this._context.execCommand(command, false, value);
     },
 
     /**
@@ -26,7 +26,7 @@ Object.assign(DOM.prototype, {
      * @returns {*} The result of the callback.
      */
     forceShow(nodes, callback) {
-        const node = this._nodeFind(nodes, node => Core.isNode(node) || Core.isDocument(node) || Core.isWindow(node));
+        const node = this._nodeFind(nodes, { node: true, document: true, window: true });
 
         if (!node) {
             return;
@@ -36,44 +36,30 @@ Object.assign(DOM.prototype, {
             return callback(node);
         }
 
-        const elements = new Map;
+        const hidden = new Map,
+            elements = [];
 
         if (this._css(node, 'display') === 'none') {
-            elements.set(node, DOM._getAttribute(node, 'style'));
+            elements.push(node);
         }
 
-        const parents = DOM._parents(
+        Core.merge(elements, DOM._parents(
             node,
             parent =>
-                this._css(parent, 'display') === 'none',
-            parent =>
-                !Core.isElement(parent)
-        );
+                this._css(parent, 'display') === 'none'
+        ));
 
-        for (const parent of parents) {
-            elements.set(parent, DOM._getAttribute(parent, 'style'));
-        }
+        for (const element of elements) {
+            hidden.set(element, DOM._getAttribute(element, 'style'));
 
-        for (const element of elements.keys()) {
-            DOM._setStyle(
-                element,
-                {
-                    display: 'initial'
-                },
-                true
-            );
+            DOM._setStyle(element, { display: 'initial' }, true);
         }
 
         const result = callback(node);
 
-        for (const [element, style] of elements) {
+        for (const [element, style] of hidden) {
             if (style) {
-                DOM._setStyle(
-                    element,
-                    {
-                        display: style
-                    }
-                )
+                DOM._setAttribute(element, { style });
             } else {
                 DOM._removeAttribute(element, 'style');
             }
@@ -119,7 +105,9 @@ Object.assign(DOM.prototype, {
      * @param {string|Node|NodeList|HTMLCollection|Document|Node[]} nodes The input node(s), or a query selector string.
      */
     normalize(nodes) {
-        for (const node of this._nodeFilter(nodes, Core.isNode)) {
+        nodes = this._nodeFilter(nodes, { node: true });
+
+        for (const node of nodes) {
             DOM._normalize(node);
         }
     },
@@ -138,7 +126,7 @@ Object.assign(DOM.prototype, {
     /**
      * Return a serialized array containing names and values of all form elements.
      * @param {string|HTMLElement|HTMLCollection|HTMLElement[]} nodes The input node(s), or a query selector string.
-     * @returns {Array} The serialized array.
+     * @returns {array} The serialized array.
      */
     serializeArray(nodes) {
         return this._nodeFilter(nodes)
@@ -185,7 +173,7 @@ Object.assign(DOM.prototype, {
      * @returns {Node[]} The sorted array of nodes.
      */
     sort(nodes) {
-        return this._nodeFilter(nodes, Core.isNode)
+        return this._nodeFilter(nodes, { node: true })
             .sort((node, other) => DOM._compareNodes(node, other));
     }
 

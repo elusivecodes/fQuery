@@ -16,7 +16,9 @@ Object.assign(DOM.prototype, {
      * @param {DOM~eventCallback} callback The callback to execute.
      */
     addEvent(nodes, events, callback) {
-        for (const node of this._nodeFilter(nodes, node => Core.isElement(node) || Core.isDocument(node) || Core.isWindow(node))) {
+        nodes = this._nodeFilter(nodes, { document: true, window: true });
+
+        for (const node of nodes) {
             this._addEvent(node, events, callback);
         }
     },
@@ -29,7 +31,9 @@ Object.assign(DOM.prototype, {
      * @param {DOM~eventCallback} callback The callback to execute.
      */
     addEventDelegate(nodes, events, delegate, callback) {
-        for (const node of this._nodeFilter(nodes, node => Core.isElement(node) || Core.isDocument(node) || Core.isWindow(node))) {
+        nodes = this._nodeFilter(nodes, { document: true, window: true });
+
+        for (const node of nodes) {
             this._addEvent(node, events, callback, delegate);
         }
     },
@@ -42,7 +46,9 @@ Object.assign(DOM.prototype, {
      * @param {DOM~eventCallback} callback The callback to execute.
      */
     addEventDelegateOnce(nodes, events, delegate, callback) {
-        for (const node of this._nodeFilter(nodes, node => Core.isElement(node) || Core.isDocument(node) || Core.isWindow(node))) {
+        nodes = this._nodeFilter(nodes, { document: true, window: true });
+
+        for (const node of nodes) {
             this._addEvent(node, events, callback, delegate, true);
         }
     },
@@ -54,7 +60,9 @@ Object.assign(DOM.prototype, {
      * @param {DOM~eventCallback} callback The callback to execute.
      */
     addEventOnce(nodes, events, callback) {
-        for (const node of this._nodeFilter(nodes, node => Core.isElement(node) || Core.isDocument(node) || Core.isWindow(node))) {
+        nodes = this._nodeFilter(nodes, { document: true, window: true });
+
+        for (const node of nodes) {
             this._addEvent(node, events, callback, null, true);
         }
     },
@@ -65,7 +73,9 @@ Object.assign(DOM.prototype, {
      * @param {string|HTMLElement|HTMLCollection|Document|Window|HTMLElement[]} others The other node(s), or a query selector string.
      */
     cloneEvents(nodes, others) {
-        for (const node of this._nodeFilter(nodes, node => Core.isElement(node) || Core.isDocument(node) || Core.isWindow(node))) {
+        nodes = this._nodeFilter(nodes, { document: true, window: true });
+
+        for (const node of nodes) {
             this._cloneEvents(node, others);
         }
     },
@@ -77,7 +87,9 @@ Object.assign(DOM.prototype, {
      * @param {DOM~eventCallback} [callback] The callback to remove.
      */
     removeEvent(nodes, events, callback) {
-        for (const node of this._nodeFilter(nodes, node => Core.isElement(node) || Core.isDocument(node) || Core.isWindow(node))) {
+        nodes = this._nodeFilter(nodes, { document: true, window: true });
+
+        for (const node of nodes) {
             this._removeEvent(node, events, callback);
         }
     },
@@ -90,7 +102,9 @@ Object.assign(DOM.prototype, {
      * @param {DOM~eventCallback} [callback] The callback to remove.
      */
     removeEventDelegate(nodes, events, delegate, callback) {
-        for (const node of this._nodeFilter(nodes, node => Core.isElement(node) || Core.isDocument(node) || Core.isWindow(node))) {
+        nodes = this._nodeFilter(nodes, { document: true, window: true });
+
+        for (const node of nodes) {
             this._removeEvent(node, events, callback, delegate);
         }
     },
@@ -118,17 +132,17 @@ Object.assign(DOM.prototype, {
             this._events.set(node, {});
         }
 
-        const nodeEvents = this._events.get(node);
-
-        const eventData = {
-            delegate,
-            callback,
-            realCallback,
-            selfDestruct
-        };
+        const nodeEvents = this._events.get(node),
+            eventData = {
+                delegate,
+                callback,
+                realCallback,
+                selfDestruct
+            };
 
         for (const event of DOM._parseEvents(events)) {
             const realEvent = DOM._parseEvent(event);
+
             eventData.event = event;
             eventData.realEvent = realEvent;
 
@@ -180,11 +194,10 @@ Object.assign(DOM.prototype, {
             return;
         }
 
-        const nodeEvents = this._events.get(node);
-
-        const eventArray = events ?
-            DOM._parseEvents(events) :
-            Object.keys(nodeEvents);
+        const nodeEvents = this._events.get(node),
+            eventArray = events ?
+                DOM._parseEvents(events) :
+                Object.keys(nodeEvents);
 
         for (const event of eventArray) {
             const realEvent = DOM._parseEvent(event);

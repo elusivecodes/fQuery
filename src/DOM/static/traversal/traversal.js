@@ -34,58 +34,6 @@ Object.assign(DOM, {
     },
 
     /**
-     * Return the parent of a single element (optionally matching a filter).
-     * @param {HTMLElement} node The input node.
-     * @param {DOM~filterCallback} [filter] The filter function.
-     * @returns {HTMLElement[]} The matching nodes.
-     */
-    _parent(node, filter) {
-        const results = [];
-
-        if (!node.parentNode) {
-            return results;
-        }
-
-        if (filter && !filter(node.parentNode)) {
-            return results;
-        }
-
-        results.push(node.parentNode);
-
-        return results;
-    },
-
-    /**
-     * Return all parents of a single element (optionally matching a filter, and before a limit).
-     * @param {HTMLElement} node The input node.
-     * @param {DOM~filterCallback} [filter] The filter function.
-     * @param {DOM~filterCallback} [limit] The limit function.
-     * @param {Boolean} [first=false] Whether to only return the first matching node for each node.
-     * @returns {HTMLElement[]} The matching nodes.
-     */
-    _parents(node, filter, limit, closest = false) {
-        const results = [];
-
-        while (node = node.parentNode) {
-            if (limit && limit(node)) {
-                break;
-            }
-
-            if (filter && !filter(node)) {
-                continue;
-            }
-
-            results.push(node);
-
-            if (closest) {
-                break;
-            }
-        }
-
-        return results;
-    },
-
-    /**
      * Return the next sibling for a single element (optionally matching a filter).
      * @param {HTMLElement} node The input node.
      * @param {DOM~filterCallback} [filter] The filter function.
@@ -140,6 +88,58 @@ Object.assign(DOM, {
             results.push(node);
 
             if (first) {
+                break;
+            }
+        }
+
+        return results;
+    },
+
+    /**
+     * Return the parent of a single element (optionally matching a filter).
+     * @param {HTMLElement} node The input node.
+     * @param {DOM~filterCallback} [filter] The filter function.
+     * @returns {HTMLElement[]} The matching nodes.
+     */
+    _parent(node, filter) {
+        const results = [];
+
+        if (!node.parentNode) {
+            return results;
+        }
+
+        if (filter && !filter(node.parentNode)) {
+            return results;
+        }
+
+        results.push(node.parentNode);
+
+        return results;
+    },
+
+    /**
+     * Return all parents of a single element (optionally matching a filter, and before a limit).
+     * @param {HTMLElement} node The input node.
+     * @param {DOM~filterCallback} [filter] The filter function.
+     * @param {DOM~filterCallback} [limit] The limit function.
+     * @param {Boolean} [first=false] Whether to only return the first matching node for each node.
+     * @returns {HTMLElement[]} The matching nodes.
+     */
+    _parents(node, filter, limit, closest = false) {
+        const results = [];
+
+        while (node = node.parentNode) {
+            if (!Core.isElement(node) || (limit && limit(node))) {
+                break;
+            }
+
+            if (filter && !filter(node)) {
+                continue;
+            }
+
+            results.push(node);
+
+            if (closest) {
                 break;
             }
         }

@@ -10,16 +10,15 @@ Object.assign(DOM.prototype, {
      * @param {string|Node|NodeList|HTMLCollection|Node[]} others The other node(s), or a query selector or HTML string.
      */
     after(nodes, others) {
-        const node = this._nodeFind(nodes, Core.isNode);
+        const node = this._nodeFind(nodes, { node: true });
 
         if (!node) {
             return;
         }
 
-        DOM._after(
-            node,
-            this._parseQuery(others, Core.isNode)
-        );
+        others = this._nodeFilter(others, { node: true, html: true });
+
+        DOM._after(node, others);
     },
 
     /**
@@ -34,10 +33,9 @@ Object.assign(DOM.prototype, {
             return;
         }
 
-        DOM._append(
-            node,
-            this._parseQuery(others, Core.isNode)
-        );
+        others = this._nodeFilter(others, { node: true, html: true });
+
+        DOM._append(node, others);
     },
 
     /**
@@ -55,16 +53,15 @@ Object.assign(DOM.prototype, {
      * @param {string|Node|NodeList|HTMLCollection|Node[]} others The other node(s), or a query selector or HTML string.
      */
     before(nodes, others) {
-        const node = this._nodeFind(nodes, Core.isNode);
+        const node = this._nodeFind(nodes, { node: true });
 
         if (!node) {
             return;
         }
 
-        DOM._before(
-            node,
-            this._parseQuery(others, Core.isNode)
-        );
+        others = this._nodeFilter(others, { node: true, html: true });
+
+        DOM._before(node, others);
     },
 
     /**
@@ -97,10 +94,9 @@ Object.assign(DOM.prototype, {
             return;
         }
 
-        DOM._prepend(
-            node,
-            this._parseQuery(others, Core.isNode)
-        );
+        others = this._nodeFilter(others, { node: true, html: true });
+
+        DOM._prepend(node, others);
     },
 
     /**

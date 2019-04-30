@@ -11,7 +11,7 @@ Object.assign(DOM.prototype, {
      * @returns {*} The cookie value.
      */
     getCookie(name, json = false) {
-        const cookie = decodeURIComponent(this.context.cookie)
+        const cookie = decodeURIComponent(this._context.cookie)
             .split(';')
             .find(cookie =>
                 cookie.trimStart()
@@ -86,7 +86,7 @@ Object.assign(DOM.prototype, {
             }
         }
 
-        this.context.cookie = cookie;
+        this._context.cookie = cookie;
     }
 
 });
