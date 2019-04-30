@@ -5078,7 +5078,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
   Object.assign(DOM.prototype, {
     /**
      * Return a filtered array of nodes.
-     * @param {string|Node|NodeList|HTMLCollection|Document|Node[]} nodes The input node(s), or a query selector string.
+     * @param {string|Node|NodeList|HTMLCollection|Document|Node[]} nodes The input node(s), or a query selector or HTML string.
      * @param {object} [options] The options for filtering.
      * @param {Boolean} [options.node=false] Whether to allow text and comment nodes.
      * @param {Boolean} [options.document=false] Whether to allow Document.
@@ -5087,10 +5087,12 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
      * @param {HTMLElement|Document} [options.context=this._context] The Document context.
      * @returns {Node[]} The filtered array of nodes.
      */
-    _nodeFilter: function _nodeFilter(nodes, options) {
+    _nodeFilter: function _nodeFilter(nodes) {
+      var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+
       if (Core.isString(nodes)) {
-        if ('html' in options && options.html) {
-          return this.parseHTML(query);
+        if ('html' in options && options.html && nodes.trim().charAt(0) === '<') {
+          return this.parseHTML(nodes);
         }
 
         return this.find(nodes, 'context' in options ? options.context : this._context);
@@ -5149,7 +5151,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Return the first node matching a filter.
-     * @param {string|Node|NodeList|HTMLCollection|Document|Node[]} nodes The input node(s), or a query selector string.
+     * @param {string|Node|NodeList|HTMLCollection|Document|Node[]} nodes The input node(s), or a query selector or HTML string.
      * @param {object} [options] The options for filtering.
      * @param {Boolean} [options.node=false] Whether to allow text and comment nodes.
      * @param {Boolean} [options.document=false] Whether to allow Document.
@@ -5158,10 +5160,12 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
      * @param {HTMLElement|Document} [options.context=this._context] The Document context.
      * @returns {Node} The matching node.
      */
-    _nodeFind: function _nodeFind(nodes, options) {
+    _nodeFind: function _nodeFind(nodes) {
+      var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+
       if (Core.isString(nodes)) {
-        if ('html' in options && options.html) {
-          return this.parseHTML(query).shift();
+        if ('html' in options && options.html && nodes.trim().charAt(0) === '<') {
+          return this.parseHTML(nodes).shift();
         }
 
         var _node = this.findOne(nodes, 'context' in options ? options.context : this._context);

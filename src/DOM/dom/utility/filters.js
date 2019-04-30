@@ -6,7 +6,7 @@ Object.assign(DOM.prototype, {
 
     /**
      * Return a filtered array of nodes.
-     * @param {string|Node|NodeList|HTMLCollection|Document|Node[]} nodes The input node(s), or a query selector string.
+     * @param {string|Node|NodeList|HTMLCollection|Document|Node[]} nodes The input node(s), or a query selector or HTML string.
      * @param {object} [options] The options for filtering.
      * @param {Boolean} [options.node=false] Whether to allow text and comment nodes.
      * @param {Boolean} [options.document=false] Whether to allow Document.
@@ -15,10 +15,10 @@ Object.assign(DOM.prototype, {
      * @param {HTMLElement|Document} [options.context=this._context] The Document context.
      * @returns {Node[]} The filtered array of nodes.
      */
-    _nodeFilter(nodes, options) {
+    _nodeFilter(nodes, options = {}) {
         if (Core.isString(nodes)) {
-            if ('html' in options && options.html) {
-                return this.parseHTML(query);
+            if ('html' in options && options.html && nodes.trim().charAt(0) === '<') {
+                return this.parseHTML(nodes);
             }
 
             return this.find(
@@ -80,7 +80,7 @@ Object.assign(DOM.prototype, {
 
     /**
      * Return the first node matching a filter.
-     * @param {string|Node|NodeList|HTMLCollection|Document|Node[]} nodes The input node(s), or a query selector string.
+     * @param {string|Node|NodeList|HTMLCollection|Document|Node[]} nodes The input node(s), or a query selector or HTML string.
      * @param {object} [options] The options for filtering.
      * @param {Boolean} [options.node=false] Whether to allow text and comment nodes.
      * @param {Boolean} [options.document=false] Whether to allow Document.
@@ -89,10 +89,10 @@ Object.assign(DOM.prototype, {
      * @param {HTMLElement|Document} [options.context=this._context] The Document context.
      * @returns {Node} The matching node.
      */
-    _nodeFind(nodes, options) {
+    _nodeFind(nodes, options = {}) {
         if (Core.isString(nodes)) {
-            if ('html' in options && options.html) {
-                return this.parseHTML(query).shift();
+            if ('html' in options && options.html && nodes.trim().charAt(0) === '<') {
+                return this.parseHTML(nodes).shift();
             }
 
             const node = this.findOne(
