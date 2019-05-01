@@ -37,11 +37,11 @@ It is heavily inspired by jQuery, but utilizes ES6 syntax and features including
 
 ## DOM
 
-The `DOM` class provides all the base methods for manipulating the DOM, performing AJAX requests, handling Cookies and more.
+The *DOM* class provides all the base methods for manipulating the DOM, performing AJAX requests, handling cookies and more.
 
-By default, a `DOM` class is created on the document context, and is assigned to the lowercase `dom` variable in the global scope.
+By default, a *DOM* class is created on the `document` context, and is assigned to the lowercase `dom` variable in the global scope.
 
-However, it is possible to create additional instances of the class on any Document context.
+However, it is possible to create additional instances of the class on any *Document* context.
 
 ```javascript
 const myDOM = new DOM(context);
@@ -80,9 +80,9 @@ dom.stop(nodes, finish);
 
 #### Animations
 
-**Drop In/Out**
+**Drop In**
 
-Drop each element in or out of place.
+Drop each element into place.
 
 - `nodes` is a query selector string, a *HTMLElement*, *HTMLCollection* or an array of elements.
 - `options` is an object containing properties to define how the animation should be handled.
@@ -95,12 +95,28 @@ This function returns a *Promise*, that will resolve after the animation has com
 
 ```javascript
 dom.dropIn(nodes, options);
+```
+
+**Drop Out**
+
+Drop each element out of place.
+
+- `nodes` is a query selector string, a *HTMLElement*, *HTMLCollection* or an array of elements.
+- `options` is an object containing properties to define how the animation should be handled.
+    - `direction` is a string or function that returns either "*top*", "*right*", "*bottom*" or "*left*" indicating the direction to drop from, and will default to "*top*".
+    - `duration` is the number of milliseconds that the animation should last, and will default to *1000*.
+    - `type` is a string of either "*ease-in*", "*ease-out*", "*ease-in-out*" or "*linear*" indicating the type of animation to run, and will default to "*ease-in-out*".
+    - `infinite` is a boolean indicating whether the animation should continue forever, and will default to *false*.
+
+This function returns a *Promise*, that will resolve after the animation has completed.
+
+```javascript
 dom.dropOut(nodes, options);
 ```
 
-**Fade In/Out**
+**Fade In**
 
-Fade the opacity of each element in or out.
+Fade the opacity of each element in.
 
 - `nodes` is a query selector string, a *HTMLElement*, *HTMLCollection* or an array of elements.
 - `options` is an object containing properties to define how the animation should be handled.
@@ -112,12 +128,27 @@ This function returns a *Promise*, that will resolve after the animation has com
 
 ```javascript
 dom.fadeIn(nodes, options);
+```
+
+**Fade Out**
+
+Fade the opacity of each element out.
+
+- `nodes` is a query selector string, a *HTMLElement*, *HTMLCollection* or an array of elements.
+- `options` is an object containing properties to define how the animation should be handled.
+    - `duration` is the number of milliseconds that the animation should last, and will default to *1000*.
+    - `type` is a string of either "*ease-in*", "*ease-out*", "*ease-in-out*" or "*linear*" indicating the type of animation to run, and will default to "*ease-in-out*".
+    - `infinite` is a boolean indicating whether the animation should continue forever, and will default to *false*.
+
+This function returns a *Promise*, that will resolve after the animation has completed.
+
+```javascript
 dom.fadeOut(nodes, options);
 ```
 
-**Rotate In/Out**
+**Rotate In**
 
-Rotate each element in or out on an X,Y.
+Rotate each element in on an X,Y.
 
 - `nodes` is a query selector string, a *HTMLElement*, *HTMLCollection* or an array of elements.
 - `options` is an object containing properties to define how the animation should be handled.
@@ -132,12 +163,30 @@ This function returns a *Promise*, that will resolve after the animation has com
 
 ```javascript
 dom.rotateIn(nodes, options);
+```
+
+**Rotate Out**
+
+Rotate each element out on an X,Y.
+
+- `nodes` is a query selector string, a *HTMLElement*, *HTMLCollection* or an array of elements.
+- `options` is an object containing properties to define how the animation should be handled.
+    - `x` is the amount of rotation to apply to the X axis, and will default to *0*.
+    - `y` is the amount of rotation to apply to the Y axis, and will default to *1*.
+    - `inverse` is a boolean indicating whether to rotate in the opposite direction, and will default to *false*.
+    - `duration` is the number of milliseconds that the animation should last, and will default to *1000*.
+    - `type` is a string of either "*ease-in*", "*ease-out*", "*ease-in-out*" or "*linear*" indicating the type of animation to run, and will default to "*ease-in-out*".
+    - `infinite` is a boolean indicating whether the animation should continue forever, and will default to *false*.
+
+This function returns a *Promise*, that will resolve after the animation has completed.
+
+```javascript
 dom.rotateOut(nodes, options);
 ```
 
-**Slide In/Out**
+**Slide In**
 
-Slide each element into or out of place to a direction.
+Slide each element into place to a direction.
 
 - `nodes` is a query selector string, a *HTMLElement*, *HTMLCollection* or an array of elements.
 - `options` is an object containing properties to define how the animation should be handled.
@@ -150,12 +199,28 @@ This function returns a *Promise*, that will resolve after the animation has com
 
 ```javascript
 dom.slideIn(nodes, options);
+```
+
+**Slide Out**
+
+Slide each element out of place from a direction.
+
+- `nodes` is a query selector string, a *HTMLElement*, *HTMLCollection* or an array of elements.
+- `options` is an object containing properties to define how the animation should be handled.
+    - `direction` is a string or function that returns either "*top*", "*right*", "*bottom*" or "*left*" indicating the direction to drop from, and will default to "*top*".
+    - `duration` is the number of milliseconds that the animation should last, and will default to *1000*.
+    - `type` is a string of either "*ease-in*", "*ease-out*", "*ease-in-out*" or "*linear*" indicating the type of animation to run, and will default to "*ease-in-out*".
+    - `infinite` is a boolean indicating whether the animation should continue forever, and will default to *false*.
+
+This function returns a *Promise*, that will resolve after the animation has completed.
+
+```javascript
 dom.slideOut(nodes, options);
 ```
 
-**Squeeze In/Out**
+**Squeeze In**
 
-Squeeze each element into or out of place to a direction.
+Squeeze each element into place to a direction.
 
 - `nodes` is a query selector string, a *HTMLElement*, *HTMLCollection* or an array of elements.
 - `options` is an object containing properties to define how the animation should be handled.
@@ -168,6 +233,22 @@ This function returns a *Promise*, that will resolve after the animation has com
 
 ```javascript
 dom.squeezeIn(nodes, options);
+```
+
+**Squeeze Out**
+
+Squeeze each element out of place from a direction.
+
+- `nodes` is a query selector string, a *HTMLElement*, *HTMLCollection* or an array of elements.
+- `options` is an object containing properties to define how the animation should be handled.
+    - `direction` is a string or function that returns either "*top*", "*right*", "*bottom*" or "*left*" indicating the direction to drop from, and will default to "*top*".
+    - `duration` is the number of milliseconds that the animation should last, and will default to *1000*.
+    - `type` is a string of either "*ease-in*", "*ease-out*", "*ease-in-out*" or "*linear*" indicating the type of animation to run, and will default to "*ease-in-out*".
+    - `infinite` is a boolean indicating whether the animation should continue forever, and will default to *false*.
+
+This function returns a *Promise*, that will resolve after the animation has completed.
+
+```javascript
 dom.squeezeOut(nodes, options);
 ```
 
