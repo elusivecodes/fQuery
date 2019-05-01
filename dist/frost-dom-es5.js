@@ -29,6 +29,8 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
  * https://github.com/elusivecodes/FrostDOM
  */
 (function (global, factory) {
+  'use strict';
+
   if ((typeof module === "undefined" ? "undefined" : _typeof(module)) === 'object' && _typeof(module.exports) === 'object') {
     module.exports = factory;
   } else {
@@ -43,10 +45,6 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
   if (!('Core' in window)) {
     throw new Error('FrostDOM requires FrostCore.');
-  }
-
-  if (!window.Core.isWindow(window)) {
-    throw new Error('FrostDOM requires a valid Window object.');
   }
 
   var Core = window.Core;
@@ -697,7 +695,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
      * Drop each element into place.
      * @param {string|HTMLElement|HTMLCollection|HTMLElement[]} nodes The input node(s), or a query selector string.
      * @param {object} [options] The options to use for animating.
-     * @param {string} [options.direction=top] The direction to drop the node from.
+     * @param {string|function} [options.direction=top] The direction to drop the node from.
      * @param {number} [options.duration=1000] The duration of the animation.
      * @param {string} [options.type=ease-in-out] The type of animation.
      * @param {Boolean} [options.infinite] Whether the animation should run forever.
@@ -713,7 +711,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
      * Drop each element out of place.
      * @param {string|HTMLElement|HTMLCollection|HTMLElement[]} nodes The input node(s), or a query selector string.
      * @param {object} [options] The options to use for animating.
-     * @param {string} [options.direction=top] The direction to drop the node to.
+     * @param {string|function} [options.direction=top] The direction to drop the node to.
      * @param {number} [options.duration=1000] The duration of the animation.
      * @param {string} [options.type=ease-in-out] The type of animation.
      * @param {Boolean} [options.infinite] Whether the animation should run forever.
@@ -809,7 +807,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
      * Slide each element in from a direction.
      * @param {string|HTMLElement|HTMLCollection|HTMLElement[]} nodes The input node(s), or a query selector string.
      * @param {object} [options] The options to use for animating.
-     * @param {string} [options.direction=bottom] The direction to slide from.
+     * @param {string|function} [options.direction=bottom] The direction to slide from.
      * @param {number} [options.duration=1000] The duration of the animation.
      * @param {string} [options.type=ease-in-out] The type of animation.
      * @param {Boolean} [options.infinite] Whether the animation should run forever.
@@ -852,7 +850,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
      * Slide each element out from a direction.
      * @param {string|HTMLElement|HTMLCollection|HTMLElement[]} nodes The input node(s), or a query selector string.
      * @param {object} [options] The options to use for animating.
-     * @param {string} [options.direction=bottom] The direction to slide to.
+     * @param {string|function} [options.direction=bottom] The direction to slide to.
      * @param {number} [options.duration=1000] The duration of the animation.
      * @param {string} [options.type=ease-in-out] The type of animation.
      * @param {Boolean} [options.infinite] Whether the animation should run forever.
@@ -895,7 +893,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
      * Squeeze each element in from a direction.
      * @param {string|HTMLElement|HTMLCollection|HTMLElement[]} nodes The input node(s), or a query selector string.
      * @param {object} [options] The options to use for animating.
-     * @param {string} [options.direction=bottom] The direction to squeeze from.
+     * @param {string|function} [options.direction=bottom] The direction to squeeze from.
      * @param {number} [options.duration=1000] The duration of the animation.
      * @param {string} [options.type=ease-in-out] The type of animation.
      * @param {Boolean} [options.infinite] Whether the animation should run forever.
@@ -921,7 +919,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
      * Squeeze each element out from a direction.
      * @param {string|HTMLElement|HTMLCollection|HTMLElement[]} nodes The input node(s), or a query selector string.
      * @param {object} [options] The options to use for animating.
-     * @param {string} [options.direction=bottom] The direction to squeeze to.
+     * @param {string|function} [options.direction=bottom] The direction to squeeze to.
      * @param {number} [options.duration=1000] The duration of the animation.
      * @param {string} [options.type=ease-in-out] The type of animation.
      * @param {Boolean} [options.infinite] Whether the animation should run forever.
