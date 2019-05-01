@@ -25,7 +25,7 @@ It is heavily inspired by jQuery, but utilizes ES6 syntax and features including
 
 ## Installation
 
-### Dependencies
+**Dependencies**
 
 - [FrostCore](https://github.com/elusivecodes/FrostCore)
 
