@@ -29,8 +29,6 @@ It is heavily inspired by jQuery, but utilizes ES6 syntax and features including
 
 - [FrostCore](https://github.com/elusivecodes/FrostCore)
 
-### Manual
-
 ```html
 <script type="text/javascript" src="/path/to/frost-core.min.js"></script>
 <script type="text/javascript" src="/path/to/frost-dom.min.js"></script>
