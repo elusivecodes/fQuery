@@ -8,7 +8,7 @@ Object.assign(DOM.prototype, {
      * Drop each element into place.
      * @param {string|HTMLElement|HTMLCollection|HTMLElement[]} nodes The input node(s), or a query selector string.
      * @param {object} [options] The options to use for animating.
-     * @param {string} [options.direction=top] The direction to drop the node from.
+     * @param {string|function} [options.direction=top] The direction to drop the node from.
      * @param {number} [options.duration=1000] The duration of the animation.
      * @param {string} [options.type=ease-in-out] The type of animation.
      * @param {Boolean} [options.infinite] Whether the animation should run forever.
@@ -28,7 +28,7 @@ Object.assign(DOM.prototype, {
      * Drop each element out of place.
      * @param {string|HTMLElement|HTMLCollection|HTMLElement[]} nodes The input node(s), or a query selector string.
      * @param {object} [options] The options to use for animating.
-     * @param {string} [options.direction=top] The direction to drop the node to.
+     * @param {string|function} [options.direction=top] The direction to drop the node to.
      * @param {number} [options.duration=1000] The duration of the animation.
      * @param {string} [options.type=ease-in-out] The type of animation.
      * @param {Boolean} [options.infinite] Whether the animation should run forever.
@@ -162,7 +162,7 @@ Object.assign(DOM.prototype, {
      * Slide each element in from a direction.
      * @param {string|HTMLElement|HTMLCollection|HTMLElement[]} nodes The input node(s), or a query selector string.
      * @param {object} [options] The options to use for animating.
-     * @param {string} [options.direction=bottom] The direction to slide from.
+     * @param {string|function} [options.direction=bottom] The direction to slide from.
      * @param {number} [options.duration=1000] The duration of the animation.
      * @param {string} [options.type=ease-in-out] The type of animation.
      * @param {Boolean} [options.infinite] Whether the animation should run forever.
@@ -213,7 +213,7 @@ Object.assign(DOM.prototype, {
      * Slide each element out from a direction.
      * @param {string|HTMLElement|HTMLCollection|HTMLElement[]} nodes The input node(s), or a query selector string.
      * @param {object} [options] The options to use for animating.
-     * @param {string} [options.direction=bottom] The direction to slide to.
+     * @param {string|function} [options.direction=bottom] The direction to slide to.
      * @param {number} [options.duration=1000] The duration of the animation.
      * @param {string} [options.type=ease-in-out] The type of animation.
      * @param {Boolean} [options.infinite] Whether the animation should run forever.
@@ -264,7 +264,7 @@ Object.assign(DOM.prototype, {
      * Squeeze each element in from a direction.
      * @param {string|HTMLElement|HTMLCollection|HTMLElement[]} nodes The input node(s), or a query selector string.
      * @param {object} [options] The options to use for animating.
-     * @param {string} [options.direction=bottom] The direction to squeeze from.
+     * @param {string|function} [options.direction=bottom] The direction to squeeze from.
      * @param {number} [options.duration=1000] The duration of the animation.
      * @param {string} [options.type=ease-in-out] The type of animation.
      * @param {Boolean} [options.infinite] Whether the animation should run forever.
@@ -292,7 +292,7 @@ Object.assign(DOM.prototype, {
      * Squeeze each element out from a direction.
      * @param {string|HTMLElement|HTMLCollection|HTMLElement[]} nodes The input node(s), or a query selector string.
      * @param {object} [options] The options to use for animating.
-     * @param {string} [options.direction=bottom] The direction to squeeze to.
+     * @param {string|function} [options.direction=bottom] The direction to squeeze to.
      * @param {number} [options.duration=1000] The duration of the animation.
      * @param {string} [options.type=ease-in-out] The type of animation.
      * @param {Boolean} [options.infinite] Whether the animation should run forever.

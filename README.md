@@ -5,7 +5,8 @@
 It is heavily inspired by jQuery, but utilizes ES6 syntax and features including Promises, with a focus on functional style programming.
 
 
-## Table of contents
+## Table Of Contents
+- [Installation](#installation)
 - [DOM](#dom)
     - [Animation](#animation)
     - [Attributes](#attributes)
@@ -20,6 +21,20 @@ It is heavily inspired by jQuery, but utilizes ES6 syntax and features including
 - [Static Methods](#static-methods)
     - [Parsing](#parsing)
 
+
+
+## Installation
+
+### Dependencies
+
+- [FrostCore](https://github.com/elusivecodes/FrostCore)
+
+### Manual
+
+```html
+<script type="text/javascript" src="/path/to/frost-core.min.js"></script>
+<script type="text/javascript" src="/path/to/frost-dom.min.js"></script>
+```
 
 
 ## DOM

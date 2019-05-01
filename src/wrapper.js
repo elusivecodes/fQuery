@@ -3,6 +3,7 @@
  * https://github.com/elusivecodes/FrostDOM
  */
 (function(global, factory) {
+    'use strict';
 
     if (typeof module === 'object' && typeof module.exports === 'object') {
         module.exports = factory;
@@ -19,10 +20,6 @@
 
     if (!('Core' in window)) {
         throw new Error('FrostDOM requires FrostCore.');
-    }
-
-    if (!window.Core.isWindow(window)) {
-        throw new Error('FrostDOM requires a valid Window object.');
     }
 
     const Core = window.Core;
