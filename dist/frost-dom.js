@@ -287,12 +287,14 @@
                 .then(response =>
                     DOM._append(
                         this._context.head,
-                        this.create(
-                            'style',
-                            {
-                                text: response.response
-                            }
-                        )
+                        [
+                            this.create(
+                                'style',
+                                {
+                                    html: response.response
+                                }
+                            )
+                        ]
                     )
                 );
         },
@@ -310,19 +312,21 @@
                         this.ajax({ url, cache })
                     )
                 )
-                .then(responses =>
-                    DOM._append(
-                        this._context.head,
-                        this.create(
-                            'style',
-                            {
-                                text: responses
-                                    .map(response => response.response)
-                                    .join("\r\n")
-                            }
-                        )
-                    )
-                );
+                .then(responses => {
+                    const styles = [];
+                    for (const response of responses) {
+                        styles.push(
+                            this.create(
+                                'style',
+                                {
+                                    html: response.response
+                                }
+                            )
+                        );
+                    }
+
+                    DOM._append(this._context.head, styles);
+                });
         }
 
     });
