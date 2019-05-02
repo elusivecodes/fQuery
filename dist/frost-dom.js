@@ -80,6 +80,8 @@
                 ...options
             };
 
+            const isLocal = DOM.localRegex.test(location.protocol);
+
             if (!options.cache) {
                 const url = new URL(options.url);
                 url.searchParams.append('_', Date.now());
@@ -90,7 +92,7 @@
                 options.headers['Content-Type'] = options.contentType;
             }
 
-            if (!('X-Requested-With' in options.headers)) {
+            if (!isLocal && !('X-Requested-With' in options.headers)) {
                 options.headers['X-Requested-With'] = 'XMLHttpRequest';
             }
 
@@ -99,7 +101,7 @@
 
                 xhr.open(options.method, options.url, true);
 
-                for (const key of options.headers) {
+                for (const key in options.headers) {
                     xhr.setRequestHeader(key, options.headers[key]);
                 }
 
@@ -123,12 +125,14 @@
                     }
                 };
 
-                xhr.onerror = e =>
-                    reject({
-                        status: xhr.status,
-                        xhr: xhr,
-                        event: e
-                    });
+                if (!isLocal) {
+                    xhr.onerror = e =>
+                        reject({
+                            status: xhr.status,
+                            xhr: xhr,
+                            event: e
+                        });
+                }
 
                 if (options.uploadProgress) {
                     xhr.upload.onprogress = e =>
@@ -233,33 +237,33 @@
 
         /**
          * Load and execute a JavaScript file.
-         * @param {string} script The URL of the script.
+         * @param {string} url The URL of the script.
          * @param {Boolean} [cache=true] Whether to cache the request.
          * @returns {Promise} A new Promise that resolves when the request is completed, or rejects on failure.
          */
-        loadScript(script, cache = true) {
-            return this.ajax(script, { cache })
+        loadScript(url, cache = true) {
+            return this.ajax({ url, cache })
                 .then(response =>
-                    eval.apply(window, response.response)
+                    eval.call(window, response.response)
                 );
         },
 
         /**
          * Load and executes multiple JavaScript files (in order).
-         * @param {string[]} scripts An array of script URLs.
+         * @param {string[]} urls An array of script URLs.
          * @param {Boolean} [cache=true] Whether to cache the requests.
          * @returns {Promise} A new Promise that resolves when the request is completed, or rejects on failure.
          */
-        loadScripts(scripts, cache = true) {
+        loadScripts(urls, cache = true) {
             return Promise.all
                 (
-                    scripts.map(script =>
-                        this.ajax(script, { cache })
+                    urls.map(url =>
+                        this.ajax({ url, cache })
                     )
                 )
                 .then(responses => {
                     for (const response of responses) {
-                        eval.apply(window, response.response);
+                        eval.call(window, response.response);
                     }
                 });
         }
@@ -274,12 +278,12 @@
 
         /**
          * Import a CSS Stylesheet file.
-         * @param {string} stylesheet The URL of the stylesheet.
+         * @param {string} url The URL of the stylesheet.
          * @param {Boolean} [cache=true] Whether to cache the request.
          * @returns {Promise} A new Promise that resolves when the request is completed, or rejects on failure.
          */
-        loadStyle(stylesheet, cache = true) {
-            return this.ajax(stylesheet, { cache })
+        loadStyle(url, cache = true) {
+            return this.ajax({ url, cache })
                 .then(response =>
                     DOM._append(
                         this._context.head,
@@ -295,15 +299,15 @@
 
         /**
          * Import multiple CSS Stylesheet files.
-         * @param {string[]} stylesheets An array of stylesheet URLs.
+         * @param {string[]} urls An array of stylesheet URLs.
          * @param {Boolean} [cache=true] Whether to cache the requests.
          * @returns {Promise} A new Promise that resolves when the request is completed, or rejects on failure.
          */
-        loadStyles(stylesheets, cache = true) {
+        loadStyles(urls, cache = true) {
             return Promise.all
                 (
-                    stylesheets.map(stylesheet =>
-                        this.ajax(stylesheet, { cache })
+                    urls.map(url =>
+                        this.ajax({ url, cache })
                     )
                 )
                 .then(responses =>
@@ -6043,6 +6047,9 @@
 
         // Fast selector RegEx
         fastRegex: /^([\#\.]?)([\w\-]+)$/,
+
+        // Local protocol RegEx
+        localRegex: /^(?:about|app|app-storage|.+-extension|file|res|widget):$/,
 
         // Comma seperated selector RegEx
         splitRegex: /\,(?=(?:(?:[^"]*"){2})*[^"]*$)\s*/,

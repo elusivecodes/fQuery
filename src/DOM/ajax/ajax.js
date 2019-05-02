@@ -27,6 +27,8 @@ Object.assign(DOM.prototype, {
             ...options
         };
 
+        const isLocal = DOM.localRegex.test(location.protocol);
+
         if (!options.cache) {
             const url = new URL(options.url);
             url.searchParams.append('_', Date.now());
@@ -37,7 +39,7 @@ Object.assign(DOM.prototype, {
             options.headers['Content-Type'] = options.contentType;
         }
 
-        if (!('X-Requested-With' in options.headers)) {
+        if (!isLocal && !('X-Requested-With' in options.headers)) {
             options.headers['X-Requested-With'] = 'XMLHttpRequest';
         }
 
@@ -46,7 +48,7 @@ Object.assign(DOM.prototype, {
 
             xhr.open(options.method, options.url, true);
 
-            for (const key of options.headers) {
+            for (const key in options.headers) {
                 xhr.setRequestHeader(key, options.headers[key]);
             }
 
@@ -70,12 +72,14 @@ Object.assign(DOM.prototype, {
                 }
             };
 
-            xhr.onerror = e =>
-                reject({
-                    status: xhr.status,
-                    xhr: xhr,
-                    event: e
-                });
+            if (!isLocal) {
+                xhr.onerror = e =>
+                    reject({
+                        status: xhr.status,
+                        xhr: xhr,
+                        event: e
+                    });
+            }
 
             if (options.uploadProgress) {
                 xhr.upload.onprogress = e =>

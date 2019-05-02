@@ -37,6 +37,9 @@ Object.assign(DOM, {
     // Fast selector RegEx
     fastRegex: /^([\#\.]?)([\w\-]+)$/,
 
+    // Local protocol RegEx
+    localRegex: /^(?:about|app|app-storage|.+-extension|file|res|widget):$/,
+
     // Comma seperated selector RegEx
     splitRegex: /\,(?=(?:(?:[^"]*"){2})*[^"]*$)\s*/,
 

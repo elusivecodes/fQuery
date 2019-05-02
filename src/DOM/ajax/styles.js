@@ -6,12 +6,12 @@ Object.assign(DOM.prototype, {
 
     /**
      * Import a CSS Stylesheet file.
-     * @param {string} stylesheet The URL of the stylesheet.
+     * @param {string} url The URL of the stylesheet.
      * @param {Boolean} [cache=true] Whether to cache the request.
      * @returns {Promise} A new Promise that resolves when the request is completed, or rejects on failure.
      */
-    loadStyle(stylesheet, cache = true) {
-        return this.ajax(stylesheet, { cache })
+    loadStyle(url, cache = true) {
+        return this.ajax({ url, cache })
             .then(response =>
                 DOM._append(
                     this._context.head,
@@ -27,15 +27,15 @@ Object.assign(DOM.prototype, {
 
     /**
      * Import multiple CSS Stylesheet files.
-     * @param {string[]} stylesheets An array of stylesheet URLs.
+     * @param {string[]} urls An array of stylesheet URLs.
      * @param {Boolean} [cache=true] Whether to cache the requests.
      * @returns {Promise} A new Promise that resolves when the request is completed, or rejects on failure.
      */
-    loadStyles(stylesheets, cache = true) {
+    loadStyles(urls, cache = true) {
         return Promise.all
             (
-                stylesheets.map(stylesheet =>
-                    this.ajax(stylesheet, { cache })
+                urls.map(url =>
+                    this.ajax({ url, cache })
                 )
             )
             .then(responses =>

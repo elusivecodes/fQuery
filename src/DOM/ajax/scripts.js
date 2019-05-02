@@ -6,33 +6,33 @@ Object.assign(DOM.prototype, {
 
     /**
      * Load and execute a JavaScript file.
-     * @param {string} script The URL of the script.
+     * @param {string} url The URL of the script.
      * @param {Boolean} [cache=true] Whether to cache the request.
      * @returns {Promise} A new Promise that resolves when the request is completed, or rejects on failure.
      */
-    loadScript(script, cache = true) {
-        return this.ajax(script, { cache })
+    loadScript(url, cache = true) {
+        return this.ajax({ url, cache })
             .then(response =>
-                eval.apply(window, response.response)
+                eval.call(window, response.response)
             );
     },
 
     /**
      * Load and executes multiple JavaScript files (in order).
-     * @param {string[]} scripts An array of script URLs.
+     * @param {string[]} urls An array of script URLs.
      * @param {Boolean} [cache=true] Whether to cache the requests.
      * @returns {Promise} A new Promise that resolves when the request is completed, or rejects on failure.
      */
-    loadScripts(scripts, cache = true) {
+    loadScripts(urls, cache = true) {
         return Promise.all
             (
-                scripts.map(script =>
-                    this.ajax(script, { cache })
+                urls.map(url =>
+                    this.ajax({ url, cache })
                 )
             )
             .then(responses => {
                 for (const response of responses) {
-                    eval.apply(window, response.response);
+                    eval.call(window, response.response);
                 }
             });
     }
