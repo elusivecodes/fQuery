@@ -1000,7 +1000,7 @@ const clones = dom.clone(nodes, deep, cloneEvents, cloneData);
 
 **Detach**
 
-Detach an element from the DOM.
+Detach each node from the DOM.
 
 - `nodes` is a query selector string, a *Node*, *NodeList*, *HTMLCollection* or an array of elements.
 

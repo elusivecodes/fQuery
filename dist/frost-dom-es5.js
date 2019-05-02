@@ -1919,41 +1919,41 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
     _constrain: function _constrain(node, containerBox) {
       var nodeBox = this._rect(node);
 
+      var style = {};
+
       if (nodeBox.height > containerBox.height) {
-        DOM._setStyle(node, {
-          height: containerBox.height
-        });
+        style.height = containerBox.height;
       }
 
       if (nodeBox.width > containerBox.width) {
-        DOM._setStyle(node, {
-          width: containerBox.width
-        });
+        style.width = containerBox.width;
       }
 
-      if (nodeBox.top < containerBox.top) {
-        DOM._setStyle(node, {
-          top: containerBox.top
-        });
+      var leftOffset;
+
+      if (nodeBox.left - containerBox.left < 0) {
+        leftOffset = nodeBox.left - containerBox.left;
+      } else if (nodeBox.right - containerBox.right > 0) {
+        leftOffset = nodeBox.right - containerBox.right;
       }
 
-      if (nodeBox.right > containerBox.right) {
-        DOM._setStyle(node, {
-          right: containerBox.right - nodeBox.width
-        });
+      if (leftOffset) {
+        style.left = "".concat(parseFloat(this._css(node, 'left')) - leftOffset, "px");
       }
 
-      if (nodeBox.bottom > containerBox.bottom) {
-        DOM._setStyle(node, {
-          top: containerBox.bottom - nodeBox.height
-        });
+      var topOffset;
+
+      if (nodeBox.top - containerBox.top < 0) {
+        topOffset = nodeBox.top - containerBox.top;
+      } else if (nodeBox.bottom - containerBox.bottom > 0) {
+        topOffset = nodeBox.bottom - containerBox.bottom;
       }
 
-      if (nodeBox.left < containerBox.left) {
-        DOM._setStyle(node, {
-          left: containerBox.left
-        });
+      if (topOffset) {
+        style.top = "".concat(parseFloat(this._css(node, 'top')) - topOffset, "px");
       }
+
+      DOM._setStyle(node, style);
     },
 
     /**
