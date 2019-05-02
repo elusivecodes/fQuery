@@ -20,7 +20,7 @@ Object.assign(DOM.prototype, {
         const range = DOM._getRange(selection);
 
         DOM._removeRanges(selection);
-        DOM._collapseRange(range);
+        DOM._collapse(range);
 
         for (const node of nodes) {
             DOM._insert(range, node);

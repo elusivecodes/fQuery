@@ -5280,7 +5280,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
       DOM._removeRanges(selection);
 
-      DOM._collapseRange(range);
+      DOM._collapse(range);
 
       var _iteratorNormalCompletion61 = true;
       var _didIteratorError61 = false;
