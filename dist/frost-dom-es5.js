@@ -5182,9 +5182,13 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         return _node ? _node : null;
       }
 
-      var nodeFilter = this._nodeFilterFactory(options),
-          node = Core.wrap(nodes).slice().shift();
+      var nodeFilter = this._nodeFilterFactory(options);
 
+      if (nodeFilter(nodes)) {
+        return nodes;
+      }
+
+      var node = Core.wrap(nodes).slice().shift();
       return node && nodeFilter(node) ? node : null;
     },
 
