@@ -38,7 +38,9 @@ Object.assign(DOM.prototype, {
         if ('class' in options) {
             DOM._addClass(
                 node,
-                DOM._parseClasses(options.class)
+                DOM._parseClasses(
+                    Core.wrap(options.class)
+                )
             );
         }
 

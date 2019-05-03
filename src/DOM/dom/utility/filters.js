@@ -108,9 +108,9 @@ Object.assign(DOM.prototype, {
         }
 
         const nodeFilter = this._nodeFilterFactory(options),
-            node = Core.wrap(nodes).shift();
+            node = Core.wrap(nodes).slice().shift();
 
-        return nodeFilter(node) ?
+        return node && nodeFilter(node) ?
             node :
             null;
     },

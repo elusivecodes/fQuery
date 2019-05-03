@@ -73,10 +73,10 @@ Object.assign(DOM.prototype, {
     hasData(nodes, key) {
         return this._nodeFilter(nodes, { document: true, window: true })
             .some(node =>
-                this.nodeData.has(node) &&
+                this._data.has(node) &&
                 (
                     !key ||
-                    this.nodeData.get(node)
+                    this._data.get(node)
                         .hasOwnProperty(key)
                 )
             );
@@ -159,7 +159,7 @@ Object.assign(DOM.prototype, {
         return this._nodeFilter(nodes)
             .some(node =>
                 this._css(node, 'position') === 'fixed' ||
-                this._parents(
+                DOM._parents(
                     node,
                     parent =>
                         this._css(parent, 'position') === 'fixed',

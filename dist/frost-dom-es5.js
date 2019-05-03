@@ -3302,7 +3302,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       }
 
       if ('class' in options) {
-        DOM._addClass(node, DOM._parseClasses(options["class"]));
+        DOM._addClass(node, DOM._parseClasses(Core.wrap(options["class"])));
       }
 
       if ('style' in options) {
@@ -5183,9 +5183,9 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       }
 
       var nodeFilter = this._nodeFilterFactory(options),
-          node = Core.wrap(nodes).shift();
+          node = Core.wrap(nodes).slice().shift();
 
-      return nodeFilter(node) ? node : null;
+      return node && nodeFilter(node) ? node : null;
     },
 
     /**
@@ -5597,7 +5597,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         document: true,
         window: true
       }).some(function (node) {
-        return _this25.nodeData.has(node) && (!key || _this25.nodeData.get(node).hasOwnProperty(key));
+        return _this25._data.has(node) && (!key || _this25._data.get(node).hasOwnProperty(key));
       });
     },
 
@@ -5680,7 +5680,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       var _this27 = this;
 
       return this._nodeFilter(nodes).some(function (node) {
-        return _this27._css(node, 'position') === 'fixed' || _this27._parents(node, function (parent) {
+        return _this27._css(node, 'position') === 'fixed' || DOM._parents(node, function (parent) {
           return _this27._css(parent, 'position') === 'fixed';
         }, false, true).length;
       });

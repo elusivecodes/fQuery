@@ -2692,7 +2692,9 @@
             if ('class' in options) {
                 DOM._addClass(
                     node,
-                    DOM._parseClasses(options.class)
+                    DOM._parseClasses(
+                        Core.wrap(options.class)
+                    )
                 );
             }
 
@@ -4118,9 +4120,9 @@
             }
 
             const nodeFilter = this._nodeFilterFactory(options),
-                node = Core.wrap(nodes).shift();
+                node = Core.wrap(nodes).slice().shift();
 
-            return nodeFilter(node) ?
+            return node && nodeFilter(node) ?
                 node :
                 null;
         },
@@ -4463,10 +4465,10 @@
         hasData(nodes, key) {
             return this._nodeFilter(nodes, { document: true, window: true })
                 .some(node =>
-                    this.nodeData.has(node) &&
+                    this._data.has(node) &&
                     (
                         !key ||
-                        this.nodeData.get(node)
+                        this._data.get(node)
                             .hasOwnProperty(key)
                     )
                 );
@@ -4549,7 +4551,7 @@
             return this._nodeFilter(nodes)
                 .some(node =>
                     this._css(node, 'position') === 'fixed' ||
-                    this._parents(
+                    DOM._parents(
                         node,
                         parent =>
                             this._css(parent, 'position') === 'fixed',
