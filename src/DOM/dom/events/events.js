@@ -65,12 +65,12 @@ Object.assign(DOM.prototype, {
 
     /**
      * Trigger events on each element.
-     * @param {string|HTMLElement|HTMLCollection|Document|Window|HTMLElement[]} nodes The input node(s), or a query selector string.
+     * @param {string|HTMLElement|HTMLCollection|ShadowRoot|Document|Window|HTMLElement[]} nodes The input node(s), or a query selector string.
      * @param {string} events The event names.
      * @param {object} [data] Additional data to attach to the event.
      */
     triggerEvent(nodes, events, data) {
-        nodes = this._nodeFilter(nodes, { document: true, window: true });
+        nodes = this._nodeFilter(nodes, { shadow: true, document: true, window: true });
 
         for (const node of nodes) {
             DOM._triggerEvent(node, events, data);

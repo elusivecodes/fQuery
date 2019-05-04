@@ -37,15 +37,15 @@ Object.assign(DOM.prototype, {
     /**
      * Return all elements with a specific class.
      * @param {string} className The class name.
-     * @param {string|HTMLElement|HTMLCollection|Document|HTMLElement[]} [nodes=this._context] The input node(s), or a query selector string.
+     * @param {string|HTMLElement|HTMLCollection|ShadowRoot|Document|HTMLElement[]} [nodes=this._context] The input node(s), or a query selector string.
      * @returns {HTMLElement[]} The matching nodes.
      */
     findByClass(className, nodes = this._context) {
-        if (Core.isDocument(nodes) || Core.isElement(nodes)) {
+        if (Core.isDocument(nodes) || Core.isElement(nodes) || Core.isShadowRoot(nodes)) {
             return Core.merge([], DOM._findByClass(className, nodes));
         }
 
-        nodes = this._nodeFilter(nodes, { document: true });
+        nodes = this._nodeFilter(nodes, { shadow: true, document: true });
 
         const results = [];
 
@@ -64,7 +64,7 @@ Object.assign(DOM.prototype, {
     /**
      * Return all elements with a specific ID.
      * @param {string} id The id.
-     * @param {string|HTMLElement|HTMLCollection|Document|HTMLElement[]} [nodes=this._context] The input node(s), or a query selector string.
+     * @param {string|HTMLElement|HTMLCollection|ShadowRoot|Document|HTMLElement[]} [nodes=this._context] The input node(s), or a query selector string.
      * @returns {HTMLElement[]} The matching nodes.
      */
     findById(id, nodes = this._context) {
@@ -78,7 +78,7 @@ Object.assign(DOM.prototype, {
             return [result];
         }
 
-        if (Core.isElement(nodes)) {
+        if (Core.isElement(nodes) || Core.isShadowRoot(nodes)) {
             return DOM._has(nodes, result) ?
                 [result] :
                 [];
@@ -92,15 +92,15 @@ Object.assign(DOM.prototype, {
     /**
      * Return all elements with a specific tag.
      * @param {string} tagName The tag name.
-     * @param {string|HTMLElement|HTMLCollection|Document|HTMLElement[]} [nodes=this._context] The input node(s), or a query selector string.
+     * @param {string|HTMLElement|HTMLCollection|ShadowRoot|Document|HTMLElement[]} [nodes=this._context] The input node(s), or a query selector string.
      * @returns {HTMLElement[]} The matching nodes.
      */
     findByTag(tagName, nodes = this._context) {
-        if (Core.isDocument(nodes) || Core.isElement(nodes)) {
+        if (Core.isDocument(nodes) || Core.isElement(nodes) || Core.isShadowRoot(nodes)) {
             return Core.merge([], DOM._findByTag(tagName, nodes));
         }
 
-        nodes = this._nodeFilter(nodes, { document: true });
+        nodes = this._nodeFilter(nodes, { shadow: true, document: true });
 
         const results = [];
 
@@ -149,15 +149,15 @@ Object.assign(DOM.prototype, {
     /**
      * Return a single element with a specific class.
      * @param {string} className The class name.
-     * @param {string|HTMLElement|HTMLCollection|Document|HTMLElement[]} [nodes=this._context] The input node(s), or a query selector string.
+     * @param {string|HTMLElement|HTMLCollection|ShadowRoot|Document|HTMLElement[]} [nodes=this._context] The input node(s), or a query selector string.
      * @returns {HTMLElement} The matching node.
      */
     findOneByClass(className, nodes = this._context) {
-        if (Core.isDocument(nodes) || Core.isElement(nodes)) {
+        if (Core.isDocument(nodes) || Core.isElement(nodes) || Core.isShadowRoot(nodes)) {
             return DOM._findByClass(className, nodes).item(0);
         }
 
-        nodes = this._nodeFilter(nodes, { document: true });
+        nodes = this._nodeFilter(nodes, { shadow: true, document: true });
 
         for (const node of nodes) {
             const result = DOM._findByClass(className, node).item(0);
@@ -172,7 +172,7 @@ Object.assign(DOM.prototype, {
     /**
      * Return a single element with a specific ID.
      * @param {string} id The id.
-     * @param {string|HTMLElement|HTMLCollection|Document|HTMLElement[]} [nodes=this._context] The input node(s), or a query selector string.
+     * @param {string|HTMLElement|HTMLCollection|ShadowRoot|Document|HTMLElement[]} [nodes=this._context] The input node(s), or a query selector string.
      * @returns {HTMLElement} The matching element.
      */
     findOneById(id, nodes = this._context) {
@@ -186,7 +186,7 @@ Object.assign(DOM.prototype, {
             return result;
         }
 
-        if (Core.isElement(nodes)) {
+        if (Core.isElement(nodes) || Core.isShadowRoot(nodes)) {
             return DOM._has(nodes, result) ?
                 result :
                 null;
@@ -200,15 +200,15 @@ Object.assign(DOM.prototype, {
     /**
      * Return a single element with a specific tag.
      * @param {string} tagName The tag name.
-     * @param {string|HTMLElement|HTMLCollection|Document|HTMLElement[]} [nodes=this._context] The input node(s), or a query selector string.
+     * @param {string|HTMLElement|HTMLCollection|ShadowRoot|Document|HTMLElement[]} [nodes=this._context] The input node(s), or a query selector string.
      * @returns {HTMLElement} The matching node.
      */
     findOneByTag(tagName, nodes = this._context) {
-        if (Core.isDocument(nodes) || Core.isElement(nodes)) {
+        if (Core.isDocument(nodes) || Core.isElement(nodes) || Core.isShadowRoot(nodes)) {
             return DOM._findByTag(tagName, nodes).item(0);
         }
 
-        nodes = this._nodeFilter(nodes, { document: true });
+        nodes = this._nodeFilter(nodes, { shadow: true, document: true });
 
         for (const node of nodes) {
             const result = DOM._findByTag(tagName, node).item(0);
@@ -241,7 +241,7 @@ Object.assign(DOM.prototype, {
             return Core.merge([], DOM._findByCustom(selectors, nodes));
         }
 
-        nodes = this._nodeFilter(nodes, { document: true });
+        nodes = this._nodeFilter(nodes);
 
         const results = [];
 
@@ -260,15 +260,15 @@ Object.assign(DOM.prototype, {
     /**
      * Return all elements matching a standard CSS selector.
      * @param {string} selector The query selector.
-     * @param {string|HTMLElement|HTMLCollection|Document|HTMLElement[]} [nodes=this._context] The input node(s), or a query selector string.
+     * @param {string|HTMLElement|HTMLCollection|ShadowRoot|Document|HTMLElement[]} [nodes=this._context] The input node(s), or a query selector string.
      * @returns {HTMLElement[]} The matching nodes.
      */
     _findBySelector(selector, nodes = this._context) {
-        if (Core.isDocument(nodes) || Core.isElement(nodes)) {
+        if (Core.isDocument(nodes) || Core.isElement(nodes) || Core.isShadowRoot(nodes)) {
             return Core.merge([], DOM._findBySelector(selector, nodes));
         }
 
-        nodes = this._nodeFilter(nodes, { document: true });
+        nodes = this._nodeFilter(nodes, { shadow: true, document: true });
 
         const results = [];
 
@@ -287,7 +287,7 @@ Object.assign(DOM.prototype, {
     /**
      * Return a single element matching a custom CSS selector.
      * @param {string} selector The custom query selector.
-     * @param {string|HTMLElement|HTMLCollection|Document|HTMLElement[]} [nodes=this._context] The input node(s), or a query selector string.
+     * @param {string|HTMLElement|HTMLCollection|HTMLElement[]} [nodes=this._context] The input node(s), or a query selector string.
      * @returns {HTMLElement} The matching node.
      */
     _findOneByCustom(selector, nodes = this._context) {
@@ -305,7 +305,7 @@ Object.assign(DOM.prototype, {
             return DOM._findOneByCustom(selectors, nodes);
         }
 
-        nodes = this._nodeFilter(nodes, { document: true });
+        nodes = this._nodeFilter(nodes);
 
         for (const node of nodes) {
             const result = DOM._findOneByCustom(selectors, node);
@@ -321,15 +321,15 @@ Object.assign(DOM.prototype, {
     /**
      * Return a single element matching a standard CSS selector.
      * @param {string} selector The query selector.
-     * @param {string|HTMLElement|HTMLCollection|Document|HTMLElement[]} [nodes=this._context] The input node(s), or a query selector string.
+     * @param {string|HTMLElement|HTMLCollection|ShadowRoot|Document|HTMLElement[]} [nodes=this._context] The input node(s), or a query selector string.
      * @returns {HTMLElement} The matching node.
      */
     _findOneBySelector(selector, nodes = this._context) {
-        if (Core.isDocument(nodes) || Core.isElement(nodes)) {
+        if (Core.isDocument(nodes) || Core.isElement(nodes) || Core.isShadowRoot(nodes)) {
             return DOM._findBySelector(selector, nodes).item(0);
         }
 
-        nodes = this._nodeFilter(nodes, { document: true });
+        nodes = this._nodeFilter(nodes, { shadow: true, document: true });
 
         for (const node of nodes) {
             const result = DOM._findOneBySelector(selector, node);

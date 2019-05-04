@@ -52,9 +52,6 @@ Object.assign(DOM.prototype, {
             return;
         }
 
-        // camelize style property
-        style = Core.snakeCase(style);
-
         return DOM._getStyle(node, style);
     },
 
@@ -99,23 +96,10 @@ Object.assign(DOM.prototype, {
     setStyle(nodes, style, value, important) {
         nodes = this._nodeFilter(nodes);
 
-        const styles = DOM._parseData(style, value),
-            realStyles = {};
-
-        for (let key in styles) {
-            let value = `${styles[key]}`;
-            key = Core.snakeCase(key);
-
-            // if value is numeric and not a number property, add px
-            if (value && Core.isNumeric(value) && !DOM.cssNumberProperties.includes(key)) {
-                value += 'px';
-            }
-
-            realStyles[key] = value;
-        }
+        const styles = DOM._parseData(style, value);
 
         for (const node of nodes) {
-            DOM._setStyle(node, realStyles, important);
+            DOM._setStyle(node, styles, important);
         }
     },
 

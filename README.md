@@ -872,7 +872,7 @@ dom.ready(callback);
 
 Trigger an event on each element.
 
-- `nodes` is a query selector string, a *HTMLElement*, *HTMLCollection*, *Document*, *Window* or an array of elements.
+- `nodes` is a query selector string, a *HTMLElement*, *HTMLCollection*, *ShadowRoot*, *Document*, *Window* or an array of elements.
 - `events` is a space-separated string of events to trigger on the elements.
 - `data` is an object containing custom data to add to the `event` object.
 
@@ -886,7 +886,7 @@ dom.triggerEvent(nodes, events, data);
 
 Add an event to each element.
 
-- `nodes` is a query selector string, a *HTMLElement*, *HTMLCollection*, *Document*, *Window* or an array of elements.
+- `nodes` is a query selector string, a *HTMLElement*, *HTMLCollection*, *ShadowRoot*, *Document*, *Window* or an array of elements.
 - `events` is a space-separated string of events to attach to the elements.
 - `callback` is a function that accepts an `event` argument, which will be called when the event is triggered.
 
@@ -898,7 +898,7 @@ dom.addEvent(nodes, events, callback);
 
 Add a delegated event to each element.
 
-- `nodes` is a query selector string, a *HTMLElement*, *HTMLCollection*, *Document*, *Window* or an array of elements.
+- `nodes` is a query selector string, a *HTMLElement*, *HTMLCollection*, *ShadowRoot*, *Document*, *Window* or an array of elements.
 - `events` is a space-separated string of events to attach to the elements.
 - `delegate` is a query selector string which will only trigger the event if it is propagated by a target matching the selector.
 - `callback` is a function that accepts an `event` argument, which will be called when the event is triggered.
@@ -911,7 +911,7 @@ dom.addEventDelegate(nodes, events, delegate, callback);
 
 Add a delegated event to each element.
 
-- `nodes` is a query selector string, a *HTMLElement*, *HTMLCollection*, *Document*, *Window* or an array of elements.
+- `nodes` is a query selector string, a *HTMLElement*, *HTMLCollection*, *ShadowRoot*, *Document*, *Window* or an array of elements.
 - `events` is a space-separated string of events to attach to the elements.
 - `delegate` is a query selector string which will only trigger the event if it is propagated by a target matching the selector.
 - `callback` is a function that accepts an `event` argument, which will be called when the event is triggered.
@@ -924,7 +924,7 @@ dom.addEventDelegateOnce(nodes, events, delegate, callback);
 
 Add a self-destructing event to each element.
 
-- `nodes` is a query selector string, a *HTMLElement*, *HTMLCollection*, *Document*, *Window* or an array of elements.
+- `nodes` is a query selector string, a *HTMLElement*, *HTMLCollection*, *ShadowRoot*, *Document*, *Window* or an array of elements.
 - `events` is a space-separated string of events to attach to the elements.
 - `callback` is a function that accepts an `event` argument, which will be called when the event is triggered.
 
@@ -936,8 +936,8 @@ dom.addEventOnce(nodes, events, callback);
 
 Clone all events from each element to other elements.
 
-- `nodes` is a query selector string, a *HTMLElement*, *HTMLCollection*, *Document*, *Window* or an array of elements.
-- `others` is a query selector string, a *HTMLElement*, *HTMLCollection*, *Document*, *Window* or an array of elements.
+- `nodes` is a query selector string, a *HTMLElement*, *HTMLCollection*, *ShadowRoot*, *Document*, *Window* or an array of elements.
+- `others` is a query selector string, a *HTMLElement*, *HTMLCollection*, *ShadowRoot*, *Document*, *Window* or an array of elements.
 
 ```javascript
 dom.cloneEvents(nodes, others);
@@ -947,7 +947,7 @@ dom.cloneEvents(nodes, others);
 
 Remove events from each element.
 
-- `nodes` is a query selector string, a *HTMLElement*, *HTMLCollection*, *Document*, *Window* or an array of elements.
+- `nodes` is a query selector string, a *HTMLElement*, *HTMLCollection*, *ShadowRoot*, *Document*, *Window* or an array of elements.
 - `events` is a space-separated string of events to remove from the elements.
 - `callback` is a function that accepts an `event` argument, which will be called when the event is triggered.
 
@@ -959,7 +959,7 @@ dom.removeEvent(nodes, events, callback);
 
 Remove delegated events from each element.
 
-- `nodes` is a query selector string, a *HTMLElement*, *HTMLCollection*, *Document*, *Window* or an array of elements.
+- `nodes` is a query selector string, a *HTMLElement*, *HTMLCollection*, *ShadowRoot*, *Document*, *Window* or an array of elements.
 - `events` is a space-separated string of events to remove from the elements.
 - `callback` is a function that accepts an `event` argument, which will be called when the event is triggered.
 
@@ -1012,7 +1012,7 @@ dom.detach(nodes);
 
 Remove all children of each node from the DOM.
 
-- `nodes` is a query selector string, a *Node*, *NodeList*, *HTMLCollection* or an array of elements.
+- `nodes` is a query selector string, a *Node*, *NodeList*, *ShadowRoot*, *HTMLCollection* or an array of elements.
 
 ```javascript
 dom.empty(nodes);
@@ -1126,7 +1126,7 @@ dom.after(nodes, others);
 
 Append each other node to the first node.
 
-- `nodes` is a query selector string, a *HTMLElement*, *HTMLCollection* or an array of elements.
+- `nodes` is a query selector string, a *HTMLElement*, *HTMLCollection*, *ShadowRoot*, *Document* or an array of elements.
 - `others` is a query selector string, a HTML string, a *Node*, *NodeList*, *HTMLCollection* or an array of nodes.
 
 ```javascript
@@ -1138,7 +1138,7 @@ dom.append(nodes, others);
 Append each node to the first other node.
 
 - `nodes` is a query selector string, a HTML string, a *Node*, *NodeList*, *HTMLCollection* or an array of nodes.
-- `others` is a query selector string, a *HTMLElement*, *HTMLCollection* or an array of elements.
+- `others` is a query selector string, a *HTMLElement*, *HTMLCollection*, *ShadowRoot*, *Document* or an array of elements.
 
 ```javascript
 dom.appendTo(nodes, others);
@@ -1181,7 +1181,7 @@ dom.insertBefore(nodes, others);
 
 Prepend each other node to the first node.
 
-- `nodes` is a query selector string, a *HTMLElement*, *HTMLCollection* or an array of elements.
+- `nodes` is a query selector string, a *HTMLElement*, *HTMLCollection*, *ShadowRoot*, *Document* or an array of elements.
 - `others` is a query selector string, a HTML string, a *Node*, *NodeList*, *HTMLCollection* or an array of nodes.
 
 ```javascript
@@ -1193,7 +1193,7 @@ dom.prepend(nodes, others);
 Prepend each node to the first other node.
 
 - `nodes` is a query selector string, a HTML string, a *Node*, *NodeList*, *HTMLCollection* or an array of nodes.
-- `others` is a query selector string, a *HTMLElement*, *HTMLCollection* or an array of elements.
+- `others` is a query selector string, a *HTMLElement*, *HTMLCollection*, *ShadowRoot*, *Document* or an array of elements.
 
 ```javascript
 dom.prependTo(nodes, others);
@@ -1217,7 +1217,7 @@ dom.unwrap(nodes, filter);
 Wrap each nodes with other nodes.
 
 - `nodes` is a query selector string, a *Node*, *NodeList*, *HTMLCollection* or an array of nodes.
-- `others` is a query selector string, a HTML string, a *HTMLElement*, *HTMLCollection* or an array of elements.
+- `others` is a query selector string, a HTML string, a *HTMLElement*, *HTMLCollection*, *ShadowRoot* or an array of elements.
 
 ```javascript
 dom.wrap(nodes, others);
@@ -1228,7 +1228,7 @@ dom.wrap(nodes, others);
 Wrap all nodes with other nodes.
 
 - `nodes` is a query selector string, a *Node*, *NodeList*, *HTMLCollection* or an array of nodes.
-- `others` is a query selector string, a HTML string, a *HTMLElement*, *HTMLCollection* or an array of elements.
+- `others` is a query selector string, a HTML string, a *HTMLElement*, *HTMLCollection*, *ShadowRoot* or an array of elements.
 
 ```javascript
 dom.wrapAll(nodes, others);
@@ -1238,8 +1238,8 @@ dom.wrapAll(nodes, others);
 
 Wrap the contents of each node with other nodes.
 
-- `nodes` is a query selector string, a *HTMLElement*, *HTMLCollection* or an array of elements.
-- `others` is a query selector string, a HTML string, a *HTMLElement*, *HTMLCollection* or an array of elements.
+- `nodes` is a query selector string, a *HTMLElement*, *HTMLCollection*, *ShadowRoot* or an array of elements.
+- `others` is a query selector string, a HTML string, a *HTMLElement*, *HTMLCollection*, *ShadowRoot* or an array of elements.
 
 ```javascript
 dom.wrapInner(nodes, others);
@@ -1252,9 +1252,9 @@ dom.wrapInner(nodes, others);
 
 **Filter**
 
-Return all elements matching a filter.
+Return all nodes matching a filter.
 
-- `nodes` is a query selector string, a *HTMLElement*, *HTMLCollection* or an array of elements.
+- `nodes` is a query selector string, a *Node*, *NodeList*, *HTMLCollection* or an array of nodes.
 - `filter` is either a function that accepts a `node` argument, a query selector string, a *Node*, *NodeList*, *HTMLCollection* or an array of nodes that the nodes will be filtered by.
 
 ```javascript
@@ -1263,9 +1263,9 @@ const filtered = dom.filter(nodes, filter);
 
 **Filter One**
 
-Return the first element matching a filter.
+Return the first node matching a filter.
 
-- `nodes` is a query selector string, a *HTMLElement*, *HTMLCollection* or an array of elements.
+- `nodes` is a query selector string, a *Node*, *NodeList*, *HTMLCollection* or an array of nodes.
 - `filter` is either a function that accepts a `node` argument, a query selector string, a *Node*, *NodeList*, *HTMLCollection* or an array of nodes that the nodes will be filtered by.
 
 ```javascript
@@ -1276,7 +1276,7 @@ const filtered = dom.filterOne(nodes, filter);
 
 Return all elements with a descendent matching a filter.
 
-- `nodes` is a query selector string, a *HTMLElement*, *HTMLCollection*, *Document* or an array of elements.
+- `nodes` is a query selector string, a *HTMLElement*, *HTMLCollection*, *ShadowRoot*, *Document* or an array of elements.
 - `filter` is either a function that accepts a `node` argument, a query selector string, a *Node*, *NodeList*, *HTMLCollection* or an array of nodes that the nodes will be filtered by.
 
 ```javascript
@@ -1287,7 +1287,7 @@ const filtered = dom.has(nodes, filter);
 
 Return the first element with a descendent matching a filter.
 
-- `nodes` is a query selector string, a *HTMLElement*, *HTMLCollection*, *Document* or an array of elements.
+- `nodes` is a query selector string, a *HTMLElement*, *HTMLCollection*, *ShadowRoot*, *Document* or an array of elements.
 - `filter` is either a function that accepts a `node` argument, a query selector string, a *Node*, *NodeList*, *HTMLCollection* or an array of nodes that the nodes will be filtered by.
 
 ```javascript
@@ -1298,7 +1298,7 @@ const filtered = dom.hasOne(nodes, filter);
 
 Return all hidden elements.
 
-- `nodes` is a query selector string, a *HTMLElement*, *HTMLCollection* or an array of elements.
+- `nodes` is a query selector string, a *HTMLElement*, *HTMLCollection*, *ShadowRoot*, *Document*, *Window* or an array of elements.
 
 ```javascript
 const filtered = dom.hidden(nodes);
@@ -1308,7 +1308,7 @@ const filtered = dom.hidden(nodes);
 
 Return the first hidden element.
 
-- `nodes` is a query selector string, a *HTMLElement*, *HTMLCollection* or an array of elements.
+- `nodes` is a query selector string, a *HTMLElement*, *HTMLCollection*, *ShadowRoot*, *Document*, *Window* or an array of elements.
 
 ```javascript
 const filtered = dom.hiddenOne(nodes);
@@ -1316,9 +1316,9 @@ const filtered = dom.hiddenOne(nodes);
 
 **Not**
 
-Return all elements not matching a filter.
+Return all nodes not matching a filter.
 
-- `nodes` is a query selector string, a *HTMLElement*, *HTMLCollection* or an array of elements.
+- `nodes` is a query selector string, a *Node*, *NodeList*, *HTMLCollection* or an array of nodes.
 - `filter` is either a function that accepts a `node` argument, a query selector string, a *Node*, *NodeList*, *HTMLCollection* or an array of nodes that the nodes will be filtered by.
 
 ```javascript
@@ -1327,9 +1327,9 @@ const filtered = dom.not(nodes, filter);
 
 **Not One**
 
-Return the first element not matching a filter.
+Return the first node not matching a filter.
 
-- `nodes` is a query selector string, a *HTMLElement*, *HTMLCollection* or an array of elements.
+- `nodes` is a query selector string, a *Node*, *NodeList*, *HTMLCollection* or an array of nodes.
 - `filter` is either a function that accepts a `node` argument, a query selector string, a *Node*, *NodeList*, *HTMLCollection* or an array of nodes that the nodes will be filtered by.
 
 ```javascript
@@ -1340,7 +1340,7 @@ const filtered = dom.notOne(nodes, filter);
 
 Return all visible elements.
 
-- `nodes` is a query selector string, a *HTMLElement*, *HTMLCollection* or an array of elements.
+- `nodes` is a query selector string, a *HTMLElement*, *HTMLCollection*, *ShadowRoot*, *Document*, *Window* or an array of elements.
 
 ```javascript
 const filtered = dom.visible(nodes);
@@ -1350,7 +1350,7 @@ const filtered = dom.visible(nodes);
 
 Return the first visible element.
 
-- `nodes` is a query selector string, a *HTMLElement*, *HTMLCollection* or an array of elements.
+- `nodes` is a query selector string, a *HTMLElement*, *HTMLCollection*, *ShadowRoot*, *Document*, *Window* or an array of elements.
 
 ```javascript
 const filtered = dom.visibleOne(nodes);
@@ -1363,7 +1363,7 @@ const filtered = dom.visibleOne(nodes);
 Find all elements matching a selector.
 
 - `selector` is a query selector string to search for.
-- `nodes` is a query selector string, a *HTMLElement*, *HTMLCollection*, *Document* or an array of elements, and will default to the *Document* context.
+- `nodes` is a query selector string, a *HTMLElement*, *HTMLCollection*, *ShadowRoot*, *Document* or an array of elements, and will default to the *Document* context.
 
 ```javascript
 const elements = dom.find(selector, nodes);
@@ -1374,7 +1374,7 @@ const elements = dom.find(selector, nodes);
 Find all elements with a specific class.
 
 - `className` is a string indicating the class name to search for.
-- `nodes` is a query selector string, a *HTMLElement*, *HTMLCollection*, *Document* or an array of elements, and will default to the *Document* context.
+- `nodes` is a query selector string, a *HTMLElement*, *HTMLCollection*, *ShadowRoot*, *Document* or an array of elements, and will default to the *Document* context.
 
 ```javascript
 const elements = dom.findByClass(className, nodes);
@@ -1385,7 +1385,7 @@ const elements = dom.findByClass(className, nodes);
 Find all elements with a specific ID.
 
 - `id` is a string indicating the id to search for.
-- `nodes` is a query selector string, a *HTMLElement*, *HTMLCollection*, *Document* or an array of elements, and will default to the *Document* context.
+- `nodes` is a query selector string, a *HTMLElement*, *HTMLCollection*, *ShadowRoot*, *Document* or an array of elements, and will default to the *Document* context.
 
 ```javascript
 const elements = dom.findById(id, nodes);
@@ -1396,7 +1396,7 @@ const elements = dom.findById(id, nodes);
 Find all elements with a specific tag.
 
 - `tagName` is a string indicating the tag name to search for.
-- `nodes` is a query selector string, a *HTMLElement*, *HTMLCollection*, *Document* or an array of elements, and will default to the *Document* context.
+- `nodes` is a query selector string, a *HTMLElement*, *HTMLCollection*, *ShadowRoot*, *Document* or an array of elements, and will default to the *Document* context.
 
 ```javascript
 const elements = dom.findByTag(tagName, nodes);
@@ -1407,7 +1407,7 @@ const elements = dom.findByTag(tagName, nodes);
 Find a single element matching a selector.
 
 - `selector` is a query selector string to search for.
-- `nodes` is a query selector string, a *HTMLElement*, *HTMLCollection*, *Document* or an array of elements, and will default to the *Document* context.
+- `nodes` is a query selector string, a *HTMLElement*, *HTMLCollection*, *ShadowRoot*, *Document* or an array of elements, and will default to the *Document* context.
 
 ```javascript
 const element = dom.findOne(selectors, nodes);
@@ -1418,7 +1418,7 @@ const element = dom.findOne(selectors, nodes);
 Find the first element with a specific class.
 
 - `className` is a string indicating the class name to search for.
-- `nodes` is a query selector string, a *HTMLElement*, *HTMLCollection*, *Document* or an array of elements, and will default to the *Document* context.
+- `nodes` is a query selector string, a *HTMLElement*, *HTMLCollection*, *ShadowRoot*, *Document* or an array of elements, and will default to the *Document* context.
 
 ```javascript
 const element = dom.findOneByClass(className, nodes);
@@ -1429,7 +1429,7 @@ const element = dom.findOneByClass(className, nodes);
 Find the first element with a specific ID.
 
 - `id` is a string indicating the id to search for.
-- `nodes` is a query selector string, a *HTMLElement*, *HTMLCollection*, *Document* or an array of elements, and will default to the *Document* context.
+- `nodes` is a query selector string, a *HTMLElement*, *HTMLCollection*, *ShadowRoot*, *Document* or an array of elements, and will default to the *Document* context.
 
 ```javascript
 const element = dom.findOneById(id, nodes);
@@ -1440,7 +1440,7 @@ const element = dom.findOneById(id, nodes);
 Find the first element with a specific tag.
 
 - `tagName` is a string indicating the tag name to search for.
-- `nodes` is a query selector string, a *HTMLElement*, *HTMLCollection*, *Document* or an array of elements, and will default to the *Document* context.
+- `nodes` is a query selector string, a *HTMLElement*, *HTMLCollection*, *ShadowRoot*, *Document* or an array of elements, and will default to the *Document* context.
 
 ```javascript
 const element = dom.findOneByTag(tagName, nodes);
@@ -1453,7 +1453,7 @@ const element = dom.findOneByTag(tagName, nodes);
 
 Find the first child of each element (optionally matching a filter).
 
-- `nodes` is a query selector string, a *HTMLElement*, *HTMLCollection* or an array of elements.
+- `nodes` is a query selector string, a *HTMLElement*, *HTMLCollection*, *ShadowRoot*, *Document* or an array of elements.
 - `filter` is either a function that accepts a `node` argument, a query selector string, a *Node*, *NodeList*, *HTMLCollection* or an array of nodes that the nodes will be filtered by, and will default to *false*.
 
 ```javascript
@@ -1464,7 +1464,7 @@ const child = dom.child(nodes, filter);
 
 Find all children of each element (optionally matching a filter).
 
-- `nodes` is a query selector string, a *HTMLElement*, *HTMLCollection* or an array of elements.
+- `nodes` is a query selector string, a *HTMLElement*, *HTMLCollection*, *ShadowRoot*, *Document* or an array of elements.
 - `filter` is either a function that accepts a `node` argument, a query selector string, a *Node*, *NodeList*, *HTMLCollection* or an array of nodes that the nodes will be filtered by, and will default to *false*.
 - `first` is a boolean indicating whether to only return the first matching node for each node, and will default to *false*.
 - `elementsOnly` is a boolean indicating whether to only return elements, and will default to *true*.
@@ -1477,7 +1477,7 @@ const children = dom.children(nodes, filter, first, elementsOnly);
 
 Find the closest ancestor to each element (optionally matching a filter, and before a limit).
 
-- `nodes` is a query selector string, a *Node*, *NodeList*, *HTMLCollection* or an array of nodes.
+- `nodes` is a query selector string, a *Node*, *NodeList*, *HTMLCollection*, *ShadowRoot* or an array of nodes.
 - `filter` is either a function that accepts a `node` argument, a query selector string, a *Node*, *NodeList*, *HTMLCollection* or an array of nodes that the nodes will be filtered by, and will default to *false*.
 - `limit` is either a function that accepts a `node` argument, a query selector string, a *Node*, *NodeList*, *HTMLCollection* or an array of nodes that when matched will stop the search, and will default to *false*.
 
@@ -1489,7 +1489,7 @@ const closest = dom.closest(nodes, filter, limit);
 
 Find the common ancestor of all elements.
 
-- `nodes` is a query selector string, a *Node*, *NodeList*, *HTMLCollection* or an array of nodes.
+- `nodes` is a query selector string, a *Node*, *NodeList*, *HTMLCollection*, *ShadowRoot* or an array of nodes.
 
 ```javascript
 const commonAncestor = dom.commonAncestor(nodes);
@@ -1499,7 +1499,7 @@ const commonAncestor = dom.commonAncestor(nodes);
 
 Find all children of each element (including text and comment nodes).
 
-- `nodes` is a query selector string, a *HTMLElement*, *HTMLCollection* or an array of elements.
+- `nodes` is a query selector string, a *HTMLElement*, *HTMLCollection*, *ShadowRoot*, *Document* or an array of elements.
 
 ```javascript
 const contents = dom.contents(nodes);
@@ -1608,7 +1608,7 @@ const siblings = dom.siblings(nodes, filter, elementsOnly);
 
 Returns *true* if any of the elements contains a descendent matching a filter.
 
-- `nodes` is a query selector string, a *HTMLElement*, *HTMLCollection*, *Document* or an array of elements.
+- `nodes` is a query selector string, a *HTMLElement*, *HTMLCollection*, *ShadowRoot*, *Document* or an array of elements.
 - `filter` is either a function that accepts a `node` argument, a query selector string, a *Node*, *NodeList*, *HTMLCollection* or an array of nodes that the nodes will be tested for.
 
 ```javascript
@@ -1651,7 +1651,7 @@ const hasClass = dom.hasClass(nodes, ...classes);
 
 Returns *true* if any of the nodes has custom data.
 
-- `nodes` is a query selector string, a *Node*, *NodeList*, *HTMLCollection*, *Document*, *Window* or an array of elements.
+- `nodes` is a query selector string, a *Node*, *NodeList*, *HTMLCollection*, *Window* or an array of elements.
 - `key` is a string indicating the custom data value to test for.
 
 ```javascript
@@ -1721,7 +1721,7 @@ const isEqual = dom.isEqual(nodes, others);
 
 Returns *true* if any of the elements or a parent of any of the elements is "fixed".
 
-- `nodes` is a query selector string, a *HTMLElement*, *HTMLCollection* or an array of elements.
+- `nodes` is a query selector string, a *Node*, *NodeList*, *HTMLCollection* or an array of elements.
 
 ```javascript
 const isFixed = dom.isFixed(nodes);
@@ -1731,7 +1731,7 @@ const isFixed = dom.isFixed(nodes);
 
 Returns *true* if any of the elements is hidden.
 
-- `nodes` is a query selector string, a *Node*, *NodeList*, *HTMLCollection*, *Document*, *Window* or an array of elements.
+- `nodes` is a query selector string, a *Node*, *NodeList*, *HTMLCollection*, *ShadowRoot*, *Document*, *Window* or an array of elements.
 
 ```javascript
 const isHidden = dom.isHidden(nodes);
@@ -1752,7 +1752,7 @@ const isSame = dom.isSame(nodes, others);
 
 Returns *true* if any of the elements is visible.
 
-- `nodes` is a query selector string, a *Node*, *NodeList*, *HTMLCollection*, *Document*, *Window* or an array of elements.
+- `nodes` is a query selector string, a *Node*, *NodeList*, *HTMLCollection*, *ShadowRoot*, *Document*, *Window* or an array of elements.
 
 ```javascript
 const isVisible = dom.isVisible(nodes);
@@ -1820,7 +1820,7 @@ dom.selectAll(nodes);
 
 Wrap selected nodes with other nodes.
 
-- `nodes` is a query selector string, a HTML string, a *HTMLElement*, *HTMLCollection* or an array of elements.
+- `nodes` is a query selector string, a HTML string, a *HTMLElement*, *HTMLCollection*, *ShadowRoot* or an array of elements.
 
 ```javascript
 dom.wrapSelection(nodes);
@@ -1843,7 +1843,7 @@ dom.exec(command, value);
 
 Force an element to be temporarily shown, and then execute a callback.
 
-- `nodes` is a query selector string, a *Node*, *NodeList*, *HTMLCollection*, *Document*, *Window* or an array of elements.
+- `nodes` is a query selector string, a *Node*, *NodeList*, *HTMLCollection*, *Window* or an array of elements.
 - `callback` is a function that accepts a `node` as a parameter.
 
 ```javascript

@@ -6,7 +6,7 @@ Object.assign(DOM.prototype, {
 
     /**
      * Return the first child of each element (optionally matching a filter).
-     * @param {string|HTMLElement|HTMLCollection|HTMLElement[]} nodes The input node(s), or a query selector string.
+     * @param {string|HTMLElement|HTMLCollection|ShadowRoot|Document|HTMLElement[]} nodes The input node(s), or a query selector string.
      * @param {string|Node|NodeList|HTMLCollection|Node[]|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
      * @returns {HTMLElement[]} The matching nodes.
      */
@@ -29,11 +29,11 @@ Object.assign(DOM.prototype, {
     children(nodes, filter, first = false, elementsOnly = true) {
         filter = this._parseFilter(filter);
 
-        if (Core.isElement(nodes)) {
+        if (Core.isElement(nodes) || Core.isDocument(nodes) || Core.isShadowRoot(nodes)) {
             return DOM._children(nodes, filter, first, elementsOnly);
         }
 
-        nodes = this._nodeFilter(nodes);
+        nodes = this._nodeFilter(nodes, { shadow: true, document: true });
 
         const results = [];
 
@@ -67,7 +67,7 @@ Object.assign(DOM.prototype, {
 
     /**
      * Return the common ancestor of all elements.
-     * @param {string|HTMLElement|HTMLCollection|HTMLElement[]} nodes The input node(s), or a query selector string.
+     * @param {string|HTMLElement|HTMLCollection|ShadowRoot|HTMLElement[]} nodes The input node(s), or a query selector string.
      * @returns {HTMLElement} The common ancestor.
      */
     commonAncestor(nodes) {
@@ -91,7 +91,7 @@ Object.assign(DOM.prototype, {
 
     /**
      * Return all children of each element (including text and comment nodes).
-     * @param {string|HTMLElement|HTMLCollection|HTMLElement[]} nodes The input node(s), or a query selector string.
+     * @param {string|HTMLElement|HTMLCollection|ShadowRoot|Document|HTMLElement[]} nodes The input node(s), or a query selector string.
      * @returns {Node[]} The matching nodes.
      */
     contents(nodes) {
@@ -112,11 +112,11 @@ Object.assign(DOM.prototype, {
     next(nodes, filter) {
         filter = this._parseFilter(filter);
 
-        if (Core.isElement(nodes)) {
+        if (Core.isNode(nodes) || Core.isShadowRoot(nodes)) {
             return DOM._next(nodes, filter);
         }
 
-        nodes = this._nodeFilter(nodes);
+        nodes = this._nodeFilter(nodes, { node: true, shadow: true });
 
         const results = [];
 
@@ -144,11 +144,11 @@ Object.assign(DOM.prototype, {
         filter = this._parseFilter(filter);
         limit = this._parseFilter(limit);
 
-        if (Core.isElement(nodes)) {
+        if (Core.isNode(nodes) || Core.isShadowRoot(nodes)) {
             return DOM._nextAll(nodes, filter, limit, first);
         }
 
-        nodes = this._nodeFilter(nodes);
+        nodes = this._nodeFilter(nodes, { node: true, shadow: true });
 
         const results = [];
 
@@ -185,11 +185,11 @@ Object.assign(DOM.prototype, {
     parent(nodes, filter) {
         filter = this._parseFilter(filter);
 
-        if (Core.isElement(nodes)) {
+        if (Core.isNode(nodes) || Core.isShadowRoot(nodes)) {
             return DOM._parent(nodes, filter);
         }
 
-        nodes = this._nodeFilter(nodes, { node: true });
+        nodes = this._nodeFilter(nodes, { node: true, shadow: true });
 
         const results = [];
 
@@ -217,11 +217,11 @@ Object.assign(DOM.prototype, {
         filter = this._parseFilter(filter);
         limit = this._parseFilter(limit);
 
-        if (Core.isElement(nodes)) {
+        if (Core.isNode(nodes) || Core.isShadowRoot(nodes)) {
             return DOM._parents(nodes, filter, limit, first);
         }
 
-        nodes = this._nodeFilter(nodes, { node: true });
+        nodes = this._nodeFilter(nodes, { node: true, shadow: true });
 
         const results = [];
 
@@ -246,11 +246,11 @@ Object.assign(DOM.prototype, {
     prev(nodes, filter) {
         filter = this._parseFilter(filter);
 
-        if (Core.isElement(nodes)) {
+        if (Core.isNode(nodes) || Core.isShadowRoot(nodes)) {
             return DOM._prev(nodes, filter);
         }
 
-        nodes = this._nodeFilter(nodes);
+        nodes = this._nodeFilter(nodes, { node: true, shadow: true });
 
         const results = [];
 
@@ -278,11 +278,11 @@ Object.assign(DOM.prototype, {
         filter = this._parseFilter(filter);
         limit = this._parseFilter(limit);
 
-        if (Core.isElement(nodes)) {
+        if (Core.isNode(nodes) || Core.isShadowRoot(nodes)) {
             return DOM._prevAll(nodes, filter, limit, first);
         }
 
-        nodes = this._nodeFilter(nodes);
+        nodes = this._nodeFilter(nodes, { node: true, shadow: true });
 
         const results = [];
 
@@ -308,11 +308,11 @@ Object.assign(DOM.prototype, {
     siblings(nodes, filter, elementsOnly = true) {
         filter = this._parseFilter(filter);
 
-        if (Core.isElement(nodes)) {
+        if (Core.isNode(nodes) || Core.isShadowRoot(nodes)) {
             return DOM._siblings(nodes, filter, elementsOnly);
         }
 
-        nodes = this._nodeFilter(nodes);
+        nodes = this._nodeFilter(nodes, { node: true, shadow: true });
 
         const results = [];
 

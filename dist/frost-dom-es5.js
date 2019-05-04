@@ -1505,6 +1505,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
     cloneData: function cloneData(nodes, others) {
       nodes = this._nodeFilter(nodes, {
         node: true,
+        shadow: true,
         document: true,
         window: true
       });
@@ -1543,6 +1544,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
     getData: function getData(nodes, key) {
       var node = this._nodeFind(nodes, {
         node: true,
+        shadow: true,
         document: true,
         window: true
       });
@@ -1562,6 +1564,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
     removeData: function removeData(nodes, key) {
       nodes = this._nodeFilter(nodes, {
         node: true,
+        shadow: true,
         document: true,
         window: true
       });
@@ -1600,6 +1603,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
     setData: function setData(nodes, key, value) {
       nodes = this._nodeFilter(nodes, {
         node: true,
+        shadow: true,
         document: true,
         window: true
       });
@@ -2376,10 +2380,8 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
       if (!node) {
         return;
-      } // camelize style property
+      }
 
-
-      style = Core.snakeCase(style);
       return DOM._getStyle(node, style);
     },
 
@@ -2444,20 +2446,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
     setStyle: function setStyle(nodes, style, value, important) {
       nodes = this._nodeFilter(nodes);
 
-      var styles = DOM._parseData(style, value),
-          realStyles = {};
-
-      for (var key in styles) {
-        var _value = "".concat(styles[key]);
-
-        key = Core.snakeCase(key); // if value is numeric and not a number property, add px
-
-        if (_value && Core.isNumeric(_value) && !DOM.cssNumberProperties.includes(key)) {
-          _value += 'px';
-        }
-
-        realStyles[key] = _value;
-      }
+      var styles = DOM._parseData(style, value);
 
       var _iteratorNormalCompletion23 = true;
       var _didIteratorError23 = false;
@@ -2467,7 +2456,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         for (var _iterator23 = nodes[Symbol.iterator](), _step23; !(_iteratorNormalCompletion23 = (_step23 = _iterator23.next()).done); _iteratorNormalCompletion23 = true) {
           var node = _step23.value;
 
-          DOM._setStyle(node, realStyles, important);
+          DOM._setStyle(node, styles, important);
         }
       } catch (err) {
         _didIteratorError23 = true;
@@ -2601,10 +2590,10 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       var animated = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : true;
 
       if (move && animated) {
-        move = Core.animationFactory(move); // needed to make sure up callback executes after final move callback
+        move = Core.animation(move); // needed to make sure up callback executes after final move callback
 
         if (up) {
-          up = Core.animationFactory(up);
+          up = Core.animation(up);
         }
       }
 
@@ -2779,12 +2768,13 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Trigger events on each element.
-     * @param {string|HTMLElement|HTMLCollection|Document|Window|HTMLElement[]} nodes The input node(s), or a query selector string.
+     * @param {string|HTMLElement|HTMLCollection|ShadowRoot|Document|Window|HTMLElement[]} nodes The input node(s), or a query selector string.
      * @param {string} events The event names.
      * @param {object} [data] Additional data to attach to the event.
      */
     triggerEvent: function triggerEvent(nodes, events, data) {
       nodes = this._nodeFilter(nodes, {
+        shadow: true,
         document: true,
         window: true
       });
@@ -2826,12 +2816,13 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Add an event to each element.
-     * @param {string|HTMLElement|HTMLCollection|Document|Window|HTMLElement[]} nodes The input node(s), or a query selector string.
+     * @param {string|HTMLElement|HTMLCollection|ShadowRoot|Document|Window|HTMLElement[]} nodes The input node(s), or a query selector string.
      * @param {string} events The event names.
      * @param {DOM~eventCallback} callback The callback to execute.
      */
     addEvent: function addEvent(nodes, events, callback) {
       nodes = this._nodeFilter(nodes, {
+        shadow: true,
         document: true,
         window: true
       });
@@ -2863,13 +2854,14 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Add a delegated event to each element.
-     * @param {string|HTMLElement|HTMLCollection|Document|Window|HTMLElement[]} nodes The input node(s), or a query selector string.
+     * @param {string|HTMLElement|HTMLCollection|ShadowRoot|Document|Window|HTMLElement[]} nodes The input node(s), or a query selector string.
      * @param {string} events The event names.
      * @param {string} delegate The delegate selector.
      * @param {DOM~eventCallback} callback The callback to execute.
      */
     addEventDelegate: function addEventDelegate(nodes, events, delegate, callback) {
       nodes = this._nodeFilter(nodes, {
+        shadow: true,
         document: true,
         window: true
       });
@@ -2901,13 +2893,14 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Add a self-destructing delegated event to each element.
-     * @param {string|HTMLElement|HTMLCollection|Document|Window|HTMLElement[]} nodes The input node(s), or a query selector string.
+     * @param {string|HTMLElement|HTMLCollection|ShadowRoot|Document|Window|HTMLElement[]} nodes The input node(s), or a query selector string.
      * @param {string} events The event names.
      * @param {string} delegate The delegate selector.
      * @param {DOM~eventCallback} callback The callback to execute.
      */
     addEventDelegateOnce: function addEventDelegateOnce(nodes, events, delegate, callback) {
       nodes = this._nodeFilter(nodes, {
+        shadow: true,
         document: true,
         window: true
       });
@@ -2939,12 +2932,13 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Add a self-destructing event to each element.
-     * @param {string|HTMLElement|HTMLCollection|Document|Window|HTMLElement[]} nodes The input node(s), or a query selector string.
+     * @param {string|HTMLElement|HTMLCollection|ShadowRoot|Document|Window|HTMLElement[]} nodes The input node(s), or a query selector string.
      * @param {string} events The event names.
      * @param {DOM~eventCallback} callback The callback to execute.
      */
     addEventOnce: function addEventOnce(nodes, events, callback) {
       nodes = this._nodeFilter(nodes, {
+        shadow: true,
         document: true,
         window: true
       });
@@ -2976,11 +2970,12 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Clone all events from each element to other elements.
-     * @param {string|HTMLElement|HTMLCollection|Document|Window|HTMLElement[]} nodes The input node(s), or a query selector string.
-     * @param {string|HTMLElement|HTMLCollection|Document|Window|HTMLElement[]} others The other node(s), or a query selector string.
+     * @param {string|HTMLElement|HTMLCollection|ShadowRoot|Document|Window|HTMLElement[]} nodes The input node(s), or a query selector string.
+     * @param {string|HTMLElement|HTMLCollection|ShadowRoot|Document|Window|HTMLElement[]} others The other node(s), or a query selector string.
      */
     cloneEvents: function cloneEvents(nodes, others) {
       nodes = this._nodeFilter(nodes, {
+        shadow: true,
         document: true,
         window: true
       });
@@ -3012,12 +3007,13 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Remove events from each element.
-     * @param {string|HTMLElement|HTMLCollection|Document|Window|HTMLElement[]} nodes The input node(s), or a query selector string.
+     * @param {string|HTMLElement|HTMLCollection|ShadowRoot|Document|Window|HTMLElement[]} nodes The input node(s), or a query selector string.
      * @param {string} [events] The event names.
      * @param {DOM~eventCallback} [callback] The callback to remove.
      */
     removeEvent: function removeEvent(nodes, events, callback) {
       nodes = this._nodeFilter(nodes, {
+        shadow: true,
         document: true,
         window: true
       });
@@ -3049,13 +3045,14 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Remove delegated events from each element.
-     * @param {string|HTMLElement|HTMLCollection|Document|Window|HTMLElement[]} nodes The input node(s), or a query selector string.
+     * @param {string|HTMLElement|HTMLCollection|ShadowRoot|Document|Window|HTMLElement[]} nodes The input node(s), or a query selector string.
      * @param {string} [events] The event names.
      * @param {string} [delegate] The delegate selector.
      * @param {DOM~eventCallback} [callback] The callback to remove.
      */
     removeEventDelegate: function removeEventDelegate(nodes, events, delegate, callback) {
       nodes = this._nodeFilter(nodes, {
+        shadow: true,
         document: true,
         window: true
       });
@@ -3087,7 +3084,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Add an event to a single element.
-     * @param {HTMLElement|Document|Window} node The input node.
+     * @param {HTMLElement|ShadowRoot|Document|Window} node The input node.
      * @param {string} events The event names.
      * @param {DOM~eventCallback} callback The callback to execute.
      * @param {string} [delegate] The delegate selector.
@@ -3156,7 +3153,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Clone all events from a single element to other elements.
-     * @param {HTMLElement|Document|Window} nodes The input node.
+     * @param {HTMLElement|ShadowRoot|Document|Window} nodes The input node.
      * @param {string|HTMLElement|HTMLCollection|Document|Window|HTMLElement[]} others The other node(s), or a query selector string.
      */
     _cloneEvents: function _cloneEvents(node, others) {
@@ -3195,7 +3192,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Remove events from a single element.
-     * @param {HTMLElement|Document|Window} nodes The input node.
+     * @param {HTMLElement|ShadowRoot|Document|Window} nodes The input node.
      * @param {string} [events] The event names.
      * @param {DOM~eventCallback} [callback] The callback to remove.
      * @param {string} [delegate] The delegate selector.
@@ -3385,7 +3382,8 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       var cloneEvents = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
       var cloneData = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : false;
       nodes = this._nodeFilter(nodes, {
-        node: true
+        node: true,
+        shadow: true
       });
       return nodes.map(function (node) {
         return _this18._clone(node, deep, cloneEvents, cloneData);
@@ -3398,7 +3396,8 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
      */
     detach: function detach(nodes) {
       nodes = this._nodeFilter(nodes, {
-        node: true
+        node: true,
+        shadow: true
       });
       var _iteratorNormalCompletion37 = true;
       var _didIteratorError37 = false;
@@ -3428,10 +3427,11 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Remove all children of each node from the DOM.
-     * @param {string|HTMLElement|HTMLCollection|Document|HTMLElement[]} nodes The input node(s), or a query selector string.
+     * @param {string|HTMLElement|HTMLCollection|ShadowRoot|Document|HTMLElement[]} nodes The input node(s), or a query selector string.
      */
     empty: function empty(nodes) {
       nodes = this._nodeFilter(nodes, {
+        shadow: true,
         document: true
       });
       var _iteratorNormalCompletion38 = true;
@@ -3466,7 +3466,8 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
      */
     remove: function remove(nodes) {
       nodes = this._nodeFilter(nodes, {
-        node: true
+        node: true,
+        shadow: true
       });
       var _iteratorNormalCompletion39 = true;
       var _didIteratorError39 = false;
@@ -3510,10 +3511,12 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
      */
     replaceWith: function replaceWith(nodes, others) {
       nodes = this._nodeFilter(nodes, {
-        node: true
+        node: true,
+        shadow: true
       });
       others = this._nodeFilter(others, {
         node: true,
+        shadow: true,
         html: true
       });
       var _iteratorNormalCompletion40 = true;
@@ -3599,7 +3602,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Remove all children of a single node from the DOM.
-     * @param {HTMLElement} node The input node.
+     * @param {HTMLElement|ShadowRoot|Document} node The input node.
      */
     _empty: function _empty(node) {
       var children = DOM._children(node, false, false, false);
@@ -3679,7 +3682,8 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
      */
     after: function after(nodes, others) {
       var node = this._nodeFind(nodes, {
-        node: true
+        node: true,
+        shadow: true
       });
 
       if (!node) {
@@ -3688,6 +3692,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
       others = this._nodeFilter(others, {
         node: true,
+        shadow: true,
         html: true
       });
 
@@ -3696,11 +3701,14 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Append each other node to the first node.
-     * @param {string|HTMLElement|HTMLCollection|HTMLElement[]} nodes The input node(s), or a query selector string.
+     * @param {string|HTMLElement|HTMLCollection|ShadowRoot|Document|HTMLElement[]} nodes The input node(s), or a query selector string.
      * @param {string|Node|NodeList|HTMLCollection|Node[]} others The other node(s), or a query selector or HTML string.
      */
     append: function append(nodes, others) {
-      var node = this._nodeFind(nodes);
+      var node = this._nodeFind(nodes, {
+        shadow: true,
+        document: true
+      });
 
       if (!node) {
         return;
@@ -3708,6 +3716,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
       others = this._nodeFilter(others, {
         node: true,
+        shadow: true,
         html: true
       });
 
@@ -3717,7 +3726,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
     /**
      * Append each node to the first other node.
      * @param {string|Node|NodeList|HTMLCollection|Node[]} nodes The input node(s), or a query selector or HTML string.
-     * @param {string|HTMLElement|HTMLCollection|HTMLElement[]} others The other node(s), or a query selector string.
+     * @param {string|HTMLElement|HTMLCollection|ShadowRoot|Document|HTMLElement[]} others The other node(s), or a query selector string.
      */
     appendTo: function appendTo(nodes, others) {
       this.append(others, nodes);
@@ -3730,7 +3739,8 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
      */
     before: function before(nodes, others) {
       var node = this._nodeFind(nodes, {
-        node: true
+        node: true,
+        shadow: true
       });
 
       if (!node) {
@@ -3739,6 +3749,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
       others = this._nodeFilter(others, {
         node: true,
+        shadow: true,
         html: true
       });
 
@@ -3765,11 +3776,14 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Prepend each other node to the first node.
-     * @param {string|HTMLElement|HTMLElement|HTMLElement[]} nodes The input node(s), or a query selector string.
+     * @param {string|HTMLElement|HTMLElement|ShadowRoot|Document|HTMLElement[]} nodes The input node(s), or a query selector string.
      * @param {string|Node|NodeList|HTMLCollection|Node[]} others The other node(s), or a query selector or HTML string.
      */
     prepend: function prepend(nodes, others) {
-      var node = this._nodeFind(nodes);
+      var node = this._nodeFind(nodes, {
+        shadow: true,
+        document: true
+      });
 
       if (!node) {
         return;
@@ -3777,6 +3791,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
       others = this._nodeFilter(others, {
         node: true,
+        shadow: true,
         html: true
       });
 
@@ -3786,7 +3801,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
     /**
      * Prepend each node to the first other node.
      * @param {string|Node|NodeList|HTMLCollection|Node[]} nodes The input node(s), or a query selector or HTML string.
-     * @param {string|HTMLElement|HTMLElement|HTMLElement[]} others The other node(s), or a query selector string.
+     * @param {string|HTMLElement|HTMLElement|ShadowRoot|Document|HTMLElement[]} others The other node(s), or a query selector string.
      */
     prependTo: function prependTo(nodes, others) {
       this.prepend(others, nodes);
@@ -3804,7 +3819,8 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
      */
     unwrap: function unwrap(nodes, filter) {
       nodes = this._nodeFilter(nodes, {
-        node: true
+        node: true,
+        shadow: true
       });
       var _iteratorNormalCompletion42 = true;
       var _didIteratorError42 = false;
@@ -3835,13 +3851,15 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
     /**
      * Wrap each nodes with other nodes.
      * @param {string|Node|NodeList|HTMLCollection|Node[]} nodes The input node(s), or a query selector string.
-     * @param {string|HTMLElement|HTMLCollection|HTMLElement[]} others The other node(s), or a query selector or HTML string.
+     * @param {string|HTMLElement|HTMLCollection|ShadowRoot|HTMLElement[]} others The other node(s), or a query selector or HTML string.
      */
     wrap: function wrap(nodes, others) {
       nodes = this._nodeFilter(nodes, {
-        node: true
+        node: true,
+        shadow: true
       });
       others = this._nodeFilter(others, {
+        shadow: true,
         html: true
       });
       var _iteratorNormalCompletion43 = true;
@@ -3873,13 +3891,15 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
     /**
      * Wrap all nodes with other nodes.
      * @param {string|Node|NodeList|HTMLCollection|Node[]} nodes The input node(s), or a query selector string.
-     * @param {string|HTMLElement|HTMLCollection|HTMLElement[]} others The other node(s), or a query selector or HTML string.
+     * @param {string|HTMLElement|HTMLCollection|ShadowRoot|HTMLElement[]} others The other node(s), or a query selector or HTML string.
      */
     wrapAll: function wrapAll(nodes, others) {
       nodes = this._nodeFilter(nodes, {
-        node: true
+        node: true,
+        shadow: true
       });
       others = this._nodeFilter(others, {
+        shadow: true,
         html: true
       });
       var clone = this.clone(others, true);
@@ -3896,14 +3916,16 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Wrap the contents of each node with other nodes.
-     * @param {string|HTMLElement|HTMLCollection|HTMLElement[]} nodes The input node(s), or a query selector string.
-     * @param {string|HTMLElement|HTMLCollection|HTMLElement[]} others The other node(s), or a query selector or HTML string.
+     * @param {string|HTMLElement|HTMLCollection|ShadowRoot|HTMLElement[]} nodes The input node(s), or a query selector string.
+     * @param {string|HTMLElement|HTMLCollection|ShadowRoot|HTMLElement[]} others The other node(s), or a query selector or HTML string.
      */
     wrapInner: function wrapInner(nodes, others) {
       nodes = this._nodeFilter(nodes, {
-        node: true
+        node: true,
+        shadow: true
       });
       others = this._nodeFilter(others, {
+        shadow: true,
         html: true
       });
       var _iteratorNormalCompletion44 = true;
@@ -3995,39 +4017,46 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
   Object.assign(DOM.prototype, {
     /**
      * Return all elements matching a filter.
-     * @param {string|HTMLElement|HTMLCollection|HTMLElement[]} nodes The input node(s), or a query selector string.
+     * @param {string|Node|NodeList|HTMLCollection|Node[]} nodes The input node(s), or a query selector string.
      * @param {string|Node|NodeList|HTMLCollection|Node[]|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
-     * @returns {HTMLElement[]} The filtered nodes.
+     * @returns {Node[]} The filtered nodes.
      */
     filter: function filter(nodes, _filter) {
       _filter = this._parseFilter(_filter);
-      return this._nodeFilter(nodes).filter(function (node, index) {
+      return this._nodeFilter(nodes, {
+        node: true,
+        shadow: true
+      }).filter(function (node, index) {
         return !_filter || _filter(node, index);
       });
     },
 
     /**
      * Return the first element matching a filter.
-     * @param {string|HTMLElement|HTMLCollection|HTMLElement[]} nodes The input node(s), or a query selector string.
+     * @param {string|Node|NodeList|HTMLCollection|Node[]} nodes The input node(s), or a query selector string.
      * @param {string|Node|NodeList|HTMLCollection|Node[]|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
-     * @returns {HTMLElement} The filtered node.
+     * @returns {Node} The filtered node.
      */
     filterOne: function filterOne(nodes, filter) {
       filter = this._parseFilter(filter);
-      return this._nodeFilter(nodes).find(function (node, index) {
+      return this._nodeFilter(nodes, {
+        node: true,
+        shadow: true
+      }).find(function (node, index) {
         return !filter || filter(node, index);
       }) || null;
     },
 
     /**
      * Return all elements with a descendent matching a filter.
-     * @param {string|HTMLElement|HTMLCollection|HTMLElement[]} nodes The input node(s), or a query selector string.
+     * @param {string|HTMLElement|HTMLCollection|ShadowRoot|Document|HTMLElement[]} nodes The input node(s), or a query selector string.
      * @param {string|Node|NodeList|HTMLCollection|Node[]|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
      * @returns {HTMLElement[]} The filtered nodes.
      */
     has: function has(nodes, filter) {
       filter = this._parseFilterContains(filter);
       return this._nodeFilter(nodes, {
+        shadow: true,
         document: true
       }).filter(function (node, index) {
         return !filter || filter(node, index);
@@ -4036,13 +4065,14 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Return the first element with a descendent matching a filter.
-     * @param {string|HTMLElement|HTMLCollection|HTMLElement[]} nodes The input node(s), or a query selector string.
+     * @param {string|HTMLElement|HTMLCollection|ShadowRoot|Document|HTMLElement[]} nodes The input node(s), or a query selector string.
      * @param {string|Node|NodeList|HTMLCollection|Node[]|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
      * @returns {HTMLElement} The filtered node.
      */
     hasOne: function hasOne(nodes, filter) {
       filter = this._parseFilterContains(filter);
       return this._nodeFilter(nodes, {
+        shadow: true,
         document: true
       }).find(function (node, index) {
         return !filter || filter(node, index);
@@ -4051,39 +4081,37 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Return all hidden elements.
-     * @param {string|HTMLElement|HTMLCollection|HTMLElement[]} nodes The input node(s), or a query selector string.
+     * @param {string|HTMLElement|HTMLCollection|ShadowRoot|Document|Window|HTMLElement[]} nodes The input node(s), or a query selector string.
      * @returns {HTMLElement[]} The filtered nodes.
      */
     hidden: function hidden(nodes) {
-      var _this19 = this;
-
       return this._nodeFilter(nodes, {
+        shadow: true,
         document: true,
         window: true
       }).filter(function (node) {
-        return _this19.isHidden(node);
+        return DOM._isHidden(node);
       });
     },
 
     /**
      * Return the first hidden element.
-     * @param {string|HTMLElement|HTMLCollection|HTMLElement[]} nodes The input node(s), or a query selector string.
+     * @param {string|HTMLElement|HTMLCollection|ShadowRoot|Document|Window|HTMLElement[]} nodes The input node(s), or a query selector string.
      * @returns {HTMLElement} The filtered node.
      */
     hiddenOne: function hiddenOne(nodes) {
-      var _this20 = this;
-
       return this._nodeFilter(nodes, {
+        shadow: true,
         document: true,
         window: true
       }).find(function (node) {
-        return _this20.isHidden(node);
+        return DOM._isHidden(node);
       }) || null;
     },
 
     /**
      * Return all elements not matching a filter.
-     * @param {string|HTMLElement|HTMLCollection|HTMLElement[]} nodes The input node(s), or a query selector string.
+     * @param {string|Node|NodeList|HTMLCollection|Node[]} nodes The input node(s), or a query selector string.
      * @param {string|Node|NodeList|HTMLCollection|Node[]|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
      * @returns {HTMLElement[]} The filtered nodes.
      */
@@ -4094,14 +4122,17 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         return [];
       }
 
-      return this._nodeFilter(nodes).filter(function (node, index) {
+      return this._nodeFilter(nodes, {
+        node: true,
+        shadow: true
+      }).filter(function (node, index) {
         return !filter(node, index);
       });
     },
 
     /**
      * Return the first element not matching a filter.
-     * @param {string|HTMLElement|HTMLCollection|HTMLElement[]} nodes The input node(s), or a query selector string.
+     * @param {string|Node|NodeList|HTMLCollection|Node[]} nodes The input node(s), or a query selector string.
      * @param {string|Node|NodeList|HTMLCollection|Node[]|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
      * @returns {HTMLElement} The filtered node.
      */
@@ -4112,40 +4143,41 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         return null;
       }
 
-      return this._nodeFilter(nodes).find(function (node, index) {
+      return this._nodeFilter(nodes, {
+        node: true,
+        shadow: true
+      }).find(function (node, index) {
         return !filter(node, index);
       }) || null;
     },
 
     /**
      * Return all visible elements.
-     * @param {string|HTMLElement|HTMLCollection|HTMLElement[]} nodes The input node(s), or a query selector string.
+     * @param {string|HTMLElement|HTMLCollection|ShadowRoot|Document|Window|HTMLElement[]} nodes The input node(s), or a query selector string.
      * @returns {HTMLElement[]} The filtered nodes.
      */
     visible: function visible(nodes) {
-      var _this21 = this;
-
       return this._nodeFilter(nodes, {
+        shadow: true,
         document: true,
         window: true
       }).filter(function (node) {
-        return _this21.isVisible(node);
+        return DOM._isVisible(node);
       });
     },
 
     /**
      * Return the first visible element.
-     * @param {string|HTMLElement|HTMLCollection|HTMLElement[]} nodes The input node(s), or a query selector string.
+     * @param {string|HTMLElement|HTMLCollection|ShadowRoot|Document|Window|HTMLElement[]} nodes The input node(s), or a query selector string.
      * @returns {HTMLElement} The filtered node.
      */
     visibleOne: function visibleOne(nodes) {
-      var _this22 = this;
-
       return this._nodeFilter(nodes, {
+        shadow: true,
         document: true,
         window: true
       }).find(function (node) {
-        return _this22.isVisible(node);
+        return DOM._isVisible(node);
       }) || null;
     }
   });
@@ -4189,17 +4221,18 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
     /**
      * Return all elements with a specific class.
      * @param {string} className The class name.
-     * @param {string|HTMLElement|HTMLCollection|Document|HTMLElement[]} [nodes=this._context] The input node(s), or a query selector string.
+     * @param {string|HTMLElement|HTMLCollection|ShadowRoot|Document|HTMLElement[]} [nodes=this._context] The input node(s), or a query selector string.
      * @returns {HTMLElement[]} The matching nodes.
      */
     findByClass: function findByClass(className) {
       var nodes = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : this._context;
 
-      if (Core.isDocument(nodes) || Core.isElement(nodes)) {
+      if (Core.isDocument(nodes) || Core.isElement(nodes) || Core.isShadowRoot(nodes)) {
         return Core.merge([], DOM._findByClass(className, nodes));
       }
 
       nodes = this._nodeFilter(nodes, {
+        shadow: true,
         document: true
       });
       var results = [];
@@ -4233,7 +4266,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
     /**
      * Return all elements with a specific ID.
      * @param {string} id The id.
-     * @param {string|HTMLElement|HTMLCollection|Document|HTMLElement[]} [nodes=this._context] The input node(s), or a query selector string.
+     * @param {string|HTMLElement|HTMLCollection|ShadowRoot|Document|HTMLElement[]} [nodes=this._context] The input node(s), or a query selector string.
      * @returns {HTMLElement[]} The matching nodes.
      */
     findById: function findById(id) {
@@ -4249,7 +4282,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         return [result];
       }
 
-      if (Core.isElement(nodes)) {
+      if (Core.isElement(nodes) || Core.isShadowRoot(nodes)) {
         return DOM._has(nodes, result) ? [result] : [];
       }
 
@@ -4259,17 +4292,18 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
     /**
      * Return all elements with a specific tag.
      * @param {string} tagName The tag name.
-     * @param {string|HTMLElement|HTMLCollection|Document|HTMLElement[]} [nodes=this._context] The input node(s), or a query selector string.
+     * @param {string|HTMLElement|HTMLCollection|ShadowRoot|Document|HTMLElement[]} [nodes=this._context] The input node(s), or a query selector string.
      * @returns {HTMLElement[]} The matching nodes.
      */
     findByTag: function findByTag(tagName) {
       var nodes = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : this._context;
 
-      if (Core.isDocument(nodes) || Core.isElement(nodes)) {
+      if (Core.isDocument(nodes) || Core.isElement(nodes) || Core.isShadowRoot(nodes)) {
         return Core.merge([], DOM._findByTag(tagName, nodes));
       }
 
       nodes = this._nodeFilter(nodes, {
+        shadow: true,
         document: true
       });
       var results = [];
@@ -4335,17 +4369,18 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
     /**
      * Return a single element with a specific class.
      * @param {string} className The class name.
-     * @param {string|HTMLElement|HTMLCollection|Document|HTMLElement[]} [nodes=this._context] The input node(s), or a query selector string.
+     * @param {string|HTMLElement|HTMLCollection|ShadowRoot|Document|HTMLElement[]} [nodes=this._context] The input node(s), or a query selector string.
      * @returns {HTMLElement} The matching node.
      */
     findOneByClass: function findOneByClass(className) {
       var nodes = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : this._context;
 
-      if (Core.isDocument(nodes) || Core.isElement(nodes)) {
+      if (Core.isDocument(nodes) || Core.isElement(nodes) || Core.isShadowRoot(nodes)) {
         return DOM._findByClass(className, nodes).item(0);
       }
 
       nodes = this._nodeFilter(nodes, {
+        shadow: true,
         document: true
       });
       var _iteratorNormalCompletion47 = true;
@@ -4383,7 +4418,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
     /**
      * Return a single element with a specific ID.
      * @param {string} id The id.
-     * @param {string|HTMLElement|HTMLCollection|Document|HTMLElement[]} [nodes=this._context] The input node(s), or a query selector string.
+     * @param {string|HTMLElement|HTMLCollection|ShadowRoot|Document|HTMLElement[]} [nodes=this._context] The input node(s), or a query selector string.
      * @returns {HTMLElement} The matching element.
      */
     findOneById: function findOneById(id) {
@@ -4399,7 +4434,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         return result;
       }
 
-      if (Core.isElement(nodes)) {
+      if (Core.isElement(nodes) || Core.isShadowRoot(nodes)) {
         return DOM._has(nodes, result) ? result : null;
       }
 
@@ -4409,17 +4444,18 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
     /**
      * Return a single element with a specific tag.
      * @param {string} tagName The tag name.
-     * @param {string|HTMLElement|HTMLCollection|Document|HTMLElement[]} [nodes=this._context] The input node(s), or a query selector string.
+     * @param {string|HTMLElement|HTMLCollection|ShadowRoot|Document|HTMLElement[]} [nodes=this._context] The input node(s), or a query selector string.
      * @returns {HTMLElement} The matching node.
      */
     findOneByTag: function findOneByTag(tagName) {
       var nodes = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : this._context;
 
-      if (Core.isDocument(nodes) || Core.isElement(nodes)) {
+      if (Core.isDocument(nodes) || Core.isElement(nodes) || Core.isShadowRoot(nodes)) {
         return DOM._findByTag(tagName, nodes).item(0);
       }
 
       nodes = this._nodeFilter(nodes, {
+        shadow: true,
         document: true
       });
       var _iteratorNormalCompletion48 = true;
@@ -4474,9 +4510,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         return Core.merge([], DOM._findByCustom(selectors, nodes));
       }
 
-      nodes = this._nodeFilter(nodes, {
-        document: true
-      });
+      nodes = this._nodeFilter(nodes);
       var results = [];
       var _iteratorNormalCompletion49 = true;
       var _didIteratorError49 = false;
@@ -4508,17 +4542,18 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
     /**
      * Return all elements matching a standard CSS selector.
      * @param {string} selector The query selector.
-     * @param {string|HTMLElement|HTMLCollection|Document|HTMLElement[]} [nodes=this._context] The input node(s), or a query selector string.
+     * @param {string|HTMLElement|HTMLCollection|ShadowRoot|Document|HTMLElement[]} [nodes=this._context] The input node(s), or a query selector string.
      * @returns {HTMLElement[]} The matching nodes.
      */
     _findBySelector: function _findBySelector(selector) {
       var nodes = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : this._context;
 
-      if (Core.isDocument(nodes) || Core.isElement(nodes)) {
+      if (Core.isDocument(nodes) || Core.isElement(nodes) || Core.isShadowRoot(nodes)) {
         return Core.merge([], DOM._findBySelector(selector, nodes));
       }
 
       nodes = this._nodeFilter(nodes, {
+        shadow: true,
         document: true
       });
       var results = [];
@@ -4552,7 +4587,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
     /**
      * Return a single element matching a custom CSS selector.
      * @param {string} selector The custom query selector.
-     * @param {string|HTMLElement|HTMLCollection|Document|HTMLElement[]} [nodes=this._context] The input node(s), or a query selector string.
+     * @param {string|HTMLElement|HTMLCollection|HTMLElement[]} [nodes=this._context] The input node(s), or a query selector string.
      * @returns {HTMLElement} The matching node.
      */
     _findOneByCustom: function _findOneByCustom(selector) {
@@ -4569,9 +4604,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         return DOM._findOneByCustom(selectors, nodes);
       }
 
-      nodes = this._nodeFilter(nodes, {
-        document: true
-      });
+      nodes = this._nodeFilter(nodes);
       var _iteratorNormalCompletion51 = true;
       var _didIteratorError51 = false;
       var _iteratorError51 = undefined;
@@ -4607,17 +4640,18 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
     /**
      * Return a single element matching a standard CSS selector.
      * @param {string} selector The query selector.
-     * @param {string|HTMLElement|HTMLCollection|Document|HTMLElement[]} [nodes=this._context] The input node(s), or a query selector string.
+     * @param {string|HTMLElement|HTMLCollection|ShadowRoot|Document|HTMLElement[]} [nodes=this._context] The input node(s), or a query selector string.
      * @returns {HTMLElement} The matching node.
      */
     _findOneBySelector: function _findOneBySelector(selector) {
       var nodes = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : this._context;
 
-      if (Core.isDocument(nodes) || Core.isElement(nodes)) {
+      if (Core.isDocument(nodes) || Core.isElement(nodes) || Core.isShadowRoot(nodes)) {
         return DOM._findBySelector(selector, nodes).item(0);
       }
 
       nodes = this._nodeFilter(nodes, {
+        shadow: true,
         document: true
       });
       var _iteratorNormalCompletion52 = true;
@@ -4659,7 +4693,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
   Object.assign(DOM.prototype, {
     /**
      * Return the first child of each element (optionally matching a filter).
-     * @param {string|HTMLElement|HTMLCollection|HTMLElement[]} nodes The input node(s), or a query selector string.
+     * @param {string|HTMLElement|HTMLCollection|ShadowRoot|Document|HTMLElement[]} nodes The input node(s), or a query selector string.
      * @param {string|Node|NodeList|HTMLCollection|Node[]|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
      * @returns {HTMLElement[]} The matching nodes.
      */
@@ -4680,11 +4714,14 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       var elementsOnly = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : true;
       filter = this._parseFilter(filter);
 
-      if (Core.isElement(nodes)) {
+      if (Core.isElement(nodes) || Core.isDocument(nodes) || Core.isShadowRoot(nodes)) {
         return DOM._children(nodes, filter, first, elementsOnly);
       }
 
-      nodes = this._nodeFilter(nodes);
+      nodes = this._nodeFilter(nodes, {
+        shadow: true,
+        document: true
+      });
       var results = [];
       var _iteratorNormalCompletion53 = true;
       var _didIteratorError53 = false;
@@ -4726,7 +4763,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Return the common ancestor of all elements.
-     * @param {string|HTMLElement|HTMLCollection|HTMLElement[]} nodes The input node(s), or a query selector string.
+     * @param {string|HTMLElement|HTMLCollection|ShadowRoot|HTMLElement[]} nodes The input node(s), or a query selector string.
      * @returns {HTMLElement} The common ancestor.
      */
     commonAncestor: function commonAncestor(nodes) {
@@ -4750,7 +4787,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Return all children of each element (including text and comment nodes).
-     * @param {string|HTMLElement|HTMLCollection|HTMLElement[]} nodes The input node(s), or a query selector string.
+     * @param {string|HTMLElement|HTMLCollection|ShadowRoot|Document|HTMLElement[]} nodes The input node(s), or a query selector string.
      * @returns {Node[]} The matching nodes.
      */
     contents: function contents(nodes) {
@@ -4766,11 +4803,14 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
     next: function next(nodes, filter) {
       filter = this._parseFilter(filter);
 
-      if (Core.isElement(nodes)) {
+      if (Core.isNode(nodes) || Core.isShadowRoot(nodes)) {
         return DOM._next(nodes, filter);
       }
 
-      nodes = this._nodeFilter(nodes);
+      nodes = this._nodeFilter(nodes, {
+        node: true,
+        shadow: true
+      });
       var results = [];
       var _iteratorNormalCompletion54 = true;
       var _didIteratorError54 = false;
@@ -4812,11 +4852,14 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       filter = this._parseFilter(filter);
       limit = this._parseFilter(limit);
 
-      if (Core.isElement(nodes)) {
+      if (Core.isNode(nodes) || Core.isShadowRoot(nodes)) {
         return DOM._nextAll(nodes, filter, limit, first);
       }
 
-      nodes = this._nodeFilter(nodes);
+      nodes = this._nodeFilter(nodes, {
+        node: true,
+        shadow: true
+      });
       var results = [];
       var _iteratorNormalCompletion55 = true;
       var _didIteratorError55 = false;
@@ -4865,12 +4908,13 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
     parent: function parent(nodes, filter) {
       filter = this._parseFilter(filter);
 
-      if (Core.isElement(nodes)) {
+      if (Core.isNode(nodes) || Core.isShadowRoot(nodes)) {
         return DOM._parent(nodes, filter);
       }
 
       nodes = this._nodeFilter(nodes, {
-        node: true
+        node: true,
+        shadow: true
       });
       var results = [];
       var _iteratorNormalCompletion56 = true;
@@ -4913,12 +4957,13 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       filter = this._parseFilter(filter);
       limit = this._parseFilter(limit);
 
-      if (Core.isElement(nodes)) {
+      if (Core.isNode(nodes) || Core.isShadowRoot(nodes)) {
         return DOM._parents(nodes, filter, limit, first);
       }
 
       nodes = this._nodeFilter(nodes, {
-        node: true
+        node: true,
+        shadow: true
       });
       var results = [];
       var _iteratorNormalCompletion57 = true;
@@ -4957,11 +5002,14 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
     prev: function prev(nodes, filter) {
       filter = this._parseFilter(filter);
 
-      if (Core.isElement(nodes)) {
+      if (Core.isNode(nodes) || Core.isShadowRoot(nodes)) {
         return DOM._prev(nodes, filter);
       }
 
-      nodes = this._nodeFilter(nodes);
+      nodes = this._nodeFilter(nodes, {
+        node: true,
+        shadow: true
+      });
       var results = [];
       var _iteratorNormalCompletion58 = true;
       var _didIteratorError58 = false;
@@ -5003,11 +5051,14 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       filter = this._parseFilter(filter);
       limit = this._parseFilter(limit);
 
-      if (Core.isElement(nodes)) {
+      if (Core.isNode(nodes) || Core.isShadowRoot(nodes)) {
         return DOM._prevAll(nodes, filter, limit, first);
       }
 
-      nodes = this._nodeFilter(nodes);
+      nodes = this._nodeFilter(nodes, {
+        node: true,
+        shadow: true
+      });
       var results = [];
       var _iteratorNormalCompletion59 = true;
       var _didIteratorError59 = false;
@@ -5047,11 +5098,14 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       var elementsOnly = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : true;
       filter = this._parseFilter(filter);
 
-      if (Core.isElement(nodes)) {
+      if (Core.isNode(nodes) || Core.isShadowRoot(nodes)) {
         return DOM._siblings(nodes, filter, elementsOnly);
       }
 
-      nodes = this._nodeFilter(nodes);
+      nodes = this._nodeFilter(nodes, {
+        node: true,
+        shadow: true
+      });
       var results = [];
       var _iteratorNormalCompletion60 = true;
       var _didIteratorError60 = false;
@@ -5125,37 +5179,9 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
      * @returns {DOM~nodeCallback} The node filter function.
      */
     _nodeFilterFactory: function _nodeFilterFactory(options) {
-      options = _objectSpread({
-        node: false,
-        document: false,
-        window: false
-      }, options);
-
-      if (options.window && options.document) {
-        return options.node ? function (node) {
-          return Core.isNode(node) || Core.isDocument(node) || Core.isWindow(node);
-        } : function (node) {
-          return Core.isElement(node) || Core.isDocument(node) || Core.isWindow(node);
-        };
-      }
-
-      if (options.window) {
-        return options.node ? function (node) {
-          return Core.isNode(node) || Core.isWindow(node);
-        } : function (node) {
-          return Core.isElement(node) || Core.isWindow(node);
-        };
-      }
-
-      if (options.document) {
-        return options.node ? function (node) {
-          return Core.isNode(node) || Core.isDocument(node);
-        } : function (node) {
-          return Core.isElement(node) || Core.isDocument(node);
-        };
-      }
-
-      return options.node ? Core.isNode : Core.isElement;
+      return function (node) {
+        return (options.node ? Core.isNode(node) : Core.isElement(node)) || options.shadow && Core.isShadowRoot(node) || options.document && Core.isDocument(node) || options.window && Core.isWindow(node);
+      };
     },
 
     /**
@@ -5212,13 +5238,16 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         };
       }
 
-      if (Core.isNode(filter)) {
+      if (Core.isNode(filter) || Core.isShadowRoot(filter)) {
         return function (node) {
           return DOM._isSame(node, filter);
         };
       }
 
-      filter = this._nodeFilter(filter);
+      filter = this._nodeFilter(filter, {
+        node: true,
+        shadow: true
+      });
 
       if (filter.length) {
         return function (node) {
@@ -5235,7 +5264,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
      * @returns {DOM~filterCallback} The element contains filter callback.
      */
     _parseFilterContains: function _parseFilterContains(filter) {
-      var _this23 = this;
+      var _this19 = this;
 
       if (!filter) {
         return false;
@@ -5247,17 +5276,20 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
       if (Core.isString(filter)) {
         return function (node) {
-          return !!_this23.findOne(filter, node);
+          return !!_this19.findOne(filter, node);
         };
       }
 
-      if (Core.isElement(filter)) {
+      if (Core.isNode(filter) || Core.isShadowRoot(filter)) {
         return function (node) {
           return DOM._has(node, filter);
         };
       }
 
-      filter = this._nodeFilter(filter);
+      filter = this._nodeFilter(filter, {
+        node: true,
+        shadow: true
+      });
 
       if (filter.length) {
         return function (node) {
@@ -5282,6 +5314,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
     afterSelection: function afterSelection(nodes) {
       nodes = this._nodeFilter(nodes, {
         node: true,
+        shadow: true,
         html: true
       });
 
@@ -5330,6 +5363,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
     beforeSelection: function beforeSelection(nodes) {
       nodes = this._nodeFilter(nodes, {
         node: true,
+        shadow: true,
         html: true
       });
 
@@ -5421,7 +5455,8 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
      */
     select: function select(nodes) {
       var node = this._nodeFind(nodes, {
-        node: true
+        node: true,
+        shadow: true
       });
 
       if (node && 'select' in node) {
@@ -5477,10 +5512,11 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Wrap selected nodes with other nodes.
-     * @param {string|Node|NodeList|HTMLCollection|Node[]} nodes The input node(s), or a query selector string.
+     * @param {string|HTMLElement|HTMLCollection|ShadowRoot|Node[]} nodes The input node(s), or a query selector string.
      */
     wrapSelection: function wrapSelection(nodes) {
       nodes = this._nodeFilter(nodes, {
+        shadow: true,
         html: true
       });
       var selection = window.getSelection();
@@ -5531,13 +5567,14 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
   Object.assign(DOM.prototype, {
     /**
      * Returns true if any of the elements contains a descendent matching a filter.
-     * @param {string|HTMLElement|HTMLCollection|Document|HTMLElement[]} nodes The input node(s), or a query selector string.
+     * @param {string|HTMLElement|HTMLCollection|ShadowRoot|Document|HTMLElement[]} nodes The input node(s), or a query selector string.
      * @param {string|Node|NodeList|HTMLCollection|HTMLElement[]|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
      * @returns {Boolean} TRUE if any of the nodes contains a descendent matching the filter, otherwise FALSE.
      */
     contains: function contains(nodes, filter) {
       filter = this._parseFilterContains(filter);
       return this._nodeFilter(nodes, {
+        shadow: true,
         document: true
       }).some(function (node) {
         return !filter || filter(node);
@@ -5550,10 +5587,10 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
      * @returns {Boolean} TRUE if any of the nodes has a CSS animation, otherwise FALSE.
      */
     hasAnimation: function hasAnimation(nodes) {
-      var _this24 = this;
+      var _this20 = this;
 
       return this._nodeFilter(nodes).some(function (node) {
-        return !!parseFloat(_this24._css(node, 'animation-duration'));
+        return !!parseFloat(_this20._css(node, 'animation-duration'));
       });
     },
 
@@ -5590,18 +5627,20 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Returns true if any of the nodes has custom data.
-     * @param {string|Node|NodeList|HTMLCollection|Window|Document|HTMLElement[]} nodes The input node(s), or a query selector string.
+     * @param {string|Node|NodeList|HTMLCollection|Window|Node[]} nodes The input node(s), or a query selector string.
      * @param {string} [key] The data key.
      * @returns {Boolean} TRUE if any of the nodes has custom data, otherwise FALSE.
      */
     hasData: function hasData(nodes, key) {
-      var _this25 = this;
+      var _this21 = this;
 
       return this._nodeFilter(nodes, {
+        node: true,
+        shadow: true,
         document: true,
         window: true
       }).some(function (node) {
-        return _this25._data.has(node) && (!key || _this25._data.get(node).hasOwnProperty(key));
+        return _this21._data.has(node) && (!key || _this21._data.get(node).hasOwnProperty(key));
       });
     },
 
@@ -5623,10 +5662,10 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
      * @returns {Boolean} TRUE if any of the nodes has a CSS transition, otherwise FALSE.
      */
     hasTransition: function hasTransition(nodes) {
-      var _this26 = this;
+      var _this22 = this;
 
       return this._nodeFilter(nodes).some(function (node) {
-        return !!parseFloat(_this26._css(node, 'transition-duration'));
+        return !!parseFloat(_this22._css(node, 'transition-duration'));
       });
     },
 
@@ -5650,7 +5689,8 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
      */
     isConnected: function isConnected(nodes) {
       return this._nodeFilter(nodes, {
-        node: true
+        node: true,
+        shadow: true
       }).some(function (node) {
         return DOM._isConnected(node);
       });
@@ -5664,12 +5704,14 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
      */
     isEqual: function isEqual(nodes, others) {
       others = this._nodeFilter(others, {
-        node: true
+        node: true,
+        shadow: true
       });
       return this._nodeFilter(nodes, {
-        node: true
+        node: true,
+        shadow: true
       }).some(function (node) {
-        return others.find(function (other) {
+        return others.some(function (other) {
           return DOM._isEqual(node, other);
         });
       });
@@ -5677,15 +5719,18 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Returns true if any of the elements or a parent of any of the elements is "fixed".
-     * @param {string|HTMLElement|HTMLCollection|HTMLElement[]} nodes The input node(s), or a query selector string.
+     * @param {string|Node|NodeList|HTMLCollection|HTMLElement[]} nodes The input node(s), or a query selector string.
      * @returns {Boolean} TRUE if any of the nodes is "fixed", otherwise FALSE.
      */
     isFixed: function isFixed(nodes) {
-      var _this27 = this;
+      var _this23 = this;
 
-      return this._nodeFilter(nodes).some(function (node) {
-        return _this27._css(node, 'position') === 'fixed' || DOM._parents(node, function (parent) {
-          return _this27._css(parent, 'position') === 'fixed';
+      return this._nodeFilter(nodes, {
+        node: true,
+        shadow: true
+      }).some(function (node) {
+        return Core.isElement(node) && _this23._css(node, 'position') === 'fixed' || DOM._parents(node, function (parent) {
+          return _this23._css(parent, 'position') === 'fixed';
         }, false, true).length;
       });
     },
@@ -5713,10 +5758,12 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
      */
     isSame: function isSame(nodes, others) {
       others = this._nodeFilter(others, {
-        node: true
+        node: true,
+        shadow: true
       });
       return this._nodeFilter(nodes, {
-        node: true
+        node: true,
+        shadow: true
       }).some(function (node) {
         return others.find(function (other) {
           return DOM._isSame(node, other);
@@ -5762,15 +5809,16 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Force an element to be shown, and then execute a callback.
-     * @param {string|Node|NodeList|HTMLCollection|Document|Window|HTMLElement[]} nodes The input node(s), or a query selector string.
+     * @param {string|Node|NodeList|HTMLCollection|Window|HTMLElement[]} nodes The input node(s), or a query selector string.
      * @param {DOM~nodeCallback} callback The callback to execute.
      * @returns {*} The result of the callback.
      */
     forceShow: function forceShow(nodes, callback) {
-      var _this28 = this;
+      var _this24 = this;
 
       var node = this._nodeFind(nodes, {
         node: true,
+        shadow: true,
         document: true,
         window: true
       });
@@ -5779,19 +5827,19 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         return;
       }
 
-      if (this.isVisible(node)) {
+      if (this.isVisible(node) || Core.isDocument(node) || Core.isWindow(node)) {
         return callback(node);
       }
 
       var hidden = new Map(),
           elements = [];
 
-      if (this._css(node, 'display') === 'none') {
+      if (Core.isElement(node) && this._css(node, 'display') === 'none') {
         elements.push(node);
       }
 
       Core.merge(elements, DOM._parents(node, function (parent) {
-        return _this28._css(parent, 'display') === 'none';
+        return _this24._css(parent, 'display') === 'none';
       }));
 
       for (var _i2 = 0, _elements = elements; _i2 < _elements.length; _i2++) {
@@ -5870,11 +5918,13 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Normalize nodes (remove empty text nodes, and join neighbouring text nodes).
-     * @param {string|Node|NodeList|HTMLCollection|Document|Node[]} nodes The input node(s), or a query selector string.
+     * @param {string|Node|NodeList|HTMLCollection|ShadowRoot|Document|Node[]} nodes The input node(s), or a query selector string.
      */
     normalize: function normalize(nodes) {
       nodes = this._nodeFilter(nodes, {
-        node: true
+        node: true,
+        shadow: true,
+        document: true
       });
       var _iteratorNormalCompletion65 = true;
       var _didIteratorError65 = false;
@@ -5904,7 +5954,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Return a serialized string containing names and values of all form elements.
-     * @param {string|HTMLElement|HTMLCollection|HTMLElement[]} nodes The input node(s), or a query selector string.
+     * @param {string|HTMLElement|HTMLCollection|ShadowRoot|HTMLElement[]} nodes The input node(s), or a query selector string.
      * @returns {string} The serialized string.
      */
     serialize: function serialize(nodes) {
@@ -5913,15 +5963,17 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Return a serialized array containing names and values of all form elements.
-     * @param {string|HTMLElement|HTMLCollection|HTMLElement[]} nodes The input node(s), or a query selector string.
+     * @param {string|HTMLElement|HTMLCollection|ShadowRoot|HTMLElement[]} nodes The input node(s), or a query selector string.
      * @returns {array} The serialized array.
      */
     serializeArray: function serializeArray(nodes) {
-      var _this29 = this;
+      var _this25 = this;
 
-      return this._nodeFilter(nodes).reduce(function (values, node) {
-        if (DOM._is(node, 'form')) {
-          return values.concat(_this29.serializeArray(DOM._findBySelector('input, select, textarea', node)));
+      return this._nodeFilter(nodes, {
+        shadow: true
+      }).reduce(function (values, node) {
+        if (Core.isShadowRoot(node) || DOM._is(node, 'form')) {
+          return values.concat(_this25.serializeArray(DOM._findBySelector('input, select, textarea', node)));
         }
 
         if (DOM._is(node, '[disabled], input[type=submit], input[type=reset], input[type=file], input[type=radio]:not(:checked), input[type=checkbox]:not(:checked)')) {
@@ -5945,12 +5997,13 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Sort nodes by their position in the document
-     * @param {string|Node|NodeList|HTMLCollection|Document|Node[]} nodes The input node(s), or a query selector string.
+     * @param {string|Node|NodeList|HTMLCollection|Node[]} nodes The input node(s), or a query selector string.
      * @returns {Node[]} The sorted array of nodes.
      */
     sort: function sort(nodes) {
       return this._nodeFilter(nodes, {
-        node: true
+        node: true,
+        shadow: true
       }).sort(function (node, other) {
         return DOM._compareNodes(node, other);
       });
@@ -6183,6 +6236,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
      * @returns {string} The style value.
      */
     _getStyle: function _getStyle(node, style) {
+      style = Core.snakeCase(style);
       return node.style[style];
     },
 
@@ -6196,7 +6250,14 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       var important = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : '';
 
       for (var style in styles) {
-        node.style.setProperty(style, styles[style], important ? 'important' : '');
+        var value = styles[style];
+        style = Core.snakeCase(style); // if value is numeric and not a number property, add px
+
+        if (value && Core.isNumeric(value) && !this.cssNumberProperties.includes(style)) {
+          value += 'px';
+        }
+
+        node.style.setProperty(style, value, important ? 'important' : '');
       }
     },
 
@@ -6239,16 +6300,11 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
      */
     _focus: function _focus(node) {
       node.focus();
-    }
-  });
-  /**
-   * DOM (Static) Event Handlers
-   */
+    },
 
-  Object.assign(DOM, {
     /**
      * Trigger an event on a single element.
-     * @param {HTMLElement|Document|Window} nodes The input node.
+     * @param {HTMLElement|ShadowRoot|Document|Window} nodes The input node.
      * @param {string} events The event names.
      * @param {object} [data] Additional data to attach to the Event object.
      */
@@ -6427,17 +6483,17 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
      * @returns {string} The URI-encoded attribute string.
      */
     _parseParams: function _parseParams(data) {
-      var _this30 = this;
+      var _this26 = this;
 
       var values = [];
 
       if (Core.isArray(data)) {
         values = data.map(function (value) {
-          return _this30._parseParam(value.name, value.value);
+          return _this26._parseParam(value.name, value.value);
         });
       } else if (Core.isObject(data)) {
         values = Object.keys(data).map(function (key) {
-          return _this30._parseParam(key, data[key]);
+          return _this26._parseParam(key, data[key]);
         });
       }
 
@@ -6451,17 +6507,17 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
      * @returns {string|array} The parsed attributes.
      */
     _parseParam: function _parseParam(key, value) {
-      var _this31 = this;
+      var _this27 = this;
 
       if (Core.isArray(value)) {
         return value.map(function (val) {
-          return _this31._parseParam(key, val);
+          return _this27._parseParam(key, val);
         }).flat();
       }
 
       if (Core.isObject(value)) {
         return Object.keys(value).map(function (subKey) {
-          return _this31._parseParam(key + '[' + subKey + ']', value[subKey]);
+          return _this27._parseParam(key + '[' + subKey + ']', value[subKey]);
         }).flat();
       }
 
@@ -6595,7 +6651,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Append each other node to a single node.
-     * @param {Node} node The input node.
+     * @param {HTMLElement|ShadowRoot|Document} node The input node.
      * @param {Node[]} others The other node(s).
      */
     _append: function _append(node, others) {
@@ -6661,7 +6717,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Prepend each other node to a single node.
-     * @param {Node} node The input node.
+     * @param {HTMLElement|ShadowRoot|Document} node The input node.
      * @param {Node[]} others The other node(s).
      */
     _prepend: function _prepend(node, others) {
@@ -6778,16 +6834,20 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Returns true if a single node is visible.
-     * @param {HTMLElement|Document|Window} node The input node.
+     * @param {HTMLElement|ShadowRoot|Document|Window} node The input node.
      * @returns {Boolean} TRUE if the node is visible, otherwise FALSE.
      */
     _isVisible: function _isVisible(node) {
       if (Core.isWindow(node)) {
-        return node.document.visibilityState === 'visible';
+        node = node.document;
       }
 
       if (Core.isDocument(node)) {
         return node.visibilityState === 'visible';
+      }
+
+      if (Core.isShadowRoot(node)) {
+        node = node.host;
       }
 
       return !!node.offsetParent;
@@ -6801,7 +6861,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
     /**
      * Return all elements with a specific class.
      * @param {string} className The class name.
-     * @param {HTMLElement|Document} node The input node.
+     * @param {HTMLElement|ShadowRoot|Document} node The input node.
      * @returns {HTMLElement[]} The matching nodes.
      */
     _findByClass: function _findByClass(className, node) {
@@ -6821,7 +6881,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
     /**
      * Return all elements with a specific tag.
      * @param {string} tagName The tag name.
-     * @param {HTMLElement|Document} node The input node.
+     * @param {HTMLElement|ShadowRoot|Document} node The input node.
      * @returns {HTMLElement[]} The matching nodes.
      */
     _findByTag: function _findByTag(tagName, node) {
@@ -6831,7 +6891,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
     /**
      * Return all elements matching a standard CSS selector.
      * @param {string} selector The query selector.
-     * @param {HTMLElement|Document} node The input node.
+     * @param {HTMLElement|ShadowRoot|Document} node The input node.
      * @returns {HTMLElement[]} The matching nodes.
      */
     _findBySelector: function _findBySelector(selector, node) {
@@ -6841,7 +6901,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
     /**
      * Return a single element matching a standard CSS selector.
      * @param {string} selector The query selector.
-     * @param {HTMLElement|Document} node The input node.
+     * @param {HTMLElement|ShadowRoot|Document} node The input node.
      * @returns {HTMLElement} The matching node.
      */
     _findOneBySelector: function _findOneBySelector(selector, node) {
@@ -6907,7 +6967,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
   Object.assign(DOM, {
     /**
      * Return all children of a single element (optionally matching a filter).
-     * @param {HTMLElement} node The input node.
+     * @param {HTMLElement|ShadowRoot|Document} node The input node.
      * @param {DOM~filterCallback} [filter] The filter function.
      * @param {Boolean} [first=false] Whether to only return the first matching node for each node.
      * @param {Boolean} [elementsOnly=false] Whether to only return element nodes.
@@ -6957,18 +7017,13 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Return the next sibling for a single element (optionally matching a filter).
-     * @param {HTMLElement} node The input node.
+     * @param {Node} node The input node.
      * @param {DOM~filterCallback} [filter] The filter function.
      * @returns {Node[]} The matching nodes.
      */
     _next: function _next(node, filter) {
       var results = [];
-
-      while (node = node.nextSibling) {
-        if (Core.isElement(node)) {
-          break;
-        }
-      }
+      node = node.nextSibling;
 
       if (!node) {
         return results;
@@ -6984,7 +7039,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Return all next siblings for a single element (optionally matching a filter, and before a limit).
-     * @param {HTMLElement} node The input node.
+     * @param {Node} node The input node.
      * @param {DOM~filterCallback} [filter] The filter function.
      * @param {DOM~filterCallback} [limit] The limit function.
      * @param {Boolean} [first=false] Whether to only return the first matching node for each node.
@@ -6995,10 +7050,6 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       var results = [];
 
       while (node = node.nextSibling) {
-        if (!Core.isElement(node)) {
-          continue;
-        }
-
         if (limit && limit(node)) {
           break;
         }
@@ -7019,7 +7070,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Return the parent of a single element (optionally matching a filter).
-     * @param {HTMLElement} node The input node.
+     * @param {Node} node The input node.
      * @param {DOM~filterCallback} [filter] The filter function.
      * @returns {HTMLElement[]} The matching nodes.
      */
@@ -7040,7 +7091,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Return all parents of a single element (optionally matching a filter, and before a limit).
-     * @param {HTMLElement} node The input node.
+     * @param {Node} node The input node.
      * @param {DOM~filterCallback} [filter] The filter function.
      * @param {DOM~filterCallback} [limit] The limit function.
      * @param {Boolean} [first=false] Whether to only return the first matching node for each node.
@@ -7051,7 +7102,11 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       var results = [];
 
       while (node = node.parentNode) {
-        if (!Core.isElement(node) || limit && limit(node)) {
+        if (Core.isDocument(node)) {
+          break;
+        }
+
+        if (limit && limit(node)) {
           break;
         }
 
@@ -7071,18 +7126,13 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Return the previous sibling for a single element (optionally matching a filter).
-     * @param {HTMLElement} node The input node.
+     * @param {Node} node The input node.
      * @param {DOM~filterCallback} [filter] The filter function.
      * @returns {Node[]} The matching nodes.
      */
     _prev: function _prev(node, filter) {
       var results = [];
-
-      while (node = node.previousSibling) {
-        if (Core.isElement(node)) {
-          break;
-        }
-      }
+      node = node.previousSibling;
 
       if (!node) {
         return results;
@@ -7098,7 +7148,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Return all previous siblings for a single element (optionally matching a filter, and before a limit).
-     * @param {HTMLElement} node The input node.
+     * @param {Node} node The input node.
      * @param {DOM~filterCallback} [filter] The filter function.
      * @param {DOM~filterCallback} [limit] The limit function.
      * @param {Boolean} [first=false] Whether to only return the first matching node for each node.
@@ -7109,10 +7159,6 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       var results = [];
 
       while (node = node.previousSibling) {
-        if (!Core.isElement(node)) {
-          continue;
-        }
-
         if (limit && limit(node)) {
           break;
         }
@@ -7133,7 +7179,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Return all siblings for a single element (optionally matching a filter).
-     * @param {HTMLElement} node The input node.
+     * @param {Node} node The input node.
      * @param {DOM~filterCallback} [filter] The filter function.
      * @param {Boolean} [elementsOnly=true] Whether to only return element nodes.
      * @returns {Node[]} The matching nodes.

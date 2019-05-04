@@ -48,34 +48,11 @@ Object.assign(DOM.prototype, {
      * @returns {DOM~nodeCallback} The node filter function.
      */
     _nodeFilterFactory(options) {
-        options = {
-            node: false,
-            document: false,
-            window: false,
-            ...options
-        };
-
-        if (options.window && options.document) {
-            return options.node ?
-                node => Core.isNode(node) || Core.isDocument(node) || Core.isWindow(node) :
-                node => Core.isElement(node) || Core.isDocument(node) || Core.isWindow(node);
-        }
-
-        if (options.window) {
-            return options.node ?
-                node => Core.isNode(node) || Core.isWindow(node) :
-                node => Core.isElement(node) || Core.isWindow(node);
-        }
-
-        if (options.document) {
-            return options.node ?
-                node => Core.isNode(node) || Core.isDocument(node) :
-                node => Core.isElement(node) || Core.isDocument(node);
-        }
-
-        return options.node ?
-            Core.isNode :
-            Core.isElement;
+        return node =>
+            (options.node ? Core.isNode(node) : Core.isElement(node)) ||
+            (options.shadow && Core.isShadowRoot(node)) ||
+            (options.document && Core.isDocument(node)) ||
+            (options.window && Core.isWindow(node));
     },
 
     /**
@@ -140,11 +117,11 @@ Object.assign(DOM.prototype, {
                 DOM._is(node, filter);
         }
 
-        if (Core.isNode(filter)) {
+        if (Core.isNode(filter) || Core.isShadowRoot(filter)) {
             return node => DOM._isSame(node, filter);
         }
 
-        filter = this._nodeFilter(filter);
+        filter = this._nodeFilter(filter, { node: true, shadow: true });
         if (filter.length) {
             return node => filter.includes(node);
         }
@@ -170,11 +147,11 @@ Object.assign(DOM.prototype, {
             return node => !!this.findOne(filter, node);
         }
 
-        if (Core.isElement(filter)) {
+        if (Core.isNode(filter) || Core.isShadowRoot(filter)) {
             return node => DOM._has(node, filter);
         }
 
-        filter = this._nodeFilter(filter);
+        filter = this._nodeFilter(filter, { node: true, shadow: true });
         if (filter.length) {
             return node => filter.some(other => DOM._has(node, other));
         }

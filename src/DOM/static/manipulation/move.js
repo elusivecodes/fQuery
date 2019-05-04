@@ -24,7 +24,7 @@ Object.assign(DOM, {
 
     /**
      * Append each other node to a single node.
-     * @param {Node} node The input node.
+     * @param {HTMLElement|ShadowRoot|Document} node The input node.
      * @param {Node[]} others The other node(s).
      */
     _append(node, others) {
@@ -53,7 +53,7 @@ Object.assign(DOM, {
 
     /**
      * Prepend each other node to a single node.
-     * @param {Node} node The input node.
+     * @param {HTMLElement|ShadowRoot|Document} node The input node.
      * @param {Node[]} others The other node(s).
      */
     _prepend(node, others) {

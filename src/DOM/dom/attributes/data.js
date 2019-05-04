@@ -10,7 +10,7 @@ Object.assign(DOM.prototype, {
      * @param {string|Node|NodeList|HTMLCollection|Window|Node[]} others The other node(s), or a query selector string.
      */
     cloneData(nodes, others) {
-        nodes = this._nodeFilter(nodes, { node: true, document: true, window: true });
+        nodes = this._nodeFilter(nodes, { node: true, shadow: true, document: true, window: true });
 
         for (const node of nodes) {
             this._cloneData(node, others);
@@ -24,7 +24,7 @@ Object.assign(DOM.prototype, {
      * @returns {*} The data value.
      */
     getData(nodes, key) {
-        const node = this._nodeFind(nodes, { node: true, document: true, window: true });
+        const node = this._nodeFind(nodes, { node: true, shadow: true, document: true, window: true });
 
         if (!node) {
             return;
@@ -39,7 +39,7 @@ Object.assign(DOM.prototype, {
      * @param {string} [key] The data key.
      */
     removeData(nodes, key) {
-        nodes = this._nodeFilter(nodes, { node: true, document: true, window: true });
+        nodes = this._nodeFilter(nodes, { node: true, shadow: true, document: true, window: true });
 
         for (const node of nodes) {
             this._removeData(node, key);
@@ -53,7 +53,7 @@ Object.assign(DOM.prototype, {
      * @param {*} [value] The data value.
      */
     setData(nodes, key, value) {
-        nodes = this._nodeFilter(nodes, { node: true, document: true, window: true });
+        nodes = this._nodeFilter(nodes, { node: true, shadow: true, document: true, window: true });
 
         const data = DOM._parseData(key, value);
 

@@ -21,25 +21,25 @@ Object.assign(DOM.prototype, {
 
     /**
      * Force an element to be shown, and then execute a callback.
-     * @param {string|Node|NodeList|HTMLCollection|Document|Window|HTMLElement[]} nodes The input node(s), or a query selector string.
+     * @param {string|Node|NodeList|HTMLCollection|Window|HTMLElement[]} nodes The input node(s), or a query selector string.
      * @param {DOM~nodeCallback} callback The callback to execute.
      * @returns {*} The result of the callback.
      */
     forceShow(nodes, callback) {
-        const node = this._nodeFind(nodes, { node: true, document: true, window: true });
+        const node = this._nodeFind(nodes, { node: true, shadow: true, document: true, window: true });
 
         if (!node) {
             return;
         }
 
-        if (this.isVisible(node)) {
+        if (this.isVisible(node) || Core.isDocument(node) || Core.isWindow(node)) {
             return callback(node);
         }
 
         const hidden = new Map,
             elements = [];
 
-        if (this._css(node, 'display') === 'none') {
+        if (Core.isElement(node) && this._css(node, 'display') === 'none') {
             elements.push(node);
         }
 
@@ -102,10 +102,10 @@ Object.assign(DOM.prototype, {
 
     /**
      * Normalize nodes (remove empty text nodes, and join neighbouring text nodes).
-     * @param {string|Node|NodeList|HTMLCollection|Document|Node[]} nodes The input node(s), or a query selector string.
+     * @param {string|Node|NodeList|HTMLCollection|ShadowRoot|Document|Node[]} nodes The input node(s), or a query selector string.
      */
     normalize(nodes) {
-        nodes = this._nodeFilter(nodes, { node: true });
+        nodes = this._nodeFilter(nodes, { node: true, shadow: true, document: true });
 
         for (const node of nodes) {
             DOM._normalize(node);
@@ -114,7 +114,7 @@ Object.assign(DOM.prototype, {
 
     /**
      * Return a serialized string containing names and values of all form elements.
-     * @param {string|HTMLElement|HTMLCollection|HTMLElement[]} nodes The input node(s), or a query selector string.
+     * @param {string|HTMLElement|HTMLCollection|ShadowRoot|HTMLElement[]} nodes The input node(s), or a query selector string.
      * @returns {string} The serialized string.
      */
     serialize(nodes) {
@@ -125,14 +125,14 @@ Object.assign(DOM.prototype, {
 
     /**
      * Return a serialized array containing names and values of all form elements.
-     * @param {string|HTMLElement|HTMLCollection|HTMLElement[]} nodes The input node(s), or a query selector string.
+     * @param {string|HTMLElement|HTMLCollection|ShadowRoot|HTMLElement[]} nodes The input node(s), or a query selector string.
      * @returns {array} The serialized array.
      */
     serializeArray(nodes) {
-        return this._nodeFilter(nodes)
+        return this._nodeFilter(nodes, { shadow: true })
             .reduce(
                 (values, node) => {
-                    if (DOM._is(node, 'form')) {
+                    if (Core.isShadowRoot(node) || DOM._is(node, 'form')) {
                         return values.concat(
                             this.serializeArray(
                                 DOM._findBySelector(
@@ -169,11 +169,11 @@ Object.assign(DOM.prototype, {
 
     /**
      * Sort nodes by their position in the document
-     * @param {string|Node|NodeList|HTMLCollection|Document|Node[]} nodes The input node(s), or a query selector string.
+     * @param {string|Node|NodeList|HTMLCollection|Node[]} nodes The input node(s), or a query selector string.
      * @returns {Node[]} The sorted array of nodes.
      */
     sort(nodes) {
-        return this._nodeFilter(nodes, { node: true })
+        return this._nodeFilter(nodes, { node: true, shadow: true })
             .sort((node, other) => DOM._compareNodes(node, other));
     }
 

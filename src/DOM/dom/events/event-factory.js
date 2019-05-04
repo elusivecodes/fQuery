@@ -14,11 +14,11 @@ Object.assign(DOM.prototype, {
      */
     mouseDragFactory(down, move, up, animated = true) {
         if (move && animated) {
-            move = Core.animationFactory(move);
+            move = Core.animation(move);
 
             // needed to make sure up callback executes after final move callback
             if (up) {
-                up = Core.animationFactory(up);
+                up = Core.animation(up);
             }
         }
 

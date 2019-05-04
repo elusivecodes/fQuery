@@ -38,6 +38,8 @@ Object.assign(DOM, {
      * @returns {string} The style value.
      */
     _getStyle(node, style) {
+        style = Core.snakeCase(style);
+
         return node.style[style];
     },
 
@@ -48,10 +50,18 @@ Object.assign(DOM, {
      * @param {Boolean} [important] Whether the style should be !important.
      */
     _setStyle(node, styles, important = '') {
-        for (const style in styles) {
+        for (let style in styles) {
+            let value = styles[style];
+            style = Core.snakeCase(style);
+
+            // if value is numeric and not a number property, add px
+            if (value && Core.isNumeric(value) && !this.cssNumberProperties.includes(style)) {
+                value += 'px';
+            }
+
             node.style.setProperty(
                 style,
-                styles[style],
+                value,
                 important ?
                     'important' :
                     ''

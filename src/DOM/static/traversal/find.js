@@ -7,7 +7,7 @@ Object.assign(DOM, {
     /**
      * Return all elements with a specific class.
      * @param {string} className The class name.
-     * @param {HTMLElement|Document} node The input node.
+     * @param {HTMLElement|ShadowRoot|Document} node The input node.
      * @returns {HTMLElement[]} The matching nodes.
      */
     _findByClass(className, node) {
@@ -27,7 +27,7 @@ Object.assign(DOM, {
     /**
      * Return all elements with a specific tag.
      * @param {string} tagName The tag name.
-     * @param {HTMLElement|Document} node The input node.
+     * @param {HTMLElement|ShadowRoot|Document} node The input node.
      * @returns {HTMLElement[]} The matching nodes.
      */
     _findByTag(tagName, node) {
@@ -37,7 +37,7 @@ Object.assign(DOM, {
     /**
      * Return all elements matching a standard CSS selector.
      * @param {string} selector The query selector.
-     * @param {HTMLElement|Document} node The input node.
+     * @param {HTMLElement|ShadowRoot|Document} node The input node.
      * @returns {HTMLElement[]} The matching nodes.
      */
     _findBySelector(selector, node) {
@@ -47,7 +47,7 @@ Object.assign(DOM, {
     /**
      * Return a single element matching a standard CSS selector.
      * @param {string} selector The query selector.
-     * @param {HTMLElement|Document} node The input node.
+     * @param {HTMLElement|ShadowRoot|Document} node The input node.
      * @returns {HTMLElement} The matching node.
      */
     _findOneBySelector(selector, node) {

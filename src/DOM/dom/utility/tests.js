@@ -6,14 +6,14 @@ Object.assign(DOM.prototype, {
 
     /**
      * Returns true if any of the elements contains a descendent matching a filter.
-     * @param {string|HTMLElement|HTMLCollection|Document|HTMLElement[]} nodes The input node(s), or a query selector string.
+     * @param {string|HTMLElement|HTMLCollection|ShadowRoot|Document|HTMLElement[]} nodes The input node(s), or a query selector string.
      * @param {string|Node|NodeList|HTMLCollection|HTMLElement[]|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
      * @returns {Boolean} TRUE if any of the nodes contains a descendent matching the filter, otherwise FALSE.
      */
     contains(nodes, filter) {
         filter = this._parseFilterContains(filter);
 
-        return this._nodeFilter(nodes, { document: true })
+        return this._nodeFilter(nodes, { shadow: true, document: true })
             .some(node =>
                 !filter ||
                 filter(node)
@@ -66,12 +66,12 @@ Object.assign(DOM.prototype, {
 
     /**
      * Returns true if any of the nodes has custom data.
-     * @param {string|Node|NodeList|HTMLCollection|Window|Document|HTMLElement[]} nodes The input node(s), or a query selector string.
+     * @param {string|Node|NodeList|HTMLCollection|Window|Node[]} nodes The input node(s), or a query selector string.
      * @param {string} [key] The data key.
      * @returns {Boolean} TRUE if any of the nodes has custom data, otherwise FALSE.
      */
     hasData(nodes, key) {
-        return this._nodeFilter(nodes, { document: true, window: true })
+        return this._nodeFilter(nodes, { node: true, shadow: true, document: true, window: true })
             .some(node =>
                 this._data.has(node) &&
                 (
@@ -132,7 +132,8 @@ Object.assign(DOM.prototype, {
      */
     isConnected(nodes) {
         return this._nodeFilter(nodes, {
-            node: true
+            node: true,
+            shadow: true
         }).some(node => DOM._isConnected(node));
     },
 
@@ -143,22 +144,22 @@ Object.assign(DOM.prototype, {
      * @returns {Boolean} TRUE if any of the nodes is considered equal to any of the other nodes, otherwise FALSE.
      */
     isEqual(nodes, others) {
-        others = this._nodeFilter(others, { node: true });
-        return this._nodeFilter(nodes, { node: true })
+        others = this._nodeFilter(others, { node: true, shadow: true });
+        return this._nodeFilter(nodes, { node: true, shadow: true })
             .some(node =>
-                others.find(other => DOM._isEqual(node, other))
+                others.some(other => DOM._isEqual(node, other))
             );
     },
 
     /**
      * Returns true if any of the elements or a parent of any of the elements is "fixed".
-     * @param {string|HTMLElement|HTMLCollection|HTMLElement[]} nodes The input node(s), or a query selector string.
+     * @param {string|Node|NodeList|HTMLCollection|HTMLElement[]} nodes The input node(s), or a query selector string.
      * @returns {Boolean} TRUE if any of the nodes is "fixed", otherwise FALSE.
      */
     isFixed(nodes) {
-        return this._nodeFilter(nodes)
+        return this._nodeFilter(nodes, { node: true, shadow: true })
             .some(node =>
-                this._css(node, 'position') === 'fixed' ||
+                (Core.isElement(node) && this._css(node, 'position') === 'fixed') ||
                 DOM._parents(
                     node,
                     parent =>
@@ -188,9 +189,9 @@ Object.assign(DOM.prototype, {
      * @returns {Boolean} TRUE if any of the nodes is considered identical to any of the other nodes, otherwise FALSE.
      */
     isSame(nodes, others) {
-        others = this._nodeFilter(others, { node: true });
+        others = this._nodeFilter(others, { node: true, shadow: true });
 
-        return this._nodeFilter(nodes, { node: true })
+        return this._nodeFilter(nodes, { node: true, shadow: true })
             .some(node =>
                 others.find(other => DOM._isSame(node, other))
             );

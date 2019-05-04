@@ -13,7 +13,7 @@ Object.assign(DOM.prototype, {
      * @returns {Node[]} The cloned nodes.
      */
     clone(nodes, deep = true, cloneEvents = false, cloneData = false) {
-        nodes = this._nodeFilter(nodes, { node: true });
+        nodes = this._nodeFilter(nodes, { node: true, shadow: true });
 
         return nodes.map(node =>
             this._clone(node, deep, cloneEvents, cloneData)
@@ -25,7 +25,7 @@ Object.assign(DOM.prototype, {
      * @param {string|Node|NodeList|HTMLCollection|Node[]} nodes The input node(s), or a query selector string.
      */
     detach(nodes) {
-        nodes = this._nodeFilter(nodes, { node: true });
+        nodes = this._nodeFilter(nodes, { node: true, shadow: true });
 
         for (const node of nodes) {
             DOM._detach(node);
@@ -34,10 +34,10 @@ Object.assign(DOM.prototype, {
 
     /**
      * Remove all children of each node from the DOM.
-     * @param {string|HTMLElement|HTMLCollection|Document|HTMLElement[]} nodes The input node(s), or a query selector string.
+     * @param {string|HTMLElement|HTMLCollection|ShadowRoot|Document|HTMLElement[]} nodes The input node(s), or a query selector string.
      */
     empty(nodes) {
-        nodes = this._nodeFilter(nodes, { document: true });
+        nodes = this._nodeFilter(nodes, { shadow: true, document: true });
 
         for (const node of nodes) {
             this._empty(node);
@@ -49,7 +49,7 @@ Object.assign(DOM.prototype, {
      * @param {string|Node|NodeList|HTMLCollection|Node[]} nodes The input node(s), or a query selector string.
      */
     remove(nodes) {
-        nodes = this._nodeFilter(nodes, { node: true });
+        nodes = this._nodeFilter(nodes, { node: true, shadow: true });
 
         for (const node of nodes) {
             this._remove(node);
@@ -71,9 +71,9 @@ Object.assign(DOM.prototype, {
      * @param {string|Node|NodeList|HTMLCollection|Node[]} others The other node(s), or a query selector or HTML string.
      */
     replaceWith(nodes, others) {
-        nodes = this._nodeFilter(nodes, { node: true });
+        nodes = this._nodeFilter(nodes, { node: true, shadow: true });
 
-        others = this._nodeFilter(others, { node: true, html: true });
+        others = this._nodeFilter(others, { node: true, shadow: true, html: true });
 
         for (const node of nodes) {
             this._replaceWith(node, others);
@@ -136,7 +136,7 @@ Object.assign(DOM.prototype, {
 
     /**
      * Remove all children of a single node from the DOM.
-     * @param {HTMLElement} node The input node.
+     * @param {HTMLElement|ShadowRoot|Document} node The input node.
      */
     _empty(node) {
         const children = DOM._children(node, false, false, false);

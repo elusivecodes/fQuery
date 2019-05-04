@@ -1347,7 +1347,7 @@
          * @param {string|Node|NodeList|HTMLCollection|Window|Node[]} others The other node(s), or a query selector string.
          */
         cloneData(nodes, others) {
-            nodes = this._nodeFilter(nodes, { node: true, document: true, window: true });
+            nodes = this._nodeFilter(nodes, { node: true, shadow: true, document: true, window: true });
 
             for (const node of nodes) {
                 this._cloneData(node, others);
@@ -1361,7 +1361,7 @@
          * @returns {*} The data value.
          */
         getData(nodes, key) {
-            const node = this._nodeFind(nodes, { node: true, document: true, window: true });
+            const node = this._nodeFind(nodes, { node: true, shadow: true, document: true, window: true });
 
             if (!node) {
                 return;
@@ -1376,7 +1376,7 @@
          * @param {string} [key] The data key.
          */
         removeData(nodes, key) {
-            nodes = this._nodeFilter(nodes, { node: true, document: true, window: true });
+            nodes = this._nodeFilter(nodes, { node: true, shadow: true, document: true, window: true });
 
             for (const node of nodes) {
                 this._removeData(node, key);
@@ -1390,7 +1390,7 @@
          * @param {*} [value] The data value.
          */
         setData(nodes, key, value) {
-            nodes = this._nodeFilter(nodes, { node: true, document: true, window: true });
+            nodes = this._nodeFilter(nodes, { node: true, shadow: true, document: true, window: true });
 
             const data = DOM._parseData(key, value);
 
@@ -2039,9 +2039,6 @@
                 return;
             }
 
-            // camelize style property
-            style = Core.snakeCase(style);
-
             return DOM._getStyle(node, style);
         },
 
@@ -2086,23 +2083,10 @@
         setStyle(nodes, style, value, important) {
             nodes = this._nodeFilter(nodes);
 
-            const styles = DOM._parseData(style, value),
-                realStyles = {};
-
-            for (let key in styles) {
-                let value = `${styles[key]}`;
-                key = Core.snakeCase(key);
-
-                // if value is numeric and not a number property, add px
-                if (value && Core.isNumeric(value) && !DOM.cssNumberProperties.includes(key)) {
-                    value += 'px';
-                }
-
-                realStyles[key] = value;
-            }
+            const styles = DOM._parseData(style, value);
 
             for (const node of nodes) {
-                DOM._setStyle(node, realStyles, important);
+                DOM._setStyle(node, styles, important);
             }
         },
 
@@ -2185,11 +2169,11 @@
          */
         mouseDragFactory(down, move, up, animated = true) {
             if (move && animated) {
-                move = Core.animationFactory(move);
+                move = Core.animation(move);
 
                 // needed to make sure up callback executes after final move callback
                 if (up) {
-                    up = Core.animationFactory(up);
+                    up = Core.animation(up);
                 }
             }
 
@@ -2382,12 +2366,12 @@
 
         /**
          * Trigger events on each element.
-         * @param {string|HTMLElement|HTMLCollection|Document|Window|HTMLElement[]} nodes The input node(s), or a query selector string.
+         * @param {string|HTMLElement|HTMLCollection|ShadowRoot|Document|Window|HTMLElement[]} nodes The input node(s), or a query selector string.
          * @param {string} events The event names.
          * @param {object} [data] Additional data to attach to the event.
          */
         triggerEvent(nodes, events, data) {
-            nodes = this._nodeFilter(nodes, { document: true, window: true });
+            nodes = this._nodeFilter(nodes, { shadow: true, document: true, window: true });
 
             for (const node of nodes) {
                 DOM._triggerEvent(node, events, data);
@@ -2409,12 +2393,12 @@
 
         /**
          * Add an event to each element.
-         * @param {string|HTMLElement|HTMLCollection|Document|Window|HTMLElement[]} nodes The input node(s), or a query selector string.
+         * @param {string|HTMLElement|HTMLCollection|ShadowRoot|Document|Window|HTMLElement[]} nodes The input node(s), or a query selector string.
          * @param {string} events The event names.
          * @param {DOM~eventCallback} callback The callback to execute.
          */
         addEvent(nodes, events, callback) {
-            nodes = this._nodeFilter(nodes, { document: true, window: true });
+            nodes = this._nodeFilter(nodes, { shadow: true, document: true, window: true });
 
             for (const node of nodes) {
                 this._addEvent(node, events, callback);
@@ -2423,13 +2407,13 @@
 
         /**
          * Add a delegated event to each element.
-         * @param {string|HTMLElement|HTMLCollection|Document|Window|HTMLElement[]} nodes The input node(s), or a query selector string.
+         * @param {string|HTMLElement|HTMLCollection|ShadowRoot|Document|Window|HTMLElement[]} nodes The input node(s), or a query selector string.
          * @param {string} events The event names.
          * @param {string} delegate The delegate selector.
          * @param {DOM~eventCallback} callback The callback to execute.
          */
         addEventDelegate(nodes, events, delegate, callback) {
-            nodes = this._nodeFilter(nodes, { document: true, window: true });
+            nodes = this._nodeFilter(nodes, { shadow: true, document: true, window: true });
 
             for (const node of nodes) {
                 this._addEvent(node, events, callback, delegate);
@@ -2438,13 +2422,13 @@
 
         /**
          * Add a self-destructing delegated event to each element.
-         * @param {string|HTMLElement|HTMLCollection|Document|Window|HTMLElement[]} nodes The input node(s), or a query selector string.
+         * @param {string|HTMLElement|HTMLCollection|ShadowRoot|Document|Window|HTMLElement[]} nodes The input node(s), or a query selector string.
          * @param {string} events The event names.
          * @param {string} delegate The delegate selector.
          * @param {DOM~eventCallback} callback The callback to execute.
          */
         addEventDelegateOnce(nodes, events, delegate, callback) {
-            nodes = this._nodeFilter(nodes, { document: true, window: true });
+            nodes = this._nodeFilter(nodes, { shadow: true, document: true, window: true });
 
             for (const node of nodes) {
                 this._addEvent(node, events, callback, delegate, true);
@@ -2453,12 +2437,12 @@
 
         /**
          * Add a self-destructing event to each element.
-         * @param {string|HTMLElement|HTMLCollection|Document|Window|HTMLElement[]} nodes The input node(s), or a query selector string.
+         * @param {string|HTMLElement|HTMLCollection|ShadowRoot|Document|Window|HTMLElement[]} nodes The input node(s), or a query selector string.
          * @param {string} events The event names.
          * @param {DOM~eventCallback} callback The callback to execute.
          */
         addEventOnce(nodes, events, callback) {
-            nodes = this._nodeFilter(nodes, { document: true, window: true });
+            nodes = this._nodeFilter(nodes, { shadow: true, document: true, window: true });
 
             for (const node of nodes) {
                 this._addEvent(node, events, callback, null, true);
@@ -2467,11 +2451,11 @@
 
         /**
          * Clone all events from each element to other elements.
-         * @param {string|HTMLElement|HTMLCollection|Document|Window|HTMLElement[]} nodes The input node(s), or a query selector string.
-         * @param {string|HTMLElement|HTMLCollection|Document|Window|HTMLElement[]} others The other node(s), or a query selector string.
+         * @param {string|HTMLElement|HTMLCollection|ShadowRoot|Document|Window|HTMLElement[]} nodes The input node(s), or a query selector string.
+         * @param {string|HTMLElement|HTMLCollection|ShadowRoot|Document|Window|HTMLElement[]} others The other node(s), or a query selector string.
          */
         cloneEvents(nodes, others) {
-            nodes = this._nodeFilter(nodes, { document: true, window: true });
+            nodes = this._nodeFilter(nodes, { shadow: true, document: true, window: true });
 
             for (const node of nodes) {
                 this._cloneEvents(node, others);
@@ -2480,12 +2464,12 @@
 
         /**
          * Remove events from each element.
-         * @param {string|HTMLElement|HTMLCollection|Document|Window|HTMLElement[]} nodes The input node(s), or a query selector string.
+         * @param {string|HTMLElement|HTMLCollection|ShadowRoot|Document|Window|HTMLElement[]} nodes The input node(s), or a query selector string.
          * @param {string} [events] The event names.
          * @param {DOM~eventCallback} [callback] The callback to remove.
          */
         removeEvent(nodes, events, callback) {
-            nodes = this._nodeFilter(nodes, { document: true, window: true });
+            nodes = this._nodeFilter(nodes, { shadow: true, document: true, window: true });
 
             for (const node of nodes) {
                 this._removeEvent(node, events, callback);
@@ -2494,13 +2478,13 @@
 
         /**
          * Remove delegated events from each element.
-         * @param {string|HTMLElement|HTMLCollection|Document|Window|HTMLElement[]} nodes The input node(s), or a query selector string.
+         * @param {string|HTMLElement|HTMLCollection|ShadowRoot|Document|Window|HTMLElement[]} nodes The input node(s), or a query selector string.
          * @param {string} [events] The event names.
          * @param {string} [delegate] The delegate selector.
          * @param {DOM~eventCallback} [callback] The callback to remove.
          */
         removeEventDelegate(nodes, events, delegate, callback) {
-            nodes = this._nodeFilter(nodes, { document: true, window: true });
+            nodes = this._nodeFilter(nodes, { shadow: true, document: true, window: true });
 
             for (const node of nodes) {
                 this._removeEvent(node, events, callback, delegate);
@@ -2509,7 +2493,7 @@
 
         /**
          * Add an event to a single element.
-         * @param {HTMLElement|Document|Window} node The input node.
+         * @param {HTMLElement|ShadowRoot|Document|Window} node The input node.
          * @param {string} events The event names.
          * @param {DOM~eventCallback} callback The callback to execute.
          * @param {string} [delegate] The delegate selector.
@@ -2558,7 +2542,7 @@
 
         /**
          * Clone all events from a single element to other elements.
-         * @param {HTMLElement|Document|Window} nodes The input node.
+         * @param {HTMLElement|ShadowRoot|Document|Window} nodes The input node.
          * @param {string|HTMLElement|HTMLCollection|Document|Window|HTMLElement[]} others The other node(s), or a query selector string.
          */
         _cloneEvents(node, others) {
@@ -2582,7 +2566,7 @@
 
         /**
          * Remove events from a single element.
-         * @param {HTMLElement|Document|Window} nodes The input node.
+         * @param {HTMLElement|ShadowRoot|Document|Window} nodes The input node.
          * @param {string} [events] The event names.
          * @param {DOM~eventCallback} [callback] The callback to remove.
          * @param {string} [delegate] The delegate selector.
@@ -2780,7 +2764,7 @@
          * @returns {Node[]} The cloned nodes.
          */
         clone(nodes, deep = true, cloneEvents = false, cloneData = false) {
-            nodes = this._nodeFilter(nodes, { node: true });
+            nodes = this._nodeFilter(nodes, { node: true, shadow: true });
 
             return nodes.map(node =>
                 this._clone(node, deep, cloneEvents, cloneData)
@@ -2792,7 +2776,7 @@
          * @param {string|Node|NodeList|HTMLCollection|Node[]} nodes The input node(s), or a query selector string.
          */
         detach(nodes) {
-            nodes = this._nodeFilter(nodes, { node: true });
+            nodes = this._nodeFilter(nodes, { node: true, shadow: true });
 
             for (const node of nodes) {
                 DOM._detach(node);
@@ -2801,10 +2785,10 @@
 
         /**
          * Remove all children of each node from the DOM.
-         * @param {string|HTMLElement|HTMLCollection|Document|HTMLElement[]} nodes The input node(s), or a query selector string.
+         * @param {string|HTMLElement|HTMLCollection|ShadowRoot|Document|HTMLElement[]} nodes The input node(s), or a query selector string.
          */
         empty(nodes) {
-            nodes = this._nodeFilter(nodes, { document: true });
+            nodes = this._nodeFilter(nodes, { shadow: true, document: true });
 
             for (const node of nodes) {
                 this._empty(node);
@@ -2816,7 +2800,7 @@
          * @param {string|Node|NodeList|HTMLCollection|Node[]} nodes The input node(s), or a query selector string.
          */
         remove(nodes) {
-            nodes = this._nodeFilter(nodes, { node: true });
+            nodes = this._nodeFilter(nodes, { node: true, shadow: true });
 
             for (const node of nodes) {
                 this._remove(node);
@@ -2838,9 +2822,9 @@
          * @param {string|Node|NodeList|HTMLCollection|Node[]} others The other node(s), or a query selector or HTML string.
          */
         replaceWith(nodes, others) {
-            nodes = this._nodeFilter(nodes, { node: true });
+            nodes = this._nodeFilter(nodes, { node: true, shadow: true });
 
-            others = this._nodeFilter(others, { node: true, html: true });
+            others = this._nodeFilter(others, { node: true, shadow: true, html: true });
 
             for (const node of nodes) {
                 this._replaceWith(node, others);
@@ -2903,7 +2887,7 @@
 
         /**
          * Remove all children of a single node from the DOM.
-         * @param {HTMLElement} node The input node.
+         * @param {HTMLElement|ShadowRoot|Document} node The input node.
          */
         _empty(node) {
             const children = DOM._children(node, false, false, false);
@@ -2963,30 +2947,30 @@
          * @param {string|Node|NodeList|HTMLCollection|Node[]} others The other node(s), or a query selector or HTML string.
          */
         after(nodes, others) {
-            const node = this._nodeFind(nodes, { node: true });
+            const node = this._nodeFind(nodes, { node: true, shadow: true });
 
             if (!node) {
                 return;
             }
 
-            others = this._nodeFilter(others, { node: true, html: true });
+            others = this._nodeFilter(others, { node: true, shadow: true, html: true });
 
             DOM._after(node, others);
         },
 
         /**
          * Append each other node to the first node.
-         * @param {string|HTMLElement|HTMLCollection|HTMLElement[]} nodes The input node(s), or a query selector string.
+         * @param {string|HTMLElement|HTMLCollection|ShadowRoot|Document|HTMLElement[]} nodes The input node(s), or a query selector string.
          * @param {string|Node|NodeList|HTMLCollection|Node[]} others The other node(s), or a query selector or HTML string.
          */
         append(nodes, others) {
-            const node = this._nodeFind(nodes);
+            const node = this._nodeFind(nodes, { shadow: true, document: true });
 
             if (!node) {
                 return;
             }
 
-            others = this._nodeFilter(others, { node: true, html: true });
+            others = this._nodeFilter(others, { node: true, shadow: true, html: true });
 
             DOM._append(node, others);
         },
@@ -2994,7 +2978,7 @@
         /**
          * Append each node to the first other node.
          * @param {string|Node|NodeList|HTMLCollection|Node[]} nodes The input node(s), or a query selector or HTML string.
-         * @param {string|HTMLElement|HTMLCollection|HTMLElement[]} others The other node(s), or a query selector string.
+         * @param {string|HTMLElement|HTMLCollection|ShadowRoot|Document|HTMLElement[]} others The other node(s), or a query selector string.
          */
         appendTo(nodes, others) {
             this.append(others, nodes);
@@ -3006,13 +2990,13 @@
          * @param {string|Node|NodeList|HTMLCollection|Node[]} others The other node(s), or a query selector or HTML string.
          */
         before(nodes, others) {
-            const node = this._nodeFind(nodes, { node: true });
+            const node = this._nodeFind(nodes, { node: true, shadow: true });
 
             if (!node) {
                 return;
             }
 
-            others = this._nodeFilter(others, { node: true, html: true });
+            others = this._nodeFilter(others, { node: true, shadow: true, html: true });
 
             DOM._before(node, others);
         },
@@ -3037,17 +3021,17 @@
 
         /**
          * Prepend each other node to the first node.
-         * @param {string|HTMLElement|HTMLElement|HTMLElement[]} nodes The input node(s), or a query selector string.
+         * @param {string|HTMLElement|HTMLElement|ShadowRoot|Document|HTMLElement[]} nodes The input node(s), or a query selector string.
          * @param {string|Node|NodeList|HTMLCollection|Node[]} others The other node(s), or a query selector or HTML string.
          */
         prepend(nodes, others) {
-            const node = this._nodeFind(nodes);
+            const node = this._nodeFind(nodes, { shadow: true, document: true });
 
             if (!node) {
                 return;
             }
 
-            others = this._nodeFilter(others, { node: true, html: true });
+            others = this._nodeFilter(others, { node: true, shadow: true, html: true });
 
             DOM._prepend(node, others);
         },
@@ -3055,7 +3039,7 @@
         /**
          * Prepend each node to the first other node.
          * @param {string|Node|NodeList|HTMLCollection|Node[]} nodes The input node(s), or a query selector or HTML string.
-         * @param {string|HTMLElement|HTMLElement|HTMLElement[]} others The other node(s), or a query selector string.
+         * @param {string|HTMLElement|HTMLElement|ShadowRoot|Document|HTMLElement[]} others The other node(s), or a query selector string.
          */
         prependTo(nodes, others) {
             this.prepend(others, nodes);
@@ -3075,7 +3059,7 @@
          * @param {string|HTMLElement|HTMLCollection|HTMLElement[]|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
          */
         unwrap(nodes, filter) {
-            nodes = this._nodeFilter(nodes, { node: true });
+            nodes = this._nodeFilter(nodes, { node: true, shadow: true });
 
             for (const node of nodes) {
                 this._unwrap(node, filter);
@@ -3085,12 +3069,12 @@
         /**
          * Wrap each nodes with other nodes.
          * @param {string|Node|NodeList|HTMLCollection|Node[]} nodes The input node(s), or a query selector string.
-         * @param {string|HTMLElement|HTMLCollection|HTMLElement[]} others The other node(s), or a query selector or HTML string.
+         * @param {string|HTMLElement|HTMLCollection|ShadowRoot|HTMLElement[]} others The other node(s), or a query selector or HTML string.
          */
         wrap(nodes, others) {
-            nodes = this._nodeFilter(nodes, { node: true });
+            nodes = this._nodeFilter(nodes, { node: true, shadow: true });
 
-            others = this._nodeFilter(others, { html: true });
+            others = this._nodeFilter(others, { shadow: true, html: true });
 
             for (const node of nodes) {
                 this._wrap(node, others);
@@ -3100,12 +3084,12 @@
         /**
          * Wrap all nodes with other nodes.
          * @param {string|Node|NodeList|HTMLCollection|Node[]} nodes The input node(s), or a query selector string.
-         * @param {string|HTMLElement|HTMLCollection|HTMLElement[]} others The other node(s), or a query selector or HTML string.
+         * @param {string|HTMLElement|HTMLCollection|ShadowRoot|HTMLElement[]} others The other node(s), or a query selector or HTML string.
          */
         wrapAll(nodes, others) {
-            nodes = this._nodeFilter(nodes, { node: true });
+            nodes = this._nodeFilter(nodes, { node: true, shadow: true });
 
-            others = this._nodeFilter(others, { html: true });
+            others = this._nodeFilter(others, { shadow: true, html: true });
 
             const clone = this.clone(others, true);
 
@@ -3124,13 +3108,13 @@
 
         /**
          * Wrap the contents of each node with other nodes.
-         * @param {string|HTMLElement|HTMLCollection|HTMLElement[]} nodes The input node(s), or a query selector string.
-         * @param {string|HTMLElement|HTMLCollection|HTMLElement[]} others The other node(s), or a query selector or HTML string.
+         * @param {string|HTMLElement|HTMLCollection|ShadowRoot|HTMLElement[]} nodes The input node(s), or a query selector string.
+         * @param {string|HTMLElement|HTMLCollection|ShadowRoot|HTMLElement[]} others The other node(s), or a query selector or HTML string.
          */
         wrapInner(nodes, others) {
-            nodes = this._nodeFilter(nodes, { node: true });
+            nodes = this._nodeFilter(nodes, { node: true, shadow: true });
 
-            others = this._nodeFilter(others, { html: true });
+            others = this._nodeFilter(others, { shadow: true, html: true });
 
             for (const node of nodes) {
                 this._wrapInner(node, others);
@@ -3207,79 +3191,79 @@
 
         /**
          * Return all elements matching a filter.
-         * @param {string|HTMLElement|HTMLCollection|HTMLElement[]} nodes The input node(s), or a query selector string.
+         * @param {string|Node|NodeList|HTMLCollection|Node[]} nodes The input node(s), or a query selector string.
          * @param {string|Node|NodeList|HTMLCollection|Node[]|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
-         * @returns {HTMLElement[]} The filtered nodes.
+         * @returns {Node[]} The filtered nodes.
          */
         filter(nodes, filter) {
             filter = this._parseFilter(filter);
 
-            return this._nodeFilter(nodes)
+            return this._nodeFilter(nodes, { node: true, shadow: true })
                 .filter((node, index) => !filter || filter(node, index));
         },
 
         /**
          * Return the first element matching a filter.
-         * @param {string|HTMLElement|HTMLCollection|HTMLElement[]} nodes The input node(s), or a query selector string.
+         * @param {string|Node|NodeList|HTMLCollection|Node[]} nodes The input node(s), or a query selector string.
          * @param {string|Node|NodeList|HTMLCollection|Node[]|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
-         * @returns {HTMLElement} The filtered node.
+         * @returns {Node} The filtered node.
          */
         filterOne(nodes, filter) {
             filter = this._parseFilter(filter);
 
-            return this._nodeFilter(nodes)
+            return this._nodeFilter(nodes, { node: true, shadow: true })
                 .find((node, index) => !filter || filter(node, index)) || null;
         },
 
         /**
          * Return all elements with a descendent matching a filter.
-         * @param {string|HTMLElement|HTMLCollection|HTMLElement[]} nodes The input node(s), or a query selector string.
+         * @param {string|HTMLElement|HTMLCollection|ShadowRoot|Document|HTMLElement[]} nodes The input node(s), or a query selector string.
          * @param {string|Node|NodeList|HTMLCollection|Node[]|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
          * @returns {HTMLElement[]} The filtered nodes.
          */
         has(nodes, filter) {
             filter = this._parseFilterContains(filter);
 
-            return this._nodeFilter(nodes, { document: true })
+            return this._nodeFilter(nodes, { shadow: true, document: true })
                 .filter((node, index) => !filter || filter(node, index));
         },
 
         /**
          * Return the first element with a descendent matching a filter.
-         * @param {string|HTMLElement|HTMLCollection|HTMLElement[]} nodes The input node(s), or a query selector string.
+         * @param {string|HTMLElement|HTMLCollection|ShadowRoot|Document|HTMLElement[]} nodes The input node(s), or a query selector string.
          * @param {string|Node|NodeList|HTMLCollection|Node[]|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
          * @returns {HTMLElement} The filtered node.
          */
         hasOne(nodes, filter) {
             filter = this._parseFilterContains(filter);
 
-            return this._nodeFilter(nodes, { document: true })
+            return this._nodeFilter(nodes, { shadow: true, document: true })
                 .find((node, index) => !filter || filter(node, index)) || null;
         },
 
         /**
          * Return all hidden elements.
-         * @param {string|HTMLElement|HTMLCollection|HTMLElement[]} nodes The input node(s), or a query selector string.
+         * @param {string|HTMLElement|HTMLCollection|ShadowRoot|Document|Window|HTMLElement[]} nodes The input node(s), or a query selector string.
          * @returns {HTMLElement[]} The filtered nodes.
          */
         hidden(nodes) {
-            return this._nodeFilter(nodes, { document: true, window: true })
-                .filter(node => this.isHidden(node));
+            return this._nodeFilter(nodes, { shadow: true, document: true, window: true })
+                .filter(node => DOM._isHidden(node));
         },
 
         /**
          * Return the first hidden element.
-         * @param {string|HTMLElement|HTMLCollection|HTMLElement[]} nodes The input node(s), or a query selector string.
+         * @param {string|HTMLElement|HTMLCollection|ShadowRoot|Document|Window|HTMLElement[]} nodes The input node(s), or a query selector string.
          * @returns {HTMLElement} The filtered node.
          */
         hiddenOne(nodes) {
-            return this._nodeFilter(nodes, { document: true, window: true })
-                .find(node => this.isHidden(node)) || null;
+            return this._nodeFilter(nodes, { shadow: true, document: true, window: true })
+                .find(node => DOM._isHidden(node)) || null;
         },
 
         /**
          * Return all elements not matching a filter.
-         * @param {string|HTMLElement|HTMLCollection|HTMLElement[]} nodes The input node(s), or a query selector string.
+         * @param {string|Node|NodeList|HTMLCollection|Node[]} nodes The input node(s), or a query selector string.
          * @param {string|Node|NodeList|HTMLCollection|Node[]|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
          * @returns {HTMLElement[]} The filtered nodes.
          */
@@ -3290,13 +3274,13 @@
                 return [];
             }
 
-            return this._nodeFilter(nodes)
+            return this._nodeFilter(nodes, { node: true, shadow: true })
                 .filter((node, index) => !filter(node, index));
         },
 
         /**
          * Return the first element not matching a filter.
-         * @param {string|HTMLElement|HTMLCollection|HTMLElement[]} nodes The input node(s), or a query selector string.
+         * @param {string|Node|NodeList|HTMLCollection|Node[]} nodes The input node(s), or a query selector string.
          * @param {string|Node|NodeList|HTMLCollection|Node[]|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
          * @returns {HTMLElement} The filtered node.
          */
@@ -3307,28 +3291,28 @@
                 return null;
             }
 
-            return this._nodeFilter(nodes)
+            return this._nodeFilter(nodes, { node: true, shadow: true })
                 .find((node, index) => !filter(node, index)) || null;
         },
 
         /**
          * Return all visible elements.
-         * @param {string|HTMLElement|HTMLCollection|HTMLElement[]} nodes The input node(s), or a query selector string.
+         * @param {string|HTMLElement|HTMLCollection|ShadowRoot|Document|Window|HTMLElement[]} nodes The input node(s), or a query selector string.
          * @returns {HTMLElement[]} The filtered nodes.
          */
         visible(nodes) {
-            return this._nodeFilter(nodes, { document: true, window: true })
-                .filter(node => this.isVisible(node));
+            return this._nodeFilter(nodes, { shadow: true, document: true, window: true })
+                .filter(node => DOM._isVisible(node));
         },
 
         /**
          * Return the first visible element.
-         * @param {string|HTMLElement|HTMLCollection|HTMLElement[]} nodes The input node(s), or a query selector string.
+         * @param {string|HTMLElement|HTMLCollection|ShadowRoot|Document|Window|HTMLElement[]} nodes The input node(s), or a query selector string.
          * @returns {HTMLElement} The filtered node.
          */
         visibleOne(nodes) {
-            return this._nodeFilter(nodes, { document: true, window: true })
-                .find(node => this.isVisible(node)) || null;
+            return this._nodeFilter(nodes, { shadow: true, document: true, window: true })
+                .find(node => DOM._isVisible(node)) || null;
         }
 
     });
@@ -3372,15 +3356,15 @@
         /**
          * Return all elements with a specific class.
          * @param {string} className The class name.
-         * @param {string|HTMLElement|HTMLCollection|Document|HTMLElement[]} [nodes=this._context] The input node(s), or a query selector string.
+         * @param {string|HTMLElement|HTMLCollection|ShadowRoot|Document|HTMLElement[]} [nodes=this._context] The input node(s), or a query selector string.
          * @returns {HTMLElement[]} The matching nodes.
          */
         findByClass(className, nodes = this._context) {
-            if (Core.isDocument(nodes) || Core.isElement(nodes)) {
+            if (Core.isDocument(nodes) || Core.isElement(nodes) || Core.isShadowRoot(nodes)) {
                 return Core.merge([], DOM._findByClass(className, nodes));
             }
 
-            nodes = this._nodeFilter(nodes, { document: true });
+            nodes = this._nodeFilter(nodes, { shadow: true, document: true });
 
             const results = [];
 
@@ -3399,7 +3383,7 @@
         /**
          * Return all elements with a specific ID.
          * @param {string} id The id.
-         * @param {string|HTMLElement|HTMLCollection|Document|HTMLElement[]} [nodes=this._context] The input node(s), or a query selector string.
+         * @param {string|HTMLElement|HTMLCollection|ShadowRoot|Document|HTMLElement[]} [nodes=this._context] The input node(s), or a query selector string.
          * @returns {HTMLElement[]} The matching nodes.
          */
         findById(id, nodes = this._context) {
@@ -3413,7 +3397,7 @@
                 return [result];
             }
 
-            if (Core.isElement(nodes)) {
+            if (Core.isElement(nodes) || Core.isShadowRoot(nodes)) {
                 return DOM._has(nodes, result) ?
                     [result] :
                     [];
@@ -3427,15 +3411,15 @@
         /**
          * Return all elements with a specific tag.
          * @param {string} tagName The tag name.
-         * @param {string|HTMLElement|HTMLCollection|Document|HTMLElement[]} [nodes=this._context] The input node(s), or a query selector string.
+         * @param {string|HTMLElement|HTMLCollection|ShadowRoot|Document|HTMLElement[]} [nodes=this._context] The input node(s), or a query selector string.
          * @returns {HTMLElement[]} The matching nodes.
          */
         findByTag(tagName, nodes = this._context) {
-            if (Core.isDocument(nodes) || Core.isElement(nodes)) {
+            if (Core.isDocument(nodes) || Core.isElement(nodes) || Core.isShadowRoot(nodes)) {
                 return Core.merge([], DOM._findByTag(tagName, nodes));
             }
 
-            nodes = this._nodeFilter(nodes, { document: true });
+            nodes = this._nodeFilter(nodes, { shadow: true, document: true });
 
             const results = [];
 
@@ -3484,15 +3468,15 @@
         /**
          * Return a single element with a specific class.
          * @param {string} className The class name.
-         * @param {string|HTMLElement|HTMLCollection|Document|HTMLElement[]} [nodes=this._context] The input node(s), or a query selector string.
+         * @param {string|HTMLElement|HTMLCollection|ShadowRoot|Document|HTMLElement[]} [nodes=this._context] The input node(s), or a query selector string.
          * @returns {HTMLElement} The matching node.
          */
         findOneByClass(className, nodes = this._context) {
-            if (Core.isDocument(nodes) || Core.isElement(nodes)) {
+            if (Core.isDocument(nodes) || Core.isElement(nodes) || Core.isShadowRoot(nodes)) {
                 return DOM._findByClass(className, nodes).item(0);
             }
 
-            nodes = this._nodeFilter(nodes, { document: true });
+            nodes = this._nodeFilter(nodes, { shadow: true, document: true });
 
             for (const node of nodes) {
                 const result = DOM._findByClass(className, node).item(0);
@@ -3507,7 +3491,7 @@
         /**
          * Return a single element with a specific ID.
          * @param {string} id The id.
-         * @param {string|HTMLElement|HTMLCollection|Document|HTMLElement[]} [nodes=this._context] The input node(s), or a query selector string.
+         * @param {string|HTMLElement|HTMLCollection|ShadowRoot|Document|HTMLElement[]} [nodes=this._context] The input node(s), or a query selector string.
          * @returns {HTMLElement} The matching element.
          */
         findOneById(id, nodes = this._context) {
@@ -3521,7 +3505,7 @@
                 return result;
             }
 
-            if (Core.isElement(nodes)) {
+            if (Core.isElement(nodes) || Core.isShadowRoot(nodes)) {
                 return DOM._has(nodes, result) ?
                     result :
                     null;
@@ -3535,15 +3519,15 @@
         /**
          * Return a single element with a specific tag.
          * @param {string} tagName The tag name.
-         * @param {string|HTMLElement|HTMLCollection|Document|HTMLElement[]} [nodes=this._context] The input node(s), or a query selector string.
+         * @param {string|HTMLElement|HTMLCollection|ShadowRoot|Document|HTMLElement[]} [nodes=this._context] The input node(s), or a query selector string.
          * @returns {HTMLElement} The matching node.
          */
         findOneByTag(tagName, nodes = this._context) {
-            if (Core.isDocument(nodes) || Core.isElement(nodes)) {
+            if (Core.isDocument(nodes) || Core.isElement(nodes) || Core.isShadowRoot(nodes)) {
                 return DOM._findByTag(tagName, nodes).item(0);
             }
 
-            nodes = this._nodeFilter(nodes, { document: true });
+            nodes = this._nodeFilter(nodes, { shadow: true, document: true });
 
             for (const node of nodes) {
                 const result = DOM._findByTag(tagName, node).item(0);
@@ -3576,7 +3560,7 @@
                 return Core.merge([], DOM._findByCustom(selectors, nodes));
             }
 
-            nodes = this._nodeFilter(nodes, { document: true });
+            nodes = this._nodeFilter(nodes);
 
             const results = [];
 
@@ -3595,15 +3579,15 @@
         /**
          * Return all elements matching a standard CSS selector.
          * @param {string} selector The query selector.
-         * @param {string|HTMLElement|HTMLCollection|Document|HTMLElement[]} [nodes=this._context] The input node(s), or a query selector string.
+         * @param {string|HTMLElement|HTMLCollection|ShadowRoot|Document|HTMLElement[]} [nodes=this._context] The input node(s), or a query selector string.
          * @returns {HTMLElement[]} The matching nodes.
          */
         _findBySelector(selector, nodes = this._context) {
-            if (Core.isDocument(nodes) || Core.isElement(nodes)) {
+            if (Core.isDocument(nodes) || Core.isElement(nodes) || Core.isShadowRoot(nodes)) {
                 return Core.merge([], DOM._findBySelector(selector, nodes));
             }
 
-            nodes = this._nodeFilter(nodes, { document: true });
+            nodes = this._nodeFilter(nodes, { shadow: true, document: true });
 
             const results = [];
 
@@ -3622,7 +3606,7 @@
         /**
          * Return a single element matching a custom CSS selector.
          * @param {string} selector The custom query selector.
-         * @param {string|HTMLElement|HTMLCollection|Document|HTMLElement[]} [nodes=this._context] The input node(s), or a query selector string.
+         * @param {string|HTMLElement|HTMLCollection|HTMLElement[]} [nodes=this._context] The input node(s), or a query selector string.
          * @returns {HTMLElement} The matching node.
          */
         _findOneByCustom(selector, nodes = this._context) {
@@ -3640,7 +3624,7 @@
                 return DOM._findOneByCustom(selectors, nodes);
             }
 
-            nodes = this._nodeFilter(nodes, { document: true });
+            nodes = this._nodeFilter(nodes);
 
             for (const node of nodes) {
                 const result = DOM._findOneByCustom(selectors, node);
@@ -3656,15 +3640,15 @@
         /**
          * Return a single element matching a standard CSS selector.
          * @param {string} selector The query selector.
-         * @param {string|HTMLElement|HTMLCollection|Document|HTMLElement[]} [nodes=this._context] The input node(s), or a query selector string.
+         * @param {string|HTMLElement|HTMLCollection|ShadowRoot|Document|HTMLElement[]} [nodes=this._context] The input node(s), or a query selector string.
          * @returns {HTMLElement} The matching node.
          */
         _findOneBySelector(selector, nodes = this._context) {
-            if (Core.isDocument(nodes) || Core.isElement(nodes)) {
+            if (Core.isDocument(nodes) || Core.isElement(nodes) || Core.isShadowRoot(nodes)) {
                 return DOM._findBySelector(selector, nodes).item(0);
             }
 
-            nodes = this._nodeFilter(nodes, { document: true });
+            nodes = this._nodeFilter(nodes, { shadow: true, document: true });
 
             for (const node of nodes) {
                 const result = DOM._findOneBySelector(selector, node);
@@ -3686,7 +3670,7 @@
 
         /**
          * Return the first child of each element (optionally matching a filter).
-         * @param {string|HTMLElement|HTMLCollection|HTMLElement[]} nodes The input node(s), or a query selector string.
+         * @param {string|HTMLElement|HTMLCollection|ShadowRoot|Document|HTMLElement[]} nodes The input node(s), or a query selector string.
          * @param {string|Node|NodeList|HTMLCollection|Node[]|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
          * @returns {HTMLElement[]} The matching nodes.
          */
@@ -3709,11 +3693,11 @@
         children(nodes, filter, first = false, elementsOnly = true) {
             filter = this._parseFilter(filter);
 
-            if (Core.isElement(nodes)) {
+            if (Core.isElement(nodes) || Core.isDocument(nodes) || Core.isShadowRoot(nodes)) {
                 return DOM._children(nodes, filter, first, elementsOnly);
             }
 
-            nodes = this._nodeFilter(nodes);
+            nodes = this._nodeFilter(nodes, { shadow: true, document: true });
 
             const results = [];
 
@@ -3747,7 +3731,7 @@
 
         /**
          * Return the common ancestor of all elements.
-         * @param {string|HTMLElement|HTMLCollection|HTMLElement[]} nodes The input node(s), or a query selector string.
+         * @param {string|HTMLElement|HTMLCollection|ShadowRoot|HTMLElement[]} nodes The input node(s), or a query selector string.
          * @returns {HTMLElement} The common ancestor.
          */
         commonAncestor(nodes) {
@@ -3771,7 +3755,7 @@
 
         /**
          * Return all children of each element (including text and comment nodes).
-         * @param {string|HTMLElement|HTMLCollection|HTMLElement[]} nodes The input node(s), or a query selector string.
+         * @param {string|HTMLElement|HTMLCollection|ShadowRoot|Document|HTMLElement[]} nodes The input node(s), or a query selector string.
          * @returns {Node[]} The matching nodes.
          */
         contents(nodes) {
@@ -3792,11 +3776,11 @@
         next(nodes, filter) {
             filter = this._parseFilter(filter);
 
-            if (Core.isElement(nodes)) {
+            if (Core.isNode(nodes) || Core.isShadowRoot(nodes)) {
                 return DOM._next(nodes, filter);
             }
 
-            nodes = this._nodeFilter(nodes);
+            nodes = this._nodeFilter(nodes, { node: true, shadow: true });
 
             const results = [];
 
@@ -3824,11 +3808,11 @@
             filter = this._parseFilter(filter);
             limit = this._parseFilter(limit);
 
-            if (Core.isElement(nodes)) {
+            if (Core.isNode(nodes) || Core.isShadowRoot(nodes)) {
                 return DOM._nextAll(nodes, filter, limit, first);
             }
 
-            nodes = this._nodeFilter(nodes);
+            nodes = this._nodeFilter(nodes, { node: true, shadow: true });
 
             const results = [];
 
@@ -3865,11 +3849,11 @@
         parent(nodes, filter) {
             filter = this._parseFilter(filter);
 
-            if (Core.isElement(nodes)) {
+            if (Core.isNode(nodes) || Core.isShadowRoot(nodes)) {
                 return DOM._parent(nodes, filter);
             }
 
-            nodes = this._nodeFilter(nodes, { node: true });
+            nodes = this._nodeFilter(nodes, { node: true, shadow: true });
 
             const results = [];
 
@@ -3897,11 +3881,11 @@
             filter = this._parseFilter(filter);
             limit = this._parseFilter(limit);
 
-            if (Core.isElement(nodes)) {
+            if (Core.isNode(nodes) || Core.isShadowRoot(nodes)) {
                 return DOM._parents(nodes, filter, limit, first);
             }
 
-            nodes = this._nodeFilter(nodes, { node: true });
+            nodes = this._nodeFilter(nodes, { node: true, shadow: true });
 
             const results = [];
 
@@ -3926,11 +3910,11 @@
         prev(nodes, filter) {
             filter = this._parseFilter(filter);
 
-            if (Core.isElement(nodes)) {
+            if (Core.isNode(nodes) || Core.isShadowRoot(nodes)) {
                 return DOM._prev(nodes, filter);
             }
 
-            nodes = this._nodeFilter(nodes);
+            nodes = this._nodeFilter(nodes, { node: true, shadow: true });
 
             const results = [];
 
@@ -3958,11 +3942,11 @@
             filter = this._parseFilter(filter);
             limit = this._parseFilter(limit);
 
-            if (Core.isElement(nodes)) {
+            if (Core.isNode(nodes) || Core.isShadowRoot(nodes)) {
                 return DOM._prevAll(nodes, filter, limit, first);
             }
 
-            nodes = this._nodeFilter(nodes);
+            nodes = this._nodeFilter(nodes, { node: true, shadow: true });
 
             const results = [];
 
@@ -3988,11 +3972,11 @@
         siblings(nodes, filter, elementsOnly = true) {
             filter = this._parseFilter(filter);
 
-            if (Core.isElement(nodes)) {
+            if (Core.isNode(nodes) || Core.isShadowRoot(nodes)) {
                 return DOM._siblings(nodes, filter, elementsOnly);
             }
 
-            nodes = this._nodeFilter(nodes);
+            nodes = this._nodeFilter(nodes, { node: true, shadow: true });
 
             const results = [];
 
@@ -4060,34 +4044,11 @@
          * @returns {DOM~nodeCallback} The node filter function.
          */
         _nodeFilterFactory(options) {
-            options = {
-                node: false,
-                document: false,
-                window: false,
-                ...options
-            };
-
-            if (options.window && options.document) {
-                return options.node ?
-                    node => Core.isNode(node) || Core.isDocument(node) || Core.isWindow(node) :
-                    node => Core.isElement(node) || Core.isDocument(node) || Core.isWindow(node);
-            }
-
-            if (options.window) {
-                return options.node ?
-                    node => Core.isNode(node) || Core.isWindow(node) :
-                    node => Core.isElement(node) || Core.isWindow(node);
-            }
-
-            if (options.document) {
-                return options.node ?
-                    node => Core.isNode(node) || Core.isDocument(node) :
-                    node => Core.isElement(node) || Core.isDocument(node);
-            }
-
-            return options.node ?
-                Core.isNode :
-                Core.isElement;
+            return node =>
+                (options.node ? Core.isNode(node) : Core.isElement(node)) ||
+                (options.shadow && Core.isShadowRoot(node)) ||
+                (options.document && Core.isDocument(node)) ||
+                (options.window && Core.isWindow(node));
         },
 
         /**
@@ -4152,11 +4113,11 @@
                     DOM._is(node, filter);
             }
 
-            if (Core.isNode(filter)) {
+            if (Core.isNode(filter) || Core.isShadowRoot(filter)) {
                 return node => DOM._isSame(node, filter);
             }
 
-            filter = this._nodeFilter(filter);
+            filter = this._nodeFilter(filter, { node: true, shadow: true });
             if (filter.length) {
                 return node => filter.includes(node);
             }
@@ -4182,11 +4143,11 @@
                 return node => !!this.findOne(filter, node);
             }
 
-            if (Core.isElement(filter)) {
+            if (Core.isNode(filter) || Core.isShadowRoot(filter)) {
                 return node => DOM._has(node, filter);
             }
 
-            filter = this._nodeFilter(filter);
+            filter = this._nodeFilter(filter, { node: true, shadow: true });
             if (filter.length) {
                 return node => filter.some(other => DOM._has(node, other));
             }
@@ -4207,7 +4168,7 @@
          * @param {string|Node|NodeList|HTMLCollection|Node[]} nodes The input node(s), or a query selector string.
          */
         afterSelection(nodes) {
-            nodes = this._nodeFilter(nodes, { node: true, html: true });
+            nodes = this._nodeFilter(nodes, { node: true, shadow: true, html: true });
 
             const selection = DOM._getSelection();
 
@@ -4230,7 +4191,7 @@
          * @param {string|Node|NodeList|HTMLCollection|Node[]} nodes The input node(s), or a query selector string.
          */
         beforeSelection(nodes) {
-            nodes = this._nodeFilter(nodes, { node: true, html: true });
+            nodes = this._nodeFilter(nodes, { node: true, shadow: true, html: true });
 
             const selection = DOM._getSelection();
 
@@ -4310,7 +4271,7 @@
          * @param {string|Node|NodeList|HTMLCollection|Node[]} nodes The input node(s), or a query selector string.
          */
         select(nodes) {
-            const node = this._nodeFind(nodes, { node: true });
+            const node = this._nodeFind(nodes, { node: true, shadow: true });
 
             if (node && 'select' in node) {
                 return node.select();
@@ -4362,10 +4323,10 @@
 
         /**
          * Wrap selected nodes with other nodes.
-         * @param {string|Node|NodeList|HTMLCollection|Node[]} nodes The input node(s), or a query selector string.
+         * @param {string|HTMLElement|HTMLCollection|ShadowRoot|Node[]} nodes The input node(s), or a query selector string.
          */
         wrapSelection(nodes) {
-            nodes = this._nodeFilter(nodes, { html: true });
+            nodes = this._nodeFilter(nodes, { shadow: true, html: true });
 
             const selection = window.getSelection();
 
@@ -4403,14 +4364,14 @@
 
         /**
          * Returns true if any of the elements contains a descendent matching a filter.
-         * @param {string|HTMLElement|HTMLCollection|Document|HTMLElement[]} nodes The input node(s), or a query selector string.
+         * @param {string|HTMLElement|HTMLCollection|ShadowRoot|Document|HTMLElement[]} nodes The input node(s), or a query selector string.
          * @param {string|Node|NodeList|HTMLCollection|HTMLElement[]|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
          * @returns {Boolean} TRUE if any of the nodes contains a descendent matching the filter, otherwise FALSE.
          */
         contains(nodes, filter) {
             filter = this._parseFilterContains(filter);
 
-            return this._nodeFilter(nodes, { document: true })
+            return this._nodeFilter(nodes, { shadow: true, document: true })
                 .some(node =>
                     !filter ||
                     filter(node)
@@ -4463,12 +4424,12 @@
 
         /**
          * Returns true if any of the nodes has custom data.
-         * @param {string|Node|NodeList|HTMLCollection|Window|Document|HTMLElement[]} nodes The input node(s), or a query selector string.
+         * @param {string|Node|NodeList|HTMLCollection|Window|Node[]} nodes The input node(s), or a query selector string.
          * @param {string} [key] The data key.
          * @returns {Boolean} TRUE if any of the nodes has custom data, otherwise FALSE.
          */
         hasData(nodes, key) {
-            return this._nodeFilter(nodes, { document: true, window: true })
+            return this._nodeFilter(nodes, { node: true, shadow: true, document: true, window: true })
                 .some(node =>
                     this._data.has(node) &&
                     (
@@ -4529,7 +4490,8 @@
          */
         isConnected(nodes) {
             return this._nodeFilter(nodes, {
-                node: true
+                node: true,
+                shadow: true
             }).some(node => DOM._isConnected(node));
         },
 
@@ -4540,22 +4502,22 @@
          * @returns {Boolean} TRUE if any of the nodes is considered equal to any of the other nodes, otherwise FALSE.
          */
         isEqual(nodes, others) {
-            others = this._nodeFilter(others, { node: true });
-            return this._nodeFilter(nodes, { node: true })
+            others = this._nodeFilter(others, { node: true, shadow: true });
+            return this._nodeFilter(nodes, { node: true, shadow: true })
                 .some(node =>
-                    others.find(other => DOM._isEqual(node, other))
+                    others.some(other => DOM._isEqual(node, other))
                 );
         },
 
         /**
          * Returns true if any of the elements or a parent of any of the elements is "fixed".
-         * @param {string|HTMLElement|HTMLCollection|HTMLElement[]} nodes The input node(s), or a query selector string.
+         * @param {string|Node|NodeList|HTMLCollection|HTMLElement[]} nodes The input node(s), or a query selector string.
          * @returns {Boolean} TRUE if any of the nodes is "fixed", otherwise FALSE.
          */
         isFixed(nodes) {
-            return this._nodeFilter(nodes)
+            return this._nodeFilter(nodes, { node: true, shadow: true })
                 .some(node =>
-                    this._css(node, 'position') === 'fixed' ||
+                    (Core.isElement(node) && this._css(node, 'position') === 'fixed') ||
                     DOM._parents(
                         node,
                         parent =>
@@ -4585,9 +4547,9 @@
          * @returns {Boolean} TRUE if any of the nodes is considered identical to any of the other nodes, otherwise FALSE.
          */
         isSame(nodes, others) {
-            others = this._nodeFilter(others, { node: true });
+            others = this._nodeFilter(others, { node: true, shadow: true });
 
-            return this._nodeFilter(nodes, { node: true })
+            return this._nodeFilter(nodes, { node: true, shadow: true })
                 .some(node =>
                     others.find(other => DOM._isSame(node, other))
                 );
@@ -4630,25 +4592,25 @@
 
         /**
          * Force an element to be shown, and then execute a callback.
-         * @param {string|Node|NodeList|HTMLCollection|Document|Window|HTMLElement[]} nodes The input node(s), or a query selector string.
+         * @param {string|Node|NodeList|HTMLCollection|Window|HTMLElement[]} nodes The input node(s), or a query selector string.
          * @param {DOM~nodeCallback} callback The callback to execute.
          * @returns {*} The result of the callback.
          */
         forceShow(nodes, callback) {
-            const node = this._nodeFind(nodes, { node: true, document: true, window: true });
+            const node = this._nodeFind(nodes, { node: true, shadow: true, document: true, window: true });
 
             if (!node) {
                 return;
             }
 
-            if (this.isVisible(node)) {
+            if (this.isVisible(node) || Core.isDocument(node) || Core.isWindow(node)) {
                 return callback(node);
             }
 
             const hidden = new Map,
                 elements = [];
 
-            if (this._css(node, 'display') === 'none') {
+            if (Core.isElement(node) && this._css(node, 'display') === 'none') {
                 elements.push(node);
             }
 
@@ -4711,10 +4673,10 @@
 
         /**
          * Normalize nodes (remove empty text nodes, and join neighbouring text nodes).
-         * @param {string|Node|NodeList|HTMLCollection|Document|Node[]} nodes The input node(s), or a query selector string.
+         * @param {string|Node|NodeList|HTMLCollection|ShadowRoot|Document|Node[]} nodes The input node(s), or a query selector string.
          */
         normalize(nodes) {
-            nodes = this._nodeFilter(nodes, { node: true });
+            nodes = this._nodeFilter(nodes, { node: true, shadow: true, document: true });
 
             for (const node of nodes) {
                 DOM._normalize(node);
@@ -4723,7 +4685,7 @@
 
         /**
          * Return a serialized string containing names and values of all form elements.
-         * @param {string|HTMLElement|HTMLCollection|HTMLElement[]} nodes The input node(s), or a query selector string.
+         * @param {string|HTMLElement|HTMLCollection|ShadowRoot|HTMLElement[]} nodes The input node(s), or a query selector string.
          * @returns {string} The serialized string.
          */
         serialize(nodes) {
@@ -4734,14 +4696,14 @@
 
         /**
          * Return a serialized array containing names and values of all form elements.
-         * @param {string|HTMLElement|HTMLCollection|HTMLElement[]} nodes The input node(s), or a query selector string.
+         * @param {string|HTMLElement|HTMLCollection|ShadowRoot|HTMLElement[]} nodes The input node(s), or a query selector string.
          * @returns {array} The serialized array.
          */
         serializeArray(nodes) {
-            return this._nodeFilter(nodes)
+            return this._nodeFilter(nodes, { shadow: true })
                 .reduce(
                     (values, node) => {
-                        if (DOM._is(node, 'form')) {
+                        if (Core.isShadowRoot(node) || DOM._is(node, 'form')) {
                             return values.concat(
                                 this.serializeArray(
                                     DOM._findBySelector(
@@ -4778,11 +4740,11 @@
 
         /**
          * Sort nodes by their position in the document
-         * @param {string|Node|NodeList|HTMLCollection|Document|Node[]} nodes The input node(s), or a query selector string.
+         * @param {string|Node|NodeList|HTMLCollection|Node[]} nodes The input node(s), or a query selector string.
          * @returns {Node[]} The sorted array of nodes.
          */
         sort(nodes) {
-            return this._nodeFilter(nodes, { node: true })
+            return this._nodeFilter(nodes, { node: true, shadow: true })
                 .sort((node, other) => DOM._compareNodes(node, other));
         }
 
@@ -5025,6 +4987,8 @@
          * @returns {string} The style value.
          */
         _getStyle(node, style) {
+            style = Core.snakeCase(style);
+
             return node.style[style];
         },
 
@@ -5035,10 +4999,18 @@
          * @param {Boolean} [important] Whether the style should be !important.
          */
         _setStyle(node, styles, important = '') {
-            for (const style in styles) {
+            for (let style in styles) {
+                let value = styles[style];
+                style = Core.snakeCase(style);
+
+                // if value is numeric and not a number property, add px
+                if (value && Core.isNumeric(value) && !this.cssNumberProperties.includes(style)) {
+                    value += 'px';
+                }
+
                 node.style.setProperty(
                     style,
-                    styles[style],
+                    value,
                     important ?
                         'important' :
                         ''
@@ -5086,19 +5058,11 @@
          */
         _focus(node) {
             node.focus();
-        }
-
-    });
-
-    /**
-     * DOM (Static) Event Handlers
-     */
-
-    Object.assign(DOM, {
+        },
 
         /**
          * Trigger an event on a single element.
-         * @param {HTMLElement|Document|Window} nodes The input node.
+         * @param {HTMLElement|ShadowRoot|Document|Window} nodes The input node.
          * @param {string} events The event names.
          * @param {object} [data] Additional data to attach to the Event object.
          */
@@ -5385,7 +5349,7 @@
 
         /**
          * Append each other node to a single node.
-         * @param {Node} node The input node.
+         * @param {HTMLElement|ShadowRoot|Document} node The input node.
          * @param {Node[]} others The other node(s).
          */
         _append(node, others) {
@@ -5414,7 +5378,7 @@
 
         /**
          * Prepend each other node to a single node.
-         * @param {Node} node The input node.
+         * @param {HTMLElement|ShadowRoot|Document} node The input node.
          * @param {Node[]} others The other node(s).
          */
         _prepend(node, others) {
@@ -5519,16 +5483,20 @@
 
         /**
          * Returns true if a single node is visible.
-         * @param {HTMLElement|Document|Window} node The input node.
+         * @param {HTMLElement|ShadowRoot|Document|Window} node The input node.
          * @returns {Boolean} TRUE if the node is visible, otherwise FALSE.
          */
         _isVisible(node) {
             if (Core.isWindow(node)) {
-                return node.document.visibilityState === 'visible';
+                node = node.document;
             }
 
             if (Core.isDocument(node)) {
                 return node.visibilityState === 'visible';
+            }
+
+            if (Core.isShadowRoot(node)) {
+                node = node.host;
             }
 
             return !!node.offsetParent;
@@ -5545,7 +5513,7 @@
         /**
          * Return all elements with a specific class.
          * @param {string} className The class name.
-         * @param {HTMLElement|Document} node The input node.
+         * @param {HTMLElement|ShadowRoot|Document} node The input node.
          * @returns {HTMLElement[]} The matching nodes.
          */
         _findByClass(className, node) {
@@ -5565,7 +5533,7 @@
         /**
          * Return all elements with a specific tag.
          * @param {string} tagName The tag name.
-         * @param {HTMLElement|Document} node The input node.
+         * @param {HTMLElement|ShadowRoot|Document} node The input node.
          * @returns {HTMLElement[]} The matching nodes.
          */
         _findByTag(tagName, node) {
@@ -5575,7 +5543,7 @@
         /**
          * Return all elements matching a standard CSS selector.
          * @param {string} selector The query selector.
-         * @param {HTMLElement|Document} node The input node.
+         * @param {HTMLElement|ShadowRoot|Document} node The input node.
          * @returns {HTMLElement[]} The matching nodes.
          */
         _findBySelector(selector, node) {
@@ -5585,7 +5553,7 @@
         /**
          * Return a single element matching a standard CSS selector.
          * @param {string} selector The query selector.
-         * @param {HTMLElement|Document} node The input node.
+         * @param {HTMLElement|ShadowRoot|Document} node The input node.
          * @returns {HTMLElement} The matching node.
          */
         _findOneBySelector(selector, node) {
@@ -5644,7 +5612,7 @@
 
         /**
          * Return all children of a single element (optionally matching a filter).
-         * @param {HTMLElement} node The input node.
+         * @param {HTMLElement|ShadowRoot|Document} node The input node.
          * @param {DOM~filterCallback} [filter] The filter function.
          * @param {Boolean} [first=false] Whether to only return the first matching node for each node.
          * @param {Boolean} [elementsOnly=false] Whether to only return element nodes.
@@ -5673,18 +5641,14 @@
 
         /**
          * Return the next sibling for a single element (optionally matching a filter).
-         * @param {HTMLElement} node The input node.
+         * @param {Node} node The input node.
          * @param {DOM~filterCallback} [filter] The filter function.
          * @returns {Node[]} The matching nodes.
          */
         _next(node, filter) {
             const results = [];
 
-            while (node = node.nextSibling) {
-                if (Core.isElement(node)) {
-                    break;
-                }
-            }
+            node = node.nextSibling
 
             if (!node) {
                 return results;
@@ -5701,7 +5665,7 @@
 
         /**
          * Return all next siblings for a single element (optionally matching a filter, and before a limit).
-         * @param {HTMLElement} node The input node.
+         * @param {Node} node The input node.
          * @param {DOM~filterCallback} [filter] The filter function.
          * @param {DOM~filterCallback} [limit] The limit function.
          * @param {Boolean} [first=false] Whether to only return the first matching node for each node.
@@ -5711,10 +5675,6 @@
             const results = [];
 
             while (node = node.nextSibling) {
-                if (!Core.isElement(node)) {
-                    continue;
-                }
-
                 if (limit && limit(node)) {
                     break;
                 }
@@ -5735,7 +5695,7 @@
 
         /**
          * Return the parent of a single element (optionally matching a filter).
-         * @param {HTMLElement} node The input node.
+         * @param {Node} node The input node.
          * @param {DOM~filterCallback} [filter] The filter function.
          * @returns {HTMLElement[]} The matching nodes.
          */
@@ -5757,7 +5717,7 @@
 
         /**
          * Return all parents of a single element (optionally matching a filter, and before a limit).
-         * @param {HTMLElement} node The input node.
+         * @param {Node} node The input node.
          * @param {DOM~filterCallback} [filter] The filter function.
          * @param {DOM~filterCallback} [limit] The limit function.
          * @param {Boolean} [first=false] Whether to only return the first matching node for each node.
@@ -5767,7 +5727,11 @@
             const results = [];
 
             while (node = node.parentNode) {
-                if (!Core.isElement(node) || (limit && limit(node))) {
+                if (Core.isDocument(node)) {
+                    break;
+                }
+
+                if (limit && limit(node)) {
                     break;
                 }
 
@@ -5787,18 +5751,14 @@
 
         /**
          * Return the previous sibling for a single element (optionally matching a filter).
-         * @param {HTMLElement} node The input node.
+         * @param {Node} node The input node.
          * @param {DOM~filterCallback} [filter] The filter function.
          * @returns {Node[]} The matching nodes.
          */
         _prev(node, filter) {
             const results = [];
 
-            while (node = node.previousSibling) {
-                if (Core.isElement(node)) {
-                    break;
-                }
-            }
+            node = node.previousSibling;
 
             if (!node) {
                 return results;
@@ -5815,7 +5775,7 @@
 
         /**
          * Return all previous siblings for a single element (optionally matching a filter, and before a limit).
-         * @param {HTMLElement} node The input node.
+         * @param {Node} node The input node.
          * @param {DOM~filterCallback} [filter] The filter function.
          * @param {DOM~filterCallback} [limit] The limit function.
          * @param {Boolean} [first=false] Whether to only return the first matching node for each node.
@@ -5825,10 +5785,6 @@
             const results = [];
 
             while (node = node.previousSibling) {
-                if (!Core.isElement(node)) {
-                    continue;
-                }
-
                 if (limit && limit(node)) {
                     break;
                 }
@@ -5849,7 +5805,7 @@
 
         /**
          * Return all siblings for a single element (optionally matching a filter).
-         * @param {HTMLElement} node The input node.
+         * @param {Node} node The input node.
          * @param {DOM~filterCallback} [filter] The filter function.
          * @param {Boolean} [elementsOnly=true] Whether to only return element nodes.
          * @returns {Node[]} The matching nodes.

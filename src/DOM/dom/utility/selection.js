@@ -9,7 +9,7 @@ Object.assign(DOM.prototype, {
      * @param {string|Node|NodeList|HTMLCollection|Node[]} nodes The input node(s), or a query selector string.
      */
     afterSelection(nodes) {
-        nodes = this._nodeFilter(nodes, { node: true, html: true });
+        nodes = this._nodeFilter(nodes, { node: true, shadow: true, html: true });
 
         const selection = DOM._getSelection();
 
@@ -32,7 +32,7 @@ Object.assign(DOM.prototype, {
      * @param {string|Node|NodeList|HTMLCollection|Node[]} nodes The input node(s), or a query selector string.
      */
     beforeSelection(nodes) {
-        nodes = this._nodeFilter(nodes, { node: true, html: true });
+        nodes = this._nodeFilter(nodes, { node: true, shadow: true, html: true });
 
         const selection = DOM._getSelection();
 
@@ -112,7 +112,7 @@ Object.assign(DOM.prototype, {
      * @param {string|Node|NodeList|HTMLCollection|Node[]} nodes The input node(s), or a query selector string.
      */
     select(nodes) {
-        const node = this._nodeFind(nodes, { node: true });
+        const node = this._nodeFind(nodes, { node: true, shadow: true });
 
         if (node && 'select' in node) {
             return node.select();
@@ -164,10 +164,10 @@ Object.assign(DOM.prototype, {
 
     /**
      * Wrap selected nodes with other nodes.
-     * @param {string|Node|NodeList|HTMLCollection|Node[]} nodes The input node(s), or a query selector string.
+     * @param {string|HTMLElement|HTMLCollection|ShadowRoot|Node[]} nodes The input node(s), or a query selector string.
      */
     wrapSelection(nodes) {
-        nodes = this._nodeFilter(nodes, { html: true });
+        nodes = this._nodeFilter(nodes, { shadow: true, html: true });
 
         const selection = window.getSelection();
 

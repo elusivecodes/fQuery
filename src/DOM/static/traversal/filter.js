@@ -64,16 +64,20 @@ Object.assign(DOM, {
 
     /**
      * Returns true if a single node is visible.
-     * @param {HTMLElement|Document|Window} node The input node.
+     * @param {HTMLElement|ShadowRoot|Document|Window} node The input node.
      * @returns {Boolean} TRUE if the node is visible, otherwise FALSE.
      */
     _isVisible(node) {
         if (Core.isWindow(node)) {
-            return node.document.visibilityState === 'visible';
+            node = node.document;
         }
 
         if (Core.isDocument(node)) {
             return node.visibilityState === 'visible';
+        }
+
+        if (Core.isShadowRoot(node)) {
+            node = node.host;
         }
 
         return !!node.offsetParent;
