@@ -5,8 +5,8 @@
 Object.assign(DOM.prototype, {
 
     /**
-     * Drop each element into place.
-     * @param {string|HTMLElement|HTMLCollection|HTMLElement[]} nodes The input node(s), or a query selector string.
+     * Drop each node into place.
+     * @param {string|array|HTMLElement|HTMLCollection} nodes The input node(s), or a query selector string.
      * @param {object} [options] The options to use for animating.
      * @param {string|function} [options.direction=top] The direction to drop the node from.
      * @param {number} [options.duration=1000] The duration of the animation.
@@ -25,8 +25,8 @@ Object.assign(DOM.prototype, {
     },
 
     /**
-     * Drop each element out of place.
-     * @param {string|HTMLElement|HTMLCollection|HTMLElement[]} nodes The input node(s), or a query selector string.
+     * Drop each node out of place.
+     * @param {string|array|HTMLElement|HTMLCollection} nodes The input node(s), or a query selector string.
      * @param {object} [options] The options to use for animating.
      * @param {string|function} [options.direction=top] The direction to drop the node to.
      * @param {number} [options.duration=1000] The duration of the animation.
@@ -45,8 +45,8 @@ Object.assign(DOM.prototype, {
     },
 
     /**
-     * Fade the opacity of each element in.
-     * @param {string|HTMLElement|HTMLCollection|HTMLElement[]} nodes The input node(s), or a query selector string.
+     * Fade the opacity of each node in.
+     * @param {string|array|HTMLElement|HTMLCollection} nodes The input node(s), or a query selector string.
      * @param {object} [options] The options to use for animating.
      * @param {number} [options.duration=1000] The duration of the animation.
      * @param {string} [options.type=ease-in-out] The type of animation.
@@ -70,8 +70,8 @@ Object.assign(DOM.prototype, {
     },
 
     /**
-     * Fade the opacity of each element out.
-     * @param {string|HTMLElement|HTMLCollection|HTMLElement[]} nodes The input node(s), or a query selector string.
+     * Fade the opacity of each node out.
+     * @param {string|array|HTMLElement|HTMLCollection} nodes The input node(s), or a query selector string.
      * @param {object} [options] The options to use for animating.
      * @param {number} [options.duration=1000] The duration of the animation.
      * @param {string} [options.type=ease-in-out] The type of animation.
@@ -95,8 +95,8 @@ Object.assign(DOM.prototype, {
     },
 
     /**
-     * Rotate each element in on an X,Y.
-     * @param {string|HTMLElement|HTMLCollection|HTMLElement[]} nodes The input node(s), or a query selector string.
+     * Rotate each node in on an X,Y.
+     * @param {string|array|HTMLElement|HTMLCollection} nodes The input node(s), or a query selector string.
      * @param {object} [options] The options to use for animating.
      * @param {number} [options.x=0] The amount to rotate on the X-axis.
      * @param {number} [options.y=1] The amount to rotate on the Y-axis.
@@ -127,8 +127,8 @@ Object.assign(DOM.prototype, {
     },
 
     /**
-     * Rotate each element out on an X,Y.
-     * @param {string|HTMLElement|HTMLCollection|HTMLElement[]} nodes The input node(s), or a query selector string.
+     * Rotate each node out on an X,Y.
+     * @param {string|array|HTMLElement|HTMLCollection} nodes The input node(s), or a query selector string.
      * @param {object} [options] The options to use for animating.
      * @param {number} [options.x=0] The amount to rotate on the X-axis.
      * @param {number} [options.y=1] The amount to rotate on the Y-axis.
@@ -159,8 +159,8 @@ Object.assign(DOM.prototype, {
     },
 
     /**
-     * Slide each element in from a direction.
-     * @param {string|HTMLElement|HTMLCollection|HTMLElement[]} nodes The input node(s), or a query selector string.
+     * Slide each node in from a direction.
+     * @param {string|array|HTMLElement|HTMLCollection} nodes The input node(s), or a query selector string.
      * @param {object} [options] The options to use for animating.
      * @param {string|function} [options.direction=bottom] The direction to slide from.
      * @param {number} [options.duration=1000] The duration of the animation.
@@ -210,8 +210,8 @@ Object.assign(DOM.prototype, {
     },
 
     /**
-     * Slide each element out from a direction.
-     * @param {string|HTMLElement|HTMLCollection|HTMLElement[]} nodes The input node(s), or a query selector string.
+     * Slide each node out from a direction.
+     * @param {string|array|HTMLElement|HTMLCollection} nodes The input node(s), or a query selector string.
      * @param {object} [options] The options to use for animating.
      * @param {string|function} [options.direction=bottom] The direction to slide to.
      * @param {number} [options.duration=1000] The duration of the animation.
@@ -261,8 +261,8 @@ Object.assign(DOM.prototype, {
     },
 
     /**
-     * Squeeze each element in from a direction.
-     * @param {string|HTMLElement|HTMLCollection|HTMLElement[]} nodes The input node(s), or a query selector string.
+     * Squeeze each node in from a direction.
+     * @param {string|array|HTMLElement|HTMLCollection} nodes The input node(s), or a query selector string.
      * @param {object} [options] The options to use for animating.
      * @param {string|function} [options.direction=bottom] The direction to squeeze from.
      * @param {number} [options.duration=1000] The duration of the animation.
@@ -289,8 +289,8 @@ Object.assign(DOM.prototype, {
     },
 
     /**
-     * Squeeze each element out from a direction.
-     * @param {string|HTMLElement|HTMLCollection|HTMLElement[]} nodes The input node(s), or a query selector string.
+     * Squeeze each node out from a direction.
+     * @param {string|array|HTMLElement|HTMLCollection} nodes The input node(s), or a query selector string.
      * @param {object} [options] The options to use for animating.
      * @param {string|function} [options.direction=bottom] The direction to squeeze to.
      * @param {number} [options.duration=1000] The duration of the animation.
@@ -317,7 +317,7 @@ Object.assign(DOM.prototype, {
     },
 
     /**
-     * Squeeze each element in from a direction.
+     * Squeeze a single node in from a direction.
      * @param {HTMLElement} node The input node.
      * @param {object} [options] The options to use for animating.
      * @param {string} [options.direction=bottom] The direction to squeeze from.
@@ -378,7 +378,7 @@ Object.assign(DOM.prototype, {
     },
 
     /**
-     * Squeeze a single element out from a direction.
+     * Squeeze a single node out from a direction.
      * @param {HTMLElement} node The input node.
      * @param {object} [options] The options to use for animating.
      * @param {string} [options.direction=bottom] The direction to squeeze to.

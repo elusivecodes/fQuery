@@ -5,7 +5,7 @@
 Object.assign(DOM, {
 
     /**
-     * Trigger a blur event on a single element.
+     * Trigger a blur event on a single node.
      * @param {HTMLElement} node The input node.
      */
     _blur(node) {
@@ -13,7 +13,7 @@ Object.assign(DOM, {
     },
 
     /**
-     * Trigger a click event on a single element.
+     * Trigger a click event on a single node.
      * @param {HTMLElement} node The input node.
      */
     _click(node) {
@@ -21,7 +21,7 @@ Object.assign(DOM, {
     },
 
     /**
-     * Trigger a focus event on a single element.
+     * Trigger a focus event on a single node.
      * @param {HTMLElement} node The input node.
      */
     _focus(node) {
@@ -29,7 +29,7 @@ Object.assign(DOM, {
     },
 
     /**
-     * Trigger an event on a single element.
+     * Trigger an event on a single node.
      * @param {HTMLElement|ShadowRoot|Document|Window} nodes The input node.
      * @param {string} events The event names.
      * @param {object} [data] Additional data to attach to the Event object.

@@ -5,7 +5,7 @@
 Object.assign(DOM, {
 
     /**
-     * Get the scroll X position of a single element.
+     * Get the scroll X position of a single node.
      * @param {HTMLElement|Document|Window} node The input node.
      * @returns {number} The scroll X position.
      */
@@ -22,7 +22,7 @@ Object.assign(DOM, {
     },
 
     /**
-     * Get the scroll Y position of a single element.
+     * Get the scroll Y position of a single node.
      * @param {HTMLElement|Document|Window} node The input node.
      * @returns {number} The scroll Y position.
      */
@@ -39,7 +39,7 @@ Object.assign(DOM, {
     },
 
     /**
-     * Scroll a single element to an X,Y position.
+     * Scroll a single node to an X,Y position.
      * @param {HTMLElement|Document|Window} node The input node.
      * @param {number} x The scroll X position.
      * @param {number} y The scroll Y position.
@@ -60,7 +60,7 @@ Object.assign(DOM, {
     },
 
     /**
-     * Scroll a single element to an X position.
+     * Scroll a single node to an X position.
      * @param {HTMLElement|Document|Window} node The input node.
      * @param {number} x The scroll X position.
      */
@@ -78,7 +78,7 @@ Object.assign(DOM, {
     },
 
     /**
-     * Scroll a single element to a Y position.
+     * Scroll a single node to a Y position.
      * @param {HTMLElement|Document|Window} node The input node.
      * @param {number} y The scroll Y position.
      */

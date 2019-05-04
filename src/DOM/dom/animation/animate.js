@@ -5,15 +5,8 @@
 Object.assign(DOM.prototype, {
 
     /**
-     * @callback DOM~animationCallback
-     * @param {HTMLElement} node The input node.
-     * @param {number} progress The animation progress.
-     * @param {object} options The options to use for animating.
-     */
-
-    /**
-     * Add an animation to each element.
-     * @param {string|HTMLElement|HTMLCollection|HTMLElement[]} nodes The input node(s), or a query selector string.
+     * Add an animation to each node.
+     * @param {string|array|HTMLElement|HTMLCollection} nodes The input node(s), or a query selector string.
      * @param {DOM~animationCallback} callback The animation callback.
      * @param {object} [options] The options to use for animating.
      * @param {number} [options.duration=1000] The duration of the animation.
@@ -39,8 +32,8 @@ Object.assign(DOM.prototype, {
     },
 
     /**
-     * Stop all animations for each element.
-     * @param {string|HTMLElement|HTMLCollection|HTMLElement[]} nodes The input node(s), or a query selector string.
+     * Stop all animations for each node.
+     * @param {string|array|HTMLElement|HTMLCollection} nodes The input node(s), or a query selector string.
      * @param {Boolean} [finish=true] Whether to complete all current animations.
      */
     stop(nodes, finish = true) {
@@ -52,7 +45,7 @@ Object.assign(DOM.prototype, {
     },
 
     /**
-     * Add an animation to a single element.
+     * Add an animation to a single node.
      * @param {HTMLElement} node The input node.
      * @param {DOM~animationCallback} callback The animation callback.
      * @param {object} [options] The options to use for animating.

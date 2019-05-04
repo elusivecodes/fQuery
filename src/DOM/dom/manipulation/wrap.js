@@ -6,8 +6,8 @@ Object.assign(DOM.prototype, {
 
     /**
      * Unwrap each node.
-     * @param {string|Node|NodeList|HTMLCollection|Node[]} nodes The input node(s), or a query selector string.
-     * @param {string|HTMLElement|HTMLCollection|HTMLElement[]|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
+     * @param {string|array|Node|NodeList|HTMLElement|HTMLCollection|ShadowRoot} nodes The input node(s), or a query selector string.
+     * @param {string|array|Node|NodeList|HTMLElement|HTMLCollection|ShadowRoot|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
      */
     unwrap(nodes, filter) {
         nodes = this._nodeFilter(nodes, { node: true, shadow: true });
@@ -19,8 +19,8 @@ Object.assign(DOM.prototype, {
 
     /**
      * Wrap each nodes with other nodes.
-     * @param {string|Node|NodeList|HTMLCollection|Node[]} nodes The input node(s), or a query selector string.
-     * @param {string|HTMLElement|HTMLCollection|ShadowRoot|HTMLElement[]} others The other node(s), or a query selector or HTML string.
+     * @param {string|array|Node|NodeList|HTMLElement|HTMLCollection|ShadowRoot} nodes The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|HTMLCollection|ShadowRoot} others The other node(s), or a query selector or HTML string.
      */
     wrap(nodes, others) {
         nodes = this._nodeFilter(nodes, { node: true, shadow: true });
@@ -34,8 +34,8 @@ Object.assign(DOM.prototype, {
 
     /**
      * Wrap all nodes with other nodes.
-     * @param {string|Node|NodeList|HTMLCollection|Node[]} nodes The input node(s), or a query selector string.
-     * @param {string|HTMLElement|HTMLCollection|ShadowRoot|HTMLElement[]} others The other node(s), or a query selector or HTML string.
+     * @param {string|array|Node|NodeList|HTMLElement|HTMLCollection|ShadowRoot} nodes The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|HTMLCollection|ShadowRoot} others The other node(s), or a query selector or HTML string.
      */
     wrapAll(nodes, others) {
         nodes = this._nodeFilter(nodes, { node: true, shadow: true });
@@ -46,21 +46,15 @@ Object.assign(DOM.prototype, {
 
         DOM._before(nodes, clone);
 
-        const first = clone.shift(),
-            deepest = Core.merge(
-                [],
-                DOM._findBySelector('*', first)
-            ).find(node =>
-                !DOM._hasChildren(node)
-            ) || first;
+        const deepest = DOM._deepest(clone.shift());
 
         DOM._append(deepest, nodes);
     },
 
     /**
      * Wrap the contents of each node with other nodes.
-     * @param {string|HTMLElement|HTMLCollection|ShadowRoot|HTMLElement[]} nodes The input node(s), or a query selector string.
-     * @param {string|HTMLElement|HTMLCollection|ShadowRoot|HTMLElement[]} others The other node(s), or a query selector or HTML string.
+     * @param {string|array|HTMLElement|HTMLCollection|ShadowRoot} nodes The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|HTMLCollection|ShadowRoot} others The other node(s), or a query selector or HTML string.
      */
     wrapInner(nodes, others) {
         nodes = this._nodeFilter(nodes, { node: true, shadow: true });
@@ -74,8 +68,8 @@ Object.assign(DOM.prototype, {
 
     /**
      * Unwrap a single node.
-     * @param {Node} node The input node.
-     * @param {string|HTMLElement|HTMLCollection|HTMLElement[]|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
+     * @param {Node|HTMLElement|ShadowRoot} node The input node.
+     * @param {string|array|Node|NodeList|HTMLElement|HTMLCollection|ShadowRoot|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
      */
     _unwrap(node, filter) {
         const parent = DOM._parent(node, filter).shift();
@@ -93,41 +87,29 @@ Object.assign(DOM.prototype, {
 
     /**
      * Wrap a single node with other nodes.
-     * @param {Node} node The input node.
-     * @param {string|HTMLElement|HTMLCollection|HTMLElement[]} others The other node(s), or a query selector or HTML string.
+     * @param {Node|HTMLElement|ShadowRoot} node The input node.
+     * @param {string|array|HTMLElement|HTMLCollection|ShadowRoot} others The other node(s), or a query selector or HTML string.
      */
     _wrap(node, others) {
         const clone = this.clone(others, true);
         DOM._before(node, clone);
 
-        const first = clone.shift(),
-            deepest = Core.merge(
-                [],
-                DOM._findBySelector('*', first)
-            ).find(node =>
-                !DOM._hasChildren(node)
-            ) || first;
+        const deepest = DOM._deepest(clone.shift());
 
         DOM._append(deepest, [node]);
     },
 
     /**
      * Wrap the contents of a single node with other nodes.
-     * @param {HTMLElement} node The input node.
-     * @param {string|HTMLElement|HTMLCollection|HTMLElement[]} others The other node(s), or a query selector or HTML string.
+     * @param {HTMLElement|ShadowRoot} node The input node.
+     * @param {string|array|HTMLElement|HTMLCollection|ShadowRoot} others The other node(s), or a query selector or HTML string.
      */
     _wrapInner(node, others) {
         const children = DOM._children(node, false, false, false),
             clone = this.clone(others, true);
         DOM._append(node, clone);
 
-        const first = clone.shift(),
-            deepest = Core.merge(
-                [],
-                DOM._findBySelector('*', first)
-            ).find(node =>
-                !DOM._hasChildren(node)
-            ) || first;
+        const deepest = DOM._deepest(clone.shift());
 
         DOM._append(deepest, children);
     }

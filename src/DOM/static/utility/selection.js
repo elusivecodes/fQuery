@@ -51,7 +51,7 @@ Object.assign(DOM, {
     /**
      * Insert a node into a range.
      * @param {Range} range The input range.
-     * @param {Node} node The node to insert.
+     * @param {Node|HTMLElement|ShadowRoot} node The node to insert.
      */
     _insert(range, node) {
         range.insertNode(node);
@@ -68,7 +68,7 @@ Object.assign(DOM, {
     /**
      * Add a node to a range.
      * @param {Range} range The input range. 
-     * @param {Node} node The node to select.
+     * @param {Node|HTMLElement|ShadowRoot} node The node to select.
      */
     _select(range, node) {
         range.selectNode(node);
@@ -77,7 +77,7 @@ Object.assign(DOM, {
     /**
      * Set the end position of a range after a node.
      * @param {Range} range The input range.
-     * @param {Node} node The node to end the range after.
+     * @param {Node|HTMLElement|ShadowRoot} node The node to end the range after.
      */
     _setEndAfter(range, node) {
         range.setEndAfter(node);
@@ -86,7 +86,7 @@ Object.assign(DOM, {
     /**
      * Set the start position of a range before a node.
      * @param {Range} range The input range.
-     * @param {Node} node The node to start the range before.
+     * @param {Node|HTMLElement|ShadowRoot} node The node to start the range before.
      */
     _setStartBefore(range, node) {
         range.setStartBefore(node);

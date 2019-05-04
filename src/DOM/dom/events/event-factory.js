@@ -6,9 +6,9 @@ Object.assign(DOM.prototype, {
 
     /** 
      * Return a wrapped mouse drag event (optionally limited by animation frame).
-     * @param {function} down The callback to execute on mousedown.
-     * @param {function} move The callback to execute on mousemove.
-     * @param {function} up The callback to execute on mouseup.
+     * @param {DOM~eventCallback} down The callback to execute on mousedown.
+     * @param {DOM~eventCallback} move The callback to execute on mousemove.
+     * @param {DOM~eventCallback} up The callback to execute on mouseup.
      * @param {Boolean} [animated=true] Whether to limit the move event by animation frame.
      * @returns {DOM~eventCallback} The mouse drag event callback.
      */
@@ -47,7 +47,7 @@ Object.assign(DOM.prototype, {
 
     /**
      * Return a wrapped event callback that executes on a delegate selector.
-     * @param {HTMLElement} node The input node.
+     * @param {HTMLElement|ShadowRoot|Document} node The input node.
      * @param {string} selector The delegate query selector.
      * @param {function} callback The event callback.
      * @returns {DOM~eventCallback} The delegated event callback.
@@ -75,10 +75,10 @@ Object.assign(DOM.prototype, {
     },
 
     /**
-     * Return a function for matching a delegate target to a complex selector.
+     * Return a function for matching a delegate target to a custom selector.
      * @param {HTMLElement} node The input node.
      * @param {string} selector The delegate query selector.
-     * @returns {function} The callback for finding the matching delegate.
+     * @returns {DOM~delegateCallback} The callback for finding the matching delegate.
      */
     _getDelegateContainsFactory(node, selector) {
         selector = DOM._prefixSelectors(selectors, `#${DOM._tempId}`);
@@ -108,17 +108,17 @@ Object.assign(DOM.prototype, {
 
     /**
      * Return a function for matching a delegate target to a standard selector.
-     * @param {HTMLElement} node The input node.
+     * @param {HTMLElement|ShadowRoot|Document} node The input node.
      * @param {string} selector The delegate query selector.
-     * @returns {function} The callback for finding the matching delegate.
+     * @returns {DOM~delegateCallback} The callback for finding the matching delegate.
      */
     _getDelegateMatchFactory(node, selector) {
         return target =>
-            DOM._is(target, selector) ?
+            Core.isElement(target) && DOM._is(target, selector) ?
                 target :
                 DOM._parents(
                     target,
-                    parent => DOM._is(parent, selector),
+                    parent => Core.isElement(target) && DOM._is(parent, selector),
                     parent => DOM._isSame(node, parent),
                     true
                 ).shift();
@@ -126,7 +126,7 @@ Object.assign(DOM.prototype, {
 
     /**
      * Return a wrapped event callback that removes itself after execution.
-     * @param {HTMLElement|Document|Window} node The input node.
+     * @param {HTMLElement|ShadowRoot|Document|Window} node The input node.
      * @param {string} events The event names.
      * @param {string} delegate The delegate selector.
      * @param {DOM~eventCallback} callback The callback to execute.

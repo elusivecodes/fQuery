@@ -5,10 +5,10 @@
 Object.assign(DOM.prototype, {
 
     /**
-     * Return the first child of each element (optionally matching a filter).
-     * @param {string|HTMLElement|HTMLCollection|ShadowRoot|Document|HTMLElement[]} nodes The input node(s), or a query selector string.
-     * @param {string|Node|NodeList|HTMLCollection|Node[]|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
-     * @returns {HTMLElement[]} The matching nodes.
+     * Return the first child of each node (optionally matching a filter).
+     * @param {string|array|HTMLElement|HTMLCollection|ShadowRoot|Document} nodes The input node(s), or a query selector string.
+     * @param {string|array|Node|NodeList|HTMLElement|HTMLCollection|ShadowRoot|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
+     * @returns {array} The matching nodes.
      */
     child(nodes, filter) {
         return this.children(
@@ -19,17 +19,17 @@ Object.assign(DOM.prototype, {
     },
 
     /**
-     * Return all children of each element (optionally matching a filter).
-     * @param {string|HTMLElement|HTMLCollection|HTMLElement[]} nodes The input node(s), or a query selector string.
-     * @param {string|Node|NodeList|HTMLCollection|Node[]|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
+     * Return all children of each node (optionally matching a filter).
+     * @param {string|array|HTMLElement|HTMLCollection|ShadowRoot|Document} nodes The input node(s), or a query selector string.
+     * @param {string|array|Node|NodeList|HTMLElement|HTMLCollection|ShadowRoot|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
      * @param {Boolean} [first=false] Whether to only return the first matching node for each node.
      * @param {Boolean} [elementsOnly=false] Whether to only return element nodes.
-     * @returns {Node[]} The matching nodes.
+     * @returns {array} The matching nodes.
      */
     children(nodes, filter, first = false, elementsOnly = true) {
         filter = this._parseFilter(filter);
 
-        if (Core.isElement(nodes) || Core.isDocument(nodes) || Core.isShadowRoot(nodes)) {
+        if (Core.isElement(nodes) || Core.isDocument(nodes) || Core.isShadow(nodes)) {
             return DOM._children(nodes, filter, first, elementsOnly);
         }
 
@@ -50,11 +50,11 @@ Object.assign(DOM.prototype, {
     },
 
     /**
-     * Return the closest ancestor to each element (optionally matching a filter, and before a limit).
-     * @param {string|Node|NodeList|HTMLCollection|Node[]} nodes The input node(s), or a query selector string.
-     * @param {string|Node|NodeList|HTMLCollection|Node[]|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
-     * @param {string|Node|NodeList|HTMLCollection|Node[]|DOM~filterCallback} [limit] The limit node(s), a query selector string or custom filter function.
-     * @returns {HTMLElement[]} The matching nodes.
+     * Return the closest ancestor to each node (optionally matching a filter, and before a limit).
+     * @param {string|array|Node|NodeList|HTMLElement|HTMLCollection|ShadowRoot} nodes The input node(s), or a query selector string.
+     * @param {string|array|Node|NodeList|HTMLElement|HTMLCollection|ShadowRoot|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
+     * @param {string|array|Node|NodeList|HTMLElement|HTMLCollection|ShadowRoot|DOM~filterCallback} [limit] The limit node(s), a query selector string or custom filter function.
+     * @returns {array} The matching nodes.
      */
     closest(nodes, filter, limit) {
         return this.parents(
@@ -66,8 +66,8 @@ Object.assign(DOM.prototype, {
     },
 
     /**
-     * Return the common ancestor of all elements.
-     * @param {string|HTMLElement|HTMLCollection|ShadowRoot|HTMLElement[]} nodes The input node(s), or a query selector string.
+     * Return the common ancestor of all nodes.
+     * @param {string|array|Node|NodeList|HTMLElement|HTMLCollection|ShadowRoot} nodes The input node(s), or a query selector string.
      * @returns {HTMLElement} The common ancestor.
      */
     commonAncestor(nodes) {
@@ -77,22 +77,22 @@ Object.assign(DOM.prototype, {
             return;
         }
 
-        const range = this._context.createRange();
+        const range = this.createRange();
 
-        if (nodes.length == 1) {
-            range.selectNode(nodes.shift());
+        if (nodes.length === 1) {
+            DOM._select(range, nodes.shift());
         } else {
-            range.setStartBefore(nodes.shift());
-            range.setEndAfter(nodes.pop());
+            DOM._setStartBefore(range, nodes.shift());
+            DOM._setEndAfter(range, nodes.pop());
         }
 
         return range.commonAncestorContainer;
     },
 
     /**
-     * Return all children of each element (including text and comment nodes).
-     * @param {string|HTMLElement|HTMLCollection|ShadowRoot|Document|HTMLElement[]} nodes The input node(s), or a query selector string.
-     * @returns {Node[]} The matching nodes.
+     * Return all children of each node (including text and comment nodes).
+     * @param {string|array|HTMLElement|HTMLCollection|ShadowRoot|Document} nodes The input node(s), or a query selector string.
+     * @returns {array} The matching nodes.
      */
     contents(nodes) {
         return this.children(
@@ -104,15 +104,15 @@ Object.assign(DOM.prototype, {
     },
 
     /**
-     * Return the next sibling for each element (optionally matching a filter).
-     * @param {string|Node|NodeList|HTMLCollection|Node[]} nodes The input node(s), or a query selector string.
-     * @param {string|Node|NodeList|HTMLCollection|Node[]|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
-     * @returns {Node[]} The matching nodes.
+     * Return the next sibling for each node (optionally matching a filter).
+     * @param {string|array|Node|NodeList|HTMLElement|HTMLCollection|ShadowRoot} nodes The input node(s), or a query selector string.
+     * @param {string|array|Node|NodeList|HTMLElement|HTMLCollection|ShadowRoot|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
+     * @returns {array} The matching nodes.
      */
     next(nodes, filter) {
         filter = this._parseFilter(filter);
 
-        if (Core.isNode(nodes) || Core.isShadowRoot(nodes)) {
+        if (Core.isNode(nodes) || Core.isShadow(nodes)) {
             return DOM._next(nodes, filter);
         }
 
@@ -133,18 +133,18 @@ Object.assign(DOM.prototype, {
     },
 
     /**
-     * Return all next siblings for each element (optionally matching a filter, and before a limit).
-     * @param {string|Node|NodeList|HTMLCollection|Node[]} nodes The input node(s), or a query selector string.
-     * @param {string|Node|NodeList|HTMLCollection|Node[]|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
-     * @param {string|Node|NodeList|HTMLCollection|Node[]|DOM~filterCallback} [limit] The limit node(s), a query selector string or custom filter function.
+     * Return all next siblings for each node (optionally matching a filter, and before a limit).
+     * @param {string|array|Node|NodeList|HTMLElement|HTMLCollection|ShadowRoot} nodes The input node(s), or a query selector string.
+     * @param {string|array|Node|NodeList|HTMLElement|HTMLCollection|ShadowRoot|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
+     * @param {string|array|Node|NodeList|HTMLElement|HTMLCollection|ShadowRoot|DOM~filterCallback} [limit] The limit node(s), a query selector string or custom filter function.
      * @param {Boolean} [first=false] Whether to only return the first matching node for each node.
-     * @returns {Node[]} The matching nodes.
+     * @returns {array} The matching nodes.
      */
     nextAll(nodes, filter, limit, first = false) {
         filter = this._parseFilter(filter);
         limit = this._parseFilter(limit);
 
-        if (Core.isNode(nodes) || Core.isShadowRoot(nodes)) {
+        if (Core.isNode(nodes) || Core.isShadow(nodes)) {
             return DOM._nextAll(nodes, filter, limit, first);
         }
 
@@ -165,8 +165,8 @@ Object.assign(DOM.prototype, {
     },
 
     /**
-     * Return the offset parent (relatively positioned) of the first element.
-     * @param {string|Node|NodeList|HTMLCollection|Node[]|QuerySet} nodes The input node(s), or a query selector string.
+     * Return the offset parent (relatively positioned) of the first node.
+     * @param {string|array|Node|NodeList|HTMLElement|HTMLCollection|ShadowRoot} nodes The input node(s), or a query selector string.
      * @returns {HTMLElement} The offset parent.
      */
     offsetParent(nodes) {
@@ -177,15 +177,15 @@ Object.assign(DOM.prototype, {
     },
 
     /**
-     * Return the parent of each element (optionally matching a filter).
-     * @param {string|Node|NodeList|HTMLCollection|Node[]} nodes The input node(s), or a query selector string.
-     * @param {string|Node|NodeList|HTMLCollection|Node[]|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
-     * @returns {HTMLElement[]} The matching nodes.
+     * Return the parent of each node (optionally matching a filter).
+     * @param {string|array|Node|NodeList|HTMLElement|HTMLCollection|ShadowRoot} nodes The input node(s), or a query selector string.
+     * @param {string|array|Node|NodeList|HTMLElement|HTMLCollection|ShadowRoot|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
+     * @returns {array} The matching nodes.
      */
     parent(nodes, filter) {
         filter = this._parseFilter(filter);
 
-        if (Core.isNode(nodes) || Core.isShadowRoot(nodes)) {
+        if (Core.isNode(nodes) || Core.isShadow(nodes)) {
             return DOM._parent(nodes, filter);
         }
 
@@ -206,18 +206,18 @@ Object.assign(DOM.prototype, {
     },
 
     /**
-     * Return all parents of each element (optionally matching a filter, and before a limit).
-     * @param {string|Node|NodeList|HTMLCollection|Node[]} nodes The input node(s), or a query selector string.
-     * @param {string|Array|Node|NodeList|HTMLCollection|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
-     * @param {string|Array|Node|NodeList|HTMLCollection|DOM~filterCallback} [limit] The limit node(s), a query selector string or custom filter function.
+     * Return all parents of each node (optionally matching a filter, and before a limit).
+     * @param {string|array|Node|NodeList|HTMLElement|HTMLCollection|ShadowRoot} nodes The input node(s), or a query selector string.
+     * @param {string|array|Node|NodeList|HTMLElement|HTMLCollection|ShadowRoot|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
+     * @param {string|array|Node|NodeList|HTMLElement|HTMLCollection|ShadowRoot|DOM~filterCallback} [limit] The limit node(s), a query selector string or custom filter function.
      * @param {Boolean} [first=false] Whether to only return the first matching node for each node.
-     * @returns {HTMLElement[]} The matching nodes.
+     * @returns {array} The matching nodes.
      */
     parents(nodes, filter, limit, first = false) {
         filter = this._parseFilter(filter);
         limit = this._parseFilter(limit);
 
-        if (Core.isNode(nodes) || Core.isShadowRoot(nodes)) {
+        if (Core.isNode(nodes) || Core.isShadow(nodes)) {
             return DOM._parents(nodes, filter, limit, first);
         }
 
@@ -238,15 +238,15 @@ Object.assign(DOM.prototype, {
     },
 
     /**
-     * Return the previous sibling for each element (optionally matching a filter).
-     * @param {string|Node|NodeList|HTMLCollection|Node[]} nodes The input node(s), or a query selector string.
-     * @param {string|Node|NodeList|HTMLCollection|Node[]|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
-     * @returns {Node[]} The matching nodes.
+     * Return the previous sibling for each node (optionally matching a filter).
+     * @param {string|array|Node|NodeList|HTMLElement|HTMLCollection|ShadowRoot} nodes The input node(s), or a query selector string.
+     * @param {string|array|Node|NodeList|HTMLElement|HTMLCollection|ShadowRoot|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
+     * @returns {array} The matching nodes.
      */
     prev(nodes, filter) {
         filter = this._parseFilter(filter);
 
-        if (Core.isNode(nodes) || Core.isShadowRoot(nodes)) {
+        if (Core.isNode(nodes) || Core.isShadow(nodes)) {
             return DOM._prev(nodes, filter);
         }
 
@@ -267,18 +267,18 @@ Object.assign(DOM.prototype, {
     },
 
     /**
-     * Return all previous siblings for each element (optionally matching a filter, and before a limit).
-     * @param {string|Node|NodeList|HTMLCollection|Node[]} nodes The input node(s), or a query selector string.
-     * @param {string|Node|NodeList|HTMLCollection|Node[]|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
-     * @param {string|Node|NodeList|HTMLCollection|Node[]|DOM~filterCallback} [limit] The limit node(s), a query selector string or custom filter function.
+     * Return all previous siblings for each node (optionally matching a filter, and before a limit).
+     * @param {string|array|Node|NodeList|HTMLElement|HTMLCollection|ShadowRoot} nodes The input node(s), or a query selector string.
+     * @param {string|array|Node|NodeList|HTMLElement|HTMLCollection|ShadowRoot|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
+     * @param {string|array|Node|NodeList|HTMLElement|HTMLCollection|ShadowRoot|DOM~filterCallback} [limit] The limit node(s), a query selector string or custom filter function.
      * @param {Boolean} [first=false] Whether to only return the first matching node for each node.
-     * @returns {Node[]} The matching nodes.
+     * @returns {array} The matching nodes.
      */
     prevAll(nodes, filter, limit, first = false) {
         filter = this._parseFilter(filter);
         limit = this._parseFilter(limit);
 
-        if (Core.isNode(nodes) || Core.isShadowRoot(nodes)) {
+        if (Core.isNode(nodes) || Core.isShadow(nodes)) {
             return DOM._prevAll(nodes, filter, limit, first);
         }
 
@@ -299,16 +299,16 @@ Object.assign(DOM.prototype, {
     },
 
     /**
-     * Return all siblings for each element (optionally matching a filter).
-     * @param {string|Node|NodeList|HTMLCollection|Node[]} nodes The input node(s), or a query selector string.
-     * @param {string|Node|NodeList|HTMLCollection|Node[]|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
+     * Return all siblings for each node (optionally matching a filter).
+     * @param {string|array|Node|NodeList|HTMLElement|HTMLCollection|ShadowRoot} nodes The input node(s), or a query selector string.
+     * @param {string|array|Node|NodeList|HTMLElement|HTMLCollection|ShadowRoot|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
      * @param {Boolean} [elementsOnly=true] Whether to only return element nodes.
-     * @returns {Node[]} The matching nodes.
+     * @returns {array} The matching nodes.
      */
     siblings(nodes, filter, elementsOnly = true) {
         filter = this._parseFilter(filter);
 
-        if (Core.isNode(nodes) || Core.isShadowRoot(nodes)) {
+        if (Core.isNode(nodes) || Core.isShadow(nodes)) {
             return DOM._siblings(nodes, filter, elementsOnly);
         }
 
@@ -326,6 +326,6 @@ Object.assign(DOM.prototype, {
         return nodes.length > 1 && results.length > 1 ?
             Core.unique(results) :
             results;
-    },
+    }
 
 });

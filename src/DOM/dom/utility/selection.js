@@ -6,7 +6,7 @@ Object.assign(DOM.prototype, {
 
     /**
      * Insert each node after the selection.
-     * @param {string|Node|NodeList|HTMLCollection|Node[]} nodes The input node(s), or a query selector string.
+     * @param {string|array|Node|NodeList|HTMLElement|HTMLCollection|ShadowRoot} nodes The input node(s), or a query selector or HTML string.
      */
     afterSelection(nodes) {
         nodes = this._nodeFilter(nodes, { node: true, shadow: true, html: true });
@@ -29,7 +29,7 @@ Object.assign(DOM.prototype, {
 
     /**
      * Insert each node before the selection.
-     * @param {string|Node|NodeList|HTMLCollection|Node[]} nodes The input node(s), or a query selector string.
+     * @param {string|array|Node|NodeList|HTMLElement|HTMLCollection|ShadowRoot} nodes The input node(s), or a query selector or HTML string.
      */
     beforeSelection(nodes) {
         nodes = this._nodeFilter(nodes, { node: true, shadow: true, html: true });
@@ -51,7 +51,7 @@ Object.assign(DOM.prototype, {
 
     /**
      * Extract selected nodes from the DOM.
-     * @returns {Node[]} The selected nodes.
+     * @returns {array} The selected nodes.
      */
     extractSelection() {
         const selection = DOM._getSelection();
@@ -69,7 +69,7 @@ Object.assign(DOM.prototype, {
 
     /**
      * Return all selected nodes.
-     * @returns {Node[]} The selected nodes.
+     * @returns {array} The selected nodes.
      */
     getSelection() {
         const selection = DOM._getSelection();
@@ -109,7 +109,7 @@ Object.assign(DOM.prototype, {
 
     /**
      * Create a selection on the first node.
-     * @param {string|Node|NodeList|HTMLCollection|Node[]} nodes The input node(s), or a query selector string.
+     * @param {string|array|Node|NodeList|HTMLElement|HTMLCollection|ShadowRoot} nodes The input node(s), or a query selector string.
      */
     select(nodes) {
         const node = this._nodeFind(nodes, { node: true, shadow: true });
@@ -135,7 +135,7 @@ Object.assign(DOM.prototype, {
 
     /**
      * Create a selection containing all of the nodes.
-     * @param {string|Node|NodeList|HTMLCollection|Node[]} nodes The input node(s), or a query selector string.
+     * @param {string|array|Node|NodeList|HTMLElement|HTMLCollection|ShadowRoot} nodes The input node(s), or a query selector string.
      */
     selectAll(nodes) {
         nodes = this.sort(nodes);
@@ -164,7 +164,7 @@ Object.assign(DOM.prototype, {
 
     /**
      * Wrap selected nodes with other nodes.
-     * @param {string|HTMLElement|HTMLCollection|ShadowRoot|Node[]} nodes The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|HTMLCollection|ShadowRoot} nodes The input node(s), or a query selector or HTML string.
      */
     wrapSelection(nodes) {
         nodes = this._nodeFilter(nodes, { shadow: true, html: true });
@@ -179,19 +179,13 @@ Object.assign(DOM.prototype, {
 
         selection.removeAllRanges();
 
-        const first = nodes.slice().shift(),
-            deepest = Core.merge(
-                [],
-                DOM._findBySelector('*', first)
-            ).find(node =>
-                !DOM._hasChildren(node)
-            ) || first,
-            children = Core.merge([], range.extractContents().childNodes);
+        const deepest = DOM._deepest(nodes.slice().shift()),
+            children = Core.merge([], DOM._extract(range));
 
         DOM._append(deepest, children);
 
         for (const node of nodes) {
-            range.insertNode(node);
+            DOM._insert(range, node);
         }
     }
 

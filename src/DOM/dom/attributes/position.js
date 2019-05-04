@@ -5,8 +5,8 @@
 Object.assign(DOM.prototype, {
 
     /**
-     * Get the X,Y co-ordinates for the center of the first element.
-     * @param {string|HTMLElement|HTMLCollection|HTMLElement[]} nodes The input node(s), or a query selector string.
+     * Get the X,Y co-ordinates for the center of the first node.
+     * @param {string|array|HTMLElement|HTMLCollection} nodes The input node(s), or a query selector string.
      * @param {Boolean} [offset] Whether to offset from the top-left of the Document.
      * @returns {object} An object with the x and y co-ordinates.
      */
@@ -24,9 +24,9 @@ Object.assign(DOM.prototype, {
     },
 
     /**
-     * Contrain each element to a container element.
-     * @param {string|HTMLElement|HTMLCollection|HTMLElement[]} nodes The input node(s), or a query selector string.
-     * @param {string|HTMLElement|HTMLCollection|HTMLElement[]} container The container node, or a query selector string.
+     * Contrain each node to a container node.
+     * @param {string|array|HTMLElement|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|HTMLCollection} container The container node, or a query selector string.
      */
     constrain(nodes, container) {
         const containerBox = this.rect(container);
@@ -43,8 +43,8 @@ Object.assign(DOM.prototype, {
     },
 
     /**
-     * Get the distance of an element to an X,Y position in the Window.
-     * @param {string|HTMLElement|HTMLCollection|HTMLElement[]} nodes The input node(s), or a query selector string.
+     * Get the distance of a node to an X,Y position in the Window.
+     * @param {string|array|HTMLElement|HTMLCollection} nodes The input node(s), or a query selector string.
      * @param {number} x The X co-ordinate.
      * @param {number} y The Y co-ordinate.
      * @param {Boolean} [offset] Whether to offset from the top-left of the Document.
@@ -66,9 +66,9 @@ Object.assign(DOM.prototype, {
     },
 
     /**
-     * Get the distance between two elements.
-     * @param {string|HTMLElement|HTMLCollection|HTMLElement[]} nodes The input node(s), or a query selector string.
-     * @param {string|HTMLElement|HTMLCollection|HTMLElement[]} others The node to compare, or a query selector string.
+     * Get the distance between two nodes.
+     * @param {string|array|HTMLElement|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|HTMLCollection} others The node to compare, or a query selector string.
      * @returns {number} The distance between the nodes.
      */
     distToNode(nodes, others) {
@@ -86,8 +86,8 @@ Object.assign(DOM.prototype, {
     },
 
     /**
-     * Get the nearest element to an X,Y position in the Window.
-     * @param {string|HTMLElement|HTMLCollection|HTMLElement[]} nodes The input node(s), or a query selector string.
+     * Get the nearest node to an X,Y position in the Window.
+     * @param {string|array|HTMLElement|HTMLCollection} nodes The input node(s), or a query selector string.
      * @param {number} x The X co-ordinate.
      * @param {number} y The Y co-ordinate.
      * @param {Boolean} [offset] Whether to offset from the top-left of the Document.
@@ -111,9 +111,9 @@ Object.assign(DOM.prototype, {
     },
 
     /**
-     * Get the nearest element to another element.
-     * @param {string|HTMLElement|HTMLCollection|HTMLElement[]} nodes The input node(s), or a query selector string.
-     * @param {string|HTMLElement|HTMLCollection|HTMLElement[]} others The node to compare, or a query selector string.
+     * Get the nearest node to another node.
+     * @param {string|array|HTMLElement|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|HTMLCollection} others The node to compare, or a query selector string.
      * @returns {HTMLElement} The nearest node.
      */
     nearestToNode(nodes, others) {
@@ -131,8 +131,8 @@ Object.assign(DOM.prototype, {
     },
 
     /**
-     * Get the percentage of an X co-ordinate relative to an element's width.
-     * @param {string|HTMLElement|HTMLCollection|HTMLElement[]} nodes The input node(s), or a query selector string.
+     * Get the percentage of an X co-ordinate relative to a node's width.
+     * @param {string|array|HTMLElement|HTMLCollection} nodes The input node(s), or a query selector string.
      * @param {number} x The X co-ordinate.
      * @param {Boolean} [offset] Whether to offset from the top-left of the Document.
      * @returns {number} The percent.
@@ -152,8 +152,8 @@ Object.assign(DOM.prototype, {
     },
 
     /**
-     * Get the percentage of a Y co-ordinate relative to an element's height.
-     * @param {string|HTMLElement|HTMLCollection|HTMLElement[]} nodes The input node(s), or a query selector string.
+     * Get the percentage of a Y co-ordinate relative to a node's height.
+     * @param {string|array|HTMLElement|HTMLCollection} nodes The input node(s), or a query selector string.
      * @param {number} y The Y co-ordinate.
      * @param {Boolean} [offset] Whether to offset from the top-left of the Document.
      * @returns {number} The percent.
@@ -173,10 +173,10 @@ Object.assign(DOM.prototype, {
     },
 
     /**
-     * Get the position of the first element relative to the Window or Document.
-     * @param {string|HTMLElement|HTMLCollection|HTMLElement[]} nodes The input node(s), or a query selector string.
+     * Get the position of the first node relative to the Window or Document.
+     * @param {string|array|HTMLElement|HTMLCollection} nodes The input node(s), or a query selector string.
      * @param {Boolean} [offset] Whether to offset from the top-left of the Document.
-     * @returns {object} An object with the x and y co-ordinates.
+     * @returns {object} An object with the X and Y co-ordinates.
      */
     position(nodes, offset) {
         const node = this._nodeFind(nodes);
@@ -189,8 +189,8 @@ Object.assign(DOM.prototype, {
     },
 
     /**
-     * Get the computed bounding rectangle of the first element.
-     * @param {string|HTMLElement|HTMLCollection|HTMLElement[]} nodes The input node(s), or a query selector string.
+     * Get the computed bounding rectangle of the first node.
+     * @param {string|array|HTMLElement|HTMLCollection} nodes The input node(s), or a query selector string.
      * @param {Boolean} [offset] Whether to offset from the top-left of the Document.
      * @returns {DOMRect} The computed bounding rectangle.
      */
@@ -205,7 +205,7 @@ Object.assign(DOM.prototype, {
     },
 
     /**
-     * Contrain a single element to a container box.
+     * Constrain a single node to a container box.
      * @param {HTMLElement} node The input node.
      * @param {DOMRect} containerBox The container box.
      */
@@ -248,10 +248,10 @@ Object.assign(DOM.prototype, {
     },
 
     /**
-     * Get the position of the a single element relative to the Window or Document.
+     * Get the position of the a single node relative to the Window or Document.
      * @param {HTMLElement} node The input node.
      * @param {Boolean} [offset] Whether to offset from the top-left of the Document.
-     * @returns {object} An object with the x and y co-ordinates.
+     * @returns {object} An object with the X and Y co-ordinates.
      */
     _position(node, offset) {
         return this.forceShow(
@@ -277,7 +277,7 @@ Object.assign(DOM.prototype, {
     },
 
     /**
-     * Get the computed bounding rectangle of a single element.
+     * Get the computed bounding rectangle of a single node.
      * @param {HTMLElement} node The input node.
      * @param {Boolean} [offset] Whether to offset from the top-left of the Document.
      * @returns {DOMRect} The computed bounding rectangle.

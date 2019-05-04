@@ -5,9 +5,9 @@
 Object.assign(DOM.prototype, {
 
     /**
-     * Returns true if any of the elements contains a descendent matching a filter.
-     * @param {string|HTMLElement|HTMLCollection|ShadowRoot|Document|HTMLElement[]} nodes The input node(s), or a query selector string.
-     * @param {string|Node|NodeList|HTMLCollection|HTMLElement[]|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
+     * Returns true if any of the nodes contains a descendent matching a filter.
+     * @param {string|array|HTMLElement|HTMLCollection|ShadowRoot|Document} nodes The input node(s), or a query selector string.
+     * @param {string|array|Node|NodeList|HTMLElement|HTMLCollection|ShadowRoot|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
      * @returns {Boolean} TRUE if any of the nodes contains a descendent matching the filter, otherwise FALSE.
      */
     contains(nodes, filter) {
@@ -21,8 +21,8 @@ Object.assign(DOM.prototype, {
     },
 
     /**
-     * Returns true if any of the elements has a CSS animation.
-     * @param {string|HTMLElement|HTMLCollection|HTMLElement[]} nodes The input node(s), or a query selector string.
+     * Returns true if any of the nodes has a CSS animation.
+     * @param {string|array|HTMLElement|HTMLCollection} nodes The input node(s), or a query selector string.
      * @returns {Boolean} TRUE if any of the nodes has a CSS animation, otherwise FALSE.
      */
     hasAnimation(nodes) {
@@ -35,8 +35,8 @@ Object.assign(DOM.prototype, {
     },
 
     /**
-     * Returns true if any of the elements has a specified attribute.
-     * @param {string|HTMLElement|HTMLCollection|HTMLElement[]} nodes The input node(s), or a query selector string.
+     * Returns true if any of the nodes has a specified attribute.
+     * @param {string|array|HTMLElement|HTMLCollection} nodes The input node(s), or a query selector string.
      * @param {string} attribute The attribute name.
      * @returns {Boolean} TRUE if any of the nodes has the attribute, otherwise FALSE.
      */
@@ -48,8 +48,8 @@ Object.assign(DOM.prototype, {
     },
 
     /**
-     * Returns true if any of the elements has any of the specified classes.
-     * @param {string|HTMLElement|HTMLCollection|HTMLElement[]} nodes The input node(s), or a query selector string.
+     * Returns true if any of the nodes has any of the specified classes.
+     * @param {string|array|HTMLElement|HTMLCollection} nodes The input node(s), or a query selector string.
      * @param {...string|string[]} classes The classes.
      * @returns {Boolean} TRUE if any of the nodes has any of the classes, otherwise FALSE.
      */
@@ -66,7 +66,7 @@ Object.assign(DOM.prototype, {
 
     /**
      * Returns true if any of the nodes has custom data.
-     * @param {string|Node|NodeList|HTMLCollection|Window|Node[]} nodes The input node(s), or a query selector string.
+     * @param {string|array|Node|NodeList|HTMLElement|HTMLCollection|ShadowRoot|Document|Window} nodes The input node(s), or a query selector string.
      * @param {string} [key] The data key.
      * @returns {Boolean} TRUE if any of the nodes has custom data, otherwise FALSE.
      */
@@ -83,8 +83,8 @@ Object.assign(DOM.prototype, {
     },
 
     /**
-     * Returns true if any of the elements has a specified property.
-     * @param {string|HTMLElement|HTMLCollection|HTMLElement[]} nodes The input node(s), or a query selector string.
+     * Returns true if any of the nodes has a specified property.
+     * @param {string|array|HTMLElement|HTMLCollection} nodes The input node(s), or a query selector string.
      * @param {string} property The property name.
      * @returns {Boolean} TRUE if any of the nodes has the property, otherwise FALSE.
      */
@@ -96,8 +96,8 @@ Object.assign(DOM.prototype, {
     },
 
     /**
-     * Returns true if any of the elements has a CSS transition.
-     * @param {string|HTMLElement|HTMLCollection|HTMLElement[]} nodes The input node(s), or a query selector string.
+     * Returns true if any of the nodes has a CSS transition.
+     * @param {string|array|HTMLElement|HTMLCollection} nodes The input node(s), or a query selector string.
      * @returns {Boolean} TRUE if any of the nodes has a CSS transition, otherwise FALSE.
      */
     hasTransition(nodes) {
@@ -110,9 +110,9 @@ Object.assign(DOM.prototype, {
     },
 
     /**
-     * Returns true if any of the elements matches a filter.
-     * @param {string|HTMLElement|HTMLCollection|HTMLElement[]} nodes The input node(s), or a query selector string.
-     * @param {string|Node|NodeList|HTMLCollection|HTMLElement[]|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
+     * Returns true if any of the nodes matches a filter.
+     * @param {string|array|Node|NodeList|HTMLElement|HTMLCollection|ShadowRoot} nodes The input node(s), or a query selector string.
+     * @param {string|array|Node|NodeList|HTMLElement|HTMLCollection|ShadowRoot|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
      * @returns {Boolean} TRUE if any of the nodes matches the filter, otherwise FALSE.
      */
     is(nodes, filter) {
@@ -127,20 +127,18 @@ Object.assign(DOM.prototype, {
 
     /**
      * Returns true if any of the nodes is connected to the DOM.
-     * @param {string|Node|NodeList|HTMLCollection|Node[]} nodes The input node(s), or a query selector string.
+     * @param {string|array|Node|NodeList|HTMLElement|HTMLCollection|ShadowRoot} nodes The input node(s), or a query selector string.
      * @returns {Boolean} TRUE if any of the nodes is connected to the DOM, otherwise FALSE.
      */
     isConnected(nodes) {
-        return this._nodeFilter(nodes, {
-            node: true,
-            shadow: true
-        }).some(node => DOM._isConnected(node));
+        return this._nodeFilter(nodes, { node: true, shadow: true })
+            .some(node => DOM._isConnected(node));
     },
 
     /**
      * Returns true if any of the nodes is considered equal to any of the other nodes.
-     * @param {string|Node|NodeList|HTMLCollection|Node[]} nodes The input node(s), or a query selector string.
-     * @param {string|Node|NodeList|HTMLCollection|Node[]} others The other node(s), or a query selector string.
+     * @param {string|array|Node|NodeList|HTMLElement|HTMLCollection|ShadowRoot} nodes The input node(s), or a query selector string.
+     * @param {string|array|Node|NodeList|HTMLElement|HTMLCollection|ShadowRoot} others The other node(s), or a query selector string.
      * @returns {Boolean} TRUE if any of the nodes is considered equal to any of the other nodes, otherwise FALSE.
      */
     isEqual(nodes, others) {
@@ -153,7 +151,7 @@ Object.assign(DOM.prototype, {
 
     /**
      * Returns true if any of the elements or a parent of any of the elements is "fixed".
-     * @param {string|Node|NodeList|HTMLCollection|HTMLElement[]} nodes The input node(s), or a query selector string.
+     * @param {string|array|Node|NodeList|HTMLElement|HTMLCollection|ShadowRoot} nodes The input node(s), or a query selector string.
      * @returns {Boolean} TRUE if any of the nodes is "fixed", otherwise FALSE.
      */
     isFixed(nodes) {
@@ -172,7 +170,7 @@ Object.assign(DOM.prototype, {
 
     /**
      * Returns true if any of the nodes is hidden.
-     * @param {string|Node|NodeList|HTMLCollection|Document|Window|Node[]} nodes The input node(s), or a query selector string.
+     * @param {string|array|Node|NodeList|HTMLElement|HTMLCollection|ShadowRoot|Document|Window} nodes The input node(s), or a query selector string.
      * @returns {Boolean} TRUE if any of the nodes is hidden, otherwise FALSE.
      */
     isHidden(nodes) {
@@ -184,8 +182,8 @@ Object.assign(DOM.prototype, {
 
     /**
      * Returns true if any of the nodes is considered identical to any of the other nodes.
-     * @param {string|Node|NodeList|HTMLCollection|Node[]} nodes The input node(s), or a query selector string.
-     * @param {string|Node|NodeList|HTMLCollection|Node[]} others The other node(s), or a query selector string.
+     * @param {string|array|Node|NodeList|HTMLElement|HTMLCollection|ShadowRoot} nodes The input node(s), or a query selector string.
+     * @param {string|array|Node|NodeList|HTMLElement|HTMLCollection|ShadowRoot} others The other node(s), or a query selector string.
      * @returns {Boolean} TRUE if any of the nodes is considered identical to any of the other nodes, otherwise FALSE.
      */
     isSame(nodes, others) {
@@ -199,11 +197,11 @@ Object.assign(DOM.prototype, {
 
     /**
      * Returns true if any of the nodes is visible.
-     * @param {string|Node|NodeList|HTMLCollection|Document|Window|Node[]} nodes The input node(s), or a query selector string.
+     * @param {string|array|Node|NodeList|HTMLElement|HTMLCollection|ShadowRoot|Document|Window} nodes The input node(s), or a query selector string.
      * @returns {Boolean} TRUE if any of the nodes is visible, otherwise FALSE.
      */
     isVisible(nodes) {
-        return this._nodeFilter(nodes, { node: true, document: true, window: true })
+        return this._nodeFilter(nodes, { node: true, shadow: true, document: true, window: true })
             .some(node =>
                 DOM._isVisible(node)
             );

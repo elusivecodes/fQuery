@@ -5,8 +5,8 @@
 Object.assign(DOM.prototype, {
 
     /**
-     * Add classes to each element.
-     * @param {string|HTMLElement|HTMLCollection|HTMLElement[]} nodes The input node(s), or a query selector string.
+     * Add classes to each node.
+     * @param {string|array|HTMLElement|HTMLCollection} nodes The input node(s), or a query selector string.
      * @param {...string|string[]} classes The classes.
      */
     addClass(nodes, ...classes) {
@@ -24,8 +24,8 @@ Object.assign(DOM.prototype, {
     },
 
     /**
-     * Get a computed CSS style value for the first element.
-     * @param {string|HTMLElement|HTMLCollection|HTMLElement[]} nodes The input node(s), or a query selector string.
+     * Get a computed CSS style value for the first node.
+     * @param {string|array|HTMLElement|HTMLCollection} nodes The input node(s), or a query selector string.
      * @param {string} style The CSS style name.
      * @returns {string} The CSS style value.
      */
@@ -40,8 +40,8 @@ Object.assign(DOM.prototype, {
     },
 
     /**
-     * Get a style property for the first element.
-     * @param {string|HTMLElement|HTMLCollection|HTMLElement[]} nodes The input node(s), or a query selector string.
+     * Get a style property for the first node.
+     * @param {string|array|HTMLElement|HTMLCollection} nodes The input node(s), or a query selector string.
      * @param {string} style The style name.
      * @returns {string} The style value.
      */
@@ -56,8 +56,8 @@ Object.assign(DOM.prototype, {
     },
 
     /**
-     * Hide each element from display.
-     * @param {string|HTMLElement|HTMLCollection|HTMLElement[]} nodes The input node(s), or a query selector string.
+     * Hide each node from display.
+     * @param {string|array|HTMLElement|HTMLCollection} nodes The input node(s), or a query selector string.
      */
     hide(nodes) {
         this.setStyle(
@@ -68,8 +68,8 @@ Object.assign(DOM.prototype, {
     },
 
     /**
-     * Remove classes from each element.
-     * @param {string|HTMLElement|HTMLCollection|HTMLElement[]} nodes The input node(s), or a query selector string.
+     * Remove classes from each node.
+     * @param {string|array|HTMLElement|HTMLCollection} nodes The input node(s), or a query selector string.
      * @param {...string|string[]} classes The classes.
      */
     removeClass(nodes, ...classes) {
@@ -87,8 +87,8 @@ Object.assign(DOM.prototype, {
     },
 
     /**
-     * Set style properties for each element.
-     * @param {string|HTMLElement|HTMLCollection|HTMLElement[]} nodes The input node(s), or a query selector string.
+     * Set style properties for each node.
+     * @param {string|array|HTMLElement|HTMLCollection} nodes The input node(s), or a query selector string.
      * @param {string|object} style The style name, or an object containing styles.
      * @param {string} [value] The style value.
      * @param {Boolean} [important] Whether the style should be !important.
@@ -104,8 +104,8 @@ Object.assign(DOM.prototype, {
     },
 
     /**
-     * Display each hidden element.
-     * @param {string|HTMLElement|HTMLCollection|HTMLElement[]} nodes The input node(s), or a query selector string.
+     * Display each hidden node.
+     * @param {string|array|HTMLElement|HTMLCollection} nodes The input node(s), or a query selector string.
      */
     show(nodes) {
         this.setStyle(
@@ -116,8 +116,8 @@ Object.assign(DOM.prototype, {
     },
 
     /**
-     * Toggle the visibility of each element.
-     * @param {string|HTMLElement|HTMLCollection|HTMLElement[]} nodes The input node(s), or a query selector string.
+     * Toggle the visibility of each node.
+     * @param {string|array|HTMLElement|HTMLCollection} nodes The input node(s), or a query selector string.
      */
     toggle(nodes) {
         nodes = this._nodeFilter(nodes);
@@ -128,8 +128,8 @@ Object.assign(DOM.prototype, {
     },
 
     /**
-     * Toggle classes for each element.
-     * @param {string|HTMLElement|HTMLCollection|HTMLElement[]} nodes The input node(s), or a query selector string.
+     * Toggle classes for each node.
+     * @param {string|array|HTMLElement|HTMLCollection} nodes The input node(s), or a query selector string.
      * @param {...string|string[]} classes The classes.
      */
     toggleClass(nodes, ...classes) {
@@ -147,7 +147,7 @@ Object.assign(DOM.prototype, {
     },
 
     /**
-     * Get a computed CSS style value for a single element.
+     * Get a computed CSS style value for a single node.
      * @param {HTMLElement} node The input node.
      * @param {string} style The CSS style name.
      * @returns {string} The CSS style value.

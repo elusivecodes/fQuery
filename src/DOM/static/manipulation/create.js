@@ -5,6 +5,16 @@
 Object.assign(DOM, {
 
     /**
+     * Attach a shadow DOM tree to a single node.
+     * @param {HTMLElement} node The input node.
+     * @param {Boolean} [open=true] Whether the elements are accessible from JavaScript outside the root.
+     * @returns {ShadowRoot} The new ShadowRoot.
+     */
+    _attachShadow(node, open = true) {
+        return node.attachShadow({ mode: open ? 'open' : 'closed' });
+    },
+
+    /**
      * Create a clone of a node.
      * @param {Node} node The input node.
      * @param {Boolean} deep Whether to deep clone the node.
@@ -32,6 +42,15 @@ Object.assign(DOM, {
      */
     _createComment(context, comment) {
         return context.createCommentNode(comment);
+    },
+
+    /**
+     * Create a new document fragment.
+     * @param {Document} context The document context.
+     * @returns {DocumentFragment} The new DocumentFragment.
+     */
+    _createFragment(context) {
+        return context.createDocumentFragment();
     },
 
     /**

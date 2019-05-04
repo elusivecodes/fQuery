@@ -6,8 +6,8 @@ Object.assign(DOM, {
 
     /**
      * Compare the position of two nodes in the DOM.
-     * @param {Node} node The input node.
-     * @param {Node} other The other node.
+     * @param {Node|HTMLElement|ShadowRoot} node The input node.
+     * @param {Node|HTMLElement|ShadowRoot} other The other node.
      * @returns {number} -1 if node is before other, 1 if other is before node, otherwise 0.
      */
     _compareNodes(node, other) {
@@ -32,7 +32,7 @@ Object.assign(DOM, {
 
     /**
      * Normalize a single node (remove empty text nodes, and join neighbouring text nodes).
-     * @param {HTMLElement} node The input node.
+     * @param {Node|HTMLElement|ShadowRoot|Document} node The input node.
      */
     _normalize(node) {
         node.normalize();

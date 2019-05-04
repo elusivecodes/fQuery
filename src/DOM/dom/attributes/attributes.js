@@ -5,8 +5,8 @@
 Object.assign(DOM.prototype, {
 
     /**
-     * Get an attribute value for the first element.
-     * @param {string|HTMLElement|HTMLCollection|HTMLElement[]} nodes The input node(s), or a query selector string.
+     * Get an attribute value for the first node.
+     * @param {string|array|HTMLElement|HTMLCollection} nodes The input node(s), or a query selector string.
      * @param {string} attribute The attribute name.
      * @returns {string} The attribute value.
      */
@@ -21,8 +21,8 @@ Object.assign(DOM.prototype, {
     },
 
     /**
-     * Get a dataset value for the first element.
-     * @param {string|HTMLElement|HTMLCollection|HTMLElement[]} nodes The input node(s), or a query selector string.
+     * Get a dataset value for the first node.
+     * @param {string|array|HTMLElement|HTMLCollection} nodes The input node(s), or a query selector string.
      * @param {string} [key] The dataset key.
      * @returns {string|object} The dataset value.
      */
@@ -37,8 +37,8 @@ Object.assign(DOM.prototype, {
     },
 
     /**
-     * Get the HTML contents of the first element.
-     * @param {string|HTMLElement|HTMLCollection|HTMLElement[]} nodes The input node(s), or a query selector string.
+     * Get the HTML contents of the first node.
+     * @param {string|array|HTMLElement|HTMLCollection} nodes The input node(s), or a query selector string.
      * @returns {string} The HTML contents.
      */
     getHTML(nodes) {
@@ -49,8 +49,8 @@ Object.assign(DOM.prototype, {
     },
 
     /**
-     * Get a property value for the first element.
-     * @param {string|HTMLElement|HTMLCollection|HTMLElement[]} nodes The input node(s), or a query selector string.
+     * Get a property value for the first node.
+     * @param {string|array|HTMLElement|HTMLCollection} nodes The input node(s), or a query selector string.
      * @param {string} property The property name.
      * @returns {string} The property value.
      */
@@ -65,8 +65,8 @@ Object.assign(DOM.prototype, {
     },
 
     /**
-     * Get the text contents of the first element.
-     * @param {string|HTMLElement|HTMLCollection|HTMLElement[]} nodes The input node(s), or a query selector string.
+     * Get the text contents of the first node.
+     * @param {string|array|HTMLElement|HTMLCollection} nodes The input node(s), or a query selector string.
      * @returns {string} The text contents.
      */
     getText(nodes) {
@@ -77,8 +77,8 @@ Object.assign(DOM.prototype, {
     },
 
     /**
-     * Get the value property of the first element.
-     * @param {string|HTMLElement|HTMLCollection|HTMLElement[]} nodes The input node(s), or a query selector string.
+     * Get the value property of the first node.
+     * @param {string|array|HTMLElement|HTMLCollection} nodes The input node(s), or a query selector string.
      * @returns {string} The value.
      */
     getValue(nodes) {
@@ -89,8 +89,8 @@ Object.assign(DOM.prototype, {
     },
 
     /**
-     * Remove an attribute from each element.
-     * @param {string|HTMLElement|HTMLCollection|HTMLElement[]} nodes The input node(s), or a query selector string.
+     * Remove an attribute from each node.
+     * @param {string|array|HTMLElement|HTMLCollection} nodes The input node(s), or a query selector string.
      * @param {string} attribute The attribute name.
      */
     removeAttribute(nodes, attribute) {
@@ -102,8 +102,8 @@ Object.assign(DOM.prototype, {
     },
 
     /**
-     * Remove a property from each element.
-     * @param {string|HTMLElement|HTMLCollection|HTMLElement[]} nodes The input node(s), or a query selector string.
+     * Remove a property from each node.
+     * @param {string|array|HTMLElement|HTMLCollection} nodes The input node(s), or a query selector string.
      * @param {string} property The property name.
      */
     removeProperty(nodes, property) {
@@ -115,8 +115,8 @@ Object.assign(DOM.prototype, {
     },
 
     /**
-     * Set an attribute value for each element.
-     * @param {string|HTMLElement|HTMLCollection|HTMLElement[]} nodes The input node(s), or a query selector string.
+     * Set an attribute value for each node.
+     * @param {string|array|HTMLElement|HTMLCollection} nodes The input node(s), or a query selector string.
      * @param {string|object} attribute The attribute name, or an object containing attributes.
      * @param {string} [value] The attribute value.
      */
@@ -131,8 +131,8 @@ Object.assign(DOM.prototype, {
     },
 
     /**
-     * Set a dataset value for the first element.
-     * @param {string|HTMLElement|HTMLCollection|HTMLElement[]} nodes The input node(s), or a query selector string.
+     * Set a dataset value for the first node.
+     * @param {string|array|HTMLElement|HTMLCollection} nodes The input node(s), or a query selector string.
      * @param {string|object} key The dataset key, or an object containing dataset values.
      * @param {string} [value] The dataset value.
      */
@@ -147,8 +147,8 @@ Object.assign(DOM.prototype, {
     },
 
     /**
-     * Set the HTML contents of each element.
-     * @param {string|HTMLElement|HTMLCollection|HTMLElement[]} nodes The input node(s), or a query selector string.
+     * Set the HTML contents of each node.
+     * @param {string|array|HTMLElement|HTMLCollection} nodes The input node(s), or a query selector string.
      * @param {string} html The HTML contents.
      */
     setHTML(nodes, html) {
@@ -162,8 +162,8 @@ Object.assign(DOM.prototype, {
     },
 
     /**
-     * Set a property value for each element.
-     * @param {string|HTMLElement|HTMLCollection|HTMLElement[]} nodes The input node(s), or a query selector string.
+     * Set a property value for each node.
+     * @param {string|array|HTMLElement|HTMLCollection} nodes The input node(s), or a query selector string.
      * @param {string|object} property The property name, or an object containing properties.
      * @param {string} [value] The property value.
      */
@@ -178,8 +178,8 @@ Object.assign(DOM.prototype, {
     },
 
     /**
-     * Set the text contents of each element.
-     * @param {string|HTMLElement|HTMLCollection|HTMLElement[]} nodes The input node(s), or a query selector string.
+     * Set the text contents of each node.
+     * @param {string|array|HTMLElement|HTMLCollection} nodes The input node(s), or a query selector string.
      * @param {string} text The text contents.
      */
     setText(nodes, text) {
@@ -193,8 +193,8 @@ Object.assign(DOM.prototype, {
     },
 
     /**
-     * Set the value property of each element.
-     * @param {string|HTMLElement|HTMLCollection|HTMLElement[]} nodes The input node(s), or a query selector string.
+     * Set the value property of each node.
+     * @param {string|array|HTMLElement|HTMLCollection} nodes The input node(s), or a query selector string.
      * @param {string} value The value.
      */
     setValue(nodes, value) {

@@ -5,7 +5,7 @@
 Object.assign(DOM, {
 
     /**
-     * Get an attribute value for a single element.
+     * Get an attribute value for a single node.
      * @param {HTMLElement} node The input node.
      * @param {string} attribute The attribute name.
      * @returns {string} The attribute value.
@@ -15,7 +15,7 @@ Object.assign(DOM, {
     },
 
     /**
-     * Get a dataset value for a single element.
+     * Get a dataset value for a single node.
      * @param {HTMLElement} node The input node.
      * @param {string} [key] The dataset key.
      * @returns {string|object} The dataset value.
@@ -29,7 +29,7 @@ Object.assign(DOM, {
     },
 
     /**
-     * Get a property value for a single element.
+     * Get a property value for a single node.
      * @param {HTMLElement} node The input node.
      * @param {string} property The property name.
      * @returns {string} The property value.
@@ -39,7 +39,7 @@ Object.assign(DOM, {
     },
 
     /**
-     * Remove an attribute from a single element.
+     * Remove an attribute from a single node.
      * @param {HTMLElement} node The input node.
      * @param {string} attribute The attribute name.
      */
@@ -48,7 +48,7 @@ Object.assign(DOM, {
     },
 
     /**
-     * Remove a property from a single element.
+     * Remove a property from a single node.
      * @param {HTMLElement} node The input node.
      * @param {string} property The property name.
      */
@@ -57,7 +57,7 @@ Object.assign(DOM, {
     },
 
     /**
-     * Set an attribute value for a single element.
+     * Set an attribute value for a single node.
      * @param {HTMLElement} node The input node.
      * @param {object} attributes An object containing attributes.
      */
@@ -71,7 +71,7 @@ Object.assign(DOM, {
     },
 
     /**
-     * Set a dataset value for a single element.
+     * Set a dataset value for a single node.
      * @param {HTMLElement} node The input node.
      * @param {object} dataset An object containing dataset values.
      */
@@ -83,7 +83,7 @@ Object.assign(DOM, {
     },
 
     /**
-     * Set a property value for a single element.
+     * Set a property value for a single node.
      * @param {HTMLElement} node The input node.
      * @param {object} properties An object containing properties.
      */

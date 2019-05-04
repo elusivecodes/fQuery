@@ -5,9 +5,25 @@
 Object.assign(DOM.prototype, {
 
     /**
+     * Attach a shadow DOM tree to the first node.
+     * @param {string|array|HTMLElement|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {Boolean} [open=true] Whether the elements are accessible from JavaScript outside the root.
+     * @returns {ShadowRoot} The new ShadowRoot.
+     */
+    attachShadow(nodes, open = true) {
+        const node = this._nodeFind(nodes);
+
+        if (!node) {
+            return;
+        }
+
+        return DOM._attachShadow(node, open);
+    },
+
+    /**
      * Create a new DOM element.
-     * @param {string} tagName The type of HTML element to create.
-     * @param {object} options The options to use for creating the element.
+     * @param {string} [tagName=div] The type of HTML element to create.
+     * @param {object} [options] The options to use for creating the element.
      * @param {string} [options.html] The HTML contents.
      * @param {string} [options.text] The text contents.
      * @param {string|array} [options.class] The classes.
@@ -16,9 +32,9 @@ Object.assign(DOM.prototype, {
      * @param {object} [options.attributes] An object containing attributes.
      * @param {object} [options.properties] An object containing properties.
      * @param {object} [options.dataset] An object containing dataset values.
-     * @returns {HTMLElement} The new element.
+     * @returns {HTMLElement} The new HTMLElement.
      */
-    create(tagName, options) {
+    create(tagName = 'div', options = null) {
         const node = DOM._create(this._context, tagName);
 
         if (!options) {
@@ -79,8 +95,16 @@ Object.assign(DOM.prototype, {
     },
 
     /**
+     * Create a new document fragment.
+     * @returns {DocumentFragment} The new DocumentFragment.
+     */
+    createFragment() {
+        return DOM._createFragment(this._context);
+    },
+
+    /**
      * Create a new range object.
-     * @returns {Range} The new range.
+     * @returns {Range} The new Range.
      */
     createRange() {
         return DOM._createRange(this._context);
@@ -98,14 +122,12 @@ Object.assign(DOM.prototype, {
     /**
      * Create an Array containing nodes parsed from a HTML string.
      * @param {string} html The HTML input string.
-     * @returns {Node[]} An array of nodes.
+     * @returns {array} An array of nodes.
      */
     parseHTML(html) {
-        return Core.merge(
-            [],
+        return DOM._children(
             this.createRange()
                 .createContextualFragment(html)
-                .childNodes
         );
     }
 

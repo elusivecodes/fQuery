@@ -5,7 +5,7 @@
 Object.assign(DOM, {
 
     /**
-     * Add classes to a single element.
+     * Add classes to a single node.
      * @param {HTMLElement} node The input node.
      * @param {...string} classes The classes.
      */
@@ -14,7 +14,7 @@ Object.assign(DOM, {
     },
 
     /**
-     * Remove classes from a single element.
+     * Remove classes from a single node.
      * @param {HTMLElement} node The input node.
      * @param {...string} classes The classes.
      */
@@ -23,7 +23,7 @@ Object.assign(DOM, {
     },
 
     /**
-     * Toggle classes for a single element.
+     * Toggle classes for a single node.
      * @param {HTMLElement} node The input node.
      * @param {...string} classes The classes.
      */
@@ -32,7 +32,7 @@ Object.assign(DOM, {
     },
 
     /**
-     * Get a style property for a single element.
+     * Get a style property for a single node.
      * @param {HTMLElement} node The input node.
      * @param {string} style The style name.
      * @returns {string} The style value.
@@ -44,7 +44,7 @@ Object.assign(DOM, {
     },
 
     /**
-     * Set style properties for a single element.
+     * Set style properties for a single node.
      * @param {HTMLElement} node The input node.
      * @param {object} styles An object containing styles.
      * @param {Boolean} [important] Whether the style should be !important.
@@ -70,7 +70,7 @@ Object.assign(DOM, {
     },
 
     /**
-     * Toggle the visibility of a single element.
+     * Toggle the visibility of a single node.
      * @param {HTMLElement} node The input node.
      */
     _toggle(node) {

@@ -5,8 +5,8 @@
 Object.assign(DOM.prototype, {
 
     /**
-     * Trigger a blur event on the first element.
-     * @param {string|HTMLElement|HTMLCollection|HTMLElement[]} nodes The input node(s), or a query selector string.
+     * Trigger a blur event on the first node.
+     * @param {string|array|HTMLElement|HTMLCollection} nodes The input node(s), or a query selector string.
      */
     blur(nodes) {
         const node = this._nodeFind(nodes);
@@ -19,8 +19,8 @@ Object.assign(DOM.prototype, {
     },
 
     /**
-     * Trigger a click event on the first element.
-     * @param {string|HTMLElement|HTMLCollection|HTMLElement[]} nodes The input node(s), or a query selector string.
+     * Trigger a click event on the first node.
+     * @param {string|array|HTMLElement|HTMLCollection} nodes The input node(s), or a query selector string.
      */
     click(nodes) {
         const node = this._nodeFind(nodes);
@@ -33,8 +33,8 @@ Object.assign(DOM.prototype, {
     },
 
     /**
-     * Trigger a focus event on the first element.
-     * @param {string|HTMLElement|HTMLCollection|HTMLElement[]} nodes The input node(s), or a query selector string.
+     * Trigger a focus event on the first node.
+     * @param {string|array|HTMLElement|HTMLCollection} nodes The input node(s), or a query selector string.
      */
     focus(nodes) {
         const node = this._nodeFind(nodes);
@@ -64,8 +64,8 @@ Object.assign(DOM.prototype, {
     },
 
     /**
-     * Trigger events on each element.
-     * @param {string|HTMLElement|HTMLCollection|ShadowRoot|Document|Window|HTMLElement[]} nodes The input node(s), or a query selector string.
+     * Trigger events on each node.
+     * @param {string|array|HTMLElement|HTMLCollection|ShadowRoot|Document|Window} nodes The input node(s), or a query selector string.
      * @param {string} events The event names.
      * @param {object} [data] Additional data to attach to the event.
      */

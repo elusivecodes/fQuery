@@ -5,12 +5,12 @@
 Object.assign(DOM, {
 
     /**
-     * Return all children of a single element (optionally matching a filter).
+     * Return all children of a single node (optionally matching a filter).
      * @param {HTMLElement|ShadowRoot|Document} node The input node.
      * @param {DOM~filterCallback} [filter] The filter function.
      * @param {Boolean} [first=false] Whether to only return the first matching node for each node.
      * @param {Boolean} [elementsOnly=false] Whether to only return element nodes.
-     * @returns {Node[]} The matching nodes.
+     * @returns {array} The matching nodes.
      */
     _children(node, filter, first = false, elementsOnly = false) {
         const children = elementsOnly ?
@@ -34,10 +34,24 @@ Object.assign(DOM, {
     },
 
     /**
-     * Return the next sibling for a single element (optionally matching a filter).
-     * @param {Node} node The input node.
+     * Return the deepest child node for a single node.
+     * @param {HTMLElement|ShadowRoot|Document} node The input node.
+     * @returns {HTMLElement} The deepest node.
+     */
+    _deepest(node) {
+        return Core.merge(
+            [],
+            this._findBySelector('*', node)
+        ).find(node =>
+            !this._hasChildren(node)
+        ) || node;
+    },
+
+    /**
+     * Return the next sibling for a single node (optionally matching a filter).
+     * @param {Node|HTMLElement|ShadowRoot} node The input node.
      * @param {DOM~filterCallback} [filter] The filter function.
-     * @returns {Node[]} The matching nodes.
+     * @returns {array} The matching nodes.
      */
     _next(node, filter) {
         const results = [];
@@ -58,12 +72,12 @@ Object.assign(DOM, {
     },
 
     /**
-     * Return all next siblings for a single element (optionally matching a filter, and before a limit).
-     * @param {Node} node The input node.
+     * Return all next siblings for a single node (optionally matching a filter, and before a limit).
+     * @param {Node|HTMLElement|ShadowRoot} node The input node.
      * @param {DOM~filterCallback} [filter] The filter function.
      * @param {DOM~filterCallback} [limit] The limit function.
      * @param {Boolean} [first=false] Whether to only return the first matching node for each node.
-     * @returns {Node[]} The matching nodes.
+     * @returns {array} The matching nodes.
      */
     _nextAll(node, filter, limit, first = false) {
         const results = [];
@@ -88,10 +102,10 @@ Object.assign(DOM, {
     },
 
     /**
-     * Return the parent of a single element (optionally matching a filter).
-     * @param {Node} node The input node.
+     * Return the parent of a single node (optionally matching a filter).
+     * @param {Node|HTMLElement|ShadowRoot} node The input node.
      * @param {DOM~filterCallback} [filter] The filter function.
-     * @returns {HTMLElement[]} The matching nodes.
+     * @returns {array} The matching nodes.
      */
     _parent(node, filter) {
         const results = [];
@@ -110,12 +124,12 @@ Object.assign(DOM, {
     },
 
     /**
-     * Return all parents of a single element (optionally matching a filter, and before a limit).
-     * @param {Node} node The input node.
+     * Return all parents of a single node (optionally matching a filter, and before a limit).
+     * @param {Node|HTMLElement|ShadowRoot} node The input node.
      * @param {DOM~filterCallback} [filter] The filter function.
      * @param {DOM~filterCallback} [limit] The limit function.
      * @param {Boolean} [first=false] Whether to only return the first matching node for each node.
-     * @returns {HTMLElement[]} The matching nodes.
+     * @returns {array} The matching nodes.
      */
     _parents(node, filter, limit, closest = false) {
         const results = [];
@@ -144,10 +158,10 @@ Object.assign(DOM, {
     },
 
     /**
-     * Return the previous sibling for a single element (optionally matching a filter).
-     * @param {Node} node The input node.
+     * Return the previous sibling for a single node (optionally matching a filter).
+     * @param {Node|HTMLElement|ShadowRoot} node The input node.
      * @param {DOM~filterCallback} [filter] The filter function.
-     * @returns {Node[]} The matching nodes.
+     * @returns {array} The matching nodes.
      */
     _prev(node, filter) {
         const results = [];
@@ -168,12 +182,12 @@ Object.assign(DOM, {
     },
 
     /**
-     * Return all previous siblings for a single element (optionally matching a filter, and before a limit).
-     * @param {Node} node The input node.
+     * Return all previous siblings for a single node (optionally matching a filter, and before a limit).
+     * @param {Node|HTMLElement|ShadowRoot} node The input node.
      * @param {DOM~filterCallback} [filter] The filter function.
      * @param {DOM~filterCallback} [limit] The limit function.
      * @param {Boolean} [first=false] Whether to only return the first matching node for each node.
-     * @returns {Node[]} The matching nodes.
+     * @returns {array} The matching nodes.
      */
     _prevAll(node, filter, limit, first = false) {
         const results = [];
@@ -198,11 +212,11 @@ Object.assign(DOM, {
     },
 
     /**
-     * Return all siblings for a single element (optionally matching a filter).
-     * @param {Node} node The input node.
+     * Return all siblings for a single node (optionally matching a filter).
+     * @param {Node|HTMLElement|ShadowRoot} node The input node.
      * @param {DOM~filterCallback} [filter] The filter function.
      * @param {Boolean} [elementsOnly=true] Whether to only return element nodes.
-     * @returns {Node[]} The matching nodes.
+     * @returns {array} The matching nodes.
      */
     _siblings(node, filter, elementsOnly = true) {
         const results = [];
