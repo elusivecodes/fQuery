@@ -16,7 +16,7 @@ It is heavily inspired by jQuery, but utilizes ES6 syntax and features including
         - [Position](#position)
         - [Scroll](#scroll)
         - [Size](#size)
-        - [Styles](#styles])
+        - [Styles](#styles)
     - [Events](#events)
         - [Event Handlers](#event-handlers)
         - [Event Factory](#event-factory)
