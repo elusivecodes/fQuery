@@ -6,8 +6,8 @@ Object.assign(DOM.prototype, {
 
     /**
      * Returns true if any of the nodes contains a descendent matching a filter.
-     * @param {string|array|HTMLElement|HTMLCollection|ShadowRoot|Document} nodes The input node(s), or a query selector string.
-     * @param {string|array|Node|NodeList|HTMLElement|HTMLCollection|ShadowRoot|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
+     * @param {string|array|HTMLElement|ShadowRoot|Document|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
      * @returns {Boolean} TRUE if any of the nodes contains a descendent matching the filter, otherwise FALSE.
      */
     contains(nodes, filter) {
@@ -66,7 +66,7 @@ Object.assign(DOM.prototype, {
 
     /**
      * Returns true if any of the nodes has custom data.
-     * @param {string|array|Node|NodeList|HTMLElement|HTMLCollection|ShadowRoot|Document|Window} nodes The input node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|ShadowRoot|Document|Window|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
      * @param {string} [key] The data key.
      * @returns {Boolean} TRUE if any of the nodes has custom data, otherwise FALSE.
      */
@@ -111,14 +111,14 @@ Object.assign(DOM.prototype, {
 
     /**
      * Returns true if any of the nodes matches a filter.
-     * @param {string|array|Node|NodeList|HTMLElement|HTMLCollection|ShadowRoot} nodes The input node(s), or a query selector string.
-     * @param {string|array|Node|NodeList|HTMLElement|HTMLCollection|ShadowRoot|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
+     * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
      * @returns {Boolean} TRUE if any of the nodes matches the filter, otherwise FALSE.
      */
     is(nodes, filter) {
         filter = this._parseFilter(filter);
 
-        return this._nodeFilter(nodes)
+        return this._nodeFilter(nodes, { node: true, shadow: true })
             .some(node =>
                 !filter ||
                 filter(node)
@@ -127,7 +127,7 @@ Object.assign(DOM.prototype, {
 
     /**
      * Returns true if any of the nodes is connected to the DOM.
-     * @param {string|array|Node|NodeList|HTMLElement|HTMLCollection|ShadowRoot} nodes The input node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
      * @returns {Boolean} TRUE if any of the nodes is connected to the DOM, otherwise FALSE.
      */
     isConnected(nodes) {
@@ -137,8 +137,8 @@ Object.assign(DOM.prototype, {
 
     /**
      * Returns true if any of the nodes is considered equal to any of the other nodes.
-     * @param {string|array|Node|NodeList|HTMLElement|HTMLCollection|ShadowRoot} nodes The input node(s), or a query selector string.
-     * @param {string|array|Node|NodeList|HTMLElement|HTMLCollection|ShadowRoot} others The other node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} others The other node(s), or a query selector string.
      * @returns {Boolean} TRUE if any of the nodes is considered equal to any of the other nodes, otherwise FALSE.
      */
     isEqual(nodes, others) {
@@ -151,7 +151,7 @@ Object.assign(DOM.prototype, {
 
     /**
      * Returns true if any of the elements or a parent of any of the elements is "fixed".
-     * @param {string|array|Node|NodeList|HTMLElement|HTMLCollection|ShadowRoot} nodes The input node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
      * @returns {Boolean} TRUE if any of the nodes is "fixed", otherwise FALSE.
      */
     isFixed(nodes) {
@@ -170,7 +170,7 @@ Object.assign(DOM.prototype, {
 
     /**
      * Returns true if any of the nodes is hidden.
-     * @param {string|array|Node|NodeList|HTMLElement|HTMLCollection|ShadowRoot|Document|Window} nodes The input node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|ShadowRoot|Document|Window|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
      * @returns {Boolean} TRUE if any of the nodes is hidden, otherwise FALSE.
      */
     isHidden(nodes) {
@@ -182,8 +182,8 @@ Object.assign(DOM.prototype, {
 
     /**
      * Returns true if any of the nodes is considered identical to any of the other nodes.
-     * @param {string|array|Node|NodeList|HTMLElement|HTMLCollection|ShadowRoot} nodes The input node(s), or a query selector string.
-     * @param {string|array|Node|NodeList|HTMLElement|HTMLCollection|ShadowRoot} others The other node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} others The other node(s), or a query selector string.
      * @returns {Boolean} TRUE if any of the nodes is considered identical to any of the other nodes, otherwise FALSE.
      */
     isSame(nodes, others) {
@@ -197,7 +197,7 @@ Object.assign(DOM.prototype, {
 
     /**
      * Returns true if any of the nodes is visible.
-     * @param {string|array|Node|NodeList|HTMLElement|HTMLCollection|ShadowRoot|Document|Window} nodes The input node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|ShadowRoot|Document|Window|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
      * @returns {Boolean} TRUE if any of the nodes is visible, otherwise FALSE.
      */
     isVisible(nodes) {

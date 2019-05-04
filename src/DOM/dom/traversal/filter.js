@@ -6,8 +6,8 @@ Object.assign(DOM.prototype, {
 
     /**
      * Return all nodes matching a filter.
-     * @param {string|array|Node|NodeList|HTMLElement|HTMLCollection|ShadowRoot} nodes The input node(s), or a query selector string.
-     * @param {string|array|Node|NodeList|HTMLElement|HTMLCollection|ShadowRoot|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
+     * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
      * @returns {array} The filtered nodes.
      */
     filter(nodes, filter) {
@@ -19,8 +19,8 @@ Object.assign(DOM.prototype, {
 
     /**
      * Return the first node matching a filter.
-     * @param {string|array|Node|NodeList|HTMLElement|HTMLCollection|ShadowRoot} nodes The input node(s), or a query selector string.
-     * @param {string|array|Node|NodeList|HTMLElement|HTMLCollection|ShadowRoot|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
+     * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
      * @returns {Node|HTMLElement|ShadowRoot} The filtered node.
      */
     filterOne(nodes, filter) {
@@ -32,8 +32,8 @@ Object.assign(DOM.prototype, {
 
     /**
      * Return all nodes with a descendent matching a filter.
-     * @param {string|array|HTMLElement|HTMLCollection|ShadowRoot|Document} nodes The input node(s), or a query selector string.
-     * @param {string|array|Node|NodeList|HTMLElement|HTMLCollection|ShadowRoot|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
+     * @param {string|array|HTMLElement|ShadowRoot|Document|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
      * @returns {array} The filtered nodes.
      */
     has(nodes, filter) {
@@ -45,8 +45,8 @@ Object.assign(DOM.prototype, {
 
     /**
      * Return the first node with a descendent matching a filter.
-     * @param {string|array|HTMLElement|HTMLCollection|ShadowRoot|Document} nodes The input node(s), or a query selector string.
-     * @param {string|array|Node|NodeList|HTMLElement|HTMLCollection|ShadowRoot|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
+     * @param {string|array|HTMLElement|ShadowRoot|Document|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
      * @returns {HTMLElement|ShadowRoot|Document} The filtered node.
      */
     hasOne(nodes, filter) {
@@ -58,7 +58,7 @@ Object.assign(DOM.prototype, {
 
     /**
      * Return all hidden nodes.
-     * @param {string|array|HTMLElement|HTMLCollection|ShadowRoot|Document|Window} nodes The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|ShadowRoot|Document|Window|HTMLCollection} nodes The input node(s), or a query selector string.
      * @returns {array} The filtered nodes.
      */
     hidden(nodes) {
@@ -68,7 +68,7 @@ Object.assign(DOM.prototype, {
 
     /**
      * Return the first hidden node.
-     * @param {string|array|HTMLElement|HTMLCollection|ShadowRoot|Document|Window} nodes The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|ShadowRoot|Document|Window|HTMLCollection} nodes The input node(s), or a query selector string.
      * @returns {HTMLElement|ShadowRoot|Document|Window} The filtered node.
      */
     hiddenOne(nodes) {
@@ -78,8 +78,8 @@ Object.assign(DOM.prototype, {
 
     /**
      * Return all nodes not matching a filter.
-     * @param {string|array|Node|NodeList|HTMLElement|HTMLCollection|ShadowRoot} nodes The input node(s), or a query selector string.
-     * @param {string|array|Node|NodeList|HTMLElement|HTMLCollection|ShadowRoot|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
+     * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
      * @returns {array} The filtered nodes.
      */
     not(nodes, filter) {
@@ -95,8 +95,8 @@ Object.assign(DOM.prototype, {
 
     /**
      * Return the first node not matching a filter.
-     * @param {string|array|Node|NodeList|HTMLElement|HTMLCollection|ShadowRoot} nodes The input node(s), or a query selector string.
-     * @param {string|array|Node|NodeList|HTMLElement|HTMLCollection|ShadowRoot|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
+     * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
      * @returns {HTMLElement|ShadowRoot|Document} The filtered node.
      */
     notOne(nodes, filter) {
@@ -112,7 +112,7 @@ Object.assign(DOM.prototype, {
 
     /**
      * Return all visible nodes.
-     * @param {string|array|HTMLElement|HTMLCollection|ShadowRoot|Document|Window} nodes The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|ShadowRoot|Document|Window|HTMLCollection} nodes The input node(s), or a query selector string.
      * @returns {array} The filtered nodes.
      */
     visible(nodes) {
@@ -122,7 +122,7 @@ Object.assign(DOM.prototype, {
 
     /**
      * Return the first visible node.
-     * @param {string|array|HTMLElement|HTMLCollection|ShadowRoot|Document|Window} nodes The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|ShadowRoot|Document|Window|HTMLCollection} nodes The input node(s), or a query selector string.
      * @returns {HTMLElement|ShadowRoot|Document|Window} The filtered node.
      */
     visibleOne(nodes) {

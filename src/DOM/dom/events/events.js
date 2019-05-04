@@ -65,7 +65,7 @@ Object.assign(DOM.prototype, {
 
     /**
      * Trigger events on each node.
-     * @param {string|array|HTMLElement|HTMLCollection|ShadowRoot|Document|Window} nodes The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|ShadowRoot|Document|Window|HTMLCollection} nodes The input node(s), or a query selector string.
      * @param {string} events The event names.
      * @param {object} [data] Additional data to attach to the event.
      */

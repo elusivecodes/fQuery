@@ -6,7 +6,7 @@ Object.assign(DOM.prototype, {
 
     /**
      * Add events to each node.
-     * @param {string|array|HTMLElement|HTMLCollection|ShadowRoot|Document|Window} nodes The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|ShadowRoot|Document|Window|HTMLCollection} nodes The input node(s), or a query selector string.
      * @param {string} events The event names.
      * @param {DOM~eventCallback} callback The callback to execute.
      */
@@ -20,7 +20,7 @@ Object.assign(DOM.prototype, {
 
     /**
      * Add delegated events to each node.
-     * @param {string|array|HTMLElement|HTMLCollection|ShadowRoot|Document|Window} nodes The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|ShadowRoot|Document|Window|HTMLCollection} nodes The input node(s), or a query selector string.
      * @param {string} events The event names.
      * @param {string} delegate The delegate selector.
      * @param {DOM~eventCallback} callback The callback to execute.
@@ -35,7 +35,7 @@ Object.assign(DOM.prototype, {
 
     /**
      * Add self-destructing delegated events to each node.
-     * @param {string|array|HTMLElement|HTMLCollection|ShadowRoot|Document|Window} nodes The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|ShadowRoot|Document|Window|HTMLCollection} nodes The input node(s), or a query selector string.
      * @param {string} events The event names.
      * @param {string} delegate The delegate selector.
      * @param {DOM~eventCallback} callback The callback to execute.
@@ -50,7 +50,7 @@ Object.assign(DOM.prototype, {
 
     /**
      * Add self-destructing events to each node.
-     * @param {string|array|HTMLElement|HTMLCollection|ShadowRoot|Document|Window} nodes The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|ShadowRoot|Document|Window|HTMLCollection} nodes The input node(s), or a query selector string.
      * @param {string} events The event names.
      * @param {DOM~eventCallback} callback The callback to execute.
      */
@@ -64,8 +64,8 @@ Object.assign(DOM.prototype, {
 
     /**
      * Clone all events from each node to other nodes.
-     * @param {string|array|HTMLElement|HTMLCollection|ShadowRoot|Document|Window} nodes The input node(s), or a query selector string.
-     * @param {string|array|HTMLElement|HTMLCollection|ShadowRoot|Document|Window} others The other node(s), or a query selector string.
+     * @param {string|array|HTMLElement|ShadowRoot|Document|Window|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|ShadowRoot|Document|Window|HTMLCollection} others The other node(s), or a query selector string.
      */
     cloneEvents(nodes, others) {
         nodes = this._nodeFilter(nodes, { shadow: true, document: true, window: true });
@@ -77,7 +77,7 @@ Object.assign(DOM.prototype, {
 
     /**
      * Remove events from each node.
-     * @param {string|array|HTMLElement|HTMLCollection|ShadowRoot|Document|Window} nodes The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|ShadowRoot|Document|Window|HTMLCollection} nodes The input node(s), or a query selector string.
      * @param {string} [events] The event names.
      * @param {DOM~eventCallback} [callback] The callback to remove.
      */
@@ -91,7 +91,7 @@ Object.assign(DOM.prototype, {
 
     /**
      * Remove delegated events from each node.
-     * @param {string|array|HTMLElement|HTMLCollection|ShadowRoot|Document|Window} nodes The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|ShadowRoot|Document|Window|HTMLCollection} nodes The input node(s), or a query selector string.
      * @param {string} [events] The event names.
      * @param {string} [delegate] The delegate selector.
      * @param {DOM~eventCallback} [callback] The callback to remove.
@@ -156,7 +156,7 @@ Object.assign(DOM.prototype, {
     /**
      * Clone all events from a single node to other nodes.
      * @param {HTMLElement|ShadowRoot|Document|Window} nodes The input node.
-     * @param {string|array|HTMLElement|HTMLCollection|ShadowRoot|Document|Window} others The other node(s), or a query selector string.
+     * @param {string|array|HTMLElement|ShadowRoot|Document|Window|HTMLCollection} others The other node(s), or a query selector string.
      */
     _cloneEvents(node, others) {
         if (!this._events.has(node)) {

@@ -6,7 +6,7 @@ Object.assign(DOM.prototype, {
 
     /**
      * Insert each node after the selection.
-     * @param {string|array|Node|NodeList|HTMLElement|HTMLCollection|ShadowRoot} nodes The input node(s), or a query selector or HTML string.
+     * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector or HTML string.
      */
     afterSelection(nodes) {
         nodes = this._nodeFilter(nodes, { node: true, shadow: true, html: true });
@@ -29,7 +29,7 @@ Object.assign(DOM.prototype, {
 
     /**
      * Insert each node before the selection.
-     * @param {string|array|Node|NodeList|HTMLElement|HTMLCollection|ShadowRoot} nodes The input node(s), or a query selector or HTML string.
+     * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector or HTML string.
      */
     beforeSelection(nodes) {
         nodes = this._nodeFilter(nodes, { node: true, shadow: true, html: true });
@@ -109,7 +109,7 @@ Object.assign(DOM.prototype, {
 
     /**
      * Create a selection on the first node.
-     * @param {string|array|Node|NodeList|HTMLElement|HTMLCollection|ShadowRoot} nodes The input node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
      */
     select(nodes) {
         const node = this._nodeFind(nodes, { node: true, shadow: true });
@@ -135,7 +135,7 @@ Object.assign(DOM.prototype, {
 
     /**
      * Create a selection containing all of the nodes.
-     * @param {string|array|Node|NodeList|HTMLElement|HTMLCollection|ShadowRoot} nodes The input node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
      */
     selectAll(nodes) {
         nodes = this.sort(nodes);
@@ -164,7 +164,7 @@ Object.assign(DOM.prototype, {
 
     /**
      * Wrap selected nodes with other nodes.
-     * @param {string|array|HTMLElement|HTMLCollection|ShadowRoot} nodes The input node(s), or a query selector or HTML string.
+     * @param {string|array|HTMLElement|ShadowRoot|HTMLCollection} nodes The input node(s), or a query selector or HTML string.
      */
     wrapSelection(nodes) {
         nodes = this._nodeFilter(nodes, { shadow: true, html: true });

@@ -1331,8 +1331,8 @@
 
         /**
          * Clone custom data from each node to each other node.
-         * @param {string|array|Node|NodeList|HTMLElement|HTMLCollection|ShadowRoot|Document|Window} nodes The input node(s), or a query selector string.
-         * @param {string|array|Node|NodeList|HTMLElement|HTMLCollection|ShadowRoot|Document|Window} others The other node(s), or a query selector string.
+         * @param {string|array|Node|HTMLElement|ShadowRoot|Document|Window|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+         * @param {string|array|Node|HTMLElement|ShadowRoot|Document|Window|NodeList|HTMLCollection} others The other node(s), or a query selector string.
          */
         cloneData(nodes, others) {
             nodes = this._nodeFilter(nodes, { node: true, shadow: true, document: true, window: true });
@@ -1344,7 +1344,7 @@
 
         /**
          * Get custom data for the first node.
-         * @param {string|array|Node|NodeList|HTMLElement|HTMLCollection|ShadowRoot|Document|Window} nodes The input node(s), or a query selector string.
+         * @param {string|array|Node|HTMLElement|ShadowRoot|Document|Window|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
          * @param {string} [key] The data key.
          * @returns {*} The data value.
          */
@@ -1360,7 +1360,7 @@
 
         /**
          * Remove custom data from each node.
-         * @param {string|array|Node|NodeList|HTMLElement|HTMLCollection|ShadowRoot|Document|Window} nodes The input node(s), or a query selector string.
+         * @param {string|array|Node|HTMLElement|ShadowRoot|Document|Window|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
          * @param {string} [key] The data key.
          */
         removeData(nodes, key) {
@@ -1373,7 +1373,7 @@
 
         /**
          * Set custom data for each node.
-         * @param {string|array|Node|NodeList|HTMLElement|HTMLCollection|ShadowRoot|Document|Window} nodes The input node(s), or a query selector string.
+         * @param {string|array|Node|HTMLElement|ShadowRoot|Document|Window|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
          * @param {string|object} key The data key, or an object containing data.
          * @param {*} [value] The data value.
          */
@@ -1390,7 +1390,7 @@
         /**
          * Clone custom data from a single node to each other node.
          * @param {Node|HTMLElement|ShadowRoot|Document|Window} node The input node.
-         * @param {string|array|Node|NodeList|HTMLElement|HTMLCollection|ShadowRoot|Document|Window} others The other node(s), or a query selector string.
+         * @param {string|array|Node|HTMLElement|ShadowRoot|Document|Window|NodeList|HTMLCollection} others The other node(s), or a query selector string.
          */
         _cloneData(node, others) {
             if (!this._data.has(node)) {
@@ -1771,7 +1771,7 @@
 
         /**
          * Get the scroll X position of the first node.
-         * @param {string|array|HTMLElement|HTMLCollection|Document|Window} nodes The input node(s), or a query selector string.
+         * @param {string|array|HTMLElement|Document|Window|HTMLCollection} nodes The input node(s), or a query selector string.
          * @returns {number} The scroll X position.
          */
         getScrollX(nodes) {
@@ -1786,7 +1786,7 @@
 
         /**
          * Get the scroll Y position of the first node.
-         * @param {string|array|HTMLElement|HTMLCollection|Document|Window} nodes The input node(s), or a query selector string.
+         * @param {string|array|HTMLElement|Document|Window|HTMLCollection} nodes The input node(s), or a query selector string.
          * @returns {number} The scroll Y position.
          */
         getScrollY(nodes) {
@@ -1801,7 +1801,7 @@
 
         /**
          * Scroll each node to an X,Y position.
-         * @param {string|array|HTMLElement|HTMLCollection|Document|Window} nodes The input node(s), or a query selector string.
+         * @param {string|array|HTMLElement|Document|Window|HTMLCollection} nodes The input node(s), or a query selector string.
          * @param {number} x The scroll X position.
          * @param {number} y The scroll Y position.
          */
@@ -1815,7 +1815,7 @@
 
         /**
          * Scroll each node to an X position.
-         * @param {string|array|HTMLElement|HTMLCollection|Document|Window} nodes The input node(s), or a query selector string.
+         * @param {string|array|HTMLElement|Document|Window|HTMLCollection} nodes The input node(s), or a query selector string.
          * @param {number} x The scroll X position.
          */
         setScrollX(nodes, x) {
@@ -1828,7 +1828,7 @@
 
         /**
          * Scroll each node to a Y position.
-         * @param {string|array|HTMLElement|HTMLCollection|Document|Window} nodes The input node(s), or a query selector string.
+         * @param {string|array|HTMLElement|Document|Window|HTMLCollection} nodes The input node(s), or a query selector string.
          * @param {number} y The scroll Y position.
          */
         setScrollY(nodes, y) {
@@ -1849,7 +1849,7 @@
 
         /**
          * Get the computed height of the first node.
-         * @param {string|array|HTMLElement|HTMLCollection|Document|Window} nodes The input node(s), or a query selector string.
+         * @param {string|array|HTMLElement|Document|Window|HTMLCollection} nodes The input node(s), or a query selector string.
          * @param {Boolean} [padding=true] Whether to include padding height.
          * @param {Boolean} [border] Whether to include border height.
          * @param {Boolean} [margin] Whether to include margin height.
@@ -1867,7 +1867,7 @@
 
         /**
          * Get the computed width of the first node.
-         * @param {string|array|HTMLElement|HTMLCollection|Document|Window} nodes The input node(s), or a query selector string.
+         * @param {string|array|HTMLElement|Document|Window|HTMLCollection} nodes The input node(s), or a query selector string.
          * @param {Boolean} [padding=true] Whether to include padding width.
          * @param {Boolean} [border] Whether to include border width.
          * @param {Boolean} [margin] Whether to include margin width.
@@ -2354,7 +2354,7 @@
 
         /**
          * Trigger events on each node.
-         * @param {string|array|HTMLElement|HTMLCollection|ShadowRoot|Document|Window} nodes The input node(s), or a query selector string.
+         * @param {string|array|HTMLElement|ShadowRoot|Document|Window|HTMLCollection} nodes The input node(s), or a query selector string.
          * @param {string} events The event names.
          * @param {object} [data] Additional data to attach to the event.
          */
@@ -2376,7 +2376,7 @@
 
         /**
          * Add events to each node.
-         * @param {string|array|HTMLElement|HTMLCollection|ShadowRoot|Document|Window} nodes The input node(s), or a query selector string.
+         * @param {string|array|HTMLElement|ShadowRoot|Document|Window|HTMLCollection} nodes The input node(s), or a query selector string.
          * @param {string} events The event names.
          * @param {DOM~eventCallback} callback The callback to execute.
          */
@@ -2390,7 +2390,7 @@
 
         /**
          * Add delegated events to each node.
-         * @param {string|array|HTMLElement|HTMLCollection|ShadowRoot|Document|Window} nodes The input node(s), or a query selector string.
+         * @param {string|array|HTMLElement|ShadowRoot|Document|Window|HTMLCollection} nodes The input node(s), or a query selector string.
          * @param {string} events The event names.
          * @param {string} delegate The delegate selector.
          * @param {DOM~eventCallback} callback The callback to execute.
@@ -2405,7 +2405,7 @@
 
         /**
          * Add self-destructing delegated events to each node.
-         * @param {string|array|HTMLElement|HTMLCollection|ShadowRoot|Document|Window} nodes The input node(s), or a query selector string.
+         * @param {string|array|HTMLElement|ShadowRoot|Document|Window|HTMLCollection} nodes The input node(s), or a query selector string.
          * @param {string} events The event names.
          * @param {string} delegate The delegate selector.
          * @param {DOM~eventCallback} callback The callback to execute.
@@ -2420,7 +2420,7 @@
 
         /**
          * Add self-destructing events to each node.
-         * @param {string|array|HTMLElement|HTMLCollection|ShadowRoot|Document|Window} nodes The input node(s), or a query selector string.
+         * @param {string|array|HTMLElement|ShadowRoot|Document|Window|HTMLCollection} nodes The input node(s), or a query selector string.
          * @param {string} events The event names.
          * @param {DOM~eventCallback} callback The callback to execute.
          */
@@ -2434,8 +2434,8 @@
 
         /**
          * Clone all events from each node to other nodes.
-         * @param {string|array|HTMLElement|HTMLCollection|ShadowRoot|Document|Window} nodes The input node(s), or a query selector string.
-         * @param {string|array|HTMLElement|HTMLCollection|ShadowRoot|Document|Window} others The other node(s), or a query selector string.
+         * @param {string|array|HTMLElement|ShadowRoot|Document|Window|HTMLCollection} nodes The input node(s), or a query selector string.
+         * @param {string|array|HTMLElement|ShadowRoot|Document|Window|HTMLCollection} others The other node(s), or a query selector string.
          */
         cloneEvents(nodes, others) {
             nodes = this._nodeFilter(nodes, { shadow: true, document: true, window: true });
@@ -2447,7 +2447,7 @@
 
         /**
          * Remove events from each node.
-         * @param {string|array|HTMLElement|HTMLCollection|ShadowRoot|Document|Window} nodes The input node(s), or a query selector string.
+         * @param {string|array|HTMLElement|ShadowRoot|Document|Window|HTMLCollection} nodes The input node(s), or a query selector string.
          * @param {string} [events] The event names.
          * @param {DOM~eventCallback} [callback] The callback to remove.
          */
@@ -2461,7 +2461,7 @@
 
         /**
          * Remove delegated events from each node.
-         * @param {string|array|HTMLElement|HTMLCollection|ShadowRoot|Document|Window} nodes The input node(s), or a query selector string.
+         * @param {string|array|HTMLElement|ShadowRoot|Document|Window|HTMLCollection} nodes The input node(s), or a query selector string.
          * @param {string} [events] The event names.
          * @param {string} [delegate] The delegate selector.
          * @param {DOM~eventCallback} [callback] The callback to remove.
@@ -2526,7 +2526,7 @@
         /**
          * Clone all events from a single node to other nodes.
          * @param {HTMLElement|ShadowRoot|Document|Window} nodes The input node.
-         * @param {string|array|HTMLElement|HTMLCollection|ShadowRoot|Document|Window} others The other node(s), or a query selector string.
+         * @param {string|array|HTMLElement|ShadowRoot|Document|Window|HTMLCollection} others The other node(s), or a query selector string.
          */
         _cloneEvents(node, others) {
             if (!this._events.has(node)) {
@@ -2762,7 +2762,7 @@
 
         /**
          * Clone each node.
-         * @param {string|array|Node|NodeList|HTMLElement|HTMLCollection|ShadowRoot} nodes The input node(s), or a query selector string.
+         * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
          * @param {Boolean} [deep=true] Whether to also clone all descendent nodes.
          * @param {Boolean} [cloneEvents=false] Whether to also clone events.
          * @param {Boolean} [cloneData=false] Whether to also clone custom data.
@@ -2778,7 +2778,7 @@
 
         /**
          * Detach each node from the DOM.
-         * @param {string|array|Node|NodeList|HTMLElement|HTMLCollection|ShadowRoot} nodes The input node(s), or a query selector string.
+         * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
          */
         detach(nodes) {
             nodes = this._nodeFilter(nodes, { node: true, shadow: true });
@@ -2790,7 +2790,7 @@
 
         /**
          * Remove all children of each node from the DOM.
-         * @param {string|HTMLElement|HTMLCollection|ShadowRoot|Document|array} nodes The input node(s), or a query selector string.
+         * @param {string|array|HTMLElement|ShadowRoot|Document|HTMLCollection} nodes The input node(s), or a query selector string.
          */
         empty(nodes) {
             nodes = this._nodeFilter(nodes, { shadow: true, document: true });
@@ -2802,7 +2802,7 @@
 
         /**
          * Remove each node from the DOM.
-         * @param {string|array|Node|NodeList|HTMLElement|HTMLCollection|ShadowRoot} nodes The input node(s), or a query selector string.
+         * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
          */
         remove(nodes) {
             nodes = this._nodeFilter(nodes, { node: true, shadow: true });
@@ -2814,8 +2814,8 @@
 
         /**
          * Replace each other node with nodes.
-         * @param {string|array|Node|NodeList|HTMLElement|HTMLCollection|ShadowRoot} nodes The input node(s), or a query selector or HTML string.
-         * @param {string|array|Node|NodeList|HTMLElement|HTMLCollection|ShadowRoot} others The input node(s), or a query selector string.
+         * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector or HTML string.
+         * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} others The input node(s), or a query selector string.
          */
         replaceAll(nodes, others) {
             this.replaceWith(others, nodes);
@@ -2823,8 +2823,8 @@
 
         /**
          * Replace each node with other nodes.
-         * @param {string|array|Node|NodeList|HTMLElement|HTMLCollection|ShadowRoot} nodes The input node(s), or a query selector string.
-         * @param {string|array|Node|NodeList|HTMLElement|HTMLCollection|ShadowRoot} others The input node(s), or a query selector or HTML string.
+         * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+         * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} others The input node(s), or a query selector or HTML string.
          */
         replaceWith(nodes, others) {
             nodes = this._nodeFilter(nodes, { node: true, shadow: true });
@@ -2948,8 +2948,8 @@
 
         /**
          * Insert each other node after the first node.
-         * @param {string|array|Node|NodeList|HTMLElement|HTMLCollection|ShadowRoot} nodes The input node(s), or a query selector string.
-         * @param {string|array|Node|NodeList|HTMLElement|HTMLCollection|ShadowRoot} others The other node(s), or a query selector or HTML string.
+         * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+         * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} others The other node(s), or a query selector or HTML string.
          */
         after(nodes, others) {
             const node = this._nodeFind(nodes, { node: true, shadow: true });
@@ -2965,8 +2965,8 @@
 
         /**
          * Append each other node to the first node.
-         * @param {string|array|Node|NodeList|HTMLElement|HTMLCollection|ShadowRoot|Document} nodes The input node(s), or a query selector string.
-         * @param {string|array|Node|NodeList|HTMLElement|HTMLCollection|ShadowRoot} others The other node(s), or a query selector or HTML string.
+         * @param {string|array|Node|HTMLElement|ShadowRoot|Document|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+         * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} others The other node(s), or a query selector or HTML string.
          */
         append(nodes, others) {
             const node = this._nodeFind(nodes, { shadow: true, document: true });
@@ -2982,8 +2982,8 @@
 
         /**
          * Append each node to the first other node.
-         * @param {string|array|Node|NodeList|HTMLElement|HTMLCollection|ShadowRoot} nodes The input node(s), or a query selector or HTML string.
-         * @param {string|array|Node|NodeList|HTMLElement|HTMLCollection|ShadowRoot|Document} others The other node(s), or a query selector string.
+         * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector or HTML string.
+         * @param {string|array|Node|HTMLElement|ShadowRoot|Document|NodeList|HTMLCollection} others The other node(s), or a query selector string.
          */
         appendTo(nodes, others) {
             this.append(others, nodes);
@@ -2991,8 +2991,8 @@
 
         /**
          * Insert each other node before the first node.
-         * @param {string|array|Node|NodeList|HTMLElement|HTMLCollection|ShadowRoot} nodes The input node(s), or a query selector string.
-         * @param {string|array|Node|NodeList|HTMLElement|HTMLCollection|ShadowRoot} others The other node(s), or a query selector or HTML string.
+         * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+         * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} others The other node(s), or a query selector or HTML string.
          */
         before(nodes, others) {
             const node = this._nodeFind(nodes, { node: true, shadow: true });
@@ -3008,8 +3008,8 @@
 
         /**
          * Insert each node after the first other node.
-         * @param {string|array|Node|NodeList|HTMLElement|HTMLCollection|ShadowRoot} nodes The input node(s), or a query selector or HTML string.
-         * @param {string|array|Node|NodeList|HTMLElement|HTMLCollection|ShadowRoot} others The other node(s), or a query selector string.
+         * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector or HTML string.
+         * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} others The other node(s), or a query selector string.
          */
         insertAfter(nodes, others) {
             this.after(others, nodes);
@@ -3017,8 +3017,8 @@
 
         /**
          * Insert each node before the first other node.
-         * @param {string|array|Node|NodeList|HTMLElement|HTMLCollection|ShadowRoot} nodes The input node(s), or a query selector or HTML string.
-         * @param {string|array|Node|NodeList|HTMLElement|HTMLCollection|ShadowRoot} others The other node(s), or a query selector string.
+         * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector or HTML string.
+         * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} others The other node(s), or a query selector string.
          */
         insertBefore(nodes, others) {
             this.before(others, nodes);
@@ -3026,8 +3026,8 @@
 
         /**
          * Prepend each other node to the first node.
-         * @param {string|array|HTMLElement|HTMLElement|ShadowRoot|Document} nodes The input node(s), or a query selector string.
-         * @param {string|array|Node|NodeList|HTMLElement|HTMLCollection|ShadowRoot} others The other node(s), or a query selector or HTML string.
+         * @param {string|array|HTMLElement|ShadowRoot|Document|HTMLCollection} nodes The input node(s), or a query selector string.
+         * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} others The other node(s), or a query selector or HTML string.
          */
         prepend(nodes, others) {
             const node = this._nodeFind(nodes, { shadow: true, document: true });
@@ -3043,8 +3043,8 @@
 
         /**
          * Prepend each node to the first other node.
-         * @param {string|array|Node|NodeList|HTMLElement|HTMLCollection|ShadowRoot} nodes The input node(s), or a query selector or HTML string.
-         * @param {string|array|HTMLElement|HTMLElement|ShadowRoot|Document} others The other node(s), or a query selector string.
+         * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector or HTML string.
+         * @param {string|array|HTMLElement|ShadowRoot|Document|HTMLCollection} others The other node(s), or a query selector string.
          */
         prependTo(nodes, others) {
             this.prepend(others, nodes);
@@ -3060,8 +3060,8 @@
 
         /**
          * Unwrap each node.
-         * @param {string|array|Node|NodeList|HTMLElement|HTMLCollection|ShadowRoot} nodes The input node(s), or a query selector string.
-         * @param {string|array|Node|NodeList|HTMLElement|HTMLCollection|ShadowRoot|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
+         * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+         * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
          */
         unwrap(nodes, filter) {
             nodes = this._nodeFilter(nodes, { node: true, shadow: true });
@@ -3073,8 +3073,8 @@
 
         /**
          * Wrap each nodes with other nodes.
-         * @param {string|array|Node|NodeList|HTMLElement|HTMLCollection|ShadowRoot} nodes The input node(s), or a query selector string.
-         * @param {string|array|HTMLElement|HTMLCollection|ShadowRoot} others The other node(s), or a query selector or HTML string.
+         * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+         * @param {string|array|HTMLElement|ShadowRoot|HTMLCollection} others The other node(s), or a query selector or HTML string.
          */
         wrap(nodes, others) {
             nodes = this._nodeFilter(nodes, { node: true, shadow: true });
@@ -3088,8 +3088,8 @@
 
         /**
          * Wrap all nodes with other nodes.
-         * @param {string|array|Node|NodeList|HTMLElement|HTMLCollection|ShadowRoot} nodes The input node(s), or a query selector string.
-         * @param {string|array|HTMLElement|HTMLCollection|ShadowRoot} others The other node(s), or a query selector or HTML string.
+         * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+         * @param {string|array|HTMLElement|ShadowRoot|HTMLCollection} others The other node(s), or a query selector or HTML string.
          */
         wrapAll(nodes, others) {
             nodes = this._nodeFilter(nodes, { node: true, shadow: true });
@@ -3107,8 +3107,8 @@
 
         /**
          * Wrap the contents of each node with other nodes.
-         * @param {string|array|HTMLElement|HTMLCollection|ShadowRoot} nodes The input node(s), or a query selector string.
-         * @param {string|array|HTMLElement|HTMLCollection|ShadowRoot} others The other node(s), or a query selector or HTML string.
+         * @param {string|array|HTMLElement|ShadowRoot|HTMLCollection} nodes The input node(s), or a query selector string.
+         * @param {string|array|HTMLElement|ShadowRoot|HTMLCollection} others The other node(s), or a query selector or HTML string.
          */
         wrapInner(nodes, others) {
             nodes = this._nodeFilter(nodes, { node: true, shadow: true });
@@ -3123,7 +3123,7 @@
         /**
          * Unwrap a single node.
          * @param {Node|HTMLElement|ShadowRoot} node The input node.
-         * @param {string|array|Node|NodeList|HTMLElement|HTMLCollection|ShadowRoot|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
+         * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
          */
         _unwrap(node, filter) {
             const parent = DOM._parent(node, filter).shift();
@@ -3142,7 +3142,7 @@
         /**
          * Wrap a single node with other nodes.
          * @param {Node|HTMLElement|ShadowRoot} node The input node.
-         * @param {string|array|HTMLElement|HTMLCollection|ShadowRoot} others The other node(s), or a query selector or HTML string.
+         * @param {string|array|HTMLElement|ShadowRoot|HTMLCollection} others The other node(s), or a query selector or HTML string.
          */
         _wrap(node, others) {
             const clone = this.clone(others, true);
@@ -3156,7 +3156,7 @@
         /**
          * Wrap the contents of a single node with other nodes.
          * @param {HTMLElement|ShadowRoot} node The input node.
-         * @param {string|array|HTMLElement|HTMLCollection|ShadowRoot} others The other node(s), or a query selector or HTML string.
+         * @param {string|array|HTMLElement|ShadowRoot|HTMLCollection} others The other node(s), or a query selector or HTML string.
          */
         _wrapInner(node, others) {
             const children = DOM._children(node, false, false, false),
@@ -3178,8 +3178,8 @@
 
         /**
          * Return all nodes matching a filter.
-         * @param {string|array|Node|NodeList|HTMLElement|HTMLCollection|ShadowRoot} nodes The input node(s), or a query selector string.
-         * @param {string|array|Node|NodeList|HTMLElement|HTMLCollection|ShadowRoot|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
+         * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+         * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
          * @returns {array} The filtered nodes.
          */
         filter(nodes, filter) {
@@ -3191,8 +3191,8 @@
 
         /**
          * Return the first node matching a filter.
-         * @param {string|array|Node|NodeList|HTMLElement|HTMLCollection|ShadowRoot} nodes The input node(s), or a query selector string.
-         * @param {string|array|Node|NodeList|HTMLElement|HTMLCollection|ShadowRoot|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
+         * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+         * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
          * @returns {Node|HTMLElement|ShadowRoot} The filtered node.
          */
         filterOne(nodes, filter) {
@@ -3204,8 +3204,8 @@
 
         /**
          * Return all nodes with a descendent matching a filter.
-         * @param {string|array|HTMLElement|HTMLCollection|ShadowRoot|Document} nodes The input node(s), or a query selector string.
-         * @param {string|array|Node|NodeList|HTMLElement|HTMLCollection|ShadowRoot|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
+         * @param {string|array|HTMLElement|ShadowRoot|Document|HTMLCollection} nodes The input node(s), or a query selector string.
+         * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
          * @returns {array} The filtered nodes.
          */
         has(nodes, filter) {
@@ -3217,8 +3217,8 @@
 
         /**
          * Return the first node with a descendent matching a filter.
-         * @param {string|array|HTMLElement|HTMLCollection|ShadowRoot|Document} nodes The input node(s), or a query selector string.
-         * @param {string|array|Node|NodeList|HTMLElement|HTMLCollection|ShadowRoot|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
+         * @param {string|array|HTMLElement|ShadowRoot|Document|HTMLCollection} nodes The input node(s), or a query selector string.
+         * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
          * @returns {HTMLElement|ShadowRoot|Document} The filtered node.
          */
         hasOne(nodes, filter) {
@@ -3230,7 +3230,7 @@
 
         /**
          * Return all hidden nodes.
-         * @param {string|array|HTMLElement|HTMLCollection|ShadowRoot|Document|Window} nodes The input node(s), or a query selector string.
+         * @param {string|array|HTMLElement|ShadowRoot|Document|Window|HTMLCollection} nodes The input node(s), or a query selector string.
          * @returns {array} The filtered nodes.
          */
         hidden(nodes) {
@@ -3240,7 +3240,7 @@
 
         /**
          * Return the first hidden node.
-         * @param {string|array|HTMLElement|HTMLCollection|ShadowRoot|Document|Window} nodes The input node(s), or a query selector string.
+         * @param {string|array|HTMLElement|ShadowRoot|Document|Window|HTMLCollection} nodes The input node(s), or a query selector string.
          * @returns {HTMLElement|ShadowRoot|Document|Window} The filtered node.
          */
         hiddenOne(nodes) {
@@ -3250,8 +3250,8 @@
 
         /**
          * Return all nodes not matching a filter.
-         * @param {string|array|Node|NodeList|HTMLElement|HTMLCollection|ShadowRoot} nodes The input node(s), or a query selector string.
-         * @param {string|array|Node|NodeList|HTMLElement|HTMLCollection|ShadowRoot|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
+         * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+         * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
          * @returns {array} The filtered nodes.
          */
         not(nodes, filter) {
@@ -3267,8 +3267,8 @@
 
         /**
          * Return the first node not matching a filter.
-         * @param {string|array|Node|NodeList|HTMLElement|HTMLCollection|ShadowRoot} nodes The input node(s), or a query selector string.
-         * @param {string|array|Node|NodeList|HTMLElement|HTMLCollection|ShadowRoot|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
+         * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+         * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
          * @returns {HTMLElement|ShadowRoot|Document} The filtered node.
          */
         notOne(nodes, filter) {
@@ -3284,7 +3284,7 @@
 
         /**
          * Return all visible nodes.
-         * @param {string|array|HTMLElement|HTMLCollection|ShadowRoot|Document|Window} nodes The input node(s), or a query selector string.
+         * @param {string|array|HTMLElement|ShadowRoot|Document|Window|HTMLCollection} nodes The input node(s), or a query selector string.
          * @returns {array} The filtered nodes.
          */
         visible(nodes) {
@@ -3294,7 +3294,7 @@
 
         /**
          * Return the first visible node.
-         * @param {string|array|HTMLElement|HTMLCollection|ShadowRoot|Document|Window} nodes The input node(s), or a query selector string.
+         * @param {string|array|HTMLElement|ShadowRoot|Document|Window|HTMLCollection} nodes The input node(s), or a query selector string.
          * @returns {HTMLElement|ShadowRoot|Document|Window} The filtered node.
          */
         visibleOne(nodes) {
@@ -3313,7 +3313,7 @@
         /**
          * Return all nodes matching a selector.
          * @param {string} selector The query selector.
-         * @param {string|array|HTMLElement|HTMLCollection|ShadowRoot|Document} [nodes=this._context] The input node(s), or a query selector string.
+         * @param {string|array|HTMLElement|ShadowRoot|Document|HTMLCollection} [nodes=this._context] The input node(s), or a query selector string.
          * @returns {array} The matching nodes.
          */
         find(selector, nodes = this._context) {
@@ -3343,7 +3343,7 @@
         /**
          * Return all nodes with a specific class.
          * @param {string} className The class name.
-         * @param {string|array|HTMLElement|HTMLCollection|ShadowRoot|Document} [nodes=this._context] The input node(s), or a query selector string.
+         * @param {string|array|HTMLElement|ShadowRoot|Document|HTMLCollection} [nodes=this._context] The input node(s), or a query selector string.
          * @returns {array} The matching nodes.
          */
         findByClass(className, nodes = this._context) {
@@ -3370,7 +3370,7 @@
         /**
          * Return all nodes with a specific ID.
          * @param {string} id The id.
-         * @param {string|array|HTMLElement|HTMLCollection|ShadowRoot|Document} [nodes=this._context] The input node(s), or a query selector string.
+         * @param {string|array|HTMLElement|ShadowRoot|Document|HTMLCollection} [nodes=this._context] The input node(s), or a query selector string.
          * @returns {array} The matching nodes.
          */
         findById(id, nodes = this._context) {
@@ -3398,7 +3398,7 @@
         /**
          * Return all nodes with a specific tag.
          * @param {string} tagName The tag name.
-         * @param {string|array|HTMLElement|HTMLCollection|ShadowRoot|Document} [nodes=this._context] The input node(s), or a query selector string.
+         * @param {string|array|HTMLElement|ShadowRoot|Document|HTMLCollection} [nodes=this._context] The input node(s), or a query selector string.
          * @returns {array} The matching nodes.
          */
         findByTag(tagName, nodes = this._context) {
@@ -3425,7 +3425,7 @@
         /**
          * Return a single node matching a selector.
          * @param {string} selector The query selector.
-         * @param {string|array|HTMLElement|HTMLCollection|ShadowRoot|Document} [nodes=this._context] The input node(s), or a query selector string.
+         * @param {string|array|HTMLElement|ShadowRoot|Document|HTMLCollection} [nodes=this._context] The input node(s), or a query selector string.
          * @returns {HTMLElement} The matching node.
          */
         findOne(selector, nodes = this._context) {
@@ -3455,7 +3455,7 @@
         /**
          * Return a single node with a specific class.
          * @param {string} className The class name.
-         * @param {string|array|HTMLElement|HTMLCollection|ShadowRoot|Document} [nodes=this._context] The input node(s), or a query selector string.
+         * @param {string|array|HTMLElement|ShadowRoot|Document|HTMLCollection} [nodes=this._context] The input node(s), or a query selector string.
          * @returns {HTMLElement} The matching node.
          */
         findOneByClass(className, nodes = this._context) {
@@ -3478,7 +3478,7 @@
         /**
          * Return a single node with a specific ID.
          * @param {string} id The id.
-         * @param {string|array|HTMLElement|HTMLCollection|ShadowRoot|Document} [nodes=this._context] The input node(s), or a query selector string.
+         * @param {string|array|HTMLElement|ShadowRoot|Document|HTMLCollection} [nodes=this._context] The input node(s), or a query selector string.
          * @returns {HTMLElement} The matching element.
          */
         findOneById(id, nodes = this._context) {
@@ -3506,7 +3506,7 @@
         /**
          * Return a single node with a specific tag.
          * @param {string} tagName The tag name.
-         * @param {string|array|HTMLElement|HTMLCollection|ShadowRoot|Document} [nodes=this._context] The input node(s), or a query selector string.
+         * @param {string|array|HTMLElement|ShadowRoot|Document|HTMLCollection} [nodes=this._context] The input node(s), or a query selector string.
          * @returns {HTMLElement} The matching node.
          */
         findOneByTag(tagName, nodes = this._context) {
@@ -3566,7 +3566,7 @@
         /**
          * Return all nodes matching a standard CSS selector.
          * @param {string} selector The query selector.
-         * @param {string|array|HTMLElement|HTMLCollection|ShadowRoot|Document} [nodes=this._context] The input node(s), or a query selector string.
+         * @param {string|array|HTMLElement|ShadowRoot|Document|HTMLCollection} [nodes=this._context] The input node(s), or a query selector string.
          * @returns {array} The matching nodes.
          */
         _findBySelector(selector, nodes = this._context) {
@@ -3627,7 +3627,7 @@
         /**
          * Return a single node matching a standard CSS selector.
          * @param {string} selector The query selector.
-         * @param {string|array|HTMLElement|HTMLCollection|ShadowRoot|Document} [nodes=this._context] The input node(s), or a query selector string.
+         * @param {string|array|HTMLElement|ShadowRoot|Document|HTMLCollection} [nodes=this._context] The input node(s), or a query selector string.
          * @returns {HTMLElement} The matching node.
          */
         _findOneBySelector(selector, nodes = this._context) {
@@ -3657,8 +3657,8 @@
 
         /**
          * Return the first child of each node (optionally matching a filter).
-         * @param {string|array|HTMLElement|HTMLCollection|ShadowRoot|Document} nodes The input node(s), or a query selector string.
-         * @param {string|array|Node|NodeList|HTMLElement|HTMLCollection|ShadowRoot|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
+         * @param {string|array|HTMLElement|ShadowRoot|Document|HTMLCollection} nodes The input node(s), or a query selector string.
+         * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
          * @returns {array} The matching nodes.
          */
         child(nodes, filter) {
@@ -3671,8 +3671,8 @@
 
         /**
          * Return all children of each node (optionally matching a filter).
-         * @param {string|array|HTMLElement|HTMLCollection|ShadowRoot|Document} nodes The input node(s), or a query selector string.
-         * @param {string|array|Node|NodeList|HTMLElement|HTMLCollection|ShadowRoot|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
+         * @param {string|array|HTMLElement|ShadowRoot|Document|HTMLCollection} nodes The input node(s), or a query selector string.
+         * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
          * @param {Boolean} [first=false] Whether to only return the first matching node for each node.
          * @param {Boolean} [elementsOnly=false] Whether to only return element nodes.
          * @returns {array} The matching nodes.
@@ -3702,9 +3702,9 @@
 
         /**
          * Return the closest ancestor to each node (optionally matching a filter, and before a limit).
-         * @param {string|array|Node|NodeList|HTMLElement|HTMLCollection|ShadowRoot} nodes The input node(s), or a query selector string.
-         * @param {string|array|Node|NodeList|HTMLElement|HTMLCollection|ShadowRoot|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
-         * @param {string|array|Node|NodeList|HTMLElement|HTMLCollection|ShadowRoot|DOM~filterCallback} [limit] The limit node(s), a query selector string or custom filter function.
+         * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+         * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
+         * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} [limit] The limit node(s), a query selector string or custom filter function.
          * @returns {array} The matching nodes.
          */
         closest(nodes, filter, limit) {
@@ -3718,7 +3718,7 @@
 
         /**
          * Return the common ancestor of all nodes.
-         * @param {string|array|Node|NodeList|HTMLElement|HTMLCollection|ShadowRoot} nodes The input node(s), or a query selector string.
+         * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
          * @returns {HTMLElement} The common ancestor.
          */
         commonAncestor(nodes) {
@@ -3742,7 +3742,7 @@
 
         /**
          * Return all children of each node (including text and comment nodes).
-         * @param {string|array|HTMLElement|HTMLCollection|ShadowRoot|Document} nodes The input node(s), or a query selector string.
+         * @param {string|array|HTMLElement|ShadowRoot|Document|HTMLCollection} nodes The input node(s), or a query selector string.
          * @returns {array} The matching nodes.
          */
         contents(nodes) {
@@ -3756,8 +3756,8 @@
 
         /**
          * Return the next sibling for each node (optionally matching a filter).
-         * @param {string|array|Node|NodeList|HTMLElement|HTMLCollection|ShadowRoot} nodes The input node(s), or a query selector string.
-         * @param {string|array|Node|NodeList|HTMLElement|HTMLCollection|ShadowRoot|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
+         * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+         * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
          * @returns {array} The matching nodes.
          */
         next(nodes, filter) {
@@ -3785,9 +3785,9 @@
 
         /**
          * Return all next siblings for each node (optionally matching a filter, and before a limit).
-         * @param {string|array|Node|NodeList|HTMLElement|HTMLCollection|ShadowRoot} nodes The input node(s), or a query selector string.
-         * @param {string|array|Node|NodeList|HTMLElement|HTMLCollection|ShadowRoot|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
-         * @param {string|array|Node|NodeList|HTMLElement|HTMLCollection|ShadowRoot|DOM~filterCallback} [limit] The limit node(s), a query selector string or custom filter function.
+         * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+         * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
+         * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} [limit] The limit node(s), a query selector string or custom filter function.
          * @param {Boolean} [first=false] Whether to only return the first matching node for each node.
          * @returns {array} The matching nodes.
          */
@@ -3817,7 +3817,7 @@
 
         /**
          * Return the offset parent (relatively positioned) of the first node.
-         * @param {string|array|Node|NodeList|HTMLElement|HTMLCollection|ShadowRoot} nodes The input node(s), or a query selector string.
+         * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
          * @returns {HTMLElement} The offset parent.
          */
         offsetParent(nodes) {
@@ -3829,8 +3829,8 @@
 
         /**
          * Return the parent of each node (optionally matching a filter).
-         * @param {string|array|Node|NodeList|HTMLElement|HTMLCollection|ShadowRoot} nodes The input node(s), or a query selector string.
-         * @param {string|array|Node|NodeList|HTMLElement|HTMLCollection|ShadowRoot|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
+         * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+         * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
          * @returns {array} The matching nodes.
          */
         parent(nodes, filter) {
@@ -3858,9 +3858,9 @@
 
         /**
          * Return all parents of each node (optionally matching a filter, and before a limit).
-         * @param {string|array|Node|NodeList|HTMLElement|HTMLCollection|ShadowRoot} nodes The input node(s), or a query selector string.
-         * @param {string|array|Node|NodeList|HTMLElement|HTMLCollection|ShadowRoot|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
-         * @param {string|array|Node|NodeList|HTMLElement|HTMLCollection|ShadowRoot|DOM~filterCallback} [limit] The limit node(s), a query selector string or custom filter function.
+         * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+         * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
+         * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} [limit] The limit node(s), a query selector string or custom filter function.
          * @param {Boolean} [first=false] Whether to only return the first matching node for each node.
          * @returns {array} The matching nodes.
          */
@@ -3890,8 +3890,8 @@
 
         /**
          * Return the previous sibling for each node (optionally matching a filter).
-         * @param {string|array|Node|NodeList|HTMLElement|HTMLCollection|ShadowRoot} nodes The input node(s), or a query selector string.
-         * @param {string|array|Node|NodeList|HTMLElement|HTMLCollection|ShadowRoot|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
+         * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+         * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
          * @returns {array} The matching nodes.
          */
         prev(nodes, filter) {
@@ -3919,9 +3919,9 @@
 
         /**
          * Return all previous siblings for each node (optionally matching a filter, and before a limit).
-         * @param {string|array|Node|NodeList|HTMLElement|HTMLCollection|ShadowRoot} nodes The input node(s), or a query selector string.
-         * @param {string|array|Node|NodeList|HTMLElement|HTMLCollection|ShadowRoot|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
-         * @param {string|array|Node|NodeList|HTMLElement|HTMLCollection|ShadowRoot|DOM~filterCallback} [limit] The limit node(s), a query selector string or custom filter function.
+         * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+         * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
+         * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} [limit] The limit node(s), a query selector string or custom filter function.
          * @param {Boolean} [first=false] Whether to only return the first matching node for each node.
          * @returns {array} The matching nodes.
          */
@@ -3951,8 +3951,8 @@
 
         /**
          * Return all siblings for each node (optionally matching a filter).
-         * @param {string|array|Node|NodeList|HTMLElement|HTMLCollection|ShadowRoot} nodes The input node(s), or a query selector string.
-         * @param {string|array|Node|NodeList|HTMLElement|HTMLCollection|ShadowRoot|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
+         * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+         * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
          * @param {Boolean} [elementsOnly=true] Whether to only return element nodes.
          * @returns {array} The matching nodes.
          */
@@ -4161,7 +4161,7 @@
 
         /**
          * Insert each node after the selection.
-         * @param {string|array|Node|NodeList|HTMLElement|HTMLCollection|ShadowRoot} nodes The input node(s), or a query selector or HTML string.
+         * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector or HTML string.
          */
         afterSelection(nodes) {
             nodes = this._nodeFilter(nodes, { node: true, shadow: true, html: true });
@@ -4184,7 +4184,7 @@
 
         /**
          * Insert each node before the selection.
-         * @param {string|array|Node|NodeList|HTMLElement|HTMLCollection|ShadowRoot} nodes The input node(s), or a query selector or HTML string.
+         * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector or HTML string.
          */
         beforeSelection(nodes) {
             nodes = this._nodeFilter(nodes, { node: true, shadow: true, html: true });
@@ -4264,7 +4264,7 @@
 
         /**
          * Create a selection on the first node.
-         * @param {string|array|Node|NodeList|HTMLElement|HTMLCollection|ShadowRoot} nodes The input node(s), or a query selector string.
+         * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
          */
         select(nodes) {
             const node = this._nodeFind(nodes, { node: true, shadow: true });
@@ -4290,7 +4290,7 @@
 
         /**
          * Create a selection containing all of the nodes.
-         * @param {string|array|Node|NodeList|HTMLElement|HTMLCollection|ShadowRoot} nodes The input node(s), or a query selector string.
+         * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
          */
         selectAll(nodes) {
             nodes = this.sort(nodes);
@@ -4319,7 +4319,7 @@
 
         /**
          * Wrap selected nodes with other nodes.
-         * @param {string|array|HTMLElement|HTMLCollection|ShadowRoot} nodes The input node(s), or a query selector or HTML string.
+         * @param {string|array|HTMLElement|ShadowRoot|HTMLCollection} nodes The input node(s), or a query selector or HTML string.
          */
         wrapSelection(nodes) {
             nodes = this._nodeFilter(nodes, { shadow: true, html: true });
@@ -4354,8 +4354,8 @@
 
         /**
          * Returns true if any of the nodes contains a descendent matching a filter.
-         * @param {string|array|HTMLElement|HTMLCollection|ShadowRoot|Document} nodes The input node(s), or a query selector string.
-         * @param {string|array|Node|NodeList|HTMLElement|HTMLCollection|ShadowRoot|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
+         * @param {string|array|HTMLElement|ShadowRoot|Document|HTMLCollection} nodes The input node(s), or a query selector string.
+         * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
          * @returns {Boolean} TRUE if any of the nodes contains a descendent matching the filter, otherwise FALSE.
          */
         contains(nodes, filter) {
@@ -4414,7 +4414,7 @@
 
         /**
          * Returns true if any of the nodes has custom data.
-         * @param {string|array|Node|NodeList|HTMLElement|HTMLCollection|ShadowRoot|Document|Window} nodes The input node(s), or a query selector string.
+         * @param {string|array|Node|HTMLElement|ShadowRoot|Document|Window|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
          * @param {string} [key] The data key.
          * @returns {Boolean} TRUE if any of the nodes has custom data, otherwise FALSE.
          */
@@ -4459,14 +4459,14 @@
 
         /**
          * Returns true if any of the nodes matches a filter.
-         * @param {string|array|Node|NodeList|HTMLElement|HTMLCollection|ShadowRoot} nodes The input node(s), or a query selector string.
-         * @param {string|array|Node|NodeList|HTMLElement|HTMLCollection|ShadowRoot|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
+         * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+         * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
          * @returns {Boolean} TRUE if any of the nodes matches the filter, otherwise FALSE.
          */
         is(nodes, filter) {
             filter = this._parseFilter(filter);
 
-            return this._nodeFilter(nodes)
+            return this._nodeFilter(nodes, { node: true, shadow: true })
                 .some(node =>
                     !filter ||
                     filter(node)
@@ -4475,7 +4475,7 @@
 
         /**
          * Returns true if any of the nodes is connected to the DOM.
-         * @param {string|array|Node|NodeList|HTMLElement|HTMLCollection|ShadowRoot} nodes The input node(s), or a query selector string.
+         * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
          * @returns {Boolean} TRUE if any of the nodes is connected to the DOM, otherwise FALSE.
          */
         isConnected(nodes) {
@@ -4485,8 +4485,8 @@
 
         /**
          * Returns true if any of the nodes is considered equal to any of the other nodes.
-         * @param {string|array|Node|NodeList|HTMLElement|HTMLCollection|ShadowRoot} nodes The input node(s), or a query selector string.
-         * @param {string|array|Node|NodeList|HTMLElement|HTMLCollection|ShadowRoot} others The other node(s), or a query selector string.
+         * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+         * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} others The other node(s), or a query selector string.
          * @returns {Boolean} TRUE if any of the nodes is considered equal to any of the other nodes, otherwise FALSE.
          */
         isEqual(nodes, others) {
@@ -4499,7 +4499,7 @@
 
         /**
          * Returns true if any of the elements or a parent of any of the elements is "fixed".
-         * @param {string|array|Node|NodeList|HTMLElement|HTMLCollection|ShadowRoot} nodes The input node(s), or a query selector string.
+         * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
          * @returns {Boolean} TRUE if any of the nodes is "fixed", otherwise FALSE.
          */
         isFixed(nodes) {
@@ -4518,7 +4518,7 @@
 
         /**
          * Returns true if any of the nodes is hidden.
-         * @param {string|array|Node|NodeList|HTMLElement|HTMLCollection|ShadowRoot|Document|Window} nodes The input node(s), or a query selector string.
+         * @param {string|array|Node|HTMLElement|ShadowRoot|Document|Window|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
          * @returns {Boolean} TRUE if any of the nodes is hidden, otherwise FALSE.
          */
         isHidden(nodes) {
@@ -4530,8 +4530,8 @@
 
         /**
          * Returns true if any of the nodes is considered identical to any of the other nodes.
-         * @param {string|array|Node|NodeList|HTMLElement|HTMLCollection|ShadowRoot} nodes The input node(s), or a query selector string.
-         * @param {string|array|Node|NodeList|HTMLElement|HTMLCollection|ShadowRoot} others The other node(s), or a query selector string.
+         * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+         * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} others The other node(s), or a query selector string.
          * @returns {Boolean} TRUE if any of the nodes is considered identical to any of the other nodes, otherwise FALSE.
          */
         isSame(nodes, others) {
@@ -4545,7 +4545,7 @@
 
         /**
          * Returns true if any of the nodes is visible.
-         * @param {string|array|Node|NodeList|HTMLElement|HTMLCollection|ShadowRoot|Document|Window} nodes The input node(s), or a query selector string.
+         * @param {string|array|Node|HTMLElement|ShadowRoot|Document|Window|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
          * @returns {Boolean} TRUE if any of the nodes is visible, otherwise FALSE.
          */
         isVisible(nodes) {
