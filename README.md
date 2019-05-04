@@ -9,11 +9,27 @@ It is heavily inspired by jQuery, but utilizes ES6 syntax and features including
 - [Installation](#installation)
 - [DOM](#dom)
     - [Animation](#animation)
+        - [Animations](#animations)
+        - [Queue](#queue)
     - [Attributes](#attributes)
+        - [Custom Data](#custom-data)
+        - [Position](#position)
+        - [Scroll](#scroll)
+        - [Size](#size)
+        - [Styles](#styles])
     - [Events](#events)
+        - [Event Handlers](#event-handlers)
+        - [Event Factory](#event-factory)
     - [Manipulation](#manipulation)
+        - [Create](#create)
+        - [Move](#move)
+        - [Wrap](#wrap)
     - [Traversal](#traversal)
+        - [Filter](#filter)
+        - [Find](#find)
     - [Utility](#utility)
+        - [Selection](#selection)
+        - [Tests](#tests)
 - [AJAX](#ajax)
     - [Scripts](#scripts)
     - [Stylesheets](#stylesheets)
@@ -1067,7 +1083,7 @@ const shadow = dom.attachShadow(nodes, open);
 
 Create a new DOM element.
 
-- `tagName` is a string indicating the type of element you wish to create, and will default to *div*.
+- `tagName` is a string indicating the type of element you wish to create, and will default to "*div*".
 - `options` is an object containing properties to define the new node.
     - `html` is a string that will become the HTML contents of the node.
     - `text` is a string that will become the text contents of the node.
@@ -1266,6 +1282,156 @@ dom.wrapInner(nodes, others);
 
 
 #### Traversal
+
+**Child**
+
+Find the first child of each node (optionally matching a filter).
+
+- `nodes` is a query selector string, a *HTMLElement*, *ShadowRoot*, *Document*, *HTMLCollection* or an array of nodes.
+- `filter` is either a function that accepts a `node` argument, a query selector string, a *Node*, *NodeList*, *HTMLCollection* or an array of nodes that the nodes will be filtered by, and will default to *false*.
+
+```javascript
+const child = dom.child(nodes, filter);
+```
+
+**Children**
+
+Find all children of each node (optionally matching a filter).
+
+- `nodes` is a query selector string, a *HTMLElement*, *ShadowRoot*, *Document*, *HTMLCollection* or an array of nodes.
+- `filter` is either a function that accepts a `node` argument, a query selector string, a *Node*, *HTMLElement*, *ShadowRoot*, *NodeList*, *HTMLCollection* or an array of nodes that the nodes will be filtered by, and will default to *false*.
+- `first` is a boolean indicating whether to only return the first matching node for each node, and will default to *false*.
+- `elementsOnly` is a boolean indicating whether to only return elements, and will default to *true*.
+
+```javascript
+const children = dom.children(nodes, filter, first, elementsOnly);
+```
+
+**Closest**
+
+Find the closest ancestor to each node (optionally matching a filter, and before a limit).
+
+- `nodes` is a query selector string, a *Node*, *HTMLElement*, *ShadowRoot*, *NodeList*, *HTMLCollection* or an array of nodes.
+- `filter` is either a function that accepts a `node` argument, a query selector string, a *Node*, *HTMLElement*, *ShadowRoot*, *NodeList*, *HTMLCollection* or an array of nodes that the nodes will be filtered by, and will default to *false*.
+- `limit` is either a function that accepts a `node` argument, a query selector string, a *Node*, *HTMLElement*, *ShadowRoot*, *NodeList*, *HTMLCollection* or an array of nodes that when matched will stop the search, and will default to *false*.
+
+```javascript
+const closest = dom.closest(nodes, filter, limit);
+```
+
+**Common Ancestor**
+
+Find the common ancestor of all nodes.
+
+- `nodes` is a query selector string, a *Node*, *HTMLElement*, *ShadowRoot*, *NodeList*, *HTMLCollection* or an array of nodes.
+
+```javascript
+const commonAncestor = dom.commonAncestor(nodes);
+```
+
+**Contents**
+
+Find all children of each node (including text and comment nodes).
+
+- `nodes` is a query selector string, a *HTMLElement*, *ShadowRoot*, *Document*, *HTMLCollection* or an array of nodes.
+
+```javascript
+const contents = dom.contents(nodes);
+```
+
+**Next**
+
+Find the next sibling for each node (optionally matching a filter).
+
+- `nodes` is a query selector string, a *Node*, *HTMLElement*, *ShadowRoot*, *NodeList*, *HTMLCollection* or an array of nodes.
+- `filter` is either a function that accepts a `node` argument, a query selector string, a *Node*, *HTMLElement*, *ShadowRoot*, *NodeList*, *HTMLCollection* or an array of nodes that the nodes will be filtered by, and will default to *false*.
+
+```javascript
+const next = dom.next(nodes, filter);
+```
+
+**Next All**
+
+Find all next siblings for each node (optionally matching a filter, and before a limit).
+
+- `nodes` is a query selector string, a *Node*, *HTMLElement*, *ShadowRoot*, *NodeList*, *HTMLCollection* or an array of nodes.
+- `filter` is either a function that accepts a `node` argument, a query selector string, a *Node*, *HTMLElement*, *ShadowRoot*, *NodeList*, *HTMLCollection* or an array of nodes that the nodes will be filtered by, and will default to *false*.
+- `limit` is either a function that accepts a `node` argument, a query selector string, a *Node*, *HTMLElement*, *ShadowRoot*, *NodeList*, *HTMLCollection* or an array of nodes that when matched will stop the search, and will default to *false*.
+- `first` is a boolean indicating whether to only return the first matching node for each node, and will default to *false*.
+
+```javascript
+const nextAll = dom.nextAll(nodes, filter, limit, first);
+```
+
+**Offset Parent**
+
+Find the offset parent (relatively positioned) of the first node.
+
+- `nodes` is a query selector string, a *Node*, *HTMLElement*, *ShadowRoot*, *NodeList*, *HTMLCollection* or an array of nodes.
+
+```javascript
+const offsetParent = dom.offsetParent(nodes);
+```
+
+**Parent**
+
+Find the parent of each node (optionally matching a filter).
+
+- `nodes` is a query selector string, a *Node*, *HTMLElement*, *ShadowRoot*, *NodeList*, *HTMLCollection* or an array of nodes.
+- `filter` is either a function that accepts a `node` argument, a query selector string, a *Node*, *HTMLElement*, *ShadowRoot*, *NodeList*, *HTMLCollection* or an array of nodes that the nodes will be filtered by, and will default to *false*.
+
+```javascript
+const parent = dom.parent(nodes, filter);
+```
+
+**Parents**
+
+Find all parents of each node (optionally matching a filter, and before a limit).
+
+- `nodes` is a query selector string, a *Node*, *HTMLElement*, *ShadowRoot*, *NodeList*, *HTMLCollection* or an array of nodes.
+- `filter` is either a function that accepts a `node` argument, a query selector string, a *Node*, *HTMLElement*, *ShadowRoot*, *NodeList*, *HTMLCollection* or an array of nodes that the nodes will be filtered by, and will default to *false*.
+- `limit` is either a function that accepts a `node` argument, a query selector string, a *Node*, *HTMLElement*, *ShadowRoot*, *NodeList*, *HTMLCollection* or an array of nodes that when matched will stop the search, and will default to *false*.
+- `first` is a boolean indicating whether to only return the first matching node for each node, and will default to *false*.
+
+```javascript
+const parents = dom.parents(nodes, filter, limit, first);
+```
+
+**Previous**
+
+Find the previous sibling for each node (optionally matching a filter).
+
+- `nodes` is a query selector string, a *Node*, *HTMLElement*, *ShadowRoot*, *NodeList*, *HTMLCollection* or an array of nodes.
+- `filter` is either a function that accepts a `node` argument, a query selector string, a *Node*, *HTMLElement*, *ShadowRoot*, *NodeList*, *HTMLCollection* or an array of nodes that the nodes will be filtered by, and will default to *false*.
+
+```javascript
+const prev = dom.prev(nodes, filter);
+```
+
+**Previous All**
+
+Find all previous siblings for each node (optionally matching a filter, and before a limit).
+
+- `nodes` is a query selector string, a *Node*, *HTMLElement*, *ShadowRoot*, *NodeList*, *HTMLCollection* or an array of nodes.
+- `filter` is either a function that accepts a `node` argument, a query selector string, a *Node*, *HTMLElement*, *ShadowRoot*, *NodeList*, *HTMLCollection* or an array of nodes that the nodes will be filtered by, and will default to *false*.
+- `limit` is either a function that accepts a `node` argument, a query selector string, a *Node*, *HTMLElement*, *ShadowRoot*, *NodeList*, *HTMLCollection* or an array of nodes that when matched will stop the search, and will default to *false*.
+- `first` is a boolean indicating whether to only return the first matching node for each node, and will default to *false*.
+
+```javascript
+const prevAll = dom.prevAll(nodes, filter, limit, first);
+```
+
+**Siblings**
+
+Find all siblings for each node (optionally matching a filter).
+
+- `nodes` is a query selector string, a *Node*, *HTMLElement*, *ShadowRoot*, *NodeList*, *HTMLCollection* or an array of nodes.
+- `filter` is either a function that accepts a `node` argument, a query selector string, a *Node*, *HTMLElement*, *ShadowRoot*, *NodeList*, *HTMLCollection* or an array of nodes that the nodes will be filtered by, and will default to *false*.
+- `elementsOnly` is a boolean indicating whether to only return elements, and will default to *true*.
+
+```javascript
+const siblings = dom.siblings(nodes, filter, elementsOnly);
+```
 
 ##### Filter
 
@@ -1466,160 +1632,158 @@ const element = dom.findOneByTag(tagName, nodes);
 ```
 
 
-##### Traversal
-
-**Child**
-
-Find the first child of each node (optionally matching a filter).
-
-- `nodes` is a query selector string, a *HTMLElement*, *ShadowRoot*, *Document*, *HTMLCollection* or an array of nodes.
-- `filter` is either a function that accepts a `node` argument, a query selector string, a *Node*, *NodeList*, *HTMLCollection* or an array of nodes that the nodes will be filtered by, and will default to *false*.
-
-```javascript
-const child = dom.child(nodes, filter);
-```
-
-**Children**
-
-Find all children of each node (optionally matching a filter).
-
-- `nodes` is a query selector string, a *HTMLElement*, *ShadowRoot*, *Document*, *HTMLCollection* or an array of nodes.
-- `filter` is either a function that accepts a `node` argument, a query selector string, a *Node*, *HTMLElement*, *ShadowRoot*, *NodeList*, *HTMLCollection* or an array of nodes that the nodes will be filtered by, and will default to *false*.
-- `first` is a boolean indicating whether to only return the first matching node for each node, and will default to *false*.
-- `elementsOnly` is a boolean indicating whether to only return elements, and will default to *true*.
-
-```javascript
-const children = dom.children(nodes, filter, first, elementsOnly);
-```
-
-**Closest**
-
-Find the closest ancestor to each node (optionally matching a filter, and before a limit).
-
-- `nodes` is a query selector string, a *Node*, *HTMLElement*, *ShadowRoot*, *NodeList*, *HTMLCollection* or an array of nodes.
-- `filter` is either a function that accepts a `node` argument, a query selector string, a *Node*, *HTMLElement*, *ShadowRoot*, *NodeList*, *HTMLCollection* or an array of nodes that the nodes will be filtered by, and will default to *false*.
-- `limit` is either a function that accepts a `node` argument, a query selector string, a *Node*, *HTMLElement*, *ShadowRoot*, *NodeList*, *HTMLCollection* or an array of nodes that when matched will stop the search, and will default to *false*.
-
-```javascript
-const closest = dom.closest(nodes, filter, limit);
-```
-
-**Common Ancestor**
-
-Find the common ancestor of all nodes.
-
-- `nodes` is a query selector string, a *Node*, *HTMLElement*, *ShadowRoot*, *NodeList*, *HTMLCollection* or an array of nodes.
-
-```javascript
-const commonAncestor = dom.commonAncestor(nodes);
-```
-
-**Contents**
-
-Find all children of each node (including text and comment nodes).
-
-- `nodes` is a query selector string, a *HTMLElement*, *ShadowRoot*, *Document*, *HTMLCollection* or an array of nodes.
-
-```javascript
-const contents = dom.contents(nodes);
-```
-
-**Next**
-
-Find the next sibling for each node (optionally matching a filter).
-
-- `nodes` is a query selector string, a *Node*, *HTMLElement*, *ShadowRoot*, *NodeList*, *HTMLCollection* or an array of nodes.
-- `filter` is either a function that accepts a `node` argument, a query selector string, a *Node*, *HTMLElement*, *ShadowRoot*, *NodeList*, *HTMLCollection* or an array of nodes that the nodes will be filtered by, and will default to *false*.
-
-```javascript
-const next = dom.next(nodes, filter);
-```
-
-**Next All**
-
-Find all next siblings for each node (optionally matching a filter, and before a limit).
-
-- `nodes` is a query selector string, a *Node*, *HTMLElement*, *ShadowRoot*, *NodeList*, *HTMLCollection* or an array of nodes.
-- `filter` is either a function that accepts a `node` argument, a query selector string, a *Node*, *HTMLElement*, *ShadowRoot*, *NodeList*, *HTMLCollection* or an array of nodes that the nodes will be filtered by, and will default to *false*.
-- `limit` is either a function that accepts a `node` argument, a query selector string, a *Node*, *HTMLElement*, *ShadowRoot*, *NodeList*, *HTMLCollection* or an array of nodes that when matched will stop the search, and will default to *false*.
-- `first` is a boolean indicating whether to only return the first matching node for each node, and will default to *false*.
-
-```javascript
-const nextAll = dom.nextAll(nodes, filter, limit, first);
-```
-
-**Offset Parent**
-
-Find the offset parent (relatively positioned) of the first node.
-
-- `nodes` is a query selector string, a *Node*, *HTMLElement*, *ShadowRoot*, *NodeList*, *HTMLCollection* or an array of nodes.
-
-```javascript
-const offsetParent = dom.offsetParent(nodes);
-```
-
-**Parent**
-
-Find the parent of each node (optionally matching a filter).
-
-- `nodes` is a query selector string, a *Node*, *HTMLElement*, *ShadowRoot*, *NodeList*, *HTMLCollection* or an array of nodes.
-- `filter` is either a function that accepts a `node` argument, a query selector string, a *Node*, *HTMLElement*, *ShadowRoot*, *NodeList*, *HTMLCollection* or an array of nodes that the nodes will be filtered by, and will default to *false*.
-
-```javascript
-const parent = dom.parent(nodes, filter);
-```
-
-**Parents**
-
-Find all parents of each node (optionally matching a filter, and before a limit).
-
-- `nodes` is a query selector string, a *Node*, *HTMLElement*, *ShadowRoot*, *NodeList*, *HTMLCollection* or an array of nodes.
-- `filter` is either a function that accepts a `node` argument, a query selector string, a *Node*, *HTMLElement*, *ShadowRoot*, *NodeList*, *HTMLCollection* or an array of nodes that the nodes will be filtered by, and will default to *false*.
-- `limit` is either a function that accepts a `node` argument, a query selector string, a *Node*, *HTMLElement*, *ShadowRoot*, *NodeList*, *HTMLCollection* or an array of nodes that when matched will stop the search, and will default to *false*.
-- `first` is a boolean indicating whether to only return the first matching node for each node, and will default to *false*.
-
-```javascript
-const parents = dom.parents(nodes, filter, limit, first);
-```
-
-**Previous**
-
-Find the previous sibling for each node (optionally matching a filter).
-
-- `nodes` is a query selector string, a *Node*, *HTMLElement*, *ShadowRoot*, *NodeList*, *HTMLCollection* or an array of nodes.
-- `filter` is either a function that accepts a `node` argument, a query selector string, a *Node*, *HTMLElement*, *ShadowRoot*, *NodeList*, *HTMLCollection* or an array of nodes that the nodes will be filtered by, and will default to *false*.
-
-```javascript
-const prev = dom.prev(nodes, filter);
-```
-
-**Previous All**
-
-Find all previous siblings for each node (optionally matching a filter, and before a limit).
-
-- `nodes` is a query selector string, a *Node*, *HTMLElement*, *ShadowRoot*, *NodeList*, *HTMLCollection* or an array of nodes.
-- `filter` is either a function that accepts a `node` argument, a query selector string, a *Node*, *HTMLElement*, *ShadowRoot*, *NodeList*, *HTMLCollection* or an array of nodes that the nodes will be filtered by, and will default to *false*.
-- `limit` is either a function that accepts a `node` argument, a query selector string, a *Node*, *HTMLElement*, *ShadowRoot*, *NodeList*, *HTMLCollection* or an array of nodes that when matched will stop the search, and will default to *false*.
-- `first` is a boolean indicating whether to only return the first matching node for each node, and will default to *false*.
-
-```javascript
-const prevAll = dom.prevAll(nodes, filter, limit, first);
-```
-
-**Siblings**
-
-Find all siblings for each node (optionally matching a filter).
-
-- `nodes` is a query selector string, a *Node*, *HTMLElement*, *ShadowRoot*, *NodeList*, *HTMLCollection* or an array of nodes.
-- `filter` is either a function that accepts a `node` argument, a query selector string, a *Node*, *HTMLElement*, *ShadowRoot*, *NodeList*, *HTMLCollection* or an array of nodes that the nodes will be filtered by, and will default to *false*.
-- `elementsOnly` is a boolean indicating whether to only return elements, and will default to *true*.
-
-```javascript
-const siblings = dom.siblings(nodes, filter, elementsOnly);
-```
-
-
 #### Utility
+
+**Execute**
+
+Execute a command in the current `document` context.
+
+- `command` is the command you are executing.
+- `value` is the value to use as the input for commands which require an argument, and will default to *null*.
+
+```javascript
+dom.exec(command, value);
+```
+
+**Force Show**
+
+Force an node to be temporarily shown, and then execute a callback.
+
+- `nodes` is a query selector string, a *Node*, *HTMLElement*, *ShadowRoot*, *Document*, *Window*, *NodeList*, *HTMLCollection* or an array of nodes.
+- `callback` is a function that accepts a `node` as a parameter.
+
+```javascript
+dom.forceShow(nodes, callback);
+```
+
+**Index**
+
+Get the index of the first node matching a filter.
+
+- `nodes` is a query selector string, a *Node*, *HTMLElement*, *ShadowRoot*, *NodeList*, *HTMLCollection* or an array of nodes.
+- `filter` is either a function that accepts a `node` argument, a query selector string, a *Node*, *HTMLElement*, *ShadowRoot*, *NodeList*, *HTMLCollection* or an array of nodes that the nodes will be tested for.
+
+```javascript
+const index = dom.index(nodes, filter);
+```
+
+**Index Of**
+
+Get the index of the first node relative to it's parent node.
+
+- `nodes` is a query selector string, a *Node*, *HTMLElement*, *ShadowRoot*, *NodeList*, *HTMLCollection* or an array of nodes.
+
+```javascript
+const indexOf = dom.indexOf(nodes);
+```
+
+**Normalize**
+
+Normalize nodes (remove empty text nodes, and join adjacent text nodes).
+
+- `nodes` is a query selector string, a *Node*, *HTMLElement*, *ShadowRoot*, *Document*, *NodeList*, *HTMLCollection*  or an array of nodes.
+
+```javascript
+dom.normalize(nodes);
+```
+
+**Serialize**
+
+Return a serialized string containing names and values of all form nodes.
+
+- `nodes` is a query selector string, a *HTMLElement*, *ShadowRoot*, *HTMLCollection* or an array of nodes.
+
+```javascript
+const serialize = dom.serialize(nodes);
+```
+
+**Serialize Array**
+
+Return a serialized array containing names and values of all form nodes.
+
+- `nodes` is a query selector string, a *HTMLElement*, *ShadowRoot*, *HTMLCollection* or an array of nodes.
+
+```javascript
+const serialArray = dom.serializeArray(nodes);
+```
+
+**Sort**
+
+Sort nodes by their position in the document
+
+- `nodes` is a query selector string, a *Node*, *HTMLElement*, *ShadowRoot*, *NodeList*, *HTMLCollection* or an array of nodes.
+
+```javascript
+const sorted = dom.sort(nodes);
+```
+
+##### Selection
+
+**After Selection**
+
+Insert each node after the selection.
+
+- `nodes` is a query selector string, a HTML string, a *Node*, *HTMLElement*, *ShadowRoot*, *NodeList*, *HTMLCollection* or an array of nodes.
+
+```javascript
+dom.afterSelection(nodes);
+```
+
+**Before Selection**
+
+Insert each node before the selection.
+
+- `nodes` is a query selector string, a HTML string, a *Node*, *HTMLElement*, *ShadowRoot*, *NodeList*, *HTMLCollection* or an array of nodes.
+
+```javascript
+dom.beforeSelection(nodes);
+```
+
+**Extract Selection**
+
+Extract selected nodes from the DOM.
+
+```javascript
+const extracted = dom.extractSelection();
+```
+
+**Get Selection**
+
+Return all selected nodes.
+
+```javascript
+const selected = dom.getSelection();
+```
+
+**Select**
+
+Create a selection on the first node.
+
+- `nodes` is a query selector string, a *Node*, *HTMLElement*, *ShadowRoot*, *NodeList*, *HTMLCollection* or an array of nodes.
+
+```javascript
+dom.select(nodes);
+```
+
+**Select All**
+
+Create a selection on all nodes.
+
+- `nodes` is a query selector string, a *Node*, *HTMLElement*, *ShadowRoot*, *NodeList*, *HTMLCollection* or an array of nodes.
+
+```javascript
+dom.selectAll(nodes);
+```
+
+**Wrap Selection**
+
+Wrap selected nodes with other nodes.
+
+- `nodes` is a query selector string, a HTML string, a *HTMLElement*, *ShadowRoot*, *HTMLCollection* or an array of nodes.
+
+```javascript
+dom.wrapSelection(nodes);
+```
 
 ##### Tests
 
@@ -1777,159 +1941,6 @@ Returns *true* if any of the nodes is visible.
 const isVisible = dom.isVisible(nodes);
 ```
 
-##### Selection
-
-**After Selection**
-
-Insert each node after the selection.
-
-- `nodes` is a query selector string, a HTML string, a *Node*, *HTMLElement*, *ShadowRoot*, *NodeList*, *HTMLCollection* or an array of nodes.
-
-```javascript
-dom.afterSelection(nodes);
-```
-
-**Before Selection**
-
-Insert each node before the selection.
-
-- `nodes` is a query selector string, a HTML string, a *Node*, *HTMLElement*, *ShadowRoot*, *NodeList*, *HTMLCollection* or an array of nodes.
-
-```javascript
-dom.beforeSelection(nodes);
-```
-
-**Extract Selection**
-
-Extract selected nodes from the DOM.
-
-```javascript
-const extracted = dom.extractSelection();
-```
-
-**Get Selection**
-
-Return all selected nodes.
-
-```javascript
-const selected = dom.getSelection();
-```
-
-**Select**
-
-Create a selection on the first node.
-
-- `nodes` is a query selector string, a *Node*, *HTMLElement*, *ShadowRoot*, *NodeList*, *HTMLCollection* or an array of nodes.
-
-```javascript
-dom.select(nodes);
-```
-
-**Select All**
-
-Create a selection on all nodes.
-
-- `nodes` is a query selector string, a *Node*, *HTMLElement*, *ShadowRoot*, *NodeList*, *HTMLCollection* or an array of nodes.
-
-```javascript
-dom.selectAll(nodes);
-```
-
-**Wrap Selection**
-
-Wrap selected nodes with other nodes.
-
-- `nodes` is a query selector string, a HTML string, a *HTMLElement*, *ShadowRoot*, *HTMLCollection* or an array of nodes.
-
-```javascript
-dom.wrapSelection(nodes);
-```
-
-##### Utility
-
-**Execute**
-
-Execute a command in the current context.
-
-- `command` is the command you are executing.
-- `value` is the value to use as the input for commands which require an argument, and will default to *null*.
-
-```javascript
-dom.exec(command, value);
-```
-
-**Force Show**
-
-Force an node to be temporarily shown, and then execute a callback.
-
-- `nodes` is a query selector string, a *Node*, *HTMLElement*, *ShadowRoot*, *Document*, *Window*, *NodeList*, *HTMLCollection* or an array of nodes.
-- `callback` is a function that accepts a `node` as a parameter.
-
-```javascript
-dom.forceShow(nodes, callback);
-```
-
-**Index**
-
-Get the index of the first node matching a filter.
-
-- `nodes` is a query selector string, a *Node*, *HTMLElement*, *ShadowRoot*, *NodeList*, *HTMLCollection* or an array of nodes.
-- `filter` is either a function that accepts a `node` argument, a query selector string, a *Node*, *HTMLElement*, *ShadowRoot*, *NodeList*, *HTMLCollection* or an array of nodes that the nodes will be tested for.
-
-```javascript
-const index = dom.index(nodes, filter);
-```
-
-**Index Of**
-
-Get the index of the first node relative to it's parent node.
-
-- `nodes` is a query selector string, a *Node*, *HTMLElement*, *ShadowRoot*, *NodeList*, *HTMLCollection* or an array of nodes.
-
-```javascript
-const indexOf = dom.indexOf(nodes);
-```
-
-**Normalize**
-
-Normalize nodes (remove empty text nodes, and join neighbouring text nodes).
-
-- `nodes` is a query selector string, a *Node*, *HTMLElement*, *ShadowRoot*, *Document*, *NodeList*, *HTMLCollection*  or an array of nodes.
-
-```javascript
-dom.normalize(nodes);
-```
-
-**Serialize**
-
-Returns a serialized string containing names and values of all form nodes.
-
-- `nodes` is a query selector string, a *HTMLElement*, *ShadowRoot*, *HTMLCollection* or an array of nodes.
-
-```javascript
-const serialize = dom.serialize(nodes);
-```
-
-**Serialize Array**
-
-Returns a serialized array containing names and values of all form nodes.
-
-- `nodes` is a query selector string, a *HTMLElement*, *ShadowRoot*, *HTMLCollection* or an array of nodes.
-
-```javascript
-const serialArray = dom.serializeArray(nodes);
-```
-
-**Sort**
-
-Sort nodes by their position in the document
-
-- `nodes` is a query selector string, a *Node*, *HTMLElement*, *ShadowRoot*, *NodeList*, *HTMLCollection* or an array of nodes.
-
-```javascript
-const sorted = dom.sort(nodes);
-```
-
 
 ## AJAX
 
@@ -1937,7 +1948,7 @@ const sorted = dom.sort(nodes);
 
 Perform an XHR request.
 
-- `options` is an object containing containing options for the request.
+- `options` is an object containing options for the request.
     - `url` is a string containing the URL for the request, and will default to the current window location.
     - `method` is a string containing the method to use for the request, and will default to "*GET*".
     - `data` is an object containing data to send with the request, and will default to *false*.
@@ -1960,7 +1971,7 @@ dom.ajax(options);
 Perform an XHR GET request.
 
 - `url` is a string containing the URL for the request.
-- `options` is an object containing containing options for the request.
+- `options` is an object containing options for the request.
     - `method` is a string containing the method to use for the request, and will default to "*GET*".
     - `data` is an object containing data to send with the request, and will default to *false*.
     - `contentType` is a string containing the Content-Type header to send with the request, and will default to "*application/x-www-form-urlencoded*".
@@ -1983,7 +1994,7 @@ Perform an XHR POST request.
 
 - `url` is a string containing the URL for the request.
 - `data` is an object containing data to send with the request, and will default to *false*.
-- `options` is an object containing containing options for the request.
+- `options` is an object containing options for the request.
     - `method` is a string containing the method to use for the request, and will default to "*POST*".
     - `contentType` is a string containing the Content-Type header to send with the request, and will default to "*application/x-www-form-urlencoded*".
     - `responseType` is a string containing the expected Content-Type header of the response.
@@ -2005,7 +2016,7 @@ Perform an XHR request for a file upload.
 
 - `url` is a string containing the URL for the request.
 - `data` is an object containing Key/Value pairs of configuration for the request.
-- `options` is an object containing containing options for the request.
+- `options` is an object containing options for the request.
     - `method` is a string containing the method to use for the request, and will default to "*POST*".
     - `contentType` is a string containing the Content-Type header to send with the request, and will default to *false*.
     - `responseType` is a string containing the expected Content-Type header of the response.
@@ -2020,6 +2031,8 @@ This method returns a *Promise* that resolves when the request is completed, or 
 ```javascript
 dom.upload(url, data, options);
 ```
+
+### Scripts
 
 **Load Script**
 
@@ -2044,6 +2057,8 @@ This method returns a *Promise* that resolves when the request is completed, or 
 ```javascript
 dom.loadScripts(scripts);
 ```
+
+### Stylesheets
 
 **Load Stylesheet**
 
@@ -2089,6 +2104,9 @@ Remove a cookie.
 
 - `name` is a string containing the name of the cookie value to remove.
 - `options` is an object containing configuration options for the cookie.
+    - `expires` is a number indicating the number of seconds until the cookie will expire, and will default to *-1*.
+    - `path` is a string indicating the path to use for the cookie.
+    - `secure` is a boolean indicating whether only set the cookie for secure requests, and will default to *false*.
 
 ```javascript
 dom.removeCookie(name, options);
@@ -2117,7 +2135,7 @@ dom.setCookie(name, value, options, json);
 
 **Parse HTML**
 
-Create a Document object from a HTML string.
+Create a *Document* object from a HTML string.
 
 - `html` is the HTML string.
 
@@ -2127,7 +2145,7 @@ const doc = DOM.parseHTML(html);
 
 **Parse XML**
 
-Create a Document object from an XML string.
+Create a *Document* object from an XML string.
 
 - `xml` is the XML string.
 

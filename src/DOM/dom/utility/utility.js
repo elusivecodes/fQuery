@@ -97,7 +97,7 @@ Object.assign(DOM.prototype, {
     },
 
     /**
-     * Normalize nodes (remove empty text nodes, and join neighbouring text nodes).
+     * Normalize nodes (remove empty text nodes, and join adjacent text nodes).
      * @param {string|array|Node|NodeList|HTMLElement|HTMLCollection|ShadowRoot|Document} nodes The input node(s), or a query selector string.
      */
     normalize(nodes) {
