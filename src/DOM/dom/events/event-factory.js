@@ -32,7 +32,7 @@ Object.assign(DOM.prototype, {
             }
 
             if (move || up) {
-                this._addEventOnce(window, 'mouseup', e => {
+                this._addEvent(window, 'mouseup', e => {
                     if (move) {
                         this._removeEvent(window, 'mousemove', move);
                     }
@@ -40,7 +40,7 @@ Object.assign(DOM.prototype, {
                     if (up) {
                         up(e);
                     }
-                });
+                }, false, true);
             }
         };
     },

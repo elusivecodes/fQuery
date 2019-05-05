@@ -2599,7 +2599,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         }
 
         if (move || up) {
-          _this16._addEventOnce(window, 'mouseup', function (e) {
+          _this16._addEvent(window, 'mouseup', function (e) {
             if (move) {
               _this16._removeEvent(window, 'mousemove', move);
             }
@@ -2607,7 +2607,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
             if (up) {
               up(e);
             }
-          });
+          }, false, true);
         }
       };
     },
@@ -5779,9 +5779,9 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
     },
 
     /**
-     * Returns true if any of the nodes has child elements.
+     * Returns true if any of the nodes has child nodes.
      * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|HTMLCollection} nodes The input node(s), or a query selector string.
-     * @returns {Boolean} TRUE if the any of the nodes has child elements, otherwise FALSE.
+     * @returns {Boolean} TRUE if the any of the nodes has child nodes, otherwise FALSE.
      */
     hasChildren: function hasChildren(nodes) {
       return this._nodeFilter(nodes, {

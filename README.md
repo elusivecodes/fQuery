@@ -1288,7 +1288,7 @@ dom.wrapInner(nodes, others);
 Find the first child of each node (optionally matching a filter).
 
 - `nodes` is a query selector string, a *HTMLElement*, *DocumentFragment*, *ShadowRoot*, *Document*, *HTMLCollection* or an array of nodes.
-- `filter` is either a function that accepts a `node` argument, a query selector string, a *Node*, *NodeList*, *HTMLCollection* or an array of nodes that the nodes will be filtered by, and will default to *false*.
+- `filter` is either a function that accepts a `node` argument, a query selector string, a *Node*, *HTMLElement*, *DocumentFragment*, *ShadowRoot*, *NodeList*, *HTMLCollection* or an array of nodes that the nodes will be filtered by, and will default to *false*.
 
 ```javascript
 const child = dom.child(nodes, filter);
@@ -1774,7 +1774,7 @@ Return a serialized string containing names and values of all form nodes.
 - `nodes` is a query selector string, a *HTMLElement*, *DocumentFragment*, *ShadowRoot*, *HTMLCollection* or an array of nodes.
 
 ```javascript
-const serialize = dom.serialize(nodes);
+const serialized = dom.serialize(nodes);
 ```
 
 **Serialize Array**
@@ -1784,7 +1784,7 @@ Return a serialized array containing names and values of all form nodes.
 - `nodes` is a query selector string, a *HTMLElement*, *DocumentFragment*, *ShadowRoot*, *HTMLCollection* or an array of nodes.
 
 ```javascript
-const serialArray = dom.serializeArray(nodes);
+const serializedArray = dom.serializeArray(nodes);
 ```
 
 **Sort**
