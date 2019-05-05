@@ -30,9 +30,9 @@ Object.assign(DOM.prototype, {
     },
 
     /**
-     * Returns true if any of the nodes has child elements.
+     * Returns true if any of the nodes has child nodes.
      * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|HTMLCollection} nodes The input node(s), or a query selector string.
-     * @returns {Boolean} TRUE if the any of the nodes has child elements, otherwise FALSE.
+     * @returns {Boolean} TRUE if the any of the nodes has child nodes, otherwise FALSE.
      */
     hasChildren(nodes) {
         return this._nodeFilter(nodes, { fragment: true, shadow: true, document: true })
