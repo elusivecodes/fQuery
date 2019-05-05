@@ -2257,11 +2257,11 @@
          */
         _getDelegateMatchFactory(node, selector) {
             return target =>
-                Core.isElement(target) && DOM._is(target, selector) ?
+                DOM._is(target, selector) ?
                     target :
                     DOM._parents(
                         target,
-                        parent => Core.isElement(target) && DOM._is(parent, selector),
+                        parent => DOM._is(parent, selector),
                         parent => DOM._isSame(node, parent),
                         true
                     ).shift();
@@ -3177,6 +3177,31 @@
     Object.assign(DOM.prototype, {
 
         /**
+         * Return all nodes connected to the DOM.
+         * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+         * @returns {array} The filtered nodes.
+         */
+        connected(nodes) {
+            return this._nodeFilter(nodes, { node: true, shadow: true })
+                .filter(node => DOM._isConnected(node));
+        },
+
+        /**
+         * Return all nodes considered equal to any of the other nodes.
+         * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+         * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} others The other node(s), or a query selector string.
+         * @returns {array} The filtered nodes.
+         */
+        equal(nodes, others) {
+            others = this._nodeFilter(others, { node: true, shadow: true });
+
+            return this._nodeFilter(nodes, { node: true, shadow: true })
+                .filter(node =>
+                    others.some(other => DOM._isEqual(node, other))
+                );
+        },
+
+        /**
          * Return all nodes matching a filter.
          * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
          * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
@@ -3203,29 +3228,22 @@
         },
 
         /**
-         * Return all nodes with a descendent matching a filter.
-         * @param {string|array|HTMLElement|ShadowRoot|Document|HTMLCollection} nodes The input node(s), or a query selector string.
-         * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
+         * Return all "fixed" nodes.
+         * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
          * @returns {array} The filtered nodes.
          */
-        has(nodes, filter) {
-            filter = this._parseFilterContains(filter);
-
-            return this._nodeFilter(nodes, { shadow: true, document: true })
-                .filter((node, index) => !filter || filter(node, index));
-        },
-
-        /**
-         * Return the first node with a descendent matching a filter.
-         * @param {string|array|HTMLElement|ShadowRoot|Document|HTMLCollection} nodes The input node(s), or a query selector string.
-         * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
-         * @returns {HTMLElement|ShadowRoot|Document} The filtered node.
-         */
-        hasOne(nodes, filter) {
-            filter = this._parseFilterContains(filter);
-
-            return this._nodeFilter(nodes, { shadow: true, document: true })
-                .find((node, index) => !filter || filter(node, index)) || null;
+        fixed(nodes) {
+            return this._nodeFilter(nodes, { node: true, shadow: true })
+                .filter(node =>
+                    (Core.isElement(node) && this._css(node, 'position') === 'fixed') ||
+                    DOM._parents(
+                        node,
+                        parent =>
+                            this._css(parent, 'position') === 'fixed',
+                        false,
+                        true
+                    ).length
+                );
         },
 
         /**
@@ -3236,16 +3254,6 @@
         hidden(nodes) {
             return this._nodeFilter(nodes, { shadow: true, document: true, window: true })
                 .filter(node => DOM._isHidden(node));
-        },
-
-        /**
-         * Return the first hidden node.
-         * @param {string|array|HTMLElement|ShadowRoot|Document|Window|HTMLCollection} nodes The input node(s), or a query selector string.
-         * @returns {HTMLElement|ShadowRoot|Document|Window} The filtered node.
-         */
-        hiddenOne(nodes) {
-            return this._nodeFilter(nodes, { shadow: true, document: true, window: true })
-                .find(node => DOM._isHidden(node)) || null;
         },
 
         /**
@@ -3266,20 +3274,18 @@
         },
 
         /**
-         * Return the first node not matching a filter.
+         * Return all nodes considered identical to any of the other nodes.
          * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
-         * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
-         * @returns {HTMLElement|ShadowRoot|Document} The filtered node.
+         * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} others The other node(s), or a query selector string.
+         * @returns {array} The filtered nodes.
          */
-        notOne(nodes, filter) {
-            filter = this._parseFilter(filter);
-
-            if (!filter) {
-                return null;
-            }
+        same(nodes, others) {
+            others = this._nodeFilter(others, { node: true, shadow: true });
 
             return this._nodeFilter(nodes, { node: true, shadow: true })
-                .find((node, index) => !filter(node, index)) || null;
+                .filter(node =>
+                    others.some(other => DOM._isSame(node, other))
+                );
         },
 
         /**
@@ -3293,13 +3299,106 @@
         },
 
         /**
-         * Return the first visible node.
-         * @param {string|array|HTMLElement|ShadowRoot|Document|Window|HTMLCollection} nodes The input node(s), or a query selector string.
-         * @returns {HTMLElement|ShadowRoot|Document|Window} The filtered node.
+         * Return all nodes with a CSS animation.
+         * @param {string|array|HTMLElement|HTMLCollection} nodes The input node(s), or a query selector string.
+         * @returns {array} The filtered nodes.
          */
-        visibleOne(nodes) {
-            return this._nodeFilter(nodes, { shadow: true, document: true, window: true })
-                .find(node => DOM._isVisible(node)) || null;
+        withAnimation(nodes) {
+            return this._nodeFilter(nodes)
+                .filter(node =>
+                    this._hasAnimation(node)
+                );
+        },
+
+        /**
+         * Return all nodes with a specified attribute.
+         * @param {string|array|HTMLElement|HTMLCollection} nodes The input node(s), or a query selector string.
+         * @param {string} attribute The attribute name.
+         * @returns {array} The filtered nodes.
+         */
+        withAttribute(nodes, attribute) {
+            return this._nodeFilter(nodes)
+                .filter(node =>
+                    DOM._hasAttribute(node, attribute)
+                );
+        },
+
+        /**
+         * Return all nodes with child elements.
+         * @param {string|array|HTMLElement|ShadowRoot|Document|HTMLCollection} nodes The input node(s), or a query selector string.
+         * @returns {array} The filtered nodes.
+         */
+        withChildren(nodes) {
+            return this._nodeFilter(nodes, { shadow: true, document: true })
+                .filter(node =>
+                    DOM._hasChildren(node)
+                );
+        },
+
+        /**
+         * Return all nodes with any of the specified classes.
+         * @param {string|array|HTMLElement|HTMLCollection} nodes The input node(s), or a query selector string.
+         * @param {...string|string[]} classes The classes.
+         * @returns {array} The filtered nodes.
+         */
+        withClass(nodes, classes) {
+            classes = DOM._parseClasses(classes);
+
+            return this._nodeFilter(nodes)
+                .filter(node =>
+                    DOM._hasClass(node, classes)
+                );
+        },
+
+        /**
+         * Return all nodes with custom data.
+         * @param {string|array|Node|HTMLElement|ShadowRoot|Document|Window|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+         * @param {string} [key] The data key.
+         * @returns {array} The filtered nodes.
+         */
+        withData(nodes, key) {
+            return this._nodeFilter(nodes, { node: true, shadow: true, document: true, window: true })
+                .filter(node =>
+                    this._hasData(node, key)
+                );
+        },
+
+        /**
+         * Return all nodes with a descendent matching a filter.
+         * @param {string|array|HTMLElement|ShadowRoot|Document|HTMLCollection} nodes The input node(s), or a query selector string.
+         * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
+         * @returns {array} The filtered nodes.
+         */
+        withDescendent(nodes, filter) {
+            filter = this._parseFilterContains(filter);
+
+            return this._nodeFilter(nodes, { shadow: true, document: true })
+                .filter((node, index) => !filter || filter(node, index));
+        },
+
+        /**
+         * Return all nodes with a specified property.
+         * @param {string|array|HTMLElement|HTMLCollection} nodes The input node(s), or a query selector string.
+         * @param {string} property The property name.
+         * @returns {array} The filtered nodes.
+         */
+        withProperty(nodes, property) {
+            return this._nodeFilter(nodes)
+                .filter(node =>
+                    DOM._hasProperty(node, property)
+                );
+        },
+
+        /**
+         * Return all nodes with a CSS transition.
+         * @param {string|array|HTMLElement|HTMLCollection} nodes The input node(s), or a query selector string.
+         * @returns {array} The filtered nodes.
+         */
+        withTransition(nodes) {
+            return this._nodeFilter(nodes)
+                .filter(node =>
+                    this._hasTransition(node)
+                );
         }
 
     });
@@ -3390,7 +3489,7 @@
                     [];
             }
 
-            return this.contains(nodes, result) ?
+            return this.hasDescendent(nodes, result) ?
                 [result] :
                 [];
         },
@@ -3498,7 +3597,7 @@
                     null;
             }
 
-            return this.contains(nodes, result) ?
+            return this.hasDescendent(nodes, result) ?
                 result :
                 null;
         },
@@ -4104,9 +4203,7 @@
             }
 
             if (Core.isString(filter)) {
-                return node =>
-                    Core.isElement(node) &&
-                    DOM._is(node, filter);
+                return node => DOM._is(node, filter);
             }
 
             if (Core.isNode(filter) || Core.isShadow(filter)) {
@@ -4353,22 +4450,6 @@
     Object.assign(DOM.prototype, {
 
         /**
-         * Returns true if any of the nodes contains a descendent matching a filter.
-         * @param {string|array|HTMLElement|ShadowRoot|Document|HTMLCollection} nodes The input node(s), or a query selector string.
-         * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
-         * @returns {Boolean} TRUE if any of the nodes contains a descendent matching the filter, otherwise FALSE.
-         */
-        contains(nodes, filter) {
-            filter = this._parseFilterContains(filter);
-
-            return this._nodeFilter(nodes, { shadow: true, document: true })
-                .some(node =>
-                    !filter ||
-                    filter(node)
-                );
-        },
-
-        /**
          * Returns true if any of the nodes has a CSS animation.
          * @param {string|array|HTMLElement|HTMLCollection} nodes The input node(s), or a query selector string.
          * @returns {Boolean} TRUE if any of the nodes has a CSS animation, otherwise FALSE.
@@ -4376,9 +4457,7 @@
         hasAnimation(nodes) {
             return this._nodeFilter(nodes)
                 .some(node =>
-                    !!parseFloat(
-                        this._css(node, 'animation-duration')
-                    )
+                    this._hasAnimation(node)
                 );
         },
 
@@ -4391,7 +4470,19 @@
         hasAttribute(nodes, attribute) {
             return this._nodeFilter(nodes)
                 .some(node =>
-                    node.hasAttribute(attribute)
+                    DOM._hasAttribute(node, attribute)
+                );
+        },
+
+        /**
+         * Returns true if any of the nodes has child elements.
+         * @param {string|array|HTMLElement|ShadowRoot|Document|HTMLCollection} nodes The input node(s), or a query selector string.
+         * @returns {Boolean} TRUE if the any of the nodes has child elements, otherwise FALSE.
+         */
+        hasChildren(nodes) {
+            return this._nodeFilter(nodes, { shadow: true, document: true })
+                .some(node =>
+                    DOM._hasChildren(node)
                 );
         },
 
@@ -4406,9 +4497,7 @@
 
             return this._nodeFilter(nodes)
                 .some(node =>
-                    classes.some(className =>
-                        node.classList.contains(className)
-                    )
+                    DOM._hasClass(node, classes)
                 );
         },
 
@@ -4421,12 +4510,23 @@
         hasData(nodes, key) {
             return this._nodeFilter(nodes, { node: true, shadow: true, document: true, window: true })
                 .some(node =>
-                    this._data.has(node) &&
-                    (
-                        !key ||
-                        this._data.get(node)
-                            .hasOwnProperty(key)
-                    )
+                    this._hasData(node, key)
+                );
+        },
+
+        /**
+         * Returns true if any of the nodes contains a descendent matching a filter.
+         * @param {string|array|HTMLElement|ShadowRoot|Document|HTMLCollection} nodes The input node(s), or a query selector string.
+         * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
+         * @returns {Boolean} TRUE if any of the nodes contains a descendent matching the filter, otherwise FALSE.
+         */
+        hasDescendent(nodes, filter) {
+            filter = this._parseFilterContains(filter);
+
+            return this._nodeFilter(nodes, { shadow: true, document: true })
+                .some(node =>
+                    !filter ||
+                    filter(node)
                 );
         },
 
@@ -4439,7 +4539,7 @@
         hasProperty(nodes, property) {
             return this._nodeFilter(nodes)
                 .some(node =>
-                    node.hasOwnProperty(property)
+                    DOM._hasProperty(node, property)
                 );
         },
 
@@ -4451,9 +4551,7 @@
         hasTransition(nodes) {
             return this._nodeFilter(nodes)
                 .some(node =>
-                    !!parseFloat(
-                        this._css(node, 'transition-duration')
-                    )
+                    this._hasTransition(node)
                 );
         },
 
@@ -4491,6 +4589,7 @@
          */
         isEqual(nodes, others) {
             others = this._nodeFilter(others, { node: true, shadow: true });
+
             return this._nodeFilter(nodes, { node: true, shadow: true })
                 .some(node =>
                     others.some(other => DOM._isEqual(node, other))
@@ -4498,7 +4597,7 @@
         },
 
         /**
-         * Returns true if any of the elements or a parent of any of the elements is "fixed".
+         * Returns true if any of the nodes or a parent of any of the nodes is "fixed".
          * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
          * @returns {Boolean} TRUE if any of the nodes is "fixed", otherwise FALSE.
          */
@@ -4539,7 +4638,7 @@
 
             return this._nodeFilter(nodes, { node: true, shadow: true })
                 .some(node =>
-                    others.find(other => DOM._isSame(node, other))
+                    others.some(other => DOM._isSame(node, other))
                 );
         },
 
@@ -4553,6 +4652,43 @@
                 .some(node =>
                     DOM._isVisible(node)
                 );
+        },
+
+        /**
+         * Returns true if a single node has a CSS animation.
+         * @param {HTMLElement} node The input node.
+         * @returns {Boolean} TRUE if the node has a CSS animation, otherwise FALSE.
+         */
+        _hasAnimation(node) {
+            return !!parseFloat(
+                this._css(node, 'animation-duration')
+            );
+        },
+
+        /**
+         * Returns true if a single node has custom data.
+         * @param {Node|HTMLElement|ShadowRoot|Document|Window} node The input node.
+         * @param {string} [key] The data key.
+         * @returns {Boolean} TRUE if the node has custom data, otherwise FALSE.
+         */
+        _hasData(node, key) {
+            return this._data.has(node) &&
+                (
+                    !key ||
+                    this._data.get(node)
+                        .hasOwnProperty(key)
+                );
+        },
+
+        /**
+         * Returns true if a single node has a CSS transition.
+         * @param {HTMLElement} node The input node.
+         * @returns {Boolean} TRUE if the has a CSS transition, otherwise FALSE.
+         */
+        _hasTransiton(node) {
+            return !!parseFloat(
+                this._css(node, 'transition-duration')
+            );
         }
 
     });
@@ -4656,7 +4792,7 @@
         },
 
         /**
-         * Normalize nodes (remove empty text nodes, and join neighbouring text nodes).
+         * Normalize nodes (remove empty text nodes, and join adjacent text nodes).
          * @param {string|array|Node|NodeList|HTMLElement|HTMLCollection|ShadowRoot|Document} nodes The input node(s), or a query selector string.
          */
         normalize(nodes) {
@@ -4687,7 +4823,7 @@
             return this._nodeFilter(nodes, { shadow: true })
                 .reduce(
                     (values, node) => {
-                        if (Core.isShadow(node) || DOM._is(node, 'form')) {
+                        if (DOM._is(node, 'form') || Core.isShadow(node)) {
                             return values.concat(
                                 this.serializeArray(
                                     DOM._findBySelector(
@@ -5894,7 +6030,7 @@
     });
 
     /**
-     * DOM (Static) Filter
+     * DOM (Static) Tests
      */
 
     Object.assign(DOM, {
@@ -5910,6 +6046,16 @@
         },
 
         /**
+         * Returns true if a single node has a specified attribute.
+         * @param {HTMLElement} node The input node.
+         * @param {string} attribute The attribute name.
+         * @returns {Boolean} TRUE if the node has the attribute, otherwise FALSE.
+         */
+        _hasAttribute(node, attribute) {
+            return node.hasAttribute(attribute);
+        },
+
+        /**
          * Returns true if a single node has child elements.
          * @param {HTMLElement|ShadowRoot|Document} node The input node.
          * @returns {Boolean} TRUE if the node has child elements, otherwise FALSE.
@@ -5919,13 +6065,35 @@
         },
 
         /**
+         * Returns true if a single node has any of the specified classes.
+         * @param {HTMLElement} node The input node.
+         * @param {string[]} classes The classes.
+         * @returns {Boolean} TRUE if the node has any of the classes, otherwise FALSE.
+         */
+        _hasClass(node, classes) {
+            return classes.some(className =>
+                node.classList.contains(className)
+            );
+        },
+
+        /**
+         * Returns true if a single node has a specified property.
+         * @param {HTMLElement} node The input node.
+         * @param {string} property The property name.
+         * @returns {Boolean} TRUE if the node has the property, otherwise FALSE.
+         */
+        _hasProperty(node, property) {
+            return node.hasOwnProperty(property);
+        },
+
+        /**
          * Returns true if a single node matches a query selector.
          * @param {HTMLElement} node The input node.
          * @param {string} selector The query selector.
          * @returns {Boolean} TRUE if the node matches the selector, otherwise FALSE.
          */
         _is(node, selector) {
-            return node.matches(selector);
+            return Core.isElement(node) && node.matches(selector);
         },
 
         /**

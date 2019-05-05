@@ -1435,6 +1435,27 @@ const siblings = dom.siblings(nodes, filter, elementsOnly);
 
 ##### Filter
 
+**Connected**
+
+Return all nodes connected to the DOM.
+
+- `nodes` is a query selector string, a *Node*, *HTMLElement*, *ShadowRoot*, *NodeList*, *HTMLCollection* or an array of nodes.
+
+```javascript
+const connected = dom.connected(nodes);
+```
+
+**Equal**
+
+Return all nodes considered equal to any of the other nodes.
+
+- `nodes` is a query selector string, a *Node*, *HTMLElement*, *ShadowRoot*, *NodeList*, *HTMLCollection* or an array of nodes.
+- `others` is a query selector string, a *Node*, *HTMLElement*, *ShadowRoot*, *NodeList*, *HTMLCollection* or an array of nodes.
+
+```javascript
+const equal = dom.equal(nodes, others);
+```
+
 **Filter**
 
 Return all nodes matching a filter.
@@ -1443,7 +1464,7 @@ Return all nodes matching a filter.
 - `filter` is either a function that accepts a `node` argument, a query selector string, a *Node*, *HTMLElement*, *ShadowRoot*, *NodeList*, *HTMLCollection* or an array of nodes that the nodes will be filtered by.
 
 ```javascript
-const filtered = dom.filter(nodes, filter);
+const filter = dom.filter(nodes, filter);
 ```
 
 **Filter One**
@@ -1454,29 +1475,17 @@ Return the first node matching a filter.
 - `filter` is either a function that accepts a `node` argument, a query selector string, a *Node*, *HTMLElement*, *ShadowRoot*, *NodeList*, *HTMLCollection* or an array of nodes that the nodes will be filtered by.
 
 ```javascript
-const filtered = dom.filterOne(nodes, filter);
+const filterOne = dom.filterOne(nodes, filter);
 ```
 
-**Has**
+**Fixed**
 
-Return all nodes with a descendent matching a filter.
+Return all "fixed" nodes.
 
-- `nodes` is a query selector string, a *HTMLElement*, *ShadowRoot*, *Document*, *HTMLCollection* or an array of nodes.
-- `filter` is either a function that accepts a `node` argument, a query selector string, a *Node*, *HTMLElement*, *ShadowRoot*, *NodeList*, *HTMLCollection* or an array of nodes that the nodes will be filtered by.
-
-```javascript
-const filtered = dom.has(nodes, filter);
-```
-
-**Has One**
-
-Return the first node with a descendent matching a filter.
-
-- `nodes` is a query selector string, a *HTMLElement*, *ShadowRoot*, *Document*, *HTMLCollection* or an array of nodes.
-- `filter` is either a function that accepts a `node` argument, a query selector string, a *Node*, *HTMLElement*, *ShadowRoot*, *NodeList*, *HTMLCollection* or an array of nodes that the nodes will be filtered by.
+- `nodes` is a query selector string, a *Node*, *HTMLElement*, *ShadowRoot*, *NodeList*, *HTMLCollection* or an array of nodes.
 
 ```javascript
-const filtered = dom.hasOne(nodes, filter);
+const fixed = dom.fixed(nodes);
 ```
 
 **Hidden**
@@ -1486,17 +1495,7 @@ Return all hidden nodes.
 - `nodes` is a query selector string, a *HTMLElement*, *ShadowRoot*, *Document*, *Window*, *HTMLCollection* or an array of nodes.
 
 ```javascript
-const filtered = dom.hidden(nodes);
-```
-
-**Hidden One**
-
-Return the first hidden node.
-
-- `nodes` is a query selector string, a *HTMLElement*, *ShadowRoot*, *Document*, *Window*, *HTMLCollection* or an array of nodes.
-
-```javascript
-const filtered = dom.hiddenOne(nodes);
+const hidden = dom.hidden(nodes);
 ```
 
 **Not**
@@ -1507,18 +1506,18 @@ Return all nodes not matching a filter.
 - `filter` is either a function that accepts a `node` argument, a query selector string, a *Node*, *HTMLElement*, *ShadowRoot*, *NodeList*, *HTMLCollection* or an array of nodes that the nodes will be filtered by.
 
 ```javascript
-const filtered = dom.not(nodes, filter);
+const not = dom.not(nodes, filter);
 ```
 
-**Not One**
+**Same**
 
-Return the first node not matching a filter.
+Return all nodes considered identical to any of the other nodes.
 
 - `nodes` is a query selector string, a *Node*, *HTMLElement*, *ShadowRoot*, *NodeList*, *HTMLCollection* or an array of nodes.
-- `filter` is either a function that accepts a `node` argument, a query selector string, a *Node*, *HTMLElement*, *ShadowRoot*, *NodeList*, *HTMLCollection* or an array of nodes that the nodes will be filtered by.
+- `others` is a query selector string, a *Node*, *HTMLElement*, *ShadowRoot*, *NodeList*, *HTMLCollection* or an array of nodes.
 
 ```javascript
-const filtered = dom.notOne(nodes, filter);
+const same = dom.same(nodes, others);
 ```
 
 **Visible**
@@ -1528,17 +1527,98 @@ Return all visible nodes.
 - `nodes` is a query selector string, a *HTMLElement*, *ShadowRoot*, *Document*, *Window*, *HTMLCollection* or an array of nodes.
 
 ```javascript
-const filtered = dom.visible(nodes);
+const visible = dom.visible(nodes);
 ```
 
-**Visible One**
+**With Animation**
 
-Return the first visible node.
+Return all nodes with a CSS animation.
 
-- `nodes` is a query selector string, a *HTMLElement*, *ShadowRoot*, *Document*, *Window*, *HTMLCollection* or an array of nodes.
+- `nodes` is a query selector string, a *HTMLElement*, *HTMLCollection* or an array of nodes.
 
 ```javascript
-const filtered = dom.visibleOne(nodes);
+const withAnimation = dom.withAnimation(nodes);
+```
+
+**With Attribute**
+
+Return all nodes with a specified attribute.
+
+- `nodes` is a query selector string, a *HTMLElement*, *HTMLCollection* or an array of nodes.
+- `attribute` is a string indicating the attribute value to test for.
+
+```javascript
+const withAttribute = dom.withAttribute(nodes, attribute);
+```
+
+**With Children**
+
+Return all nodes with child elements.
+
+- `nodes` is a query selector string, a *HTMLElement*, *ShadowRoot*, *Document*, *HTMLCollection* or an array of nodes.
+
+```javascript
+const withChildren = dom.withChildren(nodes);
+```
+
+**With Class**
+
+Return all nodes with any of the specified classes.
+
+- `nodes` is a query selector string, a *HTMLElement*, *HTMLCollection* or an array of nodes.
+- `classes` is an array of classes, or a space seperated string of class names to test for.
+
+```javascript
+const withClass = dom.withClass(nodes, classes);
+```
+
+**With Data**
+
+Return all nodes with custom data.
+
+- `nodes` is a query selector string, a *HTMLElement*, *HTMLCollection* or an array of nodes.
+- `key` is a string indicating the custom data value to test for.
+
+```javascript
+const withData = dom.withData(nodes, key);
+```
+
+If the `key` argument is omitted, this method will return all nodes with any custom data.
+
+```javascript
+const withData = dom.withData(nodes);
+```
+
+**With Descendent**
+
+Return all nodes with a descendent matching a filter.
+
+- `nodes` is a query selector string, a *HTMLElement*, *ShadowRoot*, *Document*, *HTMLCollection* or an array of nodes.
+- `filter` is either a function that accepts a `node` argument, a query selector string, a *Node*, *HTMLElement*, *ShadowRoot*, *NodeList*, *HTMLCollection* or an array of nodes that the nodes will be filtered by.
+
+```javascript
+const withDescendent = dom.withDescendent(nodes, filter);
+```
+
+**With Property**
+
+Return all nodes with a specified property.
+
+- `nodes` is a query selector string, a *HTMLElement*, *HTMLCollection* or an array of nodes.
+- `property` is a string indicating the property value to test for.
+
+```javascript
+const withProperty = dom.withProperty(nodes, property);
+```
+
+**With Transition**
+
+Return all nodes with a CSS transition.
+
+- `nodes` is a query selector string, a *HTMLElement*, *HTMLCollection* or an array of nodes.
+
+```javascript
+const withTransition = dom.withTransition(nodes);
 ```
 
 ##### Find
@@ -1787,17 +1867,6 @@ dom.wrapSelection(nodes);
 
 ##### Tests
 
-**Contains**
-
-Returns *true* if any of the nodes contains a descendent matching a filter.
-
-- `nodes` is a query selector string, a *HTMLElement*, *ShadowRoot*, *Document*, *HTMLCollection* or an array of nodes.
-- `filter` is either a function that accepts a `node` argument, a query selector string, a *Node*, *HTMLElement*, *ShadowRoot*, *NodeList*, *HTMLCollection* or an array of nodes that the nodes will be tested for.
-
-```javascript
-const contains = dom.contains(nodes, filter);
-```
-
 **Has Animation**
 
 Returns *true* if any of the nodes has a CSS animation.
@@ -1817,6 +1886,16 @@ Returns *true* if any of the nodes has a specified attribute.
 
 ```javascript
 const hasAttribute = dom.hasAttribute(nodes, attribute);
+```
+
+**Has Children**
+
+Returns *true* if any of the nodes has child elements.
+
+- `nodes` is a query selector string, a *HTMLElement*, *HTMLCollection* or an array of nodes.
+
+```javascript
+const hasChildren = dom.hasChildren(nodes);
 ```
 
 **Has Class**
@@ -1845,6 +1924,17 @@ If the `key` argument is omitted, this method will return *true* if any of the n
 
 ```javascript
 dom.hasData(nodes);
+```
+
+**Has Descendent**
+
+Returns *true* if any of the nodes contains a descendent matching a filter.
+
+- `nodes` is a query selector string, a *HTMLElement*, *ShadowRoot*, *Document*, *HTMLCollection* or an array of nodes.
+- `filter` is either a function that accepts a `node` argument, a query selector string, a *Node*, *HTMLElement*, *ShadowRoot*, *NodeList*, *HTMLCollection* or an array of nodes that the nodes will be tested for.
+
+```javascript
+const hasDescendent = dom.hasDescendent(nodes, filter);
 ```
 
 **Has Property**

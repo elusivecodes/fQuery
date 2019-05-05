@@ -84,7 +84,7 @@ Object.assign(DOM.prototype, {
                 [];
         }
 
-        return this.contains(nodes, result) ?
+        return this.hasDescendent(nodes, result) ?
             [result] :
             [];
     },
@@ -192,7 +192,7 @@ Object.assign(DOM.prototype, {
                 null;
         }
 
-        return this.contains(nodes, result) ?
+        return this.hasDescendent(nodes, result) ?
             result :
             null;
     },

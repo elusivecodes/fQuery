@@ -128,7 +128,7 @@ Object.assign(DOM.prototype, {
         return this._nodeFilter(nodes, { shadow: true })
             .reduce(
                 (values, node) => {
-                    if (Core.isShadow(node) || DOM._is(node, 'form')) {
+                    if (DOM._is(node, 'form') || Core.isShadow(node)) {
                         return values.concat(
                             this.serializeArray(
                                 DOM._findBySelector(

@@ -2668,8 +2668,8 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
      */
     _getDelegateMatchFactory: function _getDelegateMatchFactory(node, selector) {
       return function (target) {
-        return Core.isElement(target) && DOM._is(target, selector) ? target : DOM._parents(target, function (parent) {
-          return Core.isElement(target) && DOM._is(parent, selector);
+        return DOM._is(target, selector) ? target : DOM._parents(target, function (parent) {
+          return DOM._is(parent, selector);
         }, function (parent) {
           return DOM._isSame(node, parent);
         }, true).shift();
@@ -4028,6 +4028,41 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
   Object.assign(DOM.prototype, {
     /**
+     * Return all nodes connected to the DOM.
+     * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @returns {array} The filtered nodes.
+     */
+    connected: function connected(nodes) {
+      return this._nodeFilter(nodes, {
+        node: true,
+        shadow: true
+      }).filter(function (node) {
+        return DOM._isConnected(node);
+      });
+    },
+
+    /**
+     * Return all nodes considered equal to any of the other nodes.
+     * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} others The other node(s), or a query selector string.
+     * @returns {array} The filtered nodes.
+     */
+    equal: function equal(nodes, others) {
+      others = this._nodeFilter(others, {
+        node: true,
+        shadow: true
+      });
+      return this._nodeFilter(nodes, {
+        node: true,
+        shadow: true
+      }).filter(function (node) {
+        return others.some(function (other) {
+          return DOM._isEqual(node, other);
+        });
+      });
+    },
+
+    /**
      * Return all nodes matching a filter.
      * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
      * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
@@ -4060,35 +4095,21 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
     },
 
     /**
-     * Return all nodes with a descendent matching a filter.
-     * @param {string|array|HTMLElement|ShadowRoot|Document|HTMLCollection} nodes The input node(s), or a query selector string.
-     * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
+     * Return all "fixed" nodes.
+     * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
      * @returns {array} The filtered nodes.
      */
-    has: function has(nodes, filter) {
-      filter = this._parseFilterContains(filter);
-      return this._nodeFilter(nodes, {
-        shadow: true,
-        document: true
-      }).filter(function (node, index) {
-        return !filter || filter(node, index);
-      });
-    },
+    fixed: function fixed(nodes) {
+      var _this19 = this;
 
-    /**
-     * Return the first node with a descendent matching a filter.
-     * @param {string|array|HTMLElement|ShadowRoot|Document|HTMLCollection} nodes The input node(s), or a query selector string.
-     * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
-     * @returns {HTMLElement|ShadowRoot|Document} The filtered node.
-     */
-    hasOne: function hasOne(nodes, filter) {
-      filter = this._parseFilterContains(filter);
       return this._nodeFilter(nodes, {
-        shadow: true,
-        document: true
-      }).find(function (node, index) {
-        return !filter || filter(node, index);
-      }) || null;
+        node: true,
+        shadow: true
+      }).filter(function (node) {
+        return Core.isElement(node) && _this19._css(node, 'position') === 'fixed' || DOM._parents(node, function (parent) {
+          return _this19._css(parent, 'position') === 'fixed';
+        }, false, true).length;
+      });
     },
 
     /**
@@ -4104,21 +4125,6 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       }).filter(function (node) {
         return DOM._isHidden(node);
       });
-    },
-
-    /**
-     * Return the first hidden node.
-     * @param {string|array|HTMLElement|ShadowRoot|Document|Window|HTMLCollection} nodes The input node(s), or a query selector string.
-     * @returns {HTMLElement|ShadowRoot|Document|Window} The filtered node.
-     */
-    hiddenOne: function hiddenOne(nodes) {
-      return this._nodeFilter(nodes, {
-        shadow: true,
-        document: true,
-        window: true
-      }).find(function (node) {
-        return DOM._isHidden(node);
-      }) || null;
     },
 
     /**
@@ -4143,24 +4149,24 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
     },
 
     /**
-     * Return the first node not matching a filter.
+     * Return all nodes considered identical to any of the other nodes.
      * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
-     * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
-     * @returns {HTMLElement|ShadowRoot|Document} The filtered node.
+     * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} others The other node(s), or a query selector string.
+     * @returns {array} The filtered nodes.
      */
-    notOne: function notOne(nodes, filter) {
-      filter = this._parseFilter(filter);
-
-      if (!filter) {
-        return null;
-      }
-
+    same: function same(nodes, others) {
+      others = this._nodeFilter(others, {
+        node: true,
+        shadow: true
+      });
       return this._nodeFilter(nodes, {
         node: true,
         shadow: true
-      }).find(function (node, index) {
-        return !filter(node, index);
-      }) || null;
+      }).filter(function (node) {
+        return others.some(function (other) {
+          return DOM._isSame(node, other);
+        });
+      });
     },
 
     /**
@@ -4179,18 +4185,115 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
     },
 
     /**
-     * Return the first visible node.
-     * @param {string|array|HTMLElement|ShadowRoot|Document|Window|HTMLCollection} nodes The input node(s), or a query selector string.
-     * @returns {HTMLElement|ShadowRoot|Document|Window} The filtered node.
+     * Return all nodes with a CSS animation.
+     * @param {string|array|HTMLElement|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @returns {array} The filtered nodes.
      */
-    visibleOne: function visibleOne(nodes) {
+    withAnimation: function withAnimation(nodes) {
+      var _this20 = this;
+
+      return this._nodeFilter(nodes).filter(function (node) {
+        return _this20._hasAnimation(node);
+      });
+    },
+
+    /**
+     * Return all nodes with a specified attribute.
+     * @param {string|array|HTMLElement|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string} attribute The attribute name.
+     * @returns {array} The filtered nodes.
+     */
+    withAttribute: function withAttribute(nodes, attribute) {
+      return this._nodeFilter(nodes).filter(function (node) {
+        return DOM._hasAttribute(node, attribute);
+      });
+    },
+
+    /**
+     * Return all nodes with child elements.
+     * @param {string|array|HTMLElement|ShadowRoot|Document|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @returns {array} The filtered nodes.
+     */
+    withChildren: function withChildren(nodes) {
       return this._nodeFilter(nodes, {
+        shadow: true,
+        document: true
+      }).filter(function (node) {
+        return DOM._hasChildren(node);
+      });
+    },
+
+    /**
+     * Return all nodes with any of the specified classes.
+     * @param {string|array|HTMLElement|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {...string|string[]} classes The classes.
+     * @returns {array} The filtered nodes.
+     */
+    withClass: function withClass(nodes, classes) {
+      classes = DOM._parseClasses(classes);
+      return this._nodeFilter(nodes).filter(function (node) {
+        return DOM._hasClass(node, classes);
+      });
+    },
+
+    /**
+     * Return all nodes with custom data.
+     * @param {string|array|Node|HTMLElement|ShadowRoot|Document|Window|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string} [key] The data key.
+     * @returns {array} The filtered nodes.
+     */
+    withData: function withData(nodes, key) {
+      var _this21 = this;
+
+      return this._nodeFilter(nodes, {
+        node: true,
         shadow: true,
         document: true,
         window: true
-      }).find(function (node) {
-        return DOM._isVisible(node);
-      }) || null;
+      }).filter(function (node) {
+        return _this21._hasData(node, key);
+      });
+    },
+
+    /**
+     * Return all nodes with a descendent matching a filter.
+     * @param {string|array|HTMLElement|ShadowRoot|Document|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
+     * @returns {array} The filtered nodes.
+     */
+    withDescendent: function withDescendent(nodes, filter) {
+      filter = this._parseFilterContains(filter);
+      return this._nodeFilter(nodes, {
+        shadow: true,
+        document: true
+      }).filter(function (node, index) {
+        return !filter || filter(node, index);
+      });
+    },
+
+    /**
+     * Return all nodes with a specified property.
+     * @param {string|array|HTMLElement|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string} property The property name.
+     * @returns {array} The filtered nodes.
+     */
+    withProperty: function withProperty(nodes, property) {
+      return this._nodeFilter(nodes).filter(function (node) {
+        return DOM._hasProperty(node, property);
+      });
+    },
+
+    /**
+     * Return all nodes with a CSS transition.
+     * @param {string|array|HTMLElement|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @returns {array} The filtered nodes.
+     */
+    withTransition: function withTransition(nodes) {
+      var _this22 = this;
+
+      return this._nodeFilter(nodes).filter(function (node) {
+        return _this22._hasTransition(node);
+      });
     }
   });
   /**
@@ -4298,7 +4401,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         return DOM._has(nodes, result) ? [result] : [];
       }
 
-      return this.contains(nodes, result) ? [result] : [];
+      return this.hasDescendent(nodes, result) ? [result] : [];
     },
 
     /**
@@ -4450,7 +4553,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         return DOM._has(nodes, result) ? result : null;
       }
 
-      return this.contains(nodes, result) ? result : null;
+      return this.hasDescendent(nodes, result) ? result : null;
     },
 
     /**
@@ -5253,7 +5356,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
       if (Core.isString(filter)) {
         return function (node) {
-          return Core.isElement(node) && DOM._is(node, filter);
+          return DOM._is(node, filter);
         };
       }
 
@@ -5283,7 +5386,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
      * @returns {DOM~filterCallback} The node contains filter callback.
      */
     _parseFilterContains: function _parseFilterContains(filter) {
-      var _this19 = this;
+      var _this23 = this;
 
       if (!filter) {
         return false;
@@ -5295,7 +5398,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
       if (Core.isString(filter)) {
         return function (node) {
-          return !!_this19.findOne(filter, node);
+          return !!_this23.findOne(filter, node);
         };
       }
 
@@ -5584,31 +5687,15 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
   Object.assign(DOM.prototype, {
     /**
-     * Returns true if any of the nodes contains a descendent matching a filter.
-     * @param {string|array|HTMLElement|ShadowRoot|Document|HTMLCollection} nodes The input node(s), or a query selector string.
-     * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
-     * @returns {Boolean} TRUE if any of the nodes contains a descendent matching the filter, otherwise FALSE.
-     */
-    contains: function contains(nodes, filter) {
-      filter = this._parseFilterContains(filter);
-      return this._nodeFilter(nodes, {
-        shadow: true,
-        document: true
-      }).some(function (node) {
-        return !filter || filter(node);
-      });
-    },
-
-    /**
      * Returns true if any of the nodes has a CSS animation.
      * @param {string|array|HTMLElement|HTMLCollection} nodes The input node(s), or a query selector string.
      * @returns {Boolean} TRUE if any of the nodes has a CSS animation, otherwise FALSE.
      */
     hasAnimation: function hasAnimation(nodes) {
-      var _this20 = this;
+      var _this24 = this;
 
       return this._nodeFilter(nodes).some(function (node) {
-        return !!parseFloat(_this20._css(node, 'animation-duration'));
+        return _this24._hasAnimation(node);
       });
     },
 
@@ -5620,7 +5707,21 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
      */
     hasAttribute: function hasAttribute(nodes, attribute) {
       return this._nodeFilter(nodes).some(function (node) {
-        return node.hasAttribute(attribute);
+        return DOM._hasAttribute(node, attribute);
+      });
+    },
+
+    /**
+     * Returns true if any of the nodes has child elements.
+     * @param {string|array|HTMLElement|ShadowRoot|Document|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @returns {Boolean} TRUE if the any of the nodes has child elements, otherwise FALSE.
+     */
+    hasChildren: function hasChildren(nodes) {
+      return this._nodeFilter(nodes, {
+        shadow: true,
+        document: true
+      }).some(function (node) {
+        return DOM._hasChildren(node);
       });
     },
 
@@ -5637,9 +5738,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
       classes = DOM._parseClasses(classes);
       return this._nodeFilter(nodes).some(function (node) {
-        return classes.some(function (className) {
-          return node.classList.contains(className);
-        });
+        return DOM._hasClass(node, classes);
       });
     },
 
@@ -5650,7 +5749,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
      * @returns {Boolean} TRUE if any of the nodes has custom data, otherwise FALSE.
      */
     hasData: function hasData(nodes, key) {
-      var _this21 = this;
+      var _this25 = this;
 
       return this._nodeFilter(nodes, {
         node: true,
@@ -5658,7 +5757,23 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         document: true,
         window: true
       }).some(function (node) {
-        return _this21._data.has(node) && (!key || _this21._data.get(node).hasOwnProperty(key));
+        return _this25._hasData(node, key);
+      });
+    },
+
+    /**
+     * Returns true if any of the nodes contains a descendent matching a filter.
+     * @param {string|array|HTMLElement|ShadowRoot|Document|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
+     * @returns {Boolean} TRUE if any of the nodes contains a descendent matching the filter, otherwise FALSE.
+     */
+    hasDescendent: function hasDescendent(nodes, filter) {
+      filter = this._parseFilterContains(filter);
+      return this._nodeFilter(nodes, {
+        shadow: true,
+        document: true
+      }).some(function (node) {
+        return !filter || filter(node);
       });
     },
 
@@ -5670,7 +5785,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
      */
     hasProperty: function hasProperty(nodes, property) {
       return this._nodeFilter(nodes).some(function (node) {
-        return node.hasOwnProperty(property);
+        return DOM._hasProperty(node, property);
       });
     },
 
@@ -5680,10 +5795,10 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
      * @returns {Boolean} TRUE if any of the nodes has a CSS transition, otherwise FALSE.
      */
     hasTransition: function hasTransition(nodes) {
-      var _this22 = this;
+      var _this26 = this;
 
       return this._nodeFilter(nodes).some(function (node) {
-        return !!parseFloat(_this22._css(node, 'transition-duration'));
+        return _this26._hasTransition(node);
       });
     },
 
@@ -5739,19 +5854,19 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
     },
 
     /**
-     * Returns true if any of the elements or a parent of any of the elements is "fixed".
+     * Returns true if any of the nodes or a parent of any of the nodes is "fixed".
      * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
      * @returns {Boolean} TRUE if any of the nodes is "fixed", otherwise FALSE.
      */
     isFixed: function isFixed(nodes) {
-      var _this23 = this;
+      var _this27 = this;
 
       return this._nodeFilter(nodes, {
         node: true,
         shadow: true
       }).some(function (node) {
-        return Core.isElement(node) && _this23._css(node, 'position') === 'fixed' || DOM._parents(node, function (parent) {
-          return _this23._css(parent, 'position') === 'fixed';
+        return Core.isElement(node) && _this27._css(node, 'position') === 'fixed' || DOM._parents(node, function (parent) {
+          return _this27._css(parent, 'position') === 'fixed';
         }, false, true).length;
       });
     },
@@ -5786,7 +5901,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         node: true,
         shadow: true
       }).some(function (node) {
-        return others.find(function (other) {
+        return others.some(function (other) {
           return DOM._isSame(node, other);
         });
       });
@@ -5806,6 +5921,34 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       }).some(function (node) {
         return DOM._isVisible(node);
       });
+    },
+
+    /**
+     * Returns true if a single node has a CSS animation.
+     * @param {HTMLElement} node The input node.
+     * @returns {Boolean} TRUE if the node has a CSS animation, otherwise FALSE.
+     */
+    _hasAnimation: function _hasAnimation(node) {
+      return !!parseFloat(this._css(node, 'animation-duration'));
+    },
+
+    /**
+     * Returns true if a single node has custom data.
+     * @param {Node|HTMLElement|ShadowRoot|Document|Window} node The input node.
+     * @param {string} [key] The data key.
+     * @returns {Boolean} TRUE if the node has custom data, otherwise FALSE.
+     */
+    _hasData: function _hasData(node, key) {
+      return this._data.has(node) && (!key || this._data.get(node).hasOwnProperty(key));
+    },
+
+    /**
+     * Returns true if a single node has a CSS transition.
+     * @param {HTMLElement} node The input node.
+     * @returns {Boolean} TRUE if the has a CSS transition, otherwise FALSE.
+     */
+    _hasTransiton: function _hasTransiton(node) {
+      return !!parseFloat(this._css(node, 'transition-duration'));
     }
   });
   /**
@@ -5831,7 +5974,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
      * @returns {*} The result of the callback.
      */
     forceShow: function forceShow(nodes, callback) {
-      var _this24 = this;
+      var _this28 = this;
 
       var node = this._nodeFind(nodes, {
         node: true,
@@ -5855,7 +5998,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       }
 
       Core.merge(elements, DOM._parents(node, function (parent) {
-        return Core.isElement(parent) && _this24._css(parent, 'display') === 'none';
+        return Core.isElement(parent) && _this28._css(parent, 'display') === 'none';
       }));
       var hidden = new Map();
 
@@ -5940,7 +6083,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
     },
 
     /**
-     * Normalize nodes (remove empty text nodes, and join neighbouring text nodes).
+     * Normalize nodes (remove empty text nodes, and join adjacent text nodes).
      * @param {string|array|Node|NodeList|HTMLElement|HTMLCollection|ShadowRoot|Document} nodes The input node(s), or a query selector string.
      */
     normalize: function normalize(nodes) {
@@ -5990,13 +6133,13 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
      * @returns {array} The serialized array.
      */
     serializeArray: function serializeArray(nodes) {
-      var _this25 = this;
+      var _this29 = this;
 
       return this._nodeFilter(nodes, {
         shadow: true
       }).reduce(function (values, node) {
-        if (Core.isShadow(node) || DOM._is(node, 'form')) {
-          return values.concat(_this25.serializeArray(DOM._findBySelector('input, select, textarea', node)));
+        if (DOM._is(node, 'form') || Core.isShadow(node)) {
+          return values.concat(_this29.serializeArray(DOM._findBySelector('input, select, textarea', node)));
         }
 
         if (DOM._is(node, '[disabled], input[type=submit], input[type=reset], input[type=file], input[type=radio]:not(:checked), input[type=checkbox]:not(:checked)')) {
@@ -6531,17 +6674,17 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
      * @returns {string} The URI-encoded attribute string.
      */
     _parseParams: function _parseParams(data) {
-      var _this26 = this;
+      var _this30 = this;
 
       var values = [];
 
       if (Core.isArray(data)) {
         values = data.map(function (value) {
-          return _this26._parseParam(value.name, value.value);
+          return _this30._parseParam(value.name, value.value);
         });
       } else if (Core.isObject(data)) {
         values = Object.keys(data).map(function (key) {
-          return _this26._parseParam(key, data[key]);
+          return _this30._parseParam(key, data[key]);
         });
       }
 
@@ -6555,17 +6698,17 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
      * @returns {string|array} The parsed attributes.
      */
     _parseParam: function _parseParam(key, value) {
-      var _this27 = this;
+      var _this31 = this;
 
       if (Core.isArray(value)) {
         return value.map(function (val) {
-          return _this27._parseParam(key, val);
+          return _this31._parseParam(key, val);
         }).flat();
       }
 
       if (Core.isObject(value)) {
         return Object.keys(value).map(function (subKey) {
-          return _this27._parseParam(key + '[' + subKey + ']', value[subKey]);
+          return _this31._parseParam(key + '[' + subKey + ']', value[subKey]);
         }).flat();
       }
 
@@ -7007,10 +7150,10 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
      * @returns {HTMLElement} The deepest node.
      */
     _deepest: function _deepest(node) {
-      var _this28 = this;
+      var _this32 = this;
 
       return Core.merge([], this._findBySelector('*', node)).find(function (node) {
-        return !_this28._hasChildren(node);
+        return !_this32._hasChildren(node);
       }) || node;
     },
 
@@ -7324,7 +7467,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
     }
   });
   /**
-   * DOM (Static) Filter
+   * DOM (Static) Tests
    */
 
   Object.assign(DOM, {
@@ -7339,6 +7482,16 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
     },
 
     /**
+     * Returns true if a single node has a specified attribute.
+     * @param {HTMLElement} node The input node.
+     * @param {string} attribute The attribute name.
+     * @returns {Boolean} TRUE if the node has the attribute, otherwise FALSE.
+     */
+    _hasAttribute: function _hasAttribute(node, attribute) {
+      return node.hasAttribute(attribute);
+    },
+
+    /**
      * Returns true if a single node has child elements.
      * @param {HTMLElement|ShadowRoot|Document} node The input node.
      * @returns {Boolean} TRUE if the node has child elements, otherwise FALSE.
@@ -7348,13 +7501,35 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
     },
 
     /**
+     * Returns true if a single node has any of the specified classes.
+     * @param {HTMLElement} node The input node.
+     * @param {string[]} classes The classes.
+     * @returns {Boolean} TRUE if the node has any of the classes, otherwise FALSE.
+     */
+    _hasClass: function _hasClass(node, classes) {
+      return classes.some(function (className) {
+        return node.classList.contains(className);
+      });
+    },
+
+    /**
+     * Returns true if a single node has a specified property.
+     * @param {HTMLElement} node The input node.
+     * @param {string} property The property name.
+     * @returns {Boolean} TRUE if the node has the property, otherwise FALSE.
+     */
+    _hasProperty: function _hasProperty(node, property) {
+      return node.hasOwnProperty(property);
+    },
+
+    /**
      * Returns true if a single node matches a query selector.
      * @param {HTMLElement} node The input node.
      * @param {string} selector The query selector.
      * @returns {Boolean} TRUE if the node matches the selector, otherwise FALSE.
      */
     _is: function _is(node, selector) {
-      return node.matches(selector);
+      return Core.isElement(node) && node.matches(selector);
     },
 
     /**

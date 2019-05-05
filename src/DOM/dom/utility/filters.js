@@ -121,9 +121,7 @@ Object.assign(DOM.prototype, {
         }
 
         if (Core.isString(filter)) {
-            return node =>
-                Core.isElement(node) &&
-                DOM._is(node, filter);
+            return node => DOM._is(node, filter);
         }
 
         if (Core.isNode(filter) || Core.isShadow(filter)) {

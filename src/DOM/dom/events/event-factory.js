@@ -114,11 +114,11 @@ Object.assign(DOM.prototype, {
      */
     _getDelegateMatchFactory(node, selector) {
         return target =>
-            Core.isElement(target) && DOM._is(target, selector) ?
+            DOM._is(target, selector) ?
                 target :
                 DOM._parents(
                     target,
-                    parent => Core.isElement(target) && DOM._is(parent, selector),
+                    parent => DOM._is(parent, selector),
                     parent => DOM._isSame(node, parent),
                     true
                 ).shift();

@@ -1,5 +1,5 @@
 /**
- * DOM (Static) Filter
+ * DOM (Static) Tests
  */
 
 Object.assign(DOM, {
@@ -15,6 +15,16 @@ Object.assign(DOM, {
     },
 
     /**
+     * Returns true if a single node has a specified attribute.
+     * @param {HTMLElement} node The input node.
+     * @param {string} attribute The attribute name.
+     * @returns {Boolean} TRUE if the node has the attribute, otherwise FALSE.
+     */
+    _hasAttribute(node, attribute) {
+        return node.hasAttribute(attribute);
+    },
+
+    /**
      * Returns true if a single node has child elements.
      * @param {HTMLElement|ShadowRoot|Document} node The input node.
      * @returns {Boolean} TRUE if the node has child elements, otherwise FALSE.
@@ -24,13 +34,35 @@ Object.assign(DOM, {
     },
 
     /**
+     * Returns true if a single node has any of the specified classes.
+     * @param {HTMLElement} node The input node.
+     * @param {string[]} classes The classes.
+     * @returns {Boolean} TRUE if the node has any of the classes, otherwise FALSE.
+     */
+    _hasClass(node, classes) {
+        return classes.some(className =>
+            node.classList.contains(className)
+        );
+    },
+
+    /**
+     * Returns true if a single node has a specified property.
+     * @param {HTMLElement} node The input node.
+     * @param {string} property The property name.
+     * @returns {Boolean} TRUE if the node has the property, otherwise FALSE.
+     */
+    _hasProperty(node, property) {
+        return node.hasOwnProperty(property);
+    },
+
+    /**
      * Returns true if a single node matches a query selector.
      * @param {HTMLElement} node The input node.
      * @param {string} selector The query selector.
      * @returns {Boolean} TRUE if the node matches the selector, otherwise FALSE.
      */
     _is(node, selector) {
-        return node.matches(selector);
+        return Core.isElement(node) && node.matches(selector);
     },
 
     /**
