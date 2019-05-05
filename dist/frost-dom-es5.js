@@ -4163,7 +4163,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         document: true,
         window: true
       }).filter(function (node) {
-        return DOM._isHidden(node);
+        return !DOM._isVisible(node);
       });
     },
 

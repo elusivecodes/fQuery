@@ -81,7 +81,7 @@ Object.assign(DOM.prototype, {
      */
     hidden(nodes) {
         return this._nodeFilter(nodes, { fragment: true, shadow: true, document: true, window: true })
-            .filter(node => DOM._isHidden(node));
+            .filter(node => !DOM._isVisible(node));
     },
 
     /**
