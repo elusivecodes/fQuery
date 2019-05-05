@@ -886,7 +886,7 @@ dom.ready(callback);
 
 **Trigger Event**
 
-Trigger an event on each node.
+Trigger events on each node.
 
 - `nodes` is a query selector string, a *HTMLElement*, *DocumentFragment*, *ShadowRoot*, *Document*, *Window*, *HTMLCollection* or an array of nodes.
 - `events` is a space-separated string of events to trigger on the nodes.
@@ -900,7 +900,7 @@ dom.triggerEvent(nodes, events, data);
 
 **Add Event**
 
-Add an event to each node.
+Add events to each node.
 
 - `nodes` is a query selector string, a *HTMLElement*, *DocumentFragment*, *ShadowRoot*, *Document*, *Window*, *HTMLCollection* or an array of nodes.
 - `events` is a space-separated string of events to attach to the nodes.
@@ -912,7 +912,7 @@ dom.addEvent(nodes, events, callback);
 
 **Add Event Delegate**
 
-Add a delegated event to each node.
+Add delegated events to each node.
 
 - `nodes` is a query selector string, a *HTMLElement*, *DocumentFragment*, *ShadowRoot*, *Document*, *Window*, *HTMLCollection* or an array of nodes.
 - `events` is a space-separated string of events to attach to the nodes.
@@ -925,7 +925,7 @@ dom.addEventDelegate(nodes, events, delegate, callback);
 
 **Add Event Delegate Once**
 
-Add a delegated event to each node.
+Add self-destructing delegated events to each node.
 
 - `nodes` is a query selector string, a *HTMLElement*, *DocumentFragment*, *ShadowRoot*, *Document*, *Window*, *HTMLCollection* or an array of nodes.
 - `events` is a space-separated string of events to attach to the nodes.
@@ -938,7 +938,7 @@ dom.addEventDelegateOnce(nodes, events, delegate, callback);
 
 **Add Event Once**
 
-Add a self-destructing event to each node.
+Add self-destructing events to each node.
 
 - `nodes` is a query selector string, a *HTMLElement*, *DocumentFragment*, *ShadowRoot*, *Document*, *Window*, *HTMLCollection* or an array of nodes.
 - `events` is a space-separated string of events to attach to the nodes.
