@@ -21,7 +21,7 @@
 
 /**
  * @callback DOM~nodeCallback
- * @param {Node|HTMLElement|ShadowRoot|Document|Window} node The input node.
+ * @param {Node|HTMLElement|DocumentFragment|ShadowRoot|Document|Window} node The input node.
  */
 
 /**

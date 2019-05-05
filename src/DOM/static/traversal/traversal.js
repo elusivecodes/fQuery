@@ -6,7 +6,7 @@ Object.assign(DOM, {
 
     /**
      * Return all children of a single node (optionally matching a filter).
-     * @param {HTMLElement|ShadowRoot|Document} node The input node.
+     * @param {HTMLElement|DocumentFragment|ShadowRoot|Document} node The input node.
      * @param {DOM~filterCallback} [filter] The filter function.
      * @param {Boolean} [first=false] Whether to only return the first matching node for each node.
      * @param {Boolean} [elementsOnly=false] Whether to only return element nodes.
@@ -35,7 +35,7 @@ Object.assign(DOM, {
 
     /**
      * Return the deepest child node for a single node.
-     * @param {HTMLElement|ShadowRoot|Document} node The input node.
+     * @param {HTMLElement|DocumentFragment|ShadowRoot|Document} node The input node.
      * @returns {HTMLElement} The deepest node.
      */
     _deepest(node) {
@@ -49,7 +49,7 @@ Object.assign(DOM, {
 
     /**
      * Return the next sibling for a single node (optionally matching a filter).
-     * @param {Node|HTMLElement|ShadowRoot} node The input node.
+     * @param {Node|HTMLElement|DocumentFragment|ShadowRoot} node The input node.
      * @param {DOM~filterCallback} [filter] The filter function.
      * @returns {array} The matching nodes.
      */
@@ -73,7 +73,7 @@ Object.assign(DOM, {
 
     /**
      * Return all next siblings for a single node (optionally matching a filter, and before a limit).
-     * @param {Node|HTMLElement|ShadowRoot} node The input node.
+     * @param {Node|HTMLElement|DocumentFragment|ShadowRoot} node The input node.
      * @param {DOM~filterCallback} [filter] The filter function.
      * @param {DOM~filterCallback} [limit] The limit function.
      * @param {Boolean} [first=false] Whether to only return the first matching node for each node.
@@ -103,7 +103,7 @@ Object.assign(DOM, {
 
     /**
      * Return the parent of a single node (optionally matching a filter).
-     * @param {Node|HTMLElement|ShadowRoot} node The input node.
+     * @param {Node|HTMLElement|DocumentFragment|ShadowRoot} node The input node.
      * @param {DOM~filterCallback} [filter] The filter function.
      * @returns {array} The matching nodes.
      */
@@ -125,7 +125,7 @@ Object.assign(DOM, {
 
     /**
      * Return all parents of a single node (optionally matching a filter, and before a limit).
-     * @param {Node|HTMLElement|ShadowRoot} node The input node.
+     * @param {Node|HTMLElement|DocumentFragment|ShadowRoot} node The input node.
      * @param {DOM~filterCallback} [filter] The filter function.
      * @param {DOM~filterCallback} [limit] The limit function.
      * @param {Boolean} [first=false] Whether to only return the first matching node for each node.
@@ -159,7 +159,7 @@ Object.assign(DOM, {
 
     /**
      * Return the previous sibling for a single node (optionally matching a filter).
-     * @param {Node|HTMLElement|ShadowRoot} node The input node.
+     * @param {Node|HTMLElement|DocumentFragment|ShadowRoot} node The input node.
      * @param {DOM~filterCallback} [filter] The filter function.
      * @returns {array} The matching nodes.
      */
@@ -183,7 +183,7 @@ Object.assign(DOM, {
 
     /**
      * Return all previous siblings for a single node (optionally matching a filter, and before a limit).
-     * @param {Node|HTMLElement|ShadowRoot} node The input node.
+     * @param {Node|HTMLElement|DocumentFragment|ShadowRoot} node The input node.
      * @param {DOM~filterCallback} [filter] The filter function.
      * @param {DOM~filterCallback} [limit] The limit function.
      * @param {Boolean} [first=false] Whether to only return the first matching node for each node.
@@ -213,7 +213,7 @@ Object.assign(DOM, {
 
     /**
      * Return all siblings for a single node (optionally matching a filter).
-     * @param {Node|HTMLElement|ShadowRoot} node The input node.
+     * @param {Node|HTMLElement|DocumentFragment|ShadowRoot} node The input node.
      * @param {DOM~filterCallback} [filter] The filter function.
      * @param {Boolean} [elementsOnly=true] Whether to only return element nodes.
      * @returns {array} The matching nodes.

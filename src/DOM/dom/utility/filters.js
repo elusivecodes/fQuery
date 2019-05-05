@@ -6,7 +6,7 @@ Object.assign(DOM.prototype, {
 
     /**
      * Return a filtered array of nodes.
-     * @param {string|array|Node|NodeList|HTMLElement|HTMLCollection|ShadowRoot|Document|Window} nodes The input node(s), or a query selector or HTML string.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|NodeList|HTMLCollection} nodes The input node(s), or a query selector or HTML string.
      * @param {object} [options] The options for filtering.
      * @param {Boolean} [options.node=false] Whether to allow text and comment nodes.
      * @param {Boolean} [options.fragment=false] Whether to allow DocumentFragment.
@@ -14,7 +14,7 @@ Object.assign(DOM.prototype, {
      * @param {Boolean} [options.document=false] Whether to allow Document.
      * @param {Boolean} [options.window=false] Whether to allow Window.
      * @param {Boolean} [options.html=false] Whether to allow HTML strings.
-     * @param {HTMLElement|ShadowRoot|Document} [options.context=this._context] The Document context.
+     * @param {HTMLElement|DocumentFragment|ShadowRoot|Document} [options.context=this._context] The Document context.
      * @returns {array} The filtered array of nodes.
      */
     _nodeFilter(nodes, options = {}) {
@@ -64,7 +64,7 @@ Object.assign(DOM.prototype, {
 
     /**
      * Return the first node matching a filter.
-     * @param {string|array|Node|NodeList|HTMLElement|HTMLCollection|ShadowRoot|Document|Window} nodes The input node(s), or a query selector or HTML string.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|NodeList|HTMLCollection} nodes The input node(s), or a query selector or HTML string.
      * @param {object} [options] The options for filtering.
      * @param {Boolean} [options.node=false] Whether to allow text and comment nodes.
      * @param {Boolean} [options.fragment=false] Whether to allow DocumentFragment.
@@ -73,7 +73,7 @@ Object.assign(DOM.prototype, {
      * @param {Boolean} [options.window=false] Whether to allow Window.
      * @param {Boolean} [options.html=false] Whether to allow HTML strings.
      * @param {HTMLElement|Document} [options.context=this._context] The Document context.
-     * @returns {Node|HTMLElement|ShadowRoot|Document|Window} The matching node.
+     * @returns {Node|HTMLElement|DocumentFragment|ShadowRoot|Document|Window} The matching node.
      */
     _nodeFind(nodes, options = {}) {
         if (Core.isString(nodes)) {
@@ -108,7 +108,7 @@ Object.assign(DOM.prototype, {
 
     /**
      * Return a node filter callback.
-     * @param {string|array|Node|NodeList|HTMLElement|HTMLCollection|ShadowRoot|DOM~filterCallback} filter The filter node(s), a query selector string or custom filter function.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} filter The filter node(s), a query selector string or custom filter function.
      * @returns {DOM~filterCallback} The node filter callback.
      */
     _parseFilter(filter) {
@@ -124,11 +124,11 @@ Object.assign(DOM.prototype, {
             return node => DOM._is(node, filter);
         }
 
-        if (Core.isNode(filter) || Core.isShadow(filter)) {
+        if (Core.isNode(filter) || Core.isFragment(filter) || Core.isShadow(filter)) {
             return node => DOM._isSame(node, filter);
         }
 
-        filter = this._nodeFilter(filter, { node: true, shadow: true });
+        filter = this._nodeFilter(filter, { node: true, fragment: true, shadow: true });
         if (filter.length) {
             return node => filter.includes(node);
         }
@@ -138,7 +138,7 @@ Object.assign(DOM.prototype, {
 
     /**
      * Return a node contains filter callback.
-     * @param {string|array|Node|NodeList|HTMLElement|HTMLCollection|ShadowRoot|DOM~filterCallback} filter The filter node(s), a query selector string or custom filter function.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} filter The filter node(s), a query selector string or custom filter function.
      * @returns {DOM~filterCallback} The node contains filter callback.
      */
     _parseFilterContains(filter) {
@@ -154,13 +154,13 @@ Object.assign(DOM.prototype, {
             return node => !!this.findOne(filter, node);
         }
 
-        if (Core.isNode(filter) || Core.isShadow(filter)) {
-            return node => DOM._has(node, filter);
+        if (Core.isNode(filter) || Core.isFragment(filter) || Core.isShadow(filter)) {
+            return node => DOM._contains(node, filter);
         }
 
-        filter = this._nodeFilter(filter, { node: true, shadow: true });
+        filter = this._nodeFilter(filter, { node: true, fragment: true, shadow: true });
         if (filter.length) {
-            return node => filter.some(other => DOM._has(node, other));
+            return node => filter.some(other => DOM._contains(node, other));
         }
 
         return false;

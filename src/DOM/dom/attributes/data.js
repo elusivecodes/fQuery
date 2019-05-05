@@ -6,11 +6,11 @@ Object.assign(DOM.prototype, {
 
     /**
      * Clone custom data from each node to each other node.
-     * @param {string|array|Node|HTMLElement|ShadowRoot|Document|Window|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
-     * @param {string|array|Node|HTMLElement|ShadowRoot|Document|Window|NodeList|HTMLCollection} others The other node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|NodeList|HTMLCollection} others The other node(s), or a query selector string.
      */
     cloneData(nodes, others) {
-        nodes = this._nodeFilter(nodes, { node: true, shadow: true, document: true, window: true });
+        nodes = this._nodeFilter(nodes, { node: true, fragment: true, shadow: true, document: true, window: true });
 
         for (const node of nodes) {
             this._cloneData(node, others);
@@ -19,12 +19,12 @@ Object.assign(DOM.prototype, {
 
     /**
      * Get custom data for the first node.
-     * @param {string|array|Node|HTMLElement|ShadowRoot|Document|Window|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
      * @param {string} [key] The data key.
      * @returns {*} The data value.
      */
     getData(nodes, key) {
-        const node = this._nodeFind(nodes, { node: true, shadow: true, document: true, window: true });
+        const node = this._nodeFind(nodes, { node: true, fragment: true, shadow: true, document: true, window: true });
 
         if (!node) {
             return;
@@ -35,11 +35,11 @@ Object.assign(DOM.prototype, {
 
     /**
      * Remove custom data from each node.
-     * @param {string|array|Node|HTMLElement|ShadowRoot|Document|Window|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
      * @param {string} [key] The data key.
      */
     removeData(nodes, key) {
-        nodes = this._nodeFilter(nodes, { node: true, shadow: true, document: true, window: true });
+        nodes = this._nodeFilter(nodes, { node: true, fragment: true, shadow: true, document: true, window: true });
 
         for (const node of nodes) {
             this._removeData(node, key);
@@ -48,12 +48,12 @@ Object.assign(DOM.prototype, {
 
     /**
      * Set custom data for each node.
-     * @param {string|array|Node|HTMLElement|ShadowRoot|Document|Window|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
      * @param {string|object} key The data key, or an object containing data.
      * @param {*} [value] The data value.
      */
     setData(nodes, key, value) {
-        nodes = this._nodeFilter(nodes, { node: true, shadow: true, document: true, window: true });
+        nodes = this._nodeFilter(nodes, { node: true, fragment: true, shadow: true, document: true, window: true });
 
         const data = DOM._parseData(key, value);
 
@@ -64,8 +64,8 @@ Object.assign(DOM.prototype, {
 
     /**
      * Clone custom data from a single node to each other node.
-     * @param {Node|HTMLElement|ShadowRoot|Document|Window} node The input node.
-     * @param {string|array|Node|HTMLElement|ShadowRoot|Document|Window|NodeList|HTMLCollection} others The other node(s), or a query selector string.
+     * @param {Node|HTMLElement|DocumentFragment|ShadowRoot|Document|Window} node The input node.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|NodeList|HTMLCollection} others The other node(s), or a query selector string.
      */
     _cloneData(node, others) {
         if (!this._data.has(node)) {
@@ -79,7 +79,7 @@ Object.assign(DOM.prototype, {
 
     /**
      * Get custom data for a single node.
-     * @param {Node|HTMLElement|ShadowRoot|Document|Window} node The input node.
+     * @param {Node|HTMLElement|DocumentFragment|ShadowRoot|Document|Window} node The input node.
      * @param {string} [key] The data key.
      * @returns {*} The data value.
      */
@@ -97,7 +97,7 @@ Object.assign(DOM.prototype, {
 
     /**
      * Remove custom data from a single node.
-     * @param {Node|HTMLElement|ShadowRoot|Document|Window} node The input node.
+     * @param {Node|HTMLElement|DocumentFragment|ShadowRoot|Document|Window} node The input node.
      * @param {string} [key] The data key.
      */
     _removeData(node, key) {
@@ -120,7 +120,7 @@ Object.assign(DOM.prototype, {
 
     /**
      * Set custom data for a single node.
-     * @param {Node|HTMLElement|ShadowRoot|Document|Window} node The input node.
+     * @param {Node|HTMLElement|DocumentFragment|ShadowRoot|Document|Window} node The input node.
      * @param {object} data An object containing data.
      */
     _setData(node, data) {

@@ -6,7 +6,7 @@ Object.assign(DOM, {
 
     /**
      * Insert each other node after the first node.
-     * @param {Node|HTMLElement|ShadowRoot} node The input node.
+     * @param {Node|HTMLElement|DocumentFragment|ShadowRoot} node The input node.
      * @param {array} others The other node(s).
      */
     _after(node, others) {
@@ -24,7 +24,7 @@ Object.assign(DOM, {
 
     /**
      * Append each other node to a single node.
-     * @param {HTMLElement|ShadowRoot|Document} node The input node.
+     * @param {HTMLElement|DocumentFragment|ShadowRoot|Document} node The input node.
      * @param {array} others The other node(s).
      */
     _append(node, others) {
@@ -35,7 +35,7 @@ Object.assign(DOM, {
 
     /**
      * Insert each other node before a single node.
-     * @param {Node|HTMLElement|ShadowRoot} node The input node.
+     * @param {Node|HTMLElement|DocumentFragment|ShadowRoot} node The input node.
      * @param {array} others The other node(s).
      */
     _before(node, others) {
@@ -53,7 +53,7 @@ Object.assign(DOM, {
 
     /**
      * Prepend each other node to a single node.
-     * @param {HTMLElement|ShadowRoot|Document} node The input node.
+     * @param {HTMLElement|DocumentFragment|ShadowRoot|Document} node The input node.
      * @param {array} others The other node(s).
      */
     _prepend(node, others) {

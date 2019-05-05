@@ -6,7 +6,7 @@ Object.assign(DOM, {
 
     /**
      * Detach a single node from the DOM.
-     * @param {Node|HTMLElement|ShadowRoot} node The input node.
+     * @param {Node|HTMLElement|DocumentFragment|ShadowRoot} node The input node.
      */
     _detach(node) {
         if (!node.parentNode) {

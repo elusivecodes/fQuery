@@ -7,7 +7,7 @@ Object.assign(DOM.prototype, {
     /**
      * Return all nodes matching a selector.
      * @param {string} selector The query selector.
-     * @param {string|array|HTMLElement|ShadowRoot|Document|HTMLCollection} [nodes=this._context] The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|HTMLCollection} [nodes=this._context] The input node(s), or a query selector string.
      * @returns {array} The matching nodes.
      */
     find(selector, nodes = this._context) {
@@ -37,15 +37,15 @@ Object.assign(DOM.prototype, {
     /**
      * Return all nodes with a specific class.
      * @param {string} className The class name.
-     * @param {string|array|HTMLElement|ShadowRoot|Document|HTMLCollection} [nodes=this._context] The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|HTMLCollection} [nodes=this._context] The input node(s), or a query selector string.
      * @returns {array} The matching nodes.
      */
     findByClass(className, nodes = this._context) {
-        if (Core.isDocument(nodes) || Core.isElement(nodes) || Core.isShadow(nodes)) {
+        if (Core.isDocument(nodes) || Core.isElement(nodes) || Core.isFragment(nodes) || Core.isShadow(nodes)) {
             return Core.merge([], DOM._findByClass(className, nodes));
         }
 
-        nodes = this._nodeFilter(nodes, { shadow: true, document: true });
+        nodes = this._nodeFilter(nodes, { fragment: true, shadow: true, document: true });
 
         const results = [];
 
@@ -64,7 +64,7 @@ Object.assign(DOM.prototype, {
     /**
      * Return all nodes with a specific ID.
      * @param {string} id The id.
-     * @param {string|array|HTMLElement|ShadowRoot|Document|HTMLCollection} [nodes=this._context] The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|HTMLCollection} [nodes=this._context] The input node(s), or a query selector string.
      * @returns {array} The matching nodes.
      */
     findById(id, nodes = this._context) {
@@ -78,8 +78,8 @@ Object.assign(DOM.prototype, {
             return [result];
         }
 
-        if (Core.isElement(nodes) || Core.isShadow(nodes)) {
-            return DOM._has(nodes, result) ?
+        if (Core.isElement(nodes) || Core.isFragment(nodes) || Core.isShadow(nodes)) {
+            return DOM._contains(nodes, result) ?
                 [result] :
                 [];
         }
@@ -92,15 +92,15 @@ Object.assign(DOM.prototype, {
     /**
      * Return all nodes with a specific tag.
      * @param {string} tagName The tag name.
-     * @param {string|array|HTMLElement|ShadowRoot|Document|HTMLCollection} [nodes=this._context] The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|HTMLCollection} [nodes=this._context] The input node(s), or a query selector string.
      * @returns {array} The matching nodes.
      */
     findByTag(tagName, nodes = this._context) {
-        if (Core.isDocument(nodes) || Core.isElement(nodes) || Core.isShadow(nodes)) {
+        if (Core.isDocument(nodes) || Core.isElement(nodes) || Core.isFragment(nodes) || Core.isShadow(nodes)) {
             return Core.merge([], DOM._findByTag(tagName, nodes));
         }
 
-        nodes = this._nodeFilter(nodes, { shadow: true, document: true });
+        nodes = this._nodeFilter(nodes, { fragment: true, shadow: true, document: true });
 
         const results = [];
 
@@ -119,7 +119,7 @@ Object.assign(DOM.prototype, {
     /**
      * Return a single node matching a selector.
      * @param {string} selector The query selector.
-     * @param {string|array|HTMLElement|ShadowRoot|Document|HTMLCollection} [nodes=this._context] The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|HTMLCollection} [nodes=this._context] The input node(s), or a query selector string.
      * @returns {HTMLElement} The matching node.
      */
     findOne(selector, nodes = this._context) {
@@ -149,15 +149,15 @@ Object.assign(DOM.prototype, {
     /**
      * Return a single node with a specific class.
      * @param {string} className The class name.
-     * @param {string|array|HTMLElement|ShadowRoot|Document|HTMLCollection} [nodes=this._context] The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|HTMLCollection} [nodes=this._context] The input node(s), or a query selector string.
      * @returns {HTMLElement} The matching node.
      */
     findOneByClass(className, nodes = this._context) {
-        if (Core.isDocument(nodes) || Core.isElement(nodes) || Core.isShadow(nodes)) {
+        if (Core.isDocument(nodes) || Core.isElement(nodes) || Core.isFragment(nodes) || Core.isShadow(nodes)) {
             return DOM._findByClass(className, nodes).item(0);
         }
 
-        nodes = this._nodeFilter(nodes, { shadow: true, document: true });
+        nodes = this._nodeFilter(nodes, { fragment: true, shadow: true, document: true });
 
         for (const node of nodes) {
             const result = DOM._findByClass(className, node).item(0);
@@ -172,7 +172,7 @@ Object.assign(DOM.prototype, {
     /**
      * Return a single node with a specific ID.
      * @param {string} id The id.
-     * @param {string|array|HTMLElement|ShadowRoot|Document|HTMLCollection} [nodes=this._context] The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|HTMLCollection} [nodes=this._context] The input node(s), or a query selector string.
      * @returns {HTMLElement} The matching element.
      */
     findOneById(id, nodes = this._context) {
@@ -186,8 +186,8 @@ Object.assign(DOM.prototype, {
             return result;
         }
 
-        if (Core.isElement(nodes) || Core.isShadow(nodes)) {
-            return DOM._has(nodes, result) ?
+        if (Core.isElement(nodes) || Core.isFragment(nodes) || Core.isShadow(nodes)) {
+            return DOM._contains(nodes, result) ?
                 result :
                 null;
         }
@@ -200,15 +200,15 @@ Object.assign(DOM.prototype, {
     /**
      * Return a single node with a specific tag.
      * @param {string} tagName The tag name.
-     * @param {string|array|HTMLElement|ShadowRoot|Document|HTMLCollection} [nodes=this._context] The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|HTMLCollection} [nodes=this._context] The input node(s), or a query selector string.
      * @returns {HTMLElement} The matching node.
      */
     findOneByTag(tagName, nodes = this._context) {
-        if (Core.isDocument(nodes) || Core.isElement(nodes) || Core.isShadow(nodes)) {
+        if (Core.isDocument(nodes) || Core.isElement(nodes) || Core.isFragment(nodes) || Core.isShadow(nodes)) {
             return DOM._findByTag(tagName, nodes).item(0);
         }
 
-        nodes = this._nodeFilter(nodes, { shadow: true, document: true });
+        nodes = this._nodeFilter(nodes, { fragment: true, shadow: true, document: true });
 
         for (const node of nodes) {
             const result = DOM._findByTag(tagName, node).item(0);
@@ -260,15 +260,15 @@ Object.assign(DOM.prototype, {
     /**
      * Return all nodes matching a standard CSS selector.
      * @param {string} selector The query selector.
-     * @param {string|array|HTMLElement|ShadowRoot|Document|HTMLCollection} [nodes=this._context] The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|HTMLCollection} [nodes=this._context] The input node(s), or a query selector string.
      * @returns {array} The matching nodes.
      */
     _findBySelector(selector, nodes = this._context) {
-        if (Core.isDocument(nodes) || Core.isElement(nodes) || Core.isShadow(nodes)) {
+        if (Core.isDocument(nodes) || Core.isElement(nodes) || Core.isFragment(nodes) || Core.isShadow(nodes)) {
             return Core.merge([], DOM._findBySelector(selector, nodes));
         }
 
-        nodes = this._nodeFilter(nodes, { shadow: true, document: true });
+        nodes = this._nodeFilter(nodes, { fragment: true, shadow: true, document: true });
 
         const results = [];
 
@@ -321,15 +321,15 @@ Object.assign(DOM.prototype, {
     /**
      * Return a single node matching a standard CSS selector.
      * @param {string} selector The query selector.
-     * @param {string|array|HTMLElement|ShadowRoot|Document|HTMLCollection} [nodes=this._context] The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|HTMLCollection} [nodes=this._context] The input node(s), or a query selector string.
      * @returns {HTMLElement} The matching node.
      */
     _findOneBySelector(selector, nodes = this._context) {
-        if (Core.isDocument(nodes) || Core.isElement(nodes) || Core.isShadow(nodes)) {
+        if (Core.isDocument(nodes) || Core.isElement(nodes) || Core.isFragment(nodes) || Core.isShadow(nodes)) {
             return DOM._findBySelector(selector, nodes).item(0);
         }
 
-        nodes = this._nodeFilter(nodes, { shadow: true, document: true });
+        nodes = this._nodeFilter(nodes, { fragment: true, shadow: true, document: true });
 
         for (const node of nodes) {
             const result = DOM._findOneBySelector(selector, node);

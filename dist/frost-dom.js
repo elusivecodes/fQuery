@@ -1331,11 +1331,11 @@
 
         /**
          * Clone custom data from each node to each other node.
-         * @param {string|array|Node|HTMLElement|ShadowRoot|Document|Window|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
-         * @param {string|array|Node|HTMLElement|ShadowRoot|Document|Window|NodeList|HTMLCollection} others The other node(s), or a query selector string.
+         * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+         * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|NodeList|HTMLCollection} others The other node(s), or a query selector string.
          */
         cloneData(nodes, others) {
-            nodes = this._nodeFilter(nodes, { node: true, shadow: true, document: true, window: true });
+            nodes = this._nodeFilter(nodes, { node: true, fragment: true, shadow: true, document: true, window: true });
 
             for (const node of nodes) {
                 this._cloneData(node, others);
@@ -1344,12 +1344,12 @@
 
         /**
          * Get custom data for the first node.
-         * @param {string|array|Node|HTMLElement|ShadowRoot|Document|Window|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+         * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
          * @param {string} [key] The data key.
          * @returns {*} The data value.
          */
         getData(nodes, key) {
-            const node = this._nodeFind(nodes, { node: true, shadow: true, document: true, window: true });
+            const node = this._nodeFind(nodes, { node: true, fragment: true, shadow: true, document: true, window: true });
 
             if (!node) {
                 return;
@@ -1360,11 +1360,11 @@
 
         /**
          * Remove custom data from each node.
-         * @param {string|array|Node|HTMLElement|ShadowRoot|Document|Window|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+         * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
          * @param {string} [key] The data key.
          */
         removeData(nodes, key) {
-            nodes = this._nodeFilter(nodes, { node: true, shadow: true, document: true, window: true });
+            nodes = this._nodeFilter(nodes, { node: true, fragment: true, shadow: true, document: true, window: true });
 
             for (const node of nodes) {
                 this._removeData(node, key);
@@ -1373,12 +1373,12 @@
 
         /**
          * Set custom data for each node.
-         * @param {string|array|Node|HTMLElement|ShadowRoot|Document|Window|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+         * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
          * @param {string|object} key The data key, or an object containing data.
          * @param {*} [value] The data value.
          */
         setData(nodes, key, value) {
-            nodes = this._nodeFilter(nodes, { node: true, shadow: true, document: true, window: true });
+            nodes = this._nodeFilter(nodes, { node: true, fragment: true, shadow: true, document: true, window: true });
 
             const data = DOM._parseData(key, value);
 
@@ -1389,8 +1389,8 @@
 
         /**
          * Clone custom data from a single node to each other node.
-         * @param {Node|HTMLElement|ShadowRoot|Document|Window} node The input node.
-         * @param {string|array|Node|HTMLElement|ShadowRoot|Document|Window|NodeList|HTMLCollection} others The other node(s), or a query selector string.
+         * @param {Node|HTMLElement|DocumentFragment|ShadowRoot|Document|Window} node The input node.
+         * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|NodeList|HTMLCollection} others The other node(s), or a query selector string.
          */
         _cloneData(node, others) {
             if (!this._data.has(node)) {
@@ -1404,7 +1404,7 @@
 
         /**
          * Get custom data for a single node.
-         * @param {Node|HTMLElement|ShadowRoot|Document|Window} node The input node.
+         * @param {Node|HTMLElement|DocumentFragment|ShadowRoot|Document|Window} node The input node.
          * @param {string} [key] The data key.
          * @returns {*} The data value.
          */
@@ -1422,7 +1422,7 @@
 
         /**
          * Remove custom data from a single node.
-         * @param {Node|HTMLElement|ShadowRoot|Document|Window} node The input node.
+         * @param {Node|HTMLElement|DocumentFragment|ShadowRoot|Document|Window} node The input node.
          * @param {string} [key] The data key.
          */
         _removeData(node, key) {
@@ -1445,7 +1445,7 @@
 
         /**
          * Set custom data for a single node.
-         * @param {Node|HTMLElement|ShadowRoot|Document|Window} node The input node.
+         * @param {Node|HTMLElement|DocumentFragment|ShadowRoot|Document|Window} node The input node.
          * @param {object} data An object containing data.
          */
         _setData(node, data) {
@@ -2190,7 +2190,7 @@
 
         /**
          * Return a wrapped event callback that executes on a delegate selector.
-         * @param {HTMLElement|ShadowRoot|Document} node The input node.
+         * @param {HTMLElement|DocumentFragment|ShadowRoot|Document} node The input node.
          * @param {string} selector The delegate query selector.
          * @param {function} callback The event callback.
          * @returns {DOM~eventCallback} The delegated event callback.
@@ -2251,7 +2251,7 @@
 
         /**
          * Return a function for matching a delegate target to a standard selector.
-         * @param {HTMLElement|ShadowRoot|Document} node The input node.
+         * @param {HTMLElement|DocumentFragment|ShadowRoot|Document} node The input node.
          * @param {string} selector The delegate query selector.
          * @returns {DOM~delegateCallback} The callback for finding the matching delegate.
          */
@@ -2269,7 +2269,7 @@
 
         /**
          * Return a wrapped event callback that removes itself after execution.
-         * @param {HTMLElement|ShadowRoot|Document|Window} node The input node.
+         * @param {HTMLElement|DocumentFragment|ShadowRoot|Document|Window} node The input node.
          * @param {string} events The event names.
          * @param {string} delegate The delegate selector.
          * @param {DOM~eventCallback} callback The callback to execute.
@@ -2354,12 +2354,12 @@
 
         /**
          * Trigger events on each node.
-         * @param {string|array|HTMLElement|ShadowRoot|Document|Window|HTMLCollection} nodes The input node(s), or a query selector string.
+         * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|HTMLCollection} nodes The input node(s), or a query selector string.
          * @param {string} events The event names.
          * @param {object} [data] Additional data to attach to the event.
          */
         triggerEvent(nodes, events, data) {
-            nodes = this._nodeFilter(nodes, { shadow: true, document: true, window: true });
+            nodes = this._nodeFilter(nodes, { fragment: true, shadow: true, document: true, window: true });
 
             for (const node of nodes) {
                 DOM._triggerEvent(node, events, data);
@@ -2376,12 +2376,12 @@
 
         /**
          * Add events to each node.
-         * @param {string|array|HTMLElement|ShadowRoot|Document|Window|HTMLCollection} nodes The input node(s), or a query selector string.
+         * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|HTMLCollection} nodes The input node(s), or a query selector string.
          * @param {string} events The event names.
          * @param {DOM~eventCallback} callback The callback to execute.
          */
         addEvent(nodes, events, callback) {
-            nodes = this._nodeFilter(nodes, { shadow: true, document: true, window: true });
+            nodes = this._nodeFilter(nodes, { fragment: true, shadow: true, document: true, window: true });
 
             for (const node of nodes) {
                 this._addEvent(node, events, callback);
@@ -2390,13 +2390,13 @@
 
         /**
          * Add delegated events to each node.
-         * @param {string|array|HTMLElement|ShadowRoot|Document|Window|HTMLCollection} nodes The input node(s), or a query selector string.
+         * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|HTMLCollection} nodes The input node(s), or a query selector string.
          * @param {string} events The event names.
          * @param {string} delegate The delegate selector.
          * @param {DOM~eventCallback} callback The callback to execute.
          */
         addEventDelegate(nodes, events, delegate, callback) {
-            nodes = this._nodeFilter(nodes, { shadow: true, document: true, window: true });
+            nodes = this._nodeFilter(nodes, { fragment: true, shadow: true, document: true, window: true });
 
             for (const node of nodes) {
                 this._addEvent(node, events, callback, delegate);
@@ -2405,13 +2405,13 @@
 
         /**
          * Add self-destructing delegated events to each node.
-         * @param {string|array|HTMLElement|ShadowRoot|Document|Window|HTMLCollection} nodes The input node(s), or a query selector string.
+         * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|HTMLCollection} nodes The input node(s), or a query selector string.
          * @param {string} events The event names.
          * @param {string} delegate The delegate selector.
          * @param {DOM~eventCallback} callback The callback to execute.
          */
         addEventDelegateOnce(nodes, events, delegate, callback) {
-            nodes = this._nodeFilter(nodes, { shadow: true, document: true, window: true });
+            nodes = this._nodeFilter(nodes, { fragment: true, shadow: true, document: true, window: true });
 
             for (const node of nodes) {
                 this._addEvent(node, events, callback, delegate, true);
@@ -2420,12 +2420,12 @@
 
         /**
          * Add self-destructing events to each node.
-         * @param {string|array|HTMLElement|ShadowRoot|Document|Window|HTMLCollection} nodes The input node(s), or a query selector string.
+         * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|HTMLCollection} nodes The input node(s), or a query selector string.
          * @param {string} events The event names.
          * @param {DOM~eventCallback} callback The callback to execute.
          */
         addEventOnce(nodes, events, callback) {
-            nodes = this._nodeFilter(nodes, { shadow: true, document: true, window: true });
+            nodes = this._nodeFilter(nodes, { fragment: true, shadow: true, document: true, window: true });
 
             for (const node of nodes) {
                 this._addEvent(node, events, callback, null, true);
@@ -2434,11 +2434,11 @@
 
         /**
          * Clone all events from each node to other nodes.
-         * @param {string|array|HTMLElement|ShadowRoot|Document|Window|HTMLCollection} nodes The input node(s), or a query selector string.
-         * @param {string|array|HTMLElement|ShadowRoot|Document|Window|HTMLCollection} others The other node(s), or a query selector string.
+         * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|HTMLCollection} nodes The input node(s), or a query selector string.
+         * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|HTMLCollection} others The other node(s), or a query selector string.
          */
         cloneEvents(nodes, others) {
-            nodes = this._nodeFilter(nodes, { shadow: true, document: true, window: true });
+            nodes = this._nodeFilter(nodes, { fragment: true, shadow: true, document: true, window: true });
 
             for (const node of nodes) {
                 this._cloneEvents(node, others);
@@ -2447,12 +2447,12 @@
 
         /**
          * Remove events from each node.
-         * @param {string|array|HTMLElement|ShadowRoot|Document|Window|HTMLCollection} nodes The input node(s), or a query selector string.
+         * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|HTMLCollection} nodes The input node(s), or a query selector string.
          * @param {string} [events] The event names.
          * @param {DOM~eventCallback} [callback] The callback to remove.
          */
         removeEvent(nodes, events, callback) {
-            nodes = this._nodeFilter(nodes, { shadow: true, document: true, window: true });
+            nodes = this._nodeFilter(nodes, { fragment: true, shadow: true, document: true, window: true });
 
             for (const node of nodes) {
                 this._removeEvent(node, events, callback);
@@ -2461,13 +2461,13 @@
 
         /**
          * Remove delegated events from each node.
-         * @param {string|array|HTMLElement|ShadowRoot|Document|Window|HTMLCollection} nodes The input node(s), or a query selector string.
+         * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|HTMLCollection} nodes The input node(s), or a query selector string.
          * @param {string} [events] The event names.
          * @param {string} [delegate] The delegate selector.
          * @param {DOM~eventCallback} [callback] The callback to remove.
          */
         removeEventDelegate(nodes, events, delegate, callback) {
-            nodes = this._nodeFilter(nodes, { shadow: true, document: true, window: true });
+            nodes = this._nodeFilter(nodes, { fragment: true, shadow: true, document: true, window: true });
 
             for (const node of nodes) {
                 this._removeEvent(node, events, callback, delegate);
@@ -2476,7 +2476,7 @@
 
         /**
          * Add events to a single node.
-         * @param {HTMLElement|ShadowRoot|Document|Window} node The input node.
+         * @param {HTMLElement|DocumentFragment|ShadowRoot|Document|Window} node The input node.
          * @param {string} events The event names.
          * @param {DOM~eventCallback} callback The callback to execute.
          * @param {string} [delegate] The delegate selector.
@@ -2525,8 +2525,8 @@
 
         /**
          * Clone all events from a single node to other nodes.
-         * @param {HTMLElement|ShadowRoot|Document|Window} nodes The input node.
-         * @param {string|array|HTMLElement|ShadowRoot|Document|Window|HTMLCollection} others The other node(s), or a query selector string.
+         * @param {HTMLElement|DocumentFragment|ShadowRoot|Document|Window} nodes The input node.
+         * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|HTMLCollection} others The other node(s), or a query selector string.
          */
         _cloneEvents(node, others) {
             if (!this._events.has(node)) {
@@ -2549,7 +2549,7 @@
 
         /**
          * Remove events from a single node.
-         * @param {HTMLElement|ShadowRoot|Document|Window} nodes The input node.
+         * @param {HTMLElement|DocumentFragment|ShadowRoot|Document|Window} nodes The input node.
          * @param {string} [events] The event names.
          * @param {DOM~eventCallback} [callback] The callback to remove.
          * @param {string} [delegate] The delegate selector.
@@ -2762,14 +2762,14 @@
 
         /**
          * Clone each node.
-         * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+         * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
          * @param {Boolean} [deep=true] Whether to also clone all descendent nodes.
          * @param {Boolean} [cloneEvents=false] Whether to also clone events.
          * @param {Boolean} [cloneData=false] Whether to also clone custom data.
          * @returns {array} The cloned nodes.
          */
         clone(nodes, deep = true, cloneEvents = false, cloneData = false) {
-            nodes = this._nodeFilter(nodes, { node: true, shadow: true });
+            nodes = this._nodeFilter(nodes, { node: true, fragment: true, shadow: true });
 
             return nodes.map(node =>
                 this._clone(node, deep, cloneEvents, cloneData)
@@ -2778,10 +2778,10 @@
 
         /**
          * Detach each node from the DOM.
-         * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+         * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
          */
         detach(nodes) {
-            nodes = this._nodeFilter(nodes, { node: true, shadow: true });
+            nodes = this._nodeFilter(nodes, { node: true, fragment: true, shadow: true });
 
             for (const node of nodes) {
                 DOM._detach(node);
@@ -2790,10 +2790,10 @@
 
         /**
          * Remove all children of each node from the DOM.
-         * @param {string|array|HTMLElement|ShadowRoot|Document|HTMLCollection} nodes The input node(s), or a query selector string.
+         * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|HTMLCollection} nodes The input node(s), or a query selector string.
          */
         empty(nodes) {
-            nodes = this._nodeFilter(nodes, { shadow: true, document: true });
+            nodes = this._nodeFilter(nodes, { fragment: true, shadow: true, document: true });
 
             for (const node of nodes) {
                 this._empty(node);
@@ -2802,10 +2802,10 @@
 
         /**
          * Remove each node from the DOM.
-         * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+         * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
          */
         remove(nodes) {
-            nodes = this._nodeFilter(nodes, { node: true, shadow: true });
+            nodes = this._nodeFilter(nodes, { node: true, fragment: true, shadow: true });
 
             for (const node of nodes) {
                 this._remove(node);
@@ -2814,8 +2814,8 @@
 
         /**
          * Replace each other node with nodes.
-         * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector or HTML string.
-         * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} others The input node(s), or a query selector string.
+         * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector or HTML string.
+         * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} others The input node(s), or a query selector string.
          */
         replaceAll(nodes, others) {
             this.replaceWith(others, nodes);
@@ -2823,13 +2823,13 @@
 
         /**
          * Replace each node with other nodes.
-         * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
-         * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} others The input node(s), or a query selector or HTML string.
+         * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+         * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} others The input node(s), or a query selector or HTML string.
          */
         replaceWith(nodes, others) {
-            nodes = this._nodeFilter(nodes, { node: true, shadow: true });
+            nodes = this._nodeFilter(nodes, { node: true, fragment: true, shadow: true });
 
-            others = this._nodeFilter(others, { node: true, shadow: true, html: true });
+            others = this._nodeFilter(others, { node: true, fragment: true, shadow: true, html: true });
 
             for (const node of nodes) {
                 this._replaceWith(node, others);
@@ -2838,11 +2838,11 @@
 
         /**
          * Clone a single node.
-         * @param {Node|HTMLElement|ShadowRoot} node The input node.
+         * @param {Node|HTMLElement|DocumentFragment|ShadowRoot} node The input node.
          * @param {Boolean} [deep=true] Whether to also clone all descendent nodes.
          * @param {Boolean} [cloneEvents=false] Whether to also clone events.
          * @param {Boolean} [cloneData=false] Whether to also clone custom data.
-         * @returns {Node|HTMLElement|ShadowRoot} The cloned node.
+         * @returns {Node|HTMLElement|DocumentFragment|ShadowRoot} The cloned node.
          */
         _clone(node, deep = true, cloneEvents = false, cloneData = false) {
             const clone = DOM._clone(node, deep);
@@ -2868,8 +2868,8 @@
 
         /**
          * Deep clone a node.
-         * @param {Node|HTMLElement|ShadowRoot} node The input node.
-         * @param {Node|HTMLElement|ShadowRoot} clone The cloned node.
+         * @param {Node|HTMLElement|DocumentFragment|ShadowRoot} node The input node.
+         * @param {Node|HTMLElement|DocumentFragment|ShadowRoot} clone The cloned node.
          * @param {Boolean} [cloneEvents=false] Whether to also clone events.
          * @param {Boolean} [cloneData=false] Whether to also clone custom data.
          */
@@ -2892,7 +2892,7 @@
 
         /**
          * Remove all children of a single node from the DOM.
-         * @param {HTMLElement|ShadowRoot|Document} node The input node.
+         * @param {HTMLElement|DocumentFragment|ShadowRoot|Document} node The input node.
          */
         _empty(node) {
             const children = DOM._children(node, false, false, false);
@@ -2904,7 +2904,7 @@
 
         /**
          * Remove a single node from the DOM.
-         * @param {Node|HTMLElement|ShadowRoot} node The input node.
+         * @param {Node|HTMLElement|DocumentFragment|ShadowRoot} node The input node.
          */
         _remove(node) {
             if (Core.isElement(node)) {
@@ -2927,7 +2927,7 @@
 
         /**
          * Replace a single node with other nodes.
-         * @param {Node|HTMLElement|ShadowRoot} node The input node.
+         * @param {Node|HTMLElement|DocumentFragment|ShadowRoot} node The input node.
          * @param {array} others The other node(s).
          */
         _replaceWith(node, others) {
@@ -2948,42 +2948,42 @@
 
         /**
          * Insert each other node after the first node.
-         * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
-         * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} others The other node(s), or a query selector or HTML string.
+         * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+         * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} others The other node(s), or a query selector or HTML string.
          */
         after(nodes, others) {
-            const node = this._nodeFind(nodes, { node: true, shadow: true });
+            const node = this._nodeFind(nodes, { node: true, fragment: true, shadow: true });
 
             if (!node) {
                 return;
             }
 
-            others = this._nodeFilter(others, { node: true, shadow: true, html: true });
+            others = this._nodeFilter(others, { node: true, fragment: true, shadow: true, html: true });
 
             DOM._after(node, others);
         },
 
         /**
          * Append each other node to the first node.
-         * @param {string|array|Node|HTMLElement|ShadowRoot|Document|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
-         * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} others The other node(s), or a query selector or HTML string.
+         * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|Document|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+         * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} others The other node(s), or a query selector or HTML string.
          */
         append(nodes, others) {
-            const node = this._nodeFind(nodes, { shadow: true, document: true });
+            const node = this._nodeFind(nodes, { fragment: true, shadow: true, document: true });
 
             if (!node) {
                 return;
             }
 
-            others = this._nodeFilter(others, { node: true, shadow: true, html: true });
+            others = this._nodeFilter(others, { node: true, fragment: true, shadow: true, html: true });
 
             DOM._append(node, others);
         },
 
         /**
          * Append each node to the first other node.
-         * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector or HTML string.
-         * @param {string|array|Node|HTMLElement|ShadowRoot|Document|NodeList|HTMLCollection} others The other node(s), or a query selector string.
+         * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector or HTML string.
+         * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|Document|NodeList|HTMLCollection} others The other node(s), or a query selector string.
          */
         appendTo(nodes, others) {
             this.append(others, nodes);
@@ -2991,25 +2991,25 @@
 
         /**
          * Insert each other node before the first node.
-         * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
-         * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} others The other node(s), or a query selector or HTML string.
+         * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+         * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} others The other node(s), or a query selector or HTML string.
          */
         before(nodes, others) {
-            const node = this._nodeFind(nodes, { node: true, shadow: true });
+            const node = this._nodeFind(nodes, { node: true, fragment: true, shadow: true });
 
             if (!node) {
                 return;
             }
 
-            others = this._nodeFilter(others, { node: true, shadow: true, html: true });
+            others = this._nodeFilter(others, { node: true, fragment: true, shadow: true, html: true });
 
             DOM._before(node, others);
         },
 
         /**
          * Insert each node after the first other node.
-         * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector or HTML string.
-         * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} others The other node(s), or a query selector string.
+         * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector or HTML string.
+         * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} others The other node(s), or a query selector string.
          */
         insertAfter(nodes, others) {
             this.after(others, nodes);
@@ -3017,8 +3017,8 @@
 
         /**
          * Insert each node before the first other node.
-         * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector or HTML string.
-         * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} others The other node(s), or a query selector string.
+         * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector or HTML string.
+         * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} others The other node(s), or a query selector string.
          */
         insertBefore(nodes, others) {
             this.before(others, nodes);
@@ -3026,25 +3026,25 @@
 
         /**
          * Prepend each other node to the first node.
-         * @param {string|array|HTMLElement|ShadowRoot|Document|HTMLCollection} nodes The input node(s), or a query selector string.
-         * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} others The other node(s), or a query selector or HTML string.
+         * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|HTMLCollection} nodes The input node(s), or a query selector string.
+         * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} others The other node(s), or a query selector or HTML string.
          */
         prepend(nodes, others) {
-            const node = this._nodeFind(nodes, { shadow: true, document: true });
+            const node = this._nodeFind(nodes, { fragment: true, shadow: true, document: true });
 
             if (!node) {
                 return;
             }
 
-            others = this._nodeFilter(others, { node: true, shadow: true, html: true });
+            others = this._nodeFilter(others, { node: true, fragment: true, shadow: true, html: true });
 
             DOM._prepend(node, others);
         },
 
         /**
          * Prepend each node to the first other node.
-         * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector or HTML string.
-         * @param {string|array|HTMLElement|ShadowRoot|Document|HTMLCollection} others The other node(s), or a query selector string.
+         * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector or HTML string.
+         * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|HTMLCollection} others The other node(s), or a query selector string.
          */
         prependTo(nodes, others) {
             this.prepend(others, nodes);
@@ -3060,11 +3060,11 @@
 
         /**
          * Unwrap each node.
-         * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
-         * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
+         * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+         * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
          */
         unwrap(nodes, filter) {
-            nodes = this._nodeFilter(nodes, { node: true, shadow: true });
+            nodes = this._nodeFilter(nodes, { node: true, fragment: true, shadow: true });
 
             for (const node of nodes) {
                 this._unwrap(node, filter);
@@ -3073,13 +3073,13 @@
 
         /**
          * Wrap each nodes with other nodes.
-         * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
-         * @param {string|array|HTMLElement|ShadowRoot|HTMLCollection} others The other node(s), or a query selector or HTML string.
+         * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+         * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|HTMLCollection} others The other node(s), or a query selector or HTML string.
          */
         wrap(nodes, others) {
-            nodes = this._nodeFilter(nodes, { node: true, shadow: true });
+            nodes = this._nodeFilter(nodes, { node: true, fragment: true, shadow: true });
 
-            others = this._nodeFilter(others, { shadow: true, html: true });
+            others = this._nodeFilter(others, { fragment: true, shadow: true, html: true });
 
             for (const node of nodes) {
                 this._wrap(node, others);
@@ -3088,13 +3088,13 @@
 
         /**
          * Wrap all nodes with other nodes.
-         * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
-         * @param {string|array|HTMLElement|ShadowRoot|HTMLCollection} others The other node(s), or a query selector or HTML string.
+         * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+         * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|HTMLCollection} others The other node(s), or a query selector or HTML string.
          */
         wrapAll(nodes, others) {
-            nodes = this._nodeFilter(nodes, { node: true, shadow: true });
+            nodes = this._nodeFilter(nodes, { node: true, fragment: true, shadow: true });
 
-            others = this._nodeFilter(others, { shadow: true, html: true });
+            others = this._nodeFilter(others, { fragment: true, shadow: true, html: true });
 
             const clone = this.clone(others, true);
 
@@ -3107,13 +3107,13 @@
 
         /**
          * Wrap the contents of each node with other nodes.
-         * @param {string|array|HTMLElement|ShadowRoot|HTMLCollection} nodes The input node(s), or a query selector string.
-         * @param {string|array|HTMLElement|ShadowRoot|HTMLCollection} others The other node(s), or a query selector or HTML string.
+         * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|HTMLCollection} nodes The input node(s), or a query selector string.
+         * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|HTMLCollection} others The other node(s), or a query selector or HTML string.
          */
         wrapInner(nodes, others) {
-            nodes = this._nodeFilter(nodes, { node: true, shadow: true });
+            nodes = this._nodeFilter(nodes, { node: true, fragment: true, shadow: true });
 
-            others = this._nodeFilter(others, { shadow: true, html: true });
+            others = this._nodeFilter(others, { fragment: true, shadow: true, html: true });
 
             for (const node of nodes) {
                 this._wrapInner(node, others);
@@ -3122,8 +3122,8 @@
 
         /**
          * Unwrap a single node.
-         * @param {Node|HTMLElement|ShadowRoot} node The input node.
-         * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
+         * @param {Node|HTMLElement|DocumentFragment|ShadowRoot} node The input node.
+         * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
          */
         _unwrap(node, filter) {
             const parent = DOM._parent(node, filter).shift();
@@ -3141,8 +3141,8 @@
 
         /**
          * Wrap a single node with other nodes.
-         * @param {Node|HTMLElement|ShadowRoot} node The input node.
-         * @param {string|array|HTMLElement|ShadowRoot|HTMLCollection} others The other node(s), or a query selector or HTML string.
+         * @param {Node|HTMLElement|DocumentFragment|ShadowRoot} node The input node.
+         * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|HTMLCollection} others The other node(s), or a query selector or HTML string.
          */
         _wrap(node, others) {
             const clone = this.clone(others, true);
@@ -3155,8 +3155,8 @@
 
         /**
          * Wrap the contents of a single node with other nodes.
-         * @param {HTMLElement|ShadowRoot} node The input node.
-         * @param {string|array|HTMLElement|ShadowRoot|HTMLCollection} others The other node(s), or a query selector or HTML string.
+         * @param {HTMLElement|DocumentFragment|ShadowRoot} node The input node.
+         * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|HTMLCollection} others The other node(s), or a query selector or HTML string.
          */
         _wrapInner(node, others) {
             const children = DOM._children(node, false, false, false),
@@ -3178,24 +3178,24 @@
 
         /**
          * Return all nodes connected to the DOM.
-         * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+         * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
          * @returns {array} The filtered nodes.
          */
         connected(nodes) {
-            return this._nodeFilter(nodes, { node: true, shadow: true })
+            return this._nodeFilter(nodes, { node: true, fragment: true, shadow: true })
                 .filter(node => DOM._isConnected(node));
         },
 
         /**
          * Return all nodes considered equal to any of the other nodes.
-         * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
-         * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} others The other node(s), or a query selector string.
+         * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+         * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} others The other node(s), or a query selector string.
          * @returns {array} The filtered nodes.
          */
         equal(nodes, others) {
-            others = this._nodeFilter(others, { node: true, shadow: true });
+            others = this._nodeFilter(others, { node: true, fragment: true, shadow: true });
 
-            return this._nodeFilter(nodes, { node: true, shadow: true })
+            return this._nodeFilter(nodes, { node: true, fragment: true, shadow: true })
                 .filter(node =>
                     others.some(other => DOM._isEqual(node, other))
                 );
@@ -3203,37 +3203,37 @@
 
         /**
          * Return all nodes matching a filter.
-         * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
-         * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
+         * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+         * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
          * @returns {array} The filtered nodes.
          */
         filter(nodes, filter) {
             filter = this._parseFilter(filter);
 
-            return this._nodeFilter(nodes, { node: true, shadow: true })
+            return this._nodeFilter(nodes, { node: true, fragment: true, shadow: true })
                 .filter((node, index) => !filter || filter(node, index));
         },
 
         /**
          * Return the first node matching a filter.
-         * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
-         * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
-         * @returns {Node|HTMLElement|ShadowRoot} The filtered node.
+         * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+         * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
+         * @returns {Node|HTMLElement|DocumentFragment|ShadowRoot} The filtered node.
          */
         filterOne(nodes, filter) {
             filter = this._parseFilter(filter);
 
-            return this._nodeFilter(nodes, { node: true, shadow: true })
+            return this._nodeFilter(nodes, { node: true, fragment: true, shadow: true })
                 .find((node, index) => !filter || filter(node, index)) || null;
         },
 
         /**
          * Return all "fixed" nodes.
-         * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+         * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
          * @returns {array} The filtered nodes.
          */
         fixed(nodes) {
-            return this._nodeFilter(nodes, { node: true, shadow: true })
+            return this._nodeFilter(nodes, { node: true, fragment: true, shadow: true })
                 .filter(node =>
                     (Core.isElement(node) && this._css(node, 'position') === 'fixed') ||
                     DOM._parents(
@@ -3248,18 +3248,18 @@
 
         /**
          * Return all hidden nodes.
-         * @param {string|array|HTMLElement|ShadowRoot|Document|Window|HTMLCollection} nodes The input node(s), or a query selector string.
+         * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|HTMLCollection} nodes The input node(s), or a query selector string.
          * @returns {array} The filtered nodes.
          */
         hidden(nodes) {
-            return this._nodeFilter(nodes, { shadow: true, document: true, window: true })
+            return this._nodeFilter(nodes, { fragment: true, shadow: true, document: true, window: true })
                 .filter(node => DOM._isHidden(node));
         },
 
         /**
          * Return all nodes not matching a filter.
-         * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
-         * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
+         * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+         * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
          * @returns {array} The filtered nodes.
          */
         not(nodes, filter) {
@@ -3269,20 +3269,20 @@
                 return [];
             }
 
-            return this._nodeFilter(nodes, { node: true, shadow: true })
+            return this._nodeFilter(nodes, { node: true, fragment: true, shadow: true })
                 .filter((node, index) => !filter(node, index));
         },
 
         /**
          * Return all nodes considered identical to any of the other nodes.
-         * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
-         * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} others The other node(s), or a query selector string.
+         * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+         * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} others The other node(s), or a query selector string.
          * @returns {array} The filtered nodes.
          */
         same(nodes, others) {
-            others = this._nodeFilter(others, { node: true, shadow: true });
+            others = this._nodeFilter(others, { node: true, fragment: true, shadow: true });
 
-            return this._nodeFilter(nodes, { node: true, shadow: true })
+            return this._nodeFilter(nodes, { node: true, fragment: true, shadow: true })
                 .filter(node =>
                     others.some(other => DOM._isSame(node, other))
                 );
@@ -3290,11 +3290,11 @@
 
         /**
          * Return all visible nodes.
-         * @param {string|array|HTMLElement|ShadowRoot|Document|Window|HTMLCollection} nodes The input node(s), or a query selector string.
+         * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|HTMLCollection} nodes The input node(s), or a query selector string.
          * @returns {array} The filtered nodes.
          */
         visible(nodes) {
-            return this._nodeFilter(nodes, { shadow: true, document: true, window: true })
+            return this._nodeFilter(nodes, { fragment: true, shadow: true, document: true, window: true })
                 .filter(node => DOM._isVisible(node));
         },
 
@@ -3325,11 +3325,11 @@
 
         /**
          * Return all nodes with child elements.
-         * @param {string|array|HTMLElement|ShadowRoot|Document|HTMLCollection} nodes The input node(s), or a query selector string.
+         * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|HTMLCollection} nodes The input node(s), or a query selector string.
          * @returns {array} The filtered nodes.
          */
         withChildren(nodes) {
-            return this._nodeFilter(nodes, { shadow: true, document: true })
+            return this._nodeFilter(nodes, { fragment: true, shadow: true, document: true })
                 .filter(node =>
                     DOM._hasChildren(node)
                 );
@@ -3352,12 +3352,12 @@
 
         /**
          * Return all nodes with custom data.
-         * @param {string|array|Node|HTMLElement|ShadowRoot|Document|Window|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+         * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
          * @param {string} [key] The data key.
          * @returns {array} The filtered nodes.
          */
         withData(nodes, key) {
-            return this._nodeFilter(nodes, { node: true, shadow: true, document: true, window: true })
+            return this._nodeFilter(nodes, { node: true, fragment: true, shadow: true, document: true, window: true })
                 .filter(node =>
                     this._hasData(node, key)
                 );
@@ -3365,14 +3365,14 @@
 
         /**
          * Return all nodes with a descendent matching a filter.
-         * @param {string|array|HTMLElement|ShadowRoot|Document|HTMLCollection} nodes The input node(s), or a query selector string.
-         * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
+         * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|HTMLCollection} nodes The input node(s), or a query selector string.
+         * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
          * @returns {array} The filtered nodes.
          */
         withDescendent(nodes, filter) {
             filter = this._parseFilterContains(filter);
 
-            return this._nodeFilter(nodes, { shadow: true, document: true })
+            return this._nodeFilter(nodes, { fragment: true, shadow: true, document: true })
                 .filter((node, index) => !filter || filter(node, index));
         },
 
@@ -3412,7 +3412,7 @@
         /**
          * Return all nodes matching a selector.
          * @param {string} selector The query selector.
-         * @param {string|array|HTMLElement|ShadowRoot|Document|HTMLCollection} [nodes=this._context] The input node(s), or a query selector string.
+         * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|HTMLCollection} [nodes=this._context] The input node(s), or a query selector string.
          * @returns {array} The matching nodes.
          */
         find(selector, nodes = this._context) {
@@ -3442,15 +3442,15 @@
         /**
          * Return all nodes with a specific class.
          * @param {string} className The class name.
-         * @param {string|array|HTMLElement|ShadowRoot|Document|HTMLCollection} [nodes=this._context] The input node(s), or a query selector string.
+         * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|HTMLCollection} [nodes=this._context] The input node(s), or a query selector string.
          * @returns {array} The matching nodes.
          */
         findByClass(className, nodes = this._context) {
-            if (Core.isDocument(nodes) || Core.isElement(nodes) || Core.isShadow(nodes)) {
+            if (Core.isDocument(nodes) || Core.isElement(nodes) || Core.isFragment(nodes) || Core.isShadow(nodes)) {
                 return Core.merge([], DOM._findByClass(className, nodes));
             }
 
-            nodes = this._nodeFilter(nodes, { shadow: true, document: true });
+            nodes = this._nodeFilter(nodes, { fragment: true, shadow: true, document: true });
 
             const results = [];
 
@@ -3469,7 +3469,7 @@
         /**
          * Return all nodes with a specific ID.
          * @param {string} id The id.
-         * @param {string|array|HTMLElement|ShadowRoot|Document|HTMLCollection} [nodes=this._context] The input node(s), or a query selector string.
+         * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|HTMLCollection} [nodes=this._context] The input node(s), or a query selector string.
          * @returns {array} The matching nodes.
          */
         findById(id, nodes = this._context) {
@@ -3483,8 +3483,8 @@
                 return [result];
             }
 
-            if (Core.isElement(nodes) || Core.isShadow(nodes)) {
-                return DOM._has(nodes, result) ?
+            if (Core.isElement(nodes) || Core.isFragment(nodes) || Core.isShadow(nodes)) {
+                return DOM._contains(nodes, result) ?
                     [result] :
                     [];
             }
@@ -3497,15 +3497,15 @@
         /**
          * Return all nodes with a specific tag.
          * @param {string} tagName The tag name.
-         * @param {string|array|HTMLElement|ShadowRoot|Document|HTMLCollection} [nodes=this._context] The input node(s), or a query selector string.
+         * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|HTMLCollection} [nodes=this._context] The input node(s), or a query selector string.
          * @returns {array} The matching nodes.
          */
         findByTag(tagName, nodes = this._context) {
-            if (Core.isDocument(nodes) || Core.isElement(nodes) || Core.isShadow(nodes)) {
+            if (Core.isDocument(nodes) || Core.isElement(nodes) || Core.isFragment(nodes) || Core.isShadow(nodes)) {
                 return Core.merge([], DOM._findByTag(tagName, nodes));
             }
 
-            nodes = this._nodeFilter(nodes, { shadow: true, document: true });
+            nodes = this._nodeFilter(nodes, { fragment: true, shadow: true, document: true });
 
             const results = [];
 
@@ -3524,7 +3524,7 @@
         /**
          * Return a single node matching a selector.
          * @param {string} selector The query selector.
-         * @param {string|array|HTMLElement|ShadowRoot|Document|HTMLCollection} [nodes=this._context] The input node(s), or a query selector string.
+         * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|HTMLCollection} [nodes=this._context] The input node(s), or a query selector string.
          * @returns {HTMLElement} The matching node.
          */
         findOne(selector, nodes = this._context) {
@@ -3554,15 +3554,15 @@
         /**
          * Return a single node with a specific class.
          * @param {string} className The class name.
-         * @param {string|array|HTMLElement|ShadowRoot|Document|HTMLCollection} [nodes=this._context] The input node(s), or a query selector string.
+         * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|HTMLCollection} [nodes=this._context] The input node(s), or a query selector string.
          * @returns {HTMLElement} The matching node.
          */
         findOneByClass(className, nodes = this._context) {
-            if (Core.isDocument(nodes) || Core.isElement(nodes) || Core.isShadow(nodes)) {
+            if (Core.isDocument(nodes) || Core.isElement(nodes) || Core.isFragment(nodes) || Core.isShadow(nodes)) {
                 return DOM._findByClass(className, nodes).item(0);
             }
 
-            nodes = this._nodeFilter(nodes, { shadow: true, document: true });
+            nodes = this._nodeFilter(nodes, { fragment: true, shadow: true, document: true });
 
             for (const node of nodes) {
                 const result = DOM._findByClass(className, node).item(0);
@@ -3577,7 +3577,7 @@
         /**
          * Return a single node with a specific ID.
          * @param {string} id The id.
-         * @param {string|array|HTMLElement|ShadowRoot|Document|HTMLCollection} [nodes=this._context] The input node(s), or a query selector string.
+         * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|HTMLCollection} [nodes=this._context] The input node(s), or a query selector string.
          * @returns {HTMLElement} The matching element.
          */
         findOneById(id, nodes = this._context) {
@@ -3591,8 +3591,8 @@
                 return result;
             }
 
-            if (Core.isElement(nodes) || Core.isShadow(nodes)) {
-                return DOM._has(nodes, result) ?
+            if (Core.isElement(nodes) || Core.isFragment(nodes) || Core.isShadow(nodes)) {
+                return DOM._contains(nodes, result) ?
                     result :
                     null;
             }
@@ -3605,15 +3605,15 @@
         /**
          * Return a single node with a specific tag.
          * @param {string} tagName The tag name.
-         * @param {string|array|HTMLElement|ShadowRoot|Document|HTMLCollection} [nodes=this._context] The input node(s), or a query selector string.
+         * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|HTMLCollection} [nodes=this._context] The input node(s), or a query selector string.
          * @returns {HTMLElement} The matching node.
          */
         findOneByTag(tagName, nodes = this._context) {
-            if (Core.isDocument(nodes) || Core.isElement(nodes) || Core.isShadow(nodes)) {
+            if (Core.isDocument(nodes) || Core.isElement(nodes) || Core.isFragment(nodes) || Core.isShadow(nodes)) {
                 return DOM._findByTag(tagName, nodes).item(0);
             }
 
-            nodes = this._nodeFilter(nodes, { shadow: true, document: true });
+            nodes = this._nodeFilter(nodes, { fragment: true, shadow: true, document: true });
 
             for (const node of nodes) {
                 const result = DOM._findByTag(tagName, node).item(0);
@@ -3665,15 +3665,15 @@
         /**
          * Return all nodes matching a standard CSS selector.
          * @param {string} selector The query selector.
-         * @param {string|array|HTMLElement|ShadowRoot|Document|HTMLCollection} [nodes=this._context] The input node(s), or a query selector string.
+         * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|HTMLCollection} [nodes=this._context] The input node(s), or a query selector string.
          * @returns {array} The matching nodes.
          */
         _findBySelector(selector, nodes = this._context) {
-            if (Core.isDocument(nodes) || Core.isElement(nodes) || Core.isShadow(nodes)) {
+            if (Core.isDocument(nodes) || Core.isElement(nodes) || Core.isFragment(nodes) || Core.isShadow(nodes)) {
                 return Core.merge([], DOM._findBySelector(selector, nodes));
             }
 
-            nodes = this._nodeFilter(nodes, { shadow: true, document: true });
+            nodes = this._nodeFilter(nodes, { fragment: true, shadow: true, document: true });
 
             const results = [];
 
@@ -3726,15 +3726,15 @@
         /**
          * Return a single node matching a standard CSS selector.
          * @param {string} selector The query selector.
-         * @param {string|array|HTMLElement|ShadowRoot|Document|HTMLCollection} [nodes=this._context] The input node(s), or a query selector string.
+         * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|HTMLCollection} [nodes=this._context] The input node(s), or a query selector string.
          * @returns {HTMLElement} The matching node.
          */
         _findOneBySelector(selector, nodes = this._context) {
-            if (Core.isDocument(nodes) || Core.isElement(nodes) || Core.isShadow(nodes)) {
+            if (Core.isDocument(nodes) || Core.isElement(nodes) || Core.isFragment(nodes) || Core.isShadow(nodes)) {
                 return DOM._findBySelector(selector, nodes).item(0);
             }
 
-            nodes = this._nodeFilter(nodes, { shadow: true, document: true });
+            nodes = this._nodeFilter(nodes, { fragment: true, shadow: true, document: true });
 
             for (const node of nodes) {
                 const result = DOM._findOneBySelector(selector, node);
@@ -3756,8 +3756,8 @@
 
         /**
          * Return the first child of each node (optionally matching a filter).
-         * @param {string|array|HTMLElement|ShadowRoot|Document|HTMLCollection} nodes The input node(s), or a query selector string.
-         * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
+         * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|HTMLCollection} nodes The input node(s), or a query selector string.
+         * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
          * @returns {array} The matching nodes.
          */
         child(nodes, filter) {
@@ -3770,8 +3770,8 @@
 
         /**
          * Return all children of each node (optionally matching a filter).
-         * @param {string|array|HTMLElement|ShadowRoot|Document|HTMLCollection} nodes The input node(s), or a query selector string.
-         * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
+         * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|HTMLCollection} nodes The input node(s), or a query selector string.
+         * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
          * @param {Boolean} [first=false] Whether to only return the first matching node for each node.
          * @param {Boolean} [elementsOnly=false] Whether to only return element nodes.
          * @returns {array} The matching nodes.
@@ -3779,11 +3779,11 @@
         children(nodes, filter, first = false, elementsOnly = true) {
             filter = this._parseFilter(filter);
 
-            if (Core.isElement(nodes) || Core.isDocument(nodes) || Core.isShadow(nodes)) {
+            if (Core.isElement(nodes) || Core.isDocument(nodes) || Core.isFragment(nodes) || Core.isShadow(nodes)) {
                 return DOM._children(nodes, filter, first, elementsOnly);
             }
 
-            nodes = this._nodeFilter(nodes, { shadow: true, document: true });
+            nodes = this._nodeFilter(nodes, { fragment: true, shadow: true, document: true });
 
             const results = [];
 
@@ -3801,9 +3801,9 @@
 
         /**
          * Return the closest ancestor to each node (optionally matching a filter, and before a limit).
-         * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
-         * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
-         * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} [limit] The limit node(s), a query selector string or custom filter function.
+         * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+         * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
+         * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} [limit] The limit node(s), a query selector string or custom filter function.
          * @returns {array} The matching nodes.
          */
         closest(nodes, filter, limit) {
@@ -3817,7 +3817,7 @@
 
         /**
          * Return the common ancestor of all nodes.
-         * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+         * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
          * @returns {HTMLElement} The common ancestor.
          */
         commonAncestor(nodes) {
@@ -3841,7 +3841,7 @@
 
         /**
          * Return all children of each node (including text and comment nodes).
-         * @param {string|array|HTMLElement|ShadowRoot|Document|HTMLCollection} nodes The input node(s), or a query selector string.
+         * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|HTMLCollection} nodes The input node(s), or a query selector string.
          * @returns {array} The matching nodes.
          */
         contents(nodes) {
@@ -3855,18 +3855,18 @@
 
         /**
          * Return the next sibling for each node (optionally matching a filter).
-         * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
-         * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
+         * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+         * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
          * @returns {array} The matching nodes.
          */
         next(nodes, filter) {
             filter = this._parseFilter(filter);
 
-            if (Core.isNode(nodes) || Core.isShadow(nodes)) {
+            if (Core.isNode(nodes) || Core.isFragment(nodes) || Core.isShadow(nodes)) {
                 return DOM._next(nodes, filter);
             }
 
-            nodes = this._nodeFilter(nodes, { node: true, shadow: true });
+            nodes = this._nodeFilter(nodes, { node: true, fragment: true, shadow: true });
 
             const results = [];
 
@@ -3884,9 +3884,9 @@
 
         /**
          * Return all next siblings for each node (optionally matching a filter, and before a limit).
-         * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
-         * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
-         * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} [limit] The limit node(s), a query selector string or custom filter function.
+         * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+         * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
+         * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} [limit] The limit node(s), a query selector string or custom filter function.
          * @param {Boolean} [first=false] Whether to only return the first matching node for each node.
          * @returns {array} The matching nodes.
          */
@@ -3894,11 +3894,11 @@
             filter = this._parseFilter(filter);
             limit = this._parseFilter(limit);
 
-            if (Core.isNode(nodes) || Core.isShadow(nodes)) {
+            if (Core.isNode(nodes) || Core.isFragment(nodes) || Core.isShadow(nodes)) {
                 return DOM._nextAll(nodes, filter, limit, first);
             }
 
-            nodes = this._nodeFilter(nodes, { node: true, shadow: true });
+            nodes = this._nodeFilter(nodes, { node: true, fragment: true, shadow: true });
 
             const results = [];
 
@@ -3916,7 +3916,7 @@
 
         /**
          * Return the offset parent (relatively positioned) of the first node.
-         * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+         * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
          * @returns {HTMLElement} The offset parent.
          */
         offsetParent(nodes) {
@@ -3928,18 +3928,18 @@
 
         /**
          * Return the parent of each node (optionally matching a filter).
-         * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
-         * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
+         * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+         * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
          * @returns {array} The matching nodes.
          */
         parent(nodes, filter) {
             filter = this._parseFilter(filter);
 
-            if (Core.isNode(nodes) || Core.isShadow(nodes)) {
+            if (Core.isNode(nodes) || Core.isFragment(nodes) || Core.isShadow(nodes)) {
                 return DOM._parent(nodes, filter);
             }
 
-            nodes = this._nodeFilter(nodes, { node: true, shadow: true });
+            nodes = this._nodeFilter(nodes, { node: true, fragment: true, shadow: true });
 
             const results = [];
 
@@ -3957,9 +3957,9 @@
 
         /**
          * Return all parents of each node (optionally matching a filter, and before a limit).
-         * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
-         * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
-         * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} [limit] The limit node(s), a query selector string or custom filter function.
+         * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+         * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
+         * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} [limit] The limit node(s), a query selector string or custom filter function.
          * @param {Boolean} [first=false] Whether to only return the first matching node for each node.
          * @returns {array} The matching nodes.
          */
@@ -3967,11 +3967,11 @@
             filter = this._parseFilter(filter);
             limit = this._parseFilter(limit);
 
-            if (Core.isNode(nodes) || Core.isShadow(nodes)) {
+            if (Core.isNode(nodes) || Core.isFragment(nodes) || Core.isShadow(nodes)) {
                 return DOM._parents(nodes, filter, limit, first);
             }
 
-            nodes = this._nodeFilter(nodes, { node: true, shadow: true });
+            nodes = this._nodeFilter(nodes, { node: true, fragment: true, shadow: true });
 
             const results = [];
 
@@ -3989,18 +3989,18 @@
 
         /**
          * Return the previous sibling for each node (optionally matching a filter).
-         * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
-         * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
+         * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+         * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
          * @returns {array} The matching nodes.
          */
         prev(nodes, filter) {
             filter = this._parseFilter(filter);
 
-            if (Core.isNode(nodes) || Core.isShadow(nodes)) {
+            if (Core.isNode(nodes) || Core.isFragment(nodes) || Core.isShadow(nodes)) {
                 return DOM._prev(nodes, filter);
             }
 
-            nodes = this._nodeFilter(nodes, { node: true, shadow: true });
+            nodes = this._nodeFilter(nodes, { node: true, fragment: true, shadow: true });
 
             const results = [];
 
@@ -4018,9 +4018,9 @@
 
         /**
          * Return all previous siblings for each node (optionally matching a filter, and before a limit).
-         * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
-         * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
-         * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} [limit] The limit node(s), a query selector string or custom filter function.
+         * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+         * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
+         * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} [limit] The limit node(s), a query selector string or custom filter function.
          * @param {Boolean} [first=false] Whether to only return the first matching node for each node.
          * @returns {array} The matching nodes.
          */
@@ -4028,11 +4028,11 @@
             filter = this._parseFilter(filter);
             limit = this._parseFilter(limit);
 
-            if (Core.isNode(nodes) || Core.isShadow(nodes)) {
+            if (Core.isNode(nodes) || Core.isFragment(nodes) || Core.isShadow(nodes)) {
                 return DOM._prevAll(nodes, filter, limit, first);
             }
 
-            nodes = this._nodeFilter(nodes, { node: true, shadow: true });
+            nodes = this._nodeFilter(nodes, { node: true, fragment: true, shadow: true });
 
             const results = [];
 
@@ -4050,19 +4050,19 @@
 
         /**
          * Return all siblings for each node (optionally matching a filter).
-         * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
-         * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
+         * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+         * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
          * @param {Boolean} [elementsOnly=true] Whether to only return element nodes.
          * @returns {array} The matching nodes.
          */
         siblings(nodes, filter, elementsOnly = true) {
             filter = this._parseFilter(filter);
 
-            if (Core.isNode(nodes) || Core.isShadow(nodes)) {
+            if (Core.isNode(nodes) || Core.isFragment(nodes) || Core.isShadow(nodes)) {
                 return DOM._siblings(nodes, filter, elementsOnly);
             }
 
-            nodes = this._nodeFilter(nodes, { node: true, shadow: true });
+            nodes = this._nodeFilter(nodes, { node: true, fragment: true, shadow: true });
 
             const results = [];
 
@@ -4088,7 +4088,7 @@
 
         /**
          * Return a filtered array of nodes.
-         * @param {string|array|Node|NodeList|HTMLElement|HTMLCollection|ShadowRoot|Document|Window} nodes The input node(s), or a query selector or HTML string.
+         * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|NodeList|HTMLCollection} nodes The input node(s), or a query selector or HTML string.
          * @param {object} [options] The options for filtering.
          * @param {Boolean} [options.node=false] Whether to allow text and comment nodes.
          * @param {Boolean} [options.fragment=false] Whether to allow DocumentFragment.
@@ -4096,7 +4096,7 @@
          * @param {Boolean} [options.document=false] Whether to allow Document.
          * @param {Boolean} [options.window=false] Whether to allow Window.
          * @param {Boolean} [options.html=false] Whether to allow HTML strings.
-         * @param {HTMLElement|ShadowRoot|Document} [options.context=this._context] The Document context.
+         * @param {HTMLElement|DocumentFragment|ShadowRoot|Document} [options.context=this._context] The Document context.
          * @returns {array} The filtered array of nodes.
          */
         _nodeFilter(nodes, options = {}) {
@@ -4146,7 +4146,7 @@
 
         /**
          * Return the first node matching a filter.
-         * @param {string|array|Node|NodeList|HTMLElement|HTMLCollection|ShadowRoot|Document|Window} nodes The input node(s), or a query selector or HTML string.
+         * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|NodeList|HTMLCollection} nodes The input node(s), or a query selector or HTML string.
          * @param {object} [options] The options for filtering.
          * @param {Boolean} [options.node=false] Whether to allow text and comment nodes.
          * @param {Boolean} [options.fragment=false] Whether to allow DocumentFragment.
@@ -4155,7 +4155,7 @@
          * @param {Boolean} [options.window=false] Whether to allow Window.
          * @param {Boolean} [options.html=false] Whether to allow HTML strings.
          * @param {HTMLElement|Document} [options.context=this._context] The Document context.
-         * @returns {Node|HTMLElement|ShadowRoot|Document|Window} The matching node.
+         * @returns {Node|HTMLElement|DocumentFragment|ShadowRoot|Document|Window} The matching node.
          */
         _nodeFind(nodes, options = {}) {
             if (Core.isString(nodes)) {
@@ -4190,7 +4190,7 @@
 
         /**
          * Return a node filter callback.
-         * @param {string|array|Node|NodeList|HTMLElement|HTMLCollection|ShadowRoot|DOM~filterCallback} filter The filter node(s), a query selector string or custom filter function.
+         * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} filter The filter node(s), a query selector string or custom filter function.
          * @returns {DOM~filterCallback} The node filter callback.
          */
         _parseFilter(filter) {
@@ -4206,11 +4206,11 @@
                 return node => DOM._is(node, filter);
             }
 
-            if (Core.isNode(filter) || Core.isShadow(filter)) {
+            if (Core.isNode(filter) || Core.isFragment(filter) || Core.isShadow(filter)) {
                 return node => DOM._isSame(node, filter);
             }
 
-            filter = this._nodeFilter(filter, { node: true, shadow: true });
+            filter = this._nodeFilter(filter, { node: true, fragment: true, shadow: true });
             if (filter.length) {
                 return node => filter.includes(node);
             }
@@ -4220,7 +4220,7 @@
 
         /**
          * Return a node contains filter callback.
-         * @param {string|array|Node|NodeList|HTMLElement|HTMLCollection|ShadowRoot|DOM~filterCallback} filter The filter node(s), a query selector string or custom filter function.
+         * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} filter The filter node(s), a query selector string or custom filter function.
          * @returns {DOM~filterCallback} The node contains filter callback.
          */
         _parseFilterContains(filter) {
@@ -4236,13 +4236,13 @@
                 return node => !!this.findOne(filter, node);
             }
 
-            if (Core.isNode(filter) || Core.isShadow(filter)) {
-                return node => DOM._has(node, filter);
+            if (Core.isNode(filter) || Core.isFragment(filter) || Core.isShadow(filter)) {
+                return node => DOM._contains(node, filter);
             }
 
-            filter = this._nodeFilter(filter, { node: true, shadow: true });
+            filter = this._nodeFilter(filter, { node: true, fragment: true, shadow: true });
             if (filter.length) {
-                return node => filter.some(other => DOM._has(node, other));
+                return node => filter.some(other => DOM._contains(node, other));
             }
 
             return false;
@@ -4258,10 +4258,10 @@
 
         /**
          * Insert each node after the selection.
-         * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector or HTML string.
+         * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector or HTML string.
          */
         afterSelection(nodes) {
-            nodes = this._nodeFilter(nodes, { node: true, shadow: true, html: true });
+            nodes = this._nodeFilter(nodes, { node: true, fragment: true, shadow: true, html: true });
 
             const selection = DOM._getSelection();
 
@@ -4281,10 +4281,10 @@
 
         /**
          * Insert each node before the selection.
-         * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector or HTML string.
+         * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector or HTML string.
          */
         beforeSelection(nodes) {
-            nodes = this._nodeFilter(nodes, { node: true, shadow: true, html: true });
+            nodes = this._nodeFilter(nodes, { node: true, fragment: true, shadow: true, html: true });
 
             const selection = DOM._getSelection();
 
@@ -4361,10 +4361,10 @@
 
         /**
          * Create a selection on the first node.
-         * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+         * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
          */
         select(nodes) {
-            const node = this._nodeFind(nodes, { node: true, shadow: true });
+            const node = this._nodeFind(nodes, { node: true, fragment: true, shadow: true });
 
             if (node && 'select' in node) {
                 return node.select();
@@ -4387,7 +4387,7 @@
 
         /**
          * Create a selection containing all of the nodes.
-         * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+         * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
          */
         selectAll(nodes) {
             nodes = this.sort(nodes);
@@ -4416,10 +4416,10 @@
 
         /**
          * Wrap selected nodes with other nodes.
-         * @param {string|array|HTMLElement|ShadowRoot|HTMLCollection} nodes The input node(s), or a query selector or HTML string.
+         * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|HTMLCollection} nodes The input node(s), or a query selector or HTML string.
          */
         wrapSelection(nodes) {
-            nodes = this._nodeFilter(nodes, { shadow: true, html: true });
+            nodes = this._nodeFilter(nodes, { fragment: true, shadow: true, html: true });
 
             const selection = window.getSelection();
 
@@ -4476,11 +4476,11 @@
 
         /**
          * Returns true if any of the nodes has child elements.
-         * @param {string|array|HTMLElement|ShadowRoot|Document|HTMLCollection} nodes The input node(s), or a query selector string.
+         * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|HTMLCollection} nodes The input node(s), or a query selector string.
          * @returns {Boolean} TRUE if the any of the nodes has child elements, otherwise FALSE.
          */
         hasChildren(nodes) {
-            return this._nodeFilter(nodes, { shadow: true, document: true })
+            return this._nodeFilter(nodes, { fragment: true, shadow: true, document: true })
                 .some(node =>
                     DOM._hasChildren(node)
                 );
@@ -4503,12 +4503,12 @@
 
         /**
          * Returns true if any of the nodes has custom data.
-         * @param {string|array|Node|HTMLElement|ShadowRoot|Document|Window|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+         * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
          * @param {string} [key] The data key.
          * @returns {Boolean} TRUE if any of the nodes has custom data, otherwise FALSE.
          */
         hasData(nodes, key) {
-            return this._nodeFilter(nodes, { node: true, shadow: true, document: true, window: true })
+            return this._nodeFilter(nodes, { node: true, fragment: true, shadow: true, document: true, window: true })
                 .some(node =>
                     this._hasData(node, key)
                 );
@@ -4516,14 +4516,14 @@
 
         /**
          * Returns true if any of the nodes contains a descendent matching a filter.
-         * @param {string|array|HTMLElement|ShadowRoot|Document|HTMLCollection} nodes The input node(s), or a query selector string.
-         * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
+         * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|HTMLCollection} nodes The input node(s), or a query selector string.
+         * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
          * @returns {Boolean} TRUE if any of the nodes contains a descendent matching the filter, otherwise FALSE.
          */
         hasDescendent(nodes, filter) {
             filter = this._parseFilterContains(filter);
 
-            return this._nodeFilter(nodes, { shadow: true, document: true })
+            return this._nodeFilter(nodes, { fragment: true, shadow: true, document: true })
                 .some(node =>
                     !filter ||
                     filter(node)
@@ -4557,14 +4557,14 @@
 
         /**
          * Returns true if any of the nodes matches a filter.
-         * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
-         * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
+         * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+         * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
          * @returns {Boolean} TRUE if any of the nodes matches the filter, otherwise FALSE.
          */
         is(nodes, filter) {
             filter = this._parseFilter(filter);
 
-            return this._nodeFilter(nodes, { node: true, shadow: true })
+            return this._nodeFilter(nodes, { node: true, fragment: true, shadow: true })
                 .some(node =>
                     !filter ||
                     filter(node)
@@ -4573,24 +4573,24 @@
 
         /**
          * Returns true if any of the nodes is connected to the DOM.
-         * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+         * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
          * @returns {Boolean} TRUE if any of the nodes is connected to the DOM, otherwise FALSE.
          */
         isConnected(nodes) {
-            return this._nodeFilter(nodes, { node: true, shadow: true })
+            return this._nodeFilter(nodes, { node: true, fragment: true, shadow: true })
                 .some(node => DOM._isConnected(node));
         },
 
         /**
          * Returns true if any of the nodes is considered equal to any of the other nodes.
-         * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
-         * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} others The other node(s), or a query selector string.
+         * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+         * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} others The other node(s), or a query selector string.
          * @returns {Boolean} TRUE if any of the nodes is considered equal to any of the other nodes, otherwise FALSE.
          */
         isEqual(nodes, others) {
-            others = this._nodeFilter(others, { node: true, shadow: true });
+            others = this._nodeFilter(others, { node: true, fragment: true, shadow: true });
 
-            return this._nodeFilter(nodes, { node: true, shadow: true })
+            return this._nodeFilter(nodes, { node: true, fragment: true, shadow: true })
                 .some(node =>
                     others.some(other => DOM._isEqual(node, other))
                 );
@@ -4598,11 +4598,11 @@
 
         /**
          * Returns true if any of the nodes or a parent of any of the nodes is "fixed".
-         * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+         * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
          * @returns {Boolean} TRUE if any of the nodes is "fixed", otherwise FALSE.
          */
         isFixed(nodes) {
-            return this._nodeFilter(nodes, { node: true, shadow: true })
+            return this._nodeFilter(nodes, { node: true, fragment: true, shadow: true })
                 .some(node =>
                     (Core.isElement(node) && this._css(node, 'position') === 'fixed') ||
                     DOM._parents(
@@ -4617,7 +4617,7 @@
 
         /**
          * Returns true if any of the nodes is hidden.
-         * @param {string|array|Node|HTMLElement|ShadowRoot|Document|Window|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+         * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
          * @returns {Boolean} TRUE if any of the nodes is hidden, otherwise FALSE.
          */
         isHidden(nodes) {
@@ -4629,14 +4629,14 @@
 
         /**
          * Returns true if any of the nodes is considered identical to any of the other nodes.
-         * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
-         * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} others The other node(s), or a query selector string.
+         * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+         * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} others The other node(s), or a query selector string.
          * @returns {Boolean} TRUE if any of the nodes is considered identical to any of the other nodes, otherwise FALSE.
          */
         isSame(nodes, others) {
-            others = this._nodeFilter(others, { node: true, shadow: true });
+            others = this._nodeFilter(others, { node: true, fragment: true, shadow: true });
 
-            return this._nodeFilter(nodes, { node: true, shadow: true })
+            return this._nodeFilter(nodes, { node: true, fragment: true, shadow: true })
                 .some(node =>
                     others.some(other => DOM._isSame(node, other))
                 );
@@ -4644,11 +4644,11 @@
 
         /**
          * Returns true if any of the nodes is visible.
-         * @param {string|array|Node|HTMLElement|ShadowRoot|Document|Window|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+         * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
          * @returns {Boolean} TRUE if any of the nodes is visible, otherwise FALSE.
          */
         isVisible(nodes) {
-            return this._nodeFilter(nodes, { node: true, shadow: true, document: true, window: true })
+            return this._nodeFilter(nodes, { node: true, fragment: true, shadow: true, document: true, window: true })
                 .some(node =>
                     DOM._isVisible(node)
                 );
@@ -4667,7 +4667,7 @@
 
         /**
          * Returns true if a single node has custom data.
-         * @param {Node|HTMLElement|ShadowRoot|Document|Window} node The input node.
+         * @param {Node|HTMLElement|DocumentFragment|ShadowRoot|Document|Window} node The input node.
          * @param {string} [key] The data key.
          * @returns {Boolean} TRUE if the node has custom data, otherwise FALSE.
          */
@@ -4711,12 +4711,12 @@
 
         /**
          * Force a node to be shown, and then execute a callback.
-         * @param {string|array|Node|NodeList|HTMLElement|HTMLCollection|ShadowRoot|Document|Window} nodes The input node(s), or a query selector string.
+         * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
          * @param {DOM~nodeCallback} callback The callback to execute.
          * @returns {*} The result of the callback.
          */
         forceShow(nodes, callback) {
-            const node = this._nodeFind(nodes, { node: true, shadow: true, document: true, window: true });
+            const node = this._nodeFind(nodes, { node: true, fragment: true, shadow: true, document: true, window: true });
 
             if (!node) {
                 return;
@@ -4761,14 +4761,14 @@
 
         /**
          * Get the index of the first node matching a filter.
-         * @param {string|array|Node|NodeList|HTMLElement|HTMLCollection|ShadowRoot} nodes The input node(s), or a query selector string.
-         * @param {string|array|Node|NodeList|HTMLElement|HTMLCollection|ShadowRoot|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
+         * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+         * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
          * @returns {number} The index.
          */
         index(nodes, filter) {
             filter = this._parseFilter(filter);
 
-            return this._nodeFilter(nodes, { node: true, shadow: true })
+            return this._nodeFilter(nodes, { node: true, fragment: true, shadow: true })
                 .findIndex(node =>
                     !filter || filter(node)
                 );
@@ -4776,11 +4776,11 @@
 
         /**
          * Get the index of the first node relative to it's parent.
-         * @param {string|array|Node|NodeList|HTMLElement|HTMLCollection|ShadowRoot} nodes The input node(s), or a query selector string.
+         * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
          * @returns {number} The index.
          */
         indexOf(nodes) {
-            const node = this._nodeFind(nodes, { node: true, shadow: true });
+            const node = this._nodeFind(nodes, { node: true, fragment: true, shadow: true });
 
             if (!node) {
                 return;
@@ -4793,10 +4793,10 @@
 
         /**
          * Normalize nodes (remove empty text nodes, and join adjacent text nodes).
-         * @param {string|array|Node|NodeList|HTMLElement|HTMLCollection|ShadowRoot|Document} nodes The input node(s), or a query selector string.
+         * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|Document|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
          */
         normalize(nodes) {
-            nodes = this._nodeFilter(nodes, { node: true, shadow: true, document: true });
+            nodes = this._nodeFilter(nodes, { node: true, fragment: true, shadow: true, document: true });
 
             for (const node of nodes) {
                 DOM._normalize(node);
@@ -4805,7 +4805,7 @@
 
         /**
          * Return a serialized string containing names and values of all form nodes.
-         * @param {string|array|HTMLElement|HTMLCollection|ShadowRoot} nodes The input node(s), or a query selector string.
+         * @param {string|array|HTMLElement|HTMLCollection|DocumentFragment|ShadowRoot} nodes The input node(s), or a query selector string.
          * @returns {string} The serialized string.
          */
         serialize(nodes) {
@@ -4816,14 +4816,14 @@
 
         /**
          * Return a serialized array containing names and values of all form nodes.
-         * @param {string|array|HTMLElement|HTMLCollection|ShadowRoot} nodes The input node(s), or a query selector string.
+         * @param {string|array|HTMLElement|HTMLCollection|DocumentFragment|ShadowRoot} nodes The input node(s), or a query selector string.
          * @returns {array} The serialized array.
          */
         serializeArray(nodes) {
-            return this._nodeFilter(nodes, { shadow: true })
+            return this._nodeFilter(nodes, { fragment: true, shadow: true })
                 .reduce(
                     (values, node) => {
-                        if (DOM._is(node, 'form') || Core.isShadow(node)) {
+                        if (DOM._is(node, 'form') || Core.isFragment(node) || Core.isShadow(node)) {
                             return values.concat(
                                 this.serializeArray(
                                     DOM._findBySelector(
@@ -4860,11 +4860,11 @@
 
         /**
          * Sort nodes by their position in the document.
-         * @param {string|array|Node|NodeList|HTMLElement|HTMLCollection|ShadowRoot} nodes The input node(s), or a query selector string.
+         * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
          * @returns {array} The sorted array of nodes.
          */
         sort(nodes) {
-            return this._nodeFilter(nodes, { node: true, shadow: true })
+            return this._nodeFilter(nodes, { node: true, fragment: true, shadow: true })
                 .sort((node, other) => DOM._compareNodes(node, other));
         }
 
@@ -5182,7 +5182,7 @@
 
         /**
          * Trigger an event on a single node.
-         * @param {HTMLElement|ShadowRoot|Document|Window} nodes The input node.
+         * @param {HTMLElement|DocumentFragment|ShadowRoot|Document|Window} nodes The input node.
          * @param {string} events The event names.
          * @param {object} [data] Additional data to attach to the Event object.
          */
@@ -5210,7 +5210,7 @@
 
         /**
          * Add an event to a single node.
-         * @param {HTMLElement|ShadowRoot|Document|Window} node The input node.
+         * @param {HTMLElement|DocumentFragment|ShadowRoot|Document|Window} node The input node.
          * @param {string} event The event name.
          * @param {DOM~eventCallback} callback The callback to execute.
          */
@@ -5220,7 +5220,7 @@
 
         /**
          * Remove an event from a single node.
-         * @param {HTMLElement|ShadowRoot|Document|Window} nodes The input node.
+         * @param {HTMLElement|DocumentFragment|ShadowRoot|Document|Window} nodes The input node.
          * @param {string} event The event name.
          * @param {DOM~eventCallback} callback The callback to remove.
          */
@@ -5478,7 +5478,7 @@
 
         /**
          * Detach a single node from the DOM.
-         * @param {Node|HTMLElement|ShadowRoot} node The input node.
+         * @param {Node|HTMLElement|DocumentFragment|ShadowRoot} node The input node.
          */
         _detach(node) {
             if (!node.parentNode) {
@@ -5498,7 +5498,7 @@
 
         /**
          * Insert each other node after the first node.
-         * @param {Node|HTMLElement|ShadowRoot} node The input node.
+         * @param {Node|HTMLElement|DocumentFragment|ShadowRoot} node The input node.
          * @param {array} others The other node(s).
          */
         _after(node, others) {
@@ -5516,7 +5516,7 @@
 
         /**
          * Append each other node to a single node.
-         * @param {HTMLElement|ShadowRoot|Document} node The input node.
+         * @param {HTMLElement|DocumentFragment|ShadowRoot|Document} node The input node.
          * @param {array} others The other node(s).
          */
         _append(node, others) {
@@ -5527,7 +5527,7 @@
 
         /**
          * Insert each other node before a single node.
-         * @param {Node|HTMLElement|ShadowRoot} node The input node.
+         * @param {Node|HTMLElement|DocumentFragment|ShadowRoot} node The input node.
          * @param {array} others The other node(s).
          */
         _before(node, others) {
@@ -5545,7 +5545,7 @@
 
         /**
          * Prepend each other node to a single node.
-         * @param {HTMLElement|ShadowRoot|Document} node The input node.
+         * @param {HTMLElement|DocumentFragment|ShadowRoot|Document} node The input node.
          * @param {array} others The other node(s).
          */
         _prepend(node, others) {
@@ -5593,7 +5593,7 @@
         /**
          * Return all nodes with a specific class.
          * @param {string} className The class name.
-         * @param {HTMLElement|ShadowRoot|Document} node The input node.
+         * @param {HTMLElement|DocumentFragment|ShadowRoot|Document} node The input node.
          * @returns {HTMLCollection} The matching nodes.
          */
         _findByClass(className, node) {
@@ -5634,7 +5634,7 @@
         /**
          * Return all nodes with a specific tag.
          * @param {string} tagName The tag name.
-         * @param {HTMLElement|ShadowRoot|Document} node The input node.
+         * @param {HTMLElement|DocumentFragment|ShadowRoot|Document} node The input node.
          * @returns {HTMLCollection} The matching nodes.
          */
         _findByTag(tagName, node) {
@@ -5644,7 +5644,7 @@
         /**
          * Return all nodes matching a standard CSS selector.
          * @param {string} selector The query selector.
-         * @param {HTMLElement|ShadowRoot|Document} node The input node.
+         * @param {HTMLElement|DocumentFragment|ShadowRoot|Document} node The input node.
          * @returns {NodeList} The matching nodes.
          */
         _findBySelector(selector, node) {
@@ -5675,7 +5675,7 @@
         /**
          * Return a single node matching a standard CSS selector.
          * @param {string} selector The query selector.
-         * @param {HTMLElement|ShadowRoot|Document} node The input node.
+         * @param {HTMLElement|DocumentFragment|ShadowRoot|Document} node The input node.
          * @returns {HTMLElement} The matching node.
          */
         _findOneBySelector(selector, node) {
@@ -5692,7 +5692,7 @@
 
         /**
          * Return all children of a single node (optionally matching a filter).
-         * @param {HTMLElement|ShadowRoot|Document} node The input node.
+         * @param {HTMLElement|DocumentFragment|ShadowRoot|Document} node The input node.
          * @param {DOM~filterCallback} [filter] The filter function.
          * @param {Boolean} [first=false] Whether to only return the first matching node for each node.
          * @param {Boolean} [elementsOnly=false] Whether to only return element nodes.
@@ -5721,7 +5721,7 @@
 
         /**
          * Return the deepest child node for a single node.
-         * @param {HTMLElement|ShadowRoot|Document} node The input node.
+         * @param {HTMLElement|DocumentFragment|ShadowRoot|Document} node The input node.
          * @returns {HTMLElement} The deepest node.
          */
         _deepest(node) {
@@ -5735,7 +5735,7 @@
 
         /**
          * Return the next sibling for a single node (optionally matching a filter).
-         * @param {Node|HTMLElement|ShadowRoot} node The input node.
+         * @param {Node|HTMLElement|DocumentFragment|ShadowRoot} node The input node.
          * @param {DOM~filterCallback} [filter] The filter function.
          * @returns {array} The matching nodes.
          */
@@ -5759,7 +5759,7 @@
 
         /**
          * Return all next siblings for a single node (optionally matching a filter, and before a limit).
-         * @param {Node|HTMLElement|ShadowRoot} node The input node.
+         * @param {Node|HTMLElement|DocumentFragment|ShadowRoot} node The input node.
          * @param {DOM~filterCallback} [filter] The filter function.
          * @param {DOM~filterCallback} [limit] The limit function.
          * @param {Boolean} [first=false] Whether to only return the first matching node for each node.
@@ -5789,7 +5789,7 @@
 
         /**
          * Return the parent of a single node (optionally matching a filter).
-         * @param {Node|HTMLElement|ShadowRoot} node The input node.
+         * @param {Node|HTMLElement|DocumentFragment|ShadowRoot} node The input node.
          * @param {DOM~filterCallback} [filter] The filter function.
          * @returns {array} The matching nodes.
          */
@@ -5811,7 +5811,7 @@
 
         /**
          * Return all parents of a single node (optionally matching a filter, and before a limit).
-         * @param {Node|HTMLElement|ShadowRoot} node The input node.
+         * @param {Node|HTMLElement|DocumentFragment|ShadowRoot} node The input node.
          * @param {DOM~filterCallback} [filter] The filter function.
          * @param {DOM~filterCallback} [limit] The limit function.
          * @param {Boolean} [first=false] Whether to only return the first matching node for each node.
@@ -5845,7 +5845,7 @@
 
         /**
          * Return the previous sibling for a single node (optionally matching a filter).
-         * @param {Node|HTMLElement|ShadowRoot} node The input node.
+         * @param {Node|HTMLElement|DocumentFragment|ShadowRoot} node The input node.
          * @param {DOM~filterCallback} [filter] The filter function.
          * @returns {array} The matching nodes.
          */
@@ -5869,7 +5869,7 @@
 
         /**
          * Return all previous siblings for a single node (optionally matching a filter, and before a limit).
-         * @param {Node|HTMLElement|ShadowRoot} node The input node.
+         * @param {Node|HTMLElement|DocumentFragment|ShadowRoot} node The input node.
          * @param {DOM~filterCallback} [filter] The filter function.
          * @param {DOM~filterCallback} [limit] The limit function.
          * @param {Boolean} [first=false] Whether to only return the first matching node for each node.
@@ -5899,7 +5899,7 @@
 
         /**
          * Return all siblings for a single node (optionally matching a filter).
-         * @param {Node|HTMLElement|ShadowRoot} node The input node.
+         * @param {Node|HTMLElement|DocumentFragment|ShadowRoot} node The input node.
          * @param {DOM~filterCallback} [filter] The filter function.
          * @param {Boolean} [elementsOnly=true] Whether to only return element nodes.
          * @returns {array} The matching nodes.
@@ -5986,7 +5986,7 @@
         /**
          * Insert a node into a range.
          * @param {Range} range The input range.
-         * @param {Node|HTMLElement|ShadowRoot} node The node to insert.
+         * @param {Node|HTMLElement|DocumentFragment|ShadowRoot} node The node to insert.
          */
         _insert(range, node) {
             range.insertNode(node);
@@ -6003,7 +6003,7 @@
         /**
          * Add a node to a range.
          * @param {Range} range The input range. 
-         * @param {Node|HTMLElement|ShadowRoot} node The node to select.
+         * @param {Node|HTMLElement|DocumentFragment|ShadowRoot} node The node to select.
          */
         _select(range, node) {
             range.selectNode(node);
@@ -6012,7 +6012,7 @@
         /**
          * Set the end position of a range after a node.
          * @param {Range} range The input range.
-         * @param {Node|HTMLElement|ShadowRoot} node The node to end the range after.
+         * @param {Node|HTMLElement|DocumentFragment|ShadowRoot} node The node to end the range after.
          */
         _setEndAfter(range, node) {
             range.setEndAfter(node);
@@ -6021,7 +6021,7 @@
         /**
          * Set the start position of a range before a node.
          * @param {Range} range The input range.
-         * @param {Node|HTMLElement|ShadowRoot} node The node to start the range before.
+         * @param {Node|HTMLElement|DocumentFragment|ShadowRoot} node The node to start the range before.
          */
         _setStartBefore(range, node) {
             range.setStartBefore(node);
@@ -6037,11 +6037,11 @@
 
         /**
          * Returns true if a single node has another node as a descendent.
-         * @param {HTMLElement|ShadowRoot|Document} node The input node.
-         * @param {Node|HTMLElement|ShadowRoot|Document} node The other node.
+         * @param {HTMLElement|DocumentFragment|ShadowRoot|Document} node The input node.
+         * @param {Node|HTMLElement|DocumentFragment|ShadowRoot|Document} node The other node.
          * @returns {Boolean} TRUE if the node has the other node as a descendent, otherwise FALSE.
          */
-        _has(node, other) {
+        _contains(node, other) {
             return node.contains(other);
         },
 
@@ -6057,7 +6057,7 @@
 
         /**
          * Returns true if a single node has child elements.
-         * @param {HTMLElement|ShadowRoot|Document} node The input node.
+         * @param {HTMLElement|DocumentFragment|ShadowRoot|Document} node The input node.
          * @returns {Boolean} TRUE if the node has child elements, otherwise FALSE.
          */
         _hasChildren(node) {
@@ -6098,7 +6098,7 @@
 
         /**
          * Returns true if a single node is connected to the DOM.
-         * @param {Node|HTMLElement|ShadowRoot} node The input node.
+         * @param {Node|HTMLElement|DocumentFragment|ShadowRoot} node The input node.
          * @returns {Boolean} TRUE if the node is connected to the DOM, otherwise FALSE.
          */
         _isConnected(node) {
@@ -6107,8 +6107,8 @@
 
         /**
          * Returns true if a single node is equal to another node.
-         * @param {Node|HTMLElement|ShadowRoot|Document} node The input node.
-         * @param {Node|HTMLElement|ShadowRoot|Document} node The other node.
+         * @param {Node|HTMLElement|DocumentFragment|ShadowRoot|Document} node The input node.
+         * @param {Node|HTMLElement|DocumentFragment|ShadowRoot|Document} node The other node.
          * @returns {Boolean} TRUE if the node is equal to the other node, otherwise FALSE.
          */
         _isEqual(node, other) {
@@ -6117,8 +6117,8 @@
 
         /**
          * Returns true if a single node is the same as another node.
-         * @param {Node|HTMLElement|ShadowRoot|Document} node The input node.
-         * @param {Node|HTMLElement|ShadowRoot|Document} node The other node.
+         * @param {Node|HTMLElement|DocumentFragment|ShadowRoot|Document} node The input node.
+         * @param {Node|HTMLElement|DocumentFragment|ShadowRoot|Document} node The other node.
          * @returns {Boolean} TRUE if the node is the same as the other node, otherwise FALSE.
          */
         _isSame(node, other) {
@@ -6127,7 +6127,7 @@
 
         /**
          * Returns true if a single node is visible.
-         * @param {HTMLElement|ShadowRoot|Document|Window} node The input node.
+         * @param {HTMLElement|DocumentFragment|ShadowRoot|Document|Window} node The input node.
          * @returns {Boolean} TRUE if the node is visible, otherwise FALSE.
          */
         _isVisible(node) {
@@ -6156,8 +6156,8 @@
 
         /**
          * Compare the position of two nodes in the DOM.
-         * @param {Node|HTMLElement|ShadowRoot} node The input node.
-         * @param {Node|HTMLElement|ShadowRoot} other The other node.
+         * @param {Node|HTMLElement|DocumentFragment|ShadowRoot} node The input node.
+         * @param {Node|HTMLElement|DocumentFragment|ShadowRoot} other The other node.
          * @returns {number} -1 if node is before other, 1 if other is before node, otherwise 0.
          */
         _compareNodes(node, other) {
@@ -6182,7 +6182,7 @@
 
         /**
          * Normalize a single node (remove empty text nodes, and join neighbouring text nodes).
-         * @param {Node|HTMLElement|ShadowRoot|Document} node The input node.
+         * @param {Node|HTMLElement|DocumentFragment|ShadowRoot|Document} node The input node.
          */
         _normalize(node) {
             node.normalize();
@@ -6213,7 +6213,7 @@
 
     /**
      * @callback DOM~nodeCallback
-     * @param {Node|HTMLElement|ShadowRoot|Document|Window} node The input node.
+     * @param {Node|HTMLElement|DocumentFragment|ShadowRoot|Document|Window} node The input node.
      */
 
     /**

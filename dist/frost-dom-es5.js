@@ -1487,12 +1487,13 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
   Object.assign(DOM.prototype, {
     /**
      * Clone custom data from each node to each other node.
-     * @param {string|array|Node|HTMLElement|ShadowRoot|Document|Window|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
-     * @param {string|array|Node|HTMLElement|ShadowRoot|Document|Window|NodeList|HTMLCollection} others The other node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|NodeList|HTMLCollection} others The other node(s), or a query selector string.
      */
     cloneData: function cloneData(nodes, others) {
       nodes = this._nodeFilter(nodes, {
         node: true,
+        fragment: true,
         shadow: true,
         document: true,
         window: true
@@ -1525,13 +1526,14 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Get custom data for the first node.
-     * @param {string|array|Node|HTMLElement|ShadowRoot|Document|Window|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
      * @param {string} [key] The data key.
      * @returns {*} The data value.
      */
     getData: function getData(nodes, key) {
       var node = this._nodeFind(nodes, {
         node: true,
+        fragment: true,
         shadow: true,
         document: true,
         window: true
@@ -1546,12 +1548,13 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Remove custom data from each node.
-     * @param {string|array|Node|HTMLElement|ShadowRoot|Document|Window|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
      * @param {string} [key] The data key.
      */
     removeData: function removeData(nodes, key) {
       nodes = this._nodeFilter(nodes, {
         node: true,
+        fragment: true,
         shadow: true,
         document: true,
         window: true
@@ -1584,13 +1587,14 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Set custom data for each node.
-     * @param {string|array|Node|HTMLElement|ShadowRoot|Document|Window|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
      * @param {string|object} key The data key, or an object containing data.
      * @param {*} [value] The data value.
      */
     setData: function setData(nodes, key, value) {
       nodes = this._nodeFilter(nodes, {
         node: true,
+        fragment: true,
         shadow: true,
         document: true,
         window: true
@@ -1626,8 +1630,8 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Clone custom data from a single node to each other node.
-     * @param {Node|HTMLElement|ShadowRoot|Document|Window} node The input node.
-     * @param {string|array|Node|HTMLElement|ShadowRoot|Document|Window|NodeList|HTMLCollection} others The other node(s), or a query selector string.
+     * @param {Node|HTMLElement|DocumentFragment|ShadowRoot|Document|Window} node The input node.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|NodeList|HTMLCollection} others The other node(s), or a query selector string.
      */
     _cloneData: function _cloneData(node, others) {
       if (!this._data.has(node)) {
@@ -1639,7 +1643,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Get custom data for a single node.
-     * @param {Node|HTMLElement|ShadowRoot|Document|Window} node The input node.
+     * @param {Node|HTMLElement|DocumentFragment|ShadowRoot|Document|Window} node The input node.
      * @param {string} [key] The data key.
      * @returns {*} The data value.
      */
@@ -1657,7 +1661,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Remove custom data from a single node.
-     * @param {Node|HTMLElement|ShadowRoot|Document|Window} node The input node.
+     * @param {Node|HTMLElement|DocumentFragment|ShadowRoot|Document|Window} node The input node.
      * @param {string} [key] The data key.
      */
     _removeData: function _removeData(node, key) {
@@ -1680,7 +1684,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Set custom data for a single node.
-     * @param {Node|HTMLElement|ShadowRoot|Document|Window} node The input node.
+     * @param {Node|HTMLElement|DocumentFragment|ShadowRoot|Document|Window} node The input node.
      * @param {object} data An object containing data.
      */
     _setData: function _setData(node, data) {
@@ -2610,7 +2614,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Return a wrapped event callback that executes on a delegate selector.
-     * @param {HTMLElement|ShadowRoot|Document} node The input node.
+     * @param {HTMLElement|DocumentFragment|ShadowRoot|Document} node The input node.
      * @param {string} selector The delegate query selector.
      * @param {function} callback The event callback.
      * @returns {DOM~eventCallback} The delegated event callback.
@@ -2662,7 +2666,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Return a function for matching a delegate target to a standard selector.
-     * @param {HTMLElement|ShadowRoot|Document} node The input node.
+     * @param {HTMLElement|DocumentFragment|ShadowRoot|Document} node The input node.
      * @param {string} selector The delegate query selector.
      * @returns {DOM~delegateCallback} The callback for finding the matching delegate.
      */
@@ -2678,7 +2682,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Return a wrapped event callback that removes itself after execution.
-     * @param {HTMLElement|ShadowRoot|Document|Window} node The input node.
+     * @param {HTMLElement|DocumentFragment|ShadowRoot|Document|Window} node The input node.
      * @param {string} events The event names.
      * @param {string} delegate The delegate selector.
      * @param {DOM~eventCallback} callback The callback to execute.
@@ -2756,12 +2760,13 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Trigger events on each node.
-     * @param {string|array|HTMLElement|ShadowRoot|Document|Window|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|HTMLCollection} nodes The input node(s), or a query selector string.
      * @param {string} events The event names.
      * @param {object} [data] Additional data to attach to the event.
      */
     triggerEvent: function triggerEvent(nodes, events, data) {
       nodes = this._nodeFilter(nodes, {
+        fragment: true,
         shadow: true,
         document: true,
         window: true
@@ -2799,12 +2804,13 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
   Object.assign(DOM.prototype, {
     /**
      * Add events to each node.
-     * @param {string|array|HTMLElement|ShadowRoot|Document|Window|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|HTMLCollection} nodes The input node(s), or a query selector string.
      * @param {string} events The event names.
      * @param {DOM~eventCallback} callback The callback to execute.
      */
     addEvent: function addEvent(nodes, events, callback) {
       nodes = this._nodeFilter(nodes, {
+        fragment: true,
         shadow: true,
         document: true,
         window: true
@@ -2837,13 +2843,14 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Add delegated events to each node.
-     * @param {string|array|HTMLElement|ShadowRoot|Document|Window|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|HTMLCollection} nodes The input node(s), or a query selector string.
      * @param {string} events The event names.
      * @param {string} delegate The delegate selector.
      * @param {DOM~eventCallback} callback The callback to execute.
      */
     addEventDelegate: function addEventDelegate(nodes, events, delegate, callback) {
       nodes = this._nodeFilter(nodes, {
+        fragment: true,
         shadow: true,
         document: true,
         window: true
@@ -2876,13 +2883,14 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Add self-destructing delegated events to each node.
-     * @param {string|array|HTMLElement|ShadowRoot|Document|Window|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|HTMLCollection} nodes The input node(s), or a query selector string.
      * @param {string} events The event names.
      * @param {string} delegate The delegate selector.
      * @param {DOM~eventCallback} callback The callback to execute.
      */
     addEventDelegateOnce: function addEventDelegateOnce(nodes, events, delegate, callback) {
       nodes = this._nodeFilter(nodes, {
+        fragment: true,
         shadow: true,
         document: true,
         window: true
@@ -2915,12 +2923,13 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Add self-destructing events to each node.
-     * @param {string|array|HTMLElement|ShadowRoot|Document|Window|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|HTMLCollection} nodes The input node(s), or a query selector string.
      * @param {string} events The event names.
      * @param {DOM~eventCallback} callback The callback to execute.
      */
     addEventOnce: function addEventOnce(nodes, events, callback) {
       nodes = this._nodeFilter(nodes, {
+        fragment: true,
         shadow: true,
         document: true,
         window: true
@@ -2953,11 +2962,12 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Clone all events from each node to other nodes.
-     * @param {string|array|HTMLElement|ShadowRoot|Document|Window|HTMLCollection} nodes The input node(s), or a query selector string.
-     * @param {string|array|HTMLElement|ShadowRoot|Document|Window|HTMLCollection} others The other node(s), or a query selector string.
+     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|HTMLCollection} others The other node(s), or a query selector string.
      */
     cloneEvents: function cloneEvents(nodes, others) {
       nodes = this._nodeFilter(nodes, {
+        fragment: true,
         shadow: true,
         document: true,
         window: true
@@ -2990,12 +3000,13 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Remove events from each node.
-     * @param {string|array|HTMLElement|ShadowRoot|Document|Window|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|HTMLCollection} nodes The input node(s), or a query selector string.
      * @param {string} [events] The event names.
      * @param {DOM~eventCallback} [callback] The callback to remove.
      */
     removeEvent: function removeEvent(nodes, events, callback) {
       nodes = this._nodeFilter(nodes, {
+        fragment: true,
         shadow: true,
         document: true,
         window: true
@@ -3028,13 +3039,14 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Remove delegated events from each node.
-     * @param {string|array|HTMLElement|ShadowRoot|Document|Window|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|HTMLCollection} nodes The input node(s), or a query selector string.
      * @param {string} [events] The event names.
      * @param {string} [delegate] The delegate selector.
      * @param {DOM~eventCallback} [callback] The callback to remove.
      */
     removeEventDelegate: function removeEventDelegate(nodes, events, delegate, callback) {
       nodes = this._nodeFilter(nodes, {
+        fragment: true,
         shadow: true,
         document: true,
         window: true
@@ -3067,7 +3079,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Add events to a single node.
-     * @param {HTMLElement|ShadowRoot|Document|Window} node The input node.
+     * @param {HTMLElement|DocumentFragment|ShadowRoot|Document|Window} node The input node.
      * @param {string} events The event names.
      * @param {DOM~eventCallback} callback The callback to execute.
      * @param {string} [delegate] The delegate selector.
@@ -3137,8 +3149,8 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Clone all events from a single node to other nodes.
-     * @param {HTMLElement|ShadowRoot|Document|Window} nodes The input node.
-     * @param {string|array|HTMLElement|ShadowRoot|Document|Window|HTMLCollection} others The other node(s), or a query selector string.
+     * @param {HTMLElement|DocumentFragment|ShadowRoot|Document|Window} nodes The input node.
+     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|HTMLCollection} others The other node(s), or a query selector string.
      */
     _cloneEvents: function _cloneEvents(node, others) {
       if (!this._events.has(node)) {
@@ -3176,7 +3188,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Remove events from a single node.
-     * @param {HTMLElement|ShadowRoot|Document|Window} nodes The input node.
+     * @param {HTMLElement|DocumentFragment|ShadowRoot|Document|Window} nodes The input node.
      * @param {string} [events] The event names.
      * @param {DOM~eventCallback} [callback] The callback to remove.
      * @param {string} [delegate] The delegate selector.
@@ -3383,7 +3395,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
   Object.assign(DOM.prototype, {
     /**
      * Clone each node.
-     * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
      * @param {Boolean} [deep=true] Whether to also clone all descendent nodes.
      * @param {Boolean} [cloneEvents=false] Whether to also clone events.
      * @param {Boolean} [cloneData=false] Whether to also clone custom data.
@@ -3397,6 +3409,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       var cloneData = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : false;
       nodes = this._nodeFilter(nodes, {
         node: true,
+        fragment: true,
         shadow: true
       });
       return nodes.map(function (node) {
@@ -3406,11 +3419,12 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Detach each node from the DOM.
-     * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
      */
     detach: function detach(nodes) {
       nodes = this._nodeFilter(nodes, {
         node: true,
+        fragment: true,
         shadow: true
       });
       var _iteratorNormalCompletion37 = true;
@@ -3441,10 +3455,11 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Remove all children of each node from the DOM.
-     * @param {string|array|HTMLElement|ShadowRoot|Document|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|HTMLCollection} nodes The input node(s), or a query selector string.
      */
     empty: function empty(nodes) {
       nodes = this._nodeFilter(nodes, {
+        fragment: true,
         shadow: true,
         document: true
       });
@@ -3476,11 +3491,12 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Remove each node from the DOM.
-     * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
      */
     remove: function remove(nodes) {
       nodes = this._nodeFilter(nodes, {
         node: true,
+        fragment: true,
         shadow: true
       });
       var _iteratorNormalCompletion39 = true;
@@ -3511,8 +3527,8 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Replace each other node with nodes.
-     * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector or HTML string.
-     * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} others The input node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector or HTML string.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} others The input node(s), or a query selector string.
      */
     replaceAll: function replaceAll(nodes, others) {
       this.replaceWith(others, nodes);
@@ -3520,16 +3536,18 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Replace each node with other nodes.
-     * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
-     * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} others The input node(s), or a query selector or HTML string.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} others The input node(s), or a query selector or HTML string.
      */
     replaceWith: function replaceWith(nodes, others) {
       nodes = this._nodeFilter(nodes, {
         node: true,
+        fragment: true,
         shadow: true
       });
       others = this._nodeFilter(others, {
         node: true,
+        fragment: true,
         shadow: true,
         html: true
       });
@@ -3561,11 +3579,11 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Clone a single node.
-     * @param {Node|HTMLElement|ShadowRoot} node The input node.
+     * @param {Node|HTMLElement|DocumentFragment|ShadowRoot} node The input node.
      * @param {Boolean} [deep=true] Whether to also clone all descendent nodes.
      * @param {Boolean} [cloneEvents=false] Whether to also clone events.
      * @param {Boolean} [cloneData=false] Whether to also clone custom data.
-     * @returns {Node|HTMLElement|ShadowRoot} The cloned node.
+     * @returns {Node|HTMLElement|DocumentFragment|ShadowRoot} The cloned node.
      */
     _clone: function _clone(node) {
       var deep = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
@@ -3595,8 +3613,8 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Deep clone a node.
-     * @param {Node|HTMLElement|ShadowRoot} node The input node.
-     * @param {Node|HTMLElement|ShadowRoot} clone The cloned node.
+     * @param {Node|HTMLElement|DocumentFragment|ShadowRoot} node The input node.
+     * @param {Node|HTMLElement|DocumentFragment|ShadowRoot} clone The cloned node.
      * @param {Boolean} [cloneEvents=false] Whether to also clone events.
      * @param {Boolean} [cloneData=false] Whether to also clone custom data.
      */
@@ -3623,7 +3641,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Remove all children of a single node from the DOM.
-     * @param {HTMLElement|ShadowRoot|Document} node The input node.
+     * @param {HTMLElement|DocumentFragment|ShadowRoot|Document} node The input node.
      */
     _empty: function _empty(node) {
       var children = DOM._children(node, false, false, false);
@@ -3656,7 +3674,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Remove a single node from the DOM.
-     * @param {Node|HTMLElement|ShadowRoot} node The input node.
+     * @param {Node|HTMLElement|DocumentFragment|ShadowRoot} node The input node.
      */
     _remove: function _remove(node) {
       if (Core.isElement(node)) {
@@ -3682,7 +3700,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Replace a single node with other nodes.
-     * @param {Node|HTMLElement|ShadowRoot} node The input node.
+     * @param {Node|HTMLElement|DocumentFragment|ShadowRoot} node The input node.
      * @param {array} others The other node(s).
      */
     _replaceWith: function _replaceWith(node, others) {
@@ -3698,12 +3716,13 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
   Object.assign(DOM.prototype, {
     /**
      * Insert each other node after the first node.
-     * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
-     * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} others The other node(s), or a query selector or HTML string.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} others The other node(s), or a query selector or HTML string.
      */
     after: function after(nodes, others) {
       var node = this._nodeFind(nodes, {
         node: true,
+        fragment: true,
         shadow: true
       });
 
@@ -3713,6 +3732,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
       others = this._nodeFilter(others, {
         node: true,
+        fragment: true,
         shadow: true,
         html: true
       });
@@ -3722,11 +3742,12 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Append each other node to the first node.
-     * @param {string|array|Node|HTMLElement|ShadowRoot|Document|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
-     * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} others The other node(s), or a query selector or HTML string.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|Document|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} others The other node(s), or a query selector or HTML string.
      */
     append: function append(nodes, others) {
       var node = this._nodeFind(nodes, {
+        fragment: true,
         shadow: true,
         document: true
       });
@@ -3737,6 +3758,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
       others = this._nodeFilter(others, {
         node: true,
+        fragment: true,
         shadow: true,
         html: true
       });
@@ -3746,8 +3768,8 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Append each node to the first other node.
-     * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector or HTML string.
-     * @param {string|array|Node|HTMLElement|ShadowRoot|Document|NodeList|HTMLCollection} others The other node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector or HTML string.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|Document|NodeList|HTMLCollection} others The other node(s), or a query selector string.
      */
     appendTo: function appendTo(nodes, others) {
       this.append(others, nodes);
@@ -3755,12 +3777,13 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Insert each other node before the first node.
-     * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
-     * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} others The other node(s), or a query selector or HTML string.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} others The other node(s), or a query selector or HTML string.
      */
     before: function before(nodes, others) {
       var node = this._nodeFind(nodes, {
         node: true,
+        fragment: true,
         shadow: true
       });
 
@@ -3770,6 +3793,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
       others = this._nodeFilter(others, {
         node: true,
+        fragment: true,
         shadow: true,
         html: true
       });
@@ -3779,8 +3803,8 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Insert each node after the first other node.
-     * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector or HTML string.
-     * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} others The other node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector or HTML string.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} others The other node(s), or a query selector string.
      */
     insertAfter: function insertAfter(nodes, others) {
       this.after(others, nodes);
@@ -3788,8 +3812,8 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Insert each node before the first other node.
-     * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector or HTML string.
-     * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} others The other node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector or HTML string.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} others The other node(s), or a query selector string.
      */
     insertBefore: function insertBefore(nodes, others) {
       this.before(others, nodes);
@@ -3797,11 +3821,12 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Prepend each other node to the first node.
-     * @param {string|array|HTMLElement|ShadowRoot|Document|HTMLCollection} nodes The input node(s), or a query selector string.
-     * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} others The other node(s), or a query selector or HTML string.
+     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} others The other node(s), or a query selector or HTML string.
      */
     prepend: function prepend(nodes, others) {
       var node = this._nodeFind(nodes, {
+        fragment: true,
         shadow: true,
         document: true
       });
@@ -3812,6 +3837,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
       others = this._nodeFilter(others, {
         node: true,
+        fragment: true,
         shadow: true,
         html: true
       });
@@ -3821,8 +3847,8 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Prepend each node to the first other node.
-     * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector or HTML string.
-     * @param {string|array|HTMLElement|ShadowRoot|Document|HTMLCollection} others The other node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector or HTML string.
+     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|HTMLCollection} others The other node(s), or a query selector string.
      */
     prependTo: function prependTo(nodes, others) {
       this.prepend(others, nodes);
@@ -3835,12 +3861,13 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
   Object.assign(DOM.prototype, {
     /**
      * Unwrap each node.
-     * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
-     * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
      */
     unwrap: function unwrap(nodes, filter) {
       nodes = this._nodeFilter(nodes, {
         node: true,
+        fragment: true,
         shadow: true
       });
       var _iteratorNormalCompletion42 = true;
@@ -3871,15 +3898,17 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Wrap each nodes with other nodes.
-     * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
-     * @param {string|array|HTMLElement|ShadowRoot|HTMLCollection} others The other node(s), or a query selector or HTML string.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|HTMLCollection} others The other node(s), or a query selector or HTML string.
      */
     wrap: function wrap(nodes, others) {
       nodes = this._nodeFilter(nodes, {
         node: true,
+        fragment: true,
         shadow: true
       });
       others = this._nodeFilter(others, {
+        fragment: true,
         shadow: true,
         html: true
       });
@@ -3911,15 +3940,17 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Wrap all nodes with other nodes.
-     * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
-     * @param {string|array|HTMLElement|ShadowRoot|HTMLCollection} others The other node(s), or a query selector or HTML string.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|HTMLCollection} others The other node(s), or a query selector or HTML string.
      */
     wrapAll: function wrapAll(nodes, others) {
       nodes = this._nodeFilter(nodes, {
         node: true,
+        fragment: true,
         shadow: true
       });
       others = this._nodeFilter(others, {
+        fragment: true,
         shadow: true,
         html: true
       });
@@ -3934,15 +3965,17 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Wrap the contents of each node with other nodes.
-     * @param {string|array|HTMLElement|ShadowRoot|HTMLCollection} nodes The input node(s), or a query selector string.
-     * @param {string|array|HTMLElement|ShadowRoot|HTMLCollection} others The other node(s), or a query selector or HTML string.
+     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|HTMLCollection} others The other node(s), or a query selector or HTML string.
      */
     wrapInner: function wrapInner(nodes, others) {
       nodes = this._nodeFilter(nodes, {
         node: true,
+        fragment: true,
         shadow: true
       });
       others = this._nodeFilter(others, {
+        fragment: true,
         shadow: true,
         html: true
       });
@@ -3974,8 +4007,8 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Unwrap a single node.
-     * @param {Node|HTMLElement|ShadowRoot} node The input node.
-     * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
+     * @param {Node|HTMLElement|DocumentFragment|ShadowRoot} node The input node.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
      */
     _unwrap: function _unwrap(node, filter) {
       var parent = DOM._parent(node, filter).shift();
@@ -3993,8 +4026,8 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Wrap a single node with other nodes.
-     * @param {Node|HTMLElement|ShadowRoot} node The input node.
-     * @param {string|array|HTMLElement|ShadowRoot|HTMLCollection} others The other node(s), or a query selector or HTML string.
+     * @param {Node|HTMLElement|DocumentFragment|ShadowRoot} node The input node.
+     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|HTMLCollection} others The other node(s), or a query selector or HTML string.
      */
     _wrap: function _wrap(node, others) {
       var clone = this.clone(others, true);
@@ -4008,8 +4041,8 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Wrap the contents of a single node with other nodes.
-     * @param {HTMLElement|ShadowRoot} node The input node.
-     * @param {string|array|HTMLElement|ShadowRoot|HTMLCollection} others The other node(s), or a query selector or HTML string.
+     * @param {HTMLElement|DocumentFragment|ShadowRoot} node The input node.
+     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|HTMLCollection} others The other node(s), or a query selector or HTML string.
      */
     _wrapInner: function _wrapInner(node, others) {
       var children = DOM._children(node, false, false, false),
@@ -4029,12 +4062,13 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
   Object.assign(DOM.prototype, {
     /**
      * Return all nodes connected to the DOM.
-     * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
      * @returns {array} The filtered nodes.
      */
     connected: function connected(nodes) {
       return this._nodeFilter(nodes, {
         node: true,
+        fragment: true,
         shadow: true
       }).filter(function (node) {
         return DOM._isConnected(node);
@@ -4043,17 +4077,19 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Return all nodes considered equal to any of the other nodes.
-     * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
-     * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} others The other node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} others The other node(s), or a query selector string.
      * @returns {array} The filtered nodes.
      */
     equal: function equal(nodes, others) {
       others = this._nodeFilter(others, {
         node: true,
+        fragment: true,
         shadow: true
       });
       return this._nodeFilter(nodes, {
         node: true,
+        fragment: true,
         shadow: true
       }).filter(function (node) {
         return others.some(function (other) {
@@ -4064,14 +4100,15 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Return all nodes matching a filter.
-     * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
-     * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
      * @returns {array} The filtered nodes.
      */
     filter: function filter(nodes, _filter) {
       _filter = this._parseFilter(_filter);
       return this._nodeFilter(nodes, {
         node: true,
+        fragment: true,
         shadow: true
       }).filter(function (node, index) {
         return !_filter || _filter(node, index);
@@ -4080,14 +4117,15 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Return the first node matching a filter.
-     * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
-     * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
-     * @returns {Node|HTMLElement|ShadowRoot} The filtered node.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
+     * @returns {Node|HTMLElement|DocumentFragment|ShadowRoot} The filtered node.
      */
     filterOne: function filterOne(nodes, filter) {
       filter = this._parseFilter(filter);
       return this._nodeFilter(nodes, {
         node: true,
+        fragment: true,
         shadow: true
       }).find(function (node, index) {
         return !filter || filter(node, index);
@@ -4096,7 +4134,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Return all "fixed" nodes.
-     * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
      * @returns {array} The filtered nodes.
      */
     fixed: function fixed(nodes) {
@@ -4104,6 +4142,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
       return this._nodeFilter(nodes, {
         node: true,
+        fragment: true,
         shadow: true
       }).filter(function (node) {
         return Core.isElement(node) && _this19._css(node, 'position') === 'fixed' || DOM._parents(node, function (parent) {
@@ -4114,11 +4153,12 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Return all hidden nodes.
-     * @param {string|array|HTMLElement|ShadowRoot|Document|Window|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|HTMLCollection} nodes The input node(s), or a query selector string.
      * @returns {array} The filtered nodes.
      */
     hidden: function hidden(nodes) {
       return this._nodeFilter(nodes, {
+        fragment: true,
         shadow: true,
         document: true,
         window: true
@@ -4129,8 +4169,8 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Return all nodes not matching a filter.
-     * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
-     * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
      * @returns {array} The filtered nodes.
      */
     not: function not(nodes, filter) {
@@ -4142,6 +4182,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
       return this._nodeFilter(nodes, {
         node: true,
+        fragment: true,
         shadow: true
       }).filter(function (node, index) {
         return !filter(node, index);
@@ -4150,17 +4191,19 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Return all nodes considered identical to any of the other nodes.
-     * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
-     * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} others The other node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} others The other node(s), or a query selector string.
      * @returns {array} The filtered nodes.
      */
     same: function same(nodes, others) {
       others = this._nodeFilter(others, {
         node: true,
+        fragment: true,
         shadow: true
       });
       return this._nodeFilter(nodes, {
         node: true,
+        fragment: true,
         shadow: true
       }).filter(function (node) {
         return others.some(function (other) {
@@ -4171,11 +4214,12 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Return all visible nodes.
-     * @param {string|array|HTMLElement|ShadowRoot|Document|Window|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|HTMLCollection} nodes The input node(s), or a query selector string.
      * @returns {array} The filtered nodes.
      */
     visible: function visible(nodes) {
       return this._nodeFilter(nodes, {
+        fragment: true,
         shadow: true,
         document: true,
         window: true
@@ -4211,11 +4255,12 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Return all nodes with child elements.
-     * @param {string|array|HTMLElement|ShadowRoot|Document|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|HTMLCollection} nodes The input node(s), or a query selector string.
      * @returns {array} The filtered nodes.
      */
     withChildren: function withChildren(nodes) {
       return this._nodeFilter(nodes, {
+        fragment: true,
         shadow: true,
         document: true
       }).filter(function (node) {
@@ -4238,7 +4283,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Return all nodes with custom data.
-     * @param {string|array|Node|HTMLElement|ShadowRoot|Document|Window|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
      * @param {string} [key] The data key.
      * @returns {array} The filtered nodes.
      */
@@ -4247,6 +4292,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
       return this._nodeFilter(nodes, {
         node: true,
+        fragment: true,
         shadow: true,
         document: true,
         window: true
@@ -4257,13 +4303,14 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Return all nodes with a descendent matching a filter.
-     * @param {string|array|HTMLElement|ShadowRoot|Document|HTMLCollection} nodes The input node(s), or a query selector string.
-     * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
+     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
      * @returns {array} The filtered nodes.
      */
     withDescendent: function withDescendent(nodes, filter) {
       filter = this._parseFilterContains(filter);
       return this._nodeFilter(nodes, {
+        fragment: true,
         shadow: true,
         document: true
       }).filter(function (node, index) {
@@ -4304,7 +4351,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
     /**
      * Return all nodes matching a selector.
      * @param {string} selector The query selector.
-     * @param {string|array|HTMLElement|ShadowRoot|Document|HTMLCollection} [nodes=this._context] The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|HTMLCollection} [nodes=this._context] The input node(s), or a query selector string.
      * @returns {array} The matching nodes.
      */
     find: function find(selector) {
@@ -4336,17 +4383,18 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
     /**
      * Return all nodes with a specific class.
      * @param {string} className The class name.
-     * @param {string|array|HTMLElement|ShadowRoot|Document|HTMLCollection} [nodes=this._context] The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|HTMLCollection} [nodes=this._context] The input node(s), or a query selector string.
      * @returns {array} The matching nodes.
      */
     findByClass: function findByClass(className) {
       var nodes = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : this._context;
 
-      if (Core.isDocument(nodes) || Core.isElement(nodes) || Core.isShadow(nodes)) {
+      if (Core.isDocument(nodes) || Core.isElement(nodes) || Core.isFragment(nodes) || Core.isShadow(nodes)) {
         return Core.merge([], DOM._findByClass(className, nodes));
       }
 
       nodes = this._nodeFilter(nodes, {
+        fragment: true,
         shadow: true,
         document: true
       });
@@ -4381,7 +4429,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
     /**
      * Return all nodes with a specific ID.
      * @param {string} id The id.
-     * @param {string|array|HTMLElement|ShadowRoot|Document|HTMLCollection} [nodes=this._context] The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|HTMLCollection} [nodes=this._context] The input node(s), or a query selector string.
      * @returns {array} The matching nodes.
      */
     findById: function findById(id) {
@@ -4397,8 +4445,8 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         return [result];
       }
 
-      if (Core.isElement(nodes) || Core.isShadow(nodes)) {
-        return DOM._has(nodes, result) ? [result] : [];
+      if (Core.isElement(nodes) || Core.isFragment(nodes) || Core.isShadow(nodes)) {
+        return DOM._contains(nodes, result) ? [result] : [];
       }
 
       return this.hasDescendent(nodes, result) ? [result] : [];
@@ -4407,17 +4455,18 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
     /**
      * Return all nodes with a specific tag.
      * @param {string} tagName The tag name.
-     * @param {string|array|HTMLElement|ShadowRoot|Document|HTMLCollection} [nodes=this._context] The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|HTMLCollection} [nodes=this._context] The input node(s), or a query selector string.
      * @returns {array} The matching nodes.
      */
     findByTag: function findByTag(tagName) {
       var nodes = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : this._context;
 
-      if (Core.isDocument(nodes) || Core.isElement(nodes) || Core.isShadow(nodes)) {
+      if (Core.isDocument(nodes) || Core.isElement(nodes) || Core.isFragment(nodes) || Core.isShadow(nodes)) {
         return Core.merge([], DOM._findByTag(tagName, nodes));
       }
 
       nodes = this._nodeFilter(nodes, {
+        fragment: true,
         shadow: true,
         document: true
       });
@@ -4452,7 +4501,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
     /**
      * Return a single node matching a selector.
      * @param {string} selector The query selector.
-     * @param {string|array|HTMLElement|ShadowRoot|Document|HTMLCollection} [nodes=this._context] The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|HTMLCollection} [nodes=this._context] The input node(s), or a query selector string.
      * @returns {HTMLElement} The matching node.
      */
     findOne: function findOne(selector) {
@@ -4484,17 +4533,18 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
     /**
      * Return a single node with a specific class.
      * @param {string} className The class name.
-     * @param {string|array|HTMLElement|ShadowRoot|Document|HTMLCollection} [nodes=this._context] The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|HTMLCollection} [nodes=this._context] The input node(s), or a query selector string.
      * @returns {HTMLElement} The matching node.
      */
     findOneByClass: function findOneByClass(className) {
       var nodes = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : this._context;
 
-      if (Core.isDocument(nodes) || Core.isElement(nodes) || Core.isShadow(nodes)) {
+      if (Core.isDocument(nodes) || Core.isElement(nodes) || Core.isFragment(nodes) || Core.isShadow(nodes)) {
         return DOM._findByClass(className, nodes).item(0);
       }
 
       nodes = this._nodeFilter(nodes, {
+        fragment: true,
         shadow: true,
         document: true
       });
@@ -4533,7 +4583,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
     /**
      * Return a single node with a specific ID.
      * @param {string} id The id.
-     * @param {string|array|HTMLElement|ShadowRoot|Document|HTMLCollection} [nodes=this._context] The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|HTMLCollection} [nodes=this._context] The input node(s), or a query selector string.
      * @returns {HTMLElement} The matching element.
      */
     findOneById: function findOneById(id) {
@@ -4549,8 +4599,8 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         return result;
       }
 
-      if (Core.isElement(nodes) || Core.isShadow(nodes)) {
-        return DOM._has(nodes, result) ? result : null;
+      if (Core.isElement(nodes) || Core.isFragment(nodes) || Core.isShadow(nodes)) {
+        return DOM._contains(nodes, result) ? result : null;
       }
 
       return this.hasDescendent(nodes, result) ? result : null;
@@ -4559,17 +4609,18 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
     /**
      * Return a single node with a specific tag.
      * @param {string} tagName The tag name.
-     * @param {string|array|HTMLElement|ShadowRoot|Document|HTMLCollection} [nodes=this._context] The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|HTMLCollection} [nodes=this._context] The input node(s), or a query selector string.
      * @returns {HTMLElement} The matching node.
      */
     findOneByTag: function findOneByTag(tagName) {
       var nodes = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : this._context;
 
-      if (Core.isDocument(nodes) || Core.isElement(nodes) || Core.isShadow(nodes)) {
+      if (Core.isDocument(nodes) || Core.isElement(nodes) || Core.isFragment(nodes) || Core.isShadow(nodes)) {
         return DOM._findByTag(tagName, nodes).item(0);
       }
 
       nodes = this._nodeFilter(nodes, {
+        fragment: true,
         shadow: true,
         document: true
       });
@@ -4657,17 +4708,18 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
     /**
      * Return all nodes matching a standard CSS selector.
      * @param {string} selector The query selector.
-     * @param {string|array|HTMLElement|ShadowRoot|Document|HTMLCollection} [nodes=this._context] The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|HTMLCollection} [nodes=this._context] The input node(s), or a query selector string.
      * @returns {array} The matching nodes.
      */
     _findBySelector: function _findBySelector(selector) {
       var nodes = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : this._context;
 
-      if (Core.isDocument(nodes) || Core.isElement(nodes) || Core.isShadow(nodes)) {
+      if (Core.isDocument(nodes) || Core.isElement(nodes) || Core.isFragment(nodes) || Core.isShadow(nodes)) {
         return Core.merge([], DOM._findBySelector(selector, nodes));
       }
 
       nodes = this._nodeFilter(nodes, {
+        fragment: true,
         shadow: true,
         document: true
       });
@@ -4755,17 +4807,18 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
     /**
      * Return a single node matching a standard CSS selector.
      * @param {string} selector The query selector.
-     * @param {string|array|HTMLElement|ShadowRoot|Document|HTMLCollection} [nodes=this._context] The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|HTMLCollection} [nodes=this._context] The input node(s), or a query selector string.
      * @returns {HTMLElement} The matching node.
      */
     _findOneBySelector: function _findOneBySelector(selector) {
       var nodes = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : this._context;
 
-      if (Core.isDocument(nodes) || Core.isElement(nodes) || Core.isShadow(nodes)) {
+      if (Core.isDocument(nodes) || Core.isElement(nodes) || Core.isFragment(nodes) || Core.isShadow(nodes)) {
         return DOM._findBySelector(selector, nodes).item(0);
       }
 
       nodes = this._nodeFilter(nodes, {
+        fragment: true,
         shadow: true,
         document: true
       });
@@ -4808,8 +4861,8 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
   Object.assign(DOM.prototype, {
     /**
      * Return the first child of each node (optionally matching a filter).
-     * @param {string|array|HTMLElement|ShadowRoot|Document|HTMLCollection} nodes The input node(s), or a query selector string.
-     * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
+     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
      * @returns {array} The matching nodes.
      */
     child: function child(nodes, filter) {
@@ -4818,8 +4871,8 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Return all children of each node (optionally matching a filter).
-     * @param {string|array|HTMLElement|ShadowRoot|Document|HTMLCollection} nodes The input node(s), or a query selector string.
-     * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
+     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
      * @param {Boolean} [first=false] Whether to only return the first matching node for each node.
      * @param {Boolean} [elementsOnly=false] Whether to only return element nodes.
      * @returns {array} The matching nodes.
@@ -4829,11 +4882,12 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       var elementsOnly = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : true;
       filter = this._parseFilter(filter);
 
-      if (Core.isElement(nodes) || Core.isDocument(nodes) || Core.isShadow(nodes)) {
+      if (Core.isElement(nodes) || Core.isDocument(nodes) || Core.isFragment(nodes) || Core.isShadow(nodes)) {
         return DOM._children(nodes, filter, first, elementsOnly);
       }
 
       nodes = this._nodeFilter(nodes, {
+        fragment: true,
         shadow: true,
         document: true
       });
@@ -4867,9 +4921,9 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Return the closest ancestor to each node (optionally matching a filter, and before a limit).
-     * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
-     * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
-     * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} [limit] The limit node(s), a query selector string or custom filter function.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} [limit] The limit node(s), a query selector string or custom filter function.
      * @returns {array} The matching nodes.
      */
     closest: function closest(nodes, filter, limit) {
@@ -4878,7 +4932,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Return the common ancestor of all nodes.
-     * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
      * @returns {HTMLElement} The common ancestor.
      */
     commonAncestor: function commonAncestor(nodes) {
@@ -4903,7 +4957,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Return all children of each node (including text and comment nodes).
-     * @param {string|array|HTMLElement|ShadowRoot|Document|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|HTMLCollection} nodes The input node(s), or a query selector string.
      * @returns {array} The matching nodes.
      */
     contents: function contents(nodes) {
@@ -4912,19 +4966,20 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Return the next sibling for each node (optionally matching a filter).
-     * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
-     * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
      * @returns {array} The matching nodes.
      */
     next: function next(nodes, filter) {
       filter = this._parseFilter(filter);
 
-      if (Core.isNode(nodes) || Core.isShadow(nodes)) {
+      if (Core.isNode(nodes) || Core.isFragment(nodes) || Core.isShadow(nodes)) {
         return DOM._next(nodes, filter);
       }
 
       nodes = this._nodeFilter(nodes, {
         node: true,
+        fragment: true,
         shadow: true
       });
       var results = [];
@@ -4957,9 +5012,9 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Return all next siblings for each node (optionally matching a filter, and before a limit).
-     * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
-     * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
-     * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} [limit] The limit node(s), a query selector string or custom filter function.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} [limit] The limit node(s), a query selector string or custom filter function.
      * @param {Boolean} [first=false] Whether to only return the first matching node for each node.
      * @returns {array} The matching nodes.
      */
@@ -4968,12 +5023,13 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       filter = this._parseFilter(filter);
       limit = this._parseFilter(limit);
 
-      if (Core.isNode(nodes) || Core.isShadow(nodes)) {
+      if (Core.isNode(nodes) || Core.isFragment(nodes) || Core.isShadow(nodes)) {
         return DOM._nextAll(nodes, filter, limit, first);
       }
 
       nodes = this._nodeFilter(nodes, {
         node: true,
+        fragment: true,
         shadow: true
       });
       var results = [];
@@ -5006,7 +5062,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Return the offset parent (relatively positioned) of the first node.
-     * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
      * @returns {HTMLElement} The offset parent.
      */
     offsetParent: function offsetParent(nodes) {
@@ -5017,19 +5073,20 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Return the parent of each node (optionally matching a filter).
-     * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
-     * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
      * @returns {array} The matching nodes.
      */
     parent: function parent(nodes, filter) {
       filter = this._parseFilter(filter);
 
-      if (Core.isNode(nodes) || Core.isShadow(nodes)) {
+      if (Core.isNode(nodes) || Core.isFragment(nodes) || Core.isShadow(nodes)) {
         return DOM._parent(nodes, filter);
       }
 
       nodes = this._nodeFilter(nodes, {
         node: true,
+        fragment: true,
         shadow: true
       });
       var results = [];
@@ -5062,9 +5119,9 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Return all parents of each node (optionally matching a filter, and before a limit).
-     * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
-     * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
-     * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} [limit] The limit node(s), a query selector string or custom filter function.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} [limit] The limit node(s), a query selector string or custom filter function.
      * @param {Boolean} [first=false] Whether to only return the first matching node for each node.
      * @returns {array} The matching nodes.
      */
@@ -5073,12 +5130,13 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       filter = this._parseFilter(filter);
       limit = this._parseFilter(limit);
 
-      if (Core.isNode(nodes) || Core.isShadow(nodes)) {
+      if (Core.isNode(nodes) || Core.isFragment(nodes) || Core.isShadow(nodes)) {
         return DOM._parents(nodes, filter, limit, first);
       }
 
       nodes = this._nodeFilter(nodes, {
         node: true,
+        fragment: true,
         shadow: true
       });
       var results = [];
@@ -5111,19 +5169,20 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Return the previous sibling for each node (optionally matching a filter).
-     * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
-     * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
      * @returns {array} The matching nodes.
      */
     prev: function prev(nodes, filter) {
       filter = this._parseFilter(filter);
 
-      if (Core.isNode(nodes) || Core.isShadow(nodes)) {
+      if (Core.isNode(nodes) || Core.isFragment(nodes) || Core.isShadow(nodes)) {
         return DOM._prev(nodes, filter);
       }
 
       nodes = this._nodeFilter(nodes, {
         node: true,
+        fragment: true,
         shadow: true
       });
       var results = [];
@@ -5156,9 +5215,9 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Return all previous siblings for each node (optionally matching a filter, and before a limit).
-     * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
-     * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
-     * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} [limit] The limit node(s), a query selector string or custom filter function.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} [limit] The limit node(s), a query selector string or custom filter function.
      * @param {Boolean} [first=false] Whether to only return the first matching node for each node.
      * @returns {array} The matching nodes.
      */
@@ -5167,12 +5226,13 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       filter = this._parseFilter(filter);
       limit = this._parseFilter(limit);
 
-      if (Core.isNode(nodes) || Core.isShadow(nodes)) {
+      if (Core.isNode(nodes) || Core.isFragment(nodes) || Core.isShadow(nodes)) {
         return DOM._prevAll(nodes, filter, limit, first);
       }
 
       nodes = this._nodeFilter(nodes, {
         node: true,
+        fragment: true,
         shadow: true
       });
       var results = [];
@@ -5205,8 +5265,8 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Return all siblings for each node (optionally matching a filter).
-     * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
-     * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
      * @param {Boolean} [elementsOnly=true] Whether to only return element nodes.
      * @returns {array} The matching nodes.
      */
@@ -5214,12 +5274,13 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       var elementsOnly = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : true;
       filter = this._parseFilter(filter);
 
-      if (Core.isNode(nodes) || Core.isShadow(nodes)) {
+      if (Core.isNode(nodes) || Core.isFragment(nodes) || Core.isShadow(nodes)) {
         return DOM._siblings(nodes, filter, elementsOnly);
       }
 
       nodes = this._nodeFilter(nodes, {
         node: true,
+        fragment: true,
         shadow: true
       });
       var results = [];
@@ -5257,7 +5318,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
   Object.assign(DOM.prototype, {
     /**
      * Return a filtered array of nodes.
-     * @param {string|array|Node|NodeList|HTMLElement|HTMLCollection|ShadowRoot|Document|Window} nodes The input node(s), or a query selector or HTML string.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|NodeList|HTMLCollection} nodes The input node(s), or a query selector or HTML string.
      * @param {object} [options] The options for filtering.
      * @param {Boolean} [options.node=false] Whether to allow text and comment nodes.
      * @param {Boolean} [options.fragment=false] Whether to allow DocumentFragment.
@@ -5265,7 +5326,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
      * @param {Boolean} [options.document=false] Whether to allow Document.
      * @param {Boolean} [options.window=false] Whether to allow Window.
      * @param {Boolean} [options.html=false] Whether to allow HTML strings.
-     * @param {HTMLElement|ShadowRoot|Document} [options.context=this._context] The Document context.
+     * @param {HTMLElement|DocumentFragment|ShadowRoot|Document} [options.context=this._context] The Document context.
      * @returns {array} The filtered array of nodes.
      */
     _nodeFilter: function _nodeFilter(nodes) {
@@ -5306,7 +5367,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Return the first node matching a filter.
-     * @param {string|array|Node|NodeList|HTMLElement|HTMLCollection|ShadowRoot|Document|Window} nodes The input node(s), or a query selector or HTML string.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|NodeList|HTMLCollection} nodes The input node(s), or a query selector or HTML string.
      * @param {object} [options] The options for filtering.
      * @param {Boolean} [options.node=false] Whether to allow text and comment nodes.
      * @param {Boolean} [options.fragment=false] Whether to allow DocumentFragment.
@@ -5315,7 +5376,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
      * @param {Boolean} [options.window=false] Whether to allow Window.
      * @param {Boolean} [options.html=false] Whether to allow HTML strings.
      * @param {HTMLElement|Document} [options.context=this._context] The Document context.
-     * @returns {Node|HTMLElement|ShadowRoot|Document|Window} The matching node.
+     * @returns {Node|HTMLElement|DocumentFragment|ShadowRoot|Document|Window} The matching node.
      */
     _nodeFind: function _nodeFind(nodes) {
       var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
@@ -5342,7 +5403,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Return a node filter callback.
-     * @param {string|array|Node|NodeList|HTMLElement|HTMLCollection|ShadowRoot|DOM~filterCallback} filter The filter node(s), a query selector string or custom filter function.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} filter The filter node(s), a query selector string or custom filter function.
      * @returns {DOM~filterCallback} The node filter callback.
      */
     _parseFilter: function _parseFilter(filter) {
@@ -5360,7 +5421,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         };
       }
 
-      if (Core.isNode(filter) || Core.isShadow(filter)) {
+      if (Core.isNode(filter) || Core.isFragment(filter) || Core.isShadow(filter)) {
         return function (node) {
           return DOM._isSame(node, filter);
         };
@@ -5368,6 +5429,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
       filter = this._nodeFilter(filter, {
         node: true,
+        fragment: true,
         shadow: true
       });
 
@@ -5382,7 +5444,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Return a node contains filter callback.
-     * @param {string|array|Node|NodeList|HTMLElement|HTMLCollection|ShadowRoot|DOM~filterCallback} filter The filter node(s), a query selector string or custom filter function.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} filter The filter node(s), a query selector string or custom filter function.
      * @returns {DOM~filterCallback} The node contains filter callback.
      */
     _parseFilterContains: function _parseFilterContains(filter) {
@@ -5402,21 +5464,22 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         };
       }
 
-      if (Core.isNode(filter) || Core.isShadow(filter)) {
+      if (Core.isNode(filter) || Core.isFragment(filter) || Core.isShadow(filter)) {
         return function (node) {
-          return DOM._has(node, filter);
+          return DOM._contains(node, filter);
         };
       }
 
       filter = this._nodeFilter(filter, {
         node: true,
+        fragment: true,
         shadow: true
       });
 
       if (filter.length) {
         return function (node) {
           return filter.some(function (other) {
-            return DOM._has(node, other);
+            return DOM._contains(node, other);
           });
         };
       }
@@ -5431,11 +5494,12 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
   Object.assign(DOM.prototype, {
     /**
      * Insert each node after the selection.
-     * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector or HTML string.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector or HTML string.
      */
     afterSelection: function afterSelection(nodes) {
       nodes = this._nodeFilter(nodes, {
         node: true,
+        fragment: true,
         shadow: true,
         html: true
       });
@@ -5480,11 +5544,12 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Insert each node before the selection.
-     * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector or HTML string.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector or HTML string.
      */
     beforeSelection: function beforeSelection(nodes) {
       nodes = this._nodeFilter(nodes, {
         node: true,
+        fragment: true,
         shadow: true,
         html: true
       });
@@ -5573,11 +5638,12 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Create a selection on the first node.
-     * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
      */
     select: function select(nodes) {
       var node = this._nodeFind(nodes, {
         node: true,
+        fragment: true,
         shadow: true
       });
 
@@ -5604,7 +5670,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Create a selection containing all of the nodes.
-     * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
      */
     selectAll: function selectAll(nodes) {
       nodes = this.sort(nodes);
@@ -5634,10 +5700,11 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Wrap selected nodes with other nodes.
-     * @param {string|array|HTMLElement|ShadowRoot|HTMLCollection} nodes The input node(s), or a query selector or HTML string.
+     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|HTMLCollection} nodes The input node(s), or a query selector or HTML string.
      */
     wrapSelection: function wrapSelection(nodes) {
       nodes = this._nodeFilter(nodes, {
+        fragment: true,
         shadow: true,
         html: true
       });
@@ -5713,11 +5780,12 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Returns true if any of the nodes has child elements.
-     * @param {string|array|HTMLElement|ShadowRoot|Document|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|HTMLCollection} nodes The input node(s), or a query selector string.
      * @returns {Boolean} TRUE if the any of the nodes has child elements, otherwise FALSE.
      */
     hasChildren: function hasChildren(nodes) {
       return this._nodeFilter(nodes, {
+        fragment: true,
         shadow: true,
         document: true
       }).some(function (node) {
@@ -5744,7 +5812,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Returns true if any of the nodes has custom data.
-     * @param {string|array|Node|HTMLElement|ShadowRoot|Document|Window|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
      * @param {string} [key] The data key.
      * @returns {Boolean} TRUE if any of the nodes has custom data, otherwise FALSE.
      */
@@ -5753,6 +5821,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
       return this._nodeFilter(nodes, {
         node: true,
+        fragment: true,
         shadow: true,
         document: true,
         window: true
@@ -5763,13 +5832,14 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Returns true if any of the nodes contains a descendent matching a filter.
-     * @param {string|array|HTMLElement|ShadowRoot|Document|HTMLCollection} nodes The input node(s), or a query selector string.
-     * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
+     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
      * @returns {Boolean} TRUE if any of the nodes contains a descendent matching the filter, otherwise FALSE.
      */
     hasDescendent: function hasDescendent(nodes, filter) {
       filter = this._parseFilterContains(filter);
       return this._nodeFilter(nodes, {
+        fragment: true,
         shadow: true,
         document: true
       }).some(function (node) {
@@ -5804,14 +5874,15 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Returns true if any of the nodes matches a filter.
-     * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
-     * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
      * @returns {Boolean} TRUE if any of the nodes matches the filter, otherwise FALSE.
      */
     is: function is(nodes, filter) {
       filter = this._parseFilter(filter);
       return this._nodeFilter(nodes, {
         node: true,
+        fragment: true,
         shadow: true
       }).some(function (node) {
         return !filter || filter(node);
@@ -5820,12 +5891,13 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Returns true if any of the nodes is connected to the DOM.
-     * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
      * @returns {Boolean} TRUE if any of the nodes is connected to the DOM, otherwise FALSE.
      */
     isConnected: function isConnected(nodes) {
       return this._nodeFilter(nodes, {
         node: true,
+        fragment: true,
         shadow: true
       }).some(function (node) {
         return DOM._isConnected(node);
@@ -5834,17 +5906,19 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Returns true if any of the nodes is considered equal to any of the other nodes.
-     * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
-     * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} others The other node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} others The other node(s), or a query selector string.
      * @returns {Boolean} TRUE if any of the nodes is considered equal to any of the other nodes, otherwise FALSE.
      */
     isEqual: function isEqual(nodes, others) {
       others = this._nodeFilter(others, {
         node: true,
+        fragment: true,
         shadow: true
       });
       return this._nodeFilter(nodes, {
         node: true,
+        fragment: true,
         shadow: true
       }).some(function (node) {
         return others.some(function (other) {
@@ -5855,7 +5929,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Returns true if any of the nodes or a parent of any of the nodes is "fixed".
-     * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
      * @returns {Boolean} TRUE if any of the nodes is "fixed", otherwise FALSE.
      */
     isFixed: function isFixed(nodes) {
@@ -5863,6 +5937,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
       return this._nodeFilter(nodes, {
         node: true,
+        fragment: true,
         shadow: true
       }).some(function (node) {
         return Core.isElement(node) && _this27._css(node, 'position') === 'fixed' || DOM._parents(node, function (parent) {
@@ -5873,7 +5948,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Returns true if any of the nodes is hidden.
-     * @param {string|array|Node|HTMLElement|ShadowRoot|Document|Window|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
      * @returns {Boolean} TRUE if any of the nodes is hidden, otherwise FALSE.
      */
     isHidden: function isHidden(nodes) {
@@ -5888,17 +5963,19 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Returns true if any of the nodes is considered identical to any of the other nodes.
-     * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
-     * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} others The other node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} others The other node(s), or a query selector string.
      * @returns {Boolean} TRUE if any of the nodes is considered identical to any of the other nodes, otherwise FALSE.
      */
     isSame: function isSame(nodes, others) {
       others = this._nodeFilter(others, {
         node: true,
+        fragment: true,
         shadow: true
       });
       return this._nodeFilter(nodes, {
         node: true,
+        fragment: true,
         shadow: true
       }).some(function (node) {
         return others.some(function (other) {
@@ -5909,12 +5986,13 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Returns true if any of the nodes is visible.
-     * @param {string|array|Node|HTMLElement|ShadowRoot|Document|Window|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
      * @returns {Boolean} TRUE if any of the nodes is visible, otherwise FALSE.
      */
     isVisible: function isVisible(nodes) {
       return this._nodeFilter(nodes, {
         node: true,
+        fragment: true,
         shadow: true,
         document: true,
         window: true
@@ -5934,7 +6012,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Returns true if a single node has custom data.
-     * @param {Node|HTMLElement|ShadowRoot|Document|Window} node The input node.
+     * @param {Node|HTMLElement|DocumentFragment|ShadowRoot|Document|Window} node The input node.
      * @param {string} [key] The data key.
      * @returns {Boolean} TRUE if the node has custom data, otherwise FALSE.
      */
@@ -5969,7 +6047,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Force a node to be shown, and then execute a callback.
-     * @param {string|array|Node|NodeList|HTMLElement|HTMLCollection|ShadowRoot|Document|Window} nodes The input node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
      * @param {DOM~nodeCallback} callback The callback to execute.
      * @returns {*} The result of the callback.
      */
@@ -5978,6 +6056,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
       var node = this._nodeFind(nodes, {
         node: true,
+        fragment: true,
         shadow: true,
         document: true,
         window: true
@@ -6050,14 +6129,15 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Get the index of the first node matching a filter.
-     * @param {string|array|Node|NodeList|HTMLElement|HTMLCollection|ShadowRoot} nodes The input node(s), or a query selector string.
-     * @param {string|array|Node|NodeList|HTMLElement|HTMLCollection|ShadowRoot|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
      * @returns {number} The index.
      */
     index: function index(nodes, filter) {
       filter = this._parseFilter(filter);
       return this._nodeFilter(nodes, {
         node: true,
+        fragment: true,
         shadow: true
       }).findIndex(function (node) {
         return !filter || filter(node);
@@ -6066,12 +6146,13 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Get the index of the first node relative to it's parent.
-     * @param {string|array|Node|NodeList|HTMLElement|HTMLCollection|ShadowRoot} nodes The input node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
      * @returns {number} The index.
      */
     indexOf: function indexOf(nodes) {
       var node = this._nodeFind(nodes, {
         node: true,
+        fragment: true,
         shadow: true
       });
 
@@ -6084,11 +6165,12 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Normalize nodes (remove empty text nodes, and join adjacent text nodes).
-     * @param {string|array|Node|NodeList|HTMLElement|HTMLCollection|ShadowRoot|Document} nodes The input node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|Document|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
      */
     normalize: function normalize(nodes) {
       nodes = this._nodeFilter(nodes, {
         node: true,
+        fragment: true,
         shadow: true,
         document: true
       });
@@ -6120,7 +6202,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Return a serialized string containing names and values of all form nodes.
-     * @param {string|array|HTMLElement|HTMLCollection|ShadowRoot} nodes The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|HTMLCollection|DocumentFragment|ShadowRoot} nodes The input node(s), or a query selector string.
      * @returns {string} The serialized string.
      */
     serialize: function serialize(nodes) {
@@ -6129,16 +6211,17 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Return a serialized array containing names and values of all form nodes.
-     * @param {string|array|HTMLElement|HTMLCollection|ShadowRoot} nodes The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|HTMLCollection|DocumentFragment|ShadowRoot} nodes The input node(s), or a query selector string.
      * @returns {array} The serialized array.
      */
     serializeArray: function serializeArray(nodes) {
       var _this29 = this;
 
       return this._nodeFilter(nodes, {
+        fragment: true,
         shadow: true
       }).reduce(function (values, node) {
-        if (DOM._is(node, 'form') || Core.isShadow(node)) {
+        if (DOM._is(node, 'form') || Core.isFragment(node) || Core.isShadow(node)) {
           return values.concat(_this29.serializeArray(DOM._findBySelector('input, select, textarea', node)));
         }
 
@@ -6163,12 +6246,13 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Sort nodes by their position in the document.
-     * @param {string|array|Node|NodeList|HTMLElement|HTMLCollection|ShadowRoot} nodes The input node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
      * @returns {array} The sorted array of nodes.
      */
     sort: function sort(nodes) {
       return this._nodeFilter(nodes, {
         node: true,
+        fragment: true,
         shadow: true
       }).sort(function (node, other) {
         return DOM._compareNodes(node, other);
@@ -6470,7 +6554,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Trigger an event on a single node.
-     * @param {HTMLElement|ShadowRoot|Document|Window} nodes The input node.
+     * @param {HTMLElement|DocumentFragment|ShadowRoot|Document|Window} nodes The input node.
      * @param {string} events The event names.
      * @param {object} [data] Additional data to attach to the Event object.
      */
@@ -6516,7 +6600,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
   Object.assign(DOM, {
     /**
      * Add an event to a single node.
-     * @param {HTMLElement|ShadowRoot|Document|Window} node The input node.
+     * @param {HTMLElement|DocumentFragment|ShadowRoot|Document|Window} node The input node.
      * @param {string} event The event name.
      * @param {DOM~eventCallback} callback The callback to execute.
      */
@@ -6526,7 +6610,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Remove an event from a single node.
-     * @param {HTMLElement|ShadowRoot|Document|Window} nodes The input node.
+     * @param {HTMLElement|DocumentFragment|ShadowRoot|Document|Window} nodes The input node.
      * @param {string} event The event name.
      * @param {DOM~eventCallback} callback The callback to remove.
      */
@@ -6812,7 +6896,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
   Object.assign(DOM, {
     /**
      * Detach a single node from the DOM.
-     * @param {Node|HTMLElement|ShadowRoot} node The input node.
+     * @param {Node|HTMLElement|DocumentFragment|ShadowRoot} node The input node.
      */
     _detach: function _detach(node) {
       if (!node.parentNode) {
@@ -6829,7 +6913,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
   Object.assign(DOM, {
     /**
      * Insert each other node after the first node.
-     * @param {Node|HTMLElement|ShadowRoot} node The input node.
+     * @param {Node|HTMLElement|DocumentFragment|ShadowRoot} node The input node.
      * @param {array} others The other node(s).
      */
     _after: function _after(node, others) {
@@ -6864,7 +6948,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Append each other node to a single node.
-     * @param {HTMLElement|ShadowRoot|Document} node The input node.
+     * @param {HTMLElement|DocumentFragment|ShadowRoot|Document} node The input node.
      * @param {array} others The other node(s).
      */
     _append: function _append(node, others) {
@@ -6895,7 +6979,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Insert each other node before a single node.
-     * @param {Node|HTMLElement|ShadowRoot} node The input node.
+     * @param {Node|HTMLElement|DocumentFragment|ShadowRoot} node The input node.
      * @param {array} others The other node(s).
      */
     _before: function _before(node, others) {
@@ -6930,7 +7014,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Prepend each other node to a single node.
-     * @param {HTMLElement|ShadowRoot|Document} node The input node.
+     * @param {HTMLElement|DocumentFragment|ShadowRoot|Document} node The input node.
      * @param {array} others The other node(s).
      */
     _prepend: function _prepend(node, others) {
@@ -6990,7 +7074,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
     /**
      * Return all nodes with a specific class.
      * @param {string} className The class name.
-     * @param {HTMLElement|ShadowRoot|Document} node The input node.
+     * @param {HTMLElement|DocumentFragment|ShadowRoot|Document} node The input node.
      * @returns {HTMLCollection} The matching nodes.
      */
     _findByClass: function _findByClass(className, node) {
@@ -7036,7 +7120,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
     /**
      * Return all nodes with a specific tag.
      * @param {string} tagName The tag name.
-     * @param {HTMLElement|ShadowRoot|Document} node The input node.
+     * @param {HTMLElement|DocumentFragment|ShadowRoot|Document} node The input node.
      * @returns {HTMLCollection} The matching nodes.
      */
     _findByTag: function _findByTag(tagName, node) {
@@ -7046,7 +7130,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
     /**
      * Return all nodes matching a standard CSS selector.
      * @param {string} selector The query selector.
-     * @param {HTMLElement|ShadowRoot|Document} node The input node.
+     * @param {HTMLElement|DocumentFragment|ShadowRoot|Document} node The input node.
      * @returns {NodeList} The matching nodes.
      */
     _findBySelector: function _findBySelector(selector, node) {
@@ -7082,7 +7166,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
     /**
      * Return a single node matching a standard CSS selector.
      * @param {string} selector The query selector.
-     * @param {HTMLElement|ShadowRoot|Document} node The input node.
+     * @param {HTMLElement|DocumentFragment|ShadowRoot|Document} node The input node.
      * @returns {HTMLElement} The matching node.
      */
     _findOneBySelector: function _findOneBySelector(selector, node) {
@@ -7096,7 +7180,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
   Object.assign(DOM, {
     /**
      * Return all children of a single node (optionally matching a filter).
-     * @param {HTMLElement|ShadowRoot|Document} node The input node.
+     * @param {HTMLElement|DocumentFragment|ShadowRoot|Document} node The input node.
      * @param {DOM~filterCallback} [filter] The filter function.
      * @param {Boolean} [first=false] Whether to only return the first matching node for each node.
      * @param {Boolean} [elementsOnly=false] Whether to only return element nodes.
@@ -7146,7 +7230,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Return the deepest child node for a single node.
-     * @param {HTMLElement|ShadowRoot|Document} node The input node.
+     * @param {HTMLElement|DocumentFragment|ShadowRoot|Document} node The input node.
      * @returns {HTMLElement} The deepest node.
      */
     _deepest: function _deepest(node) {
@@ -7159,7 +7243,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Return the next sibling for a single node (optionally matching a filter).
-     * @param {Node|HTMLElement|ShadowRoot} node The input node.
+     * @param {Node|HTMLElement|DocumentFragment|ShadowRoot} node The input node.
      * @param {DOM~filterCallback} [filter] The filter function.
      * @returns {array} The matching nodes.
      */
@@ -7181,7 +7265,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Return all next siblings for a single node (optionally matching a filter, and before a limit).
-     * @param {Node|HTMLElement|ShadowRoot} node The input node.
+     * @param {Node|HTMLElement|DocumentFragment|ShadowRoot} node The input node.
      * @param {DOM~filterCallback} [filter] The filter function.
      * @param {DOM~filterCallback} [limit] The limit function.
      * @param {Boolean} [first=false] Whether to only return the first matching node for each node.
@@ -7212,7 +7296,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Return the parent of a single node (optionally matching a filter).
-     * @param {Node|HTMLElement|ShadowRoot} node The input node.
+     * @param {Node|HTMLElement|DocumentFragment|ShadowRoot} node The input node.
      * @param {DOM~filterCallback} [filter] The filter function.
      * @returns {array} The matching nodes.
      */
@@ -7233,7 +7317,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Return all parents of a single node (optionally matching a filter, and before a limit).
-     * @param {Node|HTMLElement|ShadowRoot} node The input node.
+     * @param {Node|HTMLElement|DocumentFragment|ShadowRoot} node The input node.
      * @param {DOM~filterCallback} [filter] The filter function.
      * @param {DOM~filterCallback} [limit] The limit function.
      * @param {Boolean} [first=false] Whether to only return the first matching node for each node.
@@ -7268,7 +7352,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Return the previous sibling for a single node (optionally matching a filter).
-     * @param {Node|HTMLElement|ShadowRoot} node The input node.
+     * @param {Node|HTMLElement|DocumentFragment|ShadowRoot} node The input node.
      * @param {DOM~filterCallback} [filter] The filter function.
      * @returns {array} The matching nodes.
      */
@@ -7290,7 +7374,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Return all previous siblings for a single node (optionally matching a filter, and before a limit).
-     * @param {Node|HTMLElement|ShadowRoot} node The input node.
+     * @param {Node|HTMLElement|DocumentFragment|ShadowRoot} node The input node.
      * @param {DOM~filterCallback} [filter] The filter function.
      * @param {DOM~filterCallback} [limit] The limit function.
      * @param {Boolean} [first=false] Whether to only return the first matching node for each node.
@@ -7321,7 +7405,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Return all siblings for a single node (optionally matching a filter).
-     * @param {Node|HTMLElement|ShadowRoot} node The input node.
+     * @param {Node|HTMLElement|DocumentFragment|ShadowRoot} node The input node.
      * @param {DOM~filterCallback} [filter] The filter function.
      * @param {Boolean} [elementsOnly=true] Whether to only return element nodes.
      * @returns {array} The matching nodes.
@@ -7425,7 +7509,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
     /**
      * Insert a node into a range.
      * @param {Range} range The input range.
-     * @param {Node|HTMLElement|ShadowRoot} node The node to insert.
+     * @param {Node|HTMLElement|DocumentFragment|ShadowRoot} node The node to insert.
      */
     _insert: function _insert(range, node) {
       range.insertNode(node);
@@ -7442,7 +7526,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
     /**
      * Add a node to a range.
      * @param {Range} range The input range. 
-     * @param {Node|HTMLElement|ShadowRoot} node The node to select.
+     * @param {Node|HTMLElement|DocumentFragment|ShadowRoot} node The node to select.
      */
     _select: function _select(range, node) {
       range.selectNode(node);
@@ -7451,7 +7535,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
     /**
      * Set the end position of a range after a node.
      * @param {Range} range The input range.
-     * @param {Node|HTMLElement|ShadowRoot} node The node to end the range after.
+     * @param {Node|HTMLElement|DocumentFragment|ShadowRoot} node The node to end the range after.
      */
     _setEndAfter: function _setEndAfter(range, node) {
       range.setEndAfter(node);
@@ -7460,7 +7544,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
     /**
      * Set the start position of a range before a node.
      * @param {Range} range The input range.
-     * @param {Node|HTMLElement|ShadowRoot} node The node to start the range before.
+     * @param {Node|HTMLElement|DocumentFragment|ShadowRoot} node The node to start the range before.
      */
     _setStartBefore: function _setStartBefore(range, node) {
       range.setStartBefore(node);
@@ -7473,11 +7557,11 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
   Object.assign(DOM, {
     /**
      * Returns true if a single node has another node as a descendent.
-     * @param {HTMLElement|ShadowRoot|Document} node The input node.
-     * @param {Node|HTMLElement|ShadowRoot|Document} node The other node.
+     * @param {HTMLElement|DocumentFragment|ShadowRoot|Document} node The input node.
+     * @param {Node|HTMLElement|DocumentFragment|ShadowRoot|Document} node The other node.
      * @returns {Boolean} TRUE if the node has the other node as a descendent, otherwise FALSE.
      */
-    _has: function _has(node, other) {
+    _contains: function _contains(node, other) {
       return node.contains(other);
     },
 
@@ -7493,7 +7577,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Returns true if a single node has child elements.
-     * @param {HTMLElement|ShadowRoot|Document} node The input node.
+     * @param {HTMLElement|DocumentFragment|ShadowRoot|Document} node The input node.
      * @returns {Boolean} TRUE if the node has child elements, otherwise FALSE.
      */
     _hasChildren: function _hasChildren(node) {
@@ -7534,7 +7618,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Returns true if a single node is connected to the DOM.
-     * @param {Node|HTMLElement|ShadowRoot} node The input node.
+     * @param {Node|HTMLElement|DocumentFragment|ShadowRoot} node The input node.
      * @returns {Boolean} TRUE if the node is connected to the DOM, otherwise FALSE.
      */
     _isConnected: function _isConnected(node) {
@@ -7543,8 +7627,8 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Returns true if a single node is equal to another node.
-     * @param {Node|HTMLElement|ShadowRoot|Document} node The input node.
-     * @param {Node|HTMLElement|ShadowRoot|Document} node The other node.
+     * @param {Node|HTMLElement|DocumentFragment|ShadowRoot|Document} node The input node.
+     * @param {Node|HTMLElement|DocumentFragment|ShadowRoot|Document} node The other node.
      * @returns {Boolean} TRUE if the node is equal to the other node, otherwise FALSE.
      */
     _isEqual: function _isEqual(node, other) {
@@ -7553,8 +7637,8 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Returns true if a single node is the same as another node.
-     * @param {Node|HTMLElement|ShadowRoot|Document} node The input node.
-     * @param {Node|HTMLElement|ShadowRoot|Document} node The other node.
+     * @param {Node|HTMLElement|DocumentFragment|ShadowRoot|Document} node The input node.
+     * @param {Node|HTMLElement|DocumentFragment|ShadowRoot|Document} node The other node.
      * @returns {Boolean} TRUE if the node is the same as the other node, otherwise FALSE.
      */
     _isSame: function _isSame(node, other) {
@@ -7563,7 +7647,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Returns true if a single node is visible.
-     * @param {HTMLElement|ShadowRoot|Document|Window} node The input node.
+     * @param {HTMLElement|DocumentFragment|ShadowRoot|Document|Window} node The input node.
      * @returns {Boolean} TRUE if the node is visible, otherwise FALSE.
      */
     _isVisible: function _isVisible(node) {
@@ -7589,8 +7673,8 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
   Object.assign(DOM, {
     /**
      * Compare the position of two nodes in the DOM.
-     * @param {Node|HTMLElement|ShadowRoot} node The input node.
-     * @param {Node|HTMLElement|ShadowRoot} other The other node.
+     * @param {Node|HTMLElement|DocumentFragment|ShadowRoot} node The input node.
+     * @param {Node|HTMLElement|DocumentFragment|ShadowRoot} other The other node.
      * @returns {number} -1 if node is before other, 1 if other is before node, otherwise 0.
      */
     _compareNodes: function _compareNodes(node, other) {
@@ -7613,7 +7697,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Normalize a single node (remove empty text nodes, and join neighbouring text nodes).
-     * @param {Node|HTMLElement|ShadowRoot|Document} node The input node.
+     * @param {Node|HTMLElement|DocumentFragment|ShadowRoot|Document} node The input node.
      */
     _normalize: function _normalize(node) {
       node.normalize();
@@ -7642,7 +7726,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
   /**
    * @callback DOM~nodeCallback
-   * @param {Node|HTMLElement|ShadowRoot|Document|Window} node The input node.
+   * @param {Node|HTMLElement|DocumentFragment|ShadowRoot|Document|Window} node The input node.
    */
 
   /**

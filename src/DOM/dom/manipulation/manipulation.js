@@ -6,14 +6,14 @@ Object.assign(DOM.prototype, {
 
     /**
      * Clone each node.
-     * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
      * @param {Boolean} [deep=true] Whether to also clone all descendent nodes.
      * @param {Boolean} [cloneEvents=false] Whether to also clone events.
      * @param {Boolean} [cloneData=false] Whether to also clone custom data.
      * @returns {array} The cloned nodes.
      */
     clone(nodes, deep = true, cloneEvents = false, cloneData = false) {
-        nodes = this._nodeFilter(nodes, { node: true, shadow: true });
+        nodes = this._nodeFilter(nodes, { node: true, fragment: true, shadow: true });
 
         return nodes.map(node =>
             this._clone(node, deep, cloneEvents, cloneData)
@@ -22,10 +22,10 @@ Object.assign(DOM.prototype, {
 
     /**
      * Detach each node from the DOM.
-     * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
      */
     detach(nodes) {
-        nodes = this._nodeFilter(nodes, { node: true, shadow: true });
+        nodes = this._nodeFilter(nodes, { node: true, fragment: true, shadow: true });
 
         for (const node of nodes) {
             DOM._detach(node);
@@ -34,10 +34,10 @@ Object.assign(DOM.prototype, {
 
     /**
      * Remove all children of each node from the DOM.
-     * @param {string|array|HTMLElement|ShadowRoot|Document|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|HTMLCollection} nodes The input node(s), or a query selector string.
      */
     empty(nodes) {
-        nodes = this._nodeFilter(nodes, { shadow: true, document: true });
+        nodes = this._nodeFilter(nodes, { fragment: true, shadow: true, document: true });
 
         for (const node of nodes) {
             this._empty(node);
@@ -46,10 +46,10 @@ Object.assign(DOM.prototype, {
 
     /**
      * Remove each node from the DOM.
-     * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
      */
     remove(nodes) {
-        nodes = this._nodeFilter(nodes, { node: true, shadow: true });
+        nodes = this._nodeFilter(nodes, { node: true, fragment: true, shadow: true });
 
         for (const node of nodes) {
             this._remove(node);
@@ -58,8 +58,8 @@ Object.assign(DOM.prototype, {
 
     /**
      * Replace each other node with nodes.
-     * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector or HTML string.
-     * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} others The input node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector or HTML string.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} others The input node(s), or a query selector string.
      */
     replaceAll(nodes, others) {
         this.replaceWith(others, nodes);
@@ -67,13 +67,13 @@ Object.assign(DOM.prototype, {
 
     /**
      * Replace each node with other nodes.
-     * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
-     * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} others The input node(s), or a query selector or HTML string.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} others The input node(s), or a query selector or HTML string.
      */
     replaceWith(nodes, others) {
-        nodes = this._nodeFilter(nodes, { node: true, shadow: true });
+        nodes = this._nodeFilter(nodes, { node: true, fragment: true, shadow: true });
 
-        others = this._nodeFilter(others, { node: true, shadow: true, html: true });
+        others = this._nodeFilter(others, { node: true, fragment: true, shadow: true, html: true });
 
         for (const node of nodes) {
             this._replaceWith(node, others);
@@ -82,11 +82,11 @@ Object.assign(DOM.prototype, {
 
     /**
      * Clone a single node.
-     * @param {Node|HTMLElement|ShadowRoot} node The input node.
+     * @param {Node|HTMLElement|DocumentFragment|ShadowRoot} node The input node.
      * @param {Boolean} [deep=true] Whether to also clone all descendent nodes.
      * @param {Boolean} [cloneEvents=false] Whether to also clone events.
      * @param {Boolean} [cloneData=false] Whether to also clone custom data.
-     * @returns {Node|HTMLElement|ShadowRoot} The cloned node.
+     * @returns {Node|HTMLElement|DocumentFragment|ShadowRoot} The cloned node.
      */
     _clone(node, deep = true, cloneEvents = false, cloneData = false) {
         const clone = DOM._clone(node, deep);
@@ -112,8 +112,8 @@ Object.assign(DOM.prototype, {
 
     /**
      * Deep clone a node.
-     * @param {Node|HTMLElement|ShadowRoot} node The input node.
-     * @param {Node|HTMLElement|ShadowRoot} clone The cloned node.
+     * @param {Node|HTMLElement|DocumentFragment|ShadowRoot} node The input node.
+     * @param {Node|HTMLElement|DocumentFragment|ShadowRoot} clone The cloned node.
      * @param {Boolean} [cloneEvents=false] Whether to also clone events.
      * @param {Boolean} [cloneData=false] Whether to also clone custom data.
      */
@@ -136,7 +136,7 @@ Object.assign(DOM.prototype, {
 
     /**
      * Remove all children of a single node from the DOM.
-     * @param {HTMLElement|ShadowRoot|Document} node The input node.
+     * @param {HTMLElement|DocumentFragment|ShadowRoot|Document} node The input node.
      */
     _empty(node) {
         const children = DOM._children(node, false, false, false);
@@ -148,7 +148,7 @@ Object.assign(DOM.prototype, {
 
     /**
      * Remove a single node from the DOM.
-     * @param {Node|HTMLElement|ShadowRoot} node The input node.
+     * @param {Node|HTMLElement|DocumentFragment|ShadowRoot} node The input node.
      */
     _remove(node) {
         if (Core.isElement(node)) {
@@ -171,7 +171,7 @@ Object.assign(DOM.prototype, {
 
     /**
      * Replace a single node with other nodes.
-     * @param {Node|HTMLElement|ShadowRoot} node The input node.
+     * @param {Node|HTMLElement|DocumentFragment|ShadowRoot} node The input node.
      * @param {array} others The other node(s).
      */
     _replaceWith(node, others) {
