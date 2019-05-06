@@ -46,6 +46,15 @@ Object.assign(DOM, {
     },
 
     /**
+     * Returns true if a single node has a DocumentFragment.
+     * @param {HTMLElement} node The input node.
+     * @returns {Boolean} TRUE if the node has a DocumentFragment, otherwise FALSE.
+     */
+    _hasFragment(node) {
+        return !!node.content;
+    },
+
+    /**
      * Returns true if a single node has a specified property.
      * @param {HTMLElement} node The input node.
      * @param {string} property The property name.
@@ -53,6 +62,15 @@ Object.assign(DOM, {
      */
     _hasProperty(node, property) {
         return node.hasOwnProperty(property);
+    },
+
+    /**
+     * Returns true if a single node has a ShadowRoot.
+     * @param {HTMLElement} node The input node.
+     * @returns {Boolean} TRUE if the node has a ShadowRoot, otherwise FALSE.
+     */
+    _hasShadow(node) {
+        return !!node.shadowRoot;
     },
 
     /**

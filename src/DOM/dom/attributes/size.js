@@ -6,7 +6,7 @@ Object.assign(DOM.prototype, {
 
     /**
      * Get the computed height of the first node.
-     * @param {string|array|HTMLElement|Document|Window|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|Document|Window|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
      * @param {Boolean} [padding=true] Whether to include padding height.
      * @param {Boolean} [border] Whether to include border height.
      * @param {Boolean} [margin] Whether to include margin height.
@@ -24,7 +24,7 @@ Object.assign(DOM.prototype, {
 
     /**
      * Get the computed width of the first node.
-     * @param {string|array|HTMLElement|Document|Window|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|Document|Window|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
      * @param {Boolean} [padding=true] Whether to include padding width.
      * @param {Boolean} [border] Whether to include border width.
      * @param {Boolean} [margin] Whether to include margin width.

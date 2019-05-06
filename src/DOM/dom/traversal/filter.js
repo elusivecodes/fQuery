@@ -57,17 +57,17 @@ Object.assign(DOM.prototype, {
 
     /**
      * Return all "fixed" nodes.
-     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
      * @returns {array} The filtered nodes.
      */
     fixed(nodes) {
-        return this._nodeFilter(nodes, { node: true, fragment: true, shadow: true })
+        return this._nodeFilter(nodes, { node: true })
             .filter(node =>
                 (Core.isElement(node) && this._css(node, 'position') === 'fixed') ||
                 DOM._parents(
                     node,
                     parent =>
-                        this._css(parent, 'position') === 'fixed',
+                        Core.isElement(parent) && this._css(parent, 'position') === 'fixed',
                     false,
                     true
                 ).length
@@ -76,7 +76,7 @@ Object.assign(DOM.prototype, {
 
     /**
      * Return all hidden nodes.
-     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
      * @returns {array} The filtered nodes.
      */
     hidden(nodes) {
@@ -118,7 +118,7 @@ Object.assign(DOM.prototype, {
 
     /**
      * Return all visible nodes.
-     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
      * @returns {array} The filtered nodes.
      */
     visible(nodes) {
@@ -128,7 +128,7 @@ Object.assign(DOM.prototype, {
 
     /**
      * Return all nodes with a CSS animation.
-     * @param {string|array|HTMLElement|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
      * @returns {array} The filtered nodes.
      */
     withAnimation(nodes) {
@@ -140,7 +140,7 @@ Object.assign(DOM.prototype, {
 
     /**
      * Return all nodes with a specified attribute.
-     * @param {string|array|HTMLElement|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
      * @param {string} attribute The attribute name.
      * @returns {array} The filtered nodes.
      */
@@ -153,7 +153,7 @@ Object.assign(DOM.prototype, {
 
     /**
      * Return all nodes with child elements.
-     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
      * @returns {array} The filtered nodes.
      */
     withChildren(nodes) {
@@ -165,7 +165,7 @@ Object.assign(DOM.prototype, {
 
     /**
      * Return all nodes with any of the specified classes.
-     * @param {string|array|HTMLElement|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
      * @param {...string|string[]} classes The classes.
      * @returns {array} The filtered nodes.
      */
@@ -180,7 +180,7 @@ Object.assign(DOM.prototype, {
 
     /**
      * Return all nodes with custom data.
-     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
      * @param {string} [key] The data key.
      * @returns {array} The filtered nodes.
      */
@@ -193,7 +193,7 @@ Object.assign(DOM.prototype, {
 
     /**
      * Return all nodes with a descendent matching a filter.
-     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
      * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
      * @returns {array} The filtered nodes.
      */
@@ -206,7 +206,7 @@ Object.assign(DOM.prototype, {
 
     /**
      * Return all nodes with a specified property.
-     * @param {string|array|HTMLElement|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
      * @param {string} property The property name.
      * @returns {array} The filtered nodes.
      */
@@ -219,7 +219,7 @@ Object.assign(DOM.prototype, {
 
     /**
      * Return all nodes with a CSS transition.
-     * @param {string|array|HTMLElement|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
      * @returns {array} The filtered nodes.
      */
     withTransition(nodes) {

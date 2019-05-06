@@ -16,12 +16,14 @@ Object.assign(DOM.prototype, {
 
     /**
      * Force a node to be shown, and then execute a callback.
-     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|Document|Window|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
      * @param {DOM~nodeCallback} callback The callback to execute.
      * @returns {*} The result of the callback.
      */
     forceShow(nodes, callback) {
-        const node = this._nodeFind(nodes, { node: true, fragment: true, shadow: true, document: true, window: true });
+
+        // DocumentFragment and ShadowRoot nodes have no parent
+        const node = this._nodeFind(nodes, { node: true, document: true, window: true });
 
         if (!node) {
             return;
@@ -81,11 +83,11 @@ Object.assign(DOM.prototype, {
 
     /**
      * Get the index of the first node relative to it's parent.
-     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
      * @returns {number} The index.
      */
     indexOf(nodes) {
-        const node = this._nodeFind(nodes, { node: true, fragment: true, shadow: true });
+        const node = this._nodeFind(nodes, { node: true });
 
         if (!node) {
             return;
@@ -110,7 +112,7 @@ Object.assign(DOM.prototype, {
 
     /**
      * Return a serialized string containing names and values of all form nodes.
-     * @param {string|array|HTMLElement|HTMLCollection|DocumentFragment|ShadowRoot} nodes The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
      * @returns {string} The serialized string.
      */
     serialize(nodes) {
@@ -121,7 +123,7 @@ Object.assign(DOM.prototype, {
 
     /**
      * Return a serialized array containing names and values of all form nodes.
-     * @param {string|array|HTMLElement|HTMLCollection|DocumentFragment|ShadowRoot} nodes The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
      * @returns {array} The serialized array.
      */
     serializeArray(nodes) {

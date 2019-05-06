@@ -6,7 +6,7 @@ Object.assign(DOM.prototype, {
 
     /**
      * Clear the queue of each node.
-     * @param {string|array|HTMLElement|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
      */
     clearQueue(nodes) {
         nodes = this._nodeFilter(nodes);
@@ -18,7 +18,7 @@ Object.assign(DOM.prototype, {
 
     /**
      * Queue a callback on each node.
-     * @param {string|array|HTMLElement|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
      * @param {DOM~queueCallback} callback The callback to queue.
      */
     queue(nodes, callback) {

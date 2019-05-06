@@ -6,7 +6,7 @@ Object.assign(DOM.prototype, {
 
     /**
      * Add an animation to each node.
-     * @param {string|array|HTMLElement|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
      * @param {DOM~animationCallback} callback The animation callback.
      * @param {object} [options] The options to use for animating.
      * @param {number} [options.duration=1000] The duration of the animation.
@@ -33,7 +33,7 @@ Object.assign(DOM.prototype, {
 
     /**
      * Stop all animations for each node.
-     * @param {string|array|HTMLElement|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
      * @param {Boolean} [finish=true] Whether to complete all current animations.
      */
     stop(nodes, finish = true) {
@@ -150,7 +150,8 @@ Object.assign(DOM.prototype, {
             return;
         }
 
-        for (const animation of this._animations.get(node)) {
+        const animations = this._animations.get(node);
+        for (const animation of animations) {
             animation(true, finish);
         }
 

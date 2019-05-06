@@ -6,7 +6,7 @@ Object.assign(DOM.prototype, {
 
     /**
      * Returns true if any of the nodes has a CSS animation.
-     * @param {string|array|HTMLElement|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
      * @returns {Boolean} TRUE if any of the nodes has a CSS animation, otherwise FALSE.
      */
     hasAnimation(nodes) {
@@ -18,7 +18,7 @@ Object.assign(DOM.prototype, {
 
     /**
      * Returns true if any of the nodes has a specified attribute.
-     * @param {string|array|HTMLElement|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
      * @param {string} attribute The attribute name.
      * @returns {Boolean} TRUE if any of the nodes has the attribute, otherwise FALSE.
      */
@@ -31,7 +31,7 @@ Object.assign(DOM.prototype, {
 
     /**
      * Returns true if any of the nodes has child nodes.
-     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
      * @returns {Boolean} TRUE if the any of the nodes has child nodes, otherwise FALSE.
      */
     hasChildren(nodes) {
@@ -43,7 +43,7 @@ Object.assign(DOM.prototype, {
 
     /**
      * Returns true if any of the nodes has any of the specified classes.
-     * @param {string|array|HTMLElement|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
      * @param {...string|string[]} classes The classes.
      * @returns {Boolean} TRUE if any of the nodes has any of the classes, otherwise FALSE.
      */
@@ -58,12 +58,12 @@ Object.assign(DOM.prototype, {
 
     /**
      * Returns true if any of the nodes has custom data.
-     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
      * @param {string} [key] The data key.
      * @returns {Boolean} TRUE if any of the nodes has custom data, otherwise FALSE.
      */
     hasData(nodes, key) {
-        return this._nodeFilter(nodes, { node: true, fragment: true, shadow: true, document: true, window: true })
+        return this._nodeFilter(nodes, { fragment: true, shadow: true, document: true, window: true })
             .some(node =>
                 this._hasData(node, key)
             );
@@ -71,7 +71,7 @@ Object.assign(DOM.prototype, {
 
     /**
      * Returns true if any of the nodes contains a descendent matching a filter.
-     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
      * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
      * @returns {Boolean} TRUE if any of the nodes contains a descendent matching the filter, otherwise FALSE.
      */
@@ -86,8 +86,20 @@ Object.assign(DOM.prototype, {
     },
 
     /**
+     * Returns true if any of the nodes has a DocumentFragment.
+     * @param {string|array|HTMLElement|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @returns {Boolean} TRUE if any of the nodes has a DocumentFragment, otherwise FALSE.
+     */
+    hasFragment(nodes) {
+        return this._nodeFilter(nodes)
+            .some(node =>
+                DOM._hasFragment(node)
+            );
+    },
+
+    /**
      * Returns true if any of the nodes has a specified property.
-     * @param {string|array|HTMLElement|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
      * @param {string} property The property name.
      * @returns {Boolean} TRUE if any of the nodes has the property, otherwise FALSE.
      */
@@ -99,8 +111,20 @@ Object.assign(DOM.prototype, {
     },
 
     /**
+     * Returns true if any of the nodes has a ShadowRoot.
+     * @param {string|array|HTMLElement|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @returns {Boolean} TRUE if any of the nodes has a ShadowRoot, otherwise FALSE.
+     */
+    hasShadow(nodes) {
+        return this._nodeFilter(nodes)
+            .some(node =>
+                DOM._hasFragment(node)
+            );
+    },
+
+    /**
      * Returns true if any of the nodes has a CSS transition.
-     * @param {string|array|HTMLElement|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
      * @returns {Boolean} TRUE if any of the nodes has a CSS transition, otherwise FALSE.
      */
     hasTransition(nodes) {
@@ -222,7 +246,7 @@ Object.assign(DOM.prototype, {
 
     /**
      * Returns true if a single node has custom data.
-     * @param {Node|HTMLElement|DocumentFragment|ShadowRoot|Document|Window} node The input node.
+     * @param {HTMLElement|DocumentFragment|ShadowRoot|Document|Window} node The input node.
      * @param {string} [key] The data key.
      * @returns {Boolean} TRUE if the node has custom data, otherwise FALSE.
      */

@@ -6,11 +6,13 @@ Object.assign(DOM.prototype, {
 
     /**
      * Insert each other node after the first node.
-     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
      * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} others The other node(s), or a query selector or HTML string.
      */
     after(nodes, others) {
-        const node = this._nodeFind(nodes, { node: true, fragment: true, shadow: true });
+
+        // DocumentFragment nodes have no parent
+        const node = this._nodeFind(nodes, { node: true, shadow: true });
 
         if (!node) {
             return;
@@ -23,7 +25,7 @@ Object.assign(DOM.prototype, {
 
     /**
      * Append each other node to the first node.
-     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|Document|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
      * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} others The other node(s), or a query selector or HTML string.
      */
     append(nodes, others) {
@@ -41,7 +43,7 @@ Object.assign(DOM.prototype, {
     /**
      * Append each node to the first other node.
      * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector or HTML string.
-     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|Document|NodeList|HTMLCollection} others The other node(s), or a query selector string.
+     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|NodeList|HTMLCollection} others The other node(s), or a query selector string.
      */
     appendTo(nodes, others) {
         this.append(others, nodes);
@@ -49,11 +51,13 @@ Object.assign(DOM.prototype, {
 
     /**
      * Insert each other node before the first node.
-     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
      * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} others The other node(s), or a query selector or HTML string.
      */
     before(nodes, others) {
-        const node = this._nodeFind(nodes, { node: true, fragment: true, shadow: true });
+
+        // DocumentFragment nodes have no parent
+        const node = this._nodeFind(nodes, { node: true, shadow: true });
 
         if (!node) {
             return;
@@ -67,7 +71,7 @@ Object.assign(DOM.prototype, {
     /**
      * Insert each node after the first other node.
      * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector or HTML string.
-     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} others The other node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} others The other node(s), or a query selector string.
      */
     insertAfter(nodes, others) {
         this.after(others, nodes);
@@ -76,7 +80,7 @@ Object.assign(DOM.prototype, {
     /**
      * Insert each node before the first other node.
      * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector or HTML string.
-     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} others The other node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} others The other node(s), or a query selector string.
      */
     insertBefore(nodes, others) {
         this.before(others, nodes);
@@ -84,7 +88,7 @@ Object.assign(DOM.prototype, {
 
     /**
      * Prepend each other node to the first node.
-     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
      * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} others The other node(s), or a query selector or HTML string.
      */
     prepend(nodes, others) {
@@ -102,7 +106,7 @@ Object.assign(DOM.prototype, {
     /**
      * Prepend each node to the first other node.
      * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector or HTML string.
-     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|HTMLCollection} others The other node(s), or a query selector string.
+     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|NodeList|HTMLCollection} others The other node(s), or a query selector string.
      */
     prependTo(nodes, others) {
         this.prepend(others, nodes);

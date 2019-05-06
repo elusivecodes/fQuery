@@ -6,14 +6,18 @@ Object.assign(DOM, {
 
     /**
      * Detach a single node from the DOM.
-     * @param {Node|HTMLElement|DocumentFragment|ShadowRoot} node The input node.
+     * @param {Node|HTMLElement|ShadowRoot} node The input node.
      */
     _detach(node) {
-        if (!node.parentNode) {
+        const parent = Core.isShadow(node) ?
+            node.host :
+            node.parentNode;
+
+        if (parent) {
             return;
         }
 
-        node.parentNode.removeChild(node);
+        parent.removeChild(node);
     }
 
 });

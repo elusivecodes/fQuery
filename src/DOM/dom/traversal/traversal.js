@@ -6,7 +6,7 @@ Object.assign(DOM.prototype, {
 
     /**
      * Return the first child of each node (optionally matching a filter).
-     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
      * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
      * @returns {array} The matching nodes.
      */
@@ -20,7 +20,7 @@ Object.assign(DOM.prototype, {
 
     /**
      * Return all children of each node (optionally matching a filter).
-     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
      * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
      * @param {Boolean} [first=false] Whether to only return the first matching node for each node.
      * @param {Boolean} [elementsOnly=false] Whether to only return element nodes.
@@ -91,7 +91,7 @@ Object.assign(DOM.prototype, {
 
     /**
      * Return all children of each node (including text and comment nodes).
-     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
      * @returns {array} The matching nodes.
      */
     contents(nodes) {
@@ -101,6 +101,21 @@ Object.assign(DOM.prototype, {
             false,
             false
         );
+    },
+
+    /**
+     * Return the DocumentFragment of the first node.
+     * @param {string|array|Node|HTMLElement|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @returns {DocumentFragment} The DocumentFragment.
+     */
+    fragment(nodes) {
+        const node = this._nodeFind(nodes);
+
+        if (!node) {
+            return;
+        }
+
+        return DOM._fragment(node);
     },
 
     /**
@@ -178,18 +193,19 @@ Object.assign(DOM.prototype, {
 
     /**
      * Return the parent of each node (optionally matching a filter).
-     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
      * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
      * @returns {array} The matching nodes.
      */
     parent(nodes, filter) {
         filter = this._parseFilter(filter);
 
-        if (Core.isNode(nodes) || Core.isFragment(nodes) || Core.isShadow(nodes)) {
+        if (Core.isNode(nodes)) {
             return DOM._parent(nodes, filter);
         }
 
-        nodes = this._nodeFilter(nodes, { node: true, fragment: true, shadow: true });
+        // DocumentFragment and ShadowRoot nodes have no parent
+        nodes = this._nodeFilter(nodes, { node: true });
 
         const results = [];
 
@@ -207,7 +223,7 @@ Object.assign(DOM.prototype, {
 
     /**
      * Return all parents of each node (optionally matching a filter, and before a limit).
-     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
      * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
      * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} [limit] The limit node(s), a query selector string or custom filter function.
      * @param {Boolean} [first=false] Whether to only return the first matching node for each node.
@@ -217,11 +233,12 @@ Object.assign(DOM.prototype, {
         filter = this._parseFilter(filter);
         limit = this._parseFilter(limit);
 
-        if (Core.isNode(nodes) || Core.isFragment(nodes) || Core.isShadow(nodes)) {
+        if (Core.isNode(nodes)) {
             return DOM._parents(nodes, filter, limit, first);
         }
 
-        nodes = this._nodeFilter(nodes, { node: true, fragment: true, shadow: true });
+        // DocumentFragment and ShadowRoot nodes have no parent
+        nodes = this._nodeFilter(nodes, { node: true });
 
         const results = [];
 
@@ -296,6 +313,21 @@ Object.assign(DOM.prototype, {
         return nodes.length > 1 && results.length ?
             Core.unique(results) :
             results;
+    },
+
+    /**
+     * Return the ShadowRoot of the first node.
+     * @param {string|array|Node|HTMLElement|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @returns {ShadowRoot} The ShadowRoot.
+     */
+    shadow(nodes) {
+        const node = this._nodeFind(nodes);
+
+        if (!node) {
+            return;
+        }
+
+        return DOM._shadow(node);
     },
 
     /**

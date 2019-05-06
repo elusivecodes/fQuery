@@ -48,6 +48,15 @@ Object.assign(DOM, {
     },
 
     /**
+     * Return the DocumentFragment for a single node.
+     * @param {HTMLElement} node The input node.
+     * @returns {DocumentFragment} The DocumentFragment.
+     */
+    _fragment(node) {
+        return node.content;
+    },
+
+    /**
      * Return the next sibling for a single node (optionally matching a filter).
      * @param {Node|HTMLElement|DocumentFragment|ShadowRoot} node The input node.
      * @param {DOM~filterCallback} [filter] The filter function.
@@ -209,6 +218,15 @@ Object.assign(DOM, {
         }
 
         return results;
+    },
+
+    /**
+     * Return the ShadowRoot for a single node.
+     * @param {HTMLElement} node The input node.
+     * @returns {ShadowRoot} The ShadowRoot.
+     */
+    _shadow(node) {
+        return node.shadowRoot;
     },
 
     /**

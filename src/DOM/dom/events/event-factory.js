@@ -47,7 +47,7 @@ Object.assign(DOM.prototype, {
 
     /**
      * Return a wrapped event callback that executes on a delegate selector.
-     * @param {HTMLElement|DocumentFragment|ShadowRoot|Document} node The input node.
+     * @param {HTMLElement|ShadowRoot|Document} node The input node.
      * @param {string} selector The delegate query selector.
      * @param {function} callback The event callback.
      * @returns {DOM~eventCallback} The delegated event callback.
@@ -108,7 +108,7 @@ Object.assign(DOM.prototype, {
 
     /**
      * Return a function for matching a delegate target to a standard selector.
-     * @param {HTMLElement|DocumentFragment|ShadowRoot|Document} node The input node.
+     * @param {HTMLElement|ShadowRoot|Document} node The input node.
      * @param {string} selector The delegate query selector.
      * @returns {DOM~delegateCallback} The callback for finding the matching delegate.
      */
@@ -126,7 +126,7 @@ Object.assign(DOM.prototype, {
 
     /**
      * Return a wrapped event callback that removes itself after execution.
-     * @param {HTMLElement|DocumentFragment|ShadowRoot|Document|Window} node The input node.
+     * @param {HTMLElement|ShadowRoot|Document|Window} node The input node.
      * @param {string} events The event names.
      * @param {string} delegate The delegate selector.
      * @param {DOM~eventCallback} callback The callback to execute.

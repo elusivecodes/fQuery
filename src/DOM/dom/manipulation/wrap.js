@@ -6,11 +6,15 @@ Object.assign(DOM.prototype, {
 
     /**
      * Unwrap each node.
-     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
      * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
      */
     unwrap(nodes, filter) {
-        nodes = this._nodeFilter(nodes, { node: true, fragment: true, shadow: true });
+
+        // DocumentFragment and ShadowRoot nodes can not be unwrapped
+        nodes = this._nodeFilter(nodes, { node: true });
+
+        filter = this._parseFilter(filter);
 
         for (const node of nodes) {
             this._unwrap(node, filter);
@@ -19,13 +23,16 @@ Object.assign(DOM.prototype, {
 
     /**
      * Wrap each nodes with other nodes.
-     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
-     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|HTMLCollection} others The other node(s), or a query selector or HTML string.
+     * @param {string|array|Node|HTMLElement|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|DocumentFragment|NodeList|HTMLCollection} others The other node(s), or a query selector or HTML string.
      */
     wrap(nodes, others) {
-        nodes = this._nodeFilter(nodes, { node: true, fragment: true, shadow: true });
 
-        others = this._nodeFilter(others, { fragment: true, shadow: true, html: true });
+        // DocumentFragment and ShadowRoot nodes can not be wrapped
+        nodes = this._nodeFilter(nodes, { node: true });
+
+        // ShadowRoot nodes can not be cloned
+        others = this._nodeFilter(others, { fragment: true, html: true });
 
         for (const node of nodes) {
             this._wrap(node, others);
@@ -34,13 +41,16 @@ Object.assign(DOM.prototype, {
 
     /**
      * Wrap all nodes with other nodes.
-     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
-     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|HTMLCollection} others The other node(s), or a query selector or HTML string.
+     * @param {string|array|Node|HTMLElement|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|DocumentFragment|NodeList|HTMLCollection} others The other node(s), or a query selector or HTML string.
      */
     wrapAll(nodes, others) {
-        nodes = this._nodeFilter(nodes, { node: true, fragment: true, shadow: true });
 
-        others = this._nodeFilter(others, { fragment: true, shadow: true, html: true });
+        // DocumentFragment and ShadowRoot nodes can not be wrapped
+        nodes = this._nodeFilter(nodes, { node: true });
+
+        // ShadowRoot nodes can not be cloned
+        others = this._nodeFilter(others, { fragment: true, html: true });
 
         const clone = this.clone(others, true);
 
@@ -54,12 +64,13 @@ Object.assign(DOM.prototype, {
     /**
      * Wrap the contents of each node with other nodes.
      * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|HTMLCollection} nodes The input node(s), or a query selector string.
-     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|HTMLCollection} others The other node(s), or a query selector or HTML string.
+     * @param {string|array|HTMLElement|DocumentFragment|NodeList|HTMLCollection} others The other node(s), or a query selector or HTML string.
      */
     wrapInner(nodes, others) {
         nodes = this._nodeFilter(nodes, { node: true, fragment: true, shadow: true });
 
-        others = this._nodeFilter(others, { fragment: true, shadow: true, html: true });
+        // ShadowRoot nodes can not be cloned
+        others = this._nodeFilter(others, { fragment: true, html: true });
 
         for (const node of nodes) {
             this._wrapInner(node, others);
@@ -68,7 +79,7 @@ Object.assign(DOM.prototype, {
 
     /**
      * Unwrap a single node.
-     * @param {Node|HTMLElement|DocumentFragment|ShadowRoot} node The input node.
+     * @param {Node|HTMLElement} node The input node.
      * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
      */
     _unwrap(node, filter) {
@@ -87,8 +98,8 @@ Object.assign(DOM.prototype, {
 
     /**
      * Wrap a single node with other nodes.
-     * @param {Node|HTMLElement|DocumentFragment|ShadowRoot} node The input node.
-     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|HTMLCollection} others The other node(s), or a query selector or HTML string.
+     * @param {Node|HTMLElement} node The input node.
+     * @param {string|array|HTMLElement|DocumentFragment|HTMLCollection} others The other node(s), or a query selector or HTML string.
      */
     _wrap(node, others) {
         const clone = this.clone(others, true);
@@ -102,7 +113,7 @@ Object.assign(DOM.prototype, {
     /**
      * Wrap the contents of a single node with other nodes.
      * @param {HTMLElement|DocumentFragment|ShadowRoot} node The input node.
-     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|HTMLCollection} others The other node(s), or a query selector or HTML string.
+     * @param {string|array|HTMLElement|DocumentFragment|HTMLCollection} others The other node(s), or a query selector or HTML string.
      */
     _wrapInner(node, others) {
         const children = DOM._children(node, false, false, false),

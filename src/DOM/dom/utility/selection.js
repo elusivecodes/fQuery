@@ -164,10 +164,12 @@ Object.assign(DOM.prototype, {
 
     /**
      * Wrap selected nodes with other nodes.
-     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|HTMLCollection} nodes The input node(s), or a query selector or HTML string.
+     * @param {string|array|HTMLElement|DocumentFragment|NodeList|HTMLCollection} nodes The input node(s), or a query selector or HTML string.
      */
     wrapSelection(nodes) {
-        nodes = this._nodeFilter(nodes, { fragment: true, shadow: true, html: true });
+
+        // ShadowRoot nodes can not be cloned
+        nodes = this._nodeFilter(nodes, { fragment: true, html: true });
 
         const selection = window.getSelection();
 

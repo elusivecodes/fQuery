@@ -14,7 +14,6 @@ class DOM {
 
         this._animating = false;
         this._animations = new Map;
-
         this._queues = new WeakMap;
 
         this._data = new WeakMap;

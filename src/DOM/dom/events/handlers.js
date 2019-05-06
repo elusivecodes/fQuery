@@ -6,12 +6,12 @@ Object.assign(DOM.prototype, {
 
     /**
      * Add events to each node.
-     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|ShadowRoot|Document|Window|HTMLCollection} nodes The input node(s), or a query selector string.
      * @param {string} events The event names.
      * @param {DOM~eventCallback} callback The callback to execute.
      */
     addEvent(nodes, events, callback) {
-        nodes = this._nodeFilter(nodes, { fragment: true, shadow: true, document: true, window: true });
+        nodes = this._nodeFilter(nodes, { shadow: true, document: true, window: true });
 
         for (const node of nodes) {
             this._addEvent(node, events, callback);
@@ -20,13 +20,13 @@ Object.assign(DOM.prototype, {
 
     /**
      * Add delegated events to each node.
-     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|ShadowRoot|Document|Window|HTMLCollection} nodes The input node(s), or a query selector string.
      * @param {string} events The event names.
      * @param {string} delegate The delegate selector.
      * @param {DOM~eventCallback} callback The callback to execute.
      */
     addEventDelegate(nodes, events, delegate, callback) {
-        nodes = this._nodeFilter(nodes, { fragment: true, shadow: true, document: true, window: true });
+        nodes = this._nodeFilter(nodes, { shadow: true, document: true, window: true });
 
         for (const node of nodes) {
             this._addEvent(node, events, callback, delegate);
@@ -35,13 +35,13 @@ Object.assign(DOM.prototype, {
 
     /**
      * Add self-destructing delegated events to each node.
-     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|ShadowRoot|Document|Window|HTMLCollection} nodes The input node(s), or a query selector string.
      * @param {string} events The event names.
      * @param {string} delegate The delegate selector.
      * @param {DOM~eventCallback} callback The callback to execute.
      */
     addEventDelegateOnce(nodes, events, delegate, callback) {
-        nodes = this._nodeFilter(nodes, { fragment: true, shadow: true, document: true, window: true });
+        nodes = this._nodeFilter(nodes, { shadow: true, document: true, window: true });
 
         for (const node of nodes) {
             this._addEvent(node, events, callback, delegate, true);
@@ -50,12 +50,12 @@ Object.assign(DOM.prototype, {
 
     /**
      * Add self-destructing events to each node.
-     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|ShadowRoot|Document|Window|HTMLCollection} nodes The input node(s), or a query selector string.
      * @param {string} events The event names.
      * @param {DOM~eventCallback} callback The callback to execute.
      */
     addEventOnce(nodes, events, callback) {
-        nodes = this._nodeFilter(nodes, { fragment: true, shadow: true, document: true, window: true });
+        nodes = this._nodeFilter(nodes, { shadow: true, document: true, window: true });
 
         for (const node of nodes) {
             this._addEvent(node, events, callback, null, true);
@@ -64,11 +64,11 @@ Object.assign(DOM.prototype, {
 
     /**
      * Clone all events from each node to other nodes.
-     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|HTMLCollection} nodes The input node(s), or a query selector string.
-     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|HTMLCollection} others The other node(s), or a query selector string.
+     * @param {string|array|HTMLElement|ShadowRoot|Document|Window|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|ShadowRoot|Document|Window|HTMLCollection} others The other node(s), or a query selector string.
      */
     cloneEvents(nodes, others) {
-        nodes = this._nodeFilter(nodes, { fragment: true, shadow: true, document: true, window: true });
+        nodes = this._nodeFilter(nodes, { shadow: true, document: true, window: true });
 
         for (const node of nodes) {
             this._cloneEvents(node, others);
@@ -77,12 +77,12 @@ Object.assign(DOM.prototype, {
 
     /**
      * Remove events from each node.
-     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|ShadowRoot|Document|Window|HTMLCollection} nodes The input node(s), or a query selector string.
      * @param {string} [events] The event names.
      * @param {DOM~eventCallback} [callback] The callback to remove.
      */
     removeEvent(nodes, events, callback) {
-        nodes = this._nodeFilter(nodes, { fragment: true, shadow: true, document: true, window: true });
+        nodes = this._nodeFilter(nodes, { shadow: true, document: true, window: true });
 
         for (const node of nodes) {
             this._removeEvent(node, events, callback);
@@ -91,13 +91,13 @@ Object.assign(DOM.prototype, {
 
     /**
      * Remove delegated events from each node.
-     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|ShadowRoot|Document|Window|HTMLCollection} nodes The input node(s), or a query selector string.
      * @param {string} [events] The event names.
      * @param {string} [delegate] The delegate selector.
      * @param {DOM~eventCallback} [callback] The callback to remove.
      */
     removeEventDelegate(nodes, events, delegate, callback) {
-        nodes = this._nodeFilter(nodes, { fragment: true, shadow: true, document: true, window: true });
+        nodes = this._nodeFilter(nodes, { shadow: true, document: true, window: true });
 
         for (const node of nodes) {
             this._removeEvent(node, events, callback, delegate);
@@ -106,7 +106,7 @@ Object.assign(DOM.prototype, {
 
     /**
      * Add events to a single node.
-     * @param {HTMLElement|DocumentFragment|ShadowRoot|Document|Window} node The input node.
+     * @param {HTMLElement|ShadowRoot|Document|Window} node The input node.
      * @param {string} events The event names.
      * @param {DOM~eventCallback} callback The callback to execute.
      * @param {string} [delegate] The delegate selector.
@@ -155,8 +155,8 @@ Object.assign(DOM.prototype, {
 
     /**
      * Clone all events from a single node to other nodes.
-     * @param {HTMLElement|DocumentFragment|ShadowRoot|Document|Window} nodes The input node.
-     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|HTMLCollection} others The other node(s), or a query selector string.
+     * @param {HTMLElement|ShadowRoot|Document|Window} nodes The input node.
+     * @param {string|array|HTMLElement|ShadowRoot|Document|Window|HTMLCollection} others The other node(s), or a query selector string.
      */
     _cloneEvents(node, others) {
         if (!this._events.has(node)) {
@@ -179,7 +179,7 @@ Object.assign(DOM.prototype, {
 
     /**
      * Remove events from a single node.
-     * @param {HTMLElement|DocumentFragment|ShadowRoot|Document|Window} nodes The input node.
+     * @param {HTMLElement|ShadowRoot|Document|Window} nodes The input node.
      * @param {string} [events] The event names.
      * @param {DOM~eventCallback} [callback] The callback to remove.
      * @param {string} [delegate] The delegate selector.
