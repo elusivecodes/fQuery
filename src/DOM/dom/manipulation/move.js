@@ -18,9 +18,17 @@ Object.assign(DOM.prototype, {
             return;
         }
 
+        const parent = DOM._parent(node);
+
+        if (!parent) {
+            return;
+        }
+
         others = this._nodeFilter(others, { node: true, fragment: true, shadow: true, html: true });
 
-        DOM._after(node, others);
+        for (const other of others.reverse()) {
+            DOM._insertBefore(parent, other, node.nextSibling);
+        }
     },
 
     /**
@@ -37,7 +45,9 @@ Object.assign(DOM.prototype, {
 
         others = this._nodeFilter(others, { node: true, fragment: true, shadow: true, html: true });
 
-        DOM._append(node, others);
+        for (const other of others) {
+            DOM._insertBefore(node, other);
+        }
     },
 
     /**
@@ -63,9 +73,17 @@ Object.assign(DOM.prototype, {
             return;
         }
 
+        const parent = DOM._parent(node);
+
+        if (!parent) {
+            return;
+        }
+
         others = this._nodeFilter(others, { node: true, fragment: true, shadow: true, html: true });
 
-        DOM._before(node, others);
+        for (const other of others) {
+            DOM._insertBefore(parent, other, node);
+        }
     },
 
     /**
@@ -100,7 +118,9 @@ Object.assign(DOM.prototype, {
 
         others = this._nodeFilter(others, { node: true, fragment: true, shadow: true, html: true });
 
-        DOM._prepend(node, others);
+        for (const other of others.reverse()) {
+            DOM._insertBefore(node, other, node.firstChild);
+        }
     },
 
     /**

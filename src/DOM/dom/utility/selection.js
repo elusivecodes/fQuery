@@ -64,7 +64,9 @@ Object.assign(DOM.prototype, {
 
         DOM._removeRanges(selection);
 
-        return Core.merge([], DOM._extract(range));
+        const fragment = DOM._extract(range);
+
+        return Core.merge([], DOM._childNodes(fragment));
     },
 
     /**
@@ -181,10 +183,14 @@ Object.assign(DOM.prototype, {
 
         selection.removeAllRanges();
 
-        const deepest = DOM._deepest(nodes.slice().shift()),
-            children = Core.merge([], DOM._extract(range));
+        const fragment = DOM._extract(range);
 
-        DOM._append(deepest, children);
+        const deepest = this._deepest(nodes.slice().shift()),
+            children = Core.merge([], DOM._childNodes(fragment));
+
+        for (const child of children) {
+            DOM._insertBefore(deepest, child);
+        }
 
         for (const node of nodes) {
             DOM._insert(range, node);

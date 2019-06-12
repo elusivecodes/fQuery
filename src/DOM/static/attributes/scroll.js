@@ -15,7 +15,7 @@ Object.assign(DOM, {
         }
 
         if (Core.isDocument(node)) {
-            return node.scrollingElement.scrollLeft;
+            node = node.scrollingElement;
         }
 
         return node.scrollLeft;
@@ -32,7 +32,7 @@ Object.assign(DOM, {
         }
 
         if (Core.isDocument(node)) {
-            return node.scrollingElement.scrollTop;
+            node = node.scrollingElement;
         }
 
         return node.scrollTop;
@@ -50,9 +50,7 @@ Object.assign(DOM, {
         }
 
         if (Core.isDocument(node)) {
-            node.scrollingElement.scrollLeft = x;
-            node.scrollingElement.scrollTop = y;
-            return;
+            node = node.scrollingElement;
         }
 
         node.scrollLeft = x;
@@ -70,8 +68,7 @@ Object.assign(DOM, {
         }
 
         if (Core.isDocument(node)) {
-            node.scrollingElement.scrollLeft = x;
-            return;
+            node = node.scrollingElement;
         }
 
         node.scrollLeft = x;
@@ -88,8 +85,7 @@ Object.assign(DOM, {
         }
 
         if (Core.isDocument(node)) {
-            node.scrollingElement.scrollTop = y;
-            return;
+            node = node.scrollingElement;
         }
 
         node.scrollTop = y;

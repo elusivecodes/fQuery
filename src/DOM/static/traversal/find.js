@@ -15,27 +15,6 @@ Object.assign(DOM, {
     },
 
     /**
-     * Return all nodes matching a custom CSS selector.
-     * @param {string} selector The custom query selector.
-     * @param {HTMLElement} node The input node.
-     * @returns {NodeList} The matching nodes.
-     */
-    _findByCustom(selector, node) {
-        const nodeId = this._getAttribute(node, 'id');
-        this._setAttribute(node, { id: this.tempId });
-
-        const results = this._findBySelector(selector, node);
-
-        if (nodeId) {
-            this._setAttribute(node, { id: nodeId });
-        } else {
-            this._removeAttribute(node, 'id');
-        }
-
-        return results;
-    },
-
-    /**
      * Return a single nodes with a specific ID.
      * @param {string} id The id.
      * @param {Document} node The input node.
@@ -63,27 +42,6 @@ Object.assign(DOM, {
      */
     _findBySelector(selector, node) {
         return node.querySelectorAll(selector);
-    },
-
-    /**
-     * Return a single node matching a custom CSS selector.
-     * @param {string} selector The custom query selector.
-     * @param {HTMLElement} node The input node.
-     * @returns {HTMLElement} The matching node.
-     */
-    _findOneByCustom(selector, node) {
-        const nodeId = this._getAttribute(node, 'id');
-        this._setAttribute(node, { id: this.tempId });
-
-        const result = this._findOneBySelector(selector, node);
-
-        if (nodeId) {
-            this._setAttribute(node, { id: nodeId });
-        } else {
-            this._removeAttribute(node, 'id');
-        }
-
-        return result;
     },
 
     /**

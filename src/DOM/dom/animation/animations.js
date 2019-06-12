@@ -59,11 +59,10 @@ Object.assign(DOM.prototype, {
             (node, progress) =>
                 DOM._setStyle(
                     node,
-                    {
-                        opacity: progress < 1 ?
-                            progress :
-                            ''
-                    }
+                    'opacity',
+                    progress < 1 ?
+                        progress :
+                        ''
                 ),
             options
         );
@@ -84,11 +83,10 @@ Object.assign(DOM.prototype, {
             (node, progress) =>
                 DOM._setStyle(
                     node,
-                    {
-                        opacity: progress < 1 ?
-                            1 - progress :
-                            ''
-                    }
+                    'opacity',
+                    progress < 1 ?
+                        1 - progress :
+                        ''
                 ),
             options
         );
@@ -112,11 +110,10 @@ Object.assign(DOM.prototype, {
             (node, progress, options) =>
                 DOM._setStyle(
                     node,
-                    {
-                        transform: progress < 1 ?
-                            `rotate3d(${options.x}, ${options.y}, 0, ${(90 - (progress * 90)) * (options.inverse ? -1 : 1)}deg)` :
-                            ''
-                    }
+                    'transform',
+                    progress < 1 ?
+                        `rotate3d(${options.x}, ${options.y}, 0, ${(90 - (progress * 90)) * (options.inverse ? -1 : 1)}deg)` :
+                        ''
                 ),
             {
                 x: 0,
@@ -144,11 +141,10 @@ Object.assign(DOM.prototype, {
             (node, progress, options) =>
                 DOM._setStyle(
                     node,
-                    {
-                        transform: progress < 1 ?
-                            `rotate3d(${options.x}, ${options.y}, 0, ${(progress * 90) * (options.inverse ? -1 : 1)}deg)` :
-                            ''
-                    }
+                    'transform',
+                    progress < 1 ?
+                        `rotate3d(${options.x}, ${options.y}, 0, ${(progress * 90) * (options.inverse ? -1 : 1)}deg)` :
+                        ''
                 ),
             {
                 x: 0,
@@ -197,9 +193,8 @@ Object.assign(DOM.prototype, {
 
                 DOM._setStyle(
                     node,
-                    {
-                        transform
-                    }
+                    'transform',
+                    transform
                 );
             },
             {
@@ -248,9 +243,8 @@ Object.assign(DOM.prototype, {
 
                 DOM._setStyle(
                     node,
-                    {
-                        transform
-                    }
+                    'transform',
+                    transform
                 );
             },
             {
@@ -335,14 +329,15 @@ Object.assign(DOM.prototype, {
         });
 
         this._wrap(node, wrapper);
-        const parent = DOM._parent(node).shift();
+        const parent = DOM._parent(node);
 
         return this._animate(
             node,
             (node, progress, options) => {
                 if (progress === 1) {
-                    DOM._before(parent, DOM._children(parent, false, false, false));
-                    this._remove(parent);
+                    const children = DOM._childNodes(parent);
+                    const child = Core.wrap(children).shift();
+                    this._unwrap(child);
                     return;
                 }
 
@@ -364,14 +359,13 @@ Object.assign(DOM.prototype, {
                 }
 
                 const size = Math.round(this[`_${sizeStyle}`](node)),
-                    amount = Math.round(size * progress),
-                    styles = {
-                        [sizeStyle]: amount + 'px'
-                    };
+                    amount = Math.round(size * progress);
+
+                DOM._setStyle(parent, sizeStyle, amount);
+
                 if (translateStyle) {
-                    styles.transform = `translate${translateStyle}(${size - amount}px)`;
+                    DOM._setStyle(parent, 'transform', `translate${translateStyle}(${size - amount}px)`);
                 }
-                DOM._setStyle(parent, styles);
             },
             options
         );
@@ -396,14 +390,15 @@ Object.assign(DOM.prototype, {
         });
 
         this._wrap(node, wrapper);
-        const parent = DOM._parent(node).shift();
+        const parent = DOM._parent(node);
 
         return this._animate(
             node,
             (node, progress, options) => {
                 if (progress === 1) {
-                    DOM._before(parent, DOM._children(parent, false, false, false));
-                    this._remove(parent);
+                    const children = DOM._childNodes(parent);
+                    const child = Core.wrap(children).shift();
+                    this._unwrap(child);
                     return;
                 }
 
@@ -426,14 +421,13 @@ Object.assign(DOM.prototype, {
                 }
 
                 const size = Math.round(this[`_${sizeStyle}`](node)),
-                    amount = Math.round(size - (size * progress)),
-                    styles = {
-                        [sizeStyle]: amount + 'px'
-                    };
+                    amount = Math.round(size - (size * progress));
+
+                DOM._setStyle(parent, sizeStyle, amount);
+
                 if (translateStyle) {
-                    styles.transform = `translate${translateStyle}(${size - amount}px)`;
+                    DOM._setStyle(parent, 'transform', `translate${translateStyle}(${size - amount}px)`);
                 }
-                DOM._setStyle(parent, styles);
             },
             options
         );

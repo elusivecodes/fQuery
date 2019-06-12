@@ -24,10 +24,10 @@ Object.assign(DOM, {
     /**
      * Extract the contents of a range.
      * @param {Range} range The input range.
-     * @returns {NodeList} The nodes in the range.
+     * @returns {DocumentFragment} A DocumentFragment containing the range contents.
      */
     _extract(range) {
-        return range.extractContents().childNodes;
+        return range.extractContents();
     },
 
     /**

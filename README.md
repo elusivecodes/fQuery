@@ -2,7 +2,7 @@
 
 **FrostDOM** is a free, open-source DOM manipulation library for *JavaScript*.
 
-It is relatively lightweight (< 10kb gzipped) and modern library, utilizing ES6 syntax and features including Promises, with a focus on functional style programming.
+It is a lightweight (< 10kb gzipped) and modern library, utilizing ES6 syntax and features including Promises, with a focus on functional style programming.
 
 
 ## Table Of Contents
@@ -77,7 +77,7 @@ Add an animation to each node.
     - `type` is a string of either *ease-in*, *ease-out*, *ease-in-out* or *linear* indicating the type of animation to run, and will default to *ease-in-out*.
     - `infinite` is a boolean indicating whether the animation should continue forever, and will default to *false*.
 
-This function returns a *Promise* that will resolve after the animation has completed.
+This method returns a *Promise* that will resolve after the animation has completed.
 
 ```javascript
 dom.animate(nodes, callback, options);
@@ -107,7 +107,7 @@ Drop each node into place.
     - `type` is a string of either "*ease-in*", "*ease-out*", "*ease-in-out*" or "*linear*" indicating the type of animation to run, and will default to "*ease-in-out*".
     - `infinite` is a boolean indicating whether the animation should continue forever, and will default to *false*.
 
-This function returns a *Promise*, that will resolve after the animation has completed.
+This method returns a *Promise*, that will resolve after the animation has completed.
 
 ```javascript
 dom.dropIn(nodes, options);
@@ -124,7 +124,7 @@ Drop each node out of place.
     - `type` is a string of either "*ease-in*", "*ease-out*", "*ease-in-out*" or "*linear*" indicating the type of animation to run, and will default to "*ease-in-out*".
     - `infinite` is a boolean indicating whether the animation should continue forever, and will default to *false*.
 
-This function returns a *Promise*, that will resolve after the animation has completed.
+This method returns a *Promise*, that will resolve after the animation has completed.
 
 ```javascript
 dom.dropOut(nodes, options);
@@ -140,7 +140,7 @@ Fade the opacity of each node in.
     - `type` is a string of either "*ease-in*", "*ease-out*", "*ease-in-out*" or "*linear*" indicating the type of animation to run, and will default to "*ease-in-out*".
     - `infinite` is a boolean indicating whether the animation should continue forever, and will default to *false*.
 
-This function returns a *Promise*, that will resolve after the animation has completed.
+This method returns a *Promise*, that will resolve after the animation has completed.
 
 ```javascript
 dom.fadeIn(nodes, options);
@@ -156,7 +156,7 @@ Fade the opacity of each node out.
     - `type` is a string of either "*ease-in*", "*ease-out*", "*ease-in-out*" or "*linear*" indicating the type of animation to run, and will default to "*ease-in-out*".
     - `infinite` is a boolean indicating whether the animation should continue forever, and will default to *false*.
 
-This function returns a *Promise*, that will resolve after the animation has completed.
+This method returns a *Promise*, that will resolve after the animation has completed.
 
 ```javascript
 dom.fadeOut(nodes, options);
@@ -175,7 +175,7 @@ Rotate each node in on an X,Y.
     - `type` is a string of either "*ease-in*", "*ease-out*", "*ease-in-out*" or "*linear*" indicating the type of animation to run, and will default to "*ease-in-out*".
     - `infinite` is a boolean indicating whether the animation should continue forever, and will default to *false*.
 
-This function returns a *Promise*, that will resolve after the animation has completed.
+This method returns a *Promise*, that will resolve after the animation has completed.
 
 ```javascript
 dom.rotateIn(nodes, options);
@@ -194,7 +194,7 @@ Rotate each node out on an X,Y.
     - `type` is a string of either "*ease-in*", "*ease-out*", "*ease-in-out*" or "*linear*" indicating the type of animation to run, and will default to "*ease-in-out*".
     - `infinite` is a boolean indicating whether the animation should continue forever, and will default to *false*.
 
-This function returns a *Promise*, that will resolve after the animation has completed.
+This method returns a *Promise*, that will resolve after the animation has completed.
 
 ```javascript
 dom.rotateOut(nodes, options);
@@ -211,7 +211,7 @@ Slide each node into place to a direction.
     - `type` is a string of either "*ease-in*", "*ease-out*", "*ease-in-out*" or "*linear*" indicating the type of animation to run, and will default to "*ease-in-out*".
     - `infinite` is a boolean indicating whether the animation should continue forever, and will default to *false*.
 
-This function returns a *Promise*, that will resolve after the animation has completed.
+This method returns a *Promise*, that will resolve after the animation has completed.
 
 ```javascript
 dom.slideIn(nodes, options);
@@ -228,7 +228,7 @@ Slide each node out of place from a direction.
     - `type` is a string of either "*ease-in*", "*ease-out*", "*ease-in-out*" or "*linear*" indicating the type of animation to run, and will default to "*ease-in-out*".
     - `infinite` is a boolean indicating whether the animation should continue forever, and will default to *false*.
 
-This function returns a *Promise*, that will resolve after the animation has completed.
+This method returns a *Promise*, that will resolve after the animation has completed.
 
 ```javascript
 dom.slideOut(nodes, options);
@@ -245,7 +245,7 @@ Squeeze each node into place to a direction.
     - `type` is a string of either "*ease-in*", "*ease-out*", "*ease-in-out*" or "*linear*" indicating the type of animation to run, and will default to "*ease-in-out*".
     - `infinite` is a boolean indicating whether the animation should continue forever, and will default to *false*.
 
-This function returns a *Promise*, that will resolve after the animation has completed.
+This method returns a *Promise*, that will resolve after the animation has completed.
 
 ```javascript
 dom.squeezeIn(nodes, options);
@@ -262,7 +262,7 @@ Squeeze each node out of place from a direction.
     - `type` is a string of either "*ease-in*", "*ease-out*", "*ease-in-out*" or "*linear*" indicating the type of animation to run, and will default to "*ease-in-out*".
     - `infinite` is a boolean indicating whether the animation should continue forever, and will default to *false*.
 
-This function returns a *Promise*, that will resolve after the animation has completed.
+This method returns a *Promise*, that will resolve after the animation has completed.
 
 ```javascript
 dom.squeezeOut(nodes, options);
@@ -748,7 +748,7 @@ dom.addClass(nodes, ...classes);
 
 **Computed Style**
 
-Get the computed style for the first node.
+Get a computed CSS style value for the first node.
 
 - `nodes` is a query selector string, a *HTMLElement*, *NodeList*, *HTMLCollection* or an array of nodes.
 - `style` is a string indicating the computed style property value to return.
@@ -884,18 +884,6 @@ If the DOM is already loaded, `callback` will execute immediately.
 dom.ready(callback);
 ```
 
-**Trigger Event**
-
-Trigger events on each node.
-
-- `nodes` is a query selector string, a *HTMLElement*, *ShadowRoot*, *Document*, *Window*, *NodeList*, *HTMLCollection* or an array of nodes.
-- `events` is a space-separated string of events to trigger on the nodes.
-- `data` is an object containing custom data to add to the `event` object.
-
-```javascript
-dom.triggerEvent(nodes, events, data);
-```
-
 ##### Event Handlers
 
 **Add Event**
@@ -981,6 +969,18 @@ Remove delegated events from each node.
 
 ```javascript
 dom.removeEventDelegate(nodes, events, delegate, callback);
+```
+
+**Trigger Event**
+
+Trigger events on each node.
+
+- `nodes` is a query selector string, a *HTMLElement*, *ShadowRoot*, *Document*, *Window*, *NodeList*, *HTMLCollection* or an array of nodes.
+- `events` is a space-separated string of events to trigger on the nodes.
+- `data` is an object containing custom data to add to the `event` object.
+
+```javascript
+dom.triggerEvent(nodes, events, data);
 ```
 
 ##### Event Factory
@@ -2209,7 +2209,7 @@ This method returns a *Promise* that resolves when the request is completed, or 
 dom.get(url, options);
 ```
 
-**Get**
+**Post**
 
 Perform an XHR POST request.
 

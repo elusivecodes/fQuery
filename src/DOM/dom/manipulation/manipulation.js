@@ -17,22 +17,60 @@ Object.assign(DOM.prototype, {
         // ShadowRoot nodes can not be cloned
         nodes = this._nodeFilter(nodes, { node: true, fragment: true });
 
-        return nodes.map(node =>
+        return nodes.flatMap(node =>
+            Core.isShadow(node) ?
+                DOM._childNodes(node) :
+                node
+        ).map(node =>
             this._clone(node, deep, cloneEvents, cloneData)
         );
     },
 
     /**
      * Detach each node from the DOM.
-     * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
      */
     detach(nodes) {
 
-        // DocumentFragment nodes can not be detached
-        nodes = this._nodeFilter(nodes, { node: true, shadow: true });
+        // DocumentFragment and ShadowRoot nodes can not be detached
+        nodes = this._nodeFilter(nodes, { node: true });
 
         for (const node of nodes) {
-            DOM._detach(node);
+            const parent = DOM._parent(node);
+
+            if (!parent) {
+                continue;
+            }
+
+            DOM._removeChild(parent, node);
+        }
+    },
+
+    detachFragment(nodes) {
+        nodes = this._nodeFilter(nodes);
+
+        for (const node of nodes) {
+            const fragment = DOM._fragment(node);
+
+            if (!fragment) {
+                continue;
+            }
+
+            DOM._removeChild(node, fragment);
+        }
+    },
+
+    detachShadow(nodes) {
+        nodes = this._nodeFilter(nodes);
+
+        for (const node of nodes) {
+            const shadow = DOM._shadow(node);
+
+            if (!shadow) {
+                continue;
+            }
+
+            DOM._removeChild(node, shadow);
         }
     },
 
@@ -54,12 +92,51 @@ Object.assign(DOM.prototype, {
      */
     remove(nodes) {
 
-        // DocumentFragment nodes can not be removed
-        nodes = this._nodeFilter(nodes, { node: true, shadow: true });
+        // DocumentFragment and ShadowRoot nodes can not be removed
+        nodes = this._nodeFilter(nodes, { node: true });
 
         for (const node of nodes) {
             this._empty(node);
             this._remove(node);
+            const parent = DOM._parent(node);
+
+            if (!parent) {
+                continue;
+            }
+
+            DOM._removeChild(parent, node);
+        }
+    },
+
+    removeFragment(nodes) {
+        nodes = this._nodeFilter(nodes);
+
+        for (const node of nodes) {
+            const fragment = DOM._fragment(node);
+
+            if (!fragment) {
+                continue;
+            }
+
+            this._empty(fragment);
+            this._remove(fragment);
+            DOM._removeChild(node, fragment);
+        }
+    },
+
+    removeShadow(nodes) {
+        nodes = this._nodeFilter(nodes);
+
+        for (const node of nodes) {
+            const shadow = DOM._shadow(node);
+
+            if (!shadow) {
+                continue;
+            }
+
+            this._empty(shadow);
+            this._remove(shadow);
+            DOM._removeChild(node, shadow);
         }
     },
 
@@ -128,8 +205,8 @@ Object.assign(DOM.prototype, {
      * @param {Boolean} [cloneData=false] Whether to also clone custom data.
      */
     _deepClone(node, clone, cloneEvents = false, cloneData = false) {
-        const children = DOM._children(node, false, false, false);
-        const cloneChildren = DOM._children(clone, false, false, false);
+        const children = DOM._childNodes(node);
+        const cloneChildren = DOM._childNodes(clone);
 
         for (let i = 0; i < children.length; i++) {
             if (cloneEvents) {
@@ -150,23 +227,27 @@ Object.assign(DOM.prototype, {
      */
     _empty(node) {
         // Remove descendent elements
-        const children = DOM._findBySelector('*', node);
+        const children = DOM._childNodes(node);
 
         for (const child of children) {
+            this._empty(child);
             this._remove(child);
         }
 
         // Remove ShadowRoot
         if (DOM._hasShadow(node)) {
             const shadow = DOM._shadow(node);
+            this._empty(shadow);
             this._remove(shadow);
+            DOM._removeChild(node, shadow);
         }
 
         // Remove DocumentFragment
         if (DOM._hasFragment(node)) {
             const fragment = DOM._fragment(node);
+            this._empty(fragment);
             this._remove(fragment);
-            node.removeChild(fragment);
+            DOM._removeChild(node, fragment);
         }
     },
 
@@ -188,24 +269,6 @@ Object.assign(DOM.prototype, {
 
         this._removeEvent(node);
         this._removeData(node);
-
-        // Remove ShadowRoot
-        if (DOM._hasShadow(node)) {
-            const shadow = DOM._shadow(node);
-            this._remove(shadow);
-        }
-
-        // Remove DocumentFragment
-        if (DOM._hasFragment(node)) {
-            const fragment = DOM._fragment(node);
-            this._remove(fragment);
-            node.removeChild(fragment);
-        }
-
-        // DocumentFragment can not be detached
-        if (!Core.isFragment(node)) {
-            DOM._detach(node);
-        }
     },
 
     /**
@@ -214,10 +277,16 @@ Object.assign(DOM.prototype, {
      * @param {array} others The other node(s).
      */
     _replaceWith(node, others) {
-        DOM._before(
-            node,
-            this.clone(others, true)
-        );
+        const parent = DOM._parent(node);
+
+        if (!parent) {
+            return;
+        }
+
+        const clones = this.clone(others, true);
+        for (const clone of clones) {
+            DOM._insertBefore(parent, clone, node);
+        }
         this._remove(node);
     }
 

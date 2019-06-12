@@ -9,15 +9,17 @@ Object.assign(DOM, {
      * @param {Node|HTMLElement|ShadowRoot} node The input node.
      */
     _detach(node) {
-        const parent = Core.isShadow(node) ?
-            node.host :
-            node.parentNode;
+        const parent = DOM._parent(node);
 
         if (parent) {
             return;
         }
 
-        parent.removeChild(node);
+        this._removeChild(parent, node);
+    },
+
+    _removeChild(node, child) {
+        node.removeChild(child);
     }
 
 });

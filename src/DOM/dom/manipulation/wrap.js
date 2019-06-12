@@ -49,16 +49,32 @@ Object.assign(DOM.prototype, {
         // DocumentFragment and ShadowRoot nodes can not be wrapped
         nodes = this._nodeFilter(nodes, { node: true });
 
+        const firstNode = nodes.slice().shift();
+
+        if (!firstNode) {
+            return;
+        }
+
+        const parent = DOM._parent(firstNode);
+
+        if (!parent) {
+            return;
+        }
+
         // ShadowRoot nodes can not be cloned
         others = this._nodeFilter(others, { fragment: true, html: true });
 
-        const clone = this.clone(others, true);
+        const clones = this.clone(others, true);
 
-        DOM._before(nodes, clone);
+        for (const clone of clones) {
+            DOM._insertBefore(parent, clone, firstNode);
+        }
 
-        const deepest = DOM._deepest(clone.shift());
+        const deepest = this._deepest(clones.shift());
 
-        DOM._append(deepest, nodes);
+        for (const node of nodes) {
+            DOM._insertBefore(deepest, node);
+        }
     },
 
     /**
@@ -83,16 +99,22 @@ Object.assign(DOM.prototype, {
      * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
      */
     _unwrap(node, filter) {
-        const parent = DOM._parent(node, filter).shift();
+        const parent = DOM._parent(node, filter);
 
         if (!parent) {
             return;
         }
 
-        const children = DOM._children(parent, false, false, false);
+        const outerParent = DOM._parent(parent);
 
-        DOM._before(parent, children);
+        if (!parent) {
+            return;
+        }
 
+        const children = DOM._childNodes(parent);
+        for (const child of children) {
+            DOM._insertBefore(outerParent, child, parent);
+        }
         this._remove(parent);
     },
 
@@ -102,12 +124,21 @@ Object.assign(DOM.prototype, {
      * @param {string|array|HTMLElement|DocumentFragment|HTMLCollection} others The other node(s), or a query selector or HTML string.
      */
     _wrap(node, others) {
-        const clone = this.clone(others, true);
-        DOM._before(node, clone);
+        const parent = DOM._parent(node);
 
-        const deepest = DOM._deepest(clone.shift());
+        if (!parent) {
+            return;
+        }
 
-        DOM._append(deepest, [node]);
+        const clones = this.clone(others, true);
+
+        for (const clone of clones) {
+            DOM._insertBefore(parent, clone, node);
+        }
+
+        const deepest = this._deepest(clones.shift());
+
+        DOM._insertBefore(deepest, node);
     },
 
     /**
@@ -116,13 +147,18 @@ Object.assign(DOM.prototype, {
      * @param {string|array|HTMLElement|DocumentFragment|HTMLCollection} others The other node(s), or a query selector or HTML string.
      */
     _wrapInner(node, others) {
-        const children = DOM._children(node, false, false, false),
-            clone = this.clone(others, true);
-        DOM._append(node, clone);
+        const children = DOM._childNodes(node),
+            clones = this.clone(others, true);
 
-        const deepest = DOM._deepest(clone.shift());
+        for (const clone of clones) {
+            DOM._insertBefore(node, clone);
+        }
 
-        DOM._append(deepest, children);
+        const deepest = this._deepest(clones.shift());
+
+        for (const child of children) {
+            DOM._insertBefore(deepest, child);
+        }
     }
 
 });

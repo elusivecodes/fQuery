@@ -9,7 +9,7 @@ Object.assign(DOM, {
      * @param {HTMLElement} node The input node.
      * @param {...string} classes The classes.
      */
-    _addClass(node, classes) {
+    _addClass(node, ...classes) {
         node.classList.add(...classes)
     },
 
@@ -18,7 +18,7 @@ Object.assign(DOM, {
      * @param {HTMLElement} node The input node.
      * @param {...string} classes The classes.
      */
-    _removeClass(node, classes) {
+    _removeClass(node, ...classes) {
         node.classList.remove(...classes)
     },
 
@@ -27,18 +27,20 @@ Object.assign(DOM, {
      * @param {HTMLElement} node The input node.
      * @param {...string} classes The classes.
      */
-    _toggleClass(node, classes) {
+    _toggleClass(node, ...classes) {
         node.classList.toggle(...classes)
     },
 
     /**
      * Get a style property for a single node.
      * @param {HTMLElement} node The input node.
-     * @param {string} style The style name.
-     * @returns {string} The style value.
+     * @param {string} [style] The style name.
+     * @returns {string|CSSStyleDeclaration} The style value.
      */
     _getStyle(node, style) {
-        style = Core.snakeCase(style);
+        if (!style) {
+            return node.style;
+        }
 
         return node.style[style];
     },
@@ -49,34 +51,19 @@ Object.assign(DOM, {
      * @param {object} styles An object containing styles.
      * @param {Boolean} [important] Whether the style should be !important.
      */
-    _setStyle(node, styles, important = '') {
-        for (let style in styles) {
-            let value = styles[style];
-            style = Core.snakeCase(style);
-
-            // if value is numeric and not a number property, add px
-            if (value && Core.isNumeric(value) && !this.cssNumberProperties.includes(style)) {
-                value += 'px';
-            }
-
-            node.style.setProperty(
-                style,
-                value,
-                important ?
-                    'important' :
-                    ''
-            );
+    _setStyle(node, style, value, important) {
+        // if value is numeric and not a number property, add px
+        if (value && Core.isNumeric(value) && !this.cssNumberProperties.includes(style)) {
+            value += 'px';
         }
-    },
 
-    /**
-     * Toggle the visibility of a single node.
-     * @param {HTMLElement} node The input node.
-     */
-    _toggle(node) {
-        this._getStyle(node, 'display') === 'none' ?
-            this._setStyle(node, { display: '' }) :
-            this._setStyle(node, { display: 'none' });
+        node.style.setProperty(
+            style,
+            value,
+            important ?
+                'important' :
+                ''
+        );
     }
 
 });

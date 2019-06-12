@@ -11,7 +11,11 @@ Object.assign(DOM, {
      * @returns {ShadowRoot} The new ShadowRoot.
      */
     _attachShadow(node, open = true) {
-        return node.attachShadow({ mode: open ? 'open' : 'closed' });
+        return node.attachShadow({
+            mode: open ?
+                'open' :
+                'closed'
+        });
     },
 
     /**

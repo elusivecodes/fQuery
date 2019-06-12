@@ -54,14 +54,14 @@ Object.assign(DOM.prototype, {
         if ('class' in options) {
             DOM._addClass(
                 node,
-                DOM._parseClasses(
+                ...DOM._parseClasses(
                     Core.wrap(options.class)
                 )
             );
         }
 
         if ('style' in options) {
-            DOM._setStyle(node, options.style);
+            this._setStyle(node, options.style);
         }
 
         if ('value' in options) {
@@ -71,7 +71,7 @@ Object.assign(DOM.prototype, {
         }
 
         if ('attributes' in options) {
-            DOM._setAttribute(node, options.attributes);
+            this._setAttribute(node, options.attributes);
         }
 
         if ('properties' in options) {
@@ -125,9 +125,11 @@ Object.assign(DOM.prototype, {
      * @returns {array} An array of nodes.
      */
     parseHTML(html) {
-        return DOM._children(
-            this.createRange()
-                .createContextualFragment(html)
+        return Core.wrap(
+            DOM._children(
+                this.createRange()
+                    .createContextualFragment(html)
+            )
         );
     }
 

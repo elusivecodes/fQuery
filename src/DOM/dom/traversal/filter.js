@@ -64,7 +64,7 @@ Object.assign(DOM.prototype, {
         return this._nodeFilter(nodes, { node: true })
             .filter(node =>
                 (Core.isElement(node) && this._css(node, 'position') === 'fixed') ||
-                DOM._parents(
+                this._parents(
                     node,
                     parent =>
                         Core.isElement(parent) && this._css(parent, 'position') === 'fixed',
@@ -169,12 +169,14 @@ Object.assign(DOM.prototype, {
      * @param {...string|string[]} classes The classes.
      * @returns {array} The filtered nodes.
      */
-    withClass(nodes, classes) {
+    withClass(nodes, ...classes) {
         classes = DOM._parseClasses(classes);
 
         return this._nodeFilter(nodes)
             .filter(node =>
-                DOM._hasClass(node, classes)
+                classes.some(className =>
+                    DOM._hasClass(node, className)
+                )
             );
     },
 

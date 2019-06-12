@@ -86,7 +86,7 @@ Object.assign(DOM.prototype, {
         return target => {
             const matches = Core.merge(
                 [],
-                DOM._findByCustom(selector, node)
+                this.__findByCustom(selector, node)
             );
 
             if (!matches.length) {
@@ -97,7 +97,7 @@ Object.assign(DOM.prototype, {
                 return target;
             }
 
-            return DOM._parents(
+            return this._parents(
                 target,
                 parent => matches.contains(parent),
                 parent => DOM._isSame(node, parent),
@@ -116,7 +116,7 @@ Object.assign(DOM.prototype, {
         return target =>
             DOM._is(target, selector) ?
                 target :
-                DOM._parents(
+                this._parents(
                     target,
                     parent => DOM._is(parent, selector),
                     parent => DOM._isSame(node, parent),

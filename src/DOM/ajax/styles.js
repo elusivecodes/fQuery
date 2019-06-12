@@ -13,16 +13,14 @@ Object.assign(DOM.prototype, {
     loadStyle(url, cache = true) {
         return this.ajax({ url, cache })
             .then(response =>
-                DOM._append(
+                DOM._insertBefore(
                     this._context.head,
-                    [
-                        this.create(
-                            'style',
-                            {
-                                html: response.response
-                            }
-                        )
-                    ]
+                    this.create(
+                        'style',
+                        {
+                            html: response.response
+                        }
+                    )
                 )
             );
     },
@@ -41,9 +39,9 @@ Object.assign(DOM.prototype, {
                 )
             )
             .then(responses => {
-                const styles = [];
                 for (const response of responses) {
-                    styles.push(
+                    DOM._insertBefore(
+                        this._context.head,
                         this.create(
                             'style',
                             {
@@ -53,7 +51,6 @@ Object.assign(DOM.prototype, {
                     );
                 }
 
-                DOM._append(this._context.head, styles);
             });
     }
 

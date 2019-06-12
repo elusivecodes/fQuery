@@ -19,15 +19,15 @@ Object.assign(DOM.prototype, {
         }
 
         for (const node of nodes) {
-            DOM._addClass(node, classes);
+            DOM._addClass(node, ...classes);
         }
     },
 
     /**
      * Get a computed CSS style value for the first node.
      * @param {string|array|HTMLElement|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
-     * @param {string} style The CSS style name.
-     * @returns {string} The CSS style value.
+     * @param {string} [style] The CSS style name.
+     * @returns {string|CSSStyleDeclaration} The CSS style value.
      */
     css(nodes, style) {
         const node = this._nodeFind(nodes);
@@ -42,8 +42,8 @@ Object.assign(DOM.prototype, {
     /**
      * Get a style property for the first node.
      * @param {string|array|HTMLElement|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
-     * @param {string} style The style name.
-     * @returns {string} The style value.
+     * @param {string} [style] The style name.
+     * @returns {string|CSSStyleDeclaration} The style value.
      */
     getStyle(nodes, style) {
         const node = this._nodeFind(nodes);
@@ -51,6 +51,8 @@ Object.assign(DOM.prototype, {
         if (!node) {
             return;
         }
+
+        style = Core.snakeCase(style);
 
         return DOM._getStyle(node, style);
     },
@@ -82,7 +84,7 @@ Object.assign(DOM.prototype, {
         }
 
         for (const node of nodes) {
-            DOM._removeClass(node, classes);
+            DOM._removeClass(node, ...classes);
         }
     },
 
@@ -99,7 +101,7 @@ Object.assign(DOM.prototype, {
         const styles = DOM._parseData(style, value);
 
         for (const node of nodes) {
-            DOM._setStyle(node, styles, important);
+            this._setStyle(node, styles, important);
         }
     },
 
@@ -123,7 +125,9 @@ Object.assign(DOM.prototype, {
         nodes = this._nodeFilter(nodes);
 
         for (const node of nodes) {
-            DOM._toggle(node);
+            DOM._getStyle(node, 'display') === 'none' ?
+                DOM._setStyle(node, 'display', '') :
+                DOM._setStyle(node, 'display', 'none');
         }
     },
 
@@ -142,15 +146,15 @@ Object.assign(DOM.prototype, {
         }
 
         for (const node of nodes) {
-            DOM._toggleClass(node, classes);
+            DOM._toggleClass(node, ...classes);
         }
     },
 
     /**
      * Get a computed CSS style value for a single node.
      * @param {HTMLElement} node The input node.
-     * @param {string} style The CSS style name.
-     * @returns {string} The CSS style value.
+     * @param {string} [style] The CSS style name.
+     * @returns {string|CSSStyleDeclaration} The CSS style value.
      */
     _css(node, style) {
         if (!this._styles.has(node)) {
@@ -160,8 +164,27 @@ Object.assign(DOM.prototype, {
             );
         }
 
+        if (!style) {
+            return this._styles.get(node);
+        }
+
         return this._styles.get(node)
             .getPropertyValue(style);
+    },
+
+    /**
+     * Set style properties for a single node.
+     * @param {HTMLElement} node The input node.
+     * @param {object} styles An object containing styles.
+     * @param {Boolean} [important] Whether the style should be !important.
+     */
+    _setStyle(node, styles, important) {
+        for (let style in styles) {
+            let value = styles[style];
+            style = Core.snakeCase(style);
+
+            DOM._setStyle(node, style, value, important);
+        }
     }
 
 });

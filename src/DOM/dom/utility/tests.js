@@ -52,7 +52,9 @@ Object.assign(DOM.prototype, {
 
         return this._nodeFilter(nodes)
             .some(node =>
-                DOM._hasClass(node, classes)
+                classes.some(className =>
+                    DOM._hasClass(node, className)
+                )
             );
     },
 
@@ -184,7 +186,7 @@ Object.assign(DOM.prototype, {
         return this._nodeFilter(nodes, { node: true, fragment: true, shadow: true })
             .some(node =>
                 (Core.isElement(node) && this._css(node, 'position') === 'fixed') ||
-                DOM._parents(
+                this._parents(
                     node,
                     parent =>
                         this._css(parent, 'position') === 'fixed',

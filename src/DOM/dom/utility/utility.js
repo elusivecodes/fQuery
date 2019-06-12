@@ -39,7 +39,7 @@ Object.assign(DOM.prototype, {
             elements.push(node);
         }
 
-        Core.merge(elements, DOM._parents(
+        Core.merge(elements, this._parents(
             node,
             parent =>
                 Core.isElement(parent) && this._css(parent, 'display') === 'none'
@@ -50,14 +50,14 @@ Object.assign(DOM.prototype, {
         for (const element of elements) {
             hidden.set(element, DOM._getAttribute(element, 'style'));
 
-            DOM._setStyle(element, { display: 'initial' }, true);
+            DOM._setStyle(element, 'display', 'initial', true);
         }
 
         const result = callback(node);
 
         for (const [element, style] of hidden) {
             if (style) {
-                DOM._setAttribute(element, { style });
+                DOM._setAttribute(element, 'style', style);
             } else {
                 DOM._removeAttribute(element, 'style');
             }
@@ -172,7 +172,25 @@ Object.assign(DOM.prototype, {
      */
     sort(nodes) {
         return this._nodeFilter(nodes, { node: true, fragment: true, shadow: true })
-            .sort((node, other) => DOM._compareNodes(node, other));
+            .sort((node, other) => {
+                if (DOM._isSame(node, other)) {
+                    return 0;
+                }
+
+                const pos = DOM._comparePosition(node, other);
+
+                if (pos & Node.DOCUMENT_POSITION_FOLLOWING ||
+                    pos & Node.DOCUMENT_POSITION_CONTAINED_BY) {
+                    return -1;
+                }
+
+                if (pos & Node.DOCUMENT_POSITION_PRECEDING ||
+                    pos & Node.DOCUMENT_POSITION_CONTAINS) {
+                    return 1;
+                }
+
+                return 0;
+            });
     }
 
 });

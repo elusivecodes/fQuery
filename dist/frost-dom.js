@@ -284,16 +284,14 @@
         loadStyle(url, cache = true) {
             return this.ajax({ url, cache })
                 .then(response =>
-                    DOM._append(
+                    DOM._insertBefore(
                         this._context.head,
-                        [
-                            this.create(
-                                'style',
-                                {
-                                    html: response.response
-                                }
-                            )
-                        ]
+                        this.create(
+                            'style',
+                            {
+                                html: response.response
+                            }
+                        )
                     )
                 );
         },
@@ -312,9 +310,9 @@
                     )
                 )
                 .then(responses => {
-                    const styles = [];
                     for (const response of responses) {
-                        styles.push(
+                        DOM._insertBefore(
+                            this._context.head,
                             this.create(
                                 'style',
                                 {
@@ -324,7 +322,6 @@
                         );
                     }
 
-                    DOM._append(this._context.head, styles);
                 });
         }
 
@@ -646,11 +643,10 @@
                 (node, progress) =>
                     DOM._setStyle(
                         node,
-                        {
-                            opacity: progress < 1 ?
-                                progress :
-                                ''
-                        }
+                        'opacity',
+                        progress < 1 ?
+                            progress :
+                            ''
                     ),
                 options
             );
@@ -671,11 +667,10 @@
                 (node, progress) =>
                     DOM._setStyle(
                         node,
-                        {
-                            opacity: progress < 1 ?
-                                1 - progress :
-                                ''
-                        }
+                        'opacity',
+                        progress < 1 ?
+                            1 - progress :
+                            ''
                     ),
                 options
             );
@@ -699,11 +694,10 @@
                 (node, progress, options) =>
                     DOM._setStyle(
                         node,
-                        {
-                            transform: progress < 1 ?
-                                `rotate3d(${options.x}, ${options.y}, 0, ${(90 - (progress * 90)) * (options.inverse ? -1 : 1)}deg)` :
-                                ''
-                        }
+                        'transform',
+                        progress < 1 ?
+                            `rotate3d(${options.x}, ${options.y}, 0, ${(90 - (progress * 90)) * (options.inverse ? -1 : 1)}deg)` :
+                            ''
                     ),
                 {
                     x: 0,
@@ -731,11 +725,10 @@
                 (node, progress, options) =>
                     DOM._setStyle(
                         node,
-                        {
-                            transform: progress < 1 ?
-                                `rotate3d(${options.x}, ${options.y}, 0, ${(progress * 90) * (options.inverse ? -1 : 1)}deg)` :
-                                ''
-                        }
+                        'transform',
+                        progress < 1 ?
+                            `rotate3d(${options.x}, ${options.y}, 0, ${(progress * 90) * (options.inverse ? -1 : 1)}deg)` :
+                            ''
                     ),
                 {
                     x: 0,
@@ -784,9 +777,8 @@
 
                     DOM._setStyle(
                         node,
-                        {
-                            transform
-                        }
+                        'transform',
+                        transform
                     );
                 },
                 {
@@ -835,9 +827,8 @@
 
                     DOM._setStyle(
                         node,
-                        {
-                            transform
-                        }
+                        'transform',
+                        transform
                     );
                 },
                 {
@@ -922,14 +913,15 @@
             });
 
             this._wrap(node, wrapper);
-            const parent = DOM._parent(node).shift();
+            const parent = DOM._parent(node);
 
             return this._animate(
                 node,
                 (node, progress, options) => {
                     if (progress === 1) {
-                        DOM._before(parent, DOM._children(parent, false, false, false));
-                        this._remove(parent);
+                        const children = DOM._childNodes(parent);
+                        const child = Core.wrap(children).shift();
+                        this._unwrap(child);
                         return;
                     }
 
@@ -951,14 +943,13 @@
                     }
 
                     const size = Math.round(this[`_${sizeStyle}`](node)),
-                        amount = Math.round(size * progress),
-                        styles = {
-                            [sizeStyle]: amount + 'px'
-                        };
+                        amount = Math.round(size * progress);
+
+                    DOM._setStyle(parent, sizeStyle, amount);
+
                     if (translateStyle) {
-                        styles.transform = `translate${translateStyle}(${size - amount}px)`;
+                        DOM._setStyle(parent, 'transform', `translate${translateStyle}(${size - amount}px)`);
                     }
-                    DOM._setStyle(parent, styles);
                 },
                 options
             );
@@ -983,14 +974,15 @@
             });
 
             this._wrap(node, wrapper);
-            const parent = DOM._parent(node).shift();
+            const parent = DOM._parent(node);
 
             return this._animate(
                 node,
                 (node, progress, options) => {
                     if (progress === 1) {
-                        DOM._before(parent, DOM._children(parent, false, false, false));
-                        this._remove(parent);
+                        const children = DOM._childNodes(parent);
+                        const child = Core.wrap(children).shift();
+                        this._unwrap(child);
                         return;
                     }
 
@@ -1013,14 +1005,13 @@
                     }
 
                     const size = Math.round(this[`_${sizeStyle}`](node)),
-                        amount = Math.round(size - (size * progress)),
-                        styles = {
-                            [sizeStyle]: amount + 'px'
-                        };
+                        amount = Math.round(size - (size * progress));
+
+                    DOM._setStyle(parent, sizeStyle, amount);
+
                     if (translateStyle) {
-                        styles.transform = `translate${translateStyle}(${size - amount}px)`;
+                        DOM._setStyle(parent, 'transform', `translate${translateStyle}(${size - amount}px)`);
                     }
-                    DOM._setStyle(parent, styles);
                 },
                 options
             );
@@ -1140,7 +1131,7 @@
          * Get a dataset value for the first node.
          * @param {string|array|HTMLElement|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
          * @param {string} [key] The dataset key.
-         * @returns {string|object} The dataset value.
+         * @returns {string|DOMStringMap} The dataset value.
          */
         getDataset(nodes, key) {
             const node = this._nodeFind(nodes);
@@ -1242,7 +1233,7 @@
             const attributes = DOM._parseData(attribute, value);
 
             for (const node of nodes) {
-                DOM._setAttribute(node, attributes);
+                this._setAttribute(node, attributes);
             }
         },
 
@@ -1319,6 +1310,21 @@
                 'value',
                 value
             );
+        },
+
+        /**
+         * Set an attribute value for a single node.
+         * @param {HTMLElement} node The input node.
+         * @param {object} attributes An object containing attributes.
+         */
+        _setAttribute(node, attributes) {
+            for (const key in attributes) {
+                DOM._setAttribute(
+                    node,
+                    key,
+                    attributes[key]
+                );
+            }
         }
 
     });
@@ -1707,7 +1713,7 @@
                 style.top = `${parseFloat(this._css(node, 'top')) - topOffset}px`;
             }
 
-            DOM._setStyle(node, style);
+            this._setStyle(node, style);
         },
 
         /**
@@ -1994,15 +2000,15 @@
             }
 
             for (const node of nodes) {
-                DOM._addClass(node, classes);
+                DOM._addClass(node, ...classes);
             }
         },
 
         /**
          * Get a computed CSS style value for the first node.
          * @param {string|array|HTMLElement|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
-         * @param {string} style The CSS style name.
-         * @returns {string} The CSS style value.
+         * @param {string} [style] The CSS style name.
+         * @returns {string|CSSStyleDeclaration} The CSS style value.
          */
         css(nodes, style) {
             const node = this._nodeFind(nodes);
@@ -2017,8 +2023,8 @@
         /**
          * Get a style property for the first node.
          * @param {string|array|HTMLElement|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
-         * @param {string} style The style name.
-         * @returns {string} The style value.
+         * @param {string} [style] The style name.
+         * @returns {string|CSSStyleDeclaration} The style value.
          */
         getStyle(nodes, style) {
             const node = this._nodeFind(nodes);
@@ -2026,6 +2032,8 @@
             if (!node) {
                 return;
             }
+
+            style = Core.snakeCase(style);
 
             return DOM._getStyle(node, style);
         },
@@ -2057,7 +2065,7 @@
             }
 
             for (const node of nodes) {
-                DOM._removeClass(node, classes);
+                DOM._removeClass(node, ...classes);
             }
         },
 
@@ -2074,7 +2082,7 @@
             const styles = DOM._parseData(style, value);
 
             for (const node of nodes) {
-                DOM._setStyle(node, styles, important);
+                this._setStyle(node, styles, important);
             }
         },
 
@@ -2098,7 +2106,9 @@
             nodes = this._nodeFilter(nodes);
 
             for (const node of nodes) {
-                DOM._toggle(node);
+                DOM._getStyle(node, 'display') === 'none' ?
+                    DOM._setStyle(node, 'display', '') :
+                    DOM._setStyle(node, 'display', 'none');
             }
         },
 
@@ -2117,15 +2127,15 @@
             }
 
             for (const node of nodes) {
-                DOM._toggleClass(node, classes);
+                DOM._toggleClass(node, ...classes);
             }
         },
 
         /**
          * Get a computed CSS style value for a single node.
          * @param {HTMLElement} node The input node.
-         * @param {string} style The CSS style name.
-         * @returns {string} The CSS style value.
+         * @param {string} [style] The CSS style name.
+         * @returns {string|CSSStyleDeclaration} The CSS style value.
          */
         _css(node, style) {
             if (!this._styles.has(node)) {
@@ -2135,8 +2145,27 @@
                 );
             }
 
+            if (!style) {
+                return this._styles.get(node);
+            }
+
             return this._styles.get(node)
                 .getPropertyValue(style);
+        },
+
+        /**
+         * Set style properties for a single node.
+         * @param {HTMLElement} node The input node.
+         * @param {object} styles An object containing styles.
+         * @param {Boolean} [important] Whether the style should be !important.
+         */
+        _setStyle(node, styles, important) {
+            for (let style in styles) {
+                let value = styles[style];
+                style = Core.snakeCase(style);
+
+                DOM._setStyle(node, style, value, important);
+            }
         }
 
     });
@@ -2229,7 +2258,7 @@
             return target => {
                 const matches = Core.merge(
                     [],
-                    DOM._findByCustom(selector, node)
+                    this.__findByCustom(selector, node)
                 );
 
                 if (!matches.length) {
@@ -2240,7 +2269,7 @@
                     return target;
                 }
 
-                return DOM._parents(
+                return this._parents(
                     target,
                     parent => matches.contains(parent),
                     parent => DOM._isSame(node, parent),
@@ -2259,7 +2288,7 @@
             return target =>
                 DOM._is(target, selector) ?
                     target :
-                    DOM._parents(
+                    this._parents(
                         target,
                         parent => DOM._is(parent, selector),
                         parent => DOM._isSame(node, parent),
@@ -2350,20 +2379,6 @@
                 'DOMContentLoaded',
                 callback
             );
-        },
-
-        /**
-         * Trigger events on each node.
-         * @param {string|array|HTMLElement|ShadowRoot|Document|Window|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
-         * @param {string} events The event names.
-         * @param {object} [data] Additional data to attach to the event.
-         */
-        triggerEvent(nodes, events, data) {
-            nodes = this._nodeFilter(nodes, { shadow: true, document: true, window: true });
-
-            for (const node of nodes) {
-                DOM._triggerEvent(node, events, data);
-            }
         }
 
     });
@@ -2615,6 +2630,25 @@
             }
 
             this._events.delete(node);
+        },
+
+        /**
+         * Trigger events on each node.
+         * @param {string|array|HTMLElement|ShadowRoot|Document|Window|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+         * @param {string} events The event names.
+         * @param {object} [data] Additional data to attach to the event.
+         */
+        triggerEvent(nodes, events, data) {
+            nodes = this._nodeFilter(nodes, { shadow: true, document: true, window: true });
+
+            events = DOM._parseEvents(events)
+                .map(event => DOM._parseEvent(event));
+
+            for (const node of nodes) {
+                for (const event of events) {
+                    DOM._triggerEvent(node, event, data);
+                }
+            }
         }
 
     });
@@ -2675,14 +2709,14 @@
             if ('class' in options) {
                 DOM._addClass(
                     node,
-                    DOM._parseClasses(
+                    ...DOM._parseClasses(
                         Core.wrap(options.class)
                     )
                 );
             }
 
             if ('style' in options) {
-                DOM._setStyle(node, options.style);
+                this._setStyle(node, options.style);
             }
 
             if ('value' in options) {
@@ -2692,7 +2726,7 @@
             }
 
             if ('attributes' in options) {
-                DOM._setAttribute(node, options.attributes);
+                this._setAttribute(node, options.attributes);
             }
 
             if ('properties' in options) {
@@ -2746,9 +2780,11 @@
          * @returns {array} An array of nodes.
          */
         parseHTML(html) {
-            return DOM._children(
-                this.createRange()
-                    .createContextualFragment(html)
+            return Core.wrap(
+                DOM._children(
+                    this.createRange()
+                        .createContextualFragment(html)
+                )
             );
         }
 
@@ -2773,22 +2809,48 @@
             // ShadowRoot nodes can not be cloned
             nodes = this._nodeFilter(nodes, { node: true, fragment: true });
 
-            return nodes.map(node =>
+            return nodes.flatMap(node =>
+                Core.isShadow(node) ?
+                    DOM._childNodes(node) :
+                    node
+            ).map(node =>
                 this._clone(node, deep, cloneEvents, cloneData)
             );
         },
 
         /**
          * Detach each node from the DOM.
-         * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+         * @param {string|array|Node|HTMLElement|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
          */
         detach(nodes) {
 
-            // DocumentFragment nodes can not be detached
-            nodes = this._nodeFilter(nodes, { node: true, shadow: true });
+            // DocumentFragment and ShadowRoot nodes can not be detached
+            nodes = this._nodeFilter(nodes, { node: true });
 
             for (const node of nodes) {
-                DOM._detach(node);
+                const parent = DOM._parent(node);
+
+                if (!parent) {
+                    continue;
+                }
+
+                DOM._removeChild(parent, node);
+            }
+        },
+
+        detachFragment(nodes) {
+            nodes = this._nodeFilter(nodes);
+
+            for (const node of nodes) {
+                DOM._detachFragment(node);
+            }
+        },
+
+        detachShadow(nodes) {
+            nodes = this._nodeFilter(nodes);
+
+            for (const node of nodes) {
+                DOM._detachShadow(node);
             }
         },
 
@@ -2810,8 +2872,8 @@
          */
         remove(nodes) {
 
-            // DocumentFragment nodes can not be removed
-            nodes = this._nodeFilter(nodes, { node: true, shadow: true });
+            // DocumentFragment and ShadowRoot nodes can not be removed
+            nodes = this._nodeFilter(nodes, { node: true });
 
             for (const node of nodes) {
                 this._empty(node);
@@ -2884,8 +2946,8 @@
          * @param {Boolean} [cloneData=false] Whether to also clone custom data.
          */
         _deepClone(node, clone, cloneEvents = false, cloneData = false) {
-            const children = DOM._children(node, false, false, false);
-            const cloneChildren = DOM._children(clone, false, false, false);
+            const children = DOM._childNodes(node);
+            const cloneChildren = DOM._childNodes(clone);
 
             for (let i = 0; i < children.length; i++) {
                 if (cloneEvents) {
@@ -2922,8 +2984,10 @@
             if (DOM._hasFragment(node)) {
                 const fragment = DOM._fragment(node);
                 this._remove(fragment);
-                node.removeChild(fragment);
+                DOM._removeChild(node, fragment);
             }
+
+            DOM._setProperty(node, { innerHTML: '' });
         },
 
         /**
@@ -2960,7 +3024,13 @@
 
             // DocumentFragment can not be detached
             if (!Core.isFragment(node)) {
-                DOM._detach(node);
+                const parent = DOM._parent(node);
+
+                if (!parent) {
+                    return;
+                }
+
+                DOM._removeChild(parent, node);
             }
         },
 
@@ -2970,10 +3040,16 @@
          * @param {array} others The other node(s).
          */
         _replaceWith(node, others) {
-            DOM._before(
-                node,
-                this.clone(others, true)
-            );
+            const parent = DOM._parent(node);
+
+            if (!parent) {
+                return;
+            }
+
+            const clones = this.clone(others, true);
+            for (const clone of clones) {
+                DOM._insertBefore(parent, clone, node);
+            }
             this._remove(node);
         }
 
@@ -2999,9 +3075,17 @@
                 return;
             }
 
+            const parent = DOM._parent(node);
+
+            if (!parent) {
+                return;
+            }
+
             others = this._nodeFilter(others, { node: true, fragment: true, shadow: true, html: true });
 
-            DOM._after(node, others);
+            for (const other of others.reverse()) {
+                DOM._insertBefore(parent, other, node.nextSibling);
+            }
         },
 
         /**
@@ -3018,7 +3102,9 @@
 
             others = this._nodeFilter(others, { node: true, fragment: true, shadow: true, html: true });
 
-            DOM._append(node, others);
+            for (const other of others) {
+                DOM._insertBefore(node, other);
+            }
         },
 
         /**
@@ -3044,9 +3130,17 @@
                 return;
             }
 
+            const parent = DOM._parent(node);
+
+            if (!parent) {
+                return;
+            }
+
             others = this._nodeFilter(others, { node: true, fragment: true, shadow: true, html: true });
 
-            DOM._before(node, others);
+            for (const other of others) {
+                DOM._insertBefore(parent, other, node);
+            }
         },
 
         /**
@@ -3081,7 +3175,9 @@
 
             others = this._nodeFilter(others, { node: true, fragment: true, shadow: true, html: true });
 
-            DOM._prepend(node, others);
+            for (const other of others.reverse()) {
+                DOM._insertBefore(node, other, node.firstChild);
+            }
         },
 
         /**
@@ -3146,16 +3242,32 @@
             // DocumentFragment and ShadowRoot nodes can not be wrapped
             nodes = this._nodeFilter(nodes, { node: true });
 
+            const firstNode = nodes.slice().shift();
+
+            if (!firstNode) {
+                return;
+            }
+
+            const parent = DOM._parent(firstNode);
+
+            if (!parent) {
+                return;
+            }
+
             // ShadowRoot nodes can not be cloned
             others = this._nodeFilter(others, { fragment: true, html: true });
 
-            const clone = this.clone(others, true);
+            const clones = this.clone(others, true);
 
-            DOM._before(nodes, clone);
+            for (const clone of clones) {
+                DOM._insertBefore(parent, clone, firstNode);
+            }
 
-            const deepest = DOM._deepest(clone.shift());
+            const deepest = this._deepest(clones.shift());
 
-            DOM._append(deepest, nodes);
+            for (const node of nodes) {
+                DOM._insertBefore(deepest, node);
+            }
         },
 
         /**
@@ -3180,16 +3292,22 @@
          * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
          */
         _unwrap(node, filter) {
-            const parent = DOM._parent(node, filter).shift();
+            const parent = DOM._parent(node, filter);
 
             if (!parent) {
                 return;
             }
 
-            const children = DOM._children(parent, false, false, false);
+            const outerParent = DOM._parent(parent);
 
-            DOM._before(parent, children);
+            if (!parent) {
+                return;
+            }
 
+            const children = DOM._childNodes(parent);
+            for (const child of children) {
+                DOM._insertBefore(outerParent, child, parent);
+            }
             this._remove(parent);
         },
 
@@ -3199,12 +3317,21 @@
          * @param {string|array|HTMLElement|DocumentFragment|HTMLCollection} others The other node(s), or a query selector or HTML string.
          */
         _wrap(node, others) {
-            const clone = this.clone(others, true);
-            DOM._before(node, clone);
+            const parent = DOM._parent(node);
 
-            const deepest = DOM._deepest(clone.shift());
+            if (!parent) {
+                return;
+            }
 
-            DOM._append(deepest, [node]);
+            const clones = this.clone(others, true);
+
+            for (const clone of clones) {
+                DOM._insertBefore(parent, clone, node);
+            }
+
+            const deepest = this._deepest(clones.shift());
+
+            DOM._insertBefore(deepest, node);
         },
 
         /**
@@ -3213,13 +3340,18 @@
          * @param {string|array|HTMLElement|DocumentFragment|HTMLCollection} others The other node(s), or a query selector or HTML string.
          */
         _wrapInner(node, others) {
-            const children = DOM._children(node, false, false, false),
-                clone = this.clone(others, true);
-            DOM._append(node, clone);
+            const children = DOM._childNodes(node),
+                clones = this.clone(others, true);
 
-            const deepest = DOM._deepest(clone.shift());
+            for (const clone of clones) {
+                DOM._insertBefore(node, clone);
+            }
 
-            DOM._append(deepest, children);
+            const deepest = this._deepest(clones.shift());
+
+            for (const child of children) {
+                DOM._insertBefore(deepest, child);
+            }
         }
 
     });
@@ -3290,7 +3422,7 @@
             return this._nodeFilter(nodes, { node: true })
                 .filter(node =>
                     (Core.isElement(node) && this._css(node, 'position') === 'fixed') ||
-                    DOM._parents(
+                    this._parents(
                         node,
                         parent =>
                             Core.isElement(parent) && this._css(parent, 'position') === 'fixed',
@@ -3395,12 +3527,14 @@
          * @param {...string|string[]} classes The classes.
          * @returns {array} The filtered nodes.
          */
-        withClass(nodes, classes) {
+        withClass(nodes, ...classes) {
             classes = DOM._parseClasses(classes);
 
             return this._nodeFilter(nodes)
                 .filter(node =>
-                    DOM._hasClass(node, classes)
+                    classes.some(className =>
+                        DOM._hasClass(node, className)
+                    )
                 );
         },
 
@@ -3527,17 +3661,13 @@
          * @returns {array} The matching nodes.
          */
         findById(id, nodes = this._context) {
-            if (!Core.isDocument(nodes)) {
-                return this._findBySelector(`#${id}`, nodes);
+            const result = this.findOneById(id, nodes);
+
+            if (result) {
+                return [result];
             }
 
-            const result = DOM._findById(id, this._context);
-
-            if (!result) {
-                return [];
-            }
-
-            return [result];
+            return [];
         },
 
         /**
@@ -3627,17 +3757,31 @@
          * @returns {HTMLElement} The matching element.
          */
         findOneById(id, nodes = this._context) {
-            if (!Core.isDocument(nodes)) {
-                return this._findOneBySelector(`#${id}`, nodes);
-            }
-
             const result = DOM._findById(id, this._context);
 
             if (!result) {
                 return null;
             }
 
-            return result;
+            if (Core.isDocument(nodes)) {
+                return result;
+            }
+
+            if (Core.isElement(nodes)) {
+                if (DOM._contains(nodes, result)) {
+                    return result;
+                }
+
+                return null;
+            }
+
+            nodes = DOM._nodeFilter(nodes);
+
+            if (nodes.some(node => DOM._contains(node, result))) {
+                return result;
+            }
+
+            return null;
         },
 
         /**
@@ -3670,32 +3814,21 @@
          * @returns {array} The matching nodes.
          */
         _findByCustom(selector, nodes = this._context) {
-            // string case
-            if (Core.isString(nodes)) {
-                return DOM._findBySelector(
-                    DOM._prefixSelectors(selector, `${nodes} `),
-                    this._context
-                );
-            }
-
             const selectors = DOM._prefixSelectors(selector, `#${DOM.tempId} `);
-
-            if (Core.isElement(nodes)) {
-                return Core.merge([], DOM._findByCustom(selectors, nodes));
-            }
-
-            nodes = this._nodeFilter(nodes);
 
             const results = [];
 
-            for (const node of nodes) {
-                Core.merge(
-                    results,
-                    DOM._findByCustom(selectors, node)
-                );
+            if (Core.isElement(nodes)) {
+                this.__findByCustom(selectors, nodes, results);
+            } else {
+                nodes = this._nodeFilter(nodes);
+
+                for (const node of nodes) {
+                    this.__findByCustom(selectors, node, results);
+                }
             }
 
-            return nodes.length > 1 && results.length > 1 ?
+            return (nodes.length > 1 || selectors.length > 1) && results.length > 1 ?
                 Core.unique(results) :
                 results;
         },
@@ -3745,13 +3878,13 @@
             const selectors = DOM._prefixSelectors(selector, `#${DOM.tempId} `);
 
             if (Core.isElement(nodes)) {
-                return DOM._findOneByCustom(selectors, nodes);
+                return this.__findOneByCustom(selectors, nodes);
             }
 
             nodes = this._nodeFilter(nodes);
 
             for (const node of nodes) {
-                const result = DOM._findOneByCustom(selectors, node);
+                const result = this.__findOneByCustom(selectors, node);
 
                 if (result) {
                     return result;
@@ -3782,6 +3915,70 @@
             }
 
             return null;
+        },
+
+        /**
+         * Return all nodes matching a custom CSS selector.
+         * @param {string} selectors The custom query selector.
+         * @param {HTMLElement} node The input node.
+         * @returns {NodeList} The matching nodes.
+         */
+        __findByCustom(selectors, node, results = []) {
+            const nodeId = DOM._getAttribute(node, 'id');
+            DOM._setAttribute(node, 'id', DOM.tempId);
+
+            const parent = DOM._parent(node);
+
+            for (const selector of selectors) {
+                Core.merge(
+                    results,
+                    DOM._findBySelector(selector, parent)
+                );
+            }
+
+            if (nodeId) {
+                DOM._setAttribute(node, 'id', nodeId);
+            } else {
+                DOM._removeAttribute(node, 'id');
+            }
+
+            return results;
+        },
+
+
+        /**
+         * Return a single node matching a custom CSS selector.
+         * @param {string} selectors The custom query selector.
+         * @param {HTMLElement} node The input node.
+         * @returns {HTMLElement} The matching node.
+         */
+        __findOneByCustom(selectors, node) {
+            const nodeId = DOM._getAttribute(node, 'id');
+            DOM._setAttribute(node, 'id', DOM.tempId);
+
+            const parent = DOM._parent(node);
+
+            if (!parent) {
+                return null;
+            }
+
+            let result = null;
+
+            for (const selector of selectors) {
+                result = DOM._findOneBySelector(selector, parent);
+
+                if (result) {
+                    break;
+                }
+            }
+
+            if (nodeId) {
+                DOM._setAttribute(node, 'id', nodeId);
+            } else {
+                DOM._removeAttribute(node, 'id');
+            }
+
+            return result;
         }
 
     });
@@ -3818,7 +4015,7 @@
             filter = this._parseFilter(filter);
 
             if (Core.isElement(nodes) || Core.isDocument(nodes) || Core.isFragment(nodes) || Core.isShadow(nodes)) {
-                return DOM._children(nodes, filter, first, elementsOnly);
+                return this._children(nodes, filter, first, elementsOnly);
             }
 
             nodes = this._nodeFilter(nodes, { fragment: true, shadow: true, document: true });
@@ -3828,7 +4025,7 @@
             for (const node of nodes) {
                 Core.merge(
                     results,
-                    DOM._children(node, filter, first, elementsOnly)
+                    this._children(node, filter, first, elementsOnly)
                 )
             }
 
@@ -3916,7 +4113,7 @@
             filter = this._parseFilter(filter);
 
             if (Core.isNode(nodes) || Core.isFragment(nodes) || Core.isShadow(nodes)) {
-                return DOM._next(nodes, filter);
+                return this._next(nodes, filter);
             }
 
             nodes = this._nodeFilter(nodes, { node: true, fragment: true, shadow: true });
@@ -3926,7 +4123,7 @@
             for (const node of nodes) {
                 Core.merge(
                     results,
-                    DOM._next(node, filter)
+                    this._next(node, filter)
                 )
             }
 
@@ -3948,7 +4145,7 @@
             limit = this._parseFilter(limit);
 
             if (Core.isNode(nodes) || Core.isFragment(nodes) || Core.isShadow(nodes)) {
-                return DOM._nextAll(nodes, filter, limit, first);
+                return this._nextAll(nodes, filter, limit, first);
             }
 
             nodes = this._nodeFilter(nodes, { node: true, fragment: true, shadow: true });
@@ -3958,7 +4155,7 @@
             for (const node of nodes) {
                 Core.merge(
                     results,
-                    DOM._nextAll(node, filter, limit, first)
+                    this._nextAll(node, filter, limit, first)
                 )
             }
 
@@ -3989,7 +4186,7 @@
             filter = this._parseFilter(filter);
 
             if (Core.isNode(nodes)) {
-                return DOM._parent(nodes, filter);
+                return this._parent(nodes, filter);
             }
 
             // DocumentFragment and ShadowRoot nodes have no parent
@@ -4000,7 +4197,7 @@
             for (const node of nodes) {
                 Core.merge(
                     results,
-                    DOM._parent(node, filter)
+                    this._parent(node, filter)
                 )
             }
 
@@ -4022,7 +4219,7 @@
             limit = this._parseFilter(limit);
 
             if (Core.isNode(nodes)) {
-                return DOM._parents(nodes, filter, limit, first);
+                return this._parents(nodes, filter, limit, first);
             }
 
             // DocumentFragment and ShadowRoot nodes have no parent
@@ -4033,7 +4230,7 @@
             for (const node of nodes) {
                 Core.merge(
                     results,
-                    DOM._parents(node, filter, limit, first)
+                    this._parents(node, filter, limit, first)
                 )
             }
 
@@ -4052,7 +4249,7 @@
             filter = this._parseFilter(filter);
 
             if (Core.isNode(nodes) || Core.isFragment(nodes) || Core.isShadow(nodes)) {
-                return DOM._prev(nodes, filter);
+                return this._prev(nodes, filter);
             }
 
             nodes = this._nodeFilter(nodes, { node: true, fragment: true, shadow: true });
@@ -4062,7 +4259,7 @@
             for (const node of nodes) {
                 Core.merge(
                     results,
-                    DOM._prev(node, filter)
+                    this._prev(node, filter)
                 )
             }
 
@@ -4084,7 +4281,7 @@
             limit = this._parseFilter(limit);
 
             if (Core.isNode(nodes) || Core.isFragment(nodes) || Core.isShadow(nodes)) {
-                return DOM._prevAll(nodes, filter, limit, first);
+                return this._prevAll(nodes, filter, limit, first);
             }
 
             nodes = this._nodeFilter(nodes, { node: true, fragment: true, shadow: true });
@@ -4094,7 +4291,7 @@
             for (const node of nodes) {
                 Core.merge(
                     results,
-                    DOM._prevAll(node, filter, limit, first)
+                    this._prevAll(node, filter, limit, first)
                 )
             }
 
@@ -4129,7 +4326,7 @@
             filter = this._parseFilter(filter);
 
             if (Core.isNode(nodes) || Core.isFragment(nodes) || Core.isShadow(nodes)) {
-                return DOM._siblings(nodes, filter, elementsOnly);
+                return this._siblings(nodes, filter, elementsOnly);
             }
 
             nodes = this._nodeFilter(nodes, { node: true, fragment: true, shadow: true });
@@ -4139,13 +4336,258 @@
             for (const node of nodes) {
                 Core.merge(
                     results,
-                    DOM._siblings(node, filter, elementsOnly)
+                    this._siblings(node, filter, elementsOnly)
                 )
             }
 
             return nodes.length > 1 && results.length > 1 ?
                 Core.unique(results) :
                 results;
+        },
+
+        /**
+         * Return all children of a single node (optionally matching a filter).
+         * @param {HTMLElement|DocumentFragment|ShadowRoot|Document} node The input node.
+         * @param {DOM~filterCallback} [filter] The filter function.
+         * @param {Boolean} [first=false] Whether to only return the first matching node for each node.
+         * @param {Boolean} [elementsOnly=false] Whether to only return element nodes.
+         * @returns {array} The matching nodes.
+         */
+        _children(node, filter, first = false, elementsOnly = false) {
+            const children = elementsOnly ?
+                DOM._children(node) :
+                DOM._childNodes(node),
+                results = [];
+
+            let child;
+            for (child of children) {
+                if (filter && !filter(child)) {
+                    continue;
+                }
+
+                results.push(child);
+                if (first) {
+                    break;
+                }
+            }
+
+            return results;
+        },
+
+        /**
+         * Return the deepest child node for a single node.
+         * @param {HTMLElement|DocumentFragment|ShadowRoot|Document} node The input node.
+         * @returns {HTMLElement} The deepest node.
+         */
+        _deepest(node) {
+            return Core.merge(
+                [],
+                DOM._findBySelector('*', node)
+            ).find(node =>
+                !DOM._hasChildren(node)
+            ) || node;
+        },
+
+        /**
+         * Return the next sibling for a single node (optionally matching a filter).
+         * @param {Node|HTMLElement|DocumentFragment|ShadowRoot} node The input node.
+         * @param {DOM~filterCallback} [filter] The filter function.
+         * @returns {array} The matching nodes.
+         */
+        _next(node, filter) {
+            const results = [];
+
+            node = DOM._next(node);
+
+            if (!node) {
+                return results;
+            }
+
+            if (filter && !filter(node)) {
+                return results;
+            }
+
+            results.push(node);
+
+            return results;
+        },
+
+        /**
+         * Return all next siblings for a single node (optionally matching a filter, and before a limit).
+         * @param {Node|HTMLElement|DocumentFragment|ShadowRoot} node The input node.
+         * @param {DOM~filterCallback} [filter] The filter function.
+         * @param {DOM~filterCallback} [limit] The limit function.
+         * @param {Boolean} [first=false] Whether to only return the first matching node for each node.
+         * @returns {array} The matching nodes.
+         */
+        _nextAll(node, filter, limit, first = false) {
+            const results = [];
+
+            while (node = DOM._next(node)) {
+                if (limit && limit(node)) {
+                    break;
+                }
+
+                if (filter && !filter(node)) {
+                    continue;
+                }
+
+                results.push(node);
+
+                if (first) {
+                    break;
+                }
+            }
+
+            return results;
+        },
+
+        /**
+         * Return the parent of a single node (optionally matching a filter).
+         * @param {Node|HTMLElement|DocumentFragment|ShadowRoot} node The input node.
+         * @param {DOM~filterCallback} [filter] The filter function.
+         * @returns {array} The matching nodes.
+         */
+        _parent(node, filter) {
+            const results = [];
+
+            const parent = DOM._parent(node);
+
+            if (!parent) {
+                return results;
+            }
+
+            if (filter && !filter(parent)) {
+                return results;
+            }
+
+            results.push(parent);
+
+            return results;
+        },
+
+        /**
+         * Return all parents of a single node (optionally matching a filter, and before a limit).
+         * @param {Node|HTMLElement|DocumentFragment|ShadowRoot} node The input node.
+         * @param {DOM~filterCallback} [filter] The filter function.
+         * @param {DOM~filterCallback} [limit] The limit function.
+         * @param {Boolean} [first=false] Whether to only return the first matching node for each node.
+         * @returns {array} The matching nodes.
+         */
+        _parents(node, filter, limit, first = false) {
+            const results = [];
+
+            while (node = DOM._parent(node)) {
+                if (Core.isDocument(node)) {
+                    break;
+                }
+
+                if (limit && limit(node)) {
+                    break;
+                }
+
+                if (filter && !filter(node)) {
+                    continue;
+                }
+
+                results.push(node);
+
+                if (first) {
+                    break;
+                }
+            }
+
+            return results;
+        },
+
+        /**
+         * Return the previous sibling for a single node (optionally matching a filter).
+         * @param {Node|HTMLElement|DocumentFragment|ShadowRoot} node The input node.
+         * @param {DOM~filterCallback} [filter] The filter function.
+         * @returns {array} The matching nodes.
+         */
+        _prev(node, filter) {
+            const results = [];
+
+            node = DOM._prev(node);
+
+            if (!node) {
+                return results;
+            }
+
+            if (filter && !filter(node)) {
+                return results;
+            }
+
+            results.push(node);
+
+            return results;
+        },
+
+        /**
+         * Return all previous siblings for a single node (optionally matching a filter, and before a limit).
+         * @param {Node|HTMLElement|DocumentFragment|ShadowRoot} node The input node.
+         * @param {DOM~filterCallback} [filter] The filter function.
+         * @param {DOM~filterCallback} [limit] The limit function.
+         * @param {Boolean} [first=false] Whether to only return the first matching node for each node.
+         * @returns {array} The matching nodes.
+         */
+        _prevAll(node, filter, limit, first = false) {
+            const results = [];
+
+            while (node = DOM._prev(node)) {
+                if (limit && limit(node)) {
+                    break;
+                }
+
+                if (filter && !filter(node)) {
+                    continue;
+                }
+
+                results.push(node);
+
+                if (first) {
+                    break;
+                }
+            }
+
+            return results;
+        },
+
+        /**
+         * Return all siblings for a single node (optionally matching a filter).
+         * @param {Node|HTMLElement|DocumentFragment|ShadowRoot} node The input node.
+         * @param {DOM~filterCallback} [filter] The filter function.
+         * @param {Boolean} [elementsOnly=true] Whether to only return element nodes.
+         * @returns {array} The matching nodes.
+         */
+        _siblings(node, filter, elementsOnly = true) {
+            const results = [];
+
+            const parent = DOM._parent(node);
+
+            if (!parent) {
+                return results;
+            }
+
+            const siblings = elementsOnly ?
+                parent.children :
+                parent.childNodes;
+
+            let sibling;
+            for (sibling of siblings) {
+                if (DOM._isSame(node, sibling)) {
+                    continue;
+                }
+
+                if (filter && !filter(sibling)) {
+                    continue;
+                }
+
+                results.push(sibling);
+            }
+
+            return results;
         }
 
     });
@@ -4386,7 +4828,9 @@
 
             DOM._removeRanges(selection);
 
-            return Core.merge([], DOM._extract(range));
+            const fragment = DOM._extract(range);
+
+            return Core.merge([], DOM._childNodes(fragment));
         },
 
         /**
@@ -4503,10 +4947,14 @@
 
             selection.removeAllRanges();
 
-            const deepest = DOM._deepest(nodes.slice().shift()),
-                children = Core.merge([], DOM._extract(range));
+            const fragment = DOM._extract(range);
 
-            DOM._append(deepest, children);
+            const deepest = this._deepest(nodes.slice().shift()),
+                children = Core.merge([], DOM._childNodes(fragment));
+
+            for (const child of children) {
+                DOM._insertBefore(deepest, child);
+            }
 
             for (const node of nodes) {
                 DOM._insert(range, node);
@@ -4569,7 +5017,9 @@
 
             return this._nodeFilter(nodes)
                 .some(node =>
-                    DOM._hasClass(node, classes)
+                    classes.some(className =>
+                        DOM._hasClass(node, className)
+                    )
                 );
         },
 
@@ -4701,7 +5151,7 @@
             return this._nodeFilter(nodes, { node: true, fragment: true, shadow: true })
                 .some(node =>
                     (Core.isElement(node) && this._css(node, 'position') === 'fixed') ||
-                    DOM._parents(
+                    this._parents(
                         node,
                         parent =>
                             this._css(parent, 'position') === 'fixed',
@@ -4830,7 +5280,7 @@
                 elements.push(node);
             }
 
-            Core.merge(elements, DOM._parents(
+            Core.merge(elements, this._parents(
                 node,
                 parent =>
                     Core.isElement(parent) && this._css(parent, 'display') === 'none'
@@ -4841,14 +5291,14 @@
             for (const element of elements) {
                 hidden.set(element, DOM._getAttribute(element, 'style'));
 
-                DOM._setStyle(element, { display: 'initial' }, true);
+                DOM._setStyle(element, 'display', 'initial', true);
             }
 
             const result = callback(node);
 
             for (const [element, style] of hidden) {
                 if (style) {
-                    DOM._setAttribute(element, { style });
+                    DOM._setAttribute(element, 'style', style);
                 } else {
                     DOM._removeAttribute(element, 'style');
                 }
@@ -4963,7 +5413,25 @@
          */
         sort(nodes) {
             return this._nodeFilter(nodes, { node: true, fragment: true, shadow: true })
-                .sort((node, other) => DOM._compareNodes(node, other));
+                .sort((node, other) => {
+                    if (DOM._isSame(node, other)) {
+                        return 0;
+                    }
+
+                    const pos = DOM._comparePosition(node, other);
+
+                    if (pos & Node.DOCUMENT_POSITION_FOLLOWING ||
+                        pos & Node.DOCUMENT_POSITION_CONTAINED_BY) {
+                        return -1;
+                    }
+
+                    if (pos & Node.DOCUMENT_POSITION_PRECEDING ||
+                        pos & Node.DOCUMENT_POSITION_CONTAINS) {
+                        return 1;
+                    }
+
+                    return 0;
+                });
         }
 
     });
@@ -4988,7 +5456,7 @@
          * Get a dataset value for a single node.
          * @param {HTMLElement} node The input node.
          * @param {string} [key] The dataset key.
-         * @returns {string|object} The dataset value.
+         * @returns {string|DOMStringMap} The dataset value.
          */
         _getDataset(node, key) {
             if (!key) {
@@ -5031,13 +5499,11 @@
          * @param {HTMLElement} node The input node.
          * @param {object} attributes An object containing attributes.
          */
-        _setAttribute(node, attributes) {
-            for (const key in attributes) {
-                node.setAttribute(
-                    key,
-                    attributes[key]
-                );
-            }
+        _setAttribute(node, attribute, value) {
+            node.setAttribute(
+                attribute,
+                value
+            );
         },
 
         /**
@@ -5083,7 +5549,7 @@
             }
 
             if (Core.isDocument(node)) {
-                return node.scrollingElement.scrollLeft;
+                node = node.scrollingElement;
             }
 
             return node.scrollLeft;
@@ -5100,7 +5566,7 @@
             }
 
             if (Core.isDocument(node)) {
-                return node.scrollingElement.scrollTop;
+                node = node.scrollingElement;
             }
 
             return node.scrollTop;
@@ -5118,9 +5584,7 @@
             }
 
             if (Core.isDocument(node)) {
-                node.scrollingElement.scrollLeft = x;
-                node.scrollingElement.scrollTop = y;
-                return;
+                node = node.scrollingElement;
             }
 
             node.scrollLeft = x;
@@ -5138,8 +5602,7 @@
             }
 
             if (Core.isDocument(node)) {
-                node.scrollingElement.scrollLeft = x;
-                return;
+                node = node.scrollingElement;
             }
 
             node.scrollLeft = x;
@@ -5156,8 +5619,7 @@
             }
 
             if (Core.isDocument(node)) {
-                node.scrollingElement.scrollTop = y;
-                return;
+                node = node.scrollingElement;
             }
 
             node.scrollTop = y;
@@ -5176,7 +5638,7 @@
          * @param {HTMLElement} node The input node.
          * @param {...string} classes The classes.
          */
-        _addClass(node, classes) {
+        _addClass(node, ...classes) {
             node.classList.add(...classes)
         },
 
@@ -5185,7 +5647,7 @@
          * @param {HTMLElement} node The input node.
          * @param {...string} classes The classes.
          */
-        _removeClass(node, classes) {
+        _removeClass(node, ...classes) {
             node.classList.remove(...classes)
         },
 
@@ -5194,18 +5656,20 @@
          * @param {HTMLElement} node The input node.
          * @param {...string} classes The classes.
          */
-        _toggleClass(node, classes) {
+        _toggleClass(node, ...classes) {
             node.classList.toggle(...classes)
         },
 
         /**
          * Get a style property for a single node.
          * @param {HTMLElement} node The input node.
-         * @param {string} style The style name.
-         * @returns {string} The style value.
+         * @param {string} [style] The style name.
+         * @returns {string|CSSStyleDeclaration} The style value.
          */
         _getStyle(node, style) {
-            style = Core.snakeCase(style);
+            if (!style) {
+                return node.style;
+            }
 
             return node.style[style];
         },
@@ -5216,34 +5680,19 @@
          * @param {object} styles An object containing styles.
          * @param {Boolean} [important] Whether the style should be !important.
          */
-        _setStyle(node, styles, important = '') {
-            for (let style in styles) {
-                let value = styles[style];
-                style = Core.snakeCase(style);
-
-                // if value is numeric and not a number property, add px
-                if (value && Core.isNumeric(value) && !this.cssNumberProperties.includes(style)) {
-                    value += 'px';
-                }
-
-                node.style.setProperty(
-                    style,
-                    value,
-                    important ?
-                        'important' :
-                        ''
-                );
+        _setStyle(node, style, value, important) {
+            // if value is numeric and not a number property, add px
+            if (value && Core.isNumeric(value) && !this.cssNumberProperties.includes(style)) {
+                value += 'px';
             }
-        },
 
-        /**
-         * Toggle the visibility of a single node.
-         * @param {HTMLElement} node The input node.
-         */
-        _toggle(node) {
-            this._getStyle(node, 'display') === 'none' ?
-                this._setStyle(node, { display: '' }) :
-                this._setStyle(node, { display: 'none' });
+            node.style.setProperty(
+                style,
+                value,
+                important ?
+                    'important' :
+                    ''
+            );
         }
 
     });
@@ -5276,26 +5725,6 @@
          */
         _focus(node) {
             node.focus();
-        },
-
-        /**
-         * Trigger an event on a single node.
-         * @param {HTMLElement|DocumentFragment|ShadowRoot|Document|Window} nodes The input node.
-         * @param {string} events The event names.
-         * @param {object} [data] Additional data to attach to the Event object.
-         */
-        _triggerEvent(node, events, data) {
-            for (const event of this._parseEvents(events)) {
-                const realEvent = this._parseEvent(event);
-
-                const eventData = new Event(realEvent);
-
-                if (data) {
-                    Object.assign(eventData, data);
-                }
-
-                node.dispatchEvent(eventData);
-            }
         }
 
     });
@@ -5324,6 +5753,22 @@
          */
         _removeEvent(node, event, callback) {
             node.removeEventListener(event, callback);
+        },
+
+        /**
+         * Trigger an event on a single node.
+         * @param {HTMLElement|DocumentFragment|ShadowRoot|Document|Window} nodes The input node.
+         * @param {string} event The event names.
+         * @param {object} [data] Additional data to attach to the Event object.
+         */
+        _triggerEvent(node, event, data) {
+            const eventData = new Event(event);
+
+            if (data) {
+                Object.assign(eventData, data);
+            }
+
+            node.dispatchEvent(eventData);
         }
 
     });
@@ -5486,8 +5931,7 @@
         _prefixSelectors(selectors, prefix) {
             return selectors.split(this.splitRegex)
                 .filter(select => !!select)
-                .map(select => `${prefix} ${select}`)
-                .join(', ');
+                .map(select => `${prefix} ${select}`);
         }
 
     });
@@ -5505,7 +5949,11 @@
          * @returns {ShadowRoot} The new ShadowRoot.
          */
         _attachShadow(node, open = true) {
-            return node.attachShadow({ mode: open ? 'open' : 'closed' });
+            return node.attachShadow({
+                mode: open ?
+                    'open' :
+                    'closed'
+            });
         },
 
         /**
@@ -5579,15 +6027,17 @@
          * @param {Node|HTMLElement|ShadowRoot} node The input node.
          */
         _detach(node) {
-            const parent = Core.isShadow(node) ?
-                node.host :
-                node.parentNode;
+            const parent = DOM._parent(node);
 
             if (parent) {
                 return;
             }
 
-            parent.removeChild(node);
+            this._removeChild(parent, node);
+        },
+
+        _removeChild(node, child) {
+            node.removeChild(child);
         }
 
     });
@@ -5598,70 +6048,8 @@
 
     Object.assign(DOM, {
 
-        /**
-         * Insert each other node after the first node.
-         * @param {Node|HTMLElement|ShadowRoot} node The input node.
-         * @param {array} others The other node(s).
-         */
-        _after(node, others) {
-            const parent = Core.isShadow(node) ?
-                node.host :
-                node.parentNode;
-
-            if (!parent) {
-                return;
-            }
-
-            for (const other of others.reverse()) {
-                parent.insertBefore(
-                    other,
-                    node.nextSibling
-                );
-            }
-        },
-
-        /**
-         * Append each other node to a single node.
-         * @param {HTMLElement|DocumentFragment|ShadowRoot|Document} node The input node.
-         * @param {array} others The other node(s).
-         */
-        _append(node, others) {
-            for (const other of others) {
-                node.insertBefore(other, null);
-            }
-        },
-
-        /**
-         * Insert each other node before a single node.
-         * @param {Node|HTMLElement|ShadowRoot} node The input node.
-         * @param {array} others The other node(s).
-         */
-        _before(node, others) {
-            const parent = Core.isShadow(node) ?
-                node.host :
-                node.parentNode;
-
-            if (!parent) {
-                return;
-            }
-
-            for (const other of others) {
-                parent.insertBefore(
-                    other,
-                    node
-                );
-            }
-        },
-
-        /**
-         * Prepend each other node to a single node.
-         * @param {HTMLElement|DocumentFragment|ShadowRoot|Document} node The input node.
-         * @param {array} others The other node(s).
-         */
-        _prepend(node, others) {
-            for (const other of others.reverse()) {
-                node.insertBefore(other, node.firstChild);
-            }
+        _insertBefore(parentNode, newNode, referenceNode = null) {
+            parentNode.insertBefore(newNode, referenceNode);
         }
 
     });
@@ -5711,27 +6099,6 @@
         },
 
         /**
-         * Return all nodes matching a custom CSS selector.
-         * @param {string} selector The custom query selector.
-         * @param {HTMLElement} node The input node.
-         * @returns {NodeList} The matching nodes.
-         */
-        _findByCustom(selector, node) {
-            const nodeId = this._getAttribute(node, 'id');
-            this._setAttribute(node, { id: this.tempId });
-
-            const results = this._findBySelector(selector, node);
-
-            if (nodeId) {
-                this._setAttribute(node, { id: nodeId });
-            } else {
-                this._removeAttribute(node, 'id');
-            }
-
-            return results;
-        },
-
-        /**
          * Return a single nodes with a specific ID.
          * @param {string} id The id.
          * @param {Document} node The input node.
@@ -5762,27 +6129,6 @@
         },
 
         /**
-         * Return a single node matching a custom CSS selector.
-         * @param {string} selector The custom query selector.
-         * @param {HTMLElement} node The input node.
-         * @returns {HTMLElement} The matching node.
-         */
-        _findOneByCustom(selector, node) {
-            const nodeId = this._getAttribute(node, 'id');
-            this._setAttribute(node, { id: this.tempId });
-
-            const result = this._findOneBySelector(selector, node);
-
-            if (nodeId) {
-                this._setAttribute(node, { id: nodeId });
-            } else {
-                this._removeAttribute(node, 'id');
-            }
-
-            return result;
-        },
-
-        /**
          * Return a single node matching a standard CSS selector.
          * @param {string} selector The query selector.
          * @param {HTMLElement|DocumentFragment|ShadowRoot|Document} node The input node.
@@ -5800,47 +6146,12 @@
 
     Object.assign(DOM, {
 
-        /**
-         * Return all children of a single node (optionally matching a filter).
-         * @param {HTMLElement|DocumentFragment|ShadowRoot|Document} node The input node.
-         * @param {DOM~filterCallback} [filter] The filter function.
-         * @param {Boolean} [first=false] Whether to only return the first matching node for each node.
-         * @param {Boolean} [elementsOnly=false] Whether to only return element nodes.
-         * @returns {array} The matching nodes.
-         */
-        _children(node, filter, first = false, elementsOnly = false) {
-            const children = elementsOnly ?
-                node.children :
-                node.childNodes,
-                results = [];
-
-            let child;
-            for (child of children) {
-                if (filter && !filter(child)) {
-                    continue;
-                }
-
-                results.push(child);
-                if (first) {
-                    break;
-                }
-            }
-
-            return results;
+        _childNodes(node) {
+            return node.childNodes;
         },
 
-        /**
-         * Return the deepest child node for a single node.
-         * @param {HTMLElement|DocumentFragment|ShadowRoot|Document} node The input node.
-         * @returns {HTMLElement} The deepest node.
-         */
-        _deepest(node) {
-            return Core.merge(
-                [],
-                this._findBySelector('*', node)
-            ).find(node =>
-                !this._hasChildren(node)
-            ) || node;
+        _children(node) {
+            return node.children;
         },
 
         /**
@@ -5852,168 +6163,16 @@
             return node.content;
         },
 
-        /**
-         * Return the next sibling for a single node (optionally matching a filter).
-         * @param {Node|HTMLElement|DocumentFragment|ShadowRoot} node The input node.
-         * @param {DOM~filterCallback} [filter] The filter function.
-         * @returns {array} The matching nodes.
-         */
-        _next(node, filter) {
-            const results = [];
-
-            node = node.nextSibling
-
-            if (!node) {
-                return results;
-            }
-
-            if (filter && !filter(node)) {
-                return results;
-            }
-
-            results.push(node);
-
-            return results;
+        _next(node) {
+            return node.nextSibling;
         },
 
-        /**
-         * Return all next siblings for a single node (optionally matching a filter, and before a limit).
-         * @param {Node|HTMLElement|DocumentFragment|ShadowRoot} node The input node.
-         * @param {DOM~filterCallback} [filter] The filter function.
-         * @param {DOM~filterCallback} [limit] The limit function.
-         * @param {Boolean} [first=false] Whether to only return the first matching node for each node.
-         * @returns {array} The matching nodes.
-         */
-        _nextAll(node, filter, limit, first = false) {
-            const results = [];
-
-            while (node = node.nextSibling) {
-                if (limit && limit(node)) {
-                    break;
-                }
-
-                if (filter && !filter(node)) {
-                    continue;
-                }
-
-                results.push(node);
-
-                if (first) {
-                    break;
-                }
-            }
-
-            return results;
+        _parent(node) {
+            return node.parentNode;
         },
 
-        /**
-         * Return the parent of a single node (optionally matching a filter).
-         * @param {Node|HTMLElement|DocumentFragment|ShadowRoot} node The input node.
-         * @param {DOM~filterCallback} [filter] The filter function.
-         * @returns {array} The matching nodes.
-         */
-        _parent(node, filter) {
-            const results = [];
-
-            if (!node.parentNode) {
-                return results;
-            }
-
-            if (filter && !filter(node.parentNode)) {
-                return results;
-            }
-
-            results.push(node.parentNode);
-
-            return results;
-        },
-
-        /**
-         * Return all parents of a single node (optionally matching a filter, and before a limit).
-         * @param {Node|HTMLElement|DocumentFragment|ShadowRoot} node The input node.
-         * @param {DOM~filterCallback} [filter] The filter function.
-         * @param {DOM~filterCallback} [limit] The limit function.
-         * @param {Boolean} [first=false] Whether to only return the first matching node for each node.
-         * @returns {array} The matching nodes.
-         */
-        _parents(node, filter, limit, closest = false) {
-            const results = [];
-
-            while (node = node.parentNode) {
-                if (Core.isDocument(node)) {
-                    break;
-                }
-
-                if (limit && limit(node)) {
-                    break;
-                }
-
-                if (filter && !filter(node)) {
-                    continue;
-                }
-
-                results.push(node);
-
-                if (closest) {
-                    break;
-                }
-            }
-
-            return results;
-        },
-
-        /**
-         * Return the previous sibling for a single node (optionally matching a filter).
-         * @param {Node|HTMLElement|DocumentFragment|ShadowRoot} node The input node.
-         * @param {DOM~filterCallback} [filter] The filter function.
-         * @returns {array} The matching nodes.
-         */
-        _prev(node, filter) {
-            const results = [];
-
-            node = node.previousSibling;
-
-            if (!node) {
-                return results;
-            }
-
-            if (filter && !filter(node)) {
-                return results;
-            }
-
-            results.push(node);
-
-            return results;
-        },
-
-        /**
-         * Return all previous siblings for a single node (optionally matching a filter, and before a limit).
-         * @param {Node|HTMLElement|DocumentFragment|ShadowRoot} node The input node.
-         * @param {DOM~filterCallback} [filter] The filter function.
-         * @param {DOM~filterCallback} [limit] The limit function.
-         * @param {Boolean} [first=false] Whether to only return the first matching node for each node.
-         * @returns {array} The matching nodes.
-         */
-        _prevAll(node, filter, limit, first = false) {
-            const results = [];
-
-            while (node = node.previousSibling) {
-                if (limit && limit(node)) {
-                    break;
-                }
-
-                if (filter && !filter(node)) {
-                    continue;
-                }
-
-                results.push(node);
-
-                if (first) {
-                    break;
-                }
-            }
-
-            return results;
+        _prev(node) {
+            return node.previousSibling;
         },
 
         /**
@@ -6023,40 +6182,6 @@
          */
         _shadow(node) {
             return node.shadowRoot;
-        },
-
-        /**
-         * Return all siblings for a single node (optionally matching a filter).
-         * @param {Node|HTMLElement|DocumentFragment|ShadowRoot} node The input node.
-         * @param {DOM~filterCallback} [filter] The filter function.
-         * @param {Boolean} [elementsOnly=true] Whether to only return element nodes.
-         * @returns {array} The matching nodes.
-         */
-        _siblings(node, filter, elementsOnly = true) {
-            const results = [];
-
-            if (!node.parentNode) {
-                return results;
-            }
-
-            const siblings = elementsOnly ?
-                node.parentNode.children :
-                node.parentNode.childNodes;
-
-            let sibling;
-            for (sibling of siblings) {
-                if (DOM._isSame(node, sibling)) {
-                    continue;
-                }
-
-                if (filter && !filter(sibling)) {
-                    continue;
-                }
-
-                results.push(sibling);
-            }
-
-            return results;
         }
 
     });
@@ -6087,10 +6212,10 @@
         /**
          * Extract the contents of a range.
          * @param {Range} range The input range.
-         * @returns {NodeList} The nodes in the range.
+         * @returns {DocumentFragment} A DocumentFragment containing the range contents.
          */
         _extract(range) {
-            return range.extractContents().childNodes;
+            return range.extractContents();
         },
 
         /**
@@ -6193,15 +6318,13 @@
         },
 
         /**
-         * Returns true if a single node has any of the specified classes.
+         * Returns true if a single node has any a specified class.
          * @param {HTMLElement} node The input node.
-         * @param {string[]} classes The classes.
+         * @param {string} className The class name.
          * @returns {Boolean} TRUE if the node has any of the classes, otherwise FALSE.
          */
-        _hasClass(node, classes) {
-            return classes.some(className =>
-                node.classList.contains(className)
-            );
+        _hasClass(node, className) {
+            return node.classList.contains(className);
         },
 
         /**
@@ -6239,7 +6362,8 @@
          * @returns {Boolean} TRUE if the node matches the selector, otherwise FALSE.
          */
         _is(node, selector) {
-            return Core.isElement(node) && node.matches(selector);
+            return Core.isElement(node) &&
+                node.matches(selector);
         },
 
         /**
@@ -6285,9 +6409,9 @@
                 return node.visibilityState === 'visible';
             }
 
-            if (Core.isShadow(node)) {
-                node = node.host;
-            }
+            // if (Core.isShadow(node)) {
+            //     node = node.host;
+            // }
 
             return !!node.offsetParent;
         }
@@ -6300,30 +6424,8 @@
 
     Object.assign(DOM, {
 
-        /**
-         * Compare the position of two nodes in the DOM.
-         * @param {Node|HTMLElement|DocumentFragment|ShadowRoot} node The input node.
-         * @param {Node|HTMLElement|DocumentFragment|ShadowRoot} other The other node.
-         * @returns {number} -1 if node is before other, 1 if other is before node, otherwise 0.
-         */
-        _compareNodes(node, other) {
-            if (this._isSame(node, other)) {
-                return 0;
-            }
-
-            const pos = node.compareDocumentPosition(other);
-
-            if (pos & Node.DOCUMENT_POSITION_FOLLOWING ||
-                pos & Node.DOCUMENT_POSITION_CONTAINED_BY) {
-                return -1;
-            }
-
-            if (pos & Node.DOCUMENT_POSITION_PRECEDING ||
-                pos & Node.DOCUMENT_POSITION_CONTAINS) {
-                return 1;
-            }
-
-            return 0;
+        _comparePosition(node, other) {
+            return node.compareDocumentPosition(other);
         },
 
         /**

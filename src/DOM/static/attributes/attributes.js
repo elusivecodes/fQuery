@@ -18,7 +18,7 @@ Object.assign(DOM, {
      * Get a dataset value for a single node.
      * @param {HTMLElement} node The input node.
      * @param {string} [key] The dataset key.
-     * @returns {string|object} The dataset value.
+     * @returns {string|DOMStringMap} The dataset value.
      */
     _getDataset(node, key) {
         if (!key) {
@@ -61,13 +61,11 @@ Object.assign(DOM, {
      * @param {HTMLElement} node The input node.
      * @param {object} attributes An object containing attributes.
      */
-    _setAttribute(node, attributes) {
-        for (const key in attributes) {
-            node.setAttribute(
-                key,
-                attributes[key]
-            );
-        }
+    _setAttribute(node, attribute, value) {
+        node.setAttribute(
+            attribute,
+            value
+        );
     },
 
     /**

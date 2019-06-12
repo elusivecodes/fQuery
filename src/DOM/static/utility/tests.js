@@ -34,15 +34,13 @@ Object.assign(DOM, {
     },
 
     /**
-     * Returns true if a single node has any of the specified classes.
+     * Returns true if a single node has any a specified class.
      * @param {HTMLElement} node The input node.
-     * @param {string[]} classes The classes.
+     * @param {string} className The class name.
      * @returns {Boolean} TRUE if the node has any of the classes, otherwise FALSE.
      */
-    _hasClass(node, classes) {
-        return classes.some(className =>
-            node.classList.contains(className)
-        );
+    _hasClass(node, className) {
+        return node.classList.contains(className);
     },
 
     /**
@@ -80,7 +78,8 @@ Object.assign(DOM, {
      * @returns {Boolean} TRUE if the node matches the selector, otherwise FALSE.
      */
     _is(node, selector) {
-        return Core.isElement(node) && node.matches(selector);
+        return Core.isElement(node) &&
+            node.matches(selector);
     },
 
     /**
@@ -126,9 +125,9 @@ Object.assign(DOM, {
             return node.visibilityState === 'visible';
         }
 
-        if (Core.isShadow(node)) {
-            node = node.host;
-        }
+        // if (Core.isShadow(node)) {
+        //     node = node.host;
+        // }
 
         return !!node.offsetParent;
     }

@@ -156,8 +156,7 @@ Object.assign(DOM, {
     _prefixSelectors(selectors, prefix) {
         return selectors.split(this.splitRegex)
             .filter(select => !!select)
-            .map(select => `${prefix} ${select}`)
-            .join(', ');
+            .map(select => `${prefix} ${select}`);
     }
 
 });
