@@ -46,34 +46,6 @@ Object.assign(DOM.prototype, {
         }
     },
 
-    detachFragment(nodes) {
-        nodes = this._nodeFilter(nodes);
-
-        for (const node of nodes) {
-            const fragment = DOM._fragment(node);
-
-            if (!fragment) {
-                continue;
-            }
-
-            DOM._removeChild(node, fragment);
-        }
-    },
-
-    detachShadow(nodes) {
-        nodes = this._nodeFilter(nodes);
-
-        for (const node of nodes) {
-            const shadow = DOM._shadow(node);
-
-            if (!shadow) {
-                continue;
-            }
-
-            DOM._removeChild(node, shadow);
-        }
-    },
-
     /**
      * Remove all children of each node from the DOM.
      * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|HTMLCollection} nodes The input node(s), or a query selector string.
@@ -105,38 +77,6 @@ Object.assign(DOM.prototype, {
             }
 
             DOM._removeChild(parent, node);
-        }
-    },
-
-    removeFragment(nodes) {
-        nodes = this._nodeFilter(nodes);
-
-        for (const node of nodes) {
-            const fragment = DOM._fragment(node);
-
-            if (!fragment) {
-                continue;
-            }
-
-            this._empty(fragment);
-            this._remove(fragment);
-            DOM._removeChild(node, fragment);
-        }
-    },
-
-    removeShadow(nodes) {
-        nodes = this._nodeFilter(nodes);
-
-        for (const node of nodes) {
-            const shadow = DOM._shadow(node);
-
-            if (!shadow) {
-                continue;
-            }
-
-            this._empty(shadow);
-            this._remove(shadow);
-            DOM._removeChild(node, shadow);
         }
     },
 
@@ -239,7 +179,6 @@ Object.assign(DOM.prototype, {
             const shadow = DOM._shadow(node);
             this._empty(shadow);
             this._remove(shadow);
-            DOM._removeChild(node, shadow);
         }
 
         // Remove DocumentFragment
@@ -247,7 +186,6 @@ Object.assign(DOM.prototype, {
             const fragment = DOM._fragment(node);
             this._empty(fragment);
             this._remove(fragment);
-            DOM._removeChild(node, fragment);
         }
     },
 

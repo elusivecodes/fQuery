@@ -19,6 +19,19 @@ Object.assign(DOM.prototype, {
             return;
         }
 
+        if (Core.isWindow(node)) {
+            return DOM._heightWindow(node, padding);
+        }
+
+        if (Core.isDocument(node)) {
+            return this._height(
+                DOM._documentElement(node),
+                padding,
+                border,
+                margin
+            );
+        }
+
         return this._height(node, padding, border, margin);
     },
 
@@ -37,28 +50,31 @@ Object.assign(DOM.prototype, {
             return;
         }
 
+        if (Core.isWindow(node)) {
+            return DOM._widthWindow(node, padding);
+        }
+
+        if (Core.isDocument(node)) {
+            return this._width(
+                DOM._documentElement(node),
+                padding,
+                border,
+                margin
+            );
+        }
+
         return this._width(node, padding, border, margin);
     },
 
     /**
      * Get the computed height of a single node.
-     * @param {HTMLElement|Document|Window} node The input node.
+     * @param {HTMLElement} node The input node.
      * @param {Boolean} [padding=true] Whether to include padding height.
      * @param {Boolean} [border] Whether to include border height.
      * @param {Boolean} [margin] Whether to include margin height.
      * @returns {number} The height.
      */
     _height(node, padding = true, border, margin) {
-        if (Core.isWindow(node)) {
-            return padding ?
-                node.outerHeight :
-                node.innerHeight;
-        }
-
-        if (Core.isDocument(node)) {
-            node = node.documentElement;
-        }
-
         return this.forceShow(
             node,
             node => {
@@ -86,23 +102,13 @@ Object.assign(DOM.prototype, {
 
     /**
      * Get the computed width of a single node.
-     * @param {HTMLElement|Document|Window} node The input node.
+     * @param {HTMLElement} node The input node.
      * @param {Boolean} [padding=true] Whether to include padding width.
      * @param {Boolean} [border] Whether to include border width.
      * @param {Boolean} [margin] Whether to include margin width.
      * @returns {number} The width.
      */
     _width(node, padding = true, border, margin) {
-        if (Core.isWindow(node)) {
-            return padding ?
-                node.outerWidth :
-                node.innerWidth;
-        }
-
-        if (Core.isDocument(node)) {
-            node = node.documentElement;
-        }
-
         return this.forceShow(
             node,
             node => {

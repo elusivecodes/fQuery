@@ -2236,7 +2236,7 @@ dom.post(url, data, options);
 Perform an XHR request for a file upload.
 
 - `url` is a string containing the URL for the request.
-- `data` is an object containing Key/Value pairs of configuration for the request.
+- `data` is a *FormData* object to send with the request.
 - `options` is an object containing options for the request.
     - `method` is a string containing the method to use for the request, and will default to "*POST*".
     - `contentType` is a string containing the Content-Type header to send with the request, and will default to *false*.

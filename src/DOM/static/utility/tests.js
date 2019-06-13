@@ -113,23 +113,29 @@ Object.assign(DOM, {
 
     /**
      * Returns true if a single node is visible.
-     * @param {HTMLElement|DocumentFragment|ShadowRoot|Document|Window} node The input node.
+     * @param {HTMLElement|DocumentFragment|ShadowRoot} node The input node.
      * @returns {Boolean} TRUE if the node is visible, otherwise FALSE.
      */
     _isVisible(node) {
-        if (Core.isWindow(node)) {
-            node = node.document;
-        }
-
-        if (Core.isDocument(node)) {
-            return node.visibilityState === 'visible';
-        }
-
-        // if (Core.isShadow(node)) {
-        //     node = node.host;
-        // }
-
         return !!node.offsetParent;
+    },
+
+    /**
+     * Returns true if a Document is visible.
+     * @param {Document} node The input node.
+     * @returns {Boolean} TRUE if the node is visible, otherwise FALSE.
+     */
+    _isVisibleDocument(node) {
+        return node.visibilityState === 'visible';
+    },
+
+    /**
+     * Returns true if a Window is visible.
+     * @param {Window} node The input node.
+     * @returns {Boolean} TRUE if the node is visible, otherwise FALSE.
+     */
+    _isVisibleWindow(node) {
+        return this._isVisibleDocument(node.document);
     }
 
 });

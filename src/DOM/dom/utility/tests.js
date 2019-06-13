@@ -204,7 +204,7 @@ Object.assign(DOM.prototype, {
     isHidden(nodes) {
         return this._nodeFilter(nodes, { node: true, document: true, window: true })
             .some(node =>
-                !DOM._isVisible(node)
+                !this._isVisible(node)
             );
     },
 
@@ -231,7 +231,7 @@ Object.assign(DOM.prototype, {
     isVisible(nodes) {
         return this._nodeFilter(nodes, { node: true, fragment: true, shadow: true, document: true, window: true })
             .some(node =>
-                DOM._isVisible(node)
+                this._isVisible(node)
             );
     },
 
@@ -264,12 +264,30 @@ Object.assign(DOM.prototype, {
     /**
      * Returns true if a single node has a CSS transition.
      * @param {HTMLElement} node The input node.
-     * @returns {Boolean} TRUE if the has a CSS transition, otherwise FALSE.
+     * @returns {Boolean} TRUE if the node has a CSS transition, otherwise FALSE.
      */
     _hasTransiton(node) {
         return !!parseFloat(
             this._css(node, 'transition-duration')
         );
+    },
+
+    /**
+     * Returns true if a single node is visible.
+     * @param {HTMLElement|Document|Window} node The input node.
+     * @returns {Boolean} TRUE if the node is visible, otherwise FALSE.
+     */
+    _isVisible(node) {
+        if (Core.isWindow(node)) {
+            return DOM._isVisibleWindow(node);
+        }
+
+        if (Core.isDocument(node)) {
+            return DOM._isVisibleDocument(node);
+        }
+
+        return DOM._isVisible(node);
     }
+
 
 });

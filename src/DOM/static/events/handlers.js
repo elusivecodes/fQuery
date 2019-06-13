@@ -27,7 +27,7 @@ Object.assign(DOM, {
     /**
      * Trigger an event on a single node.
      * @param {HTMLElement|DocumentFragment|ShadowRoot|Document|Window} nodes The input node.
-     * @param {string} event The event names.
+     * @param {string} event The event name.
      * @param {object} [data] Additional data to attach to the Event object.
      */
     _triggerEvent(node, event, data) {

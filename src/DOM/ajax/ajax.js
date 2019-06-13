@@ -9,7 +9,7 @@ Object.assign(DOM.prototype, {
      * @param {object} [options] The options to use for the request.
      * @param {string} [options.url=window.location] The URL of the request.
      * @param {string} [options.method=GET] The HTTP method of the request.
-     * @param {Boolean|string|array|object} [options.data=false] The data to send with the request.
+     * @param {Boolean|string|array|object|FormData} [options.data=false] The data to send with the request.
      * @param {Boolean|string} [options.contentType=application/x-www-form-urlencoded] The content type of the request.
      * @param {Boolean|string} [options.responseType] The content type of the response.
      * @param {Boolean} [options.cache=true] Whether to cache the request.
@@ -128,7 +128,7 @@ Object.assign(DOM.prototype, {
     /**
      * Perform an XHR POST request.
      * @param {string} url The URL of the request.
-     * @param {Boolean|string|array|object} data The data to send with the request.
+     * @param {string|array|object|FormData} data The data to send with the request.
      * @param {object} [options] The options to use for the request.
      * @param {string} [options.method=POST] The HTTP method of the request.
      * @param {Boolean|string} [options.contentType=application/x-www-form-urlencoded] The content type of the request.
@@ -152,7 +152,7 @@ Object.assign(DOM.prototype, {
     /**
      * Perform an XHR request for a file upload.
      * @param {string} url The URL of the request.
-     * @param {Boolean|string|array|object} data The data to send with the request.
+     * @param {FormData} data The data to send with the request.
      * @param {object} [options] The options to use for the request.
      * @param {string} [options.method=POST] The HTTP method of the request.
      * @param {Boolean|string} [options.contentType=false] The content type of the request.

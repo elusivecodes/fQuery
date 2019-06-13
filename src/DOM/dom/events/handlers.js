@@ -105,6 +105,25 @@ Object.assign(DOM.prototype, {
     },
 
     /**
+     * Trigger events on each node.
+     * @param {string|array|HTMLElement|ShadowRoot|Document|Window|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string} events The event names.
+     * @param {object} [data] Additional data to attach to the event.
+     */
+    triggerEvent(nodes, events, data) {
+        nodes = this._nodeFilter(nodes, { shadow: true, document: true, window: true });
+
+        events = DOM._parseEvents(events)
+            .map(event => DOM._parseEvent(event));
+
+        for (const node of nodes) {
+            for (const event of events) {
+                DOM._triggerEvent(node, event, data);
+            }
+        }
+    },
+
+    /**
      * Add events to a single node.
      * @param {HTMLElement|ShadowRoot|Document|Window} node The input node.
      * @param {string} events The event names.
@@ -245,25 +264,6 @@ Object.assign(DOM.prototype, {
         }
 
         this._events.delete(node);
-    },
-
-    /**
-     * Trigger events on each node.
-     * @param {string|array|HTMLElement|ShadowRoot|Document|Window|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
-     * @param {string} events The event names.
-     * @param {object} [data] Additional data to attach to the event.
-     */
-    triggerEvent(nodes, events, data) {
-        nodes = this._nodeFilter(nodes, { shadow: true, document: true, window: true });
-
-        events = DOM._parseEvents(events)
-            .map(event => DOM._parseEvent(event));
-
-        for (const node of nodes) {
-            for (const event of events) {
-                DOM._triggerEvent(node, event, data);
-            }
-        }
     }
 
 });

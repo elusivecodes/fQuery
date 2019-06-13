@@ -61,7 +61,7 @@
          * @param {object} [options] The options to use for the request.
          * @param {string} [options.url=window.location] The URL of the request.
          * @param {string} [options.method=GET] The HTTP method of the request.
-         * @param {Boolean|string|array|object} [options.data=false] The data to send with the request.
+         * @param {Boolean|string|array|object|FormData} [options.data=false] The data to send with the request.
          * @param {Boolean|string} [options.contentType=application/x-www-form-urlencoded] The content type of the request.
          * @param {Boolean|string} [options.responseType] The content type of the response.
          * @param {Boolean} [options.cache=true] Whether to cache the request.
@@ -180,7 +180,7 @@
         /**
          * Perform an XHR POST request.
          * @param {string} url The URL of the request.
-         * @param {Boolean|string|array|object} data The data to send with the request.
+         * @param {string|array|object|FormData} data The data to send with the request.
          * @param {object} [options] The options to use for the request.
          * @param {string} [options.method=POST] The HTTP method of the request.
          * @param {Boolean|string} [options.contentType=application/x-www-form-urlencoded] The content type of the request.
@@ -204,7 +204,7 @@
         /**
          * Perform an XHR request for a file upload.
          * @param {string} url The URL of the request.
-         * @param {Boolean|string|array|object} data The data to send with the request.
+         * @param {FormData} data The data to send with the request.
          * @param {object} [options] The options to use for the request.
          * @param {string} [options.method=POST] The HTTP method of the request.
          * @param {Boolean|string} [options.contentType=false] The content type of the request.
@@ -1787,6 +1787,14 @@
                 return;
             }
 
+            if (Core.isWindow(node)) {
+                return DOM._getScrollXWindow(node);
+            }
+
+            if (Core.isDocument(node)) {
+                return this._getScrollXDocument(node);
+            }
+
             return DOM._getScrollX(node);
         },
 
@@ -1802,6 +1810,14 @@
                 return;
             }
 
+            if (Core.isWindow(node)) {
+                return DOM._getScrollYWindow(node);
+            }
+
+            if (Core.isDocument(node)) {
+                return this._getScrollYDocument(node);
+            }
+
             return DOM._getScrollY(node);
         },
 
@@ -1815,7 +1831,13 @@
             nodes = this._nodeFilter(nodes, { document: true, window: true });
 
             for (const node of nodes) {
-                DOM._setScroll(node, x, y);
+                if (Core.isWindow(node)) {
+                    DOM._setScrollWindow(node, x, y);
+                } else if (Core.isDocument(node)) {
+                    this._setScrollDocument(node, x, y);
+                } else {
+                    this._setScroll(node, x, y);
+                }
             }
         },
 
@@ -1828,7 +1850,13 @@
             nodes = this._nodeFilter(nodes, { document: true, window: true });
 
             for (const node of nodes) {
-                DOM._setScrollX(node, x);
+                if (Core.isWindow(node)) {
+                    this._setScrollXWindow(node, x);
+                } else if (Core.isDocument(node)) {
+                    this._setScrollXDocument(node, x);
+                } else {
+                    DOM._setScrollX(node, x);
+                }
             }
         },
 
@@ -1841,9 +1869,109 @@
             nodes = this._nodeFilter(nodes, { document: true, window: true });
 
             for (const node of nodes) {
-                DOM._setScrollY(node, y);
+                if (Core.isWindow(node)) {
+                    this._setScrollYWindow(node, y);
+                } else if (Core.isDocument(node)) {
+                    this._setScrollYDocument(node, y);
+                } else {
+                    DOM._setScrollY(node, y);
+                }
             }
+        },
+
+        /**
+         * Get the scroll X position of a Document.
+         * @param {Document} node The input node.
+         * @returns {number} The scroll X position.
+         */
+        _getScrollXDocument(node) {
+            return DOM._getScrollX(DOM._scrollingElement(node));
+        },
+
+        /**
+         * Get the scroll Y position of a Document.
+         * @param {Document} node The input node.
+         * @returns {number} The scroll Y position.
+         */
+        _getScrollYDocument(node) {
+            return DOM._getScrollY(DOM._scrollingElement(node));
+        },
+
+        /**
+         * Scroll a single node to an X,Y position.
+         * @param {HTMLElement} node The input node.
+         * @param {number} x The scroll X position.
+         * @param {number} y The scroll Y position.
+         */
+        _setScroll(node, x, y) {
+            DOM._setScrollX(node, x);
+            DOM._setScrollY(node, y);
+        },
+
+        /**
+         * Scroll a Document to an X,Y position.
+         * @param {Document} node The input node.
+         * @param {number} x The scroll X position.
+         * @param {number} y The scroll Y position.
+         */
+        _setScrollDocument(node, x, y) {
+            return this._setScroll(
+                DOM._scrollingElement(node),
+                x,
+                y
+            );
+        },
+
+        /**
+         * Scroll a Document to an X position.
+         * @param {Document} node The input node.
+         * @param {number} x The scroll X position.
+         */
+        _setScrollXDocument(node, x) {
+            return DOM._setScrollX(
+                DOM._scrollingElement(node),
+                x
+            );
+        },
+
+        /**
+         * Scroll a Window to an X position.
+         * @param {Window} node The input node.
+         * @param {number} x The scroll X position.
+         */
+        _setScrollXWindow(node, x) {
+            return DOM._setScrollWindow(
+                node,
+                x,
+                DOM._getScrollYWindow(node)
+            );
+        },
+
+        /**
+         * Scroll a single node to a Y position.
+         * @param {Document} node The input node.
+         * @param {number} y The scroll Y position.
+         */
+        _setScrollYDocument(node, y) {
+            return DOM._setScrollY(
+                DOM._scrollingElement(node),
+                y
+            );
+        },
+
+        /**
+         * Scroll a Window to a Y position.
+         * @param {Window} node The input node.
+         * @param {number} y The scroll Y position.
+         */
+        _setScrollYWindow(node, y) {
+            return DOM._setScrollWindow(
+                node,
+                DOM._getScrollXWindow(node),
+                y
+            );
         }
+
 
     });
 
@@ -1868,6 +1996,19 @@
                 return;
             }
 
+            if (Core.isWindow(node)) {
+                return DOM._heightWindow(node, padding);
+            }
+
+            if (Core.isDocument(node)) {
+                return this._height(
+                    DOM._documentElement(node),
+                    padding,
+                    border,
+                    margin
+                );
+            }
+
             return this._height(node, padding, border, margin);
         },
 
@@ -1886,28 +2027,31 @@
                 return;
             }
 
+            if (Core.isWindow(node)) {
+                return DOM._widthWindow(node, padding);
+            }
+
+            if (Core.isDocument(node)) {
+                return this._width(
+                    DOM._documentElement(node),
+                    padding,
+                    border,
+                    margin
+                );
+            }
+
             return this._width(node, padding, border, margin);
         },
 
         /**
          * Get the computed height of a single node.
-         * @param {HTMLElement|Document|Window} node The input node.
+         * @param {HTMLElement} node The input node.
          * @param {Boolean} [padding=true] Whether to include padding height.
          * @param {Boolean} [border] Whether to include border height.
          * @param {Boolean} [margin] Whether to include margin height.
          * @returns {number} The height.
          */
         _height(node, padding = true, border, margin) {
-            if (Core.isWindow(node)) {
-                return padding ?
-                    node.outerHeight :
-                    node.innerHeight;
-            }
-
-            if (Core.isDocument(node)) {
-                node = node.documentElement;
-            }
-
             return this.forceShow(
                 node,
                 node => {
@@ -1935,23 +2079,13 @@
 
         /**
          * Get the computed width of a single node.
-         * @param {HTMLElement|Document|Window} node The input node.
+         * @param {HTMLElement} node The input node.
          * @param {Boolean} [padding=true] Whether to include padding width.
          * @param {Boolean} [border] Whether to include border width.
          * @param {Boolean} [margin] Whether to include margin width.
          * @returns {number} The width.
          */
         _width(node, padding = true, border, margin) {
-            if (Core.isWindow(node)) {
-                return padding ?
-                    node.outerWidth :
-                    node.innerWidth;
-            }
-
-            if (Core.isDocument(node)) {
-                node = node.documentElement;
-            }
-
             return this.forceShow(
                 node,
                 node => {
@@ -2490,6 +2624,25 @@
         },
 
         /**
+         * Trigger events on each node.
+         * @param {string|array|HTMLElement|ShadowRoot|Document|Window|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+         * @param {string} events The event names.
+         * @param {object} [data] Additional data to attach to the event.
+         */
+        triggerEvent(nodes, events, data) {
+            nodes = this._nodeFilter(nodes, { shadow: true, document: true, window: true });
+
+            events = DOM._parseEvents(events)
+                .map(event => DOM._parseEvent(event));
+
+            for (const node of nodes) {
+                for (const event of events) {
+                    DOM._triggerEvent(node, event, data);
+                }
+            }
+        },
+
+        /**
          * Add events to a single node.
          * @param {HTMLElement|ShadowRoot|Document|Window} node The input node.
          * @param {string} events The event names.
@@ -2630,25 +2783,6 @@
             }
 
             this._events.delete(node);
-        },
-
-        /**
-         * Trigger events on each node.
-         * @param {string|array|HTMLElement|ShadowRoot|Document|Window|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
-         * @param {string} events The event names.
-         * @param {object} [data] Additional data to attach to the event.
-         */
-        triggerEvent(nodes, events, data) {
-            nodes = this._nodeFilter(nodes, { shadow: true, document: true, window: true });
-
-            events = DOM._parseEvents(events)
-                .map(event => DOM._parseEvent(event));
-
-            for (const node of nodes) {
-                for (const event of events) {
-                    DOM._triggerEvent(node, event, data);
-                }
-            }
         }
 
     });
@@ -2838,22 +2972,6 @@
             }
         },
 
-        detachFragment(nodes) {
-            nodes = this._nodeFilter(nodes);
-
-            for (const node of nodes) {
-                DOM._detachFragment(node);
-            }
-        },
-
-        detachShadow(nodes) {
-            nodes = this._nodeFilter(nodes);
-
-            for (const node of nodes) {
-                DOM._detachShadow(node);
-            }
-        },
-
         /**
          * Remove all children of each node from the DOM.
          * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|HTMLCollection} nodes The input node(s), or a query selector string.
@@ -2878,6 +2996,13 @@
             for (const node of nodes) {
                 this._empty(node);
                 this._remove(node);
+                const parent = DOM._parent(node);
+
+                if (!parent) {
+                    continue;
+                }
+
+                DOM._removeChild(parent, node);
             }
         },
 
@@ -2968,26 +3093,26 @@
          */
         _empty(node) {
             // Remove descendent elements
-            const children = DOM._findBySelector('*', node);
+            const children = DOM._childNodes(node);
 
             for (const child of children) {
+                this._empty(child);
                 this._remove(child);
             }
 
             // Remove ShadowRoot
             if (DOM._hasShadow(node)) {
                 const shadow = DOM._shadow(node);
+                this._empty(shadow);
                 this._remove(shadow);
             }
 
             // Remove DocumentFragment
             if (DOM._hasFragment(node)) {
                 const fragment = DOM._fragment(node);
+                this._empty(fragment);
                 this._remove(fragment);
-                DOM._removeChild(node, fragment);
             }
-
-            DOM._setProperty(node, { innerHTML: '' });
         },
 
         /**
@@ -3008,30 +3133,6 @@
 
             this._removeEvent(node);
             this._removeData(node);
-
-            // Remove ShadowRoot
-            if (DOM._hasShadow(node)) {
-                const shadow = DOM._shadow(node);
-                this._remove(shadow);
-            }
-
-            // Remove DocumentFragment
-            if (DOM._hasFragment(node)) {
-                const fragment = DOM._fragment(node);
-                this._remove(fragment);
-                node.removeChild(fragment);
-            }
-
-            // DocumentFragment can not be detached
-            if (!Core.isFragment(node)) {
-                const parent = DOM._parent(node);
-
-                if (!parent) {
-                    return;
-                }
-
-                DOM._removeChild(parent, node);
-            }
         },
 
         /**
@@ -3439,7 +3540,7 @@
          */
         hidden(nodes) {
             return this._nodeFilter(nodes, { fragment: true, shadow: true, document: true, window: true })
-                .filter(node => !DOM._isVisible(node));
+                .filter(node => !this._isVisible(node));
         },
 
         /**
@@ -3481,7 +3582,7 @@
          */
         visible(nodes) {
             return this._nodeFilter(nodes, { fragment: true, shadow: true, document: true, window: true })
-                .filter(node => DOM._isVisible(node));
+                .filter(node => this._isVisible(node));
         },
 
         /**
@@ -3867,14 +3968,6 @@
          * @returns {HTMLElement} The matching node.
          */
         _findOneByCustom(selector, nodes = this._context) {
-            // string case
-            if (Core.isString(nodes)) {
-                return DOM._findOneBySelector(
-                    DOM._prefixSelectors(selector, `${nodes} `),
-                    this._context
-                );
-            }
-
             const selectors = DOM._prefixSelectors(selector, `#${DOM.tempId} `);
 
             if (Core.isElement(nodes)) {
@@ -5169,7 +5262,7 @@
         isHidden(nodes) {
             return this._nodeFilter(nodes, { node: true, document: true, window: true })
                 .some(node =>
-                    !DOM._isVisible(node)
+                    !this._isVisible(node)
                 );
         },
 
@@ -5196,7 +5289,7 @@
         isVisible(nodes) {
             return this._nodeFilter(nodes, { node: true, fragment: true, shadow: true, document: true, window: true })
                 .some(node =>
-                    DOM._isVisible(node)
+                    this._isVisible(node)
                 );
         },
 
@@ -5229,13 +5322,31 @@
         /**
          * Returns true if a single node has a CSS transition.
          * @param {HTMLElement} node The input node.
-         * @returns {Boolean} TRUE if the has a CSS transition, otherwise FALSE.
+         * @returns {Boolean} TRUE if the node has a CSS transition, otherwise FALSE.
          */
         _hasTransiton(node) {
             return !!parseFloat(
                 this._css(node, 'transition-duration')
             );
+        },
+
+        /**
+         * Returns true if a single node is visible.
+         * @param {HTMLElement|Document|Window} node The input node.
+         * @returns {Boolean} TRUE if the node is visible, otherwise FALSE.
+         */
+        _isVisible(node) {
+            if (Core.isWindow(node)) {
+                return DOM._isVisibleWindow(node);
+            }
+
+            if (Core.isDocument(node)) {
+                return DOM._isVisibleDocument(node);
+            }
+
+            return DOM._isVisible(node);
         }
+
 
     });
 
@@ -5540,71 +5651,56 @@
 
         /**
          * Get the scroll X position of a single node.
-         * @param {HTMLElement|Document|Window} node The input node.
+         * @param {HTMLElement} node The input node.
          * @returns {number} The scroll X position.
          */
         _getScrollX(node) {
-            if (Core.isWindow(node)) {
-                return node.scrollX;
-            }
-
-            if (Core.isDocument(node)) {
-                node = node.scrollingElement;
-            }
-
             return node.scrollLeft;
         },
 
         /**
+         * Get the scroll X position of a Window.
+         * @param {Window} node The input node.
+         * @returns {number} The scroll X position.
+         */
+        _getScrollXWindow(node) {
+            return node.scrollX;
+        },
+
+        /**
          * Get the scroll Y position of a single node.
-         * @param {HTMLElement|Document|Window} node The input node.
+         * @param {HTMLElement} node The input node.
          * @returns {number} The scroll Y position.
          */
         _getScrollY(node) {
-            if (Core.isWindow(node)) {
-                return node.scrollY;
-            }
-
-            if (Core.isDocument(node)) {
-                node = node.scrollingElement;
-            }
-
             return node.scrollTop;
         },
 
         /**
-         * Scroll a single node to an X,Y position.
-         * @param {HTMLElement|Document|Window} node The input node.
+         * Get the scroll Y position of a Window.
+         * @param {Document} node The input node.
+         * @returns {number} The scroll Y position.
+         */
+        _getScrollYWindow(node) {
+            return node.scrollY;
+        },
+
+        /**
+         * Scroll a Window to an X,Y position.
+         * @param {Window} node The input node.
          * @param {number} x The scroll X position.
          * @param {number} y The scroll Y position.
          */
-        _setScroll(node, x, y) {
-            if (Core.isWindow(node)) {
-                return node.scroll(x, y);
-            }
-
-            if (Core.isDocument(node)) {
-                node = node.scrollingElement;
-            }
-
-            node.scrollLeft = x;
-            node.scrollTop = y;
+        _setScrollWindow(node, x, y) {
+            return node.scroll(x, y);
         },
 
         /**
          * Scroll a single node to an X position.
-         * @param {HTMLElement|Document|Window} node The input node.
+         * @param {HTMLElement} node The input node.
          * @param {number} x The scroll X position.
          */
         _setScrollX(node, x) {
-            if (Core.isWindow(node)) {
-                return node.scroll(x, node.scrollY);
-            }
-
-            if (Core.isDocument(node)) {
-                node = node.scrollingElement;
-            }
-
             node.scrollLeft = x;
         },
 
@@ -5614,15 +5710,57 @@
          * @param {number} y The scroll Y position.
          */
         _setScrollY(node, y) {
-            if (Core.isWindow(node)) {
-                return node.scroll(node.scrollX, y);
-            }
-
-            if (Core.isDocument(node)) {
-                node = node.scrollingElement;
-            }
-
             node.scrollTop = y;
+        }
+
+    });
+
+    /**
+     * DOM (Static) Size
+     */
+
+    Object.assign(DOM, {
+
+        /**
+         * Get the client height of a single node.
+         * @param {HTMLElement} node The input node.
+         * @returns {number} The height.
+         */
+        _height(node) {
+            return node.clientHeight;
+        },
+
+        /**
+         * Get the height of a Window.
+         * @param {Window} node The input node.
+         * @param {Boolean} [outer] Whether to use the outer height.
+         * @returns {number} The height.
+         */
+        _heightWindow(node, outer) {
+            return outer ?
+                node.outerHeight :
+                node.innerHeight;
+        },
+
+        /**
+         * Get the client width of a single node.
+         * @param {HTMLElement} node The input node.
+         * @returns {number} The width.
+         */
+        _width(node) {
+            return node.clientWidth;
+        },
+
+        /**
+         * Get the width of a Window.
+         * @param {Window} node The input node.
+         * @param {Boolean} [outer] Whether to use the outer width.
+         * @returns {number} The width.
+         */
+        _widthWindow(node, outer) {
+            return outer ?
+                node.outerWeight :
+                node.innerWidth;
         }
 
     });
@@ -5758,7 +5896,7 @@
         /**
          * Trigger an event on a single node.
          * @param {HTMLElement|DocumentFragment|ShadowRoot|Document|Window} nodes The input node.
-         * @param {string} event The event names.
+         * @param {string} event The event name.
          * @param {object} [data] Additional data to attach to the Event object.
          */
         _triggerEvent(node, event, data) {
@@ -6024,7 +6162,7 @@
 
         /**
          * Detach a single node from the DOM.
-         * @param {Node|HTMLElement|ShadowRoot} node The input node.
+         * @param {Node|HTMLElement} node The input node.
          */
         _detach(node) {
             const parent = DOM._parent(node);
@@ -6036,6 +6174,11 @@
             this._removeChild(parent, node);
         },
 
+        /**
+         * Remove a child node from a parent node in the DOM.
+         * @param {HTMLElement|DocumentFragment|ShadowRoot|Document} node The parent node.
+         * @param {Node} child The child node to remove.
+         */
         _removeChild(node, child) {
             node.removeChild(child);
         }
@@ -6048,6 +6191,12 @@
 
     Object.assign(DOM, {
 
+        /**
+         * Insert a new node into a parent node (optionally before a reference node).
+         * @param {HTMLElement|DocumentFragment|ShadowRoot|Document} parentNode The parent node.
+         * @param {Node} newNode The new node to insert.
+         * @param {Node} [referenceNode] The node to insert the new node before.
+         */
         _insertBefore(parentNode, newNode, referenceNode = null) {
             parentNode.insertBefore(newNode, referenceNode);
         }
@@ -6146,12 +6295,31 @@
 
     Object.assign(DOM, {
 
+        /**
+         * Return all child nodes for a single node.
+         * @param {HTMLElement} node The input node.
+         * @returns {NodeList} The child nodes.
+         */
         _childNodes(node) {
             return node.childNodes;
         },
 
+        /**
+         * Return all child elements for a single node.
+         * @param {ParentNode} node The input node.
+         * @returns {HTMLCollection} The child elements.
+         */
         _children(node) {
             return node.children;
+        },
+
+        /**
+         * Get the document element from a Document.
+         * @param {Document} node The input node.
+         * @returns {HTMLElement} The document element.
+         */
+        _documentElement(node) {
+            return node.documentElement;
         },
 
         /**
@@ -6163,16 +6331,40 @@
             return node.content;
         },
 
+        /**
+         * Return the next sibling node of a single node.
+         * @param {Node} node The input node.
+         * @returns {Node} The next sibling node.
+         */
         _next(node) {
             return node.nextSibling;
         },
 
+        /**
+         * Return the parent node of a single node.
+         * @param {Node} node The input node.
+         * @returns {HTMLElement|DocumentFragment|ShadowRoot|Document} The parent node.
+         */
         _parent(node) {
             return node.parentNode;
         },
 
+        /**
+         * Return the previous sibling node of a single node.
+         * @param {Node} node The input node.
+         * @returns {Node} The previous sibling node.
+         */
         _prev(node) {
             return node.previousSibling;
+        },
+
+        /**
+         * Get the scrolling element from a Document.
+         * @param {Document} node The input node.
+         * @returns {HTMLElement} The scrolling element.
+         */
+        _scrollingElement(node) {
+            return node.scrollingElement;
         },
 
         /**
@@ -6397,23 +6589,29 @@
 
         /**
          * Returns true if a single node is visible.
-         * @param {HTMLElement|DocumentFragment|ShadowRoot|Document|Window} node The input node.
+         * @param {HTMLElement|DocumentFragment|ShadowRoot} node The input node.
          * @returns {Boolean} TRUE if the node is visible, otherwise FALSE.
          */
         _isVisible(node) {
-            if (Core.isWindow(node)) {
-                node = node.document;
-            }
-
-            if (Core.isDocument(node)) {
-                return node.visibilityState === 'visible';
-            }
-
-            // if (Core.isShadow(node)) {
-            //     node = node.host;
-            // }
-
             return !!node.offsetParent;
+        },
+
+        /**
+         * Returns true if a Document is visible.
+         * @param {Document} node The input node.
+         * @returns {Boolean} TRUE if the node is visible, otherwise FALSE.
+         */
+        _isVisibleDocument(node) {
+            return node.visibilityState === 'visible';
+        },
+
+        /**
+         * Returns true if a Window is visible.
+         * @param {Window} node The input node.
+         * @returns {Boolean} TRUE if the node is visible, otherwise FALSE.
+         */
+        _isVisibleWindow(node) {
+            return this._isVisibleDocument(node.document);
         }
 
     });
@@ -6424,6 +6622,12 @@
 
     Object.assign(DOM, {
 
+        /**
+         * Compare the position of two nodes in a Document.
+         * @param {Node} node The input node.
+         * @param {Node} other The node to compare against.
+         * @returns {number} The bitmask representing the relationship of the nodes.
+         */
         _comparePosition(node, other) {
             return node.compareDocumentPosition(other);
         },
