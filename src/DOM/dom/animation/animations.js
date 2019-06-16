@@ -57,7 +57,7 @@ Object.assign(DOM.prototype, {
         return this.animate(
             nodes,
             (node, progress) =>
-                DOM._setStyle(
+                DOMNode.setStyle(
                     node,
                     'opacity',
                     progress < 1 ?
@@ -81,7 +81,7 @@ Object.assign(DOM.prototype, {
         return this.animate(
             nodes,
             (node, progress) =>
-                DOM._setStyle(
+                DOMNode.setStyle(
                     node,
                     'opacity',
                     progress < 1 ?
@@ -108,7 +108,7 @@ Object.assign(DOM.prototype, {
         return this.animate(
             nodes,
             (node, progress, options) =>
-                DOM._setStyle(
+                DOMNode.setStyle(
                     node,
                     'transform',
                     progress < 1 ?
@@ -139,7 +139,7 @@ Object.assign(DOM.prototype, {
         return this.animate(
             nodes,
             (node, progress, options) =>
-                DOM._setStyle(
+                DOMNode.setStyle(
                     node,
                     'transform',
                     progress < 1 ?
@@ -178,11 +178,11 @@ Object.assign(DOM.prototype, {
                     let axis, size, inverse;
                     if (dir === 'top' || dir === 'bottom') {
                         axis = 'Y';
-                        size = this._height(node);
+                        size = DOM._height(node);
                         inverse = dir === 'top';
                     } else {
                         axis = 'X';
-                        size = this._width(node);
+                        size = DOM._width(node);
                         inverse = dir === 'left';
                     }
 
@@ -191,7 +191,7 @@ Object.assign(DOM.prototype, {
                     transform = '';
                 }
 
-                DOM._setStyle(
+                DOMNode.setStyle(
                     node,
                     'transform',
                     transform
@@ -228,11 +228,11 @@ Object.assign(DOM.prototype, {
                     let axis, size, inverse;
                     if (dir === 'top' || dir === 'bottom') {
                         axis = 'Y';
-                        size = this._height(node);
+                        size = DOM._height(node);
                         inverse = dir === 'top';
                     } else {
                         axis = 'X';
-                        size = this._width(node);
+                        size = DOM._width(node);
                         inverse = dir === 'left';
                     }
 
@@ -241,7 +241,7 @@ Object.assign(DOM.prototype, {
                     transform = '';
                 }
 
-                DOM._setStyle(
+                DOMNode.setStyle(
                     node,
                     'transform',
                     transform
@@ -265,7 +265,7 @@ Object.assign(DOM.prototype, {
      * @returns {Promise} A new Promise that resolves when the animation has completed.
      */
     squeezeIn(nodes, options) {
-        nodes = this._nodeFilter(nodes);
+        nodes = this.parseNodes(nodes);
 
         options = {
             ...DOM.animationDefaults,
@@ -273,11 +273,58 @@ Object.assign(DOM.prototype, {
             ...options
         };
 
-        const promises = nodes.map(node =>
-            this._squeezeIn(node, options)
-        );
+        const promises = nodes.map(node => {
+            const wrapper = this.create('div', {
+                style: {
+                    overflow: 'hidden',
+                    position: 'relative'
+                }
+            });
 
-        this._start();
+            DOM._wrap(node, [wrapper]);
+            const parent = DOMNode.parent(node);
+
+            return DOM._animate(
+                node,
+                (node, progress, options) => {
+                    if (progress === 1) {
+                        const children = DOMNode.childNodes(parent);
+                        const child = Core.wrap(children).shift();
+                        DOM._unwrap(child);
+                        return;
+                    }
+
+                    const dir = Core.isFunction(options.direction) ?
+                        options.direction() :
+                        options.direction;
+
+                    let sizeStyle, translateStyle;
+                    if (dir === 'top' || dir === 'bottom') {
+                        sizeStyle = 'height';
+                        if (dir === 'top') {
+                            translateStyle = 'Y';
+                        }
+                    } else if (dir === 'left' || dir === 'right') {
+                        sizeStyle = 'width';
+                        if (dir === 'left') {
+                            translateStyle = 'X';
+                        }
+                    }
+
+                    const size = Math.round(DOM[`_${sizeStyle}`](node)),
+                        amount = Math.round(size * progress);
+
+                    DOMNode.setStyle(parent, sizeStyle, `${amount}px`);
+
+                    if (translateStyle) {
+                        DOMNode.setStyle(parent, 'transform', `translate${translateStyle}(${size - amount}px)`);
+                    }
+                },
+                options
+            );
+        });
+
+        DOM._start();
 
         return Promise.all(promises);
     },
@@ -293,7 +340,7 @@ Object.assign(DOM.prototype, {
      * @returns {Promise} A new Promise that resolves when the animation has completed.
      */
     squeezeOut(nodes, options) {
-        nodes = this._nodeFilter(nodes);
+        nodes = this.parseNodes(nodes);
 
         options = {
             ...DOM.animationDefaults,
@@ -301,136 +348,61 @@ Object.assign(DOM.prototype, {
             ...options
         };
 
-        const promises = nodes.map(node =>
-            this._squeezeOut(node, options)
-        );
+        const promises = nodes.map(node => {
+            const wrapper = this.create('div', {
+                style: {
+                    overflow: 'hidden',
+                    position: 'relative'
+                }
+            });
 
-        this._start();
+            DOM._wrap(node, [wrapper]);
+            const parent = DOMNode.parent(node);
+
+            return DOM._animate(
+                node,
+                (node, progress, options) => {
+                    if (progress === 1) {
+                        const children = DOMNode.childNodes(parent);
+                        const child = Core.wrap(children).shift();
+                        DOM._unwrap(child);
+                        return;
+                    }
+
+                    const dir = Core.isFunction(options.direction) ?
+                        options.direction() :
+                        options.direction;
+
+                    let sizeStyle, translateStyle;
+                    if (dir === 'top' || dir === 'bottom') {
+                        sizeStyle = 'height';
+                        if (dir === 'top') {
+                            translateStyle = 'Y';
+                        }
+                    }
+                    else if (dir === 'left' || dir === 'right') {
+                        sizeStyle = 'width';
+                        if (dir === 'left') {
+                            translateStyle = 'X';
+                        }
+                    }
+
+                    const size = Math.round(DOM[`_${sizeStyle}`](node)),
+                        amount = Math.round(size - (size * progress));
+
+                    DOMNode.setStyle(parent, sizeStyle, `${amount}px`);
+
+                    if (translateStyle) {
+                        DOMNode.setStyle(parent, 'transform', `translate${translateStyle}(${size - amount}px)`);
+                    }
+                },
+                options
+            );
+        });
+
+        DOM._start();
 
         return Promise.all(promises);
-    },
-
-    /**
-     * Squeeze a single node in from a direction.
-     * @param {HTMLElement} node The input node.
-     * @param {object} [options] The options to use for animating.
-     * @param {string} [options.direction=bottom] The direction to squeeze from.
-     * @param {number} [options.duration=1000] The duration of the animation.
-     * @param {string} [options.type=ease-in-out] The type of animation.
-     * @param {Boolean} [options.infinite] Whether the animation should run forever.
-     * @returns {Promise} A new Promise that resolves when the animation has completed.
-     */
-    _squeezeIn(node, options) {
-        const wrapper = this.create('div', {
-            style: {
-                overflow: 'hidden',
-                position: 'relative'
-            }
-        });
-
-        this._wrap(node, wrapper);
-        const parent = DOM._parent(node);
-
-        return this._animate(
-            node,
-            (node, progress, options) => {
-                if (progress === 1) {
-                    const children = DOM._childNodes(parent);
-                    const child = Core.wrap(children).shift();
-                    this._unwrap(child);
-                    return;
-                }
-
-                const dir = Core.isFunction(options.direction) ?
-                    options.direction() :
-                    options.direction;
-
-                let sizeStyle, translateStyle;
-                if (dir === 'top' || dir === 'bottom') {
-                    sizeStyle = 'height';
-                    if (dir === 'top') {
-                        translateStyle = 'Y';
-                    }
-                } else if (dir === 'left' || dir === 'right') {
-                    sizeStyle = 'width';
-                    if (dir === 'left') {
-                        translateStyle = 'X';
-                    }
-                }
-
-                const size = Math.round(this[`_${sizeStyle}`](node)),
-                    amount = Math.round(size * progress);
-
-                DOM._setStyle(parent, sizeStyle, amount);
-
-                if (translateStyle) {
-                    DOM._setStyle(parent, 'transform', `translate${translateStyle}(${size - amount}px)`);
-                }
-            },
-            options
-        );
-    },
-
-    /**
-     * Squeeze a single node out from a direction.
-     * @param {HTMLElement} node The input node.
-     * @param {object} [options] The options to use for animating.
-     * @param {string} [options.direction=bottom] The direction to squeeze to.
-     * @param {number} [options.duration=1000] The duration of the animation.
-     * @param {string} [options.type=ease-in-out] The type of animation.
-     * @param {Boolean} [options.infinite] Whether the animation should run forever.
-     * @returns {Promise} A new Promise that resolves when the animation has completed.
-     */
-    _squeezeOut(node, options) {
-        const wrapper = this.create('div', {
-            style: {
-                overflow: 'hidden',
-                position: 'relative'
-            }
-        });
-
-        this._wrap(node, wrapper);
-        const parent = DOM._parent(node);
-
-        return this._animate(
-            node,
-            (node, progress, options) => {
-                if (progress === 1) {
-                    const children = DOM._childNodes(parent);
-                    const child = Core.wrap(children).shift();
-                    this._unwrap(child);
-                    return;
-                }
-
-                const dir = Core.isFunction(options.direction) ?
-                    options.direction() :
-                    options.direction;
-
-                let sizeStyle, translateStyle;
-                if (dir === 'top' || dir === 'bottom') {
-                    sizeStyle = 'height';
-                    if (dir === 'top') {
-                        translateStyle = 'Y';
-                    }
-                }
-                else if (dir === 'left' || dir === 'right') {
-                    sizeStyle = 'width';
-                    if (dir === 'left') {
-                        translateStyle = 'X';
-                    }
-                }
-
-                const size = Math.round(this[`_${sizeStyle}`](node)),
-                    amount = Math.round(size - (size * progress));
-
-                DOM._setStyle(parent, sizeStyle, amount);
-
-                if (translateStyle) {
-                    DOM._setStyle(parent, 'transform', `translate${translateStyle}(${size - amount}px)`);
-                }
-            },
-            options
-        );
     }
 
 });

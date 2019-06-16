@@ -12,22 +12,22 @@ Object.assign(DOM.prototype, {
     after(nodes, others) {
 
         // DocumentFragment nodes have no parent
-        const node = this._nodeFind(nodes, { node: true, shadow: true });
+        const node = this.parseNode(nodes, { node: true, shadow: true });
 
         if (!node) {
             return;
         }
 
-        const parent = DOM._parent(node);
+        const parent = DOMNode.parent(node);
 
         if (!parent) {
             return;
         }
 
-        others = this._nodeFilter(others, { node: true, fragment: true, shadow: true, html: true });
+        others = this.parseNodes(others, { node: true, fragment: true, shadow: true, html: true });
 
         for (const other of others.reverse()) {
-            DOM._insertBefore(parent, other, node.nextSibling);
+            DOMNode.insertBefore(parent, other, DOMNode.next(node));
         }
     },
 
@@ -37,16 +37,16 @@ Object.assign(DOM.prototype, {
      * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} others The other node(s), or a query selector or HTML string.
      */
     append(nodes, others) {
-        const node = this._nodeFind(nodes, { fragment: true, shadow: true, document: true });
+        const node = this.parseNode(nodes, { fragment: true, shadow: true, document: true });
 
         if (!node) {
             return;
         }
 
-        others = this._nodeFilter(others, { node: true, fragment: true, shadow: true, html: true });
+        others = this.parseNodes(others, { node: true, fragment: true, shadow: true, html: true });
 
         for (const other of others) {
-            DOM._insertBefore(node, other);
+            DOMNode.insertBefore(node, other);
         }
     },
 
@@ -67,22 +67,22 @@ Object.assign(DOM.prototype, {
     before(nodes, others) {
 
         // DocumentFragment nodes have no parent
-        const node = this._nodeFind(nodes, { node: true, shadow: true });
+        const node = this.parseNode(nodes, { node: true, shadow: true });
 
         if (!node) {
             return;
         }
 
-        const parent = DOM._parent(node);
+        const parent = DOMNode.parent(node);
 
         if (!parent) {
             return;
         }
 
-        others = this._nodeFilter(others, { node: true, fragment: true, shadow: true, html: true });
+        others = this.parseNodes(others, { node: true, fragment: true, shadow: true, html: true });
 
         for (const other of others) {
-            DOM._insertBefore(parent, other, node);
+            DOMNode.insertBefore(parent, other, node);
         }
     },
 
@@ -110,16 +110,18 @@ Object.assign(DOM.prototype, {
      * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} others The other node(s), or a query selector or HTML string.
      */
     prepend(nodes, others) {
-        const node = this._nodeFind(nodes, { fragment: true, shadow: true, document: true });
+        const node = this.parseNode(nodes, { fragment: true, shadow: true, document: true });
 
         if (!node) {
             return;
         }
 
-        others = this._nodeFilter(others, { node: true, fragment: true, shadow: true, html: true });
+        const firstChild = DOMNode.firstChild(node);
+
+        others = this.parseNodes(others, { node: true, fragment: true, shadow: true, html: true });
 
         for (const other of others.reverse()) {
-            DOM._insertBefore(node, other, node.firstChild);
+            DOMNode.insertBefore(node, other, firstChild);
         }
     },
 

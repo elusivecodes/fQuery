@@ -1,8 +1,8 @@
 /**
- * DOM (Static) Move
+ * DOMNode (Static) Move
  */
 
-Object.assign(DOM, {
+Object.assign(DOMNode, {
 
     /**
      * Insert a new node into a parent node (optionally before a reference node).
@@ -10,7 +10,7 @@ Object.assign(DOM, {
      * @param {Node} newNode The new node to insert.
      * @param {Node} [referenceNode] The node to insert the new node before.
      */
-    _insertBefore(parentNode, newNode, referenceNode = null) {
+    insertBefore(parentNode, newNode, referenceNode = null) {
         parentNode.insertBefore(newNode, referenceNode);
     }
 

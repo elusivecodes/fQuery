@@ -13,7 +13,7 @@ Object.assign(DOM.prototype, {
     loadStyle(url, cache = true) {
         return this.ajax({ url, cache })
             .then(response =>
-                DOM._insertBefore(
+                DOMNode.insertBefore(
                     this._context.head,
                     this.create(
                         'style',
@@ -40,7 +40,7 @@ Object.assign(DOM.prototype, {
             )
             .then(responses => {
                 for (const response of responses) {
-                    DOM._insertBefore(
+                    DOMNode.insertBefore(
                         this._context.head,
                         this.create(
                             'style',

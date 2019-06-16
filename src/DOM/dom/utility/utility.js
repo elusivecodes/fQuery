@@ -23,47 +23,13 @@ Object.assign(DOM.prototype, {
     forceShow(nodes, callback) {
 
         // DocumentFragment and ShadowRoot nodes have no parent
-        const node = this._nodeFind(nodes, { node: true, document: true, window: true });
+        const node = this.parseNode(nodes, { node: true, document: true, window: true });
 
         if (!node) {
             return;
         }
 
-        if (Core.isDocument(node) || Core.isWindow(node) || DOM._isVisible(node)) {
-            return callback(node);
-        }
-
-        const elements = [];
-
-        if (Core.isElement(node) && this._css(node, 'display') === 'none') {
-            elements.push(node);
-        }
-
-        Core.merge(elements, this._parents(
-            node,
-            parent =>
-                Core.isElement(parent) && this._css(parent, 'display') === 'none'
-        ));
-
-        const hidden = new Map;
-
-        for (const element of elements) {
-            hidden.set(element, DOM._getAttribute(element, 'style'));
-
-            DOM._setStyle(element, 'display', 'initial', true);
-        }
-
-        const result = callback(node);
-
-        for (const [element, style] of hidden) {
-            if (style) {
-                DOM._setAttribute(element, 'style', style);
-            } else {
-                DOM._removeAttribute(element, 'style');
-            }
-        }
-
-        return result;
+        return DOM._forceShow(node, callback);
     },
 
     /**
@@ -73,9 +39,9 @@ Object.assign(DOM.prototype, {
      * @returns {number} The index.
      */
     index(nodes, filter) {
-        filter = this._parseFilter(filter);
+        filter = this.parseFilter(filter);
 
-        return this._nodeFilter(nodes, { node: true, fragment: true, shadow: true })
+        return this.parseNodes(nodes, { node: true, fragment: true, shadow: true })
             .findIndex(node =>
                 !filter || filter(node)
             );
@@ -87,14 +53,17 @@ Object.assign(DOM.prototype, {
      * @returns {number} The index.
      */
     indexOf(nodes) {
-        const node = this._nodeFind(nodes, { node: true });
+        const node = this.parseNode(nodes, { node: true });
 
         if (!node) {
             return;
         }
 
-        return DOM._children(
-            DOM._parent(node).shift()
+        return Core.merge(
+            [],
+            DOMNode.children(
+                DOMNode.parent(node)
+            )
         ).indexOf(node);
     },
 
@@ -103,10 +72,10 @@ Object.assign(DOM.prototype, {
      * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|Document|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
      */
     normalize(nodes) {
-        nodes = this._nodeFilter(nodes, { node: true, fragment: true, shadow: true, document: true });
+        nodes = this.parseNodes(nodes, { node: true, fragment: true, shadow: true, document: true });
 
         for (const node of nodes) {
-            DOM._normalize(node);
+            DOMNode.normalize(node);
         }
     },
 
@@ -127,13 +96,13 @@ Object.assign(DOM.prototype, {
      * @returns {array} The serialized array.
      */
     serializeArray(nodes) {
-        return this._nodeFilter(nodes, { fragment: true, shadow: true })
+        return this.parseNodes(nodes, { fragment: true, shadow: true })
             .reduce(
                 (values, node) => {
-                    if (DOM._is(node, 'form') || Core.isFragment(node) || Core.isShadow(node)) {
+                    if (DOMNode.is(node, 'form') || Core.isFragment(node) || Core.isShadow(node)) {
                         return values.concat(
                             this.serializeArray(
-                                DOM._findBySelector(
+                                DOMNode.findBySelector(
                                     'input, select, textarea',
                                     node
                                 )
@@ -141,16 +110,16 @@ Object.assign(DOM.prototype, {
                         );
                     }
 
-                    if (DOM._is(node, '[disabled], input[type=submit], input[type=reset], input[type=file], input[type=radio]:not(:checked), input[type=checkbox]:not(:checked)')) {
+                    if (DOMNode.is(node, '[disabled], input[type=submit], input[type=reset], input[type=file], input[type=radio]:not(:checked), input[type=checkbox]:not(:checked)')) {
                         return values;
                     }
 
-                    const name = DOM._getAttribute(node, 'name');
+                    const name = DOMNode.getAttribute(node, 'name');
                     if (!name) {
                         return values;
                     }
 
-                    const value = DOM._getAttribute(node, 'value') || '';
+                    const value = DOMNode.getAttribute(node, 'value') || '';
 
                     values.push(
                         {
@@ -171,13 +140,13 @@ Object.assign(DOM.prototype, {
      * @returns {array} The sorted array of nodes.
      */
     sort(nodes) {
-        return this._nodeFilter(nodes, { node: true, fragment: true, shadow: true })
+        return this.parseNodes(nodes, { node: true, fragment: true, shadow: true })
             .sort((node, other) => {
-                if (DOM._isSame(node, other)) {
+                if (DOMNode.isSame(node, other)) {
                     return 0;
                 }
 
-                const pos = DOM._comparePosition(node, other);
+                const pos = DOMNode.comparePosition(node, other);
 
                 if (pos & Node.DOCUMENT_POSITION_FOLLOWING ||
                     pos & Node.DOCUMENT_POSITION_CONTAINED_BY) {

@@ -5,44 +5,25 @@
 Object.assign(DOM, {
 
     /**
-     * Add classes to a single node.
+     * Get a computed CSS style value for a single node.
      * @param {HTMLElement} node The input node.
-     * @param {...string} classes The classes.
+     * @param {string} [style] The CSS style name.
+     * @returns {string|CSSStyleDeclaration} The CSS style value.
      */
-    _addClass(node, ...classes) {
-        node.classList.add(...classes)
-    },
-
-    /**
-     * Remove classes from a single node.
-     * @param {HTMLElement} node The input node.
-     * @param {...string} classes The classes.
-     */
-    _removeClass(node, ...classes) {
-        node.classList.remove(...classes)
-    },
-
-    /**
-     * Toggle classes for a single node.
-     * @param {HTMLElement} node The input node.
-     * @param {...string} classes The classes.
-     */
-    _toggleClass(node, ...classes) {
-        node.classList.toggle(...classes)
-    },
-
-    /**
-     * Get a style property for a single node.
-     * @param {HTMLElement} node The input node.
-     * @param {string} [style] The style name.
-     * @returns {string|CSSStyleDeclaration} The style value.
-     */
-    _getStyle(node, style) {
-        if (!style) {
-            return node.style;
+    _css(node, style) {
+        if (!this._styles.has(node)) {
+            this._styles.set(
+                node,
+                DOMNode.css(node)
+            );
         }
 
-        return node.style[style];
+        if (!style) {
+            return this._styles.get(node);
+        }
+
+        return this._styles.get(node)
+            .getPropertyValue(style);
     },
 
     /**
@@ -51,19 +32,18 @@ Object.assign(DOM, {
      * @param {object} styles An object containing styles.
      * @param {Boolean} [important] Whether the style should be !important.
      */
-    _setStyle(node, style, value, important) {
-        // if value is numeric and not a number property, add px
-        if (value && Core.isNumeric(value) && !this.cssNumberProperties.includes(style)) {
-            value += 'px';
-        }
+    _setStyle(node, styles, important) {
+        for (let style in styles) {
+            let value = styles[style];
+            style = Core.snakeCase(style);
 
-        node.style.setProperty(
-            style,
-            value,
-            important ?
-                'important' :
-                ''
-        );
+            // if value is numeric and not a number property, add px
+            if (value && Core.isNumeric(value) && !this.cssNumberProperties.includes(style)) {
+                value += 'px';
+            }
+
+            DOMNode.setStyle(node, style, value, important);
+        }
     }
 
 });

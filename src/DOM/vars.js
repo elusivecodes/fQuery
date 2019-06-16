@@ -31,6 +31,14 @@
 
 Object.assign(DOM, {
 
+    _animating: false,
+    _animations: new Map,
+    _queues: new WeakMap,
+
+    _data: new WeakMap,
+    _events: new WeakMap,
+    _styles: new WeakMap,
+
     // Default AJAX options
     ajaxDefaults: {
         beforeSend: false,

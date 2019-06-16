@@ -28,6 +28,7 @@
     // {{code}}
     return {
         DOM,
+        DOMNode,
         dom: new DOM
     };
 

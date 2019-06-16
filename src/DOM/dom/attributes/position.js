@@ -35,10 +35,10 @@ Object.assign(DOM.prototype, {
             return;
         }
 
-        nodes = this._nodeFilter(nodes);
+        nodes = this.parseNodes(nodes);
 
         for (const node of nodes) {
-            this._constrain(node, containerBox);
+            DOM._constrain(node, containerBox);
         }
     },
 
@@ -97,7 +97,7 @@ Object.assign(DOM.prototype, {
         let closest = null,
             closestDistance = Number.MAX_VALUE;
 
-        nodes = this._nodeFilter(nodes);
+        nodes = this.parseNodes(nodes);
 
         for (const node of nodes) {
             const dist = this.distTo(node, x, y, offset);
@@ -179,13 +179,13 @@ Object.assign(DOM.prototype, {
      * @returns {object} An object with the X and Y co-ordinates.
      */
     position(nodes, offset) {
-        const node = this._nodeFind(nodes);
+        const node = this.parseNode(nodes);
 
         if (!node) {
             return;
         }
 
-        return this._position(node, offset);
+        return DOM._position(node, offset);
     },
 
     /**
@@ -195,107 +195,13 @@ Object.assign(DOM.prototype, {
      * @returns {DOMRect} The computed bounding rectangle.
      */
     rect(nodes, offset) {
-        const node = this._nodeFind(nodes);
+        const node = this.parseNode(nodes);
 
         if (!node) {
             return;
         }
 
-        return this._rect(node, offset);
-    },
-
-    /**
-     * Constrain a single node to a container box.
-     * @param {HTMLElement} node The input node.
-     * @param {DOMRect} containerBox The container box.
-     */
-    _constrain(node, containerBox) {
-        const nodeBox = this._rect(node);
-
-        const style = {};
-
-        if (nodeBox.height > containerBox.height) {
-            style.height = containerBox.height;
-        }
-
-        if (nodeBox.width > containerBox.width) {
-            style.width = containerBox.width;
-        }
-
-        let leftOffset;
-        if (nodeBox.left - containerBox.left < 0) {
-            leftOffset = nodeBox.left - containerBox.left
-        } else if (nodeBox.right - containerBox.right > 0) {
-            leftOffset = nodeBox.right - containerBox.right;
-        }
-
-        if (leftOffset) {
-            style.left = `${parseFloat(this._css(node, 'left')) - leftOffset}px`;
-        }
-
-        let topOffset;
-        if (nodeBox.top - containerBox.top < 0) {
-            topOffset = nodeBox.top - containerBox.top;
-        } else if (nodeBox.bottom - containerBox.bottom > 0) {
-            topOffset = nodeBox.bottom - containerBox.bottom;
-        }
-
-        if (topOffset) {
-            style.top = `${parseFloat(this._css(node, 'top')) - topOffset}px`;
-        }
-
-        this._setStyle(node, style);
-    },
-
-    /**
-     * Get the position of the a single node relative to the Window or Document.
-     * @param {HTMLElement} node The input node.
-     * @param {Boolean} [offset] Whether to offset from the top-left of the Document.
-     * @returns {object} An object with the X and Y co-ordinates.
-     */
-    _position(node, offset) {
-        return this.forceShow(
-            node,
-            node => {
-                const result = {
-                    x: node.offsetLeft,
-                    y: node.offsetTop
-                };
-
-                if (offset) {
-                    let offsetParent = node;
-
-                    while (offsetParent = offsetParent.offsetParent) {
-                        result.x += offsetParent.offsetLeft;
-                        result.y += offsetParent.offsetTop;
-                    }
-                }
-
-                return result;
-            }
-        );
-    },
-
-    /**
-     * Get the computed bounding rectangle of a single node.
-     * @param {HTMLElement} node The input node.
-     * @param {Boolean} [offset] Whether to offset from the top-left of the Document.
-     * @returns {DOMRect} The computed bounding rectangle.
-     */
-    _rect(node, offset) {
-        return this.forceShow(
-            node,
-            node => {
-                const result = node.getBoundingClientRect();
-
-                if (offset) {
-                    result.x += DOM._getScrollX(window);
-                    result.y += DOM._getScrollY(window);
-                }
-
-                return result;
-            }
-        );
+        return DOM._rect(node, offset);
     }
 
 });

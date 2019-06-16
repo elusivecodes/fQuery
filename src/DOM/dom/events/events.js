@@ -9,13 +9,13 @@ Object.assign(DOM.prototype, {
      * @param {string|array|HTMLElement|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
      */
     blur(nodes) {
-        const node = this._nodeFind(nodes);
+        const node = this.parseNode(nodes);
 
         if (!node) {
             return;
         }
 
-        DOM._blur(node);
+        DOMNode.blur(node);
     },
 
     /**
@@ -23,13 +23,13 @@ Object.assign(DOM.prototype, {
      * @param {string|array|HTMLElement|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
      */
     click(nodes) {
-        const node = this._nodeFind(nodes);
+        const node = this.parseNode(nodes);
 
         if (!node) {
             return;
         }
 
-        DOM._click(node);
+        DOMNode.click(node);
     },
 
     /**
@@ -37,13 +37,13 @@ Object.assign(DOM.prototype, {
      * @param {string|array|HTMLElement|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
      */
     focus(nodes) {
-        const node = this._nodeFind(nodes);
+        const node = this.parseNode(nodes);
 
         if (!node) {
             return;
         }
 
-        DOM._focus(node);
+        DOMNode.focus(node);
     },
 
     /**
@@ -56,7 +56,7 @@ Object.assign(DOM.prototype, {
             return;
         }
 
-        this._addEvent(
+        DOM._addEvent(
             window,
             'DOMContentLoaded',
             callback

@@ -1,15 +1,15 @@
 /**
- * DOM (Static) Selection
+ * DOMNode (Static) Selection
  */
 
-Object.assign(DOM, {
+Object.assign(DOMNode, {
 
     /**
      * Add a range to a selection.
      * @param {Selection} selection The input selection.
      * @param {Range} range The range to add.
      */
-    _addRange(selection, range) {
+    addRange(selection, range) {
         selection.addRange(range);
     },
 
@@ -17,8 +17,17 @@ Object.assign(DOM, {
      * Collapse a range.
      * @param {Range} range The input range.
      */
-    _collapse(range) {
+    collapse(range) {
         range.collapse();
+    },
+
+    /**
+     * Return the end container of a range.
+     * @param {Range} range The input range.
+     * @returns {HTMLElement} The end container of the range.
+     */
+    endContainer(range) {
+        return range.endContainer;
     },
 
     /**
@@ -26,7 +35,7 @@ Object.assign(DOM, {
      * @param {Range} range The input range.
      * @returns {DocumentFragment} A DocumentFragment containing the range contents.
      */
-    _extract(range) {
+    extract(range) {
         return range.extractContents();
     },
 
@@ -36,7 +45,7 @@ Object.assign(DOM, {
      * @param {number} [index=0] The index of the range to return.
      * @returns {Range} The selected range.
      */
-    _getRange(selection, index = 0) {
+    getRange(selection, index = 0) {
         return selection.getRangeAt(index);
     },
 
@@ -44,7 +53,7 @@ Object.assign(DOM, {
      * Get the current selection.
      * @returns {Selection} The current selection.
      */
-    _getSelection() {
+    getSelection() {
         return window.getSelection();
     },
 
@@ -53,15 +62,23 @@ Object.assign(DOM, {
      * @param {Range} range The input range.
      * @param {Node|HTMLElement|DocumentFragment|ShadowRoot} node The node to insert.
      */
-    _insert(range, node) {
+    insert(range, node) {
         range.insertNode(node);
+    },
+
+    /**
+     * Return the range count for a selection.
+     * @param {Selection} selection The input selection.
+     */
+    rangeCount(selection) {
+        return selection.rangeCount;
     },
 
     /**
      * Remove all ranges from a selection.
      * @param {Selection} selection The input selection.
      */
-    _removeRanges(selection) {
+    removeRanges(selection) {
         selection.removeAllRanges();
     },
 
@@ -70,7 +87,7 @@ Object.assign(DOM, {
      * @param {Range} range The input range. 
      * @param {Node|HTMLElement|DocumentFragment|ShadowRoot} node The node to select.
      */
-    _select(range, node) {
+    select(range, node) {
         range.selectNode(node);
     },
 
@@ -79,7 +96,7 @@ Object.assign(DOM, {
      * @param {Range} range The input range.
      * @param {Node|HTMLElement|DocumentFragment|ShadowRoot} node The node to end the range after.
      */
-    _setEndAfter(range, node) {
+    setEndAfter(range, node) {
         range.setEndAfter(node);
     },
 
@@ -88,8 +105,17 @@ Object.assign(DOM, {
      * @param {Range} range The input range.
      * @param {Node|HTMLElement|DocumentFragment|ShadowRoot} node The node to start the range before.
      */
-    _setStartBefore(range, node) {
+    setStartBefore(range, node) {
         range.setStartBefore(node);
+    },
+
+    /**
+     * Return the start container of a range.
+     * @param {Range} range The input range.
+     * @returns {HTMLElement} The start container of the range.
+     */
+    startContainer(range) {
+        return range.startContainer;
     }
 
 });

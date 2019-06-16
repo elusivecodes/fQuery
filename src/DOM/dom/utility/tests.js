@@ -10,9 +10,9 @@ Object.assign(DOM.prototype, {
      * @returns {Boolean} TRUE if any of the nodes has a CSS animation, otherwise FALSE.
      */
     hasAnimation(nodes) {
-        return this._nodeFilter(nodes)
+        return this.parseNodes(nodes)
             .some(node =>
-                this._hasAnimation(node)
+                DOM._hasAnimation(node)
             );
     },
 
@@ -23,9 +23,9 @@ Object.assign(DOM.prototype, {
      * @returns {Boolean} TRUE if any of the nodes has the attribute, otherwise FALSE.
      */
     hasAttribute(nodes, attribute) {
-        return this._nodeFilter(nodes)
+        return this.parseNodes(nodes)
             .some(node =>
-                DOM._hasAttribute(node, attribute)
+                DOMNode.hasAttribute(node, attribute)
             );
     },
 
@@ -35,9 +35,9 @@ Object.assign(DOM.prototype, {
      * @returns {Boolean} TRUE if the any of the nodes has child nodes, otherwise FALSE.
      */
     hasChildren(nodes) {
-        return this._nodeFilter(nodes, { fragment: true, shadow: true, document: true })
+        return this.parseNodes(nodes, { fragment: true, shadow: true, document: true })
             .some(node =>
-                DOM._hasChildren(node)
+                DOMNode.hasChildren(node)
             );
     },
 
@@ -50,10 +50,10 @@ Object.assign(DOM.prototype, {
     hasClass(nodes, ...classes) {
         classes = DOM._parseClasses(classes);
 
-        return this._nodeFilter(nodes)
+        return this.parseNodes(nodes)
             .some(node =>
                 classes.some(className =>
-                    DOM._hasClass(node, className)
+                    DOMNode.hasClass(node, className)
                 )
             );
     },
@@ -65,9 +65,9 @@ Object.assign(DOM.prototype, {
      * @returns {Boolean} TRUE if any of the nodes has custom data, otherwise FALSE.
      */
     hasData(nodes, key) {
-        return this._nodeFilter(nodes, { fragment: true, shadow: true, document: true, window: true })
+        return this.parseNodes(nodes, { fragment: true, shadow: true, document: true, window: true })
             .some(node =>
-                this._hasData(node, key)
+                DOM._hasData(node, key)
             );
     },
 
@@ -78,9 +78,9 @@ Object.assign(DOM.prototype, {
      * @returns {Boolean} TRUE if any of the nodes contains a descendent matching the filter, otherwise FALSE.
      */
     hasDescendent(nodes, filter) {
-        filter = this._parseFilterContains(filter);
+        filter = this.parseFilterContains(filter);
 
-        return this._nodeFilter(nodes, { fragment: true, shadow: true, document: true })
+        return this.parseNodes(nodes, { fragment: true, shadow: true, document: true })
             .some(node =>
                 !filter ||
                 filter(node)
@@ -93,7 +93,7 @@ Object.assign(DOM.prototype, {
      * @returns {Boolean} TRUE if any of the nodes has a DocumentFragment, otherwise FALSE.
      */
     hasFragment(nodes) {
-        return this._nodeFilter(nodes)
+        return this.parseNodes(nodes)
             .some(node =>
                 DOM._hasFragment(node)
             );
@@ -106,9 +106,9 @@ Object.assign(DOM.prototype, {
      * @returns {Boolean} TRUE if any of the nodes has the property, otherwise FALSE.
      */
     hasProperty(nodes, property) {
-        return this._nodeFilter(nodes)
+        return this.parseNodes(nodes)
             .some(node =>
-                DOM._hasProperty(node, property)
+                DOMNode.hasProperty(node, property)
             );
     },
 
@@ -118,9 +118,9 @@ Object.assign(DOM.prototype, {
      * @returns {Boolean} TRUE if any of the nodes has a ShadowRoot, otherwise FALSE.
      */
     hasShadow(nodes) {
-        return this._nodeFilter(nodes)
+        return this.parseNodes(nodes)
             .some(node =>
-                DOM._hasFragment(node)
+                DOM._hasShadow(node)
             );
     },
 
@@ -130,9 +130,9 @@ Object.assign(DOM.prototype, {
      * @returns {Boolean} TRUE if any of the nodes has a CSS transition, otherwise FALSE.
      */
     hasTransition(nodes) {
-        return this._nodeFilter(nodes)
+        return this.parseNodes(nodes)
             .some(node =>
-                this._hasTransition(node)
+                DOM._hasTransition(node)
             );
     },
 
@@ -143,9 +143,9 @@ Object.assign(DOM.prototype, {
      * @returns {Boolean} TRUE if any of the nodes matches the filter, otherwise FALSE.
      */
     is(nodes, filter) {
-        filter = this._parseFilter(filter);
+        filter = this.parseFilter(filter);
 
-        return this._nodeFilter(nodes, { node: true, fragment: true, shadow: true })
+        return this.parseNodes(nodes, { node: true, fragment: true, shadow: true })
             .some(node =>
                 !filter ||
                 filter(node)
@@ -158,8 +158,8 @@ Object.assign(DOM.prototype, {
      * @returns {Boolean} TRUE if any of the nodes is connected to the DOM, otherwise FALSE.
      */
     isConnected(nodes) {
-        return this._nodeFilter(nodes, { node: true, fragment: true, shadow: true })
-            .some(node => DOM._isConnected(node));
+        return this.parseNodes(nodes, { node: true, fragment: true, shadow: true })
+            .some(node => DOMNode.isConnected(node));
     },
 
     /**
@@ -169,11 +169,11 @@ Object.assign(DOM.prototype, {
      * @returns {Boolean} TRUE if any of the nodes is considered equal to any of the other nodes, otherwise FALSE.
      */
     isEqual(nodes, others) {
-        others = this._nodeFilter(others, { node: true, fragment: true, shadow: true });
+        others = this.parseNodes(others, { node: true, fragment: true, shadow: true });
 
-        return this._nodeFilter(nodes, { node: true, fragment: true, shadow: true })
+        return this.parseNodes(nodes, { node: true, fragment: true, shadow: true })
             .some(node =>
-                others.some(other => DOM._isEqual(node, other))
+                others.some(other => DOMNode.isEqual(node, other))
             );
     },
 
@@ -183,13 +183,13 @@ Object.assign(DOM.prototype, {
      * @returns {Boolean} TRUE if any of the nodes is "fixed", otherwise FALSE.
      */
     isFixed(nodes) {
-        return this._nodeFilter(nodes, { node: true, fragment: true, shadow: true })
+        return this.parseNodes(nodes, { node: true, fragment: true, shadow: true })
             .some(node =>
-                (Core.isElement(node) && this._css(node, 'position') === 'fixed') ||
-                this._parents(
+                (Core.isElement(node) && DOM._css(node, 'position') === 'fixed') ||
+                DOM._parents(
                     node,
                     parent =>
-                        this._css(parent, 'position') === 'fixed',
+                        DOM._css(parent, 'position') === 'fixed',
                     false,
                     true
                 ).length
@@ -202,9 +202,9 @@ Object.assign(DOM.prototype, {
      * @returns {Boolean} TRUE if any of the nodes is hidden, otherwise FALSE.
      */
     isHidden(nodes) {
-        return this._nodeFilter(nodes, { node: true, document: true, window: true })
+        return this.parseNodes(nodes, { node: true, document: true, window: true })
             .some(node =>
-                !this._isVisible(node)
+                !DOM._isVisible(node)
             );
     },
 
@@ -215,11 +215,11 @@ Object.assign(DOM.prototype, {
      * @returns {Boolean} TRUE if any of the nodes is considered identical to any of the other nodes, otherwise FALSE.
      */
     isSame(nodes, others) {
-        others = this._nodeFilter(others, { node: true, fragment: true, shadow: true });
+        others = this.parseNodes(others, { node: true, fragment: true, shadow: true });
 
-        return this._nodeFilter(nodes, { node: true, fragment: true, shadow: true })
+        return this.parseNodes(nodes, { node: true, fragment: true, shadow: true })
             .some(node =>
-                others.some(other => DOM._isSame(node, other))
+                others.some(other => DOMNode.isSame(node, other))
             );
     },
 
@@ -229,65 +229,10 @@ Object.assign(DOM.prototype, {
      * @returns {Boolean} TRUE if any of the nodes is visible, otherwise FALSE.
      */
     isVisible(nodes) {
-        return this._nodeFilter(nodes, { node: true, fragment: true, shadow: true, document: true, window: true })
+        return this.parseNodes(nodes, { node: true, fragment: true, shadow: true, document: true, window: true })
             .some(node =>
-                this._isVisible(node)
+                DOM._isVisible(node)
             );
-    },
-
-    /**
-     * Returns true if a single node has a CSS animation.
-     * @param {HTMLElement} node The input node.
-     * @returns {Boolean} TRUE if the node has a CSS animation, otherwise FALSE.
-     */
-    _hasAnimation(node) {
-        return !!parseFloat(
-            this._css(node, 'animation-duration')
-        );
-    },
-
-    /**
-     * Returns true if a single node has custom data.
-     * @param {HTMLElement|DocumentFragment|ShadowRoot|Document|Window} node The input node.
-     * @param {string} [key] The data key.
-     * @returns {Boolean} TRUE if the node has custom data, otherwise FALSE.
-     */
-    _hasData(node, key) {
-        return this._data.has(node) &&
-            (
-                !key ||
-                this._data.get(node)
-                    .hasOwnProperty(key)
-            );
-    },
-
-    /**
-     * Returns true if a single node has a CSS transition.
-     * @param {HTMLElement} node The input node.
-     * @returns {Boolean} TRUE if the node has a CSS transition, otherwise FALSE.
-     */
-    _hasTransiton(node) {
-        return !!parseFloat(
-            this._css(node, 'transition-duration')
-        );
-    },
-
-    /**
-     * Returns true if a single node is visible.
-     * @param {HTMLElement|Document|Window} node The input node.
-     * @returns {Boolean} TRUE if the node is visible, otherwise FALSE.
-     */
-    _isVisible(node) {
-        if (Core.isWindow(node)) {
-            return DOM._isVisibleWindow(node);
-        }
-
-        if (Core.isDocument(node)) {
-            return DOM._isVisibleDocument(node);
-        }
-
-        return DOM._isVisible(node);
     }
-
 
 });

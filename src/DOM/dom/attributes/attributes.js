@@ -11,13 +11,13 @@ Object.assign(DOM.prototype, {
      * @returns {string} The attribute value.
      */
     getAttribute(nodes, attribute) {
-        const node = this._nodeFind(nodes);
+        const node = this.parseNode(nodes);
 
         if (!node) {
             return;
         }
 
-        return DOM._getAttribute(node, attribute);
+        return DOMNode.getAttribute(node, attribute);
     },
 
     /**
@@ -27,13 +27,13 @@ Object.assign(DOM.prototype, {
      * @returns {string|DOMStringMap} The dataset value.
      */
     getDataset(nodes, key) {
-        const node = this._nodeFind(nodes);
+        const node = this.parseNode(nodes);
 
         if (!node) {
             return;
         }
 
-        return DOM._getDataset(node, key);
+        return DOMNode.getDataset(node, key);
     },
 
     /**
@@ -55,13 +55,13 @@ Object.assign(DOM.prototype, {
      * @returns {string} The property value.
      */
     getProperty(nodes, property) {
-        const node = this._nodeFind(nodes);
+        const node = this.parseNode(nodes);
 
         if (!node) {
             return;
         }
 
-        return DOM._getProperty(node, property);
+        return DOMNode.getProperty(node, property);
     },
 
     /**
@@ -94,10 +94,10 @@ Object.assign(DOM.prototype, {
      * @param {string} attribute The attribute name.
      */
     removeAttribute(nodes, attribute) {
-        nodes = this._nodeFilter(nodes);
+        nodes = this.parseNodes(nodes);
 
         for (const node of nodes) {
-            DOM._removeAttribute(node, attribute);
+            DOMNode.removeAttribute(node, attribute);
         }
     },
 
@@ -107,10 +107,10 @@ Object.assign(DOM.prototype, {
      * @param {string} property The property name.
      */
     removeProperty(nodes, property) {
-        nodes = this._nodeFilter(nodes);
+        nodes = this.parseNodes(nodes);
 
         for (const node of nodes) {
-            DOM._removeProperty(node, property);
+            DOMNode.removeProperty(node, property);
         }
     },
 
@@ -121,12 +121,12 @@ Object.assign(DOM.prototype, {
      * @param {string} [value] The attribute value.
      */
     setAttribute(nodes, attribute, value) {
-        nodes = this._nodeFilter(nodes);
+        nodes = this.parseNodes(nodes);
 
         const attributes = DOM._parseData(attribute, value);
 
         for (const node of nodes) {
-            this._setAttribute(node, attributes);
+            DOM._setAttribute(node, attributes);
         }
     },
 
@@ -137,12 +137,12 @@ Object.assign(DOM.prototype, {
      * @param {string} [value] The dataset value.
      */
     setDataset(nodes, key, value) {
-        nodes = this._nodeFilter(nodes);
+        nodes = this.parseNodes(nodes);
 
         const dataset = DOM._parseData(key, value);
 
         for (const node of nodes) {
-            DOM._setDataset(node, dataset);
+            DOMNode.setDataset(node, dataset);
         }
     },
 
@@ -168,12 +168,12 @@ Object.assign(DOM.prototype, {
      * @param {string} [value] The property value.
      */
     setProperty(nodes, property, value) {
-        nodes = this._nodeFilter(nodes);
+        nodes = this.parseNodes(nodes);
 
         const properties = DOM._parseData(property, value);
 
         for (const node of nodes) {
-            DOM._setProperty(node, properties);
+            DOMNode.setProperty(node, properties);
         }
     },
 
@@ -203,21 +203,6 @@ Object.assign(DOM.prototype, {
             'value',
             value
         );
-    },
-
-    /**
-     * Set an attribute value for a single node.
-     * @param {HTMLElement} node The input node.
-     * @param {object} attributes An object containing attributes.
-     */
-    _setAttribute(node, attributes) {
-        for (const key in attributes) {
-            DOM._setAttribute(
-                node,
-                key,
-                attributes[key]
-            );
-        }
     }
 
 });

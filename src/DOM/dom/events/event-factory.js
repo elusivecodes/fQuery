@@ -28,13 +28,13 @@ Object.assign(DOM.prototype, {
             }
 
             if (move) {
-                this._addEvent(window, 'mousemove', move);
+                DOM._addEvent(window, 'mousemove', move);
             }
 
             if (move || up) {
-                this._addEvent(window, 'mouseup', e => {
+                DOM._addEvent(window, 'mouseup', e => {
                     if (move) {
-                        this._removeEvent(window, 'mousemove', move);
+                        DOM._removeEvent(window, 'mousemove', move);
                     }
 
                     if (up) {
@@ -43,103 +43,6 @@ Object.assign(DOM.prototype, {
                 }, false, true);
             }
         };
-    },
-
-    /**
-     * Return a wrapped event callback that executes on a delegate selector.
-     * @param {HTMLElement|ShadowRoot|Document} node The input node.
-     * @param {string} selector The delegate query selector.
-     * @param {function} callback The event callback.
-     * @returns {DOM~eventCallback} The delegated event callback.
-     */
-    _delegateFactory(node, selector, callback) {
-        const getDelegate = selector.match(DOM.complexRegex) ?
-            this._getDelegateContainsFactory(node, selector) :
-            this._getDelegateMatchFactory(node, selector);
-
-        return e => {
-            if (DOM._isSame(e.target, node)) {
-                return;
-            }
-
-            const delegate = getDelegate(e.target);
-
-            if (!delegate) {
-                return;
-            }
-
-            e.delegateTarget = delegate;
-
-            return callback(e);
-        };
-    },
-
-    /**
-     * Return a function for matching a delegate target to a custom selector.
-     * @param {HTMLElement} node The input node.
-     * @param {string} selector The delegate query selector.
-     * @returns {DOM~delegateCallback} The callback for finding the matching delegate.
-     */
-    _getDelegateContainsFactory(node, selector) {
-        selector = DOM._prefixSelectors(selectors, `#${DOM._tempId}`);
-
-        return target => {
-            const matches = Core.merge(
-                [],
-                this.__findByCustom(selector, node)
-            );
-
-            if (!matches.length) {
-                return false;
-            }
-
-            if (matches.includes(target)) {
-                return target;
-            }
-
-            return this._parents(
-                target,
-                parent => matches.contains(parent),
-                parent => DOM._isSame(node, parent),
-                true
-            ).shift();
-        };
-    },
-
-    /**
-     * Return a function for matching a delegate target to a standard selector.
-     * @param {HTMLElement|ShadowRoot|Document} node The input node.
-     * @param {string} selector The delegate query selector.
-     * @returns {DOM~delegateCallback} The callback for finding the matching delegate.
-     */
-    _getDelegateMatchFactory(node, selector) {
-        return target =>
-            DOM._is(target, selector) ?
-                target :
-                this._parents(
-                    target,
-                    parent => DOM._is(parent, selector),
-                    parent => DOM._isSame(node, parent),
-                    true
-                ).shift();
-    },
-
-    /**
-     * Return a wrapped event callback that removes itself after execution.
-     * @param {HTMLElement|ShadowRoot|Document|Window} node The input node.
-     * @param {string} events The event names.
-     * @param {string} delegate The delegate selector.
-     * @param {DOM~eventCallback} callback The callback to execute.
-     */
-    _selfDestructFactory(node, events, delegate, callback) {
-        const realCallback = e => {
-            delegate ?
-                this._removeEvent(node, events, callback, delegate) :
-                this._removeEvent(node, events, realCallback);
-            return callback(e);
-        };
-
-        return realCallback;
     }
 
 });

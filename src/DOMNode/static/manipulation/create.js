@@ -1,8 +1,8 @@
 /**
- * DOM (Static) Create
+ * DOMNode (Static) Create
  */
 
-Object.assign(DOM, {
+Object.assign(DOMNode, {
 
     /**
      * Attach a shadow DOM tree to a single node.
@@ -10,7 +10,7 @@ Object.assign(DOM, {
      * @param {Boolean} [open=true] Whether the elements are accessible from JavaScript outside the root.
      * @returns {ShadowRoot} The new ShadowRoot.
      */
-    _attachShadow(node, open = true) {
+    attachShadow(node, open = true) {
         return node.attachShadow({
             mode: open ?
                 'open' :
@@ -24,7 +24,7 @@ Object.assign(DOM, {
      * @param {Boolean} deep Whether to deep clone the node.
      * @returns {Node} The cloned node.
      */
-    _clone(node, deep) {
+    clone(node, deep) {
         return node.cloneNode(deep);
     },
 
@@ -34,7 +34,7 @@ Object.assign(DOM, {
      * @param {string} tagName The type of HTML element to create.
      * @returns {HTMLElement} The new element.
      */
-    _create(context, tagName) {
+    create(context, tagName) {
         return context.createElement(tagName);
     },
 
@@ -44,7 +44,7 @@ Object.assign(DOM, {
      * @param {string} comment The comment contents.
      * @returns {Node} The new comment node.
      */
-    _createComment(context, comment) {
+    createComment(context, comment) {
         return context.createCommentNode(comment);
     },
 
@@ -53,7 +53,7 @@ Object.assign(DOM, {
      * @param {Document} context The document context.
      * @returns {DocumentFragment} The new DocumentFragment.
      */
-    _createFragment(context) {
+    createFragment(context) {
         return context.createDocumentFragment();
     },
 
@@ -62,7 +62,7 @@ Object.assign(DOM, {
      * @param {Document} context The document context.
      * @returns {Range} The new range.
      */
-    _createRange(context) {
+    createRange(context) {
         return context.createRange();
     },
 
@@ -72,7 +72,7 @@ Object.assign(DOM, {
      * @param {string} text The text contents.
      * @returns {Node} The new text node.
      */
-    _createText(context, text) {
+    createText(context, text) {
         return context.createTextNode(text);
     }
 

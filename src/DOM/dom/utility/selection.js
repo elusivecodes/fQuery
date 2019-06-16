@@ -9,21 +9,21 @@ Object.assign(DOM.prototype, {
      * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector or HTML string.
      */
     afterSelection(nodes) {
-        nodes = this._nodeFilter(nodes, { node: true, fragment: true, shadow: true, html: true });
+        nodes = this.parseNodes(nodes, { node: true, fragment: true, shadow: true, html: true });
 
-        const selection = DOM._getSelection();
+        const selection = DOMNode.getSelection();
 
-        if (!selection.rangeCount) {
+        if (!DOMNode.rangeCount(selection)) {
             return;
         }
 
-        const range = DOM._getRange(selection);
+        const range = DOMNode.getRange(selection);
 
-        DOM._removeRanges(selection);
-        DOM._collapse(range);
+        DOMNode.removeRanges(selection);
+        DOMNode.collapse(range);
 
         for (const node of nodes) {
-            DOM._insert(range, node);
+            DOMNode.insert(range, node);
         }
     },
 
@@ -32,20 +32,20 @@ Object.assign(DOM.prototype, {
      * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector or HTML string.
      */
     beforeSelection(nodes) {
-        nodes = this._nodeFilter(nodes, { node: true, fragment: true, shadow: true, html: true });
+        nodes = this.parseNodes(nodes, { node: true, fragment: true, shadow: true, html: true });
 
-        const selection = DOM._getSelection();
+        const selection = DOMNode.getSelection();
 
-        if (!selection.rangeCount) {
+        if (!DOMNode.rangeCount(selection)) {
             return;
         }
 
-        const range = DOM._getRange(selection);
+        const range = DOMNode.getRange(selection);
 
-        DOM._removeRanges(selection);
+        DOMNode.removeRanges(selection);
 
         for (const node of nodes) {
-            DOM._insert(range, node);
+            DOMNode.insert(range, node);
         }
     },
 
@@ -54,19 +54,19 @@ Object.assign(DOM.prototype, {
      * @returns {array} The selected nodes.
      */
     extractSelection() {
-        const selection = DOM._getSelection();
+        const selection = DOMNode.getSelection();
 
-        if (!selection.rangeCount) {
+        if (!DOMNode.rangeCount(selection)) {
             return [];
         }
 
-        const range = DOM._getRange(selection);
+        const range = DOMNode.getRange(selection);
 
-        DOM._removeRanges(selection);
+        DOMNode.removeRanges(selection);
 
-        const fragment = DOM._extract(range);
+        const fragment = DOMNode.extract(range);
 
-        return Core.merge([], DOM._childNodes(fragment));
+        return Core.merge([], DOMNode.childNodes(fragment));
     },
 
     /**
@@ -74,18 +74,17 @@ Object.assign(DOM.prototype, {
      * @returns {array} The selected nodes.
      */
     getSelection() {
-        const selection = DOM._getSelection();
+        const selection = DOMNode.getSelection();
 
-        if (!selection.rangeCount) {
+        if (!DOMNode.rangeCount(selection)) {
             return [];
         }
 
-        const range = DOM._getRange(selection);
-
-        const nodes = Core.merge(
-            [],
-            DOM._findBySelector('*', range.commonAncestorContainer)
-        );
+        const range = DOMNode.getRange(selection),
+            nodes = Core.merge(
+                [],
+                DOMNode.findBySelector('*', range.commonAncestorContainer)
+            );
 
         if (!nodes.length) {
             return [range.commonAncestorContainer];
@@ -95,13 +94,14 @@ Object.assign(DOM.prototype, {
             return nodes;
         }
 
-        const start = Core.isElement(range.startContainer) ?
-            range.startContainer :
-            DOM._parent(range.startContainer).shift();
-
-        const end = Core.isElement(range.endContainer) ?
-            range.endContainer :
-            DOM._parent(range.endContainer).shift();
+        const startContainer = DOMNode.startContainer(range),
+            endContainer = DOMNode.endContainer(range),
+            start = Core.isElement(startContainer) ?
+                startContainer :
+                DOMNode.parent(startContainer).shift(),
+            end = Core.isElement(endContainer) ?
+                endContainer :
+                DOMNode.parent(endContainer).shift();
 
         return nodes.slice(
             nodes.indexOf(start),
@@ -114,16 +114,16 @@ Object.assign(DOM.prototype, {
      * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
      */
     select(nodes) {
-        const node = this._nodeFind(nodes, { node: true, fragment: true, shadow: true });
+        const node = this.parseNode(nodes, { node: true, fragment: true, shadow: true });
 
         if (node && 'select' in node) {
             return node.select();
         }
 
-        const selection = DOM._getSelection();
+        const selection = DOMNode.getSelection();
 
-        if (selection.rangeCount > 0) {
-            DOM._removeRanges(selection);
+        if (DOMNode.rangeCount(selection) > 0) {
+            DOMNode.removeRanges(selection);
         }
 
         if (!node) {
@@ -131,8 +131,8 @@ Object.assign(DOM.prototype, {
         }
 
         const range = this.createRange();
-        DOM._select(range, node);
-        DOM._addRange(selection, range);
+        DOMNode.select(range, node);
+        DOMNode.addRange(selection, range);
     },
 
     /**
@@ -142,10 +142,10 @@ Object.assign(DOM.prototype, {
     selectAll(nodes) {
         nodes = this.sort(nodes);
 
-        const selection = DOM._getSelection();
+        const selection = DOMNode.getSelection();
 
-        if (selection.rangeCount) {
-            DOM._removeRanges(selection);
+        if (DOMNode.rangeCount(selection)) {
+            DOMNode.removeRanges(selection);
         }
 
         if (!nodes.length) {
@@ -155,13 +155,13 @@ Object.assign(DOM.prototype, {
         const range = this.createRange();
 
         if (nodes.length == 1) {
-            DOM._select(range, nodes.shift());
+            DOMNode.select(range, nodes.shift());
         } else {
-            DOM._setStartBefore(range, nodes.shift());
-            DOM._setEndAfter(range, nodes.pop());
+            DOMNode.setStartBefore(range, nodes.shift());
+            DOMNode.setEndAfter(range, nodes.pop());
         }
 
-        DOM._addRange(selection, range);
+        DOMNode.addRange(selection, range);
     },
 
     /**
@@ -171,29 +171,28 @@ Object.assign(DOM.prototype, {
     wrapSelection(nodes) {
 
         // ShadowRoot nodes can not be cloned
-        nodes = this._nodeFilter(nodes, { fragment: true, html: true });
+        nodes = this.parseNodes(nodes, { fragment: true, html: true });
 
-        const selection = window.getSelection();
+        const selection = DOMNode.getSelection();
 
-        if (!selection.rangeCount) {
+        if (!DOMNode.rangeCount(selection)) {
             return;
         }
 
-        const range = selection.getRangeAt(0);
+        const range = DOMNode.getRange(selection);
 
-        selection.removeAllRanges();
+        DOMNode.removeRanges(selection);
 
-        const fragment = DOM._extract(range);
-
-        const deepest = this._deepest(nodes.slice().shift()),
-            children = Core.merge([], DOM._childNodes(fragment));
+        const fragment = DOMNode.extract(range),
+            deepest = DOM._deepest(nodes.slice().shift()),
+            children = Core.merge([], DOMNode.childNodes(fragment));
 
         for (const child of children) {
-            DOM._insertBefore(deepest, child);
+            DOMNode.insertBefore(deepest, child);
         }
 
         for (const node of nodes) {
-            DOM._insert(range, node);
+            DOMNode.insert(range, node);
         }
     }
 

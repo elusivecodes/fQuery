@@ -10,7 +10,7 @@ Object.assign(DOM.prototype, {
      * @param {...string|string[]} classes The classes.
      */
     addClass(nodes, ...classes) {
-        nodes = this._nodeFilter(nodes);
+        nodes = this.parseNodes(nodes);
 
         classes = DOM._parseClasses(classes);
 
@@ -19,7 +19,7 @@ Object.assign(DOM.prototype, {
         }
 
         for (const node of nodes) {
-            DOM._addClass(node, ...classes);
+            DOMNode.addClass(node, ...classes);
         }
     },
 
@@ -30,13 +30,13 @@ Object.assign(DOM.prototype, {
      * @returns {string|CSSStyleDeclaration} The CSS style value.
      */
     css(nodes, style) {
-        const node = this._nodeFind(nodes);
+        const node = this.parseNode(nodes);
 
         if (!node) {
             return;
         }
 
-        return this._css(node, style);
+        return DOM._css(node, style);
     },
 
     /**
@@ -46,7 +46,7 @@ Object.assign(DOM.prototype, {
      * @returns {string|CSSStyleDeclaration} The style value.
      */
     getStyle(nodes, style) {
-        const node = this._nodeFind(nodes);
+        const node = this.parseNode(nodes);
 
         if (!node) {
             return;
@@ -54,7 +54,7 @@ Object.assign(DOM.prototype, {
 
         style = Core.snakeCase(style);
 
-        return DOM._getStyle(node, style);
+        return DOMNode.getStyle(node, style);
     },
 
     /**
@@ -75,7 +75,7 @@ Object.assign(DOM.prototype, {
      * @param {...string|string[]} classes The classes.
      */
     removeClass(nodes, ...classes) {
-        nodes = this._nodeFilter(nodes);
+        nodes = this.parseNodes(nodes);
 
         classes = DOM._parseClasses(classes);
 
@@ -84,7 +84,7 @@ Object.assign(DOM.prototype, {
         }
 
         for (const node of nodes) {
-            DOM._removeClass(node, ...classes);
+            DOMNode.removeClass(node, ...classes);
         }
     },
 
@@ -96,12 +96,12 @@ Object.assign(DOM.prototype, {
      * @param {Boolean} [important] Whether the style should be !important.
      */
     setStyle(nodes, style, value, important) {
-        nodes = this._nodeFilter(nodes);
+        nodes = this.parseNodes(nodes);
 
         const styles = DOM._parseData(style, value);
 
         for (const node of nodes) {
-            this._setStyle(node, styles, important);
+            DOM._setStyle(node, styles, important);
         }
     },
 
@@ -122,12 +122,12 @@ Object.assign(DOM.prototype, {
      * @param {string|array|HTMLElement|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
      */
     toggle(nodes) {
-        nodes = this._nodeFilter(nodes);
+        nodes = this.parseNodes(nodes);
 
         for (const node of nodes) {
-            DOM._getStyle(node, 'display') === 'none' ?
-                DOM._setStyle(node, 'display', '') :
-                DOM._setStyle(node, 'display', 'none');
+            DOMNode.getStyle(node, 'display') === 'none' ?
+                DOMNode.setStyle(node, 'display', '') :
+                DOMNode.setStyle(node, 'display', 'none');
         }
     },
 
@@ -137,7 +137,7 @@ Object.assign(DOM.prototype, {
      * @param {...string|string[]} classes The classes.
      */
     toggleClass(nodes, ...classes) {
-        nodes = this._nodeFilter(nodes);
+        nodes = this.parseNodes(nodes);
 
         classes = DOM._parseClasses(classes);
 
@@ -146,44 +146,7 @@ Object.assign(DOM.prototype, {
         }
 
         for (const node of nodes) {
-            DOM._toggleClass(node, ...classes);
-        }
-    },
-
-    /**
-     * Get a computed CSS style value for a single node.
-     * @param {HTMLElement} node The input node.
-     * @param {string} [style] The CSS style name.
-     * @returns {string|CSSStyleDeclaration} The CSS style value.
-     */
-    _css(node, style) {
-        if (!this._styles.has(node)) {
-            this._styles.set(
-                node,
-                window.getComputedStyle(node)
-            );
-        }
-
-        if (!style) {
-            return this._styles.get(node);
-        }
-
-        return this._styles.get(node)
-            .getPropertyValue(style);
-    },
-
-    /**
-     * Set style properties for a single node.
-     * @param {HTMLElement} node The input node.
-     * @param {object} styles An object containing styles.
-     * @param {Boolean} [important] Whether the style should be !important.
-     */
-    _setStyle(node, styles, important) {
-        for (let style in styles) {
-            let value = styles[style];
-            style = Core.snakeCase(style);
-
-            DOM._setStyle(node, style, value, important);
+            DOMNode.toggleClass(node, ...classes);
         }
     }
 

@@ -27,11 +27,28 @@ Object.assign(DOM.prototype, {
 
         // custom selector
         if (selector.match(DOM.complexRegex)) {
-            return this._findByCustom(selector, nodes);
+            const selectors = DOM._prefixSelectors(selector, `#${DOM.tempId} `);
+
+            if (Core.isElement(nodes)) {
+                return DOM.__findByCustom(selectors, nodes);
+            }
+
+            nodes = this.parseNodes(nodes);
+
+            return DOM._findByCustom(selectors, nodes);
         }
 
         // standard selector
-        return this._findBySelector(selector, nodes);
+        if (Core.isDocument(nodes) || Core.isElement(nodes) || Core.isFragment(nodes) || Core.isShadow(nodes)) {
+            return Core.merge(
+                [],
+                DOMNode.findBySelector(selector, nodes)
+            );
+        }
+
+        nodes = this.parseNodes(nodes, { fragment: true, shadow: true, document: true });
+
+        return DOM._findBySelector(selector, nodes);
     },
 
     /**
@@ -42,17 +59,17 @@ Object.assign(DOM.prototype, {
      */
     findByClass(className, nodes = this._context) {
         if (Core.isDocument(nodes) || Core.isElement(nodes) || Core.isFragment(nodes) || Core.isShadow(nodes)) {
-            return Core.merge([], DOM._findByClass(className, nodes));
+            return Core.merge([], DOMNode.findByClass(className, nodes));
         }
 
-        nodes = this._nodeFilter(nodes, { fragment: true, shadow: true, document: true });
+        nodes = this.parseNodes(nodes, { fragment: true, shadow: true, document: true });
 
         const results = [];
 
         for (const node of nodes) {
             Core.merge(
                 results,
-                DOM._findByClass(className, node)
+                DOMNode.findByClass(className, node)
             )
         }
 
@@ -85,17 +102,17 @@ Object.assign(DOM.prototype, {
      */
     findByTag(tagName, nodes = this._context) {
         if (Core.isDocument(nodes) || Core.isElement(nodes) || Core.isFragment(nodes) || Core.isShadow(nodes)) {
-            return Core.merge([], DOM._findByTag(tagName, nodes));
+            return Core.merge([], DOMNode.findByTag(tagName, nodes));
         }
 
-        nodes = this._nodeFilter(nodes, { fragment: true, shadow: true, document: true });
+        nodes = this.parseNodes(nodes, { fragment: true, shadow: true, document: true });
 
         const results = [];
 
         for (const node of nodes) {
             Core.merge(
                 results,
-                DOM._findByTag(tagName, node)
+                DOMNode.findByTag(tagName, node)
             )
         }
 
@@ -127,11 +144,25 @@ Object.assign(DOM.prototype, {
 
         // custom selector
         if (selector.match(DOM.complexRegex)) {
-            return this._findOneByCustom(selector, nodes);
+            const selectors = DOM._prefixSelectors(selector, `#${DOM.tempId} `);
+
+            if (Core.isElement(nodes)) {
+                return DOM.__findOneByCustom(selectors, nodes);
+            }
+
+            nodes = this.parseNodes(nodes);
+
+            return DOM._findOneByCustom(selectors, nodes);
         }
 
         // standard selector
-        return this._findOneBySelector(selector, nodes);
+        if (Core.isDocument(nodes) || Core.isElement(nodes) || Core.isFragment(nodes) || Core.isShadow(nodes)) {
+            return DOMNode.findOneBySelector(selector, nodes);
+        }
+
+        nodes = this.parseNodes(nodes, { fragment: true, shadow: true, document: true });
+
+        return DOM._findOneBySelector(selector, nodes);
     },
 
     /**
@@ -142,13 +173,13 @@ Object.assign(DOM.prototype, {
      */
     findOneByClass(className, nodes = this._context) {
         if (Core.isDocument(nodes) || Core.isElement(nodes) || Core.isFragment(nodes) || Core.isShadow(nodes)) {
-            return DOM._findByClass(className, nodes).item(0);
+            return DOMNode.findByClass(className, nodes).item(0);
         }
 
-        nodes = this._nodeFilter(nodes, { fragment: true, shadow: true, document: true });
+        nodes = this.parseNodes(nodes, { fragment: true, shadow: true, document: true });
 
         for (const node of nodes) {
-            const result = DOM._findByClass(className, node).item(0);
+            const result = DOMNode.findByClass(className, node).item(0);
             if (result) {
                 return result;
             }
@@ -164,7 +195,7 @@ Object.assign(DOM.prototype, {
      * @returns {HTMLElement} The matching element.
      */
     findOneById(id, nodes = this._context) {
-        const result = DOM._findById(id, this._context);
+        const result = DOMNode.findById(id, this._context);
 
         if (!result) {
             return null;
@@ -175,16 +206,16 @@ Object.assign(DOM.prototype, {
         }
 
         if (Core.isElement(nodes)) {
-            if (DOM._contains(nodes, result)) {
+            if (DOMNode.contains(nodes, result)) {
                 return result;
             }
 
             return null;
         }
 
-        nodes = DOM._nodeFilter(nodes);
+        nodes = this.parseNodes(nodes);
 
-        if (nodes.some(node => DOM._contains(node, result))) {
+        if (nodes.some(node => DOMNode.contains(node, result))) {
             return result;
         }
 
@@ -199,185 +230,19 @@ Object.assign(DOM.prototype, {
      */
     findOneByTag(tagName, nodes = this._context) {
         if (Core.isDocument(nodes) || Core.isElement(nodes) || Core.isFragment(nodes) || Core.isShadow(nodes)) {
-            return DOM._findByTag(tagName, nodes).item(0);
+            return DOMNode.findByTag(tagName, nodes).item(0);
         }
 
-        nodes = this._nodeFilter(nodes, { fragment: true, shadow: true, document: true });
+        nodes = this.parseNodes(nodes, { fragment: true, shadow: true, document: true });
 
         for (const node of nodes) {
-            const result = DOM._findByTag(tagName, node).item(0);
+            const result = DOMNode.findByTag(tagName, node).item(0);
             if (result) {
                 return result;
             }
         }
 
         return null;
-    },
-
-    /**
-     * Return all nodes matching a custom CSS selector.
-     * @param {string} selector The custom query selector.
-     * @param {string|array|HTMLElement|NodeList|HTMLCollection} [nodes=this._context] The input node(s), or a query selector string.
-     * @returns {array} The matching nodes.
-     */
-    _findByCustom(selector, nodes = this._context) {
-        const selectors = DOM._prefixSelectors(selector, `#${DOM.tempId} `);
-
-        const results = [];
-
-        if (Core.isElement(nodes)) {
-            this.__findByCustom(selectors, nodes, results);
-        } else {
-            nodes = this._nodeFilter(nodes);
-
-            for (const node of nodes) {
-                this.__findByCustom(selectors, node, results);
-            }
-        }
-
-        return (nodes.length > 1 || selectors.length > 1) && results.length > 1 ?
-            Core.unique(results) :
-            results;
-    },
-
-    /**
-     * Return all nodes matching a standard CSS selector.
-     * @param {string} selector The query selector.
-     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|NodeList|HTMLCollection} [nodes=this._context] The input node(s), or a query selector string.
-     * @returns {array} The matching nodes.
-     */
-    _findBySelector(selector, nodes = this._context) {
-        if (Core.isDocument(nodes) || Core.isElement(nodes) || Core.isFragment(nodes) || Core.isShadow(nodes)) {
-            return Core.merge([], DOM._findBySelector(selector, nodes));
-        }
-
-        nodes = this._nodeFilter(nodes, { fragment: true, shadow: true, document: true });
-
-        const results = [];
-
-        for (const node of nodes) {
-            Core.merge(
-                results,
-                DOM._findBySelector(selector, node)
-            );
-        }
-
-        return nodes.length > 1 && results.length > 1 ?
-            Core.unique(results) :
-            results;
-    },
-
-    /**
-     * Return a single node matching a custom CSS selector.
-     * @param {string} selector The custom query selector.
-     * @param {string|array|HTMLElement|NodeList|HTMLCollection} [nodes=this._context] The input node(s), or a query selector string.
-     * @returns {HTMLElement} The matching node.
-     */
-    _findOneByCustom(selector, nodes = this._context) {
-        const selectors = DOM._prefixSelectors(selector, `#${DOM.tempId} `);
-
-        if (Core.isElement(nodes)) {
-            return this.__findOneByCustom(selectors, nodes);
-        }
-
-        nodes = this._nodeFilter(nodes);
-
-        for (const node of nodes) {
-            const result = this.__findOneByCustom(selectors, node);
-
-            if (result) {
-                return result;
-            }
-        }
-
-        return null;
-    },
-
-    /**
-     * Return a single node matching a standard CSS selector.
-     * @param {string} selector The query selector.
-     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|NodeList|HTMLCollection} [nodes=this._context] The input node(s), or a query selector string.
-     * @returns {HTMLElement} The matching node.
-     */
-    _findOneBySelector(selector, nodes = this._context) {
-        if (Core.isDocument(nodes) || Core.isElement(nodes) || Core.isFragment(nodes) || Core.isShadow(nodes)) {
-            return DOM._findBySelector(selector, nodes).item(0);
-        }
-
-        nodes = this._nodeFilter(nodes, { fragment: true, shadow: true, document: true });
-
-        for (const node of nodes) {
-            const result = DOM._findOneBySelector(selector, node);
-            if (result) {
-                return result;
-            }
-        }
-
-        return null;
-    },
-
-    /**
-     * Return all nodes matching a custom CSS selector.
-     * @param {string} selectors The custom query selector.
-     * @param {HTMLElement} node The input node.
-     * @returns {NodeList} The matching nodes.
-     */
-    __findByCustom(selectors, node, results = []) {
-        const nodeId = DOM._getAttribute(node, 'id');
-        DOM._setAttribute(node, 'id', DOM.tempId);
-
-        const parent = DOM._parent(node);
-
-        for (const selector of selectors) {
-            Core.merge(
-                results,
-                DOM._findBySelector(selector, parent)
-            );
-        }
-
-        if (nodeId) {
-            DOM._setAttribute(node, 'id', nodeId);
-        } else {
-            DOM._removeAttribute(node, 'id');
-        }
-
-        return results;
-    },
-
-
-    /**
-     * Return a single node matching a custom CSS selector.
-     * @param {string} selectors The custom query selector.
-     * @param {HTMLElement} node The input node.
-     * @returns {HTMLElement} The matching node.
-     */
-    __findOneByCustom(selectors, node) {
-        const nodeId = DOM._getAttribute(node, 'id');
-        DOM._setAttribute(node, 'id', DOM.tempId);
-
-        const parent = DOM._parent(node);
-
-        if (!parent) {
-            return null;
-        }
-
-        let result = null;
-
-        for (const selector of selectors) {
-            result = DOM._findOneBySelector(selector, parent);
-
-            if (result) {
-                break;
-            }
-        }
-
-        if (nodeId) {
-            DOM._setAttribute(node, 'id', nodeId);
-        } else {
-            DOM._removeAttribute(node, 'id');
-        }
-
-        return result;
     }
 
 });

@@ -1,14 +1,14 @@
 /**
- * DOM (Static) Events
+ * DOMNode (Static) Events
  */
 
-Object.assign(DOM, {
+Object.assign(DOMNode, {
 
     /**
      * Trigger a blur event on a single node.
      * @param {HTMLElement} node The input node.
      */
-    _blur(node) {
+    blur(node) {
         node.blur();
     },
 
@@ -16,7 +16,7 @@ Object.assign(DOM, {
      * Trigger a click event on a single node.
      * @param {HTMLElement} node The input node.
      */
-    _click(node) {
+    click(node) {
         node.click();
     },
 
@@ -24,7 +24,7 @@ Object.assign(DOM, {
      * Trigger a focus event on a single node.
      * @param {HTMLElement} node The input node.
      */
-    _focus(node) {
+    focus(node) {
         node.focus();
     }
 

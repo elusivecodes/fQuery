@@ -11,13 +11,13 @@ Object.assign(DOM.prototype, {
      * @returns {ShadowRoot} The new ShadowRoot.
      */
     attachShadow(nodes, open = true) {
-        const node = this._nodeFind(nodes);
+        const node = this.parseNode(nodes);
 
         if (!node) {
             return;
         }
 
-        return DOM._attachShadow(node, open);
+        return DOMNode.attachShadow(node, open);
     },
 
     /**
@@ -34,25 +34,25 @@ Object.assign(DOM.prototype, {
      * @param {object} [options.dataset] An object containing dataset values.
      * @returns {HTMLElement} The new HTMLElement.
      */
-    create(tagName = 'div', options = null) {
-        const node = DOM._create(this._context, tagName);
+    create(tagName = 'div', options) {
+        const node = DOMNode.create(this._context, tagName);
 
         if (!options) {
             return node;
         }
 
         if ('html' in options) {
-            DOM._setProperty(node, {
+            DOMNode.setProperty(node, {
                 innerHTML: options.html
             });
         } else if ('text' in options) {
-            DOM._setProperty(node, {
+            DOMNode.setProperty(node, {
                 innerText: options.text
             });
         }
 
         if ('class' in options) {
-            DOM._addClass(
+            DOMNode.addClass(
                 node,
                 ...DOM._parseClasses(
                     Core.wrap(options.class)
@@ -61,25 +61,25 @@ Object.assign(DOM.prototype, {
         }
 
         if ('style' in options) {
-            this._setStyle(node, options.style);
+            DOM._setStyle(node, options.style);
         }
 
         if ('value' in options) {
-            DOM._setProperty(node, {
+            DOMNode.setProperty(node, {
                 value: options.value
             });
         }
 
         if ('attributes' in options) {
-            this._setAttribute(node, options.attributes);
+            DOM._setAttribute(node, options.attributes);
         }
 
         if ('properties' in options) {
-            DOM._setProperty(node, options.properties);
+            DOMNode.setProperty(node, options.properties);
         }
 
         if ('dataset' in options) {
-            DOM._setDataset(node, options.dataset);
+            DOMNode.setDataset(node, options.dataset);
         }
 
         return node;
@@ -91,7 +91,7 @@ Object.assign(DOM.prototype, {
      * @returns {Node} The new comment node.
      */
     createComment(comment) {
-        return DOM._createComment(this._context, comment);
+        return DOMNode.createComment(this._context, comment);
     },
 
     /**
@@ -99,7 +99,7 @@ Object.assign(DOM.prototype, {
      * @returns {DocumentFragment} The new DocumentFragment.
      */
     createFragment() {
-        return DOM._createFragment(this._context);
+        return DOMNode.createFragment(this._context);
     },
 
     /**
@@ -107,7 +107,7 @@ Object.assign(DOM.prototype, {
      * @returns {Range} The new Range.
      */
     createRange() {
-        return DOM._createRange(this._context);
+        return DOMNode.createRange(this._context);
     },
 
     /**
@@ -116,7 +116,7 @@ Object.assign(DOM.prototype, {
      * @returns {Node} The new text node.
      */
     createText(text) {
-        return DOM._createText(this._context, text);
+        return DOMNode.createText(this._context, text);
     },
 
     /**
@@ -126,7 +126,7 @@ Object.assign(DOM.prototype, {
      */
     parseHTML(html) {
         return Core.wrap(
-            DOM._children(
+            DOMNode.children(
                 this.createRange()
                     .createContextualFragment(html)
             )
