@@ -85,8 +85,7 @@ Object.assign(DOM.prototype, {
         }
 
         const range = DOMNode.getRange(selection),
-            nodes = Core.merge(
-                [],
+            nodes = Core.wrap(
                 DOMNode.findBySelector('*', range.commonAncestorContainer)
             );
 

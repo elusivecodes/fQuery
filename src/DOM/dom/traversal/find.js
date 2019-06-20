@@ -40,8 +40,7 @@ Object.assign(DOM.prototype, {
 
         // standard selector
         if (Core.isDocument(nodes) || Core.isElement(nodes) || Core.isFragment(nodes) || Core.isShadow(nodes)) {
-            return Core.merge(
-                [],
+            return Core.wrap(
                 DOMNode.findBySelector(selector, nodes)
             );
         }
@@ -59,7 +58,7 @@ Object.assign(DOM.prototype, {
      */
     findByClass(className, nodes = this._context) {
         if (Core.isDocument(nodes) || Core.isElement(nodes) || Core.isFragment(nodes) || Core.isShadow(nodes)) {
-            return Core.merge([], DOMNode.findByClass(className, nodes));
+            return Core.wrap(DOMNode.findByClass(className, nodes));
         }
 
         nodes = this.parseNodes(nodes, { fragment: true, shadow: true, document: true });
@@ -102,7 +101,7 @@ Object.assign(DOM.prototype, {
      */
     findByTag(tagName, nodes = this._context) {
         if (Core.isDocument(nodes) || Core.isElement(nodes) || Core.isFragment(nodes) || Core.isShadow(nodes)) {
-            return Core.merge([], DOMNode.findByTag(tagName, nodes));
+            return Core.wrap(DOMNode.findByTag(tagName, nodes));
         }
 
         nodes = this.parseNodes(nodes, { fragment: true, shadow: true, document: true });

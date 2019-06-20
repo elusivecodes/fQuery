@@ -21,11 +21,14 @@ Object.assign(DOM, {
             elements.push(node);
         }
 
-        Core.merge(elements, this._parents(
-            node,
-            parent =>
-                Core.isElement(parent) && this._css(parent, 'display') === 'none'
-        ));
+        Core.merge(
+            elements,
+            this._parents(
+                node,
+                parent =>
+                    Core.isElement(parent) && this._css(parent, 'display') === 'none'
+            )
+        );
 
         const hidden = new Map;
 

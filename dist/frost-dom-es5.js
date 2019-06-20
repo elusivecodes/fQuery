@@ -3651,7 +3651,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
 
       if (Core.isDocument(nodes) || Core.isElement(nodes) || Core.isFragment(nodes) || Core.isShadow(nodes)) {
-        return Core.merge([], DOMNode.findBySelector(selector, nodes));
+        return Core.wrap(DOMNode.findBySelector(selector, nodes));
       }
 
       nodes = this.parseNodes(nodes, {
@@ -3672,7 +3672,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       var nodes = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : this._context;
 
       if (Core.isDocument(nodes) || Core.isElement(nodes) || Core.isFragment(nodes) || Core.isShadow(nodes)) {
-        return Core.merge([], DOMNode.findByClass(className, nodes));
+        return Core.wrap(DOMNode.findByClass(className, nodes));
       }
 
       nodes = this.parseNodes(nodes, {
@@ -3735,7 +3735,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       var nodes = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : this._context;
 
       if (Core.isDocument(nodes) || Core.isElement(nodes) || Core.isFragment(nodes) || Core.isShadow(nodes)) {
-        return Core.merge([], DOMNode.findByTag(tagName, nodes));
+        return Core.wrap(DOMNode.findByTag(tagName, nodes));
       }
 
       nodes = this.parseNodes(nodes, {
@@ -4716,7 +4716,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       }
 
       var range = DOMNode.getRange(selection),
-          nodes = Core.merge([], DOMNode.findBySelector('*', range.commonAncestorContainer));
+          nodes = Core.wrap(DOMNode.findBySelector('*', range.commonAncestorContainer));
 
       if (!nodes.length) {
         return [range.commonAncestorContainer];
@@ -7087,7 +7087,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
      * @returns {HTMLElement} The deepest node.
      */
     _deepest: function _deepest(node) {
-      return Core.merge([], DOMNode.findBySelector('*', node)).find(function (node) {
+      return Core.wrap(DOMNode.findBySelector('*', node)).find(function (node) {
         return !DOMNode.hasChildren(node);
       }) || node;
     },

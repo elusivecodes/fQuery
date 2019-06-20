@@ -2730,8 +2730,7 @@
 
             // standard selector
             if (Core.isDocument(nodes) || Core.isElement(nodes) || Core.isFragment(nodes) || Core.isShadow(nodes)) {
-                return Core.merge(
-                    [],
+                return Core.wrap(
                     DOMNode.findBySelector(selector, nodes)
                 );
             }
@@ -2749,7 +2748,7 @@
          */
         findByClass(className, nodes = this._context) {
             if (Core.isDocument(nodes) || Core.isElement(nodes) || Core.isFragment(nodes) || Core.isShadow(nodes)) {
-                return Core.merge([], DOMNode.findByClass(className, nodes));
+                return Core.wrap(DOMNode.findByClass(className, nodes));
             }
 
             nodes = this.parseNodes(nodes, { fragment: true, shadow: true, document: true });
@@ -2792,7 +2791,7 @@
          */
         findByTag(tagName, nodes = this._context) {
             if (Core.isDocument(nodes) || Core.isElement(nodes) || Core.isFragment(nodes) || Core.isShadow(nodes)) {
-                return Core.merge([], DOMNode.findByTag(tagName, nodes));
+                return Core.wrap(DOMNode.findByTag(tagName, nodes));
             }
 
             nodes = this.parseNodes(nodes, { fragment: true, shadow: true, document: true });
@@ -3544,8 +3543,7 @@
             }
 
             const range = DOMNode.getRange(selection),
-                nodes = Core.merge(
-                    [],
+                nodes = Core.wrap(
                     DOMNode.findBySelector('*', range.commonAncestorContainer)
                 );
 
@@ -5555,8 +5553,7 @@
          * @returns {HTMLElement} The deepest node.
          */
         _deepest(node) {
-            return Core.merge(
-                [],
+            return Core.wrap(
                 DOMNode.findBySelector('*', node)
             ).find(node =>
                 !DOMNode.hasChildren(node)
@@ -5901,11 +5898,14 @@
                 elements.push(node);
             }
 
-            Core.merge(elements, this._parents(
-                node,
-                parent =>
-                    Core.isElement(parent) && this._css(parent, 'display') === 'none'
-            ));
+            Core.merge(
+                elements,
+                this._parents(
+                    node,
+                    parent =>
+                        Core.isElement(parent) && this._css(parent, 'display') === 'none'
+                )
+            );
 
             const hidden = new Map;
 

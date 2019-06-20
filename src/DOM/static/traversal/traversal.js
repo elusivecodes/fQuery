@@ -41,8 +41,7 @@ Object.assign(DOM, {
      * @returns {HTMLElement} The deepest node.
      */
     _deepest(node) {
-        return Core.merge(
-            [],
+        return Core.wrap(
             DOMNode.findBySelector('*', node)
         ).find(node =>
             !DOMNode.hasChildren(node)
