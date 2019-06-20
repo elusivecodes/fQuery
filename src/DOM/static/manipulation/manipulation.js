@@ -42,8 +42,8 @@ Object.assign(DOM, {
      * @param {Boolean} [cloneData=false] Whether to also clone custom data.
      */
     _deepClone(node, clone, cloneEvents = false, cloneData = false) {
-        const children = DOMNode.childNodes(node);
-        const cloneChildren = DOMNode.childNodes(clone);
+        const children = Core.wrap(DOMNode.childNodes(node));
+        const cloneChildren = Core.wrap(DOMNode.childNodes(clone));
 
         for (let i = 0; i < children.length; i++) {
             if (cloneEvents) {
@@ -78,7 +78,7 @@ Object.assign(DOM, {
      */
     _empty(node) {
         // Remove descendent elements
-        const children = DOMNode.childNodes(node);
+        const children = Core.wrap(DOMNode.childNodes(node));
 
         for (const child of children) {
             this._empty(child);

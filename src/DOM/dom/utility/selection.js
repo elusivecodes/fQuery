@@ -70,7 +70,7 @@ Object.assign(DOM.prototype, {
 
         const fragment = DOMNode.extract(range);
 
-        return Core.merge([], DOMNode.childNodes(fragment));
+        return Core.wrap(DOMNode.childNodes(fragment));
     },
 
     /**
@@ -102,10 +102,10 @@ Object.assign(DOM.prototype, {
             endContainer = DOMNode.endContainer(range),
             start = Core.isElement(startContainer) ?
                 startContainer :
-                DOMNode.parent(startContainer).shift(),
+                DOMNode.parent(startContainer),
             end = Core.isElement(endContainer) ?
                 endContainer :
-                DOMNode.parent(endContainer).shift();
+                DOMNode.parent(endContainer);
 
         return nodes.slice(
             nodes.indexOf(start),
@@ -189,7 +189,7 @@ Object.assign(DOM.prototype, {
 
         const fragment = DOMNode.extract(range),
             deepest = DOM._deepest(nodes.slice().shift()),
-            children = Core.merge([], DOMNode.childNodes(fragment));
+            children = Core.wrap(DOMNode.childNodes(fragment));
 
         for (const child of children) {
             DOMNode.insertBefore(deepest, child);

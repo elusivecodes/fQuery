@@ -59,8 +59,7 @@ Object.assign(DOM.prototype, {
             return;
         }
 
-        return Core.merge(
-            [],
+        return Core.wrap(
             DOMNode.children(
                 DOMNode.parent(node)
             )

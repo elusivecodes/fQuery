@@ -731,7 +731,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         return DOM._animate(node, function (node, progress, options) {
           if (progress === 1) {
             var children = DOMNode.childNodes(parent);
-            var child = Core.wrap(children).shift();
+            var child = children.item(0);
 
             DOM._unwrap(child);
 
@@ -801,7 +801,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         return DOM._animate(node, function (node, progress, options) {
           if (progress === 1) {
             var children = DOMNode.childNodes(parent);
-            var child = Core.wrap(children).shift();
+            var child = children.item(0);
 
             DOM._unwrap(child);
 
@@ -4701,7 +4701,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       var range = DOMNode.getRange(selection);
       DOMNode.removeRanges(selection);
       var fragment = DOMNode.extract(range);
-      return Core.merge([], DOMNode.childNodes(fragment));
+      return Core.wrap(DOMNode.childNodes(fragment));
     },
 
     /**
@@ -4728,8 +4728,8 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
       var startContainer = DOMNode.startContainer(range),
           endContainer = DOMNode.endContainer(range),
-          start = Core.isElement(startContainer) ? startContainer : DOMNode.parent(startContainer).shift(),
-          end = Core.isElement(endContainer) ? endContainer : DOMNode.parent(endContainer).shift();
+          start = Core.isElement(startContainer) ? startContainer : DOMNode.parent(startContainer),
+          end = Core.isElement(endContainer) ? endContainer : DOMNode.parent(endContainer);
       return nodes.slice(nodes.indexOf(start), nodes.indexOf(end) + 1);
     },
 
@@ -4812,7 +4812,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
       var fragment = DOMNode.extract(range),
           deepest = DOM._deepest(nodes.slice().shift()),
-          children = Core.merge([], DOMNode.childNodes(fragment));
+          children = Core.wrap(DOMNode.childNodes(fragment));
 
       var _iteratorNormalCompletion62 = true;
       var _didIteratorError62 = false;
@@ -5195,7 +5195,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         return;
       }
 
-      return Core.merge([], DOMNode.children(DOMNode.parent(node))).indexOf(node);
+      return Core.wrap(DOMNode.children(DOMNode.parent(node))).indexOf(node);
     },
 
     /**
@@ -6440,8 +6440,8 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
     _deepClone: function _deepClone(node, clone) {
       var cloneEvents = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
       var cloneData = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : false;
-      var children = DOMNode.childNodes(node);
-      var cloneChildren = DOMNode.childNodes(clone);
+      var children = Core.wrap(DOMNode.childNodes(node));
+      var cloneChildren = Core.wrap(DOMNode.childNodes(clone));
 
       for (var i = 0; i < children.length; i++) {
         if (cloneEvents) {
@@ -6476,7 +6476,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
      */
     _empty: function _empty(node) {
       // Remove descendent elements
-      var children = DOMNode.childNodes(node);
+      var children = Core.wrap(DOMNode.childNodes(node));
       var _iteratorNormalCompletion72 = true;
       var _didIteratorError72 = false;
       var _iteratorError72 = undefined;
@@ -6616,7 +6616,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         return;
       }
 
-      var children = DOMNode.childNodes(parent);
+      var children = Core.wrap(DOMNode.childNodes(parent));
       var _iteratorNormalCompletion74 = true;
       var _didIteratorError74 = false;
       var _iteratorError74 = undefined;
@@ -6698,7 +6698,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
     _wrapInner: function _wrapInner(node, others) {
       var _this19 = this;
 
-      var children = DOMNode.childNodes(node);
+      var children = Core.wrap(DOMNode.childNodes(node));
       var clones = others.map(function (other) {
         return _this19._clone(other, true);
       });
@@ -7042,8 +7042,8 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
     _children: function _children(node, filter) {
       var first = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
       var elementsOnly = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : false;
-      var children = elementsOnly ? DOMNode.children(node) : DOMNode.childNodes(node),
-          results = [];
+      var children = Core.wrap(elementsOnly ? DOMNode.children(node) : DOMNode.childNodes(node));
+      var results = [];
       var child;
       var _iteratorNormalCompletion84 = true;
       var _didIteratorError84 = false;

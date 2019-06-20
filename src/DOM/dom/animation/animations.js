@@ -289,7 +289,7 @@ Object.assign(DOM.prototype, {
                 (node, progress, options) => {
                     if (progress === 1) {
                         const children = DOMNode.childNodes(parent);
-                        const child = Core.wrap(children).shift();
+                        const child = children.item(0);
                         DOM._unwrap(child);
                         return;
                     }
@@ -364,7 +364,7 @@ Object.assign(DOM.prototype, {
                 (node, progress, options) => {
                     if (progress === 1) {
                         const children = DOMNode.childNodes(parent);
-                        const child = Core.wrap(children).shift();
+                        const child = children.item(0);
                         DOM._unwrap(child);
                         return;
                     }
@@ -379,8 +379,7 @@ Object.assign(DOM.prototype, {
                         if (dir === 'top') {
                             translateStyle = 'Y';
                         }
-                    }
-                    else if (dir === 'left' || dir === 'right') {
+                    } else if (dir === 'left' || dir === 'right') {
                         sizeStyle = 'width';
                         if (dir === 'left') {
                             translateStyle = 'X';

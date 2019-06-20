@@ -13,10 +13,12 @@ Object.assign(DOM, {
      * @returns {array} The matching nodes.
      */
     _children(node, filter, first = false, elementsOnly = false) {
-        const children = elementsOnly ?
-            DOMNode.children(node) :
-            DOMNode.childNodes(node),
-            results = [];
+        const children = Core.wrap(
+            elementsOnly ?
+                DOMNode.children(node) :
+                DOMNode.childNodes(node)
+        );
+        const results = [];
 
         let child;
         for (child of children) {

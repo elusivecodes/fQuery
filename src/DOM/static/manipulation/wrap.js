@@ -22,7 +22,8 @@ Object.assign(DOM, {
             return;
         }
 
-        const children = DOMNode.childNodes(parent);
+        const children = Core.wrap(DOMNode.childNodes(parent));
+
         for (const child of children) {
             DOMNode.insertBefore(outerParent, child, parent);
         }
@@ -61,7 +62,7 @@ Object.assign(DOM, {
      * @param {string|array|HTMLElement|DocumentFragment|HTMLCollection} others The other node(s), or a query selector or HTML string.
      */
     _wrapInner(node, others) {
-        const children = DOMNode.childNodes(node);
+        const children = Core.wrap(DOMNode.childNodes(node));
 
         const clones = others.map(other =>
             this._clone(other, true)

@@ -751,7 +751,7 @@
                     (node, progress, options) => {
                         if (progress === 1) {
                             const children = DOMNode.childNodes(parent);
-                            const child = Core.wrap(children).shift();
+                            const child = children.item(0);
                             DOM._unwrap(child);
                             return;
                         }
@@ -826,7 +826,7 @@
                     (node, progress, options) => {
                         if (progress === 1) {
                             const children = DOMNode.childNodes(parent);
-                            const child = Core.wrap(children).shift();
+                            const child = children.item(0);
                             DOM._unwrap(child);
                             return;
                         }
@@ -841,8 +841,7 @@
                             if (dir === 'top') {
                                 translateStyle = 'Y';
                             }
-                        }
-                        else if (dir === 'left' || dir === 'right') {
+                        } else if (dir === 'left' || dir === 'right') {
                             sizeStyle = 'width';
                             if (dir === 'left') {
                                 translateStyle = 'X';
@@ -3530,7 +3529,7 @@
 
             const fragment = DOMNode.extract(range);
 
-            return Core.merge([], DOMNode.childNodes(fragment));
+            return Core.wrap(DOMNode.childNodes(fragment));
         },
 
         /**
@@ -3562,10 +3561,10 @@
                 endContainer = DOMNode.endContainer(range),
                 start = Core.isElement(startContainer) ?
                     startContainer :
-                    DOMNode.parent(startContainer).shift(),
+                    DOMNode.parent(startContainer),
                 end = Core.isElement(endContainer) ?
                     endContainer :
-                    DOMNode.parent(endContainer).shift();
+                    DOMNode.parent(endContainer);
 
             return nodes.slice(
                 nodes.indexOf(start),
@@ -3649,7 +3648,7 @@
 
             const fragment = DOMNode.extract(range),
                 deepest = DOM._deepest(nodes.slice().shift()),
-                children = Core.merge([], DOMNode.childNodes(fragment));
+                children = Core.wrap(DOMNode.childNodes(fragment));
 
             for (const child of children) {
                 DOMNode.insertBefore(deepest, child);
@@ -3962,8 +3961,7 @@
                 return;
             }
 
-            return Core.merge(
-                [],
+            return Core.wrap(
                 DOMNode.children(
                     DOMNode.parent(node)
                 )
@@ -5146,8 +5144,8 @@
          * @param {Boolean} [cloneData=false] Whether to also clone custom data.
          */
         _deepClone(node, clone, cloneEvents = false, cloneData = false) {
-            const children = DOMNode.childNodes(node);
-            const cloneChildren = DOMNode.childNodes(clone);
+            const children = Core.wrap(DOMNode.childNodes(node));
+            const cloneChildren = Core.wrap(DOMNode.childNodes(clone));
 
             for (let i = 0; i < children.length; i++) {
                 if (cloneEvents) {
@@ -5182,7 +5180,7 @@
          */
         _empty(node) {
             // Remove descendent elements
-            const children = DOMNode.childNodes(node);
+            const children = Core.wrap(DOMNode.childNodes(node));
 
             for (const child of children) {
                 this._empty(child);
@@ -5273,7 +5271,8 @@
                 return;
             }
 
-            const children = DOMNode.childNodes(parent);
+            const children = Core.wrap(DOMNode.childNodes(parent));
+
             for (const child of children) {
                 DOMNode.insertBefore(outerParent, child, parent);
             }
@@ -5312,7 +5311,7 @@
          * @param {string|array|HTMLElement|DocumentFragment|HTMLCollection} others The other node(s), or a query selector or HTML string.
          */
         _wrapInner(node, others) {
-            const children = DOMNode.childNodes(node);
+            const children = Core.wrap(DOMNode.childNodes(node));
 
             const clones = others.map(other =>
                 this._clone(other, true)
@@ -5528,10 +5527,12 @@
          * @returns {array} The matching nodes.
          */
         _children(node, filter, first = false, elementsOnly = false) {
-            const children = elementsOnly ?
-                DOMNode.children(node) :
-                DOMNode.childNodes(node),
-                results = [];
+            const children = Core.wrap(
+                elementsOnly ?
+                    DOMNode.children(node) :
+                    DOMNode.childNodes(node)
+            );
+            const results = [];
 
             let child;
             for (child of children) {
