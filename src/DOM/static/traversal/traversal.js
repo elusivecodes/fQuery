@@ -49,7 +49,7 @@ Object.assign(DOM, {
 
     /**
      * Return the next sibling for a single node (optionally matching a filter).
-     * @param {Node|HTMLElement|DocumentFragment|ShadowRoot} node The input node.
+     * @param {Node|HTMLElement} node The input node.
      * @param {DOM~filterCallback} [filter] The filter function.
      * @returns {array} The matching nodes.
      */
@@ -73,7 +73,7 @@ Object.assign(DOM, {
 
     /**
      * Return all next siblings for a single node (optionally matching a filter, and before a limit).
-     * @param {Node|HTMLElement|DocumentFragment|ShadowRoot} node The input node.
+     * @param {Node|HTMLElement} node The input node.
      * @param {DOM~filterCallback} [filter] The filter function.
      * @param {DOM~filterCallback} [limit] The limit function.
      * @param {Boolean} [first=false] Whether to only return the first matching node for each node.
@@ -103,7 +103,7 @@ Object.assign(DOM, {
 
     /**
      * Return the parent of a single node (optionally matching a filter).
-     * @param {Node|HTMLElement|DocumentFragment|ShadowRoot} node The input node.
+     * @param {Node|HTMLElement} node The input node.
      * @param {DOM~filterCallback} [filter] The filter function.
      * @returns {array} The matching nodes.
      */
@@ -127,7 +127,7 @@ Object.assign(DOM, {
 
     /**
      * Return all parents of a single node (optionally matching a filter, and before a limit).
-     * @param {Node|HTMLElement|DocumentFragment|ShadowRoot} node The input node.
+     * @param {Node|HTMLElement} node The input node.
      * @param {DOM~filterCallback} [filter] The filter function.
      * @param {DOM~filterCallback} [limit] The limit function.
      * @param {Boolean} [first=false] Whether to only return the first matching node for each node.
@@ -161,7 +161,7 @@ Object.assign(DOM, {
 
     /**
      * Return the previous sibling for a single node (optionally matching a filter).
-     * @param {Node|HTMLElement|DocumentFragment|ShadowRoot} node The input node.
+     * @param {Node|HTMLElement} node The input node.
      * @param {DOM~filterCallback} [filter] The filter function.
      * @returns {array} The matching nodes.
      */
@@ -185,7 +185,7 @@ Object.assign(DOM, {
 
     /**
      * Return all previous siblings for a single node (optionally matching a filter, and before a limit).
-     * @param {Node|HTMLElement|DocumentFragment|ShadowRoot} node The input node.
+     * @param {Node|HTMLElement} node The input node.
      * @param {DOM~filterCallback} [filter] The filter function.
      * @param {DOM~filterCallback} [limit] The limit function.
      * @param {Boolean} [first=false] Whether to only return the first matching node for each node.
@@ -215,7 +215,7 @@ Object.assign(DOM, {
 
     /**
      * Return all siblings for a single node (optionally matching a filter).
-     * @param {Node|HTMLElement|DocumentFragment|ShadowRoot} node The input node.
+     * @param {Node|HTMLElement} node The input node.
      * @param {DOM~filterCallback} [filter] The filter function.
      * @param {Boolean} [elementsOnly=true] Whether to only return element nodes.
      * @returns {array} The matching nodes.

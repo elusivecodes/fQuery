@@ -179,17 +179,17 @@ Object.assign(DOM.prototype, {
 
     /**
      * Returns true if any of the nodes or a parent of any of the nodes is "fixed".
-     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
      * @returns {Boolean} TRUE if any of the nodes is "fixed", otherwise FALSE.
      */
     isFixed(nodes) {
-        return this.parseNodes(nodes, { node: true, fragment: true, shadow: true })
+        return this.parseNodes(nodes, { node: true })
             .some(node =>
                 (Core.isElement(node) && DOM._css(node, 'position') === 'fixed') ||
                 DOM._parents(
                     node,
                     parent =>
-                        DOM._css(parent, 'position') === 'fixed',
+                        Core.isElement(parent) && DOM._css(parent, 'position') === 'fixed',
                     false,
                     true
                 ).length
@@ -198,7 +198,7 @@ Object.assign(DOM.prototype, {
 
     /**
      * Returns true if any of the nodes is hidden.
-     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|Document|Window|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
      * @returns {Boolean} TRUE if any of the nodes is hidden, otherwise FALSE.
      */
     isHidden(nodes) {
@@ -225,11 +225,11 @@ Object.assign(DOM.prototype, {
 
     /**
      * Returns true if any of the nodes is visible.
-     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|Document|Window|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
      * @returns {Boolean} TRUE if any of the nodes is visible, otherwise FALSE.
      */
     isVisible(nodes) {
-        return this.parseNodes(nodes, { node: true, fragment: true, shadow: true, document: true, window: true })
+        return this.parseNodes(nodes, { node: true, document: true, window: true })
             .some(node =>
                 DOM._isVisible(node)
             );

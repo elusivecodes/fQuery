@@ -76,11 +76,11 @@ Object.assign(DOM.prototype, {
 
     /**
      * Return all hidden nodes.
-     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|Document|Window|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
      * @returns {array} The filtered nodes.
      */
     hidden(nodes) {
-        return this.parseNodes(nodes, { fragment: true, shadow: true, document: true, window: true })
+        return this.parseNodes(nodes, { node: true, document: true, window: true })
             .filter(node => !DOM._isVisible(node));
     },
 
@@ -118,11 +118,11 @@ Object.assign(DOM.prototype, {
 
     /**
      * Return all visible nodes.
-     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|Document|Window|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
      * @returns {array} The filtered nodes.
      */
     visible(nodes) {
-        return this.parseNodes(nodes, { fragment: true, shadow: true, document: true, window: true })
+        return this.parseNodes(nodes, { node: true, document: true, window: true })
             .filter(node => DOM._isVisible(node));
     },
 

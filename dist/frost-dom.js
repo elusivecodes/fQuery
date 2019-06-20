@@ -2165,7 +2165,7 @@
 
         /**
          * Remove each node from the DOM.
-         * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+         * @param {string|array|Node|HTMLElement|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
          */
         remove(nodes) {
 
@@ -2189,7 +2189,7 @@
         /**
          * Replace each other node with nodes.
          * @param {string|array|Node|HTMLElement|DocumentFragment|NodeList|HTMLCollection} nodes The input node(s), or a query selector or HTML string.
-         * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} others The input node(s), or a query selector string.
+         * @param {string|array|Node|HTMLElement|NodeList|HTMLCollection} others The input node(s), or a query selector string.
          */
         replaceAll(nodes, others) {
             this.replaceWith(others, nodes);
@@ -2197,13 +2197,13 @@
 
         /**
          * Replace each node with other nodes.
-         * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+         * @param {string|array|Node|HTMLElement|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
          * @param {string|array|Node|HTMLElement|DocumentFragment|NodeList|HTMLCollection} others The input node(s), or a query selector or HTML string.
          */
         replaceWith(nodes, others) {
 
-            // DocumentFragment nodes can not be replaced
-            nodes = this.parseNodes(nodes, { node: true, shadow: true });
+            // DocumentFragment and ShadowRoot nodes can not be removed
+            nodes = this.parseNodes(nodes, { node: true });
 
             // ShadowRoot nodes can not be cloned
             others = this.parseNodes(others, { node: true, fragment: true, html: true });
@@ -2223,13 +2223,13 @@
 
         /**
          * Insert each other node after the first node.
-         * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
-         * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} others The other node(s), or a query selector or HTML string.
+         * @param {string|array|Node|HTMLElement|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+         * @param {string|array|Node|HTMLElement|DocumentFragment|NodeList|HTMLCollection} others The other node(s), or a query selector or HTML string.
          */
         after(nodes, others) {
 
-            // DocumentFragment nodes have no parent
-            const node = this.parseNode(nodes, { node: true, shadow: true });
+            // DocumentFragment and ShadowRoot nodes can not have siblings
+            const node = this.parseNode(nodes, { node: true });
 
             if (!node) {
                 return;
@@ -2241,7 +2241,8 @@
                 return;
             }
 
-            others = this.parseNodes(others, { node: true, fragment: true, shadow: true, html: true });
+            // ShadowRoot nodes can not be moved
+            others = this.parseNodes(others, { node: true, fragment: true, html: true });
 
             for (const other of others.reverse()) {
                 DOMNode.insertBefore(parent, other, DOMNode.next(node));
@@ -2251,7 +2252,7 @@
         /**
          * Append each other node to the first node.
          * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
-         * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} others The other node(s), or a query selector or HTML string.
+         * @param {string|array|Node|HTMLElement|DocumentFragment|NodeList|HTMLCollection} others The other node(s), or a query selector or HTML string.
          */
         append(nodes, others) {
             const node = this.parseNode(nodes, { fragment: true, shadow: true, document: true });
@@ -2260,7 +2261,8 @@
                 return;
             }
 
-            others = this.parseNodes(others, { node: true, fragment: true, shadow: true, html: true });
+            // ShadowRoot nodes can not be moved
+            others = this.parseNodes(others, { node: true, fragment: true, html: true });
 
             for (const other of others) {
                 DOMNode.insertBefore(node, other);
@@ -2269,7 +2271,7 @@
 
         /**
          * Append each node to the first other node.
-         * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector or HTML string.
+         * @param {string|array|Node|HTMLElement|DocumentFragment|NodeList|HTMLCollection} nodes The input node(s), or a query selector or HTML string.
          * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|NodeList|HTMLCollection} others The other node(s), or a query selector string.
          */
         appendTo(nodes, others) {
@@ -2278,13 +2280,13 @@
 
         /**
          * Insert each other node before the first node.
-         * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
-         * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} others The other node(s), or a query selector or HTML string.
+         * @param {string|array|Node|HTMLElement|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+         * @param {string|array|Node|HTMLElement|DocumentFragment|NodeList|HTMLCollection} others The other node(s), or a query selector or HTML string.
          */
         before(nodes, others) {
 
-            // DocumentFragment nodes have no parent
-            const node = this.parseNode(nodes, { node: true, shadow: true });
+            // DocumentFragment and ShadowRoot nodes can not have siblings
+            const node = this.parseNode(nodes, { node: true });
 
             if (!node) {
                 return;
@@ -2296,7 +2298,8 @@
                 return;
             }
 
-            others = this.parseNodes(others, { node: true, fragment: true, shadow: true, html: true });
+            // ShadowRoot nodes can not be moved
+            others = this.parseNodes(others, { node: true, fragment: true, html: true });
 
             for (const other of others) {
                 DOMNode.insertBefore(parent, other, node);
@@ -2305,8 +2308,8 @@
 
         /**
          * Insert each node after the first other node.
-         * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector or HTML string.
-         * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} others The other node(s), or a query selector string.
+         * @param {string|array|Node|HTMLElement|DocumentFragment|NodeList|HTMLCollection} nodes The input node(s), or a query selector or HTML string.
+         * @param {string|array|Node|HTMLElement|NodeList|HTMLCollection} others The other node(s), or a query selector string.
          */
         insertAfter(nodes, others) {
             this.after(others, nodes);
@@ -2314,8 +2317,8 @@
 
         /**
          * Insert each node before the first other node.
-         * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector or HTML string.
-         * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} others The other node(s), or a query selector string.
+         * @param {string|array|Node|HTMLElement|DocumentFragment|NodeList|HTMLCollection} nodes The input node(s), or a query selector or HTML string.
+         * @param {string|array|Node|HTMLElement|NodeList|HTMLCollection} others The other node(s), or a query selector string.
          */
         insertBefore(nodes, others) {
             this.before(others, nodes);
@@ -2324,7 +2327,7 @@
         /**
          * Prepend each other node to the first node.
          * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
-         * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} others The other node(s), or a query selector or HTML string.
+         * @param {string|array|Node|HTMLElement|DocumentFragment|NodeList|HTMLCollection} others The other node(s), or a query selector or HTML string.
          */
         prepend(nodes, others) {
             const node = this.parseNode(nodes, { fragment: true, shadow: true, document: true });
@@ -2335,7 +2338,8 @@
 
             const firstChild = DOMNode.firstChild(node);
 
-            others = this.parseNodes(others, { node: true, fragment: true, shadow: true, html: true });
+            // ShadowRoot nodes can not be moved
+            others = this.parseNodes(others, { node: true, fragment: true, html: true });
 
             for (const other of others.reverse()) {
                 DOMNode.insertBefore(node, other, firstChild);
@@ -2344,7 +2348,7 @@
 
         /**
          * Prepend each node to the first other node.
-         * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector or HTML string.
+         * @param {string|array|Node|HTMLElement|DocumentFragment|NodeList|HTMLCollection} nodes The input node(s), or a query selector or HTML string.
          * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|NodeList|HTMLCollection} others The other node(s), or a query selector string.
          */
         prependTo(nodes, others) {
@@ -2528,11 +2532,11 @@
 
         /**
          * Return all hidden nodes.
-         * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+         * @param {string|array|Node|HTMLElement|Document|Window|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
          * @returns {array} The filtered nodes.
          */
         hidden(nodes) {
-            return this.parseNodes(nodes, { fragment: true, shadow: true, document: true, window: true })
+            return this.parseNodes(nodes, { node: true, document: true, window: true })
                 .filter(node => !DOM._isVisible(node));
         },
 
@@ -2570,11 +2574,11 @@
 
         /**
          * Return all visible nodes.
-         * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+         * @param {string|array|Node|HTMLElement|Document|Window|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
          * @returns {array} The filtered nodes.
          */
         visible(nodes) {
-            return this.parseNodes(nodes, { fragment: true, shadow: true, document: true, window: true })
+            return this.parseNodes(nodes, { node: true, document: true, window: true })
                 .filter(node => DOM._isVisible(node));
         },
 
@@ -3056,18 +3060,19 @@
 
         /**
          * Return the next sibling for each node (optionally matching a filter).
-         * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+         * @param {string|array|Node|HTMLElement|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
          * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
          * @returns {array} The matching nodes.
          */
         next(nodes, filter) {
             filter = this.parseFilter(filter);
 
-            if (Core.isNode(nodes) || Core.isFragment(nodes) || Core.isShadow(nodes)) {
+            if (Core.isNode(nodes)) {
                 return DOM._next(nodes, filter);
             }
 
-            nodes = this.parseNodes(nodes, { node: true, fragment: true, shadow: true });
+            // DocumentFragment and ShadowRoot nodes can not have siblings
+            nodes = this.parseNodes(nodes, { node: true });
 
             const results = [];
 
@@ -3085,7 +3090,7 @@
 
         /**
          * Return all next siblings for each node (optionally matching a filter, and before a limit).
-         * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+         * @param {string|array|Node|HTMLElement|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
          * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
          * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} [limit] The limit node(s), a query selector string or custom filter function.
          * @param {Boolean} [first=false] Whether to only return the first matching node for each node.
@@ -3095,11 +3100,12 @@
             filter = this.parseFilter(filter);
             limit = this.parseFilter(limit);
 
-            if (Core.isNode(nodes) || Core.isFragment(nodes) || Core.isShadow(nodes)) {
+            if (Core.isNode(nodes)) {
                 return DOM._nextAll(nodes, filter, limit, first);
             }
 
-            nodes = this.parseNodes(nodes, { node: true, fragment: true, shadow: true });
+            // DocumentFragment and ShadowRoot nodes can not have siblings
+            nodes = this.parseNodes(nodes, { node: true });
 
             const results = [];
 
@@ -3117,7 +3123,7 @@
 
         /**
          * Return the offset parent (relatively positioned) of the first node.
-         * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+         * @param {string|array|Node|HTMLElement|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
          * @returns {HTMLElement} The offset parent.
          */
         offsetParent(nodes) {
@@ -3192,18 +3198,19 @@
 
         /**
          * Return the previous sibling for each node (optionally matching a filter).
-         * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+         * @param {string|array|Node|HTMLElement|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
          * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
          * @returns {array} The matching nodes.
          */
         prev(nodes, filter) {
             filter = this.parseFilter(filter);
 
-            if (Core.isNode(nodes) || Core.isFragment(nodes) || Core.isShadow(nodes)) {
+            if (Core.isNode(nodes)) {
                 return DOM._prev(nodes, filter);
             }
 
-            nodes = this.parseNodes(nodes, { node: true, fragment: true, shadow: true });
+            // DocumentFragment and ShadowRoot nodes can not have siblings
+            nodes = this.parseNodes(nodes, { node: true });
 
             const results = [];
 
@@ -3221,7 +3228,7 @@
 
         /**
          * Return all previous siblings for each node (optionally matching a filter, and before a limit).
-         * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+         * @param {string|array|Node|HTMLElement|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
          * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
          * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} [limit] The limit node(s), a query selector string or custom filter function.
          * @param {Boolean} [first=false] Whether to only return the first matching node for each node.
@@ -3231,11 +3238,12 @@
             filter = this.parseFilter(filter);
             limit = this.parseFilter(limit);
 
-            if (Core.isNode(nodes) || Core.isFragment(nodes) || Core.isShadow(nodes)) {
+            if (Core.isNode(nodes)) {
                 return DOM._prevAll(nodes, filter, limit, first);
             }
 
-            nodes = this.parseNodes(nodes, { node: true, fragment: true, shadow: true });
+            // DocumentFragment and ShadowRoot nodes can not have siblings
+            nodes = this.parseNodes(nodes, { node: true });
 
             const results = [];
 
@@ -3268,7 +3276,7 @@
 
         /**
          * Return all siblings for each node (optionally matching a filter).
-         * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+         * @param {string|array|Node|HTMLElement|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
          * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
          * @param {Boolean} [elementsOnly=true] Whether to only return element nodes.
          * @returns {array} The matching nodes.
@@ -3276,11 +3284,12 @@
         siblings(nodes, filter, elementsOnly = true) {
             filter = this.parseFilter(filter);
 
-            if (Core.isNode(nodes) || Core.isFragment(nodes) || Core.isShadow(nodes)) {
+            if (Core.isNode(nodes)) {
                 return DOM._siblings(nodes, filter, elementsOnly);
             }
 
-            nodes = this.parseNodes(nodes, { node: true, fragment: true, shadow: true });
+            // DocumentFragment and ShadowRoot nodes can not have siblings
+            nodes = this.parseNodes(nodes, { node: true });
 
             const results = [];
 
@@ -3457,10 +3466,12 @@
 
         /**
          * Insert each node after the selection.
-         * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector or HTML string.
+         * @param {string|array|Node|HTMLElement|DocumentFragment|NodeList|HTMLCollection} nodes The input node(s), or a query selector or HTML string.
          */
         afterSelection(nodes) {
-            nodes = this.parseNodes(nodes, { node: true, fragment: true, shadow: true, html: true });
+
+            // ShadowRoot nodes can not be moved
+            nodes = this.parseNodes(nodes, { node: true, fragment: true, html: true });
 
             const selection = DOMNode.getSelection();
 
@@ -3480,10 +3491,12 @@
 
         /**
          * Insert each node before the selection.
-         * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector or HTML string.
+         * @param {string|array|Node|HTMLElement|DocumentFragment|NodeList|HTMLCollection} nodes The input node(s), or a query selector or HTML string.
          */
         beforeSelection(nodes) {
-            nodes = this.parseNodes(nodes, { node: true, fragment: true, shadow: true, html: true });
+
+            // ShadowRoot nodes can not be moved
+            nodes = this.parseNodes(nodes, { node: true, fragment: true, html: true });
 
             const selection = DOMNode.getSelection();
 
@@ -3830,17 +3843,17 @@
 
         /**
          * Returns true if any of the nodes or a parent of any of the nodes is "fixed".
-         * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+         * @param {string|array|Node|HTMLElement|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
          * @returns {Boolean} TRUE if any of the nodes is "fixed", otherwise FALSE.
          */
         isFixed(nodes) {
-            return this.parseNodes(nodes, { node: true, fragment: true, shadow: true })
+            return this.parseNodes(nodes, { node: true })
                 .some(node =>
                     (Core.isElement(node) && DOM._css(node, 'position') === 'fixed') ||
                     DOM._parents(
                         node,
                         parent =>
-                            DOM._css(parent, 'position') === 'fixed',
+                            Core.isElement(parent) && DOM._css(parent, 'position') === 'fixed',
                         false,
                         true
                     ).length
@@ -3849,7 +3862,7 @@
 
         /**
          * Returns true if any of the nodes is hidden.
-         * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+         * @param {string|array|Node|HTMLElement|Document|Window|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
          * @returns {Boolean} TRUE if any of the nodes is hidden, otherwise FALSE.
          */
         isHidden(nodes) {
@@ -3876,11 +3889,11 @@
 
         /**
          * Returns true if any of the nodes is visible.
-         * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+         * @param {string|array|Node|HTMLElement|Document|Window|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
          * @returns {Boolean} TRUE if any of the nodes is visible, otherwise FALSE.
          */
         isVisible(nodes) {
-            return this.parseNodes(nodes, { node: true, fragment: true, shadow: true, document: true, window: true })
+            return this.parseNodes(nodes, { node: true, document: true, window: true })
                 .some(node =>
                     DOM._isVisible(node)
                 );
@@ -4710,7 +4723,7 @@
 
         /**
          * Return a function for matching a delegate target to a custom selector.
-         * @param {HTMLElement} node The input node.
+         * @param {HTMLElement|ShadowRoot|Document} node The input node.
          * @param {string} selector The delegate query selector.
          * @returns {DOM~delegateCallback} The callback for finding the matching delegate.
          */
@@ -5214,7 +5227,7 @@
 
         /**
          * Replace a single node with other nodes.
-         * @param {Node|HTMLElement|ShadowRoot} node The input node.
+         * @param {Node|HTMLElement} node The input node.
          * @param {array} others The other node(s).
          */
         _replaceWith(node, others) {
@@ -5551,7 +5564,7 @@
 
         /**
          * Return the next sibling for a single node (optionally matching a filter).
-         * @param {Node|HTMLElement|DocumentFragment|ShadowRoot} node The input node.
+         * @param {Node|HTMLElement} node The input node.
          * @param {DOM~filterCallback} [filter] The filter function.
          * @returns {array} The matching nodes.
          */
@@ -5575,7 +5588,7 @@
 
         /**
          * Return all next siblings for a single node (optionally matching a filter, and before a limit).
-         * @param {Node|HTMLElement|DocumentFragment|ShadowRoot} node The input node.
+         * @param {Node|HTMLElement} node The input node.
          * @param {DOM~filterCallback} [filter] The filter function.
          * @param {DOM~filterCallback} [limit] The limit function.
          * @param {Boolean} [first=false] Whether to only return the first matching node for each node.
@@ -5605,7 +5618,7 @@
 
         /**
          * Return the parent of a single node (optionally matching a filter).
-         * @param {Node|HTMLElement|DocumentFragment|ShadowRoot} node The input node.
+         * @param {Node|HTMLElement} node The input node.
          * @param {DOM~filterCallback} [filter] The filter function.
          * @returns {array} The matching nodes.
          */
@@ -5629,7 +5642,7 @@
 
         /**
          * Return all parents of a single node (optionally matching a filter, and before a limit).
-         * @param {Node|HTMLElement|DocumentFragment|ShadowRoot} node The input node.
+         * @param {Node|HTMLElement} node The input node.
          * @param {DOM~filterCallback} [filter] The filter function.
          * @param {DOM~filterCallback} [limit] The limit function.
          * @param {Boolean} [first=false] Whether to only return the first matching node for each node.
@@ -5663,7 +5676,7 @@
 
         /**
          * Return the previous sibling for a single node (optionally matching a filter).
-         * @param {Node|HTMLElement|DocumentFragment|ShadowRoot} node The input node.
+         * @param {Node|HTMLElement} node The input node.
          * @param {DOM~filterCallback} [filter] The filter function.
          * @returns {array} The matching nodes.
          */
@@ -5687,7 +5700,7 @@
 
         /**
          * Return all previous siblings for a single node (optionally matching a filter, and before a limit).
-         * @param {Node|HTMLElement|DocumentFragment|ShadowRoot} node The input node.
+         * @param {Node|HTMLElement} node The input node.
          * @param {DOM~filterCallback} [filter] The filter function.
          * @param {DOM~filterCallback} [limit] The limit function.
          * @param {Boolean} [first=false] Whether to only return the first matching node for each node.
@@ -5717,7 +5730,7 @@
 
         /**
          * Return all siblings for a single node (optionally matching a filter).
-         * @param {Node|HTMLElement|DocumentFragment|ShadowRoot} node The input node.
+         * @param {Node|HTMLElement} node The input node.
          * @param {DOM~filterCallback} [filter] The filter function.
          * @param {Boolean} [elementsOnly=true] Whether to only return element nodes.
          * @returns {array} The matching nodes.
@@ -6763,7 +6776,7 @@
         /**
          * Insert a node into a range.
          * @param {Range} range The input range.
-         * @param {Node|HTMLElement|DocumentFragment|ShadowRoot} node The node to insert.
+         * @param {Node|HTMLElement} node The node to insert.
          */
         insert(range, node) {
             range.insertNode(node);

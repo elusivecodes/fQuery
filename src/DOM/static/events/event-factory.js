@@ -35,7 +35,7 @@ Object.assign(DOM, {
 
     /**
      * Return a function for matching a delegate target to a custom selector.
-     * @param {HTMLElement} node The input node.
+     * @param {HTMLElement|ShadowRoot|Document} node The input node.
      * @param {string} selector The delegate query selector.
      * @returns {DOM~delegateCallback} The callback for finding the matching delegate.
      */

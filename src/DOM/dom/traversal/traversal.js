@@ -120,18 +120,19 @@ Object.assign(DOM.prototype, {
 
     /**
      * Return the next sibling for each node (optionally matching a filter).
-     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
      * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
      * @returns {array} The matching nodes.
      */
     next(nodes, filter) {
         filter = this.parseFilter(filter);
 
-        if (Core.isNode(nodes) || Core.isFragment(nodes) || Core.isShadow(nodes)) {
+        if (Core.isNode(nodes)) {
             return DOM._next(nodes, filter);
         }
 
-        nodes = this.parseNodes(nodes, { node: true, fragment: true, shadow: true });
+        // DocumentFragment and ShadowRoot nodes can not have siblings
+        nodes = this.parseNodes(nodes, { node: true });
 
         const results = [];
 
@@ -149,7 +150,7 @@ Object.assign(DOM.prototype, {
 
     /**
      * Return all next siblings for each node (optionally matching a filter, and before a limit).
-     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
      * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
      * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} [limit] The limit node(s), a query selector string or custom filter function.
      * @param {Boolean} [first=false] Whether to only return the first matching node for each node.
@@ -159,11 +160,12 @@ Object.assign(DOM.prototype, {
         filter = this.parseFilter(filter);
         limit = this.parseFilter(limit);
 
-        if (Core.isNode(nodes) || Core.isFragment(nodes) || Core.isShadow(nodes)) {
+        if (Core.isNode(nodes)) {
             return DOM._nextAll(nodes, filter, limit, first);
         }
 
-        nodes = this.parseNodes(nodes, { node: true, fragment: true, shadow: true });
+        // DocumentFragment and ShadowRoot nodes can not have siblings
+        nodes = this.parseNodes(nodes, { node: true });
 
         const results = [];
 
@@ -181,7 +183,7 @@ Object.assign(DOM.prototype, {
 
     /**
      * Return the offset parent (relatively positioned) of the first node.
-     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
      * @returns {HTMLElement} The offset parent.
      */
     offsetParent(nodes) {
@@ -256,18 +258,19 @@ Object.assign(DOM.prototype, {
 
     /**
      * Return the previous sibling for each node (optionally matching a filter).
-     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
      * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
      * @returns {array} The matching nodes.
      */
     prev(nodes, filter) {
         filter = this.parseFilter(filter);
 
-        if (Core.isNode(nodes) || Core.isFragment(nodes) || Core.isShadow(nodes)) {
+        if (Core.isNode(nodes)) {
             return DOM._prev(nodes, filter);
         }
 
-        nodes = this.parseNodes(nodes, { node: true, fragment: true, shadow: true });
+        // DocumentFragment and ShadowRoot nodes can not have siblings
+        nodes = this.parseNodes(nodes, { node: true });
 
         const results = [];
 
@@ -285,7 +288,7 @@ Object.assign(DOM.prototype, {
 
     /**
      * Return all previous siblings for each node (optionally matching a filter, and before a limit).
-     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
      * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
      * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} [limit] The limit node(s), a query selector string or custom filter function.
      * @param {Boolean} [first=false] Whether to only return the first matching node for each node.
@@ -295,11 +298,12 @@ Object.assign(DOM.prototype, {
         filter = this.parseFilter(filter);
         limit = this.parseFilter(limit);
 
-        if (Core.isNode(nodes) || Core.isFragment(nodes) || Core.isShadow(nodes)) {
+        if (Core.isNode(nodes)) {
             return DOM._prevAll(nodes, filter, limit, first);
         }
 
-        nodes = this.parseNodes(nodes, { node: true, fragment: true, shadow: true });
+        // DocumentFragment and ShadowRoot nodes can not have siblings
+        nodes = this.parseNodes(nodes, { node: true });
 
         const results = [];
 
@@ -332,7 +336,7 @@ Object.assign(DOM.prototype, {
 
     /**
      * Return all siblings for each node (optionally matching a filter).
-     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
      * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
      * @param {Boolean} [elementsOnly=true] Whether to only return element nodes.
      * @returns {array} The matching nodes.
@@ -340,11 +344,12 @@ Object.assign(DOM.prototype, {
     siblings(nodes, filter, elementsOnly = true) {
         filter = this.parseFilter(filter);
 
-        if (Core.isNode(nodes) || Core.isFragment(nodes) || Core.isShadow(nodes)) {
+        if (Core.isNode(nodes)) {
             return DOM._siblings(nodes, filter, elementsOnly);
         }
 
-        nodes = this.parseNodes(nodes, { node: true, fragment: true, shadow: true });
+        // DocumentFragment and ShadowRoot nodes can not have siblings
+        nodes = this.parseNodes(nodes, { node: true });
 
         const results = [];
 

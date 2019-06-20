@@ -56,7 +56,7 @@ Object.assign(DOM.prototype, {
 
     /**
      * Remove each node from the DOM.
-     * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
      */
     remove(nodes) {
 
@@ -80,7 +80,7 @@ Object.assign(DOM.prototype, {
     /**
      * Replace each other node with nodes.
      * @param {string|array|Node|HTMLElement|DocumentFragment|NodeList|HTMLCollection} nodes The input node(s), or a query selector or HTML string.
-     * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} others The input node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|NodeList|HTMLCollection} others The input node(s), or a query selector string.
      */
     replaceAll(nodes, others) {
         this.replaceWith(others, nodes);
@@ -88,13 +88,13 @@ Object.assign(DOM.prototype, {
 
     /**
      * Replace each node with other nodes.
-     * @param {string|array|Node|HTMLElement|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
      * @param {string|array|Node|HTMLElement|DocumentFragment|NodeList|HTMLCollection} others The input node(s), or a query selector or HTML string.
      */
     replaceWith(nodes, others) {
 
-        // DocumentFragment nodes can not be replaced
-        nodes = this.parseNodes(nodes, { node: true, shadow: true });
+        // DocumentFragment and ShadowRoot nodes can not be removed
+        nodes = this.parseNodes(nodes, { node: true });
 
         // ShadowRoot nodes can not be cloned
         others = this.parseNodes(others, { node: true, fragment: true, html: true });

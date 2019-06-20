@@ -60,7 +60,7 @@ Object.assign(DOMNode, {
     /**
      * Insert a node into a range.
      * @param {Range} range The input range.
-     * @param {Node|HTMLElement|DocumentFragment|ShadowRoot} node The node to insert.
+     * @param {Node|HTMLElement} node The node to insert.
      */
     insert(range, node) {
         range.insertNode(node);

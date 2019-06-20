@@ -123,7 +123,7 @@ Object.assign(DOM, {
 
     /**
      * Replace a single node with other nodes.
-     * @param {Node|HTMLElement|ShadowRoot} node The input node.
+     * @param {Node|HTMLElement} node The input node.
      * @param {array} others The other node(s).
      */
     _replaceWith(node, others) {

@@ -6,10 +6,12 @@ Object.assign(DOM.prototype, {
 
     /**
      * Insert each node after the selection.
-     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector or HTML string.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|NodeList|HTMLCollection} nodes The input node(s), or a query selector or HTML string.
      */
     afterSelection(nodes) {
-        nodes = this.parseNodes(nodes, { node: true, fragment: true, shadow: true, html: true });
+
+        // ShadowRoot nodes can not be moved
+        nodes = this.parseNodes(nodes, { node: true, fragment: true, html: true });
 
         const selection = DOMNode.getSelection();
 
@@ -29,10 +31,12 @@ Object.assign(DOM.prototype, {
 
     /**
      * Insert each node before the selection.
-     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector or HTML string.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|NodeList|HTMLCollection} nodes The input node(s), or a query selector or HTML string.
      */
     beforeSelection(nodes) {
-        nodes = this.parseNodes(nodes, { node: true, fragment: true, shadow: true, html: true });
+
+        // ShadowRoot nodes can not be moved
+        nodes = this.parseNodes(nodes, { node: true, fragment: true, html: true });
 
         const selection = DOMNode.getSelection();
 
