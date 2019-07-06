@@ -965,6 +965,7 @@ Remove delegated events from each node.
 
 - `nodes` is a query selector string, a *HTMLElement*, *ShadowRoot*, *Document*, *Window*, *NodeList*, *HTMLCollection* or an array of nodes.
 - `events` is a space-separated string of events to remove from the nodes.
+- `delegate` is a query selector string which will only trigger the event if it is propagated by a target matching the selector.
 - `callback` is a function that accepts an `event` argument, which will be called when the event is triggered.
 
 ```javascript
@@ -1014,13 +1015,6 @@ Clone each node (optionally deep, and with events and data).
 const clones = dom.clone(nodes, deep, cloneEvents, cloneData);
 ```
 
-*ShadowRoot* nodes cannot be cloned, you must clone their contents instead.
-
-```javascript
-const contents = dom.contents(shadowRoot);
-const clones = dom.clone(contents);
-```
-
 **Detach**
 
 Detach each node from the DOM.
@@ -1030,8 +1024,6 @@ Detach each node from the DOM.
 ```javascript
 dom.detach(nodes);
 ```
-
-*DocumentFragment* and *ShadowRoot* nodes cannot be detached directly, you must detach their parent node instead.
 
 **Empty**
 
@@ -1053,8 +1045,6 @@ Remove each node from the DOM.
 dom.remove(nodes);
 ```
 
-*DocumentFragment* and *ShadowRoot* nodes cannot be removed directly, you must remove their parent node instead.
-
 **Replace All**
 
 Replace each other node with nodes.
@@ -1068,8 +1058,6 @@ dom.replaceAll(nodes, others);
 
 If a node you are replacing with is a *DocumentFragment*, the fragment contents will be used as a replacement.
 
-*DocumentFragment* and *ShadowRoot* nodes cannot be replaced directly, you must replace their parent node instead.
-
 **Replace With**
 
 Replace each node with other nodes.
@@ -1080,8 +1068,6 @@ Replace each node with other nodes.
 ```javascript
 dom.replaceWith(nodes, others);
 ```
-
-*DocumentFragment* and *ShadowRoot* nodes cannot be replaced directly, you must replace their parent node instead.
 
 If a node you are replacing with is a *DocumentFragment*, the fragment contents will be used as a replacement.
 
@@ -1176,7 +1162,7 @@ Insert each other node after the first node.
 dom.after(nodes, others);
 ```
 
-If the node you are moving is a *DocumentFragment*, the contents will be moved instead.
+If a node you are moving is a *DocumentFragment*, the contents will be moved instead.
 
 **Append**
 
@@ -1189,7 +1175,7 @@ Append each other node to the first node.
 dom.append(nodes, others);
 ```
 
-If the node you are moving is a *DocumentFragment*, the contents will be moved instead.
+If a node you are moving is a *DocumentFragment*, the contents will be moved instead.
 
 **Append To**
 
@@ -1202,7 +1188,7 @@ Append each node to the first other node.
 dom.appendTo(nodes, others);
 ```
 
-If the node you are moving is a *DocumentFragment*, the contents will be moved instead.
+If a node you are moving is a *DocumentFragment*, the contents will be moved instead.
 
 **Before**
 
@@ -1215,7 +1201,7 @@ Insert each other node before the first node.
 dom.before(nodes, others);
 ```
 
-If the node you are moving is a *DocumentFragment*, the contents will be moved instead.
+If a node you are moving is a *DocumentFragment*, the contents will be moved instead.
 
 **Insert After**
 
@@ -1228,7 +1214,7 @@ Insert each node after the first other node.
 dom.insertAfter(nodes, others);
 ```
 
-If the node you are moving is a *DocumentFragment*, the contents will be moved instead.
+If a node you are moving is a *DocumentFragment*, the contents will be moved instead.
 
 **Insert Before**
 
@@ -1241,7 +1227,7 @@ Insert each node before the first other node.
 dom.insertBefore(nodes, others);
 ```
 
-If the node you are moving is a *DocumentFragment*, the contents will be moved instead.
+If a node you are moving is a *DocumentFragment*, the contents will be moved instead.
 
 **Prepend**
 
@@ -1254,7 +1240,7 @@ Prepend each other node to the first node.
 dom.prepend(nodes, others);
 ```
 
-If the node you are moving is a *DocumentFragment*, the contents will be moved instead.
+If a node you are moving is a *DocumentFragment*, the contents will be moved instead.
 
 **Prepend To**
 
@@ -1267,7 +1253,7 @@ Prepend each node to the first other node.
 dom.prependTo(nodes, others);
 ```
 
-If the node you are moving is a *DocumentFragment*, the contents will be moved instead.
+If a node you are moving is a *DocumentFragment*, the contents will be moved instead.
 
 ##### Wrap
 
@@ -1282,8 +1268,6 @@ Unwrap each node.
 dom.unwrap(nodes, filter);
 ```
 
-*DocumentFragment* and *ShadowRoot* nodes cannot be unwrapped.
-
 **Wrap**
 
 Wrap each nodes with other nodes.
@@ -1295,11 +1279,7 @@ Wrap each nodes with other nodes.
 dom.wrap(nodes, others);
 ```
 
-*DocumentFragment* and *ShadowRoot* nodes cannot be wrapped.
-
-*ShadowRoot* nodes cannot be used to wrap.
-
-If the node you are wrapping with is a *DocumentFragment*, the contents will be used to wrap instead.
+If a node you are wrapping with is a *DocumentFragment*, the contents will be used to wrap instead.
 
 **Wrap All**
 
@@ -1312,12 +1292,6 @@ Wrap all nodes with other nodes.
 dom.wrapAll(nodes, others);
 ```
 
-*DocumentFragment* and *ShadowRoot* nodes cannot be wrapped.
-
-*ShadowRoot* nodes cannot be used to wrap.
-
-If the node you are wrapping with is a *DocumentFragment*, the contents will be used to wrap instead.
-
 **Wrap Inner**
 
 Wrap the contents of each node with other nodes.
@@ -1329,9 +1303,7 @@ Wrap the contents of each node with other nodes.
 dom.wrapInner(nodes, others);
 ```
 
-*ShadowRoot* nodes cannot be used to wrap.
-
-If the node you are wrapping with is a *DocumentFragment*, the contents will be used to wrap instead.
+If a node you are wrapping with is a *DocumentFragment*, the contents will be used to wrap instead.
 
 
 #### Traversal
@@ -1371,10 +1343,6 @@ Find the closest ancestor to each node (optionally matching a filter, and before
 ```javascript
 const closest = dom.closest(nodes, filter, limit);
 ```
-
-*DocumentFragment* and *ShadowRoot* nodes cannot be traversed up the DOM.
-
-Nodes inside of *DocumentFragment* and *ShadowRoot* will only be traversed up until their *DocumentFragment* or *ShadowRoot* ancestor.
 
 **Common Ancestor**
 
@@ -1451,8 +1419,6 @@ Find the parent of each node (optionally matching a filter).
 const parent = dom.parent(nodes, filter);
 ```
 
-*DocumentFragment* and *ShadowRoot* nodes cannot be traversed up the DOM.
-
 **Parents**
 
 Find all parents of each node (optionally matching a filter, and before a limit).
@@ -1465,10 +1431,6 @@ Find all parents of each node (optionally matching a filter, and before a limit)
 ```javascript
 const parents = dom.parents(nodes, filter, limit, first);
 ```
-
-*DocumentFragment* and *ShadowRoot* nodes cannot be traversed up the DOM.
-
-Nodes inside of *DocumentFragment* and *ShadowRoot* will only be traversed up until their *DocumentFragment* or *ShadowRoot* ancestor.
 
 **Previous**
 
@@ -1892,7 +1854,7 @@ Insert each node after the selection.
 dom.afterSelection(nodes);
 ```
 
-If the node you are moving is a *DocumentFragment*, the contents will be moved instead.
+If a node you are moving is a *DocumentFragment*, the contents will be moved instead.
 
 **Before Selection**
 
@@ -1904,7 +1866,7 @@ Insert each node before the selection.
 dom.beforeSelection(nodes);
 ```
 
-If the node you are moving is a *DocumentFragment*, the contents will be moved instead.
+If a node you are moving is a *DocumentFragment*, the contents will be moved instead.
 
 **Extract Selection**
 
@@ -1946,13 +1908,13 @@ dom.selectAll(nodes);
 
 Wrap selected nodes with other nodes.
 
-- `nodes` is a query selector string, a HTML string, a *HTMLElement*, *DocumentFragment*, *ShadowRoot*, *NodeList*, *HTMLCollection* or an array of nodes.
+- `nodes` is a query selector string, a HTML string, a *HTMLElement*, *DocumentFragment*, *NodeList*, *HTMLCollection* or an array of nodes.
 
 ```javascript
 dom.wrapSelection(nodes);
 ```
 
-*ShadowRoot* nodes cannot be used to wrap.
+If a node you are wrapping with is a *DocumentFragment*, the contents will be used to wrap instead.
 
 ##### Tests
 
