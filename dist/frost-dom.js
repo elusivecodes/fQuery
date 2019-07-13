@@ -2548,12 +2548,21 @@
         not(nodes, filter) {
             filter = this.parseFilter(filter);
 
-            if (!filter) {
-                return [];
-            }
+            return this.parseNodes(nodes, { node: true, fragment: true, shadow: true })
+                .filter((node, index) => filter && !filter(node, index));
+        },
+
+        /**
+         * Return the first node not matching a filter.
+         * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
+         * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
+         * @returns {array} The filtered nodes.
+         */
+        notOne(nodes, filter) {
+            filter = this.parseFilter(filter);
 
             return this.parseNodes(nodes, { node: true, fragment: true, shadow: true })
-                .filter((node, index) => !filter(node, index));
+                .find((node, index) => filter && !filter(node, index));
         },
 
         /**

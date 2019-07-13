@@ -1551,6 +1551,17 @@ Return all nodes not matching a filter.
 - `filter` is either a function that accepts a `node` argument, a query selector string, a *Node*, *HTMLElement*, *DocumentFragment*, *ShadowRoot*, *NodeList*, *HTMLCollection*, *QuerySet* or an array of nodes that the nodes will be filtered by.
 
 ```javascript
+const notOne = dom.notOne(nodes, filter);
+```
+
+**Not One**
+
+Return the first node not matching a filter.
+
+- `nodes` is a query selector string, a *Node*, *HTMLElement*, *DocumentFragment*, *ShadowRoot*, *NodeList*, *HTMLCollection*, *QuerySet* or an array of nodes.
+- `filter` is either a function that accepts a `node` argument, a query selector string, a *Node*, *HTMLElement*, *DocumentFragment*, *ShadowRoot*, *NodeList*, *HTMLCollection*, *QuerySet* or an array of nodes that the nodes will be filtered by.
+
+```javascript
 const not = dom.not(nodes, filter);
 ```
 
