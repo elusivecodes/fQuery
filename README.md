@@ -4,6 +4,8 @@
 
 It is a lightweight (~10kb gzipped) and modern library, utilizing ES6 syntax and features including Promises, with a focus on functional style programming.
 
+For an OOP implementation, also check out my [*fQuery*](https://github.com/elusivecodes/fQuery) library.
+
 
 ## Table Of Contents
 - [Installation](#installation)
