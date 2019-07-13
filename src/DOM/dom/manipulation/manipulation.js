@@ -6,7 +6,7 @@ Object.assign(DOM.prototype, {
 
     /**
      * Clone each node.
-     * @param {string|array|Node|HTMLElement|DocumentFragment|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
      * @param {Boolean} [deep=true] Whether to also clone all descendent nodes.
      * @param {Boolean} [cloneEvents=false] Whether to also clone events.
      * @param {Boolean} [cloneData=false] Whether to also clone custom data.
@@ -24,7 +24,7 @@ Object.assign(DOM.prototype, {
 
     /**
      * Detach each node from the DOM.
-     * @param {string|array|Node|HTMLElement|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
      */
     detach(nodes) {
 
@@ -44,7 +44,7 @@ Object.assign(DOM.prototype, {
 
     /**
      * Remove all children of each node from the DOM.
-     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
      */
     empty(nodes) {
         nodes = this.parseNodes(nodes, { fragment: true, shadow: true, document: true });
@@ -56,7 +56,7 @@ Object.assign(DOM.prototype, {
 
     /**
      * Remove each node from the DOM.
-     * @param {string|array|Node|HTMLElement|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
      */
     remove(nodes) {
 
@@ -79,8 +79,8 @@ Object.assign(DOM.prototype, {
 
     /**
      * Replace each other node with nodes.
-     * @param {string|array|Node|HTMLElement|DocumentFragment|NodeList|HTMLCollection} nodes The input node(s), or a query selector or HTML string.
-     * @param {string|array|Node|HTMLElement|NodeList|HTMLCollection} others The input node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector or HTML string.
+     * @param {string|array|Node|HTMLElement|NodeList|HTMLCollection|QuerySet} others The input node(s), or a query selector string.
      */
     replaceAll(nodes, others) {
         this.replaceWith(others, nodes);
@@ -88,8 +88,8 @@ Object.assign(DOM.prototype, {
 
     /**
      * Replace each node with other nodes.
-     * @param {string|array|Node|HTMLElement|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
-     * @param {string|array|Node|HTMLElement|DocumentFragment|NodeList|HTMLCollection} others The input node(s), or a query selector or HTML string.
+     * @param {string|array|Node|HTMLElement|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|NodeList|HTMLCollection|QuerySet} others The input node(s), or a query selector or HTML string.
      */
     replaceWith(nodes, others) {
 

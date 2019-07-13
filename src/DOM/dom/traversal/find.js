@@ -7,7 +7,7 @@ Object.assign(DOM.prototype, {
     /**
      * Return all nodes matching a selector.
      * @param {string} selector The query selector.
-     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|NodeList|HTMLCollection} [nodes=this._context] The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|NodeList|HTMLCollection|QuerySet} [nodes=this._context] The input node(s), or a query selector string.
      * @returns {array} The matching nodes.
      */
     find(selector, nodes = this._context) {
@@ -53,7 +53,7 @@ Object.assign(DOM.prototype, {
     /**
      * Return all nodes with a specific class.
      * @param {string} className The class name.
-     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|NodeList|HTMLCollection} [nodes=this._context] The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|NodeList|HTMLCollection|QuerySet} [nodes=this._context] The input node(s), or a query selector string.
      * @returns {array} The matching nodes.
      */
     findByClass(className, nodes = this._context) {
@@ -80,7 +80,7 @@ Object.assign(DOM.prototype, {
     /**
      * Return all nodes with a specific ID.
      * @param {string} id The id.
-     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|NodeList|HTMLCollection} [nodes=this._context] The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|NodeList|HTMLCollection|QuerySet} [nodes=this._context] The input node(s), or a query selector string.
      * @returns {array} The matching nodes.
      */
     findById(id, nodes = this._context) {
@@ -96,7 +96,7 @@ Object.assign(DOM.prototype, {
     /**
      * Return all nodes with a specific tag.
      * @param {string} tagName The tag name.
-     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|NodeList|HTMLCollection} [nodes=this._context] The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|NodeList|HTMLCollection|QuerySet} [nodes=this._context] The input node(s), or a query selector string.
      * @returns {array} The matching nodes.
      */
     findByTag(tagName, nodes = this._context) {
@@ -123,7 +123,7 @@ Object.assign(DOM.prototype, {
     /**
      * Return a single node matching a selector.
      * @param {string} selector The query selector.
-     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|NodeList|HTMLCollection} [nodes=this._context] The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|NodeList|HTMLCollection|QuerySet} [nodes=this._context] The input node(s), or a query selector string.
      * @returns {HTMLElement} The matching node.
      */
     findOne(selector, nodes = this._context) {
@@ -167,7 +167,7 @@ Object.assign(DOM.prototype, {
     /**
      * Return a single node with a specific class.
      * @param {string} className The class name.
-     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|NodeList|HTMLCollection} [nodes=this._context] The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|NodeList|HTMLCollection|QuerySet} [nodes=this._context] The input node(s), or a query selector string.
      * @returns {HTMLElement} The matching node.
      */
     findOneByClass(className, nodes = this._context) {
@@ -190,7 +190,7 @@ Object.assign(DOM.prototype, {
     /**
      * Return a single node with a specific ID.
      * @param {string} id The id.
-     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|NodeList|HTMLCollection} [nodes=this._context] The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|NodeList|HTMLCollection|QuerySet} [nodes=this._context] The input node(s), or a query selector string.
      * @returns {HTMLElement} The matching element.
      */
     findOneById(id, nodes = this._context) {
@@ -224,7 +224,7 @@ Object.assign(DOM.prototype, {
     /**
      * Return a single node with a specific tag.
      * @param {string} tagName The tag name.
-     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|NodeList|HTMLCollection} [nodes=this._context] The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|NodeList|HTMLCollection|QuerySet} [nodes=this._context] The input node(s), or a query selector string.
      * @returns {HTMLElement} The matching node.
      */
     findOneByTag(tagName, nodes = this._context) {

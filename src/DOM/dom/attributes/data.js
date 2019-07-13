@@ -6,8 +6,8 @@ Object.assign(DOM.prototype, {
 
     /**
      * Clone custom data from each node to each other node.
-     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
-     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|NodeList|HTMLCollection} others The other node(s), or a query selector string.
+     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|NodeList|HTMLCollection|QuerySet} others The other node(s), or a query selector string.
      */
     cloneData(nodes, others) {
         nodes = this.parseNodes(nodes, { fragment: true, shadow: true, document: true, window: true });
@@ -22,7 +22,7 @@ Object.assign(DOM.prototype, {
 
     /**
      * Get custom data for the first node.
-     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
      * @param {string} [key] The data key.
      * @returns {*} The data value.
      */
@@ -38,7 +38,7 @@ Object.assign(DOM.prototype, {
 
     /**
      * Remove custom data from each node.
-     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
      * @param {string} [key] The data key.
      */
     removeData(nodes, key) {
@@ -51,7 +51,7 @@ Object.assign(DOM.prototype, {
 
     /**
      * Set custom data for each node.
-     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
      * @param {string|object} key The data key, or an object containing data.
      * @param {*} [value] The data value.
      */

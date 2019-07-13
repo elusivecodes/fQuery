@@ -459,7 +459,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
   Object.assign(DOM.prototype, {
     /**
      * Add an animation to each node.
-     * @param {string|array|HTMLElement|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
      * @param {DOM~animationCallback} callback The animation callback.
      * @param {object} [options] The options to use for animating.
      * @param {number} [options.duration=1000] The duration of the animation.
@@ -481,7 +481,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Stop all animations for each node.
-     * @param {string|array|HTMLElement|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
      * @param {Boolean} [finish=true] Whether to complete all current animations.
      */
     stop: function stop(nodes) {
@@ -520,7 +520,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
   Object.assign(DOM.prototype, {
     /**
      * Drop each node into place.
-     * @param {string|array|HTMLElement|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
      * @param {object} [options] The options to use for animating.
      * @param {string|function} [options.direction=top] The direction to drop the node from.
      * @param {number} [options.duration=1000] The duration of the animation.
@@ -536,7 +536,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Drop each node out of place.
-     * @param {string|array|HTMLElement|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
      * @param {object} [options] The options to use for animating.
      * @param {string|function} [options.direction=top] The direction to drop the node to.
      * @param {number} [options.duration=1000] The duration of the animation.
@@ -552,7 +552,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Fade the opacity of each node in.
-     * @param {string|array|HTMLElement|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
      * @param {object} [options] The options to use for animating.
      * @param {number} [options.duration=1000] The duration of the animation.
      * @param {string} [options.type=ease-in-out] The type of animation.
@@ -567,7 +567,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Fade the opacity of each node out.
-     * @param {string|array|HTMLElement|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
      * @param {object} [options] The options to use for animating.
      * @param {number} [options.duration=1000] The duration of the animation.
      * @param {string} [options.type=ease-in-out] The type of animation.
@@ -582,7 +582,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Rotate each node in on an X,Y.
-     * @param {string|array|HTMLElement|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
      * @param {object} [options] The options to use for animating.
      * @param {number} [options.x=0] The amount to rotate on the X-axis.
      * @param {number} [options.y=1] The amount to rotate on the Y-axis.
@@ -603,7 +603,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Rotate each node out on an X,Y.
-     * @param {string|array|HTMLElement|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
      * @param {object} [options] The options to use for animating.
      * @param {number} [options.x=0] The amount to rotate on the X-axis.
      * @param {number} [options.y=1] The amount to rotate on the Y-axis.
@@ -624,7 +624,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Slide each node in from a direction.
-     * @param {string|array|HTMLElement|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
      * @param {object} [options] The options to use for animating.
      * @param {string|function} [options.direction=bottom] The direction to slide from.
      * @param {number} [options.duration=1000] The duration of the animation.
@@ -663,7 +663,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Slide each node out from a direction.
-     * @param {string|array|HTMLElement|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
      * @param {object} [options] The options to use for animating.
      * @param {string|function} [options.direction=bottom] The direction to slide to.
      * @param {number} [options.duration=1000] The duration of the animation.
@@ -702,7 +702,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Squeeze each node in from a direction.
-     * @param {string|array|HTMLElement|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
      * @param {object} [options] The options to use for animating.
      * @param {string|function} [options.direction=bottom] The direction to squeeze from.
      * @param {number} [options.duration=1000] The duration of the animation.
@@ -772,7 +772,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Squeeze each node out from a direction.
-     * @param {string|array|HTMLElement|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
      * @param {object} [options] The options to use for animating.
      * @param {string|function} [options.direction=bottom] The direction to squeeze to.
      * @param {number} [options.duration=1000] The duration of the animation.
@@ -847,7 +847,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
   Object.assign(DOM.prototype, {
     /**
      * Clear the queue of each node.
-     * @param {string|array|HTMLElement|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
      */
     clearQueue: function clearQueue(nodes) {
       nodes = this.parseNodes(nodes);
@@ -879,7 +879,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Queue a callback on each node.
-     * @param {string|array|HTMLElement|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
      * @param {DOM~queueCallback} callback The callback to queue.
      */
     queue: function queue(nodes, callback) {
@@ -917,7 +917,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
   Object.assign(DOM.prototype, {
     /**
      * Get an attribute value for the first node.
-     * @param {string|array|HTMLElement|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
      * @param {string} attribute The attribute name.
      * @returns {string} The attribute value.
      */
@@ -933,7 +933,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Get a dataset value for the first node.
-     * @param {string|array|HTMLElement|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
      * @param {string} [key] The dataset key.
      * @returns {string|DOMStringMap} The dataset value.
      */
@@ -949,7 +949,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Get the HTML contents of the first node.
-     * @param {string|array|HTMLElement|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
      * @returns {string} The HTML contents.
      */
     getHTML: function getHTML(nodes) {
@@ -958,7 +958,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Get a property value for the first node.
-     * @param {string|array|HTMLElement|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
      * @param {string} property The property name.
      * @returns {string} The property value.
      */
@@ -974,7 +974,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Get the text contents of the first node.
-     * @param {string|array|HTMLElement|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
      * @returns {string} The text contents.
      */
     getText: function getText(nodes) {
@@ -983,7 +983,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Get the value property of the first node.
-     * @param {string|array|HTMLElement|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
      * @returns {string} The value.
      */
     getValue: function getValue(nodes) {
@@ -992,7 +992,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Remove an attribute from each node.
-     * @param {string|array|HTMLElement|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
      * @param {string} attribute The attribute name.
      */
     removeAttribute: function removeAttribute(nodes, attribute) {
@@ -1024,7 +1024,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Remove a property from each node.
-     * @param {string|array|HTMLElement|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
      * @param {string} property The property name.
      */
     removeProperty: function removeProperty(nodes, property) {
@@ -1056,7 +1056,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Set an attribute value for each node.
-     * @param {string|array|HTMLElement|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
      * @param {string|object} attribute The attribute name, or an object containing attributes.
      * @param {string} [value] The attribute value.
      */
@@ -1093,7 +1093,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Set a dataset value for the first node.
-     * @param {string|array|HTMLElement|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
      * @param {string|object} key The dataset key, or an object containing dataset values.
      * @param {string} [value] The dataset value.
      */
@@ -1129,7 +1129,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Set the HTML contents of each node.
-     * @param {string|array|HTMLElement|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
      * @param {string} html The HTML contents.
      */
     setHTML: function setHTML(nodes, html) {
@@ -1139,7 +1139,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Set a property value for each node.
-     * @param {string|array|HTMLElement|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
      * @param {string|object} property The property name, or an object containing properties.
      * @param {string} [value] The property value.
      */
@@ -1175,7 +1175,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Set the text contents of each node.
-     * @param {string|array|HTMLElement|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
      * @param {string} text The text contents.
      */
     setText: function setText(nodes, text) {
@@ -1185,7 +1185,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Set the value property of each node.
-     * @param {string|array|HTMLElement|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
      * @param {string} value The value.
      */
     setValue: function setValue(nodes, value) {
@@ -1199,8 +1199,8 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
   Object.assign(DOM.prototype, {
     /**
      * Clone custom data from each node to each other node.
-     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
-     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|NodeList|HTMLCollection} others The other node(s), or a query selector string.
+     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|NodeList|HTMLCollection|QuerySet} others The other node(s), or a query selector string.
      */
     cloneData: function cloneData(nodes, others) {
       nodes = this.parseNodes(nodes, {
@@ -1265,7 +1265,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Get custom data for the first node.
-     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
      * @param {string} [key] The data key.
      * @returns {*} The data value.
      */
@@ -1286,7 +1286,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Remove custom data from each node.
-     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
      * @param {string} [key] The data key.
      */
     removeData: function removeData(nodes, key) {
@@ -1324,7 +1324,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Set custom data for each node.
-     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
      * @param {string|object} key The data key, or an object containing data.
      * @param {*} [value] The data value.
      */
@@ -1371,7 +1371,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
   Object.assign(DOM.prototype, {
     /**
      * Get the X,Y co-ordinates for the center of the first node.
-     * @param {string|array|HTMLElement|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
      * @param {Boolean} [offset] Whether to offset from the top-left of the Document.
      * @returns {object} An object with the x and y co-ordinates.
      */
@@ -1390,8 +1390,8 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Contrain each node to a container node.
-     * @param {string|array|HTMLElement|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
-     * @param {string|array|HTMLElement|NodeList|HTMLCollection} container The container node, or a query selector string.
+     * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} container The container node, or a query selector string.
      */
     constrain: function constrain(nodes, container) {
       var containerBox = this.rect(container);
@@ -1429,7 +1429,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Get the distance of a node to an X,Y position in the Window.
-     * @param {string|array|HTMLElement|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
      * @param {number} x The X co-ordinate.
      * @param {number} y The Y co-ordinate.
      * @param {Boolean} [offset] Whether to offset from the top-left of the Document.
@@ -1447,8 +1447,8 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Get the distance between two nodes.
-     * @param {string|array|HTMLElement|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
-     * @param {string|array|HTMLElement|NodeList|HTMLCollection} others The node to compare, or a query selector string.
+     * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} others The node to compare, or a query selector string.
      * @returns {number} The distance between the nodes.
      */
     distToNode: function distToNode(nodes, others) {
@@ -1463,7 +1463,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Get the nearest node to an X,Y position in the Window.
-     * @param {string|array|HTMLElement|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
      * @param {number} x The X co-ordinate.
      * @param {number} y The Y co-ordinate.
      * @param {Boolean} [offset] Whether to offset from the top-left of the Document.
@@ -1507,8 +1507,8 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Get the nearest node to another node.
-     * @param {string|array|HTMLElement|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
-     * @param {string|array|HTMLElement|NodeList|HTMLCollection} others The node to compare, or a query selector string.
+     * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} others The node to compare, or a query selector string.
      * @returns {HTMLElement} The nearest node.
      */
     nearestToNode: function nearestToNode(nodes, others) {
@@ -1523,7 +1523,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Get the percentage of an X co-ordinate relative to a node's width.
-     * @param {string|array|HTMLElement|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
      * @param {number} x The X co-ordinate.
      * @param {Boolean} [offset] Whether to offset from the top-left of the Document.
      * @returns {number} The percent.
@@ -1540,7 +1540,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Get the percentage of a Y co-ordinate relative to a node's height.
-     * @param {string|array|HTMLElement|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
      * @param {number} y The Y co-ordinate.
      * @param {Boolean} [offset] Whether to offset from the top-left of the Document.
      * @returns {number} The percent.
@@ -1557,7 +1557,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Get the position of the first node relative to the Window or Document.
-     * @param {string|array|HTMLElement|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
      * @param {Boolean} [offset] Whether to offset from the top-left of the Document.
      * @returns {object} An object with the X and Y co-ordinates.
      */
@@ -1573,7 +1573,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Get the computed bounding rectangle of the first node.
-     * @param {string|array|HTMLElement|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
      * @param {Boolean} [offset] Whether to offset from the top-left of the Document.
      * @returns {DOMRect} The computed bounding rectangle.
      */
@@ -1594,7 +1594,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
   Object.assign(DOM.prototype, {
     /**
      * Get the scroll X position of the first node.
-     * @param {string|array|HTMLElement|Document|Window|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|Document|Window|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
      * @returns {number} The scroll X position.
      */
     getScrollX: function getScrollX(nodes) {
@@ -1620,7 +1620,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Get the scroll Y position of the first node.
-     * @param {string|array|HTMLElement|Document|Window|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|Document|Window|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
      * @returns {number} The scroll Y position.
      */
     getScrollY: function getScrollY(nodes) {
@@ -1646,7 +1646,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Scroll each node to an X,Y position.
-     * @param {string|array|HTMLElement|Document|Window|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|Document|Window|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
      * @param {number} x The scroll X position.
      * @param {number} y The scroll Y position.
      */
@@ -1689,7 +1689,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Scroll each node to an X position.
-     * @param {string|array|HTMLElement|Document|Window|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|Document|Window|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
      * @param {number} x The scroll X position.
      */
     setScrollX: function setScrollX(nodes, x) {
@@ -1731,7 +1731,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Scroll each node to a Y position.
-     * @param {string|array|HTMLElement|Document|Window|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|Document|Window|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
      * @param {number} y The scroll Y position.
      */
     setScrollY: function setScrollY(nodes, y) {
@@ -1778,7 +1778,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
   Object.assign(DOM.prototype, {
     /**
      * Get the computed height of the first node.
-     * @param {string|array|HTMLElement|Document|Window|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|Document|Window|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
      * @param {Boolean} [padding=true] Whether to include padding height.
      * @param {Boolean} [border] Whether to include border height.
      * @param {Boolean} [margin] Whether to include margin height.
@@ -1810,7 +1810,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Get the computed width of the first node.
-     * @param {string|array|HTMLElement|Document|Window|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|Document|Window|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
      * @param {Boolean} [padding=true] Whether to include padding width.
      * @param {Boolean} [border] Whether to include border width.
      * @param {Boolean} [margin] Whether to include margin width.
@@ -1847,7 +1847,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
   Object.assign(DOM.prototype, {
     /**
      * Add classes to each node.
-     * @param {string|array|HTMLElement|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
      * @param {...string|string[]} classes The classes.
      */
     addClass: function addClass(nodes) {
@@ -1889,7 +1889,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Get a computed CSS style value for the first node.
-     * @param {string|array|HTMLElement|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
      * @param {string} [style] The CSS style name.
      * @returns {string|CSSStyleDeclaration} The CSS style value.
      */
@@ -1905,7 +1905,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Get a style property for the first node.
-     * @param {string|array|HTMLElement|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
      * @param {string} [style] The style name.
      * @returns {string|CSSStyleDeclaration} The style value.
      */
@@ -1922,7 +1922,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Hide each node from display.
-     * @param {string|array|HTMLElement|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
      */
     hide: function hide(nodes) {
       this.setStyle(nodes, 'display', 'none');
@@ -1930,7 +1930,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Remove classes from each node.
-     * @param {string|array|HTMLElement|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
      * @param {...string|string[]} classes The classes.
      */
     removeClass: function removeClass(nodes) {
@@ -1972,7 +1972,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Set style properties for each node.
-     * @param {string|array|HTMLElement|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
      * @param {string|object} style The style name, or an object containing styles.
      * @param {string} [value] The style value.
      * @param {Boolean} [important] Whether the style should be !important.
@@ -2010,7 +2010,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Display each hidden node.
-     * @param {string|array|HTMLElement|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
      */
     show: function show(nodes) {
       this.setStyle(nodes, 'display', '');
@@ -2018,7 +2018,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Toggle the visibility of each node.
-     * @param {string|array|HTMLElement|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
      */
     toggle: function toggle(nodes) {
       nodes = this.parseNodes(nodes);
@@ -2049,7 +2049,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Toggle classes for each node.
-     * @param {string|array|HTMLElement|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
      * @param {...string|string[]} classes The classes.
      */
     toggleClass: function toggleClass(nodes) {
@@ -2143,7 +2143,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
   Object.assign(DOM.prototype, {
     /**
      * Trigger a blur event on the first node.
-     * @param {string|array|HTMLElement|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
      */
     blur: function blur(nodes) {
       var node = this.parseNode(nodes);
@@ -2157,7 +2157,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Trigger a click event on the first node.
-     * @param {string|array|HTMLElement|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
      */
     click: function click(nodes) {
       var node = this.parseNode(nodes);
@@ -2171,7 +2171,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Trigger a focus event on the first node.
-     * @param {string|array|HTMLElement|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
      */
     focus: function focus(nodes) {
       var node = this.parseNode(nodes);
@@ -2203,7 +2203,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
   Object.assign(DOM.prototype, {
     /**
      * Add events to each node.
-     * @param {string|array|HTMLElement|ShadowRoot|Document|Window|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|ShadowRoot|Document|Window|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
      * @param {string} events The event names.
      * @param {DOM~eventCallback} callback The callback to execute.
      */
@@ -2241,7 +2241,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Add delegated events to each node.
-     * @param {string|array|HTMLElement|ShadowRoot|Document|Window|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|ShadowRoot|Document|Window|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
      * @param {string} events The event names.
      * @param {string} delegate The delegate selector.
      * @param {DOM~eventCallback} callback The callback to execute.
@@ -2280,7 +2280,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Add self-destructing delegated events to each node.
-     * @param {string|array|HTMLElement|ShadowRoot|Document|Window|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|ShadowRoot|Document|Window|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
      * @param {string} events The event names.
      * @param {string} delegate The delegate selector.
      * @param {DOM~eventCallback} callback The callback to execute.
@@ -2319,7 +2319,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Add self-destructing events to each node.
-     * @param {string|array|HTMLElement|ShadowRoot|Document|Window|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|ShadowRoot|Document|Window|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
      * @param {string} events The event names.
      * @param {DOM~eventCallback} callback The callback to execute.
      */
@@ -2357,8 +2357,8 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Clone all events from each node to other nodes.
-     * @param {string|array|HTMLElement|ShadowRoot|Document|Window|HTMLCollection} nodes The input node(s), or a query selector string.
-     * @param {string|array|HTMLElement|ShadowRoot|Document|Window|HTMLCollection} others The other node(s), or a query selector string.
+     * @param {string|array|HTMLElement|ShadowRoot|Document|Window|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|ShadowRoot|Document|Window|HTMLCollection|QuerySet} others The other node(s), or a query selector string.
      */
     cloneEvents: function cloneEvents(nodes, others) {
       nodes = this.parseNodes(nodes, {
@@ -2421,7 +2421,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Remove events from each node.
-     * @param {string|array|HTMLElement|ShadowRoot|Document|Window|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|ShadowRoot|Document|Window|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
      * @param {string} [events] The event names.
      * @param {DOM~eventCallback} [callback] The callback to remove.
      */
@@ -2459,7 +2459,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Remove delegated events from each node.
-     * @param {string|array|HTMLElement|ShadowRoot|Document|Window|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|ShadowRoot|Document|Window|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
      * @param {string} [events] The event names.
      * @param {string} [delegate] The delegate selector.
      * @param {DOM~eventCallback} [callback] The callback to remove.
@@ -2498,7 +2498,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Trigger events on each node.
-     * @param {string|array|HTMLElement|ShadowRoot|Document|Window|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|ShadowRoot|Document|Window|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
      * @param {string} events The event names.
      * @param {object} [data] Additional data to attach to the event.
      */
@@ -2565,7 +2565,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
   Object.assign(DOM.prototype, {
     /**
      * Attach a shadow DOM tree to the first node.
-     * @param {string|array|HTMLElement|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
      * @param {Boolean} [open=true] Whether the elements are accessible from JavaScript outside the root.
      * @returns {ShadowRoot} The new ShadowRoot.
      */
@@ -2692,7 +2692,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
   Object.assign(DOM.prototype, {
     /**
      * Clone each node.
-     * @param {string|array|Node|HTMLElement|DocumentFragment|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
      * @param {Boolean} [deep=true] Whether to also clone all descendent nodes.
      * @param {Boolean} [cloneEvents=false] Whether to also clone events.
      * @param {Boolean} [cloneData=false] Whether to also clone custom data.
@@ -2714,7 +2714,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Detach each node from the DOM.
-     * @param {string|array|Node|HTMLElement|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
      */
     detach: function detach(nodes) {
       // DocumentFragment and ShadowRoot nodes can not be detached
@@ -2754,7 +2754,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Remove all children of each node from the DOM.
-     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
      */
     empty: function empty(nodes) {
       nodes = this.parseNodes(nodes, {
@@ -2790,7 +2790,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Remove each node from the DOM.
-     * @param {string|array|Node|HTMLElement|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
      */
     remove: function remove(nodes) {
       // DocumentFragment and ShadowRoot nodes can not be removed
@@ -2834,8 +2834,8 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Replace each other node with nodes.
-     * @param {string|array|Node|HTMLElement|DocumentFragment|NodeList|HTMLCollection} nodes The input node(s), or a query selector or HTML string.
-     * @param {string|array|Node|HTMLElement|NodeList|HTMLCollection} others The input node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector or HTML string.
+     * @param {string|array|Node|HTMLElement|NodeList|HTMLCollection|QuerySet} others The input node(s), or a query selector string.
      */
     replaceAll: function replaceAll(nodes, others) {
       this.replaceWith(others, nodes);
@@ -2843,8 +2843,8 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Replace each node with other nodes.
-     * @param {string|array|Node|HTMLElement|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
-     * @param {string|array|Node|HTMLElement|DocumentFragment|NodeList|HTMLCollection} others The input node(s), or a query selector or HTML string.
+     * @param {string|array|Node|HTMLElement|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|NodeList|HTMLCollection|QuerySet} others The input node(s), or a query selector or HTML string.
      */
     replaceWith: function replaceWith(nodes, others) {
       // DocumentFragment and ShadowRoot nodes can not be removed
@@ -2890,8 +2890,8 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
   Object.assign(DOM.prototype, {
     /**
      * Insert each other node after the first node.
-     * @param {string|array|Node|HTMLElement|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
-     * @param {string|array|Node|HTMLElement|DocumentFragment|NodeList|HTMLCollection} others The other node(s), or a query selector or HTML string.
+     * @param {string|array|Node|HTMLElement|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|NodeList|HTMLCollection|QuerySet} others The other node(s), or a query selector or HTML string.
      */
     after: function after(nodes, others) {
       // DocumentFragment and ShadowRoot nodes can not have siblings
@@ -2942,8 +2942,8 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Append each other node to the first node.
-     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
-     * @param {string|array|Node|HTMLElement|DocumentFragment|NodeList|HTMLCollection} others The other node(s), or a query selector or HTML string.
+     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|NodeList|HTMLCollection|QuerySet} others The other node(s), or a query selector or HTML string.
      */
     append: function append(nodes, others) {
       var node = this.parseNode(nodes, {
@@ -2989,8 +2989,8 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Append each node to the first other node.
-     * @param {string|array|Node|HTMLElement|DocumentFragment|NodeList|HTMLCollection} nodes The input node(s), or a query selector or HTML string.
-     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|NodeList|HTMLCollection} others The other node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector or HTML string.
+     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|NodeList|HTMLCollection|QuerySet} others The other node(s), or a query selector string.
      */
     appendTo: function appendTo(nodes, others) {
       this.append(others, nodes);
@@ -2998,8 +2998,8 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Insert each other node before the first node.
-     * @param {string|array|Node|HTMLElement|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
-     * @param {string|array|Node|HTMLElement|DocumentFragment|NodeList|HTMLCollection} others The other node(s), or a query selector or HTML string.
+     * @param {string|array|Node|HTMLElement|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|NodeList|HTMLCollection|QuerySet} others The other node(s), or a query selector or HTML string.
      */
     before: function before(nodes, others) {
       // DocumentFragment and ShadowRoot nodes can not have siblings
@@ -3050,8 +3050,8 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Insert each node after the first other node.
-     * @param {string|array|Node|HTMLElement|DocumentFragment|NodeList|HTMLCollection} nodes The input node(s), or a query selector or HTML string.
-     * @param {string|array|Node|HTMLElement|NodeList|HTMLCollection} others The other node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector or HTML string.
+     * @param {string|array|Node|HTMLElement|NodeList|HTMLCollection|QuerySet} others The other node(s), or a query selector string.
      */
     insertAfter: function insertAfter(nodes, others) {
       this.after(others, nodes);
@@ -3059,8 +3059,8 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Insert each node before the first other node.
-     * @param {string|array|Node|HTMLElement|DocumentFragment|NodeList|HTMLCollection} nodes The input node(s), or a query selector or HTML string.
-     * @param {string|array|Node|HTMLElement|NodeList|HTMLCollection} others The other node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector or HTML string.
+     * @param {string|array|Node|HTMLElement|NodeList|HTMLCollection|QuerySet} others The other node(s), or a query selector string.
      */
     insertBefore: function insertBefore(nodes, others) {
       this.before(others, nodes);
@@ -3068,7 +3068,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Prepend each other node to the first node.
-     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
      * @param {string|array|Node|HTMLElement|DocumentFragment|NodeList|HTMLCollection} others The other node(s), or a query selector or HTML string.
      */
     prepend: function prepend(nodes, others) {
@@ -3116,8 +3116,8 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Prepend each node to the first other node.
-     * @param {string|array|Node|HTMLElement|DocumentFragment|NodeList|HTMLCollection} nodes The input node(s), or a query selector or HTML string.
-     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|NodeList|HTMLCollection} others The other node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector or HTML string.
+     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|NodeList|HTMLCollection|QuerySet} others The other node(s), or a query selector string.
      */
     prependTo: function prependTo(nodes, others) {
       this.prepend(others, nodes);
@@ -3130,8 +3130,8 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
   Object.assign(DOM.prototype, {
     /**
      * Unwrap each node.
-     * @param {string|array|Node|HTMLElement|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
-     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
+     * @param {string|array|Node|HTMLElement|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
      */
     unwrap: function unwrap(nodes, filter) {
       // DocumentFragment and ShadowRoot nodes can not be unwrapped
@@ -3167,8 +3167,8 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Wrap each nodes with other nodes.
-     * @param {string|array|Node|HTMLElement|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
-     * @param {string|array|HTMLElement|DocumentFragment|NodeList|HTMLCollection} others The other node(s), or a query selector or HTML string.
+     * @param {string|array|Node|HTMLElement|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|DocumentFragment|NodeList|HTMLCollection|QuerySet} others The other node(s), or a query selector or HTML string.
      */
     wrap: function wrap(nodes, others) {
       // DocumentFragment and ShadowRoot nodes can not be wrapped
@@ -3208,8 +3208,8 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Wrap all nodes with other nodes.
-     * @param {string|array|Node|HTMLElement|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
-     * @param {string|array|HTMLElement|DocumentFragment|NodeList|HTMLCollection} others The other node(s), or a query selector or HTML string.
+     * @param {string|array|Node|HTMLElement|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|DocumentFragment|NodeList|HTMLCollection|QuerySet} others The other node(s), or a query selector or HTML string.
      */
     wrapAll: function wrapAll(nodes, others) {
       // DocumentFragment and ShadowRoot nodes can not be wrapped
@@ -3287,8 +3287,8 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Wrap the contents of each node with other nodes.
-     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|HTMLCollection} nodes The input node(s), or a query selector string.
-     * @param {string|array|HTMLElement|DocumentFragment|NodeList|HTMLCollection} others The other node(s), or a query selector or HTML string.
+     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|DocumentFragment|NodeList|HTMLCollection|QuerySet} others The other node(s), or a query selector or HTML string.
      */
     wrapInner: function wrapInner(nodes, others) {
       nodes = this.parseNodes(nodes, {
@@ -3334,7 +3334,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
   Object.assign(DOM.prototype, {
     /**
      * Return all nodes connected to the DOM.
-     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
      * @returns {array} The filtered nodes.
      */
     connected: function connected(nodes) {
@@ -3349,8 +3349,8 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Return all nodes considered equal to any of the other nodes.
-     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
-     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} others The other node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet} others The other node(s), or a query selector string.
      * @returns {array} The filtered nodes.
      */
     equal: function equal(nodes, others) {
@@ -3372,8 +3372,8 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Return all nodes matching a filter.
-     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
-     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
      * @returns {array} The filtered nodes.
      */
     filter: function filter(nodes, _filter) {
@@ -3389,8 +3389,8 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Return the first node matching a filter.
-     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
-     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
      * @returns {Node|HTMLElement|DocumentFragment|ShadowRoot} The filtered node.
      */
     filterOne: function filterOne(nodes, filter) {
@@ -3406,7 +3406,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Return all "fixed" nodes.
-     * @param {string|array|Node|HTMLElement|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
      * @returns {array} The filtered nodes.
      */
     fixed: function fixed(nodes) {
@@ -3421,7 +3421,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Return all hidden nodes.
-     * @param {string|array|Node|HTMLElement|Document|Window|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|Document|Window|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
      * @returns {array} The filtered nodes.
      */
     hidden: function hidden(nodes) {
@@ -3436,8 +3436,8 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Return all nodes not matching a filter.
-     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
-     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
      * @returns {array} The filtered nodes.
      */
     not: function not(nodes, filter) {
@@ -3458,8 +3458,8 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Return all nodes considered identical to any of the other nodes.
-     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
-     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} others The other node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet} others The other node(s), or a query selector string.
      * @returns {array} The filtered nodes.
      */
     same: function same(nodes, others) {
@@ -3481,7 +3481,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Return all visible nodes.
-     * @param {string|array|Node|HTMLElement|Document|Window|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|Document|Window|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
      * @returns {array} The filtered nodes.
      */
     visible: function visible(nodes) {
@@ -3496,7 +3496,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Return all nodes with a CSS animation.
-     * @param {string|array|HTMLElement|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
      * @returns {array} The filtered nodes.
      */
     withAnimation: function withAnimation(nodes) {
@@ -3507,7 +3507,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Return all nodes with a specified attribute.
-     * @param {string|array|HTMLElement|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
      * @param {string} attribute The attribute name.
      * @returns {array} The filtered nodes.
      */
@@ -3519,7 +3519,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Return all nodes with child elements.
-     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
      * @returns {array} The filtered nodes.
      */
     withChildren: function withChildren(nodes) {
@@ -3534,7 +3534,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Return all nodes with any of the specified classes.
-     * @param {string|array|HTMLElement|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
      * @param {...string|string[]} classes The classes.
      * @returns {array} The filtered nodes.
      */
@@ -3553,7 +3553,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Return all nodes with custom data.
-     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
      * @param {string} [key] The data key.
      * @returns {array} The filtered nodes.
      */
@@ -3571,8 +3571,8 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Return all nodes with a descendent matching a filter.
-     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
-     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
+     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
      * @returns {array} The filtered nodes.
      */
     withDescendent: function withDescendent(nodes, filter) {
@@ -3588,7 +3588,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Return all nodes with a specified property.
-     * @param {string|array|HTMLElement|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
      * @param {string} property The property name.
      * @returns {array} The filtered nodes.
      */
@@ -3600,7 +3600,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Return all nodes with a CSS transition.
-     * @param {string|array|HTMLElement|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
      * @returns {array} The filtered nodes.
      */
     withTransition: function withTransition(nodes) {
@@ -3617,7 +3617,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
     /**
      * Return all nodes matching a selector.
      * @param {string} selector The query selector.
-     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|NodeList|HTMLCollection} [nodes=this._context] The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|NodeList|HTMLCollection|QuerySet} [nodes=this._context] The input node(s), or a query selector string.
      * @returns {array} The matching nodes.
      */
     find: function find(selector) {
@@ -3665,7 +3665,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
     /**
      * Return all nodes with a specific class.
      * @param {string} className The class name.
-     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|NodeList|HTMLCollection} [nodes=this._context] The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|NodeList|HTMLCollection|QuerySet} [nodes=this._context] The input node(s), or a query selector string.
      * @returns {array} The matching nodes.
      */
     findByClass: function findByClass(className) {
@@ -3711,7 +3711,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
     /**
      * Return all nodes with a specific ID.
      * @param {string} id The id.
-     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|NodeList|HTMLCollection} [nodes=this._context] The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|NodeList|HTMLCollection|QuerySet} [nodes=this._context] The input node(s), or a query selector string.
      * @returns {array} The matching nodes.
      */
     findById: function findById(id) {
@@ -3728,7 +3728,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
     /**
      * Return all nodes with a specific tag.
      * @param {string} tagName The tag name.
-     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|NodeList|HTMLCollection} [nodes=this._context] The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|NodeList|HTMLCollection|QuerySet} [nodes=this._context] The input node(s), or a query selector string.
      * @returns {array} The matching nodes.
      */
     findByTag: function findByTag(tagName) {
@@ -3774,7 +3774,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
     /**
      * Return a single node matching a selector.
      * @param {string} selector The query selector.
-     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|NodeList|HTMLCollection} [nodes=this._context] The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|NodeList|HTMLCollection|QuerySet} [nodes=this._context] The input node(s), or a query selector string.
      * @returns {HTMLElement} The matching node.
      */
     findOne: function findOne(selector) {
@@ -3822,7 +3822,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
     /**
      * Return a single node with a specific class.
      * @param {string} className The class name.
-     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|NodeList|HTMLCollection} [nodes=this._context] The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|NodeList|HTMLCollection|QuerySet} [nodes=this._context] The input node(s), or a query selector string.
      * @returns {HTMLElement} The matching node.
      */
     findOneByClass: function findOneByClass(className) {
@@ -3871,7 +3871,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
     /**
      * Return a single node with a specific ID.
      * @param {string} id The id.
-     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|NodeList|HTMLCollection} [nodes=this._context] The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|NodeList|HTMLCollection|QuerySet} [nodes=this._context] The input node(s), or a query selector string.
      * @returns {HTMLElement} The matching element.
      */
     findOneById: function findOneById(id) {
@@ -3908,7 +3908,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
     /**
      * Return a single node with a specific tag.
      * @param {string} tagName The tag name.
-     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|NodeList|HTMLCollection} [nodes=this._context] The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|NodeList|HTMLCollection|QuerySet} [nodes=this._context] The input node(s), or a query selector string.
      * @returns {HTMLElement} The matching node.
      */
     findOneByTag: function findOneByTag(tagName) {
@@ -3961,8 +3961,8 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
   Object.assign(DOM.prototype, {
     /**
      * Return the first child of each node (optionally matching a filter).
-     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
-     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
+     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
      * @returns {array} The matching nodes.
      */
     child: function child(nodes, filter) {
@@ -3971,8 +3971,8 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Return all children of each node (optionally matching a filter).
-     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
-     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
+     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
      * @param {Boolean} [first=false] Whether to only return the first matching node for each node.
      * @param {Boolean} [elementsOnly=false] Whether to only return element nodes.
      * @returns {array} The matching nodes.
@@ -4021,9 +4021,9 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Return the closest ancestor to each node (optionally matching a filter, and before a limit).
-     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
-     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
-     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} [limit] The limit node(s), a query selector string or custom filter function.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet|DOM~filterCallback} [limit] The limit node(s), a query selector string or custom filter function.
      * @returns {array} The matching nodes.
      */
     closest: function closest(nodes, filter, limit) {
@@ -4032,7 +4032,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Return the common ancestor of all nodes.
-     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
      * @returns {HTMLElement} The common ancestor.
      */
     commonAncestor: function commonAncestor(nodes) {
@@ -4056,7 +4056,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Return all children of each node (including text and comment nodes).
-     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
      * @returns {array} The matching nodes.
      */
     contents: function contents(nodes) {
@@ -4065,7 +4065,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Return the DocumentFragment of the first node.
-     * @param {string|array|Node|HTMLElement|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
      * @returns {DocumentFragment} The DocumentFragment.
      */
     fragment: function fragment(nodes) {
@@ -4080,8 +4080,8 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Return the next sibling for each node (optionally matching a filter).
-     * @param {string|array|Node|HTMLElement|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
-     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
+     * @param {string|array|Node|HTMLElement|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
      * @returns {array} The matching nodes.
      */
     next: function next(nodes, filter) {
@@ -4125,9 +4125,9 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Return all next siblings for each node (optionally matching a filter, and before a limit).
-     * @param {string|array|Node|HTMLElement|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
-     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
-     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} [limit] The limit node(s), a query selector string or custom filter function.
+     * @param {string|array|Node|HTMLElement|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet|DOM~filterCallback} [limit] The limit node(s), a query selector string or custom filter function.
      * @param {Boolean} [first=false] Whether to only return the first matching node for each node.
      * @returns {array} The matching nodes.
      */
@@ -4174,7 +4174,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Return the offset parent (relatively positioned) of the first node.
-     * @param {string|array|Node|HTMLElement|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
      * @returns {HTMLElement} The offset parent.
      */
     offsetParent: function offsetParent(nodes) {
@@ -4185,8 +4185,8 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Return the parent of each node (optionally matching a filter).
-     * @param {string|array|Node|HTMLElement|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
-     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
+     * @param {string|array|Node|HTMLElement|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
      * @returns {array} The matching nodes.
      */
     parent: function parent(nodes, filter) {
@@ -4230,9 +4230,9 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Return all parents of each node (optionally matching a filter, and before a limit).
-     * @param {string|array|Node|HTMLElement|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
-     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
-     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} [limit] The limit node(s), a query selector string or custom filter function.
+     * @param {string|array|Node|HTMLElement|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet|DOM~filterCallback} [limit] The limit node(s), a query selector string or custom filter function.
      * @param {Boolean} [first=false] Whether to only return the first matching node for each node.
      * @returns {array} The matching nodes.
      */
@@ -4279,8 +4279,8 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Return the previous sibling for each node (optionally matching a filter).
-     * @param {string|array|Node|HTMLElement|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
-     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
+     * @param {string|array|Node|HTMLElement|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
      * @returns {array} The matching nodes.
      */
     prev: function prev(nodes, filter) {
@@ -4324,9 +4324,9 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Return all previous siblings for each node (optionally matching a filter, and before a limit).
-     * @param {string|array|Node|HTMLElement|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
-     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
-     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} [limit] The limit node(s), a query selector string or custom filter function.
+     * @param {string|array|Node|HTMLElement|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet|DOM~filterCallback} [limit] The limit node(s), a query selector string or custom filter function.
      * @param {Boolean} [first=false] Whether to only return the first matching node for each node.
      * @returns {array} The matching nodes.
      */
@@ -4373,7 +4373,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Return the ShadowRoot of the first node.
-     * @param {string|array|Node|HTMLElement|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
      * @returns {ShadowRoot} The ShadowRoot.
      */
     shadow: function shadow(nodes) {
@@ -4388,8 +4388,8 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Return all siblings for each node (optionally matching a filter).
-     * @param {string|array|Node|HTMLElement|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
-     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
+     * @param {string|array|Node|HTMLElement|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
      * @param {Boolean} [elementsOnly=true] Whether to only return element nodes.
      * @returns {array} The matching nodes.
      */
@@ -4440,7 +4440,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
   Object.assign(DOM.prototype, {
     /**
      * Return a node filter callback.
-     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} filter The filter node(s), a query selector string or custom filter function.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet|DOM~filterCallback} filter The filter node(s), a query selector string or custom filter function.
      * @returns {DOM~filterCallback} The node filter callback.
      */
     parseFilter: function parseFilter(filter) {
@@ -4481,7 +4481,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Return a node contains filter callback.
-     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} filter The filter node(s), a query selector string or custom filter function.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet|DOM~filterCallback} filter The filter node(s), a query selector string or custom filter function.
      * @returns {DOM~filterCallback} The node contains filter callback.
      */
     parseFilterContains: function parseFilterContains(filter) {
@@ -4526,7 +4526,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Return the first node matching a filter.
-     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|NodeList|HTMLCollection} nodes The input node(s), or a query selector or HTML string.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector or HTML string.
      * @param {object} [options] The options for filtering.
      * @param {Boolean} [options.node=false] Whether to allow text and comment nodes.
      * @param {Boolean} [options.fragment=false] Whether to allow DocumentFragment.
@@ -4562,7 +4562,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Return a filtered array of nodes.
-     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|NodeList|HTMLCollection} nodes The input node(s), or a query selector or HTML string.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector or HTML string.
      * @param {object} [options] The options for filtering.
      * @param {Boolean} [options.node=false] Whether to allow text and comment nodes.
      * @param {Boolean} [options.fragment=false] Whether to allow DocumentFragment.
@@ -4600,7 +4600,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
   Object.assign(DOM.prototype, {
     /**
      * Insert each node after the selection.
-     * @param {string|array|Node|HTMLElement|DocumentFragment|NodeList|HTMLCollection} nodes The input node(s), or a query selector or HTML string.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector or HTML string.
      */
     afterSelection: function afterSelection(nodes) {
       // ShadowRoot nodes can not be moved
@@ -4645,7 +4645,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Insert each node before the selection.
-     * @param {string|array|Node|HTMLElement|DocumentFragment|NodeList|HTMLCollection} nodes The input node(s), or a query selector or HTML string.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector or HTML string.
      */
     beforeSelection: function beforeSelection(nodes) {
       // ShadowRoot nodes can not be moved
@@ -4735,7 +4735,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Create a selection on the first node.
-     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
      */
     select: function select(nodes) {
       var node = this.parseNode(nodes, {
@@ -4765,7 +4765,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Create a selection containing all of the nodes.
-     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
      */
     selectAll: function selectAll(nodes) {
       nodes = this.sort(nodes);
@@ -4793,7 +4793,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Wrap selected nodes with other nodes.
-     * @param {string|array|HTMLElement|DocumentFragment|NodeList|HTMLCollection} nodes The input node(s), or a query selector or HTML string.
+     * @param {string|array|HTMLElement|DocumentFragment|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector or HTML string.
      */
     wrapSelection: function wrapSelection(nodes) {
       // ShadowRoot nodes can not be cloned
@@ -4870,7 +4870,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
   Object.assign(DOM.prototype, {
     /**
      * Returns true if any of the nodes has a CSS animation.
-     * @param {string|array|HTMLElement|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
      * @returns {Boolean} TRUE if any of the nodes has a CSS animation, otherwise FALSE.
      */
     hasAnimation: function hasAnimation(nodes) {
@@ -4881,7 +4881,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Returns true if any of the nodes has a specified attribute.
-     * @param {string|array|HTMLElement|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
      * @param {string} attribute The attribute name.
      * @returns {Boolean} TRUE if any of the nodes has the attribute, otherwise FALSE.
      */
@@ -4893,7 +4893,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Returns true if any of the nodes has child nodes.
-     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
      * @returns {Boolean} TRUE if the any of the nodes has child nodes, otherwise FALSE.
      */
     hasChildren: function hasChildren(nodes) {
@@ -4908,7 +4908,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Returns true if any of the nodes has any of the specified classes.
-     * @param {string|array|HTMLElement|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
      * @param {...string|string[]} classes The classes.
      * @returns {Boolean} TRUE if any of the nodes has any of the classes, otherwise FALSE.
      */
@@ -4927,7 +4927,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Returns true if any of the nodes has custom data.
-     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
      * @param {string} [key] The data key.
      * @returns {Boolean} TRUE if any of the nodes has custom data, otherwise FALSE.
      */
@@ -4944,8 +4944,8 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Returns true if any of the nodes contains a descendent matching a filter.
-     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
-     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
+     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
      * @returns {Boolean} TRUE if any of the nodes contains a descendent matching the filter, otherwise FALSE.
      */
     hasDescendent: function hasDescendent(nodes, filter) {
@@ -4961,7 +4961,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Returns true if any of the nodes has a DocumentFragment.
-     * @param {string|array|HTMLElement|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
      * @returns {Boolean} TRUE if any of the nodes has a DocumentFragment, otherwise FALSE.
      */
     hasFragment: function hasFragment(nodes) {
@@ -4972,7 +4972,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Returns true if any of the nodes has a specified property.
-     * @param {string|array|HTMLElement|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
      * @param {string} property The property name.
      * @returns {Boolean} TRUE if any of the nodes has the property, otherwise FALSE.
      */
@@ -4984,7 +4984,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Returns true if any of the nodes has a ShadowRoot.
-     * @param {string|array|HTMLElement|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
      * @returns {Boolean} TRUE if any of the nodes has a ShadowRoot, otherwise FALSE.
      */
     hasShadow: function hasShadow(nodes) {
@@ -4995,7 +4995,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Returns true if any of the nodes has a CSS transition.
-     * @param {string|array|HTMLElement|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
      * @returns {Boolean} TRUE if any of the nodes has a CSS transition, otherwise FALSE.
      */
     hasTransition: function hasTransition(nodes) {
@@ -5006,8 +5006,8 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Returns true if any of the nodes matches a filter.
-     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
-     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
      * @returns {Boolean} TRUE if any of the nodes matches the filter, otherwise FALSE.
      */
     is: function is(nodes, filter) {
@@ -5023,7 +5023,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Returns true if any of the nodes is connected to the DOM.
-     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
      * @returns {Boolean} TRUE if any of the nodes is connected to the DOM, otherwise FALSE.
      */
     isConnected: function isConnected(nodes) {
@@ -5038,8 +5038,8 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Returns true if any of the nodes is considered equal to any of the other nodes.
-     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
-     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} others The other node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet} others The other node(s), or a query selector string.
      * @returns {Boolean} TRUE if any of the nodes is considered equal to any of the other nodes, otherwise FALSE.
      */
     isEqual: function isEqual(nodes, others) {
@@ -5061,7 +5061,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Returns true if any of the nodes or a parent of any of the nodes is "fixed".
-     * @param {string|array|Node|HTMLElement|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
      * @returns {Boolean} TRUE if any of the nodes is "fixed", otherwise FALSE.
      */
     isFixed: function isFixed(nodes) {
@@ -5076,7 +5076,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Returns true if any of the nodes is hidden.
-     * @param {string|array|Node|HTMLElement|Document|Window|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|Document|Window|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
      * @returns {Boolean} TRUE if any of the nodes is hidden, otherwise FALSE.
      */
     isHidden: function isHidden(nodes) {
@@ -5091,8 +5091,8 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Returns true if any of the nodes is considered identical to any of the other nodes.
-     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
-     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} others The other node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet} others The other node(s), or a query selector string.
      * @returns {Boolean} TRUE if any of the nodes is considered identical to any of the other nodes, otherwise FALSE.
      */
     isSame: function isSame(nodes, others) {
@@ -5114,7 +5114,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Returns true if any of the nodes is visible.
-     * @param {string|array|Node|HTMLElement|Document|Window|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|Document|Window|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
      * @returns {Boolean} TRUE if any of the nodes is visible, otherwise FALSE.
      */
     isVisible: function isVisible(nodes) {
@@ -5145,7 +5145,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Force a node to be shown, and then execute a callback.
-     * @param {string|array|Node|HTMLElement|Document|Window|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|Document|Window|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
      * @param {DOM~nodeCallback} callback The callback to execute.
      * @returns {*} The result of the callback.
      */
@@ -5166,8 +5166,8 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Get the index of the first node matching a filter.
-     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
-     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
      * @returns {number} The index.
      */
     index: function index(nodes, filter) {
@@ -5183,7 +5183,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Get the index of the first node relative to it's parent.
-     * @param {string|array|Node|HTMLElement|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
      * @returns {number} The index.
      */
     indexOf: function indexOf(nodes) {
@@ -5200,7 +5200,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Normalize nodes (remove empty text nodes, and join adjacent text nodes).
-     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|Document|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|Document|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
      */
     normalize: function normalize(nodes) {
       nodes = this.parseNodes(nodes, {
@@ -5236,7 +5236,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Return a serialized string containing names and values of all form nodes.
-     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
      * @returns {string} The serialized string.
      */
     serialize: function serialize(nodes) {
@@ -5245,7 +5245,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Return a serialized array containing names and values of all form nodes.
-     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
      * @returns {array} The serialized array.
      */
     serializeArray: function serializeArray(nodes) {
@@ -5280,7 +5280,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Sort nodes by their position in the document.
-     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
      * @returns {array} The sorted array of nodes.
      */
     sort: function sort(nodes) {
@@ -6601,7 +6601,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
     /**
      * Unwrap a single node.
      * @param {Node|HTMLElement} node The input node.
-     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
+     * @param {DOM~filterCallback} [filter] The filter function.
      */
     _unwrap: function _unwrap(node, filter) {
       var parent = DOMNode.parent(node, filter);
@@ -6647,7 +6647,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
     /**
      * Wrap a single node with other nodes.
      * @param {Node|HTMLElement} node The input node.
-     * @param {string|array|HTMLElement|DocumentFragment|HTMLCollection} others The other node(s), or a query selector or HTML string.
+     * @param {array} others The other node(s).
      */
     _wrap: function _wrap(node, others) {
       var _this18 = this;
@@ -6693,7 +6693,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
     /**
      * Wrap the contents of a single node with other nodes.
      * @param {HTMLElement|DocumentFragment|ShadowRoot} node The input node.
-     * @param {string|array|HTMLElement|DocumentFragment|HTMLCollection} others The other node(s), or a query selector or HTML string.
+     * @param {array} others The other node(s).
      */
     _wrapInner: function _wrapInner(node, others) {
       var _this19 = this;

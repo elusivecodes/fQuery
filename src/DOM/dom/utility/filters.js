@@ -6,7 +6,7 @@ Object.assign(DOM.prototype, {
 
     /**
      * Return a node filter callback.
-     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} filter The filter node(s), a query selector string or custom filter function.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet|DOM~filterCallback} filter The filter node(s), a query selector string or custom filter function.
      * @returns {DOM~filterCallback} The node filter callback.
      */
     parseFilter(filter) {
@@ -37,7 +37,7 @@ Object.assign(DOM.prototype, {
 
     /**
      * Return a node contains filter callback.
-     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} filter The filter node(s), a query selector string or custom filter function.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet|DOM~filterCallback} filter The filter node(s), a query selector string or custom filter function.
      * @returns {DOM~filterCallback} The node contains filter callback.
      */
     parseFilterContains(filter) {
@@ -68,7 +68,7 @@ Object.assign(DOM.prototype, {
 
     /**
      * Return the first node matching a filter.
-     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|NodeList|HTMLCollection} nodes The input node(s), or a query selector or HTML string.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector or HTML string.
      * @param {object} [options] The options for filtering.
      * @param {Boolean} [options.node=false] Whether to allow text and comment nodes.
      * @param {Boolean} [options.fragment=false] Whether to allow DocumentFragment.
@@ -112,7 +112,7 @@ Object.assign(DOM.prototype, {
 
     /**
      * Return a filtered array of nodes.
-     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|NodeList|HTMLCollection} nodes The input node(s), or a query selector or HTML string.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector or HTML string.
      * @param {object} [options] The options for filtering.
      * @param {Boolean} [options.node=false] Whether to allow text and comment nodes.
      * @param {Boolean} [options.fragment=false] Whether to allow DocumentFragment.

@@ -16,7 +16,7 @@ Object.assign(DOM.prototype, {
 
     /**
      * Force a node to be shown, and then execute a callback.
-     * @param {string|array|Node|HTMLElement|Document|Window|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|Document|Window|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
      * @param {DOM~nodeCallback} callback The callback to execute.
      * @returns {*} The result of the callback.
      */
@@ -34,8 +34,8 @@ Object.assign(DOM.prototype, {
 
     /**
      * Get the index of the first node matching a filter.
-     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
-     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
      * @returns {number} The index.
      */
     index(nodes, filter) {
@@ -49,7 +49,7 @@ Object.assign(DOM.prototype, {
 
     /**
      * Get the index of the first node relative to it's parent.
-     * @param {string|array|Node|HTMLElement|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
      * @returns {number} The index.
      */
     indexOf(nodes) {
@@ -68,7 +68,7 @@ Object.assign(DOM.prototype, {
 
     /**
      * Normalize nodes (remove empty text nodes, and join adjacent text nodes).
-     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|Document|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|Document|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
      */
     normalize(nodes) {
         nodes = this.parseNodes(nodes, { node: true, fragment: true, shadow: true, document: true });
@@ -80,7 +80,7 @@ Object.assign(DOM.prototype, {
 
     /**
      * Return a serialized string containing names and values of all form nodes.
-     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
      * @returns {string} The serialized string.
      */
     serialize(nodes) {
@@ -91,7 +91,7 @@ Object.assign(DOM.prototype, {
 
     /**
      * Return a serialized array containing names and values of all form nodes.
-     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
      * @returns {array} The serialized array.
      */
     serializeArray(nodes) {
@@ -135,7 +135,7 @@ Object.assign(DOM.prototype, {
 
     /**
      * Sort nodes by their position in the document.
-     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
      * @returns {array} The sorted array of nodes.
      */
     sort(nodes) {

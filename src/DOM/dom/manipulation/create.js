@@ -6,7 +6,7 @@ Object.assign(DOM.prototype, {
 
     /**
      * Attach a shadow DOM tree to the first node.
-     * @param {string|array|HTMLElement|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
      * @param {Boolean} [open=true] Whether the elements are accessible from JavaScript outside the root.
      * @returns {ShadowRoot} The new ShadowRoot.
      */

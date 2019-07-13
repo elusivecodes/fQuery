@@ -6,7 +6,7 @@ Object.assign(DOM.prototype, {
 
     /**
      * Trigger a blur event on the first node.
-     * @param {string|array|HTMLElement|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
      */
     blur(nodes) {
         const node = this.parseNode(nodes);
@@ -20,7 +20,7 @@ Object.assign(DOM.prototype, {
 
     /**
      * Trigger a click event on the first node.
-     * @param {string|array|HTMLElement|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
      */
     click(nodes) {
         const node = this.parseNode(nodes);
@@ -34,7 +34,7 @@ Object.assign(DOM.prototype, {
 
     /**
      * Trigger a focus event on the first node.
-     * @param {string|array|HTMLElement|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
      */
     focus(nodes) {
         const node = this.parseNode(nodes);

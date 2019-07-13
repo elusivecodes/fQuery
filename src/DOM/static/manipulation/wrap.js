@@ -7,7 +7,7 @@ Object.assign(DOM, {
     /**
      * Unwrap a single node.
      * @param {Node|HTMLElement} node The input node.
-     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
+     * @param {DOM~filterCallback} [filter] The filter function.
      */
     _unwrap(node, filter) {
         const parent = DOMNode.parent(node, filter);
@@ -34,7 +34,7 @@ Object.assign(DOM, {
     /**
      * Wrap a single node with other nodes.
      * @param {Node|HTMLElement} node The input node.
-     * @param {string|array|HTMLElement|DocumentFragment|HTMLCollection} others The other node(s), or a query selector or HTML string.
+     * @param {array} others The other node(s).
      */
     _wrap(node, others) {
         const parent = DOMNode.parent(node);
@@ -59,7 +59,7 @@ Object.assign(DOM, {
     /**
      * Wrap the contents of a single node with other nodes.
      * @param {HTMLElement|DocumentFragment|ShadowRoot} node The input node.
-     * @param {string|array|HTMLElement|DocumentFragment|HTMLCollection} others The other node(s), or a query selector or HTML string.
+     * @param {array} others The other node(s).
      */
     _wrapInner(node, others) {
         const children = Core.wrap(DOMNode.childNodes(node));

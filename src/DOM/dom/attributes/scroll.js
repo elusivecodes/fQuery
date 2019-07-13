@@ -6,7 +6,7 @@ Object.assign(DOM.prototype, {
 
     /**
      * Get the scroll X position of the first node.
-     * @param {string|array|HTMLElement|Document|Window|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|Document|Window|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
      * @returns {number} The scroll X position.
      */
     getScrollX(nodes) {
@@ -29,7 +29,7 @@ Object.assign(DOM.prototype, {
 
     /**
      * Get the scroll Y position of the first node.
-     * @param {string|array|HTMLElement|Document|Window|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|Document|Window|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
      * @returns {number} The scroll Y position.
      */
     getScrollY(nodes) {
@@ -52,7 +52,7 @@ Object.assign(DOM.prototype, {
 
     /**
      * Scroll each node to an X,Y position.
-     * @param {string|array|HTMLElement|Document|Window|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|Document|Window|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
      * @param {number} x The scroll X position.
      * @param {number} y The scroll Y position.
      */
@@ -72,7 +72,7 @@ Object.assign(DOM.prototype, {
 
     /**
      * Scroll each node to an X position.
-     * @param {string|array|HTMLElement|Document|Window|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|Document|Window|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
      * @param {number} x The scroll X position.
      */
     setScrollX(nodes, x) {
@@ -91,7 +91,7 @@ Object.assign(DOM.prototype, {
 
     /**
      * Scroll each node to a Y position.
-     * @param {string|array|HTMLElement|Document|Window|NodeList|HTMLCollection} nodes The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|Document|Window|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
      * @param {number} y The scroll Y position.
      */
     setScrollY(nodes, y) {
