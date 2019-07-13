@@ -57,6 +57,35 @@ Object.assign(DOM, {
     },
 
     /**
+     * Wrap all nodes with other nodes.
+     * @param {array} nodes The input node(s).
+     * @param {array} others The other node(s).
+     */
+    _wrapAll(nodes, others) {
+        const firstNode = nodes.slice().shift();
+
+        if (!firstNode) {
+            return;
+        }
+
+        const parent = DOMNode.parent(firstNode);
+
+        if (!parent) {
+            return;
+        }
+
+        for (const other of others) {
+            DOMNode.insertBefore(parent, other, firstNode);
+        }
+
+        const deepest = DOM._deepest(others.shift());
+
+        for (const node of nodes) {
+            DOMNode.insertBefore(deepest, node);
+        }
+    },
+
+    /**
      * Wrap the contents of a single node with other nodes.
      * @param {HTMLElement|DocumentFragment|ShadowRoot} node The input node.
      * @param {array} others The other node(s).

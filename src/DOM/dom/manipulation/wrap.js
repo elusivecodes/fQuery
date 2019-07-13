@@ -49,32 +49,12 @@ Object.assign(DOM.prototype, {
         // DocumentFragment and ShadowRoot nodes can not be wrapped
         nodes = this.parseNodes(nodes, { node: true });
 
-        const firstNode = nodes.slice().shift();
-
-        if (!firstNode) {
-            return;
-        }
-
-        const parent = DOMNode.parent(firstNode);
-
-        if (!parent) {
-            return;
-        }
-
         // ShadowRoot nodes can not be cloned
         others = this.parseNodes(others, { fragment: true, html: true });
 
         const clones = this.clone(others, true);
 
-        for (const clone of clones) {
-            DOMNode.insertBefore(parent, clone, firstNode);
-        }
-
-        const deepest = DOM._deepest(clones.shift());
-
-        for (const node of nodes) {
-            DOMNode.insertBefore(deepest, node);
-        }
+        DOM._wrapAll(nodes, clones);
     },
 
     /**

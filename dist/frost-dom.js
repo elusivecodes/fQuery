@@ -2407,32 +2407,12 @@
             // DocumentFragment and ShadowRoot nodes can not be wrapped
             nodes = this.parseNodes(nodes, { node: true });
 
-            const firstNode = nodes.slice().shift();
-
-            if (!firstNode) {
-                return;
-            }
-
-            const parent = DOMNode.parent(firstNode);
-
-            if (!parent) {
-                return;
-            }
-
             // ShadowRoot nodes can not be cloned
             others = this.parseNodes(others, { fragment: true, html: true });
 
             const clones = this.clone(others, true);
 
-            for (const clone of clones) {
-                DOMNode.insertBefore(parent, clone, firstNode);
-            }
-
-            const deepest = DOM._deepest(clones.shift());
-
-            for (const node of nodes) {
-                DOMNode.insertBefore(deepest, node);
-            }
+            DOM._wrapAll(nodes, clones);
         },
 
         /**
@@ -5310,6 +5290,35 @@
             const deepest = this._deepest(clones.shift());
 
             DOMNode.insertBefore(deepest, node);
+        },
+
+        /**
+         * Wrap all nodes with other nodes.
+         * @param {array} nodes The input node(s).
+         * @param {array} others The other node(s).
+         */
+        _wrapAll(nodes, others) {
+            const firstNode = nodes.slice().shift();
+
+            if (!firstNode) {
+                return;
+            }
+
+            const parent = DOMNode.parent(firstNode);
+
+            if (!parent) {
+                return;
+            }
+
+            for (const other of others) {
+                DOMNode.insertBefore(parent, other, firstNode);
+            }
+
+            const deepest = DOM._deepest(others.shift());
+
+            for (const node of nodes) {
+                DOMNode.insertBefore(deepest, node);
+            }
         },
 
         /**
