@@ -1783,6 +1783,16 @@ dom.forceShow(nodes, callback);
 
 **Index**
 
+Get the index of the first node relative to it's parent node.
+
+- `nodes` is a query selector string, a *Node*, *HTMLElement*, *NodeList*, *HTMLCollection*, *QuerySet* or an array of nodes.
+
+```javascript
+const indexOf = dom.indexOf(nodes);
+```
+
+**Index Of**
+
 Get the index of the first node matching a filter.
 
 - `nodes` is a query selector string, a *Node*, *HTMLElement*, *DocumentFragment*, *ShadowRoot*, *NodeList*, *HTMLCollection*, *QuerySet* or an array of nodes.
@@ -1790,16 +1800,6 @@ Get the index of the first node matching a filter.
 
 ```javascript
 const index = dom.index(nodes, filter);
-```
-
-**Index Of**
-
-Get the index of the first node relative to it's parent node.
-
-- `nodes` is a query selector string, a *Node*, *HTMLElement*, *NodeList*, *HTMLCollection*, *QuerySet* or an array of nodes.
-
-```javascript
-const indexOf = dom.indexOf(nodes);
 ```
 
 **Normalize**

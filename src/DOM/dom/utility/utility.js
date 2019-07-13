@@ -33,26 +33,11 @@ Object.assign(DOM.prototype, {
     },
 
     /**
-     * Get the index of the first node matching a filter.
-     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
-     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
-     * @returns {number} The index.
-     */
-    index(nodes, filter) {
-        filter = this.parseFilter(filter);
-
-        return this.parseNodes(nodes, { node: true, fragment: true, shadow: true })
-            .findIndex(node =>
-                !filter || filter(node)
-            );
-    },
-
-    /**
      * Get the index of the first node relative to it's parent.
      * @param {string|array|Node|HTMLElement|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
      * @returns {number} The index.
      */
-    indexOf(nodes) {
+    index(nodes) {
         const node = this.parseNode(nodes, { node: true });
 
         if (!node) {
@@ -64,6 +49,21 @@ Object.assign(DOM.prototype, {
                 DOMNode.parent(node)
             )
         ).indexOf(node);
+    },
+
+    /**
+     * Get the index of the first node matching a filter.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
+     * @returns {number} The index.
+     */
+    indexOf(nodes, filter) {
+        filter = this.parseFilter(filter);
+
+        return this.parseNodes(nodes, { node: true, fragment: true, shadow: true })
+            .findIndex(node =>
+                !filter || filter(node)
+            );
     },
 
     /**

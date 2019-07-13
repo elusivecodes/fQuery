@@ -5165,28 +5165,11 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
     },
 
     /**
-     * Get the index of the first node matching a filter.
-     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
-     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
-     * @returns {number} The index.
-     */
-    index: function index(nodes, filter) {
-      filter = this.parseFilter(filter);
-      return this.parseNodes(nodes, {
-        node: true,
-        fragment: true,
-        shadow: true
-      }).findIndex(function (node) {
-        return !filter || filter(node);
-      });
-    },
-
-    /**
      * Get the index of the first node relative to it's parent.
      * @param {string|array|Node|HTMLElement|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
      * @returns {number} The index.
      */
-    indexOf: function indexOf(nodes) {
+    index: function index(nodes) {
       var node = this.parseNode(nodes, {
         node: true
       });
@@ -5196,6 +5179,23 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       }
 
       return Core.wrap(DOMNode.children(DOMNode.parent(node))).indexOf(node);
+    },
+
+    /**
+     * Get the index of the first node matching a filter.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
+     * @returns {number} The index.
+     */
+    indexOf: function indexOf(nodes, filter) {
+      filter = this.parseFilter(filter);
+      return this.parseNodes(nodes, {
+        node: true,
+        fragment: true,
+        shadow: true
+      }).findIndex(function (node) {
+        return !filter || filter(node);
+      });
     },
 
     /**
