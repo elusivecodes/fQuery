@@ -1788,7 +1788,7 @@ Get the index of the first node relative to it's parent node.
 - `nodes` is a query selector string, a *Node*, *HTMLElement*, *NodeList*, *HTMLCollection*, *QuerySet* or an array of nodes.
 
 ```javascript
-const indexOf = dom.indexOf(nodes);
+const index = dom.index(nodes);
 ```
 
 **Index Of**
@@ -1799,7 +1799,7 @@ Get the index of the first node matching a filter.
 - `filter` is either a function that accepts a `node` argument, a query selector string, a *Node*, *HTMLElement*, *DocumentFragment*, *ShadowRoot*, *NodeList*, *HTMLCollection*, *QuerySet* or an array of nodes that the nodes will be tested for.
 
 ```javascript
-const index = dom.index(nodes, filter);
+const indexOf = dom.indexOf(nodes, filter);
 ```
 
 **Normalize**
