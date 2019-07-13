@@ -15,7 +15,7 @@ Object.assign(DOM, {
      * @returns {Promise} A new Promise that resolves when the animation has completed.
      */
     _animate(node, callback, options) {
-        if (!this._animations.has(node)) {
+        if (!DOM._hasAnimation(node)) {
             this._animations.set(node, []);
         }
 
@@ -106,7 +106,7 @@ Object.assign(DOM, {
      * @param {Boolean} [finish=true] Whether to complete all current animations.
      */
     _stop(node, finish = true) {
-        if (!this._animations.has(node)) {
+        if (!DOM._hasAnimation(node)) {
             return;
         }
 

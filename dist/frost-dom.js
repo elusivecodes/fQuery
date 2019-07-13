@@ -908,10 +908,10 @@
     Object.assign(DOM.prototype, {
 
         /**
-         * Get an attribute value for the first node.
+         * Get attribute value(s) for the first node.
          * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
-         * @param {string} attribute The attribute name.
-         * @returns {string} The attribute value.
+         * @param {string} [attribute] The attribute name.
+         * @returns {string|object} The attribute value, or an object containing attributes.
          */
         getAttribute(nodes, attribute) {
             const node = this.parseNode(nodes);
@@ -920,14 +920,14 @@
                 return;
             }
 
-            return DOMNode.getAttribute(node, attribute);
+            return DOM._getAttribute(node, attribute);
         },
 
         /**
-         * Get a dataset value for the first node.
+         * Get dataset value(s) for the first node.
          * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
          * @param {string} [key] The dataset key.
-         * @returns {string|DOMStringMap} The dataset value.
+         * @returns {string|object} The dataset value, or an object containing the dataset.
          */
         getDataset(nodes, key) {
             const node = this.parseNode(nodes);
@@ -936,7 +936,7 @@
                 return;
             }
 
-            return DOMNode.getDataset(node, key);
+            return DOM._getDataset(node, key);
         },
 
         /**
@@ -1595,10 +1595,10 @@
         },
 
         /**
-         * Get a computed CSS style value for the first node.
+         * Get computed CSS style value(s) for the first node.
          * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
          * @param {string} [style] The CSS style name.
-         * @returns {string|CSSStyleDeclaration} The CSS style value.
+         * @returns {string|object} The CSS style value, or an object containing the computed CSS style properties.
          */
         css(nodes, style) {
             const node = this.parseNode(nodes);
@@ -1611,10 +1611,10 @@
         },
 
         /**
-         * Get a style property for the first node.
+         * Get style properties for the first node.
          * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
          * @param {string} [style] The style name.
-         * @returns {string|CSSStyleDeclaration} The style value.
+         * @returns {string|object} The style value, or an object containing the style properties.
          */
         getStyle(nodes, style) {
             const node = this.parseNode(nodes);
@@ -1623,9 +1623,7 @@
                 return;
             }
 
-            style = Core.snakeCase(style);
-
-            return DOMNode.getStyle(node, style);
+            return DOM._getStyle(node, style);
         },
 
         /**
@@ -2571,7 +2569,7 @@
         },
 
         /**
-         * Return all nodes with a CSS animation.
+         * Return all nodes with an animation.
          * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
          * @returns {array} The filtered nodes.
          */
@@ -2625,6 +2623,30 @@
         },
 
         /**
+         * Return all nodes with a CSS animation.
+         * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
+         * @returns {array} The filtered nodes.
+         */
+        withCSSAnimation(nodes) {
+            return this.parseNodes(nodes)
+                .filter(node =>
+                    DOM._hasCSSAnimation(node)
+                );
+        },
+
+        /**
+         * Return all nodes with a CSS transition.
+         * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
+         * @returns {array} The filtered nodes.
+         */
+        withCSSTransition(nodes) {
+            return this.parseNodes(nodes)
+                .filter(node =>
+                    DOM._hasCSSTransition(node)
+                );
+        },
+
+        /**
          * Return all nodes with custom data.
          * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
          * @param {string} [key] The data key.
@@ -2660,18 +2682,6 @@
             return this.parseNodes(nodes)
                 .filter(node =>
                     DOMNode.hasProperty(node, property)
-                );
-        },
-
-        /**
-         * Return all nodes with a CSS transition.
-         * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
-         * @returns {array} The filtered nodes.
-         */
-        withTransition(nodes) {
-            return this.parseNodes(nodes)
-                .filter(node =>
-                    DOM._hasTransition(node)
                 );
         }
 
@@ -3655,9 +3665,9 @@
     Object.assign(DOM.prototype, {
 
         /**
-         * Returns true if any of the nodes has a CSS animation.
+         * Returns true if any of the nodes has an animation.
          * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
-         * @returns {Boolean} TRUE if any of the nodes has a CSS animation, otherwise FALSE.
+         * @returns {Boolean} TRUE if any of the nodes has an animation, otherwise FALSE.
          */
         hasAnimation(nodes) {
             return this.parseNodes(nodes)
@@ -3705,6 +3715,30 @@
                     classes.some(className =>
                         DOMNode.hasClass(node, className)
                     )
+                );
+        },
+
+        /**
+         * Returns true if any of the nodes has a CSS animation.
+         * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
+         * @returns {Boolean} TRUE if any of the nodes has a CSS animation, otherwise FALSE.
+         */
+        hasCSSAnimation(nodes) {
+            return this.parseNodes(nodes)
+                .some(node =>
+                    DOM._hasCSSAnimation(node)
+                );
+        },
+
+        /**
+         * Returns true if any of the nodes has a CSS transition.
+         * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
+         * @returns {Boolean} TRUE if any of the nodes has a CSS transition, otherwise FALSE.
+         */
+        hasCSSTransition(nodes) {
+            return this.parseNodes(nodes)
+                .some(node =>
+                    DOM._hasCSSTransition(node)
                 );
         },
 
@@ -3771,18 +3805,6 @@
             return this.parseNodes(nodes)
                 .some(node =>
                     DOM._hasShadow(node)
-                );
-        },
-
-        /**
-         * Returns true if any of the nodes has a CSS transition.
-         * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
-         * @returns {Boolean} TRUE if any of the nodes has a CSS transition, otherwise FALSE.
-         */
-        hasTransition(nodes) {
-            return this.parseNodes(nodes)
-                .some(node =>
-                    DOM._hasTransition(node)
                 );
         },
 
@@ -4069,7 +4091,7 @@
          * @returns {Promise} A new Promise that resolves when the animation has completed.
          */
         _animate(node, callback, options) {
-            if (!this._animations.has(node)) {
+            if (!DOM._hasAnimation(node)) {
                 this._animations.set(node, []);
             }
 
@@ -4160,7 +4182,7 @@
          * @param {Boolean} [finish=true] Whether to complete all current animations.
          */
         _stop(node, finish = true) {
-            if (!this._animations.has(node)) {
+            if (!DOM._hasAnimation(node)) {
                 return;
             }
 
@@ -4240,6 +4262,42 @@
      */
 
     Object.assign(DOM, {
+
+        /**
+         * Get attribute value(s) for a single node.
+         * @param {HTMLElement} node The input node.
+         * @param {string} [attribute] The attribute name.
+         * @returns {string|object} The attribute value, or an object containing attributes.
+         */
+        _getAttribute(node, attribute) {
+            if (attribute) {
+                return DOMNode.getAttribute(node, attribute);
+            }
+
+            const attributes = {};
+
+            for (const attr of DOMNode.attributes(node)) {
+                attributes[attr.nodeName] = attr.nodeValue;
+            }
+
+            return attributes;
+        },
+
+        /**
+         * Get dataset value(s) for a single node.
+         * @param {HTMLElement} node The input node.
+         * @param {string} [key] The dataset key.
+         * @returns {string|object} The dataset value, or an object containing the dataset.
+         */
+        _getDataset(node, key) {
+            if (key) {
+                return DOMNode.getDataset(node, key);
+            }
+
+            return {
+                ...DOMNode.dataset(node)
+            };
+        },
 
         /**
          * Set an attribute value for a single node.
@@ -4628,10 +4686,10 @@
     Object.assign(DOM, {
 
         /**
-         * Get a computed CSS style value for a single node.
+         * Get computed CSS style value(s) for a single node.
          * @param {HTMLElement} node The input node.
          * @param {string} [style] The CSS style name.
-         * @returns {string|CSSStyleDeclaration} The CSS style value.
+         * @returns {string|object} The CSS style value, or an object containing the computed CSS style properties.
          */
         _css(node, style) {
             if (!this._styles.has(node)) {
@@ -4642,11 +4700,35 @@
             }
 
             if (!style) {
-                return this._styles.get(node);
+                return {
+                    ...this._styles.get(node)
+                };
             }
 
             return this._styles.get(node)
                 .getPropertyValue(style);
+        },
+
+        /**
+         * Get style properties for a single node.
+         * @param {HTMLElement} node The input node.
+         * @param {string} [style] The style name.
+         * @returns {string|object} The style value, or an object containing the style properties.
+         */
+        _getStyle(node, style) {
+            if (style) {
+                style = Core.snakeCase(style);
+
+                return DOMNode.getStyle(node, style);
+            }
+
+            const styles = {};
+
+            for (const style of DOMNode.style(node)) {
+                styles[style] = DOMNode.getStyle(node, style);
+            }
+
+            return styles;
         },
 
         /**
@@ -4700,7 +4782,8 @@
                     return;
                 }
 
-                e.delegateTarget = delegate;
+                e.currentTarget = delegate;
+                e.delegateTarget = node;
 
                 return callback(e);
             };
@@ -5818,13 +5901,33 @@
     Object.assign(DOM, {
 
         /**
+         * Returns true if a single node has an animation.
+         * @param {HTMLElement} node The input node.
+         * @returns {Boolean} TRUE if the node has an animation, otherwise FALSE.
+         */
+        _hasAnimation(node) {
+            return this._animations.has(node);
+        },
+
+        /**
          * Returns true if a single node has a CSS animation.
          * @param {HTMLElement} node The input node.
          * @returns {Boolean} TRUE if the node has a CSS animation, otherwise FALSE.
          */
-        _hasAnimation(node) {
+        _hasCSSAnimation(node) {
             return !!parseFloat(
                 this._css(node, 'animation-duration')
+            );
+        },
+
+        /**
+         * Returns true if a single node has a CSS transition.
+         * @param {HTMLElement} node The input node.
+         * @returns {Boolean} TRUE if the node has a CSS transition, otherwise FALSE.
+         */
+        _hasCSSTransition(node) {
+            return !!parseFloat(
+                this._css(node, 'transition-duration')
             );
         },
 
@@ -5859,17 +5962,6 @@
          */
         _hasShadow(node) {
             return !!DOMNode.shadow(node);
-        },
-
-        /**
-         * Returns true if a single node has a CSS transition.
-         * @param {HTMLElement} node The input node.
-         * @returns {Boolean} TRUE if the node has a CSS transition, otherwise FALSE.
-         */
-        _hasTransition(node) {
-            return !!parseFloat(
-                this._css(node, 'transition-duration')
-            );
         },
 
         /**
@@ -6061,14 +6153,10 @@
          * Get a dataset value for a single node.
          * @param {HTMLElement} node The input node.
          * @param {string} [key] The dataset key.
-         * @returns {string|DOMStringMap} The dataset value.
+         * @returns {string} The dataset value.
          */
         getDataset(node, key) {
-            if (!key) {
-                return node.dataset;
-            }
-
-            return node.dataset[key];
+            return this.dataset(node)[key];
         },
 
         /**
@@ -6340,14 +6428,10 @@
          * Get a style property for a single node.
          * @param {HTMLElement} node The input node.
          * @param {string} [style] The style name.
-         * @returns {string|CSSStyleDeclaration} The style value.
+         * @returns {string} The style value.
          */
         getStyle(node, style) {
-            if (!style) {
-                return node.style;
-            }
-
-            return node.style[style];
+            return this.style(node)[style];
         },
 
         /**
@@ -6968,6 +7052,15 @@
     Object.assign(DOMNode, {
 
         /**
+         * Get attribute values for a single node.
+         * @param {HTMLElement} node The input node.
+         * @returns {NamedNodeMap} The dataset value.
+         */
+        attributes(node) {
+            return node.attributes;
+        },
+
+        /**
          * Compare the position of two nodes in a Document.
          * @param {Node} node The input node.
          * @param {Node} other The node to compare against.
@@ -6978,11 +7071,29 @@
         },
 
         /**
+         * Get dataset values for a single node.
+         * @param {HTMLElement} node The input node.
+         * @returns {DOMStringMap} The dataset value.
+         */
+        dataset(node) {
+            return node.dataset;
+        },
+
+        /**
          * Normalize a single node (remove empty text nodes, and join neighbouring text nodes).
          * @param {Node|HTMLElement|DocumentFragment|ShadowRoot|Document} node The input node.
          */
         normalize(node) {
             node.normalize();
+        },
+
+        /**
+         * Get style properties for a single node.
+         * @param {HTMLElement} node The input node.
+         * @returns {CSSStyleDeclaration} The style value.
+         */
+        style(node) {
+            return node.style;
         }
 
     });

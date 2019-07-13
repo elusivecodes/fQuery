@@ -5,10 +5,10 @@
 Object.assign(DOM, {
 
     /**
-     * Get a computed CSS style value for a single node.
+     * Get computed CSS style value(s) for a single node.
      * @param {HTMLElement} node The input node.
      * @param {string} [style] The CSS style name.
-     * @returns {string|CSSStyleDeclaration} The CSS style value.
+     * @returns {string|object} The CSS style value, or an object containing the computed CSS style properties.
      */
     _css(node, style) {
         if (!this._styles.has(node)) {
@@ -19,11 +19,35 @@ Object.assign(DOM, {
         }
 
         if (!style) {
-            return this._styles.get(node);
+            return {
+                ...this._styles.get(node)
+            };
         }
 
         return this._styles.get(node)
             .getPropertyValue(style);
+    },
+
+    /**
+     * Get style properties for a single node.
+     * @param {HTMLElement} node The input node.
+     * @param {string} [style] The style name.
+     * @returns {string|object} The style value, or an object containing the style properties.
+     */
+    _getStyle(node, style) {
+        if (style) {
+            style = Core.snakeCase(style);
+
+            return DOMNode.getStyle(node, style);
+        }
+
+        const styles = {};
+
+        for (const style of DOMNode.style(node)) {
+            styles[style] = DOMNode.getStyle(node, style);
+        }
+
+        return styles;
     },
 
     /**

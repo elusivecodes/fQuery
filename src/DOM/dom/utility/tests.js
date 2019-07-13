@@ -5,9 +5,9 @@
 Object.assign(DOM.prototype, {
 
     /**
-     * Returns true if any of the nodes has a CSS animation.
+     * Returns true if any of the nodes has an animation.
      * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
-     * @returns {Boolean} TRUE if any of the nodes has a CSS animation, otherwise FALSE.
+     * @returns {Boolean} TRUE if any of the nodes has an animation, otherwise FALSE.
      */
     hasAnimation(nodes) {
         return this.parseNodes(nodes)
@@ -55,6 +55,30 @@ Object.assign(DOM.prototype, {
                 classes.some(className =>
                     DOMNode.hasClass(node, className)
                 )
+            );
+    },
+
+    /**
+     * Returns true if any of the nodes has a CSS animation.
+     * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
+     * @returns {Boolean} TRUE if any of the nodes has a CSS animation, otherwise FALSE.
+     */
+    hasCSSAnimation(nodes) {
+        return this.parseNodes(nodes)
+            .some(node =>
+                DOM._hasCSSAnimation(node)
+            );
+    },
+
+    /**
+     * Returns true if any of the nodes has a CSS transition.
+     * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
+     * @returns {Boolean} TRUE if any of the nodes has a CSS transition, otherwise FALSE.
+     */
+    hasCSSTransition(nodes) {
+        return this.parseNodes(nodes)
+            .some(node =>
+                DOM._hasCSSTransition(node)
             );
     },
 
@@ -121,18 +145,6 @@ Object.assign(DOM.prototype, {
         return this.parseNodes(nodes)
             .some(node =>
                 DOM._hasShadow(node)
-            );
-    },
-
-    /**
-     * Returns true if any of the nodes has a CSS transition.
-     * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
-     * @returns {Boolean} TRUE if any of the nodes has a CSS transition, otherwise FALSE.
-     */
-    hasTransition(nodes) {
-        return this.parseNodes(nodes)
-            .some(node =>
-                DOM._hasTransition(node)
             );
     },
 

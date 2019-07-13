@@ -307,6 +307,12 @@ Get an attribute value for the first node.
 const attr = dom.getAttribute(nodes, attribute);
 ```
 
+If the `attribute` argument is omitted, an object containing all attribute values will be returned instead.
+
+```javascript
+const attributes = dom.getAttribute(nodes);
+```
+
 **Get Dataset**
 
 Get a dataset value for the first node.
@@ -756,7 +762,13 @@ Get a computed CSS style value for the first node.
 - `style` is a string indicating the computed style property value to return.
 
 ```javascript
-const css = dom.css(nodes, style);
+const value = dom.css(nodes, style);
+```
+
+If the `style` argument is omitted, an object containing all computed style values will be returned instead.
+
+```javascript
+const css = dom.css(nodes);
 ```
 
 **Get Style**
@@ -767,7 +779,13 @@ Get a style property for the first node.
 - `style` is a string indicating the style property value to return.
 
 ```javascript
-const style = dom.getStyle(nodes, style);
+const value = dom.getStyle(nodes, style);
+```
+
+If the `style` argument is omitted, an object containing all style values will be returned instead.
+
+```javascript
+const styles = dom.getStyle(nodes);
 ```
 
 **Hide**
@@ -1590,7 +1608,7 @@ const visible = dom.visible(nodes);
 
 **With Animation**
 
-Return all nodes with a CSS animation.
+Return all nodes with an animation.
 
 - `nodes` is a query selector string, a *HTMLElement*, *NodeList*, *HTMLCollection*, [*QuerySet*](https://github.com/elusivecodes/fQuery) or an array of nodes.
 
@@ -1630,6 +1648,26 @@ Return all nodes with any of the specified classes.
 const withClass = dom.withClass(nodes, classes);
 ```
 
+**With CSS Animation**
+
+Return all nodes with a CSS animation.
+
+- `nodes` is a query selector string, a *HTMLElement*, *NodeList*, *HTMLCollection*, [*QuerySet*](https://github.com/elusivecodes/fQuery) or an array of nodes.
+
+```javascript
+const withCSSAnimation = dom.withCSSAnimation(nodes);
+```
+
+**With CSS Transition**
+
+Return all nodes with a CSS transition.
+
+- `nodes` is a query selector string, a *HTMLElement*, *NodeList*, *HTMLCollection*, [*QuerySet*](https://github.com/elusivecodes/fQuery) or an array of nodes.
+
+```javascript
+const withCSSTransition = dom.withCSSTransition(nodes);
+```
+
 **With Data**
 
 Return all nodes with custom data.
@@ -1667,16 +1705,6 @@ Return all nodes with a specified property.
 
 ```javascript
 const withProperty = dom.withProperty(nodes, property);
-```
-
-**With Transition**
-
-Return all nodes with a CSS transition.
-
-- `nodes` is a query selector string, a *HTMLElement*, *NodeList*, *HTMLCollection*, [*QuerySet*](https://github.com/elusivecodes/fQuery) or an array of nodes.
-
-```javascript
-const withTransition = dom.withTransition(nodes);
 ```
 
 ##### Find
@@ -1933,7 +1961,7 @@ If a node you are wrapping with is a *DocumentFragment*, the contents will be us
 
 **Has Animation**
 
-Returns *true* if any of the nodes has a CSS animation.
+Returns *true* if any of the nodes has an animation.
 
 - `nodes` is a query selector string, a *HTMLElement*, *NodeList*, *HTMLCollection*, [*QuerySet*](https://github.com/elusivecodes/fQuery) or an array of nodes.
 
@@ -1971,6 +1999,26 @@ Returns *true* if any of the nodes has any of the specified classes.
 
 ```javascript
 const hasClass = dom.hasClass(nodes, ...classes);
+```
+
+**Has CSS Animation**
+
+Returns *true* if any of the nodes has a CSS animation.
+
+- `nodes` is a query selector string, a *HTMLElement*, *NodeList*, *HTMLCollection*, [*QuerySet*](https://github.com/elusivecodes/fQuery) or an array of nodes.
+
+```javascript
+const hasCSSAnimation = dom.hasCSSAnimation(nodes);
+```
+
+**Has CSS Transition**
+
+Returns *true* if any of the nodes has a CSS transition.
+
+- `nodes` is a query selector string, a *HTMLElement*, *NodeList*, *HTMLCollection*, [*QuerySet*](https://github.com/elusivecodes/fQuery) or an array of nodes.
+
+```javascript
+const hasCSSTransition = dom.hasCSSTransition(nodes);
 ```
 
 **Has Data**
@@ -2030,16 +2078,6 @@ Returns *true* if any of the nodes has a *ShadowRoot*.
 
 ```javascript
 const hasShadow = dom.hasShadow(nodes);
-```
-
-**Has Transition**
-
-Returns *true* if any of the nodes has a CSS transition.
-
-- `nodes` is a query selector string, a *HTMLElement*, *NodeList*, *HTMLCollection*, [*QuerySet*](https://github.com/elusivecodes/fQuery) or an array of nodes.
-
-```javascript
-const hasTransition = dom.hasTransition(nodes);
 ```
 
 **Is**

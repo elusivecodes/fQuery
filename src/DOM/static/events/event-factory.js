@@ -27,7 +27,8 @@ Object.assign(DOM, {
                 return;
             }
 
-            e.delegateTarget = delegate;
+            e.currentTarget = delegate;
+            e.delegateTarget = node;
 
             return callback(e);
         };

@@ -5,10 +5,10 @@
 Object.assign(DOM.prototype, {
 
     /**
-     * Get an attribute value for the first node.
+     * Get attribute value(s) for the first node.
      * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
-     * @param {string} attribute The attribute name.
-     * @returns {string} The attribute value.
+     * @param {string} [attribute] The attribute name.
+     * @returns {string|object} The attribute value, or an object containing attributes.
      */
     getAttribute(nodes, attribute) {
         const node = this.parseNode(nodes);
@@ -17,14 +17,14 @@ Object.assign(DOM.prototype, {
             return;
         }
 
-        return DOMNode.getAttribute(node, attribute);
+        return DOM._getAttribute(node, attribute);
     },
 
     /**
-     * Get a dataset value for the first node.
+     * Get dataset value(s) for the first node.
      * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
      * @param {string} [key] The dataset key.
-     * @returns {string|DOMStringMap} The dataset value.
+     * @returns {string|object} The dataset value, or an object containing the dataset.
      */
     getDataset(nodes, key) {
         const node = this.parseNode(nodes);
@@ -33,7 +33,7 @@ Object.assign(DOM.prototype, {
             return;
         }
 
-        return DOMNode.getDataset(node, key);
+        return DOM._getDataset(node, key);
     },
 
     /**

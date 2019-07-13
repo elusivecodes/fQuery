@@ -44,14 +44,10 @@ Object.assign(DOMNode, {
      * Get a style property for a single node.
      * @param {HTMLElement} node The input node.
      * @param {string} [style] The style name.
-     * @returns {string|CSSStyleDeclaration} The style value.
+     * @returns {string} The style value.
      */
     getStyle(node, style) {
-        if (!style) {
-            return node.style;
-        }
-
-        return node.style[style];
+        return this.style(node)[style];
     },
 
     /**

@@ -24,10 +24,10 @@ Object.assign(DOM.prototype, {
     },
 
     /**
-     * Get a computed CSS style value for the first node.
+     * Get computed CSS style value(s) for the first node.
      * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
      * @param {string} [style] The CSS style name.
-     * @returns {string|CSSStyleDeclaration} The CSS style value.
+     * @returns {string|object} The CSS style value, or an object containing the computed CSS style properties.
      */
     css(nodes, style) {
         const node = this.parseNode(nodes);
@@ -40,10 +40,10 @@ Object.assign(DOM.prototype, {
     },
 
     /**
-     * Get a style property for the first node.
+     * Get style properties for the first node.
      * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
      * @param {string} [style] The style name.
-     * @returns {string|CSSStyleDeclaration} The style value.
+     * @returns {string|object} The style value, or an object containing the style properties.
      */
     getStyle(nodes, style) {
         const node = this.parseNode(nodes);
@@ -52,9 +52,7 @@ Object.assign(DOM.prototype, {
             return;
         }
 
-        style = Core.snakeCase(style);
-
-        return DOMNode.getStyle(node, style);
+        return DOM._getStyle(node, style);
     },
 
     /**

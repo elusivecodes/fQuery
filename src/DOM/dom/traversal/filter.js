@@ -136,7 +136,7 @@ Object.assign(DOM.prototype, {
     },
 
     /**
-     * Return all nodes with a CSS animation.
+     * Return all nodes with an animation.
      * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
      * @returns {array} The filtered nodes.
      */
@@ -190,6 +190,30 @@ Object.assign(DOM.prototype, {
     },
 
     /**
+     * Return all nodes with a CSS animation.
+     * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
+     * @returns {array} The filtered nodes.
+     */
+    withCSSAnimation(nodes) {
+        return this.parseNodes(nodes)
+            .filter(node =>
+                DOM._hasCSSAnimation(node)
+            );
+    },
+
+    /**
+     * Return all nodes with a CSS transition.
+     * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
+     * @returns {array} The filtered nodes.
+     */
+    withCSSTransition(nodes) {
+        return this.parseNodes(nodes)
+            .filter(node =>
+                DOM._hasCSSTransition(node)
+            );
+    },
+
+    /**
      * Return all nodes with custom data.
      * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
      * @param {string} [key] The data key.
@@ -225,18 +249,6 @@ Object.assign(DOM.prototype, {
         return this.parseNodes(nodes)
             .filter(node =>
                 DOMNode.hasProperty(node, property)
-            );
-    },
-
-    /**
-     * Return all nodes with a CSS transition.
-     * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
-     * @returns {array} The filtered nodes.
-     */
-    withTransition(nodes) {
-        return this.parseNodes(nodes)
-            .filter(node =>
-                DOM._hasTransition(node)
             );
     }
 

@@ -18,14 +18,10 @@ Object.assign(DOMNode, {
      * Get a dataset value for a single node.
      * @param {HTMLElement} node The input node.
      * @param {string} [key] The dataset key.
-     * @returns {string|DOMStringMap} The dataset value.
+     * @returns {string} The dataset value.
      */
     getDataset(node, key) {
-        if (!key) {
-            return node.dataset;
-        }
-
-        return node.dataset[key];
+        return this.dataset(node)[key];
     },
 
     /**

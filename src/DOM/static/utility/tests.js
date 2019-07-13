@@ -5,13 +5,33 @@
 Object.assign(DOM, {
 
     /**
+     * Returns true if a single node has an animation.
+     * @param {HTMLElement} node The input node.
+     * @returns {Boolean} TRUE if the node has an animation, otherwise FALSE.
+     */
+    _hasAnimation(node) {
+        return this._animations.has(node);
+    },
+
+    /**
      * Returns true if a single node has a CSS animation.
      * @param {HTMLElement} node The input node.
      * @returns {Boolean} TRUE if the node has a CSS animation, otherwise FALSE.
      */
-    _hasAnimation(node) {
+    _hasCSSAnimation(node) {
         return !!parseFloat(
             this._css(node, 'animation-duration')
+        );
+    },
+
+    /**
+     * Returns true if a single node has a CSS transition.
+     * @param {HTMLElement} node The input node.
+     * @returns {Boolean} TRUE if the node has a CSS transition, otherwise FALSE.
+     */
+    _hasCSSTransition(node) {
+        return !!parseFloat(
+            this._css(node, 'transition-duration')
         );
     },
 
@@ -46,17 +66,6 @@ Object.assign(DOM, {
      */
     _hasShadow(node) {
         return !!DOMNode.shadow(node);
-    },
-
-    /**
-     * Returns true if a single node has a CSS transition.
-     * @param {HTMLElement} node The input node.
-     * @returns {Boolean} TRUE if the node has a CSS transition, otherwise FALSE.
-     */
-    _hasTransition(node) {
-        return !!parseFloat(
-            this._css(node, 'transition-duration')
-        );
     },
 
     /**
