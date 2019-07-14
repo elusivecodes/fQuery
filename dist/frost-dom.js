@@ -4782,16 +4782,17 @@
                     return;
                 }
 
-                const event = {
-                    ...e,
-                    currentTarget: delegate,
-                    delegateTarget: node,
-                    originalEvent: e,
-                    composedPath: _ => e.composedPath(),
-                    preventDefault: _ => e.preventDefault(),
-                    stopImmediatePropagation: _ => e.stopImmediatePropagation(),
-                    stopPropagation: _ => e.stopPropagation()
-                };
+                const event = {};
+
+                for (const key in e) {
+                    event[key] = Core.isFunction(e[key]) ?
+                        (...args) => e[key](...args) :
+                        e[key];
+                }
+
+                event.currentTarget = delegate;
+                event.delegateTarget = node;
+                event.originalEvent = e;
 
                 Object.freeze(event)
 

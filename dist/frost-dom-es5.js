@@ -6010,24 +6010,21 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
           return;
         }
 
-        var event = _objectSpread({}, e, {
-          currentTarget: delegate,
-          delegateTarget: node,
-          originalEvent: e,
-          composedPath: function composedPath(_) {
-            return e.composedPath();
-          },
-          preventDefault: function preventDefault(_) {
-            return e.preventDefault();
-          },
-          stopImmediatePropagation: function stopImmediatePropagation(_) {
-            return e.stopImmediatePropagation();
-          },
-          stopPropagation: function stopPropagation(_) {
-            return e.stopPropagation();
-          }
-        });
+        var event = {};
 
+        var _loop = function _loop(key) {
+          event[key] = Core.isFunction(e[key]) ? function () {
+            return e[key].apply(e, arguments);
+          } : e[key];
+        };
+
+        for (var key in e) {
+          _loop(key);
+        }
+
+        event.currentTarget = delegate;
+        event.delegateTarget = node;
+        event.originalEvent = e;
         Object.freeze(event);
         return callback(event);
       };
@@ -6232,7 +6229,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       var _iteratorError69 = undefined;
 
       try {
-        var _loop = function _loop() {
+        var _loop2 = function _loop2() {
           var event = _step69.value;
 
           var realEvent = DOM._parseEvent(event);
@@ -6258,7 +6255,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         };
 
         for (var _iterator69 = eventArray[Symbol.iterator](), _step69; !(_iteratorNormalCompletion69 = (_step69 = _iterator69.next()).done); _iteratorNormalCompletion69 = true) {
-          var _ret = _loop();
+          var _ret = _loop2();
 
           if (_typeof(_ret) === "object") return _ret.v;
         }
