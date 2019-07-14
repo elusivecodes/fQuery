@@ -4782,10 +4782,14 @@
                     return;
                 }
 
-                e.currentTarget = delegate;
-                e.delegateTarget = node;
-
-                return callback(e);
+                return callback({
+                    ...e,
+                    currentTarget: delegate,
+                    delegateTarget: node,
+                    originalEvent: e,
+                    preventDefault: _ => e.preventDefault(),
+                    stopPropagation: _ => e.stopPropagation()
+                });
             };
         },
 

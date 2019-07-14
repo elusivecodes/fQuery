@@ -6010,9 +6010,17 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
           return;
         }
 
-        e.currentTarget = delegate;
-        e.delegateTarget = node;
-        return callback(e);
+        return callback(_objectSpread({}, e, {
+          currentTarget: delegate,
+          delegateTarget: node,
+          originalEvent: e,
+          preventDefault: function preventDefault(_) {
+            return e.preventDefault();
+          },
+          stopPropagation: function stopPropagation(_) {
+            return e.stopPropagation();
+          }
+        }));
       };
     },
 
