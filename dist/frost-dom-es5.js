@@ -5744,8 +5744,8 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         var result = DOMNode.rect(node);
 
         if (offset) {
-          result.x += DOMNode.getScrollX(window);
-          result.y += DOMNode.getScrollY(window);
+          result.x += DOMNode.getScrollXWindow(window);
+          result.y += DOMNode.getScrollYWindow(window);
         }
 
         return result;
