@@ -4782,14 +4782,20 @@
                     return;
                 }
 
-                return callback({
+                const event = {
                     ...e,
                     currentTarget: delegate,
                     delegateTarget: node,
                     originalEvent: e,
+                    composedPath: _ => e.composedPath(),
                     preventDefault: _ => e.preventDefault(),
+                    stopImmediatePropagation: _ => e.stopImmediatePropagation(),
                     stopPropagation: _ => e.stopPropagation()
-                });
+                };
+
+                Object.freeze(event)
+
+                return callback(event);
             };
         },
 

@@ -6010,17 +6010,26 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
           return;
         }
 
-        return callback(_objectSpread({}, e, {
+        var event = _objectSpread({}, e, {
           currentTarget: delegate,
           delegateTarget: node,
           originalEvent: e,
+          composedPath: function composedPath(_) {
+            return e.composedPath();
+          },
           preventDefault: function preventDefault(_) {
             return e.preventDefault();
+          },
+          stopImmediatePropagation: function stopImmediatePropagation(_) {
+            return e.stopImmediatePropagation();
           },
           stopPropagation: function stopPropagation(_) {
             return e.stopPropagation();
           }
-        }));
+        });
+
+        Object.freeze(event);
+        return callback(event);
       };
     },
 
