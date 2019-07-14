@@ -29,6 +29,7 @@ Object.assign(DOM, {
         }
 
         this._remove(parent);
+        DOMNode.removeChild(outerParent, parent);
     },
 
     /**

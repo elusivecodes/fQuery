@@ -6729,6 +6729,8 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       }
 
       this._remove(parent);
+
+      DOMNode.removeChild(outerParent, parent);
     },
 
     /**

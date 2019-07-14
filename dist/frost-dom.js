@@ -5358,6 +5358,7 @@
             }
 
             this._remove(parent);
+            DOMNode.removeChild(outerParent, parent);
         },
 
         /**
