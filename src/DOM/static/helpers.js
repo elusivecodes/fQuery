@@ -5,6 +5,30 @@
 Object.assign(DOM, {
 
     /**
+     * Return a RegExp for testing a namespaced event.
+     * @param {string} event The namespaced event.
+     * @returns {RegExp} The namespaced event RegExp.
+     */
+    _eventNamespacedRegExp(event) {
+        const parts = event.split('.');
+
+        let regex = '';
+        for (const part of parts) {
+            if (regex) {
+                regex += '(?:\\.';
+            }
+
+            regex += Core.escapeRegExp(part);
+        }
+
+        for (let i = 0; i < parts.length - 1; i++) {
+            regex += ')';
+        }
+
+        return new RegExp('^' + regex + '(?:\\.|$)', 'i');
+    },
+
+    /**
      * Return a single dimensional array of classes (from a multi-dimensional array or space-separated strings).
      * @param {array} classList The classes to parse.
      * @returns {string[]} The parsed classes.

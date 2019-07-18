@@ -6126,21 +6126,36 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
     },
 
     /**
+     * Return a wrapped event callback that check for a namespace match.
+     * @param {string} event The namespaced event name.
+     * @param {DOM~eventCallback} callback The callback to execute.
+     * @returns {DOM~eventCallback} The wrapped event callback.
+     */
+    _namespaceFactory: function _namespaceFactory(event, callback) {
+      return function (e) {
+        if ('namespaceRegEx' in e && !event.match(e.nameSpaceRegEx)) {
+          return;
+        }
+
+        return callback(e);
+      };
+    },
+
+    /**
      * Return a wrapped event callback that removes itself after execution.
      * @param {HTMLElement|ShadowRoot|Document|Window} node The input node.
      * @param {string} events The event names.
      * @param {string} delegate The delegate selector.
      * @param {DOM~eventCallback} callback The callback to execute.
+     * @returns {DOM~eventCallback} The wrapped event callback.
      */
     _selfDestructFactory: function _selfDestructFactory(node, events, delegate, callback) {
       var _this15 = this;
 
-      var realCallback = function realCallback(e) {
-        delegate ? _this15._removeEvent(node, events, callback, delegate) : _this15._removeEvent(node, events, realCallback);
+      return function (e) {
+        delegate ? _this15._removeEvent(node, events, callback, delegate) : _this15._removeEvent(node, events, callback);
         return callback(e);
       };
-
-      return realCallback;
     }
   });
   /**
@@ -6157,16 +6172,6 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
      * @param {Boolean} [selfDestruct] Whether to remove the event after triggering.
      */
     _addEvent: function _addEvent(node, events, callback, delegate, selfDestruct) {
-      var realCallback = callback;
-
-      if (selfDestruct) {
-        realCallback = this._selfDestructFactory(node, events, delegate, realCallback);
-      }
-
-      if (delegate) {
-        realCallback = this._delegateFactory(node, delegate, realCallback);
-      }
-
       if (!this._events.has(node)) {
         this._events.set(node, {});
       }
@@ -6175,7 +6180,6 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
           eventData = {
         delegate: delegate,
         callback: callback,
-        realCallback: realCallback,
         selfDestruct: selfDestruct
       };
 
@@ -6189,6 +6193,21 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
           var realEvent = DOM._parseEvent(event);
 
+          var realCallback = callback;
+
+          if (selfDestruct) {
+            realCallback = this._selfDestructFactory(node, events, delegate, realCallback);
+          }
+
+          if (delegate) {
+            realCallback = this._delegateFactory(node, delegate, realCallback);
+          }
+
+          if (event !== realEvent) {
+            realCallback = this._namespaceFactory(event, realCallback);
+          }
+
+          eventData.realCallback = realCallback;
           eventData.event = event;
           eventData.realEvent = realEvent;
 
@@ -6289,8 +6308,16 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
           }
 
           nodeEvents[realEvent] = nodeEvents[realEvent].filter(function (eventData) {
-            if (realEvent === event && realEvent !== eventData.realEvent || realEvent !== event && event !== eventData.event || delegate && (delegate !== eventData.delegate || callback && callback !== eventData.callback) || !delegate && callback && callback !== eventData.realCallback) {
+            if (delegate && delegate !== eventData.delegate || callback && callback !== eventData.callback) {
               return true;
+            }
+
+            if (realEvent !== event) {
+              var regex = DOM._eventNamespacedRegExp(event);
+
+              if (!eventData.event.match(regex)) {
+                return true;
+              }
             }
 
             DOMNode.removeEvent(node, eventData.realEvent, eventData.realCallback);
@@ -6327,6 +6354,48 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       }
 
       this._events["delete"](node);
+    },
+
+    /**
+     * Trigger events on a single node.
+     * @param {HTMLElement|DocumentFragment|ShadowRoot|Document|Window} node The input node.
+     * @param {string} events The event names.
+     * @param {object} [data] Additional data to attach to the Event object.
+     * @param {object} [options]
+     */
+    _triggerEvent: function _triggerEvent(node, events, data) {
+      var _iteratorNormalCompletion71 = true;
+      var _didIteratorError71 = false;
+      var _iteratorError71 = undefined;
+
+      try {
+        for (var _iterator71 = DOM._parseEvents(events)[Symbol.iterator](), _step71; !(_iteratorNormalCompletion71 = (_step71 = _iterator71.next()).done); _iteratorNormalCompletion71 = true) {
+          var event = _step71.value;
+
+          var realEvent = DOM._parseEvent(event),
+              eventData = _objectSpread({}, data);
+
+          if (realEvent !== event) {
+            eventData.namespace = event.substring(realEvent.length + 1);
+            eventData.namespaceRegex = DOM._eventNamespacedRegExp(event);
+          }
+
+          DOMNode.triggerEvent(node, realEvent, eventData);
+        }
+      } catch (err) {
+        _didIteratorError71 = true;
+        _iteratorError71 = err;
+      } finally {
+        try {
+          if (!_iteratorNormalCompletion71 && _iterator71["return"] != null) {
+            _iterator71["return"]();
+          }
+        } finally {
+          if (_didIteratorError71) {
+            throw _iteratorError71;
+          }
+        }
+      }
     }
   });
   /**
@@ -6334,6 +6403,50 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
    */
 
   Object.assign(DOM, {
+    /**
+     * Return a RegExp for testing a namespaced event.
+     * @param {string} event The namespaced event.
+     * @returns {RegExp} The namespaced event RegExp.
+     */
+    _eventNamespacedRegExp: function _eventNamespacedRegExp(event) {
+      var parts = event.split('.');
+      var regex = '';
+      var _iteratorNormalCompletion72 = true;
+      var _didIteratorError72 = false;
+      var _iteratorError72 = undefined;
+
+      try {
+        for (var _iterator72 = parts[Symbol.iterator](), _step72; !(_iteratorNormalCompletion72 = (_step72 = _iterator72.next()).done); _iteratorNormalCompletion72 = true) {
+          var part = _step72.value;
+
+          if (regex) {
+            regex += '(?:\\.';
+          }
+
+          regex += Core.escapeRegExp(part);
+        }
+      } catch (err) {
+        _didIteratorError72 = true;
+        _iteratorError72 = err;
+      } finally {
+        try {
+          if (!_iteratorNormalCompletion72 && _iterator72["return"] != null) {
+            _iterator72["return"]();
+          }
+        } finally {
+          if (_didIteratorError72) {
+            throw _iteratorError72;
+          }
+        }
+      }
+
+      for (var i = 0; i < parts.length - 1; i++) {
+        regex += ')';
+      }
+
+      return new RegExp('^' + regex + '(?:\\.|$)', 'i');
+    },
+
     /**
      * Return a single dimensional array of classes (from a multi-dimensional array or space-separated strings).
      * @param {array} classList The classes to parse.
@@ -6383,26 +6496,26 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
       if (Core.isArray(data)) {
         var obj = {};
-        var _iteratorNormalCompletion71 = true;
-        var _didIteratorError71 = false;
-        var _iteratorError71 = undefined;
+        var _iteratorNormalCompletion73 = true;
+        var _didIteratorError73 = false;
+        var _iteratorError73 = undefined;
 
         try {
-          for (var _iterator71 = data[Symbol.iterator](), _step71; !(_iteratorNormalCompletion71 = (_step71 = _iterator71.next()).done); _iteratorNormalCompletion71 = true) {
-            var value = _step71.value;
+          for (var _iterator73 = data[Symbol.iterator](), _step73; !(_iteratorNormalCompletion73 = (_step73 = _iterator73.next()).done); _iteratorNormalCompletion73 = true) {
+            var value = _step73.value;
             obj[value.name] = value.value;
           }
         } catch (err) {
-          _didIteratorError71 = true;
-          _iteratorError71 = err;
+          _didIteratorError73 = true;
+          _iteratorError73 = err;
         } finally {
           try {
-            if (!_iteratorNormalCompletion71 && _iterator71["return"] != null) {
-              _iterator71["return"]();
+            if (!_iteratorNormalCompletion73 && _iterator73["return"] != null) {
+              _iterator73["return"]();
             }
           } finally {
-            if (_didIteratorError71) {
-              throw _iteratorError71;
+            if (_didIteratorError73) {
+              throw _iteratorError73;
             }
           }
         }
@@ -6436,26 +6549,26 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         } else if (!Core.isArray(value)) {
           formData.set(key, value);
         } else {
-          var _iteratorNormalCompletion72 = true;
-          var _didIteratorError72 = false;
-          var _iteratorError72 = undefined;
+          var _iteratorNormalCompletion74 = true;
+          var _didIteratorError74 = false;
+          var _iteratorError74 = undefined;
 
           try {
-            for (var _iterator72 = value[Symbol.iterator](), _step72; !(_iteratorNormalCompletion72 = (_step72 = _iterator72.next()).done); _iteratorNormalCompletion72 = true) {
-              var val = _step72.value;
+            for (var _iterator74 = value[Symbol.iterator](), _step74; !(_iteratorNormalCompletion74 = (_step74 = _iterator74.next()).done); _iteratorNormalCompletion74 = true) {
+              var val = _step74.value;
               formData.append(key, val);
             }
           } catch (err) {
-            _didIteratorError72 = true;
-            _iteratorError72 = err;
+            _didIteratorError74 = true;
+            _iteratorError74 = err;
           } finally {
             try {
-              if (!_iteratorNormalCompletion72 && _iterator72["return"] != null) {
-                _iterator72["return"]();
+              if (!_iteratorNormalCompletion74 && _iterator74["return"] != null) {
+                _iterator74["return"]();
               }
             } finally {
-              if (_didIteratorError72) {
-                throw _iteratorError72;
+              if (_didIteratorError74) {
+                throw _iteratorError74;
               }
             }
           }
@@ -6609,13 +6722,13 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
     _empty: function _empty(node) {
       // Remove descendent elements
       var children = Core.wrap(DOMNode.childNodes(node));
-      var _iteratorNormalCompletion73 = true;
-      var _didIteratorError73 = false;
-      var _iteratorError73 = undefined;
+      var _iteratorNormalCompletion75 = true;
+      var _didIteratorError75 = false;
+      var _iteratorError75 = undefined;
 
       try {
-        for (var _iterator73 = children[Symbol.iterator](), _step73; !(_iteratorNormalCompletion73 = (_step73 = _iterator73.next()).done); _iteratorNormalCompletion73 = true) {
-          var child = _step73.value;
+        for (var _iterator75 = children[Symbol.iterator](), _step75; !(_iteratorNormalCompletion75 = (_step75 = _iterator75.next()).done); _iteratorNormalCompletion75 = true) {
+          var child = _step75.value;
 
           this._empty(child);
 
@@ -6625,16 +6738,16 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         } // Remove ShadowRoot
 
       } catch (err) {
-        _didIteratorError73 = true;
-        _iteratorError73 = err;
+        _didIteratorError75 = true;
+        _iteratorError75 = err;
       } finally {
         try {
-          if (!_iteratorNormalCompletion73 && _iterator73["return"] != null) {
-            _iterator73["return"]();
+          if (!_iteratorNormalCompletion75 && _iterator75["return"] != null) {
+            _iterator75["return"]();
           }
         } finally {
-          if (_didIteratorError73) {
-            throw _iteratorError73;
+          if (_didIteratorError75) {
+            throw _iteratorError75;
           }
         }
       }
@@ -6691,29 +6804,29 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         return;
       }
 
-      var _iteratorNormalCompletion74 = true;
-      var _didIteratorError74 = false;
-      var _iteratorError74 = undefined;
+      var _iteratorNormalCompletion76 = true;
+      var _didIteratorError76 = false;
+      var _iteratorError76 = undefined;
 
       try {
-        for (var _iterator74 = others[Symbol.iterator](), _step74; !(_iteratorNormalCompletion74 = (_step74 = _iterator74.next()).done); _iteratorNormalCompletion74 = true) {
-          var other = _step74.value;
+        for (var _iterator76 = others[Symbol.iterator](), _step76; !(_iteratorNormalCompletion76 = (_step76 = _iterator76.next()).done); _iteratorNormalCompletion76 = true) {
+          var other = _step76.value;
 
           var clone = this._clone(other, true);
 
           DOMNode.insertBefore(parent, clone, node);
         }
       } catch (err) {
-        _didIteratorError74 = true;
-        _iteratorError74 = err;
+        _didIteratorError76 = true;
+        _iteratorError76 = err;
       } finally {
         try {
-          if (!_iteratorNormalCompletion74 && _iterator74["return"] != null) {
-            _iterator74["return"]();
+          if (!_iteratorNormalCompletion76 && _iterator76["return"] != null) {
+            _iterator76["return"]();
           }
         } finally {
-          if (_didIteratorError74) {
-            throw _iteratorError74;
+          if (_didIteratorError76) {
+            throw _iteratorError76;
           }
         }
       }
@@ -6749,26 +6862,26 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       }
 
       var children = Core.wrap(DOMNode.childNodes(parent));
-      var _iteratorNormalCompletion75 = true;
-      var _didIteratorError75 = false;
-      var _iteratorError75 = undefined;
+      var _iteratorNormalCompletion77 = true;
+      var _didIteratorError77 = false;
+      var _iteratorError77 = undefined;
 
       try {
-        for (var _iterator75 = children[Symbol.iterator](), _step75; !(_iteratorNormalCompletion75 = (_step75 = _iterator75.next()).done); _iteratorNormalCompletion75 = true) {
-          var child = _step75.value;
+        for (var _iterator77 = children[Symbol.iterator](), _step77; !(_iteratorNormalCompletion77 = (_step77 = _iterator77.next()).done); _iteratorNormalCompletion77 = true) {
+          var child = _step77.value;
           DOMNode.insertBefore(outerParent, child, parent);
         }
       } catch (err) {
-        _didIteratorError75 = true;
-        _iteratorError75 = err;
+        _didIteratorError77 = true;
+        _iteratorError77 = err;
       } finally {
         try {
-          if (!_iteratorNormalCompletion75 && _iterator75["return"] != null) {
-            _iterator75["return"]();
+          if (!_iteratorNormalCompletion77 && _iterator77["return"] != null) {
+            _iterator77["return"]();
           }
         } finally {
-          if (_didIteratorError75) {
-            throw _iteratorError75;
+          if (_didIteratorError77) {
+            throw _iteratorError77;
           }
         }
       }
@@ -6795,26 +6908,26 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       var clones = others.map(function (other) {
         return _this18._clone(other, true);
       });
-      var _iteratorNormalCompletion76 = true;
-      var _didIteratorError76 = false;
-      var _iteratorError76 = undefined;
+      var _iteratorNormalCompletion78 = true;
+      var _didIteratorError78 = false;
+      var _iteratorError78 = undefined;
 
       try {
-        for (var _iterator76 = clones[Symbol.iterator](), _step76; !(_iteratorNormalCompletion76 = (_step76 = _iterator76.next()).done); _iteratorNormalCompletion76 = true) {
-          var clone = _step76.value;
+        for (var _iterator78 = clones[Symbol.iterator](), _step78; !(_iteratorNormalCompletion78 = (_step78 = _iterator78.next()).done); _iteratorNormalCompletion78 = true) {
+          var clone = _step78.value;
           DOMNode.insertBefore(parent, clone, node);
         }
       } catch (err) {
-        _didIteratorError76 = true;
-        _iteratorError76 = err;
+        _didIteratorError78 = true;
+        _iteratorError78 = err;
       } finally {
         try {
-          if (!_iteratorNormalCompletion76 && _iterator76["return"] != null) {
-            _iterator76["return"]();
+          if (!_iteratorNormalCompletion78 && _iterator78["return"] != null) {
+            _iterator78["return"]();
           }
         } finally {
-          if (_didIteratorError76) {
-            throw _iteratorError76;
+          if (_didIteratorError78) {
+            throw _iteratorError78;
           }
         }
       }
@@ -6842,52 +6955,52 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         return;
       }
 
-      var _iteratorNormalCompletion77 = true;
-      var _didIteratorError77 = false;
-      var _iteratorError77 = undefined;
+      var _iteratorNormalCompletion79 = true;
+      var _didIteratorError79 = false;
+      var _iteratorError79 = undefined;
 
       try {
-        for (var _iterator77 = others[Symbol.iterator](), _step77; !(_iteratorNormalCompletion77 = (_step77 = _iterator77.next()).done); _iteratorNormalCompletion77 = true) {
-          var other = _step77.value;
+        for (var _iterator79 = others[Symbol.iterator](), _step79; !(_iteratorNormalCompletion79 = (_step79 = _iterator79.next()).done); _iteratorNormalCompletion79 = true) {
+          var other = _step79.value;
           DOMNode.insertBefore(parent, other, firstNode);
         }
       } catch (err) {
-        _didIteratorError77 = true;
-        _iteratorError77 = err;
+        _didIteratorError79 = true;
+        _iteratorError79 = err;
       } finally {
         try {
-          if (!_iteratorNormalCompletion77 && _iterator77["return"] != null) {
-            _iterator77["return"]();
+          if (!_iteratorNormalCompletion79 && _iterator79["return"] != null) {
+            _iterator79["return"]();
           }
         } finally {
-          if (_didIteratorError77) {
-            throw _iteratorError77;
+          if (_didIteratorError79) {
+            throw _iteratorError79;
           }
         }
       }
 
       var deepest = DOM._deepest(others.shift());
 
-      var _iteratorNormalCompletion78 = true;
-      var _didIteratorError78 = false;
-      var _iteratorError78 = undefined;
+      var _iteratorNormalCompletion80 = true;
+      var _didIteratorError80 = false;
+      var _iteratorError80 = undefined;
 
       try {
-        for (var _iterator78 = nodes[Symbol.iterator](), _step78; !(_iteratorNormalCompletion78 = (_step78 = _iterator78.next()).done); _iteratorNormalCompletion78 = true) {
-          var node = _step78.value;
+        for (var _iterator80 = nodes[Symbol.iterator](), _step80; !(_iteratorNormalCompletion80 = (_step80 = _iterator80.next()).done); _iteratorNormalCompletion80 = true) {
+          var node = _step80.value;
           DOMNode.insertBefore(deepest, node);
         }
       } catch (err) {
-        _didIteratorError78 = true;
-        _iteratorError78 = err;
+        _didIteratorError80 = true;
+        _iteratorError80 = err;
       } finally {
         try {
-          if (!_iteratorNormalCompletion78 && _iterator78["return"] != null) {
-            _iterator78["return"]();
+          if (!_iteratorNormalCompletion80 && _iterator80["return"] != null) {
+            _iterator80["return"]();
           }
         } finally {
-          if (_didIteratorError78) {
-            throw _iteratorError78;
+          if (_didIteratorError80) {
+            throw _iteratorError80;
           }
         }
       }
@@ -6905,52 +7018,52 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       var clones = others.map(function (other) {
         return _this19._clone(other, true);
       });
-      var _iteratorNormalCompletion79 = true;
-      var _didIteratorError79 = false;
-      var _iteratorError79 = undefined;
+      var _iteratorNormalCompletion81 = true;
+      var _didIteratorError81 = false;
+      var _iteratorError81 = undefined;
 
       try {
-        for (var _iterator79 = clones[Symbol.iterator](), _step79; !(_iteratorNormalCompletion79 = (_step79 = _iterator79.next()).done); _iteratorNormalCompletion79 = true) {
-          var clone = _step79.value;
+        for (var _iterator81 = clones[Symbol.iterator](), _step81; !(_iteratorNormalCompletion81 = (_step81 = _iterator81.next()).done); _iteratorNormalCompletion81 = true) {
+          var clone = _step81.value;
           DOMNode.insertBefore(node, clone);
         }
       } catch (err) {
-        _didIteratorError79 = true;
-        _iteratorError79 = err;
+        _didIteratorError81 = true;
+        _iteratorError81 = err;
       } finally {
         try {
-          if (!_iteratorNormalCompletion79 && _iterator79["return"] != null) {
-            _iterator79["return"]();
+          if (!_iteratorNormalCompletion81 && _iterator81["return"] != null) {
+            _iterator81["return"]();
           }
         } finally {
-          if (_didIteratorError79) {
-            throw _iteratorError79;
+          if (_didIteratorError81) {
+            throw _iteratorError81;
           }
         }
       }
 
       var deepest = this._deepest(clones.shift());
 
-      var _iteratorNormalCompletion80 = true;
-      var _didIteratorError80 = false;
-      var _iteratorError80 = undefined;
+      var _iteratorNormalCompletion82 = true;
+      var _didIteratorError82 = false;
+      var _iteratorError82 = undefined;
 
       try {
-        for (var _iterator80 = children[Symbol.iterator](), _step80; !(_iteratorNormalCompletion80 = (_step80 = _iterator80.next()).done); _iteratorNormalCompletion80 = true) {
-          var child = _step80.value;
+        for (var _iterator82 = children[Symbol.iterator](), _step82; !(_iteratorNormalCompletion82 = (_step82 = _iterator82.next()).done); _iteratorNormalCompletion82 = true) {
+          var child = _step82.value;
           DOMNode.insertBefore(deepest, child);
         }
       } catch (err) {
-        _didIteratorError80 = true;
-        _iteratorError80 = err;
+        _didIteratorError82 = true;
+        _iteratorError82 = err;
       } finally {
         try {
-          if (!_iteratorNormalCompletion80 && _iterator80["return"] != null) {
-            _iterator80["return"]();
+          if (!_iteratorNormalCompletion82 && _iterator82["return"] != null) {
+            _iterator82["return"]();
           }
         } finally {
-          if (_didIteratorError80) {
-            throw _iteratorError80;
+          if (_didIteratorError82) {
+            throw _iteratorError82;
           }
         }
       }
@@ -6993,75 +7106,6 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
     _findByCustom: function _findByCustom(selectors) {
       var nodes = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : this._context;
       var results = [];
-      var _iteratorNormalCompletion81 = true;
-      var _didIteratorError81 = false;
-      var _iteratorError81 = undefined;
-
-      try {
-        for (var _iterator81 = nodes[Symbol.iterator](), _step81; !(_iteratorNormalCompletion81 = (_step81 = _iterator81.next()).done); _iteratorNormalCompletion81 = true) {
-          var node = _step81.value;
-          Core.merge(results, this.__findByCustom(selectors, node));
-        }
-      } catch (err) {
-        _didIteratorError81 = true;
-        _iteratorError81 = err;
-      } finally {
-        try {
-          if (!_iteratorNormalCompletion81 && _iterator81["return"] != null) {
-            _iterator81["return"]();
-          }
-        } finally {
-          if (_didIteratorError81) {
-            throw _iteratorError81;
-          }
-        }
-      }
-
-      return nodes.length > 1 && results.length > 1 ? Core.unique(results) : results;
-    },
-
-    /**
-     * Return all nodes matching a standard CSS selector.
-     * @param {string} selector The query selector.
-     * @param {array} nodes The input nodes.
-     * @returns {array} The matching nodes.
-     */
-    _findBySelector: function _findBySelector(selector, nodes) {
-      var results = [];
-      var _iteratorNormalCompletion82 = true;
-      var _didIteratorError82 = false;
-      var _iteratorError82 = undefined;
-
-      try {
-        for (var _iterator82 = nodes[Symbol.iterator](), _step82; !(_iteratorNormalCompletion82 = (_step82 = _iterator82.next()).done); _iteratorNormalCompletion82 = true) {
-          var node = _step82.value;
-          Core.merge(results, DOMNode.findBySelector(selector, node));
-        }
-      } catch (err) {
-        _didIteratorError82 = true;
-        _iteratorError82 = err;
-      } finally {
-        try {
-          if (!_iteratorNormalCompletion82 && _iterator82["return"] != null) {
-            _iterator82["return"]();
-          }
-        } finally {
-          if (_didIteratorError82) {
-            throw _iteratorError82;
-          }
-        }
-      }
-
-      return nodes.length > 1 && results.length > 1 ? Core.unique(results) : results;
-    },
-
-    /**
-     * Return a single node matching custom CSS selector(s).
-     * @param {array} selectors The custom query selector(s).
-     * @param {array} nodes The input nodes.
-     * @returns {HTMLElement} The matching node.
-     */
-    _findOneByCustom: function _findOneByCustom(selectors, nodes) {
       var _iteratorNormalCompletion83 = true;
       var _didIteratorError83 = false;
       var _iteratorError83 = undefined;
@@ -7069,12 +7113,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       try {
         for (var _iterator83 = nodes[Symbol.iterator](), _step83; !(_iteratorNormalCompletion83 = (_step83 = _iterator83.next()).done); _iteratorNormalCompletion83 = true) {
           var node = _step83.value;
-
-          var result = this.__findOneByCustom(selectors, node);
-
-          if (result) {
-            return result;
-          }
+          Core.merge(results, this.__findByCustom(selectors, node));
         }
       } catch (err) {
         _didIteratorError83 = true;
@@ -7091,16 +7130,17 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         }
       }
 
-      return null;
+      return nodes.length > 1 && results.length > 1 ? Core.unique(results) : results;
     },
 
     /**
-     * Return a single node matching a standard CSS selector.
+     * Return all nodes matching a standard CSS selector.
      * @param {string} selector The query selector.
      * @param {array} nodes The input nodes.
-     * @returns {HTMLElement} The matching node.
+     * @returns {array} The matching nodes.
      */
-    _findOneBySelector: function _findOneBySelector(selector, nodes) {
+    _findBySelector: function _findBySelector(selector, nodes) {
+      var results = [];
       var _iteratorNormalCompletion84 = true;
       var _didIteratorError84 = false;
       var _iteratorError84 = undefined;
@@ -7108,11 +7148,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       try {
         for (var _iterator84 = nodes[Symbol.iterator](), _step84; !(_iteratorNormalCompletion84 = (_step84 = _iterator84.next()).done); _iteratorNormalCompletion84 = true) {
           var node = _step84.value;
-          var result = DOMNode.findOneBySelector(selector, node);
-
-          if (result) {
-            return result;
-          }
+          Core.merge(results, DOMNode.findBySelector(selector, node));
         }
       } catch (err) {
         _didIteratorError84 = true;
@@ -7125,6 +7161,83 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         } finally {
           if (_didIteratorError84) {
             throw _iteratorError84;
+          }
+        }
+      }
+
+      return nodes.length > 1 && results.length > 1 ? Core.unique(results) : results;
+    },
+
+    /**
+     * Return a single node matching custom CSS selector(s).
+     * @param {array} selectors The custom query selector(s).
+     * @param {array} nodes The input nodes.
+     * @returns {HTMLElement} The matching node.
+     */
+    _findOneByCustom: function _findOneByCustom(selectors, nodes) {
+      var _iteratorNormalCompletion85 = true;
+      var _didIteratorError85 = false;
+      var _iteratorError85 = undefined;
+
+      try {
+        for (var _iterator85 = nodes[Symbol.iterator](), _step85; !(_iteratorNormalCompletion85 = (_step85 = _iterator85.next()).done); _iteratorNormalCompletion85 = true) {
+          var node = _step85.value;
+
+          var result = this.__findOneByCustom(selectors, node);
+
+          if (result) {
+            return result;
+          }
+        }
+      } catch (err) {
+        _didIteratorError85 = true;
+        _iteratorError85 = err;
+      } finally {
+        try {
+          if (!_iteratorNormalCompletion85 && _iterator85["return"] != null) {
+            _iterator85["return"]();
+          }
+        } finally {
+          if (_didIteratorError85) {
+            throw _iteratorError85;
+          }
+        }
+      }
+
+      return null;
+    },
+
+    /**
+     * Return a single node matching a standard CSS selector.
+     * @param {string} selector The query selector.
+     * @param {array} nodes The input nodes.
+     * @returns {HTMLElement} The matching node.
+     */
+    _findOneBySelector: function _findOneBySelector(selector, nodes) {
+      var _iteratorNormalCompletion86 = true;
+      var _didIteratorError86 = false;
+      var _iteratorError86 = undefined;
+
+      try {
+        for (var _iterator86 = nodes[Symbol.iterator](), _step86; !(_iteratorNormalCompletion86 = (_step86 = _iterator86.next()).done); _iteratorNormalCompletion86 = true) {
+          var node = _step86.value;
+          var result = DOMNode.findOneBySelector(selector, node);
+
+          if (result) {
+            return result;
+          }
+        }
+      } catch (err) {
+        _didIteratorError86 = true;
+        _iteratorError86 = err;
+      } finally {
+        try {
+          if (!_iteratorNormalCompletion86 && _iterator86["return"] != null) {
+            _iterator86["return"]();
+          }
+        } finally {
+          if (_didIteratorError86) {
+            throw _iteratorError86;
           }
         }
       }
@@ -7143,26 +7256,26 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       DOMNode.setAttribute(node, 'id', this.tempId);
       var parent = DOMNode.parent(node);
       var results = [];
-      var _iteratorNormalCompletion85 = true;
-      var _didIteratorError85 = false;
-      var _iteratorError85 = undefined;
+      var _iteratorNormalCompletion87 = true;
+      var _didIteratorError87 = false;
+      var _iteratorError87 = undefined;
 
       try {
-        for (var _iterator85 = selectors[Symbol.iterator](), _step85; !(_iteratorNormalCompletion85 = (_step85 = _iterator85.next()).done); _iteratorNormalCompletion85 = true) {
-          var selector = _step85.value;
+        for (var _iterator87 = selectors[Symbol.iterator](), _step87; !(_iteratorNormalCompletion87 = (_step87 = _iterator87.next()).done); _iteratorNormalCompletion87 = true) {
+          var selector = _step87.value;
           Core.merge(results, DOMNode.findBySelector(selector, parent));
         }
       } catch (err) {
-        _didIteratorError85 = true;
-        _iteratorError85 = err;
+        _didIteratorError87 = true;
+        _iteratorError87 = err;
       } finally {
         try {
-          if (!_iteratorNormalCompletion85 && _iterator85["return"] != null) {
-            _iterator85["return"]();
+          if (!_iteratorNormalCompletion87 && _iterator87["return"] != null) {
+            _iterator87["return"]();
           }
         } finally {
-          if (_didIteratorError85) {
-            throw _iteratorError85;
+          if (_didIteratorError87) {
+            throw _iteratorError87;
           }
         }
       }
@@ -7192,13 +7305,13 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       }
 
       var result = null;
-      var _iteratorNormalCompletion86 = true;
-      var _didIteratorError86 = false;
-      var _iteratorError86 = undefined;
+      var _iteratorNormalCompletion88 = true;
+      var _didIteratorError88 = false;
+      var _iteratorError88 = undefined;
 
       try {
-        for (var _iterator86 = selectors[Symbol.iterator](), _step86; !(_iteratorNormalCompletion86 = (_step86 = _iterator86.next()).done); _iteratorNormalCompletion86 = true) {
-          var selector = _step86.value;
+        for (var _iterator88 = selectors[Symbol.iterator](), _step88; !(_iteratorNormalCompletion88 = (_step88 = _iterator88.next()).done); _iteratorNormalCompletion88 = true) {
+          var selector = _step88.value;
           result = DOMNode.findOneBySelector(selector, parent);
 
           if (result) {
@@ -7206,16 +7319,16 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
           }
         }
       } catch (err) {
-        _didIteratorError86 = true;
-        _iteratorError86 = err;
+        _didIteratorError88 = true;
+        _iteratorError88 = err;
       } finally {
         try {
-          if (!_iteratorNormalCompletion86 && _iterator86["return"] != null) {
-            _iterator86["return"]();
+          if (!_iteratorNormalCompletion88 && _iterator88["return"] != null) {
+            _iterator88["return"]();
           }
         } finally {
-          if (_didIteratorError86) {
-            throw _iteratorError86;
+          if (_didIteratorError88) {
+            throw _iteratorError88;
           }
         }
       }
@@ -7248,13 +7361,13 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       var children = Core.wrap(elementsOnly ? DOMNode.children(node) : DOMNode.childNodes(node));
       var results = [];
       var child;
-      var _iteratorNormalCompletion87 = true;
-      var _didIteratorError87 = false;
-      var _iteratorError87 = undefined;
+      var _iteratorNormalCompletion89 = true;
+      var _didIteratorError89 = false;
+      var _iteratorError89 = undefined;
 
       try {
-        for (var _iterator87 = children[Symbol.iterator](), _step87; !(_iteratorNormalCompletion87 = (_step87 = _iterator87.next()).done); _iteratorNormalCompletion87 = true) {
-          child = _step87.value;
+        for (var _iterator89 = children[Symbol.iterator](), _step89; !(_iteratorNormalCompletion89 = (_step89 = _iterator89.next()).done); _iteratorNormalCompletion89 = true) {
+          child = _step89.value;
 
           if (filter && !filter(child)) {
             continue;
@@ -7267,16 +7380,16 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
           }
         }
       } catch (err) {
-        _didIteratorError87 = true;
-        _iteratorError87 = err;
+        _didIteratorError89 = true;
+        _iteratorError89 = err;
       } finally {
         try {
-          if (!_iteratorNormalCompletion87 && _iterator87["return"] != null) {
-            _iterator87["return"]();
+          if (!_iteratorNormalCompletion89 && _iterator89["return"] != null) {
+            _iterator89["return"]();
           }
         } finally {
-          if (_didIteratorError87) {
-            throw _iteratorError87;
+          if (_didIteratorError89) {
+            throw _iteratorError89;
           }
         }
       }
@@ -7476,13 +7589,13 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
       var siblings = elementsOnly ? parent.children : parent.childNodes;
       var sibling;
-      var _iteratorNormalCompletion88 = true;
-      var _didIteratorError88 = false;
-      var _iteratorError88 = undefined;
+      var _iteratorNormalCompletion90 = true;
+      var _didIteratorError90 = false;
+      var _iteratorError90 = undefined;
 
       try {
-        for (var _iterator88 = siblings[Symbol.iterator](), _step88; !(_iteratorNormalCompletion88 = (_step88 = _iterator88.next()).done); _iteratorNormalCompletion88 = true) {
-          sibling = _step88.value;
+        for (var _iterator90 = siblings[Symbol.iterator](), _step90; !(_iteratorNormalCompletion90 = (_step90 = _iterator90.next()).done); _iteratorNormalCompletion90 = true) {
+          sibling = _step90.value;
 
           if (DOMNode.isSame(node, sibling)) {
             continue;
@@ -7495,16 +7608,16 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
           results.push(sibling);
         }
       } catch (err) {
-        _didIteratorError88 = true;
-        _iteratorError88 = err;
+        _didIteratorError90 = true;
+        _iteratorError90 = err;
       } finally {
         try {
-          if (!_iteratorNormalCompletion88 && _iterator88["return"] != null) {
-            _iterator88["return"]();
+          if (!_iteratorNormalCompletion90 && _iterator90["return"] != null) {
+            _iterator90["return"]();
           }
         } finally {
-          if (_didIteratorError88) {
-            throw _iteratorError88;
+          if (_didIteratorError90) {
+            throw _iteratorError90;
           }
         }
       }
@@ -7646,15 +7759,15 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       }
 
       var result = callback(node);
-      var _iteratorNormalCompletion89 = true;
-      var _didIteratorError89 = false;
-      var _iteratorError89 = undefined;
+      var _iteratorNormalCompletion91 = true;
+      var _didIteratorError91 = false;
+      var _iteratorError91 = undefined;
 
       try {
-        for (var _iterator89 = hidden[Symbol.iterator](), _step89; !(_iteratorNormalCompletion89 = (_step89 = _iterator89.next()).done); _iteratorNormalCompletion89 = true) {
-          var _step89$value = _slicedToArray(_step89.value, 2),
-              _element = _step89$value[0],
-              style = _step89$value[1];
+        for (var _iterator91 = hidden[Symbol.iterator](), _step91; !(_iteratorNormalCompletion91 = (_step91 = _iterator91.next()).done); _iteratorNormalCompletion91 = true) {
+          var _step91$value = _slicedToArray(_step91.value, 2),
+              _element = _step91$value[0],
+              style = _step91$value[1];
 
           if (style) {
             DOMNode.setAttribute(_element, 'style', style);
@@ -7663,16 +7776,16 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
           }
         }
       } catch (err) {
-        _didIteratorError89 = true;
-        _iteratorError89 = err;
+        _didIteratorError91 = true;
+        _iteratorError91 = err;
       } finally {
         try {
-          if (!_iteratorNormalCompletion89 && _iterator89["return"] != null) {
-            _iterator89["return"]();
+          if (!_iteratorNormalCompletion91 && _iterator91["return"] != null) {
+            _iterator91["return"]();
           }
         } finally {
-          if (_didIteratorError89) {
-            throw _iteratorError89;
+          if (_didIteratorError91) {
+            throw _iteratorError91;
           }
         }
       }
@@ -7718,27 +7831,27 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
 
       var children = DOMNode.children(node);
-      var _iteratorNormalCompletion90 = true;
-      var _didIteratorError90 = false;
-      var _iteratorError90 = undefined;
+      var _iteratorNormalCompletion92 = true;
+      var _didIteratorError92 = false;
+      var _iteratorError92 = undefined;
 
       try {
-        for (var _iterator90 = children[Symbol.iterator](), _step90; !(_iteratorNormalCompletion90 = (_step90 = _iterator90.next()).done); _iteratorNormalCompletion90 = true) {
-          var child = _step90.value;
+        for (var _iterator92 = children[Symbol.iterator](), _step92; !(_iteratorNormalCompletion92 = (_step92 = _iterator92.next()).done); _iteratorNormalCompletion92 = true) {
+          var child = _step92.value;
 
           this._sanitize(child, allowedTags);
         }
       } catch (err) {
-        _didIteratorError90 = true;
-        _iteratorError90 = err;
+        _didIteratorError92 = true;
+        _iteratorError92 = err;
       } finally {
         try {
-          if (!_iteratorNormalCompletion90 && _iterator90["return"] != null) {
-            _iterator90["return"]();
+          if (!_iteratorNormalCompletion92 && _iterator92["return"] != null) {
+            _iterator92["return"]();
           }
         } finally {
-          if (_didIteratorError90) {
-            throw _iteratorError90;
+          if (_didIteratorError92) {
+            throw _iteratorError92;
           }
         }
       }
@@ -8247,7 +8360,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
     /**
      * Trigger an event on a single node.
-     * @param {HTMLElement|DocumentFragment|ShadowRoot|Document|Window} nodes The input node.
+     * @param {HTMLElement|DocumentFragment|ShadowRoot|Document|Window} node The input node.
      * @param {string} event The event name.
      * @param {object} [data] Additional data to attach to the Event object.
      * @param {object} [options]

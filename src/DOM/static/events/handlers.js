@@ -13,16 +13,6 @@ Object.assign(DOM, {
      * @param {Boolean} [selfDestruct] Whether to remove the event after triggering.
      */
     _addEvent(node, events, callback, delegate, selfDestruct) {
-        let realCallback = callback;
-
-        if (selfDestruct) {
-            realCallback = this._selfDestructFactory(node, events, delegate, realCallback);
-        }
-
-        if (delegate) {
-            realCallback = this._delegateFactory(node, delegate, realCallback);
-        }
-
         if (!this._events.has(node)) {
             this._events.set(node, {});
         }
@@ -31,13 +21,27 @@ Object.assign(DOM, {
             eventData = {
                 delegate,
                 callback,
-                realCallback,
                 selfDestruct
             };
 
         for (const event of DOM._parseEvents(events)) {
             const realEvent = DOM._parseEvent(event);
 
+            let realCallback = callback;
+
+            if (selfDestruct) {
+                realCallback = this._selfDestructFactory(node, events, delegate, realCallback);
+            }
+
+            if (delegate) {
+                realCallback = this._delegateFactory(node, delegate, realCallback);
+            }
+
+            if (event !== realEvent) {
+                realCallback = this._namespaceFactory(event, realCallback);
+            }
+
+            eventData.realCallback = realCallback;
             eventData.event = event;
             eventData.realEvent = realEvent;
 
@@ -104,30 +108,23 @@ Object.assign(DOM, {
             nodeEvents[realEvent] = nodeEvents[realEvent].filter(eventData => {
                 if (
                     (
-                        realEvent === event &&
-                        realEvent !== eventData.realEvent
-                    ) ||
-                    (
-                        realEvent !== event &&
-                        event !== eventData.event
-                    ) ||
-                    (
                         delegate &&
-                        (
-                            delegate !== eventData.delegate ||
-                            (
-                                callback &&
-                                callback !== eventData.callback
-                            )
-                        )
+                        delegate !== eventData.delegate
                     ) ||
                     (
-                        !delegate &&
                         callback &&
-                        callback !== eventData.realCallback
+                        callback !== eventData.callback
                     )
                 ) {
                     return true;
+                }
+
+                if (realEvent !== event) {
+                    const regex = DOM._eventNamespacedRegExp(event);
+
+                    if (!eventData.event.match(regex)) {
+                        return true;
+                    }
                 }
 
                 DOMNode.removeEvent(node, eventData.realEvent, eventData.realCallback);
@@ -145,6 +142,29 @@ Object.assign(DOM, {
         }
 
         this._events.delete(node);
+    },
+
+    /**
+     * Trigger events on a single node.
+     * @param {HTMLElement|DocumentFragment|ShadowRoot|Document|Window} node The input node.
+     * @param {string} events The event names.
+     * @param {object} [data] Additional data to attach to the Event object.
+     * @param {object} [options]
+     */
+    _triggerEvent(node, events, data) {
+        for (const event of DOM._parseEvents(events)) {
+            const realEvent = DOM._parseEvent(event),
+                eventData = {
+                    ...data
+                };
+
+            if (realEvent !== event) {
+                eventData.namespace = event.substring(realEvent.length + 1);
+                eventData.namespaceRegex = DOM._eventNamespacedRegExp(event);
+            }
+
+            DOMNode.triggerEvent(node, realEvent, eventData);
+        }
     }
 
 });

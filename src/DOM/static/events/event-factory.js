@@ -93,21 +93,36 @@ Object.assign(DOM, {
     },
 
     /**
+     * Return a wrapped event callback that check for a namespace match.
+     * @param {string} event The namespaced event name.
+     * @param {DOM~eventCallback} callback The callback to execute.
+     * @returns {DOM~eventCallback} The wrapped event callback.
+     */
+    _namespaceFactory(event, callback) {
+        return e => {
+            if ('namespaceRegEx' in e && !event.match(e.nameSpaceRegEx)) {
+                return;
+            }
+
+            return callback(e);
+        };
+    },
+
+    /**
      * Return a wrapped event callback that removes itself after execution.
      * @param {HTMLElement|ShadowRoot|Document|Window} node The input node.
      * @param {string} events The event names.
      * @param {string} delegate The delegate selector.
      * @param {DOM~eventCallback} callback The callback to execute.
+     * @returns {DOM~eventCallback} The wrapped event callback.
      */
     _selfDestructFactory(node, events, delegate, callback) {
-        const realCallback = e => {
+        return e => {
             delegate ?
                 this._removeEvent(node, events, callback, delegate) :
-                this._removeEvent(node, events, realCallback);
+                this._removeEvent(node, events, callback);
             return callback(e);
         };
-
-        return realCallback;
     }
 
 });

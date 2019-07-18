@@ -4874,21 +4874,36 @@
         },
 
         /**
+         * Return a wrapped event callback that check for a namespace match.
+         * @param {string} event The namespaced event name.
+         * @param {DOM~eventCallback} callback The callback to execute.
+         * @returns {DOM~eventCallback} The wrapped event callback.
+         */
+        _namespaceFactory(event, callback) {
+            return e => {
+                if ('namespaceRegEx' in e && !event.match(e.nameSpaceRegEx)) {
+                    return;
+                }
+
+                return callback(e);
+            };
+        },
+
+        /**
          * Return a wrapped event callback that removes itself after execution.
          * @param {HTMLElement|ShadowRoot|Document|Window} node The input node.
          * @param {string} events The event names.
          * @param {string} delegate The delegate selector.
          * @param {DOM~eventCallback} callback The callback to execute.
+         * @returns {DOM~eventCallback} The wrapped event callback.
          */
         _selfDestructFactory(node, events, delegate, callback) {
-            const realCallback = e => {
+            return e => {
                 delegate ?
                     this._removeEvent(node, events, callback, delegate) :
-                    this._removeEvent(node, events, realCallback);
+                    this._removeEvent(node, events, callback);
                 return callback(e);
             };
-
-            return realCallback;
         }
 
     });
@@ -4908,16 +4923,6 @@
          * @param {Boolean} [selfDestruct] Whether to remove the event after triggering.
          */
         _addEvent(node, events, callback, delegate, selfDestruct) {
-            let realCallback = callback;
-
-            if (selfDestruct) {
-                realCallback = this._selfDestructFactory(node, events, delegate, realCallback);
-            }
-
-            if (delegate) {
-                realCallback = this._delegateFactory(node, delegate, realCallback);
-            }
-
             if (!this._events.has(node)) {
                 this._events.set(node, {});
             }
@@ -4926,13 +4931,27 @@
                 eventData = {
                     delegate,
                     callback,
-                    realCallback,
                     selfDestruct
                 };
 
             for (const event of DOM._parseEvents(events)) {
                 const realEvent = DOM._parseEvent(event);
 
+                let realCallback = callback;
+
+                if (selfDestruct) {
+                    realCallback = this._selfDestructFactory(node, events, delegate, realCallback);
+                }
+
+                if (delegate) {
+                    realCallback = this._delegateFactory(node, delegate, realCallback);
+                }
+
+                if (event !== realEvent) {
+                    realCallback = this._namespaceFactory(event, realCallback);
+                }
+
+                eventData.realCallback = realCallback;
                 eventData.event = event;
                 eventData.realEvent = realEvent;
 
@@ -4999,30 +5018,23 @@
                 nodeEvents[realEvent] = nodeEvents[realEvent].filter(eventData => {
                     if (
                         (
-                            realEvent === event &&
-                            realEvent !== eventData.realEvent
-                        ) ||
-                        (
-                            realEvent !== event &&
-                            event !== eventData.event
-                        ) ||
-                        (
                             delegate &&
-                            (
-                                delegate !== eventData.delegate ||
-                                (
-                                    callback &&
-                                    callback !== eventData.callback
-                                )
-                            )
+                            delegate !== eventData.delegate
                         ) ||
                         (
-                            !delegate &&
                             callback &&
-                            callback !== eventData.realCallback
+                            callback !== eventData.callback
                         )
                     ) {
                         return true;
+                    }
+
+                    if (realEvent !== event) {
+                        const regex = DOM._eventNamespacedRegExp(event);
+
+                        if (!eventData.event.match(regex)) {
+                            return true;
+                        }
                     }
 
                     DOMNode.removeEvent(node, eventData.realEvent, eventData.realCallback);
@@ -5040,6 +5052,29 @@
             }
 
             this._events.delete(node);
+        },
+
+        /**
+         * Trigger events on a single node.
+         * @param {HTMLElement|DocumentFragment|ShadowRoot|Document|Window} node The input node.
+         * @param {string} events The event names.
+         * @param {object} [data] Additional data to attach to the Event object.
+         * @param {object} [options]
+         */
+        _triggerEvent(node, events, data) {
+            for (const event of DOM._parseEvents(events)) {
+                const realEvent = DOM._parseEvent(event),
+                    eventData = {
+                        ...data
+                    };
+
+                if (realEvent !== event) {
+                    eventData.namespace = event.substring(realEvent.length + 1);
+                    eventData.namespaceRegex = DOM._eventNamespacedRegExp(event);
+                }
+
+                DOMNode.triggerEvent(node, realEvent, eventData);
+            }
         }
 
     });
@@ -5049,6 +5084,30 @@
      */
 
     Object.assign(DOM, {
+
+        /**
+         * Return a RegExp for testing a namespaced event.
+         * @param {string} event The namespaced event.
+         * @returns {RegExp} The namespaced event RegExp.
+         */
+        _eventNamespacedRegExp(event) {
+            const parts = event.split('.');
+
+            let regex = '';
+            for (const part of parts) {
+                if (regex) {
+                    regex += '(?:\\.';
+                }
+
+                regex += Core.escapeRegExp(part);
+            }
+
+            for (let i = 0; i < parts.length - 1; i++) {
+                regex += ')';
+            }
+
+            return new RegExp('^' + regex + '(?:\\.|$)', 'i');
+        },
 
         /**
          * Return a single dimensional array of classes (from a multi-dimensional array or space-separated strings).
@@ -6654,7 +6713,7 @@
 
         /**
          * Trigger an event on a single node.
-         * @param {HTMLElement|DocumentFragment|ShadowRoot|Document|Window} nodes The input node.
+         * @param {HTMLElement|DocumentFragment|ShadowRoot|Document|Window} node The input node.
          * @param {string} event The event name.
          * @param {object} [data] Additional data to attach to the Event object.
          * @param {object} [options]
