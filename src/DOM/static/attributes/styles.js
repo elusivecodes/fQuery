@@ -41,9 +41,10 @@ Object.assign(DOM, {
             return DOMNode.getStyle(node, style);
         }
 
-        const styles = {};
+        const nodeStyles = DOMNode.style(node),
+            styles = {};
 
-        for (const style of DOMNode.style(node)) {
+        for (const style of nodeStyles) {
             styles[style] = DOMNode.getStyle(node, style);
         }
 

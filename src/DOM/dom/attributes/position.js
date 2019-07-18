@@ -135,20 +135,23 @@ Object.assign(DOM.prototype, {
      * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
      * @param {number} x The X co-ordinate.
      * @param {Boolean} [offset] Whether to offset from the top-left of the Document.
+     * @param {Boolean} [clamp=true] Whether to clamp the percent between 0 and 100.
      * @returns {number} The percent.
      */
-    percentX(nodes, x, offset) {
+    percentX(nodes, x, offset, clamp = true) {
         const nodeBox = this.rect(nodes, offset);
 
         if (!nodeBox) {
             return;
         }
 
-        return Core.clampPercent(
-            (x - nodeBox.left)
+        const percent = (x - nodeBox.left)
             / nodeBox.width
-            * 100
-        );
+            * 100;
+
+        return clamp ?
+            Core.clampPercent(percent) :
+            percent;
     },
 
     /**
@@ -156,6 +159,7 @@ Object.assign(DOM.prototype, {
      * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
      * @param {number} y The Y co-ordinate.
      * @param {Boolean} [offset] Whether to offset from the top-left of the Document.
+     * @param {Boolean} [clamp=true] Whether to clamp the percent between 0 and 100.
      * @returns {number} The percent.
      */
     percentY(nodes, y, offset) {
@@ -165,11 +169,13 @@ Object.assign(DOM.prototype, {
             return;
         }
 
-        return Core.clampPercent(
-            (y - nodeBox.top)
+        const percent = (y - nodeBox.top)
             / nodeBox.height
-            * 100
-        );
+            * 100;
+
+        return clamp ?
+            Core.clampPercent(percent) :
+            percent;
     },
 
     /**

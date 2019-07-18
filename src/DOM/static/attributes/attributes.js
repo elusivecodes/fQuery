@@ -15,9 +15,10 @@ Object.assign(DOM, {
             return DOMNode.getAttribute(node, attribute);
         }
 
-        const attributes = {};
+        const nodeAttributes = DOMNode.attributes(node),
+            attributes = {};
 
-        for (const attr of DOMNode.attributes(node)) {
+        for (const attr of nodeAttributes) {
             attributes[attr.nodeName] = attr.nodeValue;
         }
 

@@ -29,15 +29,21 @@ Object.assign(DOMNode, {
      * @param {HTMLElement|DocumentFragment|ShadowRoot|Document|Window} nodes The input node.
      * @param {string} event The event name.
      * @param {object} [data] Additional data to attach to the Event object.
+     * @param {object} [options]
+     * @returns {Boolean} Whether the event was cancelled.
      */
-    triggerEvent(node, event, data) {
-        const eventData = new Event(event);
+    triggerEvent(node, event, data, options) {
+        const eventData = new Event(event, {
+            bubbles: true,
+            cancelable: true,
+            ...options
+        });
 
         if (data) {
             Object.assign(eventData, data);
         }
 
-        node.dispatchEvent(eventData);
+        return node.dispatchEvent(eventData);
     }
 
 });

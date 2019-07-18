@@ -99,12 +99,12 @@ Object.assign(DOM.prototype, {
 
         const startContainer = DOMNode.startContainer(range),
             endContainer = DOMNode.endContainer(range),
-            start = Core.isElement(startContainer) ?
+            start = (Core.isElement(startContainer) ?
                 startContainer :
-                DOMNode.parent(startContainer),
-            end = Core.isElement(endContainer) ?
+                DOMNode.parent(startContainer)),
+            end = (Core.isElement(endContainer) ?
                 endContainer :
-                DOMNode.parent(endContainer);
+                DOMNode.parent(endContainer));
 
         return nodes.slice(
             nodes.indexOf(start),

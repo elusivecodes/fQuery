@@ -49,6 +49,40 @@ Object.assign(DOM, {
         processData: true
     },
 
+    // Default allowed tags/attributes for sanitizer
+    allowedTags: {
+        '*': ['class', 'dir', 'id', 'lang', 'role', /^aria-[\w-]*$/i],
+        a: ['target', 'href', 'title', 'rel'],
+        area: [],
+        b: [],
+        br: [],
+        col: [],
+        code: [],
+        div: [],
+        em: [],
+        hr: [],
+        h1: [],
+        h2: [],
+        h3: [],
+        h4: [],
+        h5: [],
+        h6: [],
+        i: [],
+        img: ['src', 'alt', 'title', 'width', 'height'],
+        li: [],
+        ol: [],
+        p: [],
+        pre: [],
+        s: [],
+        small: [],
+        span: [],
+        sub: [],
+        sup: [],
+        strong: [],
+        u: [],
+        ul: []
+    },
+
     // Default animation options
     animationDefaults: {
         duration: 1000,

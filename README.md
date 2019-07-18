@@ -618,9 +618,10 @@ Get the percentage of an X co-ordinate relative to the first node.
 - `nodes` is a query selector string, a *HTMLElement*, *NodeList*, *HTMLCollection*, [*QuerySet*](https://github.com/elusivecodes/fQuery) or an array of nodes.
 - `x` is a distance (in pixels) along the X axis.
 - `offset` is a boolean indicating whether the co-ordinates should be offset from the top left of the document, and will default to *false*.
+- `clamp` is a boolean indicating whether to clamp the percent betwen *0* and *100*, and will default to *true*.
 
 ```javascript
-const pX = dom.percentX(nodes, x, offset);
+const pX = dom.percentX(nodes, x, offset, clamp);
 ```
 
 **Percent Y**
@@ -630,9 +631,10 @@ Get the percentage of a Y co-ordinate relative to the first node.
 - `nodes` is a query selector string, a *HTMLElement*, *NodeList*, *HTMLCollection*, [*QuerySet*](https://github.com/elusivecodes/fQuery) or an array of nodes.
 - `y` is a distance (in pixels) along the Y axis.
 - `offset` is a boolean indicating whether the co-ordinates should be offset from the top left of the document, and will default to *false*.
+- `clamp` is a boolean indicating whether to clamp the percent betwen *0* and *100*, and will default to *true*.
 
 ```javascript
-const pY = dom.percentY(nodes, y, offset);
+const pY = dom.percentY(nodes, y, offset, clamp);
 ```
 
 **Position**
@@ -1851,6 +1853,17 @@ Normalize nodes (remove empty text nodes, and join adjacent text nodes).
 
 ```javascript
 dom.normalize(nodes);
+```
+
+**Sanitize**
+
+Sanitize a HTML string.
+
+- `html` is the HTML string.
+- `allowedTags` is an object containing allowed tags and attributes.
+
+```javascript
+dom.sanitize(html, allowedTags);
 ```
 
 **Serialize**

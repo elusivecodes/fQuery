@@ -25,9 +25,9 @@ Object.assign(DOM.prototype, {
         }
 
         // ShadowRoot nodes can not be moved
-        others = this.parseNodes(others, { node: true, fragment: true, html: true });
+        others = this.parseNodes(others, { node: true, fragment: true, html: true }).reverse();
 
-        for (const other of others.reverse()) {
+        for (const other of others) {
             DOMNode.insertBefore(parent, other, DOMNode.next(node));
         }
     },
@@ -122,9 +122,9 @@ Object.assign(DOM.prototype, {
         const firstChild = DOMNode.firstChild(node);
 
         // ShadowRoot nodes can not be moved
-        others = this.parseNodes(others, { node: true, fragment: true, html: true });
+        others = this.parseNodes(others, { node: true, fragment: true, html: true }).reverse();
 
-        for (const other of others.reverse()) {
+        for (const other of others) {
             DOMNode.insertBefore(node, other, firstChild);
         }
     },

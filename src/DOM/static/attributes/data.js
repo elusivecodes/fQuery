@@ -10,12 +10,12 @@ Object.assign(DOM, {
      * @param {HTMLElement|DocumentFragment|ShadowRoot|Document|Window} other The other node.
      */
     _cloneData(node, other) {
-        if (!DOM._data.has(node)) {
+        if (!this._data.has(node)) {
             return;
         }
 
         this._setData(other, {
-            ...DOM._data.get(node)
+            ...this._data.get(node)
         });
     },
 

@@ -1316,20 +1316,23 @@
          * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
          * @param {number} x The X co-ordinate.
          * @param {Boolean} [offset] Whether to offset from the top-left of the Document.
+         * @param {Boolean} [clamp=true] Whether to clamp the percent between 0 and 100.
          * @returns {number} The percent.
          */
-        percentX(nodes, x, offset) {
+        percentX(nodes, x, offset, clamp = true) {
             const nodeBox = this.rect(nodes, offset);
 
             if (!nodeBox) {
                 return;
             }
 
-            return Core.clampPercent(
-                (x - nodeBox.left)
+            const percent = (x - nodeBox.left)
                 / nodeBox.width
-                * 100
-            );
+                * 100;
+
+            return clamp ?
+                Core.clampPercent(percent) :
+                percent;
         },
 
         /**
@@ -1337,6 +1340,7 @@
          * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
          * @param {number} y The Y co-ordinate.
          * @param {Boolean} [offset] Whether to offset from the top-left of the Document.
+         * @param {Boolean} [clamp=true] Whether to clamp the percent between 0 and 100.
          * @returns {number} The percent.
          */
         percentY(nodes, y, offset) {
@@ -1346,11 +1350,13 @@
                 return;
             }
 
-            return Core.clampPercent(
-                (y - nodeBox.top)
+            const percent = (y - nodeBox.top)
                 / nodeBox.height
-                * 100
-            );
+                * 100;
+
+            return clamp ?
+                Core.clampPercent(percent) :
+                percent;
         },
 
         /**
@@ -2239,9 +2245,9 @@
             }
 
             // ShadowRoot nodes can not be moved
-            others = this.parseNodes(others, { node: true, fragment: true, html: true });
+            others = this.parseNodes(others, { node: true, fragment: true, html: true }).reverse();
 
-            for (const other of others.reverse()) {
+            for (const other of others) {
                 DOMNode.insertBefore(parent, other, DOMNode.next(node));
             }
         },
@@ -2336,9 +2342,9 @@
             const firstChild = DOMNode.firstChild(node);
 
             // ShadowRoot nodes can not be moved
-            others = this.parseNodes(others, { node: true, fragment: true, html: true });
+            others = this.parseNodes(others, { node: true, fragment: true, html: true }).reverse();
 
-            for (const other of others.reverse()) {
+            for (const other of others) {
                 DOMNode.insertBefore(node, other, firstChild);
             }
         },
@@ -3556,12 +3562,12 @@
 
             const startContainer = DOMNode.startContainer(range),
                 endContainer = DOMNode.endContainer(range),
-                start = Core.isElement(startContainer) ?
+                start = (Core.isElement(startContainer) ?
                     startContainer :
-                    DOMNode.parent(startContainer),
-                end = Core.isElement(endContainer) ?
+                    DOMNode.parent(startContainer)),
+                end = (Core.isElement(endContainer) ?
                     endContainer :
-                    DOMNode.parent(endContainer);
+                    DOMNode.parent(endContainer));
 
             return nodes.slice(
                 nodes.indexOf(start),
@@ -3990,6 +3996,24 @@
         },
 
         /**
+         * Sanitize a HTML string.
+         * @param {string} html The input HTML string.
+         * @param {object} [allowedTags] An object containing allowed tags and attributes.
+         * @returns {string} The sanitized HTML string.
+         */
+        sanitize(html, allowedTags = DOM.allowedTags) {
+            const template = this.create('template', { html }),
+                fragment = DOMNode.fragment(template),
+                children = DOMNode.children(fragment);
+
+            for (const child of children) {
+                DOM._sanitize(child, allowedTags);
+            }
+
+            return this.getHTML(template);
+        },
+
+        /**
          * Return a serialized string containing names and values of all form nodes.
          * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
          * @returns {string} The serialized string.
@@ -4274,9 +4298,10 @@
                 return DOMNode.getAttribute(node, attribute);
             }
 
-            const attributes = {};
+            const nodeAttributes = DOMNode.attributes(node),
+                attributes = {};
 
-            for (const attr of DOMNode.attributes(node)) {
+            for (const attr of nodeAttributes) {
                 attributes[attr.nodeName] = attr.nodeValue;
             }
 
@@ -4328,12 +4353,12 @@
          * @param {HTMLElement|DocumentFragment|ShadowRoot|Document|Window} other The other node.
          */
         _cloneData(node, other) {
-            if (!DOM._data.has(node)) {
+            if (!this._data.has(node)) {
                 return;
             }
 
             this._setData(other, {
-                ...DOM._data.get(node)
+                ...this._data.get(node)
             });
         },
 
@@ -4442,7 +4467,7 @@
                 style.top = `${parseFloat(this._css(node, 'top')) - topOffset}px`;
             }
 
-            DOM._setStyle(node, style);
+            this._setStyle(node, style);
         },
 
         /**
@@ -4722,9 +4747,10 @@
                 return DOMNode.getStyle(node, style);
             }
 
-            const styles = {};
+            const nodeStyles = DOMNode.style(node),
+                styles = {};
 
-            for (const style of DOMNode.style(node)) {
+            for (const style of nodeStyles) {
                 styles[style] = DOMNode.getStyle(node, style);
             }
 
@@ -6010,7 +6036,7 @@
          * @returns {*} The result of the callback.
          */
         _forceShow(node, callback) {
-            if (Core.isDocument(node) || Core.isWindow(node) || DOM._isVisible(node)) {
+            if (Core.isDocument(node) || Core.isWindow(node) || this._isVisible(node)) {
                 return callback(node);
             }
 
@@ -6048,6 +6074,49 @@
             }
 
             return result;
+        },
+
+        /**
+         * Sanitize a single node.
+         * @param {HTMLElement} node The input node.
+         * @param {object} [allowedTags] An object containing allowed tags and attributes.
+         */
+        _sanitize(node, allowedTags = this.allowedTags) {
+            // check node
+            const name = this._tagName(node);
+            if (!(name in allowedTags)) {
+                this._remove(node);
+                return;
+            }
+
+            // check node attributes
+            const allowedAttributes = [
+                ...allowedTags['*'],
+                ...allowedTags[name]
+            ];
+            const attributes = this._getAttribute(node);
+            for (const attribute in attributes) {
+                const valid = !!allowedAttributes.find(test => attribute.match(test));
+
+                if (!valid) {
+                    DOMNode.removeAttribute(node, attribute);
+                }
+            }
+
+            // check children
+            const children = DOMNode.children(node);
+            for (const child of children) {
+                this._sanitize(child, allowedTags);
+            }
+        },
+
+        /**
+         * Return the tag name (lowercase) of a single node.
+         * @param {HTMLElement} node The input node.
+         * @returns {string} The elements tag name (lowercase).
+         */
+        _tagName(node) {
+            return DOMNode.tagName(node).toLowerCase();
         }
 
     });
@@ -6103,6 +6172,40 @@
             processData: true
         },
 
+        // Default allowed tags/attributes for sanitizer
+        allowedTags: {
+            '*': ['class', 'dir', 'id', 'lang', 'role', /^aria-[\w-]*$/i],
+            a: ['target', 'href', 'title', 'rel'],
+            area: [],
+            b: [],
+            br: [],
+            col: [],
+            code: [],
+            div: [],
+            em: [],
+            hr: [],
+            h1: [],
+            h2: [],
+            h3: [],
+            h4: [],
+            h5: [],
+            h6: [],
+            i: [],
+            img: ['src', 'alt', 'title', 'width', 'height'],
+            li: [],
+            ol: [],
+            p: [],
+            pre: [],
+            s: [],
+            small: [],
+            span: [],
+            sub: [],
+            sup: [],
+            strong: [],
+            u: [],
+            ul: []
+        },
+
         // Default animation options
         animationDefaults: {
             duration: 1000,
@@ -6150,6 +6253,24 @@
      */
 
     Object.assign(DOMNode, {
+
+        /**
+         * Get attribute values for a single node.
+         * @param {HTMLElement} node The input node.
+         * @returns {NamedNodeMap} The dataset value.
+         */
+        attributes(node) {
+            return node.attributes;
+        },
+
+        /**
+         * Get dataset values for a single node.
+         * @param {HTMLElement} node The input node.
+         * @returns {DOMStringMap} The dataset value.
+         */
+        dataset(node) {
+            return node.dataset;
+        },
 
         /**
          * Get an attribute value for a single node.
@@ -6419,24 +6540,6 @@
         },
 
         /**
-         * Remove classes from a single node.
-         * @param {HTMLElement} node The input node.
-         * @param {...string} classes The classes.
-         */
-        removeClass(node, ...classes) {
-            node.classList.remove(...classes)
-        },
-
-        /**
-         * Toggle classes for a single node.
-         * @param {HTMLElement} node The input node.
-         * @param {...string} classes The classes.
-         */
-        toggleClass(node, ...classes) {
-            node.classList.toggle(...classes)
-        },
-
-        /**
          * Get a style property for a single node.
          * @param {HTMLElement} node The input node.
          * @param {string} [style] The style name.
@@ -6444,6 +6547,15 @@
          */
         getStyle(node, style) {
             return this.style(node)[style];
+        },
+
+        /**
+         * Remove classes from a single node.
+         * @param {HTMLElement} node The input node.
+         * @param {...string} classes The classes.
+         */
+        removeClass(node, ...classes) {
+            node.classList.remove(...classes)
         },
 
         /**
@@ -6460,6 +6572,24 @@
                     'important' :
                     ''
             );
+        },
+
+        /**
+         * Get style properties for a single node.
+         * @param {HTMLElement} node The input node.
+         * @returns {CSSStyleDeclaration} The style value.
+         */
+        style(node) {
+            return node.style;
+        },
+
+        /**
+         * Toggle classes for a single node.
+         * @param {HTMLElement} node The input node.
+         * @param {...string} classes The classes.
+         */
+        toggleClass(node, ...classes) {
+            node.classList.toggle(...classes)
         }
 
     });
@@ -6527,15 +6657,21 @@
          * @param {HTMLElement|DocumentFragment|ShadowRoot|Document|Window} nodes The input node.
          * @param {string} event The event name.
          * @param {object} [data] Additional data to attach to the Event object.
+         * @param {object} [options]
+         * @returns {Boolean} Whether the event was cancelled.
          */
-        triggerEvent(node, event, data) {
-            const eventData = new Event(event);
+        triggerEvent(node, event, data, options) {
+            const eventData = new Event(event, {
+                bubbles: true,
+                cancelable: true,
+                ...options
+            });
 
             if (data) {
                 Object.assign(eventData, data);
             }
 
-            node.dispatchEvent(eventData);
+            return node.dispatchEvent(eventData);
         }
 
     });
@@ -7064,15 +7200,6 @@
     Object.assign(DOMNode, {
 
         /**
-         * Get attribute values for a single node.
-         * @param {HTMLElement} node The input node.
-         * @returns {NamedNodeMap} The dataset value.
-         */
-        attributes(node) {
-            return node.attributes;
-        },
-
-        /**
          * Compare the position of two nodes in a Document.
          * @param {Node} node The input node.
          * @param {Node} other The node to compare against.
@@ -7080,15 +7207,6 @@
          */
         comparePosition(node, other) {
             return node.compareDocumentPosition(other);
-        },
-
-        /**
-         * Get dataset values for a single node.
-         * @param {HTMLElement} node The input node.
-         * @returns {DOMStringMap} The dataset value.
-         */
-        dataset(node) {
-            return node.dataset;
         },
 
         /**
@@ -7100,12 +7218,12 @@
         },
 
         /**
-         * Get style properties for a single node.
+         * Return the tag name of a single node.
          * @param {HTMLElement} node The input node.
-         * @returns {CSSStyleDeclaration} The style value.
+         * @returns {string} The elements tag name.
          */
-        style(node) {
-            return node.style;
+        tagName(node) {
+            return node.tagName;
         }
 
     });

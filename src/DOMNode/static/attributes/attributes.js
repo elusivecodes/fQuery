@@ -5,6 +5,24 @@
 Object.assign(DOMNode, {
 
     /**
+     * Get attribute values for a single node.
+     * @param {HTMLElement} node The input node.
+     * @returns {NamedNodeMap} The dataset value.
+     */
+    attributes(node) {
+        return node.attributes;
+    },
+
+    /**
+     * Get dataset values for a single node.
+     * @param {HTMLElement} node The input node.
+     * @returns {DOMStringMap} The dataset value.
+     */
+    dataset(node) {
+        return node.dataset;
+    },
+
+    /**
      * Get an attribute value for a single node.
      * @param {HTMLElement} node The input node.
      * @param {string} attribute The attribute name.

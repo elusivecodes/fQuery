@@ -79,6 +79,24 @@ Object.assign(DOM.prototype, {
     },
 
     /**
+     * Sanitize a HTML string.
+     * @param {string} html The input HTML string.
+     * @param {object} [allowedTags] An object containing allowed tags and attributes.
+     * @returns {string} The sanitized HTML string.
+     */
+    sanitize(html, allowedTags = DOM.allowedTags) {
+        const template = this.create('template', { html }),
+            fragment = DOMNode.fragment(template),
+            children = DOMNode.children(fragment);
+
+        for (const child of children) {
+            DOM._sanitize(child, allowedTags);
+        }
+
+        return this.getHTML(template);
+    },
+
+    /**
      * Return a serialized string containing names and values of all form nodes.
      * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
      * @returns {string} The serialized string.

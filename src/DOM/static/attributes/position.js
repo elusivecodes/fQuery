@@ -44,7 +44,7 @@ Object.assign(DOM, {
             style.top = `${parseFloat(this._css(node, 'top')) - topOffset}px`;
         }
 
-        DOM._setStyle(node, style);
+        this._setStyle(node, style);
     },
 
     /**

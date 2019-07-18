@@ -5,15 +5,6 @@
 Object.assign(DOMNode, {
 
     /**
-     * Get attribute values for a single node.
-     * @param {HTMLElement} node The input node.
-     * @returns {NamedNodeMap} The dataset value.
-     */
-    attributes(node) {
-        return node.attributes;
-    },
-
-    /**
      * Compare the position of two nodes in a Document.
      * @param {Node} node The input node.
      * @param {Node} other The node to compare against.
@@ -21,15 +12,6 @@ Object.assign(DOMNode, {
      */
     comparePosition(node, other) {
         return node.compareDocumentPosition(other);
-    },
-
-    /**
-     * Get dataset values for a single node.
-     * @param {HTMLElement} node The input node.
-     * @returns {DOMStringMap} The dataset value.
-     */
-    dataset(node) {
-        return node.dataset;
     },
 
     /**
@@ -41,12 +23,12 @@ Object.assign(DOMNode, {
     },
 
     /**
-     * Get style properties for a single node.
+     * Return the tag name of a single node.
      * @param {HTMLElement} node The input node.
-     * @returns {CSSStyleDeclaration} The style value.
+     * @returns {string} The elements tag name.
      */
-    style(node) {
-        return node.style;
+    tagName(node) {
+        return node.tagName;
     }
 
 });
