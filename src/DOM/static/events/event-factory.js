@@ -12,7 +12,7 @@ Object.assign(DOM, {
      * @returns {DOM~eventCallback} The delegated event callback.
      */
     _delegateFactory(node, selector, callback) {
-        const getDelegate = selector.match(DOM.complexRegex) ?
+        const getDelegate = selector.match(DOM._complexRegExp) ?
             this._getDelegateContainsFactory(node, selector) :
             this._getDelegateMatchFactory(node, selector);
 
@@ -100,7 +100,7 @@ Object.assign(DOM, {
      */
     _namespaceFactory(event, callback) {
         return e => {
-            if ('namespaceRegEx' in e && !event.match(e.nameSpaceRegEx)) {
+            if ('namespaceRegExp' in e && !e.namespaceRegExp.test(event)) {
                 return;
             }
 

@@ -5,14 +5,14 @@
 Object.assign(DOM, {
 
     /**
-     * Add events to a single node.
+     * Add an event to a single node.
      * @param {HTMLElement|ShadowRoot|Document|Window} node The input node.
-     * @param {string} events The event names.
+     * @param {string} event The event names.
      * @param {DOM~eventCallback} callback The callback to execute.
      * @param {string} [delegate] The delegate selector.
      * @param {Boolean} [selfDestruct] Whether to remove the event after triggering.
      */
-    _addEvent(node, events, callback, delegate, selfDestruct) {
+    _addEvent(node, event, callback, delegate, selfDestruct) {
         if (!this._events.has(node)) {
             this._events.set(node, {});
         }
@@ -22,39 +22,36 @@ Object.assign(DOM, {
                 delegate,
                 callback,
                 selfDestruct
-            };
+            },
+            realEvent = DOM._parseEvent(event);
 
-        for (const event of DOM._parseEvents(events)) {
-            const realEvent = DOM._parseEvent(event);
+        let realCallback = callback;
 
-            let realCallback = callback;
-
-            if (selfDestruct) {
-                realCallback = this._selfDestructFactory(node, events, delegate, realCallback);
-            }
-
-            if (delegate) {
-                realCallback = this._delegateFactory(node, delegate, realCallback);
-            }
-
-            if (event !== realEvent) {
-                realCallback = this._namespaceFactory(event, realCallback);
-            }
-
-            eventData.realCallback = realCallback;
-            eventData.event = event;
-            eventData.realEvent = realEvent;
-
-            if (!nodeEvents[realEvent]) {
-                nodeEvents[realEvent] = [];
-            } else if (nodeEvents[realEvent].includes(eventData)) {
-                return;
-            }
-
-            DOMNode.addEvent(node, realEvent, realCallback);
-
-            nodeEvents[realEvent].push(eventData);
+        if (selfDestruct) {
+            realCallback = this._selfDestructFactory(node, event, delegate, realCallback);
         }
+
+        if (delegate) {
+            realCallback = this._delegateFactory(node, delegate, realCallback);
+        }
+
+        if (event !== realEvent) {
+            realCallback = this._namespaceFactory(event, realCallback);
+        }
+
+        eventData.realCallback = realCallback;
+        eventData.event = event;
+        eventData.realEvent = realEvent;
+
+        if (!nodeEvents[realEvent]) {
+            nodeEvents[realEvent] = [];
+        } else if (nodeEvents[realEvent].includes(eventData)) {
+            return;
+        }
+
+        nodeEvents[realEvent].push(eventData);
+
+        DOMNode.addEvent(node, realEvent, realCallback);
     },
 
     /**
@@ -84,57 +81,51 @@ Object.assign(DOM, {
     /**
      * Remove events from a single node.
      * @param {HTMLElement|ShadowRoot|Document|Window} nodes The input node.
-     * @param {string} [events] The event names.
+     * @param {string} [event] The event names.
      * @param {DOM~eventCallback} [callback] The callback to remove.
      * @param {string} [delegate] The delegate selector.
      */
-    _removeEvent(node, events, callback, delegate) {
+    _removeEvent(node, event, callback, delegate) {
         if (!this._events.has(node)) {
             return;
         }
 
         const nodeEvents = this._events.get(node),
-            eventArray = events ?
-                DOM._parseEvents(events) :
-                Object.keys(nodeEvents);
+            realEvent = DOM._parseEvent(event);
 
-        for (const event of eventArray) {
-            const realEvent = DOM._parseEvent(event);
+        if (!nodeEvents[realEvent]) {
+            return;
+        }
 
-            if (!nodeEvents[realEvent]) {
-                return;
+        nodeEvents[realEvent] = nodeEvents[realEvent].filter(eventData => {
+            if (
+                (
+                    delegate &&
+                    delegate !== eventData.delegate
+                ) ||
+                (
+                    callback &&
+                    callback !== eventData.callback
+                )
+            ) {
+                return true;
             }
 
-            nodeEvents[realEvent] = nodeEvents[realEvent].filter(eventData => {
-                if (
-                    (
-                        delegate &&
-                        delegate !== eventData.delegate
-                    ) ||
-                    (
-                        callback &&
-                        callback !== eventData.callback
-                    )
-                ) {
+            if (realEvent !== event) {
+                const regExp = DOM._eventNamespacedRegExp(event);
+
+                if (!eventData.event.match(regExp)) {
                     return true;
                 }
-
-                if (realEvent !== event) {
-                    const regex = DOM._eventNamespacedRegExp(event);
-
-                    if (!eventData.event.match(regex)) {
-                        return true;
-                    }
-                }
-
-                DOMNode.removeEvent(node, eventData.realEvent, eventData.realCallback);
-
-                return false;
-            });
-
-            if (!nodeEvents[realEvent].length) {
-                delete nodeEvents[realEvent];
             }
+
+            DOMNode.removeEvent(node, eventData.realEvent, eventData.realCallback);
+
+            return false;
+        });
+
+        if (!nodeEvents[realEvent].length) {
+            delete nodeEvents[realEvent];
         }
 
         if (Object.keys(nodeEvents).length) {
@@ -147,24 +138,25 @@ Object.assign(DOM, {
     /**
      * Trigger events on a single node.
      * @param {HTMLElement|DocumentFragment|ShadowRoot|Document|Window} node The input node.
-     * @param {string} events The event names.
+     * @param {string} event The event names.
      * @param {object} [data] Additional data to attach to the Event object.
-     * @param {object} [options]
+     * @param {object} [options] The options to use for the Event.
+     * @param {Boolean} [options.bubbles=true] Whether the event will bubble.
+     * @param {Boolean} [options.cancelable=true] Whether the event is cancelable.
+     * @returns {Boolean} FALSE if the event was cancelled, otherwise TRUE.
      */
-    _triggerEvent(node, events, data) {
-        for (const event of DOM._parseEvents(events)) {
-            const realEvent = DOM._parseEvent(event),
-                eventData = {
-                    ...data
-                };
+    _triggerEvent(node, event, data, options) {
+        const realEvent = DOM._parseEvent(event),
+            eventData = {
+                ...data
+            };
 
-            if (realEvent !== event) {
-                eventData.namespace = event.substring(realEvent.length + 1);
-                eventData.namespaceRegex = DOM._eventNamespacedRegExp(event);
-            }
-
-            DOMNode.triggerEvent(node, realEvent, eventData);
+        if (realEvent !== event) {
+            eventData.namespace = event.substring(realEvent.length + 1);
+            eventData.namespaceRegExp = DOM._eventNamespacedRegExp(event);
         }
+
+        return DOMNode.triggerEvent(node, realEvent, eventData, options);
     }
 
 });

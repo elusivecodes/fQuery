@@ -90,7 +90,7 @@ Object.assign(DOM, {
      */
     __findByCustom(selectors, node) {
         const nodeId = DOMNode.getAttribute(node, 'id');
-        DOMNode.setAttribute(node, 'id', this.tempId);
+        DOMNode.setAttribute(node, 'id', this._tempId);
 
         const parent = DOMNode.parent(node);
 
@@ -123,7 +123,7 @@ Object.assign(DOM, {
      */
     __findOneByCustom(selectors, node) {
         const nodeId = DOMNode.getAttribute(node, 'id');
-        DOMNode.setAttribute(node, 'id', this.tempId);
+        DOMNode.setAttribute(node, 'id', this._tempId);
 
         const parent = DOMNode.parent(node);
 

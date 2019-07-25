@@ -12,7 +12,7 @@ Object.assign(DOM.prototype, {
      */
     find(selector, nodes = this._context) {
         // fast selector
-        const match = selector.match(DOM.fastRegex);
+        const match = selector.match(DOM._fastRegExp);
         if (match) {
             if (match[1] === '#') {
                 return this.findById(match[2], nodes);
@@ -26,8 +26,8 @@ Object.assign(DOM.prototype, {
         }
 
         // custom selector
-        if (selector.match(DOM.complexRegex)) {
-            const selectors = DOM._prefixSelectors(selector, `#${DOM.tempId} `);
+        if (selector.match(DOM._complexRegExp)) {
+            const selectors = DOM._prefixSelectors(selector, `#${DOM._tempId} `);
 
             if (Core.isElement(nodes)) {
                 return DOM.__findByCustom(selectors, nodes);
@@ -128,7 +128,7 @@ Object.assign(DOM.prototype, {
      */
     findOne(selector, nodes = this._context) {
         // fast selector
-        const match = selector.match(DOM.fastRegex);
+        const match = selector.match(DOM._fastRegExp);
         if (match) {
             if (match[1] === '#') {
                 return this.findOneById(match[2], nodes);
@@ -142,8 +142,8 @@ Object.assign(DOM.prototype, {
         }
 
         // custom selector
-        if (selector.match(DOM.complexRegex)) {
-            const selectors = DOM._prefixSelectors(selector, `#${DOM.tempId} `);
+        if (selector.match(DOM._complexRegExp)) {
+            const selectors = DOM._prefixSelectors(selector, `#${DOM._tempId} `);
 
             if (Core.isElement(nodes)) {
                 return DOM.__findOneByCustom(selectors, nodes);

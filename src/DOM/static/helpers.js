@@ -10,22 +10,7 @@ Object.assign(DOM, {
      * @returns {RegExp} The namespaced event RegExp.
      */
     _eventNamespacedRegExp(event) {
-        const parts = event.split('.');
-
-        let regex = '';
-        for (const part of parts) {
-            if (regex) {
-                regex += '(?:\\.';
-            }
-
-            regex += Core.escapeRegExp(part);
-        }
-
-        for (let i = 0; i < parts.length - 1; i++) {
-            regex += ')';
-        }
-
-        return new RegExp('^' + regex + '(?:\\.|$)', 'i');
+        return new RegExp('^' + Core.escapeRegExp(event) + '(?:\\.|$)', 'i');
     },
 
     /**
@@ -178,7 +163,7 @@ Object.assign(DOM, {
      * @returns {string} The prefixed selector.
      */
     _prefixSelectors(selectors, prefix) {
-        return selectors.split(this.splitRegex)
+        return selectors.split(this.splitRegExp)
             .filter(select => !!select)
             .map(select => `${prefix} ${select}`);
     }

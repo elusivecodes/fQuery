@@ -71,7 +71,7 @@
                 ...options
             };
 
-            const isLocal = DOM.localRegex.test(location.protocol);
+            const isLocal = DOM._localRegExp.test(location.protocol);
 
             if (!options.cache) {
                 const url = new URL(options.url);
@@ -1854,12 +1854,16 @@
          * @param {string|array|HTMLElement|ShadowRoot|Document|Window|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
          * @param {string} events The event names.
          * @param {DOM~eventCallback} callback The callback to execute.
+         * @param {string} [delegate] The delegate selector.
+         * @param {Boolean} [selfDestruct] Whether to remove the event after triggering.
          */
-        addEvent(nodes, events, callback) {
+        addEvent(nodes, events, callback, delegate, selfDestruct) {
             nodes = this.parseNodes(nodes, { shadow: true, document: true, window: true });
 
             for (const node of nodes) {
-                DOM._addEvent(node, events, callback);
+                for (const event of DOM._parseEvents(events)) {
+                    DOM._addEvent(node, event, callback, delegate, selfDestruct);
+                }
             }
         },
 
@@ -1871,11 +1875,7 @@
          * @param {DOM~eventCallback} callback The callback to execute.
          */
         addEventDelegate(nodes, events, delegate, callback) {
-            nodes = this.parseNodes(nodes, { shadow: true, document: true, window: true });
-
-            for (const node of nodes) {
-                DOM._addEvent(node, events, callback, delegate);
-            }
+            this.addEvent(nodes, events, callback, delegate);
         },
 
         /**
@@ -1886,11 +1886,7 @@
          * @param {DOM~eventCallback} callback The callback to execute.
          */
         addEventDelegateOnce(nodes, events, delegate, callback) {
-            nodes = this.parseNodes(nodes, { shadow: true, document: true, window: true });
-
-            for (const node of nodes) {
-                DOM._addEvent(node, events, callback, delegate, true);
-            }
+            this.addEvent(nodes, events, callback, delegate, true);
         },
 
         /**
@@ -1900,11 +1896,7 @@
          * @param {DOM~eventCallback} callback The callback to execute.
          */
         addEventOnce(nodes, events, callback) {
-            nodes = this.parseNodes(nodes, { shadow: true, document: true, window: true });
-
-            for (const node of nodes) {
-                DOM._addEvent(node, events, callback, null, true);
-            }
+            this.addEvent(nodes, events, callback, null, true);
         },
 
         /**
@@ -1928,12 +1920,21 @@
          * @param {string|array|HTMLElement|ShadowRoot|Document|Window|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
          * @param {string} [events] The event names.
          * @param {DOM~eventCallback} [callback] The callback to remove.
+         * @param {string} [delegate] The delegate selector.
          */
-        removeEvent(nodes, events, callback) {
+        removeEvent(nodes, events, callback, delegate) {
             nodes = this.parseNodes(nodes, { shadow: true, document: true, window: true });
 
+            events = DOM._parseEvents(events);
+
             for (const node of nodes) {
-                DOM._removeEvent(node, events, callback);
+                const eventArray = events ?
+                    events :
+                    Object.keys(this._events.get(node));
+
+                for (const event of eventArray) {
+                    DOM._removeEvent(node, event, callback, delegate);
+                }
             }
         },
 
@@ -1945,11 +1946,7 @@
          * @param {DOM~eventCallback} [callback] The callback to remove.
          */
         removeEventDelegate(nodes, events, delegate, callback) {
-            nodes = this.parseNodes(nodes, { shadow: true, document: true, window: true });
-
-            for (const node of nodes) {
-                DOM._removeEvent(node, events, callback, delegate);
-            }
+            this.removeEvent(nodes, events, callback, delegate);
         },
 
         /**
@@ -1957,16 +1954,18 @@
          * @param {string|array|HTMLElement|ShadowRoot|Document|Window|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
          * @param {string} events The event names.
          * @param {object} [data] Additional data to attach to the event.
+         * @param {object} [options] The options to use for the Event.
+         * @param {Boolean} [options.bubbles=true] Whether the event will bubble.
+         * @param {Boolean} [options.cancelable=true] Whether the event is cancelable.
          */
-        triggerEvent(nodes, events, data) {
+        triggerEvent(nodes, events, data, options) {
             nodes = this.parseNodes(nodes, { shadow: true, document: true, window: true });
 
-            events = DOM._parseEvents(events)
-                .map(event => DOM._parseEvent(event));
+            events = DOM._parseEvents(events);
 
             for (const node of nodes) {
                 for (const event of events) {
-                    DOMNode.triggerEvent(node, event, data);
+                    DOM._triggerEvent(node, event, data, options);
                 }
             }
         }
@@ -2707,7 +2706,7 @@
          */
         find(selector, nodes = this._context) {
             // fast selector
-            const match = selector.match(DOM.fastRegex);
+            const match = selector.match(DOM._fastRegExp);
             if (match) {
                 if (match[1] === '#') {
                     return this.findById(match[2], nodes);
@@ -2721,8 +2720,8 @@
             }
 
             // custom selector
-            if (selector.match(DOM.complexRegex)) {
-                const selectors = DOM._prefixSelectors(selector, `#${DOM.tempId} `);
+            if (selector.match(DOM._complexRegExp)) {
+                const selectors = DOM._prefixSelectors(selector, `#${DOM._tempId} `);
 
                 if (Core.isElement(nodes)) {
                     return DOM.__findByCustom(selectors, nodes);
@@ -2823,7 +2822,7 @@
          */
         findOne(selector, nodes = this._context) {
             // fast selector
-            const match = selector.match(DOM.fastRegex);
+            const match = selector.match(DOM._fastRegExp);
             if (match) {
                 if (match[1] === '#') {
                     return this.findOneById(match[2], nodes);
@@ -2837,8 +2836,8 @@
             }
 
             // custom selector
-            if (selector.match(DOM.complexRegex)) {
-                const selectors = DOM._prefixSelectors(selector, `#${DOM.tempId} `);
+            if (selector.match(DOM._complexRegExp)) {
+                const selectors = DOM._prefixSelectors(selector, `#${DOM._tempId} `);
 
                 if (Core.isElement(nodes)) {
                     return DOM.__findOneByCustom(selectors, nodes);
@@ -4793,7 +4792,7 @@
          * @returns {DOM~eventCallback} The delegated event callback.
          */
         _delegateFactory(node, selector, callback) {
-            const getDelegate = selector.match(DOM.complexRegex) ?
+            const getDelegate = selector.match(DOM._complexRegExp) ?
                 this._getDelegateContainsFactory(node, selector) :
                 this._getDelegateMatchFactory(node, selector);
 
@@ -4881,7 +4880,7 @@
          */
         _namespaceFactory(event, callback) {
             return e => {
-                if ('namespaceRegEx' in e && !event.match(e.nameSpaceRegEx)) {
+                if ('namespaceRegExp' in e && !e.namespaceRegExp.test(event)) {
                     return;
                 }
 
@@ -4915,14 +4914,14 @@
     Object.assign(DOM, {
 
         /**
-         * Add events to a single node.
+         * Add an event to a single node.
          * @param {HTMLElement|ShadowRoot|Document|Window} node The input node.
-         * @param {string} events The event names.
+         * @param {string} event The event names.
          * @param {DOM~eventCallback} callback The callback to execute.
          * @param {string} [delegate] The delegate selector.
          * @param {Boolean} [selfDestruct] Whether to remove the event after triggering.
          */
-        _addEvent(node, events, callback, delegate, selfDestruct) {
+        _addEvent(node, event, callback, delegate, selfDestruct) {
             if (!this._events.has(node)) {
                 this._events.set(node, {});
             }
@@ -4932,39 +4931,36 @@
                     delegate,
                     callback,
                     selfDestruct
-                };
+                },
+                realEvent = DOM._parseEvent(event);
 
-            for (const event of DOM._parseEvents(events)) {
-                const realEvent = DOM._parseEvent(event);
+            let realCallback = callback;
 
-                let realCallback = callback;
-
-                if (selfDestruct) {
-                    realCallback = this._selfDestructFactory(node, events, delegate, realCallback);
-                }
-
-                if (delegate) {
-                    realCallback = this._delegateFactory(node, delegate, realCallback);
-                }
-
-                if (event !== realEvent) {
-                    realCallback = this._namespaceFactory(event, realCallback);
-                }
-
-                eventData.realCallback = realCallback;
-                eventData.event = event;
-                eventData.realEvent = realEvent;
-
-                if (!nodeEvents[realEvent]) {
-                    nodeEvents[realEvent] = [];
-                } else if (nodeEvents[realEvent].includes(eventData)) {
-                    return;
-                }
-
-                DOMNode.addEvent(node, realEvent, realCallback);
-
-                nodeEvents[realEvent].push(eventData);
+            if (selfDestruct) {
+                realCallback = this._selfDestructFactory(node, event, delegate, realCallback);
             }
+
+            if (delegate) {
+                realCallback = this._delegateFactory(node, delegate, realCallback);
+            }
+
+            if (event !== realEvent) {
+                realCallback = this._namespaceFactory(event, realCallback);
+            }
+
+            eventData.realCallback = realCallback;
+            eventData.event = event;
+            eventData.realEvent = realEvent;
+
+            if (!nodeEvents[realEvent]) {
+                nodeEvents[realEvent] = [];
+            } else if (nodeEvents[realEvent].includes(eventData)) {
+                return;
+            }
+
+            nodeEvents[realEvent].push(eventData);
+
+            DOMNode.addEvent(node, realEvent, realCallback);
         },
 
         /**
@@ -4994,57 +4990,51 @@
         /**
          * Remove events from a single node.
          * @param {HTMLElement|ShadowRoot|Document|Window} nodes The input node.
-         * @param {string} [events] The event names.
+         * @param {string} [event] The event names.
          * @param {DOM~eventCallback} [callback] The callback to remove.
          * @param {string} [delegate] The delegate selector.
          */
-        _removeEvent(node, events, callback, delegate) {
+        _removeEvent(node, event, callback, delegate) {
             if (!this._events.has(node)) {
                 return;
             }
 
             const nodeEvents = this._events.get(node),
-                eventArray = events ?
-                    DOM._parseEvents(events) :
-                    Object.keys(nodeEvents);
+                realEvent = DOM._parseEvent(event);
 
-            for (const event of eventArray) {
-                const realEvent = DOM._parseEvent(event);
+            if (!nodeEvents[realEvent]) {
+                return;
+            }
 
-                if (!nodeEvents[realEvent]) {
-                    return;
+            nodeEvents[realEvent] = nodeEvents[realEvent].filter(eventData => {
+                if (
+                    (
+                        delegate &&
+                        delegate !== eventData.delegate
+                    ) ||
+                    (
+                        callback &&
+                        callback !== eventData.callback
+                    )
+                ) {
+                    return true;
                 }
 
-                nodeEvents[realEvent] = nodeEvents[realEvent].filter(eventData => {
-                    if (
-                        (
-                            delegate &&
-                            delegate !== eventData.delegate
-                        ) ||
-                        (
-                            callback &&
-                            callback !== eventData.callback
-                        )
-                    ) {
+                if (realEvent !== event) {
+                    const regExp = DOM._eventNamespacedRegExp(event);
+
+                    if (!eventData.event.match(regExp)) {
                         return true;
                     }
-
-                    if (realEvent !== event) {
-                        const regex = DOM._eventNamespacedRegExp(event);
-
-                        if (!eventData.event.match(regex)) {
-                            return true;
-                        }
-                    }
-
-                    DOMNode.removeEvent(node, eventData.realEvent, eventData.realCallback);
-
-                    return false;
-                });
-
-                if (!nodeEvents[realEvent].length) {
-                    delete nodeEvents[realEvent];
                 }
+
+                DOMNode.removeEvent(node, eventData.realEvent, eventData.realCallback);
+
+                return false;
+            });
+
+            if (!nodeEvents[realEvent].length) {
+                delete nodeEvents[realEvent];
             }
 
             if (Object.keys(nodeEvents).length) {
@@ -5057,24 +5047,25 @@
         /**
          * Trigger events on a single node.
          * @param {HTMLElement|DocumentFragment|ShadowRoot|Document|Window} node The input node.
-         * @param {string} events The event names.
+         * @param {string} event The event names.
          * @param {object} [data] Additional data to attach to the Event object.
-         * @param {object} [options]
+         * @param {object} [options] The options to use for the Event.
+         * @param {Boolean} [options.bubbles=true] Whether the event will bubble.
+         * @param {Boolean} [options.cancelable=true] Whether the event is cancelable.
+         * @returns {Boolean} FALSE if the event was cancelled, otherwise TRUE.
          */
-        _triggerEvent(node, events, data) {
-            for (const event of DOM._parseEvents(events)) {
-                const realEvent = DOM._parseEvent(event),
-                    eventData = {
-                        ...data
-                    };
+        _triggerEvent(node, event, data, options) {
+            const realEvent = DOM._parseEvent(event),
+                eventData = {
+                    ...data
+                };
 
-                if (realEvent !== event) {
-                    eventData.namespace = event.substring(realEvent.length + 1);
-                    eventData.namespaceRegex = DOM._eventNamespacedRegExp(event);
-                }
-
-                DOMNode.triggerEvent(node, realEvent, eventData);
+            if (realEvent !== event) {
+                eventData.namespace = event.substring(realEvent.length + 1);
+                eventData.namespaceRegExp = DOM._eventNamespacedRegExp(event);
             }
+
+            return DOMNode.triggerEvent(node, realEvent, eventData, options);
         }
 
     });
@@ -5091,22 +5082,7 @@
          * @returns {RegExp} The namespaced event RegExp.
          */
         _eventNamespacedRegExp(event) {
-            const parts = event.split('.');
-
-            let regex = '';
-            for (const part of parts) {
-                if (regex) {
-                    regex += '(?:\\.';
-                }
-
-                regex += Core.escapeRegExp(part);
-            }
-
-            for (let i = 0; i < parts.length - 1; i++) {
-                regex += ')';
-            }
-
-            return new RegExp('^' + regex + '(?:\\.|$)', 'i');
+            return new RegExp('^' + Core.escapeRegExp(event) + '(?:\\.|$)', 'i');
         },
 
         /**
@@ -5259,7 +5235,7 @@
          * @returns {string} The prefixed selector.
          */
         _prefixSelectors(selectors, prefix) {
-            return selectors.split(this.splitRegex)
+            return selectors.split(this.splitRegExp)
                 .filter(select => !!select)
                 .map(select => `${prefix} ${select}`);
         }
@@ -5646,7 +5622,7 @@
          */
         __findByCustom(selectors, node) {
             const nodeId = DOMNode.getAttribute(node, 'id');
-            DOMNode.setAttribute(node, 'id', this.tempId);
+            DOMNode.setAttribute(node, 'id', this._tempId);
 
             const parent = DOMNode.parent(node);
 
@@ -5679,7 +5655,7 @@
          */
         __findOneByCustom(selectors, node) {
             const nodeId = DOMNode.getAttribute(node, 'id');
-            DOMNode.setAttribute(node, 'id', this.tempId);
+            DOMNode.setAttribute(node, 'id', this._tempId);
 
             const parent = DOMNode.parent(node);
 
@@ -6282,20 +6258,20 @@
             'z-index'
         ],
 
-        // Complex selector RegEX
-        complexRegex: /(?:^\s*[\>\+\~]|\,(?=(?:(?:[^"']*["']){2})*[^"']*$)\s*[\>\+\~])/,
+        // Complex selector RegExp
+        _complexRegExp: /(?:^\s*[\>\+\~]|\,(?=(?:(?:[^"']*["']){2})*[^"']*$)\s*[\>\+\~])/,
 
-        // Fast selector RegEx
-        fastRegex: /^([\#\.]?)([\w\-]+)$/,
+        // Fast selector RegExp
+        _fastRegExp: /^([\#\.]?)([\w\-]+)$/,
 
-        // Local protocol RegEx
-        localRegex: /^(?:about|app|app-storage|.+-extension|file|res|widget):$/,
+        // Local protocol RegExp
+        _localRegExp: /^(?:about|app|app-storage|.+-extension|file|res|widget):$/,
 
-        // Comma seperated selector RegEx
-        splitRegex: /\,(?=(?:(?:[^"]*"){2})*[^"]*$)\s*/,
+        // Comma seperated selector RegExp
+        _splitRegExp: /\,(?=(?:(?:[^"]*"){2})*[^"]*$)\s*/,
 
         // Temporary ID
-        tempId: 'frost' + (Date.now().toString(16))
+        _tempId: 'frost' + (Date.now().toString(16))
 
     });
 
@@ -6716,8 +6692,10 @@
          * @param {HTMLElement|DocumentFragment|ShadowRoot|Document|Window} node The input node.
          * @param {string} event The event name.
          * @param {object} [data] Additional data to attach to the Event object.
-         * @param {object} [options]
-         * @returns {Boolean} Whether the event was cancelled.
+         * @param {object} [options] The options to use for the Event.
+         * @param {Boolean} [options.bubbles=true] Whether the event will bubble.
+         * @param {Boolean} [options.cancelable=true] Whether the event is cancelable.
+         * @returns {Boolean} FALSE if the event was cancelled, otherwise TRUE.
          */
         triggerEvent(node, event, data, options) {
             const eventData = new Event(event, {

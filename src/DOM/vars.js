@@ -100,19 +100,19 @@ Object.assign(DOM, {
         'z-index'
     ],
 
-    // Complex selector RegEX
-    complexRegex: /(?:^\s*[\>\+\~]|\,(?=(?:(?:[^"']*["']){2})*[^"']*$)\s*[\>\+\~])/,
+    // Complex selector RegExp
+    _complexRegExp: /(?:^\s*[\>\+\~]|\,(?=(?:(?:[^"']*["']){2})*[^"']*$)\s*[\>\+\~])/,
 
-    // Fast selector RegEx
-    fastRegex: /^([\#\.]?)([\w\-]+)$/,
+    // Fast selector RegExp
+    _fastRegExp: /^([\#\.]?)([\w\-]+)$/,
 
-    // Local protocol RegEx
-    localRegex: /^(?:about|app|app-storage|.+-extension|file|res|widget):$/,
+    // Local protocol RegExp
+    _localRegExp: /^(?:about|app|app-storage|.+-extension|file|res|widget):$/,
 
-    // Comma seperated selector RegEx
-    splitRegex: /\,(?=(?:(?:[^"]*"){2})*[^"]*$)\s*/,
+    // Comma seperated selector RegExp
+    _splitRegExp: /\,(?=(?:(?:[^"]*"){2})*[^"]*$)\s*/,
 
     // Temporary ID
-    tempId: 'frost' + (Date.now().toString(16))
+    _tempId: 'frost' + (Date.now().toString(16))
 
 });

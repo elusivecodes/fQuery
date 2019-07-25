@@ -1001,9 +1001,12 @@ Trigger events on each node.
 - `nodes` is a query selector string, a *HTMLElement*, *ShadowRoot*, *Document*, *Window*, *NodeList*, *HTMLCollection*, [*QuerySet*](https://github.com/elusivecodes/fQuery) or an array of nodes.
 - `events` is a space-separated string of events to trigger on the nodes.
 - `data` is an object containing custom data to add to the `event` object.
+- `options` is an object containing properties to define the new Event.
+    - `bubbles` is a boolean indicating whether the event should bubble, and will default to *true*.
+    - `cancelable` is a boolean indicating whether the event is cancelable, and will default to *true*.
 
 ```javascript
-dom.triggerEvent(nodes, events, data);
+dom.triggerEvent(nodes, events, data, options);
 ```
 
 ##### Event Factory

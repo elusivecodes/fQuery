@@ -27,7 +27,7 @@ Object.assign(DOM.prototype, {
             ...options
         };
 
-        const isLocal = DOM.localRegex.test(location.protocol);
+        const isLocal = DOM._localRegExp.test(location.protocol);
 
         if (!options.cache) {
             const url = new URL(options.url);
