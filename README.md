@@ -1866,7 +1866,7 @@ Sanitize a HTML string.
 - `allowedTags` is an object containing allowed tags and attributes.
 
 ```javascript
-dom.sanitize(html, allowedTags);
+const sanitized = dom.sanitize(html, allowedTags);
 ```
 
 **Serialize**
