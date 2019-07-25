@@ -2,7 +2,7 @@
 
 **FrostDOM** is a free, open-source DOM manipulation library for *JavaScript*.
 
-It is a lightweight (~10kb gzipped) and modern library, utilizing ES6 syntax and features including Promises, with a focus on functional style programming.
+It is a lightweight (~11kb gzipped) and modern library, utilizing ES6 syntax and features including Promises, with a focus on functional style programming.
 
 For an OOP implementation, also check out my [fQuery](https://github.com/elusivecodes/fQuery) library.
 
