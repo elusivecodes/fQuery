@@ -6458,7 +6458,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
      * @returns {string} The prefixed selector.
      */
     _prefixSelectors: function _prefixSelectors(selectors, prefix) {
-      return selectors.split(this.splitRegExp).filter(function (select) {
+      return selectors.split(this._splitRegExp).filter(function (select) {
         return !!select;
       }).map(function (select) {
         return "".concat(prefix, " ").concat(select);

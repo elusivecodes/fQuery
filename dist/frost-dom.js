@@ -5235,7 +5235,7 @@
          * @returns {string} The prefixed selector.
          */
         _prefixSelectors(selectors, prefix) {
-            return selectors.split(this.splitRegExp)
+            return selectors.split(this._splitRegExp)
                 .filter(select => !!select)
                 .map(select => `${prefix} ${select}`);
         }
