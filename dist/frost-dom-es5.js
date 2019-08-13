@@ -714,30 +714,19 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
      * @returns {Promise} A new Promise that resolves when the animation has completed.
      */
     squeezeIn: function squeezeIn(nodes, options) {
-      var _this4 = this;
-
       nodes = this.parseNodes(nodes);
       options = _objectSpread({}, DOM.animationDefaults, {
         direction: 'bottom'
       }, options);
       var promises = nodes.map(function (node) {
-        var wrapper = _this4.create('div', {
-          style: {
-            overflow: 'hidden',
-            position: 'relative'
-          }
-        });
-
-        DOM._wrap(node, [wrapper]);
-
-        var parent = DOMNode.parent(node);
+        DOMNode.setStyle(node, 'overflow', 'hidden');
         return DOM._animate(node, function (node, progress, options) {
+          DOMNode.setStyle(node, 'height', '');
+          DOMNode.setStyle(node, 'width', '');
+
           if (progress === 1) {
-            var children = DOMNode.childNodes(parent);
-            var child = children.item(0);
-
-            DOM._unwrap(child);
-
+            DOMNode.setStyle(node, 'overflow', '');
+            DOMNode.setStyle(node, 'transform', '');
             return;
           }
 
@@ -760,10 +749,10 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
           var size = Math.round(DOM["_".concat(sizeStyle)](node)),
               amount = Math.round(size * progress);
-          DOMNode.setStyle(parent, sizeStyle, "".concat(amount, "px"));
+          DOMNode.setStyle(node, sizeStyle, "".concat(amount, "px"));
 
           if (translateStyle) {
-            DOMNode.setStyle(parent, 'transform', "translate".concat(translateStyle, "(").concat(size - amount, "px)"));
+            DOMNode.setStyle(node, 'transform', "translate".concat(translateStyle, "(").concat(size - amount, "px)"));
           }
         }, options);
       });
@@ -784,30 +773,19 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
      * @returns {Promise} A new Promise that resolves when the animation has completed.
      */
     squeezeOut: function squeezeOut(nodes, options) {
-      var _this5 = this;
-
       nodes = this.parseNodes(nodes);
       options = _objectSpread({}, DOM.animationDefaults, {
         direction: 'bottom'
       }, options);
       var promises = nodes.map(function (node) {
-        var wrapper = _this5.create('div', {
-          style: {
-            overflow: 'hidden',
-            position: 'relative'
-          }
-        });
-
-        DOM._wrap(node, [wrapper]);
-
-        var parent = DOMNode.parent(node);
+        DOMNode.setStyle(node, 'overflow', 'hidden');
         return DOM._animate(node, function (node, progress, options) {
+          DOMNode.setStyle(node, 'height', '');
+          DOMNode.setStyle(node, 'width', '');
+
           if (progress === 1) {
-            var children = DOMNode.childNodes(parent);
-            var child = children.item(0);
-
-            DOM._unwrap(child);
-
+            DOMNode.setStyle(node, 'overflow', '');
+            DOMNode.setStyle(node, 'transform', '');
             return;
           }
 
@@ -830,10 +808,10 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
           var size = Math.round(DOM["_".concat(sizeStyle)](node)),
               amount = Math.round(size - size * progress);
-          DOMNode.setStyle(parent, sizeStyle, "".concat(amount, "px"));
+          DOMNode.setStyle(node, sizeStyle, "".concat(amount, "px"));
 
           if (translateStyle) {
-            DOMNode.setStyle(parent, 'transform', "translate".concat(translateStyle, "(").concat(size - amount, "px)"));
+            DOMNode.setStyle(node, 'transform', "translate".concat(translateStyle, "(").concat(size - amount, "px)"));
           }
         }, options);
       });
@@ -4395,7 +4373,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
      * @returns {DOM~filterCallback} The node contains filter callback.
      */
     parseFilterContains: function parseFilterContains(filter) {
-      var _this6 = this;
+      var _this4 = this;
 
       if (!filter) {
         return false;
@@ -4407,7 +4385,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
       if (Core.isString(filter)) {
         return function (node) {
-          return !!_this6.findOne(filter, node);
+          return !!_this4.findOne(filter, node);
         };
       }
 
@@ -5211,14 +5189,14 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
      * @returns {array} The serialized array.
      */
     serializeArray: function serializeArray(nodes) {
-      var _this7 = this;
+      var _this5 = this;
 
       return this.parseNodes(nodes, {
         fragment: true,
         shadow: true
       }).reduce(function (values, node) {
         if (DOMNode.is(node, 'form') || Core.isFragment(node) || Core.isShadow(node)) {
-          return values.concat(_this7.serializeArray(DOMNode.findBySelector('input, select, textarea', node)));
+          return values.concat(_this5.serializeArray(DOMNode.findBySelector('input, select, textarea', node)));
         }
 
         if (DOMNode.is(node, '[disabled], input[type=submit], input[type=reset], input[type=file], input[type=radio]:not(:checked), input[type=checkbox]:not(:checked)')) {
@@ -5285,7 +5263,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
      * @returns {Promise} A new Promise that resolves when the animation has completed.
      */
     _animate: function _animate(node, callback, options) {
-      var _this8 = this;
+      var _this6 = this;
 
       if (!DOM._hasAnimation(node)) {
         this._animations.set(node, []);
@@ -5293,7 +5271,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
       var start = performance.now();
       return new Promise(function (resolve, reject) {
-        _this8._animations.get(node).push(function () {
+        _this6._animations.get(node).push(function () {
           var stop = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
           var finish = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
 
@@ -5342,7 +5320,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
      * Run a single frame of all animations, and then queue up the next frame.
      */
     _animationFrame: function _animationFrame() {
-      var _this9 = this;
+      var _this7 = this;
 
       var _iteratorNormalCompletion62 = true;
       var _didIteratorError62 = false;
@@ -5381,7 +5359,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
       if (this._animations.size) {
         window.requestAnimationFrame(function (_) {
-          return _this9._animationFrame();
+          return _this7._animationFrame();
         });
       } else {
         this._animating = false;
@@ -5464,7 +5442,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
      * @param {HTMLElement} node The input node.
      */
     _dequeueNode: function _dequeueNode(node) {
-      var _this10 = this;
+      var _this8 = this;
 
       if (!this._queues.has(node)) {
         return;
@@ -5479,7 +5457,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       }
 
       Promise.resolve(next(node))["finally"](function (_) {
-        return _this10._dequeueNode(node);
+        return _this8._dequeueNode(node);
       });
     },
 
@@ -5833,7 +5811,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
      * @returns {number} The height.
      */
     _height: function _height(node) {
-      var _this11 = this;
+      var _this9 = this;
 
       var padding = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
       var border = arguments.length > 2 ? arguments[2] : undefined;
@@ -5842,15 +5820,15 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         var result = DOMNode.height(node);
 
         if (!padding) {
-          result -= parseInt(_this11._css(node, 'padding-top')) + parseInt(_this11._css(node, 'padding-bottom'));
+          result -= parseInt(_this9._css(node, 'padding-top')) + parseInt(_this9._css(node, 'padding-bottom'));
         }
 
         if (border) {
-          result += parseInt(_this11._css(node, 'border-top-width')) + parseInt(_this11._css(node, 'border-bottom-width'));
+          result += parseInt(_this9._css(node, 'border-top-width')) + parseInt(_this9._css(node, 'border-bottom-width'));
         }
 
         if (margin) {
-          result += parseInt(_this11._css(node, 'margin-top')) + parseInt(_this11._css(node, 'margin-bottom'));
+          result += parseInt(_this9._css(node, 'margin-top')) + parseInt(_this9._css(node, 'margin-bottom'));
         }
 
         return result;
@@ -5866,7 +5844,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
      * @returns {number} The width.
      */
     _width: function _width(node) {
-      var _this12 = this;
+      var _this10 = this;
 
       var padding = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
       var border = arguments.length > 2 ? arguments[2] : undefined;
@@ -5875,15 +5853,15 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         var result = DOMNode.width(node);
 
         if (!padding) {
-          result -= parseInt(_this12._css(node, 'padding-left')) + parseInt(_this12._css(node, 'padding-right'));
+          result -= parseInt(_this10._css(node, 'padding-left')) + parseInt(_this10._css(node, 'padding-right'));
         }
 
         if (border) {
-          result += parseInt(_this12._css(node, 'border-left-width')) + parseInt(_this12._css(node, 'border-right-width'));
+          result += parseInt(_this10._css(node, 'border-left-width')) + parseInt(_this10._css(node, 'border-right-width'));
         }
 
         if (margin) {
-          result += parseInt(_this12._css(node, 'margin-left')) + parseInt(_this12._css(node, 'margin-right'));
+          result += parseInt(_this10._css(node, 'margin-left')) + parseInt(_this10._css(node, 'margin-right'));
         }
 
         return result;
@@ -6025,11 +6003,11 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
      * @returns {DOM~delegateCallback} The callback for finding the matching delegate.
      */
     _getDelegateContainsFactory: function _getDelegateContainsFactory(node, selector) {
-      var _this13 = this;
+      var _this11 = this;
 
       selector = DOM._prefixSelectors(selectors, "#".concat(DOM._tempId));
       return function (target) {
-        var matches = _this13.__findByCustom(selector, node);
+        var matches = _this11.__findByCustom(selector, node);
 
         if (!matches.length) {
           return false;
@@ -6039,7 +6017,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
           return target;
         }
 
-        return _this13._parents(target, function (parent) {
+        return _this11._parents(target, function (parent) {
           return matches.includes(parent);
         }, function (parent) {
           return DOMNode.isSame(node, parent);
@@ -6054,10 +6032,10 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
      * @returns {DOM~delegateCallback} The callback for finding the matching delegate.
      */
     _getDelegateMatchFactory: function _getDelegateMatchFactory(node, selector) {
-      var _this14 = this;
+      var _this12 = this;
 
       return function (target) {
-        return DOMNode.is(target, selector) ? target : _this14._parents(target, function (parent) {
+        return DOMNode.is(target, selector) ? target : _this12._parents(target, function (parent) {
           return DOMNode.is(parent, selector);
         }, function (parent) {
           return DOMNode.isSame(node, parent);
@@ -6090,10 +6068,10 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
      * @returns {DOM~eventCallback} The wrapped event callback.
      */
     _selfDestructFactory: function _selfDestructFactory(node, events, delegate, callback) {
-      var _this15 = this;
+      var _this13 = this;
 
       return function (e) {
-        delegate ? _this15._removeEvent(node, events, callback, delegate) : _this15._removeEvent(node, events, callback);
+        delegate ? _this13._removeEvent(node, events, callback, delegate) : _this13._removeEvent(node, events, callback);
         return callback(e);
       };
     }
@@ -6410,17 +6388,17 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
      * @returns {string} The URI-encoded attribute string.
      */
     _parseParams: function _parseParams(data) {
-      var _this16 = this;
+      var _this14 = this;
 
       var values = [];
 
       if (Core.isArray(data)) {
         values = data.map(function (value) {
-          return _this16._parseParam(value.name, value.value);
+          return _this14._parseParam(value.name, value.value);
         });
       } else if (Core.isObject(data)) {
         values = Object.keys(data).map(function (key) {
-          return _this16._parseParam(key, data[key]);
+          return _this14._parseParam(key, data[key]);
         });
       }
 
@@ -6434,17 +6412,17 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
      * @returns {string|array} The parsed attributes.
      */
     _parseParam: function _parseParam(key, value) {
-      var _this17 = this;
+      var _this15 = this;
 
       if (Core.isArray(value)) {
         return value.map(function (val) {
-          return _this17._parseParam(key, val);
+          return _this15._parseParam(key, val);
         }).flat();
       }
 
       if (Core.isObject(value)) {
         return Object.keys(value).map(function (subKey) {
-          return _this17._parseParam(key + '[' + subKey + ']', value[subKey]);
+          return _this15._parseParam(key + '[' + subKey + ']', value[subKey]);
         }).flat();
       }
 
@@ -6725,7 +6703,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
      * @param {array} others The other node(s).
      */
     _wrap: function _wrap(node, others) {
-      var _this18 = this;
+      var _this16 = this;
 
       var parent = DOMNode.parent(node);
 
@@ -6734,7 +6712,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       }
 
       var clones = others.map(function (other) {
-        return _this18._clone(other, true);
+        return _this16._clone(other, true);
       });
       var _iteratorNormalCompletion72 = true;
       var _didIteratorError72 = false;
@@ -6840,11 +6818,11 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
      * @param {array} others The other node(s).
      */
     _wrapInner: function _wrapInner(node, others) {
-      var _this19 = this;
+      var _this17 = this;
 
       var children = Core.wrap(DOMNode.childNodes(node));
       var clones = others.map(function (other) {
-        return _this19._clone(other, true);
+        return _this17._clone(other, true);
       });
       var _iteratorNormalCompletion75 = true;
       var _didIteratorError75 = false;
@@ -7563,7 +7541,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
      * @returns {*} The result of the callback.
      */
     _forceShow: function _forceShow(node, callback) {
-      var _this20 = this;
+      var _this18 = this;
 
       if (Core.isDocument(node) || Core.isWindow(node) || this._isVisible(node)) {
         return callback(node);
@@ -7576,7 +7554,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       }
 
       Core.merge(elements, this._parents(node, function (parent) {
-        return Core.isElement(parent) && _this20._css(parent, 'display') === 'none';
+        return Core.isElement(parent) && _this18._css(parent, 'display') === 'none';
       }));
       var hidden = new Map();
 

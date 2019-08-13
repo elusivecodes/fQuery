@@ -274,23 +274,17 @@ Object.assign(DOM.prototype, {
         };
 
         const promises = nodes.map(node => {
-            const wrapper = this.create('div', {
-                style: {
-                    overflow: 'hidden',
-                    position: 'relative'
-                }
-            });
-
-            DOM._wrap(node, [wrapper]);
-            const parent = DOMNode.parent(node);
+            DOMNode.setStyle(node, 'overflow', 'hidden');
 
             return DOM._animate(
                 node,
                 (node, progress, options) => {
+                    DOMNode.setStyle(node, 'height', '');
+                    DOMNode.setStyle(node, 'width', '');
+
                     if (progress === 1) {
-                        const children = DOMNode.childNodes(parent);
-                        const child = children.item(0);
-                        DOM._unwrap(child);
+                        DOMNode.setStyle(node, 'overflow', '');
+                        DOMNode.setStyle(node, 'transform', '');
                         return;
                     }
 
@@ -314,10 +308,10 @@ Object.assign(DOM.prototype, {
                     const size = Math.round(DOM[`_${sizeStyle}`](node)),
                         amount = Math.round(size * progress);
 
-                    DOMNode.setStyle(parent, sizeStyle, `${amount}px`);
+                    DOMNode.setStyle(node, sizeStyle, `${amount}px`);
 
                     if (translateStyle) {
-                        DOMNode.setStyle(parent, 'transform', `translate${translateStyle}(${size - amount}px)`);
+                        DOMNode.setStyle(node, 'transform', `translate${translateStyle}(${size - amount}px)`);
                     }
                 },
                 options
@@ -349,23 +343,17 @@ Object.assign(DOM.prototype, {
         };
 
         const promises = nodes.map(node => {
-            const wrapper = this.create('div', {
-                style: {
-                    overflow: 'hidden',
-                    position: 'relative'
-                }
-            });
-
-            DOM._wrap(node, [wrapper]);
-            const parent = DOMNode.parent(node);
+            DOMNode.setStyle(node, 'overflow', 'hidden');
 
             return DOM._animate(
                 node,
                 (node, progress, options) => {
+                    DOMNode.setStyle(node, 'height', '');
+                    DOMNode.setStyle(node, 'width', '');
+
                     if (progress === 1) {
-                        const children = DOMNode.childNodes(parent);
-                        const child = children.item(0);
-                        DOM._unwrap(child);
+                        DOMNode.setStyle(node, 'overflow', '');
+                        DOMNode.setStyle(node, 'transform', '');
                         return;
                     }
 
@@ -389,10 +377,10 @@ Object.assign(DOM.prototype, {
                     const size = Math.round(DOM[`_${sizeStyle}`](node)),
                         amount = Math.round(size - (size * progress));
 
-                    DOMNode.setStyle(parent, sizeStyle, `${amount}px`);
+                    DOMNode.setStyle(node, sizeStyle, `${amount}px`);
 
                     if (translateStyle) {
-                        DOMNode.setStyle(parent, 'transform', `translate${translateStyle}(${size - amount}px)`);
+                        DOMNode.setStyle(node, 'transform', `translate${translateStyle}(${size - amount}px)`);
                     }
                 },
                 options
