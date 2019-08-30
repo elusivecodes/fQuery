@@ -995,7 +995,7 @@
         /**
          * Remove a dataset value from each node.
          * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
-         * @param {string} [key] The dataset key.
+         * @param {string} key The dataset key.
          */
         removeDataset(nodes, key) {
             nodes = this.parseNodes(nodes);
