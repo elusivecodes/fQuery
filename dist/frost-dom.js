@@ -993,6 +993,19 @@
         },
 
         /**
+         * Remove a dataset value from each node.
+         * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
+         * @param {string} [key] The dataset key.
+         */
+        removeDataset(nodes, key) {
+            nodes = this.parseNodes(nodes);
+
+            for (const node of nodes) {
+                DOMNode.removeDataset(node, key);
+            }
+        },
+
+        /**
          * Remove a property from each node.
          * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
          * @param {string} property The property name.
@@ -6332,6 +6345,15 @@
          */
         removeAttribute(node, attribute) {
             node.removeAttribute(attribute)
+        },
+
+        /**
+         * Remove a dataset value from a single node.
+         * @param {HTMLElement} node The input node.
+         * @param {string} key The dataset key.
+         */
+        removeDataset(node, key) {
+            delete node.dataset[key];
         },
 
         /**

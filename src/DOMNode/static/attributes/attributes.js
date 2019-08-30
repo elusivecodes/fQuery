@@ -62,6 +62,15 @@ Object.assign(DOMNode, {
     },
 
     /**
+     * Remove a dataset value from a single node.
+     * @param {HTMLElement} node The input node.
+     * @param {string} key The dataset key.
+     */
+    removeDataset(node, key) {
+        delete node.dataset[key];
+    },
+
+    /**
      * Remove a property from a single node.
      * @param {HTMLElement} node The input node.
      * @param {string} property The property name.

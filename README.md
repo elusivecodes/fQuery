@@ -382,6 +382,17 @@ Remove an attribute from each node.
 dom.removeAttribute(nodes, attribute);
 ```
 
+**Remove Dataset**
+
+Remove a dataset value from each node.
+
+- `nodes` is a query selector string, a *HTMLElement*, *NodeList*, *HTMLCollection*, [*QuerySet*](https://github.com/elusivecodes/fQuery) or an array of nodes.
+- `key` is a string indicating the dataset value to remove.
+
+```javascript
+dom.removeDataset(nodes, key);
+```
+
 **Remove Property**
 
 Remove a property from each node.
