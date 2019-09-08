@@ -529,6 +529,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
      * @param {number} [options.duration=1000] The duration of the animation.
      * @param {string} [options.type=ease-in-out] The type of animation.
      * @param {Boolean} [options.infinite] Whether the animation should run forever.
+     * @param {Boolean} [options.useGpu=true] Whether the animation should use GPU acceleration.
      * @returns {Promise} A new Promise that resolves when the animation has completed.
      */
     dropIn: function dropIn(nodes, options) {
@@ -545,6 +546,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
      * @param {number} [options.duration=1000] The duration of the animation.
      * @param {string} [options.type=ease-in-out] The type of animation.
      * @param {Boolean} [options.infinite] Whether the animation should run forever.
+     * @param {Boolean} [options.useGpu=true] Whether the animation should use GPU acceleration.
      * @returns {Promise} A new Promise that resolves when the animation has completed.
      */
     dropOut: function dropOut(nodes, options) {
@@ -633,34 +635,47 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
      * @param {number} [options.duration=1000] The duration of the animation.
      * @param {string} [options.type=ease-in-out] The type of animation.
      * @param {Boolean} [options.infinite] Whether the animation should run forever.
+     * @param {Boolean} [options.useGpu=true] Whether the animation should use GPU acceleration.
      * @returns {Promise} A new Promise that resolves when the animation has completed.
      */
     slideIn: function slideIn(nodes, options) {
       return this.animate(nodes, function (node, progress, options) {
-        var transform;
+        if (progress === 1) {
+          DOMNode.setStyle(node, 'overflow', '');
 
-        if (progress < 1) {
-          var dir = Core.isFunction(options.direction) ? options.direction() : options.direction;
-          var axis, size, inverse;
-
-          if (dir === 'top' || dir === 'bottom') {
-            axis = 'Y';
-            size = DOM._height(node);
-            inverse = dir === 'top';
+          if (options.useGpu) {
+            DOMNode.setStyle(node, 'transform', '');
           } else {
-            axis = 'X';
-            size = DOM._width(node);
-            inverse = dir === 'left';
+            DOMNode.setStyle(node, 'margin-left', '');
+            DOMNode.setStyle(node, 'margin-top', '');
           }
 
-          transform = "translate".concat(axis, "(").concat(Math.round(size - size * progress) * (inverse ? -1 : 1), "px)");
-        } else {
-          transform = '';
+          return;
         }
 
-        DOMNode.setStyle(node, 'transform', transform);
+        var dir = Core.isFunction(options.direction) ? options.direction() : options.direction;
+        var translateStyle, size, inverse;
+
+        if (dir === 'top' || dir === 'bottom') {
+          translateStyle = options.useGpu ? 'Y' : 'margin-top';
+          size = DOM._height(node);
+          inverse = dir === 'top';
+        } else {
+          translateStyle = options.useGpu ? 'X' : 'margin-left';
+          size = DOM._width(node);
+          inverse = dir === 'left';
+        }
+
+        var translateAmount = Math.round(size - size * progress) * (inverse ? -1 : 1);
+
+        if (options.useGpu) {
+          DOMNode.setStyle(node, 'transform', "translate".concat(translateStyle, "(").concat(translateAmount, "px)"));
+        } else {
+          DOMNode.setStyle(node, translateStyle, "".concat(translateAmount, "px"));
+        }
       }, _objectSpread({
-        direction: 'bottom'
+        direction: 'bottom',
+        useGpu: true
       }, options));
     },
 
@@ -672,34 +687,47 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
      * @param {number} [options.duration=1000] The duration of the animation.
      * @param {string} [options.type=ease-in-out] The type of animation.
      * @param {Boolean} [options.infinite] Whether the animation should run forever.
+     * @param {Boolean} [options.useGpu=true] Whether the animation should use GPU acceleration.
      * @returns {Promise} A new Promise that resolves when the animation has completed.
      */
     slideOut: function slideOut(nodes, options) {
       return this.animate(nodes, function (node, progress, options) {
-        var transform;
+        if (progress === 1) {
+          DOMNode.setStyle(node, 'overflow', '');
 
-        if (progress < 1) {
-          var dir = Core.isFunction(options.direction) ? options.direction() : options.direction;
-          var axis, size, inverse;
-
-          if (dir === 'top' || dir === 'bottom') {
-            axis = 'Y';
-            size = DOM._height(node);
-            inverse = dir === 'top';
+          if (options.useGpu) {
+            DOMNode.setStyle(node, 'transform', '');
           } else {
-            axis = 'X';
-            size = DOM._width(node);
-            inverse = dir === 'left';
+            DOMNode.setStyle(node, 'margin-left', '');
+            DOMNode.setStyle(node, 'margin-top', '');
           }
 
-          transform = "translate".concat(axis, "(").concat(Math.round(size * progress) * (inverse ? -1 : 1), "px)");
-        } else {
-          transform = '';
+          return;
         }
 
-        DOMNode.setStyle(node, 'transform', transform);
+        var dir = Core.isFunction(options.direction) ? options.direction() : options.direction;
+        var translateStyle, size, inverse;
+
+        if (dir === 'top' || dir === 'bottom') {
+          translateStyle = options.useGpu ? 'Y' : 'margin-top';
+          size = DOM._height(node);
+          inverse = dir === 'top';
+        } else {
+          translateStyle = options.useGpu ? 'X' : 'margin-left';
+          size = DOM._width(node);
+          inverse = dir === 'left';
+        }
+
+        var translateAmount = Math.round(size * progress) * (inverse ? -1 : 1);
+
+        if (options.useGpu) {
+          DOMNode.setStyle(node, 'transform', "translate".concat(translateStyle, "(").concat(translateAmount, "px)"));
+        } else {
+          DOMNode.setStyle(node, translateStyle, "".concat(translateAmount, "px"));
+        }
       }, _objectSpread({
-        direction: 'bottom'
+        direction: 'bottom',
+        useGpu: true
       }, options));
     },
 
@@ -711,48 +739,72 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
      * @param {number} [options.duration=1000] The duration of the animation.
      * @param {string} [options.type=ease-in-out] The type of animation.
      * @param {Boolean} [options.infinite] Whether the animation should run forever.
+     * @param {Boolean} [options.useGpu=true] Whether the animation should use GPU acceleration.
      * @returns {Promise} A new Promise that resolves when the animation has completed.
      */
     squeezeIn: function squeezeIn(nodes, options) {
       nodes = this.parseNodes(nodes);
       options = _objectSpread({}, DOM.animationDefaults, {
-        direction: 'bottom'
+        direction: 'bottom',
+        useGpu: true
       }, options);
       var promises = nodes.map(function (node) {
+        var initialHeight = DOMNode.getStyle(node, 'height');
+        var initialMinHeight = DOMNode.getStyle(node, 'min-height');
+        var initialWidth = DOMNode.getStyle(node, 'width');
+        var initialMinWidth = DOMNode.getStyle(node, 'min-width');
         DOMNode.setStyle(node, 'overflow', 'hidden');
         return DOM._animate(node, function (node, progress, options) {
-          DOMNode.setStyle(node, 'height', '');
-          DOMNode.setStyle(node, 'width', '');
+          DOMNode.setStyle(node, 'height', initialHeight);
+          DOMNode.setStyle(node, 'min-height', initialMinHeight);
+          DOMNode.setStyle(node, 'width', initialWidth);
+          DOMNode.setStyle(node, 'min-width', initialMinWidth);
 
           if (progress === 1) {
             DOMNode.setStyle(node, 'overflow', '');
-            DOMNode.setStyle(node, 'transform', '');
+
+            if (options.useGpu) {
+              DOMNode.setStyle(node, 'transform', '');
+            } else {
+              DOMNode.setStyle(node, 'margin-left', '');
+              DOMNode.setStyle(node, 'margin-top', '');
+            }
+
             return;
           }
 
           var dir = Core.isFunction(options.direction) ? options.direction() : options.direction;
-          var sizeStyle, translateStyle;
+          var sizeStyle, minSizeStyle, translateStyle;
 
           if (dir === 'top' || dir === 'bottom') {
             sizeStyle = 'height';
+            minSizeStyle = 'min-height';
 
             if (dir === 'top') {
-              translateStyle = 'Y';
+              translateStyle = options.useGpu ? 'Y' : 'margin-top';
             }
           } else if (dir === 'left' || dir === 'right') {
             sizeStyle = 'width';
+            minSizeStyle = 'min-width';
 
             if (dir === 'left') {
-              translateStyle = 'X';
+              translateStyle = options.useGpu ? 'X' : 'margin-left';
             }
           }
 
           var size = Math.round(DOM["_".concat(sizeStyle)](node)),
               amount = Math.round(size * progress);
           DOMNode.setStyle(node, sizeStyle, "".concat(amount, "px"));
+          DOMNode.setStyle(node, minSizeStyle, "0px");
 
           if (translateStyle) {
-            DOMNode.setStyle(node, 'transform', "translate".concat(translateStyle, "(").concat(size - amount, "px)"));
+            var translateAmount = size - amount;
+
+            if (options.useGpu) {
+              DOMNode.setStyle(node, 'transform', "translate".concat(translateStyle, "(").concat(translateAmount, "px)"));
+            } else {
+              DOMNode.setStyle(node, translateStyle, "".concat(translateAmount, "px"));
+            }
           }
         }, options);
       });
@@ -770,48 +822,72 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
      * @param {number} [options.duration=1000] The duration of the animation.
      * @param {string} [options.type=ease-in-out] The type of animation.
      * @param {Boolean} [options.infinite] Whether the animation should run forever.
+     * @param {Boolean} [options.useGpu=true] Whether the animation should use GPU acceleration.
      * @returns {Promise} A new Promise that resolves when the animation has completed.
      */
     squeezeOut: function squeezeOut(nodes, options) {
       nodes = this.parseNodes(nodes);
       options = _objectSpread({}, DOM.animationDefaults, {
-        direction: 'bottom'
+        direction: 'bottom',
+        useGpu: true
       }, options);
       var promises = nodes.map(function (node) {
+        var initialHeight = DOMNode.getStyle(node, 'height');
+        var initialMinHeight = DOMNode.getStyle(node, 'min-height');
+        var initialWidth = DOMNode.getStyle(node, 'width');
+        var initialMinWidth = DOMNode.getStyle(node, 'min-width');
         DOMNode.setStyle(node, 'overflow', 'hidden');
         return DOM._animate(node, function (node, progress, options) {
-          DOMNode.setStyle(node, 'height', '');
-          DOMNode.setStyle(node, 'width', '');
+          DOMNode.setStyle(node, 'height', initialHeight);
+          DOMNode.setStyle(node, 'min-height', initialMinHeight);
+          DOMNode.setStyle(node, 'width', initialWidth);
+          DOMNode.setStyle(node, 'min-width', initialMinWidth);
 
           if (progress === 1) {
             DOMNode.setStyle(node, 'overflow', '');
-            DOMNode.setStyle(node, 'transform', '');
+
+            if (options.useGpu) {
+              DOMNode.setStyle(node, 'transform', '');
+            } else {
+              DOMNode.setStyle(node, 'margin-left', '');
+              DOMNode.setStyle(node, 'margin-top', '');
+            }
+
             return;
           }
 
           var dir = Core.isFunction(options.direction) ? options.direction() : options.direction;
-          var sizeStyle, translateStyle;
+          var sizeStyle, minSizeStyle, translateStyle;
 
           if (dir === 'top' || dir === 'bottom') {
             sizeStyle = 'height';
+            minSizeStyle = 'min-height';
 
             if (dir === 'top') {
-              translateStyle = 'Y';
+              translateStyle = options.useGpu ? 'Y' : 'margin-top';
             }
           } else if (dir === 'left' || dir === 'right') {
             sizeStyle = 'width';
+            minSizeStyle = 'min-width';
 
             if (dir === 'left') {
-              translateStyle = 'X';
+              translateStyle = options.useGpu ? 'X' : 'margin-left';
             }
           }
 
           var size = Math.round(DOM["_".concat(sizeStyle)](node)),
               amount = Math.round(size - size * progress);
           DOMNode.setStyle(node, sizeStyle, "".concat(amount, "px"));
+          DOMNode.setStyle(node, minSizeStyle, "0px");
 
           if (translateStyle) {
-            DOMNode.setStyle(node, 'transform', "translate".concat(translateStyle, "(").concat(size - amount, "px)"));
+            var translateAmount = size - amount;
+
+            if (options.useGpu) {
+              DOMNode.setStyle(node, 'transform', "translate".concat(translateStyle, "(").concat(translateAmount, "px)"));
+            } else {
+              DOMNode.setStyle(node, translateStyle, "".concat(translateAmount, "px"));
+            }
           }
         }, options);
       });

@@ -474,6 +474,7 @@
          * @param {number} [options.duration=1000] The duration of the animation.
          * @param {string} [options.type=ease-in-out] The type of animation.
          * @param {Boolean} [options.infinite] Whether the animation should run forever.
+         * @param {Boolean} [options.useGpu=true] Whether the animation should use GPU acceleration.
          * @returns {Promise} A new Promise that resolves when the animation has completed.
          */
         dropIn(nodes, options) {
@@ -494,6 +495,7 @@
          * @param {number} [options.duration=1000] The duration of the animation.
          * @param {string} [options.type=ease-in-out] The type of animation.
          * @param {Boolean} [options.infinite] Whether the animation should run forever.
+         * @param {Boolean} [options.useGpu=true] Whether the animation should use GPU acceleration.
          * @returns {Promise} A new Promise that resolves when the animation has completed.
          */
         dropOut(nodes, options) {
@@ -624,43 +626,53 @@
          * @param {number} [options.duration=1000] The duration of the animation.
          * @param {string} [options.type=ease-in-out] The type of animation.
          * @param {Boolean} [options.infinite] Whether the animation should run forever.
+         * @param {Boolean} [options.useGpu=true] Whether the animation should use GPU acceleration.
          * @returns {Promise} A new Promise that resolves when the animation has completed.
          */
         slideIn(nodes, options) {
             return this.animate(
                 nodes,
                 (node, progress, options) => {
-                    let transform;
-
-                    if (progress < 1) {
-                        const dir = Core.isFunction(options.direction) ?
-                            options.direction() :
-                            options.direction;
-
-                        let axis, size, inverse;
-                        if (dir === 'top' || dir === 'bottom') {
-                            axis = 'Y';
-                            size = DOM._height(node);
-                            inverse = dir === 'top';
+                    if (progress === 1) {
+                        DOMNode.setStyle(node, 'overflow', '');
+                        if (options.useGpu) {
+                            DOMNode.setStyle(node, 'transform', '');
                         } else {
-                            axis = 'X';
-                            size = DOM._width(node);
-                            inverse = dir === 'left';
+                            DOMNode.setStyle(node, 'margin-left', '');
+                            DOMNode.setStyle(node, 'margin-top', '');
                         }
-
-                        transform = `translate${axis}(${Math.round(size - (size * progress)) * (inverse ? -1 : 1)}px)`;
-                    } else {
-                        transform = '';
+                        return;
                     }
 
-                    DOMNode.setStyle(
-                        node,
-                        'transform',
-                        transform
-                    );
+                    const dir = Core.isFunction(options.direction) ?
+                        options.direction() :
+                        options.direction;
+
+                    let translateStyle, size, inverse;
+                    if (dir === 'top' || dir === 'bottom') {
+                        translateStyle = options.useGpu ?
+                            'Y' :
+                            'margin-top';
+                        size = DOM._height(node);
+                        inverse = dir === 'top';
+                    } else {
+                        translateStyle = options.useGpu ?
+                            'X' :
+                            'margin-left';
+                        size = DOM._width(node);
+                        inverse = dir === 'left';
+                    }
+
+                    const translateAmount = Math.round(size - (size * progress)) * (inverse ? -1 : 1);
+                    if (options.useGpu) {
+                        DOMNode.setStyle(node, 'transform', `translate${translateStyle}(${translateAmount}px)`);
+                    } else {
+                        DOMNode.setStyle(node, translateStyle, `${translateAmount}px`);
+                    }
                 },
                 {
                     direction: 'bottom',
+                    useGpu: true,
                     ...options
                 }
             );
@@ -674,43 +686,53 @@
          * @param {number} [options.duration=1000] The duration of the animation.
          * @param {string} [options.type=ease-in-out] The type of animation.
          * @param {Boolean} [options.infinite] Whether the animation should run forever.
+         * @param {Boolean} [options.useGpu=true] Whether the animation should use GPU acceleration.
          * @returns {Promise} A new Promise that resolves when the animation has completed.
          */
         slideOut(nodes, options) {
             return this.animate(
                 nodes,
                 (node, progress, options) => {
-                    let transform;
-
-                    if (progress < 1) {
-                        const dir = Core.isFunction(options.direction) ?
-                            options.direction() :
-                            options.direction;
-
-                        let axis, size, inverse;
-                        if (dir === 'top' || dir === 'bottom') {
-                            axis = 'Y';
-                            size = DOM._height(node);
-                            inverse = dir === 'top';
+                    if (progress === 1) {
+                        DOMNode.setStyle(node, 'overflow', '');
+                        if (options.useGpu) {
+                            DOMNode.setStyle(node, 'transform', '');
                         } else {
-                            axis = 'X';
-                            size = DOM._width(node);
-                            inverse = dir === 'left';
+                            DOMNode.setStyle(node, 'margin-left', '');
+                            DOMNode.setStyle(node, 'margin-top', '');
                         }
-
-                        transform = `translate${axis}(${Math.round(size * progress) * (inverse ? -1 : 1)}px)`;
-                    } else {
-                        transform = '';
+                        return;
                     }
 
-                    DOMNode.setStyle(
-                        node,
-                        'transform',
-                        transform
-                    );
+                    const dir = Core.isFunction(options.direction) ?
+                        options.direction() :
+                        options.direction;
+
+                    let translateStyle, size, inverse;
+                    if (dir === 'top' || dir === 'bottom') {
+                        translateStyle = options.useGpu ?
+                            'Y' :
+                            'margin-top';
+                        size = DOM._height(node);
+                        inverse = dir === 'top';
+                    } else {
+                        translateStyle = options.useGpu ?
+                            'X' :
+                            'margin-left';
+                        size = DOM._width(node);
+                        inverse = dir === 'left';
+                    }
+
+                    const translateAmount = Math.round(size * progress) * (inverse ? -1 : 1);
+                    if (options.useGpu) {
+                        DOMNode.setStyle(node, 'transform', `translate${translateStyle}(${translateAmount}px)`);
+                    } else {
+                        DOMNode.setStyle(node, translateStyle, `${translateAmount}px`);
+                    }
                 },
                 {
                     direction: 'bottom',
+                    useGpu: true,
                     ...options
                 }
             );
@@ -724,6 +746,7 @@
          * @param {number} [options.duration=1000] The duration of the animation.
          * @param {string} [options.type=ease-in-out] The type of animation.
          * @param {Boolean} [options.infinite] Whether the animation should run forever.
+         * @param {Boolean} [options.useGpu=true] Whether the animation should use GPU acceleration.
          * @returns {Promise} A new Promise that resolves when the animation has completed.
          */
         squeezeIn(nodes, options) {
@@ -732,21 +755,33 @@
             options = {
                 ...DOM.animationDefaults,
                 direction: 'bottom',
+                useGpu: true,
                 ...options
             };
 
             const promises = nodes.map(node => {
+                const initialHeight = DOMNode.getStyle(node, 'height');
+                const initialMinHeight = DOMNode.getStyle(node, 'min-height');
+                const initialWidth = DOMNode.getStyle(node, 'width');
+                const initialMinWidth = DOMNode.getStyle(node, 'min-width');
                 DOMNode.setStyle(node, 'overflow', 'hidden');
 
                 return DOM._animate(
                     node,
                     (node, progress, options) => {
-                        DOMNode.setStyle(node, 'height', '');
-                        DOMNode.setStyle(node, 'width', '');
+                        DOMNode.setStyle(node, 'height', initialHeight);
+                        DOMNode.setStyle(node, 'min-height', initialMinHeight);
+                        DOMNode.setStyle(node, 'width', initialWidth);
+                        DOMNode.setStyle(node, 'min-width', initialMinWidth);
 
                         if (progress === 1) {
                             DOMNode.setStyle(node, 'overflow', '');
-                            DOMNode.setStyle(node, 'transform', '');
+                            if (options.useGpu) {
+                                DOMNode.setStyle(node, 'transform', '');
+                            } else {
+                                DOMNode.setStyle(node, 'margin-left', '');
+                                DOMNode.setStyle(node, 'margin-top', '');
+                            }
                             return;
                         }
 
@@ -754,16 +789,22 @@
                             options.direction() :
                             options.direction;
 
-                        let sizeStyle, translateStyle;
+                        let sizeStyle, minSizeStyle, translateStyle;
                         if (dir === 'top' || dir === 'bottom') {
                             sizeStyle = 'height';
+                            minSizeStyle = 'min-height';
                             if (dir === 'top') {
-                                translateStyle = 'Y';
+                                translateStyle = options.useGpu ?
+                                    'Y' :
+                                    'margin-top';
                             }
                         } else if (dir === 'left' || dir === 'right') {
                             sizeStyle = 'width';
+                            minSizeStyle = 'min-width';
                             if (dir === 'left') {
-                                translateStyle = 'X';
+                                translateStyle = options.useGpu ?
+                                    'X' :
+                                    'margin-left';
                             }
                         }
 
@@ -771,9 +812,15 @@
                             amount = Math.round(size * progress);
 
                         DOMNode.setStyle(node, sizeStyle, `${amount}px`);
+                        DOMNode.setStyle(node, minSizeStyle, `0px`);
 
                         if (translateStyle) {
-                            DOMNode.setStyle(node, 'transform', `translate${translateStyle}(${size - amount}px)`);
+                            const translateAmount = size - amount;
+                            if (options.useGpu) {
+                                DOMNode.setStyle(node, 'transform', `translate${translateStyle}(${translateAmount}px)`);
+                            } else {
+                                DOMNode.setStyle(node, translateStyle, `${translateAmount}px`);
+                            }
                         }
                     },
                     options
@@ -793,6 +840,7 @@
          * @param {number} [options.duration=1000] The duration of the animation.
          * @param {string} [options.type=ease-in-out] The type of animation.
          * @param {Boolean} [options.infinite] Whether the animation should run forever.
+         * @param {Boolean} [options.useGpu=true] Whether the animation should use GPU acceleration.
          * @returns {Promise} A new Promise that resolves when the animation has completed.
          */
         squeezeOut(nodes, options) {
@@ -801,21 +849,33 @@
             options = {
                 ...DOM.animationDefaults,
                 direction: 'bottom',
+                useGpu: true,
                 ...options
             };
 
             const promises = nodes.map(node => {
+                const initialHeight = DOMNode.getStyle(node, 'height');
+                const initialMinHeight = DOMNode.getStyle(node, 'min-height');
+                const initialWidth = DOMNode.getStyle(node, 'width');
+                const initialMinWidth = DOMNode.getStyle(node, 'min-width');
                 DOMNode.setStyle(node, 'overflow', 'hidden');
 
                 return DOM._animate(
                     node,
                     (node, progress, options) => {
-                        DOMNode.setStyle(node, 'height', '');
-                        DOMNode.setStyle(node, 'width', '');
+                        DOMNode.setStyle(node, 'height', initialHeight);
+                        DOMNode.setStyle(node, 'min-height', initialMinHeight);
+                        DOMNode.setStyle(node, 'width', initialWidth);
+                        DOMNode.setStyle(node, 'min-width', initialMinWidth);
 
                         if (progress === 1) {
                             DOMNode.setStyle(node, 'overflow', '');
-                            DOMNode.setStyle(node, 'transform', '');
+                            if (options.useGpu) {
+                                DOMNode.setStyle(node, 'transform', '');
+                            } else {
+                                DOMNode.setStyle(node, 'margin-left', '');
+                                DOMNode.setStyle(node, 'margin-top', '');
+                            }
                             return;
                         }
 
@@ -823,16 +883,22 @@
                             options.direction() :
                             options.direction;
 
-                        let sizeStyle, translateStyle;
+                        let sizeStyle, minSizeStyle, translateStyle;
                         if (dir === 'top' || dir === 'bottom') {
                             sizeStyle = 'height';
+                            minSizeStyle = 'min-height';
                             if (dir === 'top') {
-                                translateStyle = 'Y';
+                                translateStyle = options.useGpu ?
+                                    'Y' :
+                                    'margin-top';
                             }
                         } else if (dir === 'left' || dir === 'right') {
                             sizeStyle = 'width';
+                            minSizeStyle = 'min-width';
                             if (dir === 'left') {
-                                translateStyle = 'X';
+                                translateStyle = options.useGpu ?
+                                    'X' :
+                                    'margin-left';
                             }
                         }
 
@@ -840,9 +906,15 @@
                             amount = Math.round(size - (size * progress));
 
                         DOMNode.setStyle(node, sizeStyle, `${amount}px`);
+                        DOMNode.setStyle(node, minSizeStyle, `0px`);
 
                         if (translateStyle) {
-                            DOMNode.setStyle(node, 'transform', `translate${translateStyle}(${size - amount}px)`);
+                            const translateAmount = size - amount;
+                            if (options.useGpu) {
+                                DOMNode.setStyle(node, 'transform', `translate${translateStyle}(${translateAmount}px)`);
+                            } else {
+                                DOMNode.setStyle(node, translateStyle, `${translateAmount}px`);
+                            }
                         }
                     },
                     options

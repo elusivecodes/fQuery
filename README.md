@@ -108,6 +108,7 @@ Drop each node into place.
     - `duration` is the number of milliseconds that the animation should last, and will default to *1000*.
     - `type` is a string of either "*ease-in*", "*ease-out*", "*ease-in-out*" or "*linear*" indicating the type of animation to run, and will default to "*ease-in-out*".
     - `infinite` is a boolean indicating whether the animation should continue forever, and will default to *false*.
+    - `useGpu` is a boolean indicating whether the animation should use GPU acceleration (CSS transform) and will default to *true*.
 
 This method returns a *Promise*, that will resolve after the animation has completed.
 
@@ -125,6 +126,7 @@ Drop each node out of place.
     - `duration` is the number of milliseconds that the animation should last, and will default to *1000*.
     - `type` is a string of either "*ease-in*", "*ease-out*", "*ease-in-out*" or "*linear*" indicating the type of animation to run, and will default to "*ease-in-out*".
     - `infinite` is a boolean indicating whether the animation should continue forever, and will default to *false*.
+    - `useGpu` is a boolean indicating whether the animation should use GPU acceleration (CSS transform) and will default to *true*.
 
 This method returns a *Promise*, that will resolve after the animation has completed.
 
@@ -212,6 +214,7 @@ Slide each node into place to a direction.
     - `duration` is the number of milliseconds that the animation should last, and will default to *1000*.
     - `type` is a string of either "*ease-in*", "*ease-out*", "*ease-in-out*" or "*linear*" indicating the type of animation to run, and will default to "*ease-in-out*".
     - `infinite` is a boolean indicating whether the animation should continue forever, and will default to *false*.
+    - `useGpu` is a boolean indicating whether the animation should use GPU acceleration (CSS transform) and will default to *true*.
 
 This method returns a *Promise*, that will resolve after the animation has completed.
 
@@ -229,6 +232,7 @@ Slide each node out of place from a direction.
     - `duration` is the number of milliseconds that the animation should last, and will default to *1000*.
     - `type` is a string of either "*ease-in*", "*ease-out*", "*ease-in-out*" or "*linear*" indicating the type of animation to run, and will default to "*ease-in-out*".
     - `infinite` is a boolean indicating whether the animation should continue forever, and will default to *false*.
+    - `useGpu` is a boolean indicating whether the animation should use GPU acceleration (CSS transform) and will default to *true*.
 
 This method returns a *Promise*, that will resolve after the animation has completed.
 
@@ -246,6 +250,7 @@ Squeeze each node into place to a direction.
     - `duration` is the number of milliseconds that the animation should last, and will default to *1000*.
     - `type` is a string of either "*ease-in*", "*ease-out*", "*ease-in-out*" or "*linear*" indicating the type of animation to run, and will default to "*ease-in-out*".
     - `infinite` is a boolean indicating whether the animation should continue forever, and will default to *false*.
+    - `useGpu` is a boolean indicating whether the animation should use GPU acceleration (CSS transform) and will default to *true*.
 
 This method returns a *Promise*, that will resolve after the animation has completed.
 
@@ -263,6 +268,7 @@ Squeeze each node out of place from a direction.
     - `duration` is the number of milliseconds that the animation should last, and will default to *1000*.
     - `type` is a string of either "*ease-in*", "*ease-out*", "*ease-in-out*" or "*linear*" indicating the type of animation to run, and will default to "*ease-in-out*".
     - `infinite` is a boolean indicating whether the animation should continue forever, and will default to *false*.
+    - `useGpu` is a boolean indicating whether the animation should use GPU acceleration (CSS transform) and will default to *true*.
 
 This method returns a *Promise*, that will resolve after the animation has completed.
 
