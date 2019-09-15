@@ -33,12 +33,20 @@ Object.assign(DOM, {
      */
     _getDataset(node, key) {
         if (key) {
-            return DOMNode.getDataset(node, key);
+            return DOM._parseDataset(
+                DOMNode.getDataset(node, key)
+            );
         }
 
-        return {
-            ...DOMNode.dataset(node)
-        };
+        const dataset = DOMNode.dataset(node);
+
+        const result = {};
+
+        for (const k in dataset) {
+            result[k] = DOM._parseDataset(dataset[k]);
+        }
+
+        return result;
     },
 
     /**

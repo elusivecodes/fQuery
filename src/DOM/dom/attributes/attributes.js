@@ -24,7 +24,7 @@ Object.assign(DOM.prototype, {
      * Get dataset value(s) for the first node.
      * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
      * @param {string} [key] The dataset key.
-     * @returns {string|object} The dataset value, or an object containing the dataset.
+     * @returns {*} The dataset value, or an object containing the dataset.
      */
     getDataset(nodes, key) {
         const node = this.parseNode(nodes);
@@ -147,12 +147,12 @@ Object.assign(DOM.prototype, {
      * Set a dataset value for the first node.
      * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
      * @param {string|object} key The dataset key, or an object containing dataset values.
-     * @param {string} [value] The dataset value.
+     * @param {*} [value] The dataset value.
      */
     setDataset(nodes, key, value) {
         nodes = this.parseNodes(nodes);
 
-        const dataset = DOM._parseData(key, value);
+        const dataset = DOM._parseData(key, value, true);
 
         for (const node of nodes) {
             DOMNode.setDataset(node, dataset);

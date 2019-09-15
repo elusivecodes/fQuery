@@ -336,6 +336,8 @@ If the `key` argument is omitted, an object containing all dataset values will b
 const dataset = dom.getDataset(nodes);
 ```
 
+This method will attempt to convert string values to JS primitives (including booleans, numbers, objects, arrays and null).
+
 **Get HTML**
 
 Get the HTML contents of the first node.
@@ -445,6 +447,8 @@ Alternatively, you can set multiple dataset properties by passing a single `data
 ```javascript
 dom.setDataset(nodes, dataset);
 ```
+
+This method will convert object and array values to JSON strings.
 
 **Set HTML**
 

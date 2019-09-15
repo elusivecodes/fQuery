@@ -992,7 +992,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
      * Get dataset value(s) for the first node.
      * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
      * @param {string} [key] The dataset key.
-     * @returns {string|object} The dataset value, or an object containing the dataset.
+     * @returns {*} The dataset value, or an object containing the dataset.
      */
     getDataset: function getDataset(nodes, key) {
       var node = this.parseNode(nodes);
@@ -1184,12 +1184,12 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
      * Set a dataset value for the first node.
      * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
      * @param {string|object} key The dataset key, or an object containing dataset values.
-     * @param {string} [value] The dataset value.
+     * @param {*} [value] The dataset value.
      */
     setDataset: function setDataset(nodes, key, value) {
       nodes = this.parseNodes(nodes);
 
-      var dataset = DOM._parseData(key, value);
+      var dataset = DOM._parseData(key, value, true);
 
       var _iteratorNormalCompletion10 = true;
       var _didIteratorError10 = false;
@@ -5641,10 +5641,17 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
      */
     _getDataset: function _getDataset(node, key) {
       if (key) {
-        return DOMNode.getDataset(node, key);
+        return DOM._parseDataset(DOMNode.getDataset(node, key));
       }
 
-      return _objectSpread({}, DOMNode.dataset(node));
+      var dataset = DOMNode.dataset(node);
+      var result = {};
+
+      for (var k in dataset) {
+        result[k] = DOM._parseDataset(dataset[k]);
+      }
+
+      return result;
     },
 
     /**
@@ -6376,10 +6383,58 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
      * Return a data object from a key and value, or a data object.
      * @param {string|object} key The data key, or an object containing data.
      * @param {*} [value] The data value.
+     * @param {Boolean} [json=false] Whether to JSON encode the values.
      * @returns {object} The data object.
      */
     _parseData: function _parseData(key, value) {
-      return Core.isObject(key) ? key : _defineProperty({}, key, value);
+      var json = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
+      var obj = Core.isObject(key) ? key : _defineProperty({}, key, value);
+      var result = {};
+
+      for (var k in obj) {
+        var v = obj[k];
+        result[k] = json && (Core.isObject(v) || Core.isArray(v)) ? JSON.stringify(v) : v;
+      }
+
+      return result;
+    },
+
+    /**
+     * Return a JS primitive from a dataset string.
+     * @param {string} value The input value.
+     * @return {*} The parsed value.
+     */
+    _parseDataset: function _parseDataset(value) {
+      if (Core.isUndefined(value)) {
+        return value;
+      }
+
+      var lower = value.toLowerCase().trim();
+
+      if (['true', 'on'].includes(lower)) {
+        return true;
+      }
+
+      if (['false', 'off'].includes(lower)) {
+        return false;
+      }
+
+      if (lower === 'null') {
+        return null;
+      }
+
+      if (Core.isNumeric(lower)) {
+        return parseFloat(lower);
+      }
+
+      if (['{', '['].includes(lower.charAt(0))) {
+        try {
+          var result = JSON.parse(value);
+          return result;
+        } catch (e) {}
+      }
+
+      return value;
     },
 
     /**
