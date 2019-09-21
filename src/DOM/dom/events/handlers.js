@@ -80,12 +80,18 @@ Object.assign(DOM.prototype, {
     removeEvent(nodes, events, callback, delegate) {
         nodes = this.parseNodes(nodes, { shadow: true, document: true, window: true });
 
-        events = DOM._parseEvents(events);
+        events = events ?
+            DOM._parseEvents(events) :
+            false;
 
         for (const node of nodes) {
+            if (!DOM._events.has(node)) {
+                continue;
+            }
+
             const eventArray = events ?
                 events :
-                Object.keys(this._events.get(node));
+                Object.keys(DOM._events.get(node));
 
             for (const event of eventArray) {
                 DOM._removeEvent(node, event, callback, delegate);

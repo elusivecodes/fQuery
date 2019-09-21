@@ -1998,12 +1998,18 @@
         removeEvent(nodes, events, callback, delegate) {
             nodes = this.parseNodes(nodes, { shadow: true, document: true, window: true });
 
-            events = DOM._parseEvents(events);
+            events = events ?
+                DOM._parseEvents(events) :
+                false;
 
             for (const node of nodes) {
+                if (!DOM._events.has(node)) {
+                    continue;
+                }
+
                 const eventArray = events ?
                     events :
-                    Object.keys(this._events.get(node));
+                    Object.keys(DOM._events.get(node));
 
                 for (const event of eventArray) {
                     DOM._removeEvent(node, event, callback, delegate);
@@ -2234,30 +2240,59 @@
             nodes = this.parseNodes(nodes, { fragment: true, shadow: true, document: true });
 
             for (const node of nodes) {
-                DOM._empty(node);
+                // Remove descendent elements
+                const children = Core.wrap(DOMNode.childNodes(node));
+
+                // Remove ShadowRoot
+                if (DOM._hasShadow(node)) {
+                    const shadow = DOMNode.shadow(node);
+                    children.push(shadow);
+                }
+
+                // Remove DocumentFragment
+                if (DOM._hasFragment(node)) {
+                    const fragment = DOMNode.fragment(node);
+                    children.push(fragment);
+                }
+
+                this.remove(children, true);
             }
         },
 
         /**
          * Remove each node from the DOM.
-         * @param {string|array|Node|HTMLElement|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
+         * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
          */
         remove(nodes) {
+            nodes = this.parseNodes(nodes, { node: true, fragment: true, shadow: true });
 
-            // DocumentFragment and ShadowRoot nodes can not be removed
-            nodes = this.parseNodes(nodes, { node: true });
+            this.empty(nodes);
 
             for (const node of nodes) {
-                const parent = DOMNode.parent(node);
+                DOMNode.triggerEvent(node, 'remove');
 
-                if (!parent) {
-                    continue;
+                if (Core.isElement(node)) {
+                    DOM._clearQueue(node);
+                    DOM._stop(node);
+
+                    if (DOM._styles.has(node)) {
+                        DOM._styles.delete(node);
+                    }
                 }
 
-                DOM._empty(node);
-                DOM._remove(node);
+                this.removeEvent(node);
+                DOM._removeData(node);
 
-                DOMNode.removeChild(parent, node);
+                // DocumentFragment and ShadowRoot nodes can not be removed
+                if (Core.isNode(node)) {
+                    const parent = DOMNode.parent(node);
+
+                    if (!parent) {
+                        continue;
+                    }
+
+                    DOMNode.removeChild(parent, node);
+                }
             }
         },
 
@@ -2284,7 +2319,18 @@
             others = this.parseNodes(others, { node: true, fragment: true, html: true });
 
             for (const node of nodes) {
-                DOM._replaceWith(node, others);
+                const parent = DOMNode.parent(node);
+
+                if (!parent) {
+                    return;
+                }
+
+                for (const other of others) {
+                    const clone = DOM._clone(other, true);
+                    DOMNode.insertBefore(parent, clone, node);
+                }
+
+                this.remove(node);
             }
         }
 
@@ -2451,7 +2497,25 @@
             filter = this.parseFilter(filter);
 
             for (const node of nodes) {
-                DOM._unwrap(node, filter);
+                const parent = DOMNode.parent(node, filter);
+
+                if (!parent) {
+                    return;
+                }
+
+                const outerParent = DOMNode.parent(parent);
+
+                if (!parent) {
+                    return;
+                }
+
+                const children = Core.wrap(DOMNode.childNodes(parent));
+
+                for (const child of children) {
+                    DOMNode.insertBefore(outerParent, child, parent);
+                }
+
+                this.remove(parent);
             }
         },
 
@@ -4079,7 +4143,7 @@
                 children = DOMNode.children(fragment);
 
             for (const child of children) {
-                DOM._sanitize(child, allowedTags);
+                DOM._sanitize(child, fragment, allowedTags);
             }
 
             return this.getHTML(template);
@@ -4997,7 +5061,7 @@
         /**
          * Add an event to a single node.
          * @param {HTMLElement|ShadowRoot|Document|Window} node The input node.
-         * @param {string} event The event names.
+         * @param {string} event The event name.
          * @param {DOM~eventCallback} callback The callback to execute.
          * @param {string} [delegate] The delegate selector.
          * @param {Boolean} [selfDestruct] Whether to remove the event after triggering.
@@ -5013,7 +5077,7 @@
                     callback,
                     selfDestruct
                 },
-                realEvent = DOM._parseEvent(event);
+                realEvent = this._parseEvent(event);
 
             let realCallback = callback;
 
@@ -5071,7 +5135,7 @@
         /**
          * Remove events from a single node.
          * @param {HTMLElement|ShadowRoot|Document|Window} nodes The input node.
-         * @param {string} [event] The event names.
+         * @param {string} event The event name.
          * @param {DOM~eventCallback} [callback] The callback to remove.
          * @param {string} [delegate] The delegate selector.
          */
@@ -5081,7 +5145,7 @@
             }
 
             const nodeEvents = this._events.get(node),
-                realEvent = DOM._parseEvent(event);
+                realEvent = this._parseEvent(event);
 
             if (!nodeEvents[realEvent]) {
                 return;
@@ -5128,7 +5192,7 @@
         /**
          * Trigger events on a single node.
          * @param {HTMLElement|DocumentFragment|ShadowRoot|Document|Window} node The input node.
-         * @param {string} event The event names.
+         * @param {string} event The event name.
          * @param {object} [data] Additional data to attach to the Event object.
          * @param {object} [options] The options to use for the Event.
          * @param {Boolean} [options.bubbles=true] Whether the event will bubble.
@@ -5445,77 +5509,6 @@
             }
 
             DOMNode.removeChild(parent, node);
-        },
-
-        /**
-         * Remove all children of a single node from the DOM.
-         * @param {HTMLElement|DocumentFragment|ShadowRoot|Document} node The input node.
-         */
-        _empty(node) {
-            // Remove descendent elements
-            const children = Core.wrap(DOMNode.childNodes(node));
-
-            for (const child of children) {
-                this._empty(child);
-                this._remove(child);
-                DOMNode.removeChild(node, child);
-            }
-
-            // Remove ShadowRoot
-            if (DOM._hasShadow(node)) {
-                const shadow = DOMNode.shadow(node);
-                this._empty(shadow);
-                this._remove(shadow);
-            }
-
-            // Remove DocumentFragment
-            if (DOM._hasFragment(node)) {
-                const fragment = DOMNode.fragment(node);
-                this._empty(fragment);
-                this._remove(fragment);
-            }
-        },
-
-        /**
-         * Remove a single node from the DOM.
-         * @param {HTMLElement|DocumentFragment|ShadowRoot} node The input node.
-         */
-        _remove(node) {
-            DOMNode.triggerEvent(node, 'remove');
-
-            if (Core.isElement(node)) {
-                this._clearQueue(node);
-                this._stop(node);
-
-                if (this._styles.has(node)) {
-                    this._styles.delete(node);
-                }
-            }
-
-            this._removeEvent(node);
-            this._removeData(node);
-        },
-
-        /**
-         * Replace a single node with other nodes.
-         * @param {Node|HTMLElement} node The input node.
-         * @param {array} others The other node(s).
-         */
-        _replaceWith(node, others) {
-            const parent = DOMNode.parent(node);
-
-            if (!parent) {
-                return;
-            }
-
-            for (const other of others) {
-                const clone = this._clone(other, true);
-                DOMNode.insertBefore(parent, clone, node);
-            }
-
-            this._empty(node);
-            this._remove(node);
-            DOMNode.removeChild(parent, node);
         }
 
     });
@@ -5525,34 +5518,6 @@
      */
 
     Object.assign(DOM, {
-
-        /**
-         * Unwrap a single node.
-         * @param {Node|HTMLElement} node The input node.
-         * @param {DOM~filterCallback} [filter] The filter function.
-         */
-        _unwrap(node, filter) {
-            const parent = DOMNode.parent(node, filter);
-
-            if (!parent) {
-                return;
-            }
-
-            const outerParent = DOMNode.parent(parent);
-
-            if (!parent) {
-                return;
-            }
-
-            const children = Core.wrap(DOMNode.childNodes(parent));
-
-            for (const child of children) {
-                DOMNode.insertBefore(outerParent, child, parent);
-            }
-
-            this._remove(parent);
-            DOMNode.removeChild(outerParent, parent);
-        },
 
         /**
          * Wrap a single node with other nodes.
@@ -6245,13 +6210,14 @@
         /**
          * Sanitize a single node.
          * @param {HTMLElement} node The input node.
+         * @param {HTMLElement} parent The parent node.
          * @param {object} [allowedTags] An object containing allowed tags and attributes.
          */
-        _sanitize(node, allowedTags = this.allowedTags) {
+        _sanitize(node, parent, allowedTags = this.allowedTags) {
             // check node
             const name = this._tagName(node);
             if (!(name in allowedTags)) {
-                this._remove(node);
+                DOMNode.removeChild(parent, node);
                 return;
             }
 
@@ -6272,7 +6238,7 @@
             // check children
             const children = DOMNode.children(node);
             for (const child of children) {
-                this._sanitize(child, allowedTags);
+                this._sanitize(child, node, allowedTags);
             }
         },
 

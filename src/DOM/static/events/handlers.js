@@ -7,7 +7,7 @@ Object.assign(DOM, {
     /**
      * Add an event to a single node.
      * @param {HTMLElement|ShadowRoot|Document|Window} node The input node.
-     * @param {string} event The event names.
+     * @param {string} event The event name.
      * @param {DOM~eventCallback} callback The callback to execute.
      * @param {string} [delegate] The delegate selector.
      * @param {Boolean} [selfDestruct] Whether to remove the event after triggering.
@@ -23,7 +23,7 @@ Object.assign(DOM, {
                 callback,
                 selfDestruct
             },
-            realEvent = DOM._parseEvent(event);
+            realEvent = this._parseEvent(event);
 
         let realCallback = callback;
 
@@ -81,7 +81,7 @@ Object.assign(DOM, {
     /**
      * Remove events from a single node.
      * @param {HTMLElement|ShadowRoot|Document|Window} nodes The input node.
-     * @param {string} [event] The event names.
+     * @param {string} event The event name.
      * @param {DOM~eventCallback} [callback] The callback to remove.
      * @param {string} [delegate] The delegate selector.
      */
@@ -91,7 +91,7 @@ Object.assign(DOM, {
         }
 
         const nodeEvents = this._events.get(node),
-            realEvent = DOM._parseEvent(event);
+            realEvent = this._parseEvent(event);
 
         if (!nodeEvents[realEvent]) {
             return;
@@ -138,7 +138,7 @@ Object.assign(DOM, {
     /**
      * Trigger events on a single node.
      * @param {HTMLElement|DocumentFragment|ShadowRoot|Document|Window} node The input node.
-     * @param {string} event The event names.
+     * @param {string} event The event name.
      * @param {object} [data] Additional data to attach to the Event object.
      * @param {object} [options] The options to use for the Event.
      * @param {Boolean} [options.bubbles=true] Whether the event will bubble.

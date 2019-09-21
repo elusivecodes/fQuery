@@ -90,7 +90,7 @@ Object.assign(DOM.prototype, {
             children = DOMNode.children(fragment);
 
         for (const child of children) {
-            DOM._sanitize(child, allowedTags);
+            DOM._sanitize(child, fragment, allowedTags);
         }
 
         return this.getHTML(template);
