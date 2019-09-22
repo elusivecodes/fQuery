@@ -89,11 +89,12 @@ Object.assign(DOM.prototype, {
                 continue;
             }
 
-            const eventArray = events ?
-                events :
-                Object.keys(DOM._events.get(node));
+            if (!events) {
+                DOM._removeEvent(node, events, callback, delegate);
+                continue;
+            }
 
-            for (const event of eventArray) {
+            for (const event of events) {
                 DOM._removeEvent(node, event, callback, delegate);
             }
         }

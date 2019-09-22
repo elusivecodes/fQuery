@@ -50,22 +50,7 @@ Object.assign(DOM.prototype, {
         nodes = this.parseNodes(nodes, { fragment: true, shadow: true, document: true });
 
         for (const node of nodes) {
-            // Remove descendent elements
-            const children = Core.wrap(DOMNode.childNodes(node));
-
-            // Remove ShadowRoot
-            if (DOM._hasShadow(node)) {
-                const shadow = DOMNode.shadow(node);
-                children.push(shadow);
-            }
-
-            // Remove DocumentFragment
-            if (DOM._hasFragment(node)) {
-                const fragment = DOMNode.fragment(node);
-                children.push(fragment);
-            }
-
-            this.remove(children, true);
+            DOM._empty(node);
         }
     },
 
@@ -74,35 +59,19 @@ Object.assign(DOM.prototype, {
      * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
      */
     remove(nodes) {
-        nodes = this.parseNodes(nodes, { node: true, fragment: true, shadow: true });
 
-        this.empty(nodes);
+        // DocumentFragment and ShadowRoot nodes can not be removed
+        nodes = this.parseNodes(nodes, { node: true });
 
         for (const node of nodes) {
-            DOMNode.triggerEvent(node, 'remove');
+            const parent = DOMNode.parent(node);
 
-            if (Core.isElement(node)) {
-                DOM._clearQueue(node);
-                DOM._stop(node);
-
-                if (DOM._styles.has(node)) {
-                    DOM._styles.delete(node);
-                }
+            if (!parent) {
+                continue;
             }
 
-            this.removeEvent(node);
-            DOM._removeData(node);
-
-            // DocumentFragment and ShadowRoot nodes can not be removed
-            if (Core.isNode(node)) {
-                const parent = DOMNode.parent(node);
-
-                if (!parent) {
-                    continue;
-                }
-
-                DOMNode.removeChild(parent, node);
-            }
+            DOM._remove(node);
+            DOMNode.removeChild(parent, node);
         }
     },
 
@@ -129,18 +98,7 @@ Object.assign(DOM.prototype, {
         others = this.parseNodes(others, { node: true, fragment: true, html: true });
 
         for (const node of nodes) {
-            const parent = DOMNode.parent(node);
-
-            if (!parent) {
-                return;
-            }
-
-            for (const other of others) {
-                const clone = DOM._clone(other, true);
-                DOMNode.insertBefore(parent, clone, node);
-            }
-
-            this.remove(node);
+            DOM._replaceWith(node, others);
         }
     }
 

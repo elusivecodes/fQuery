@@ -5,6 +5,34 @@
 Object.assign(DOM, {
 
     /**
+     * Unwrap a single node.
+     * @param {Node|HTMLElement} node The input node.
+     * @param {DOM~filterCallback} [filter] The filter function.
+     */
+    _unwrap(node, filter) {
+        const parent = DOMNode.parent(node, filter);
+
+        if (!parent) {
+            return;
+        }
+
+        const outerParent = DOMNode.parent(parent);
+
+        if (!parent) {
+            return;
+        }
+
+        const children = Core.wrap(DOMNode.childNodes(parent));
+
+        for (const child of children) {
+            DOMNode.insertBefore(outerParent, child, parent);
+        }
+
+        this._remove(parent);
+        DOMNode.removeChild(outerParent, parent);
+    },
+
+    /**
      * Wrap a single node with other nodes.
      * @param {Node|HTMLElement} node The input node.
      * @param {array} others The other node(s).

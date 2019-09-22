@@ -79,9 +79,9 @@ Object.assign(DOM, {
     },
 
     /**
-     * Remove events from a single node.
+     * Remove an event from a single node.
      * @param {HTMLElement|ShadowRoot|Document|Window} nodes The input node.
-     * @param {string} event The event name.
+     * @param {string} [event] The event name.
      * @param {DOM~eventCallback} [callback] The callback to remove.
      * @param {string} [delegate] The delegate selector.
      */
@@ -90,8 +90,19 @@ Object.assign(DOM, {
             return;
         }
 
-        const nodeEvents = this._events.get(node),
-            realEvent = this._parseEvent(event);
+        const nodeEvents = this._events.get(node);
+
+        if (!event) {
+            const realEvents = Object.keys(nodeEvents);
+
+            for (const realEvent of realEvents) {
+                this._removeEvent(node, realEvent, callback, delegate);
+            }
+
+            return;
+        }
+
+        const realEvent = this._parseEvent(event);
 
         if (!nodeEvents[realEvent]) {
             return;
@@ -136,7 +147,7 @@ Object.assign(DOM, {
     },
 
     /**
-     * Trigger events on a single node.
+     * Trigger an event on a single node.
      * @param {HTMLElement|DocumentFragment|ShadowRoot|Document|Window} node The input node.
      * @param {string} event The event name.
      * @param {object} [data] Additional data to attach to the Event object.

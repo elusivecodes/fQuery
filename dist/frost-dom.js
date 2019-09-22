@@ -2007,11 +2007,12 @@
                     continue;
                 }
 
-                const eventArray = events ?
-                    events :
-                    Object.keys(DOM._events.get(node));
+                if (!events) {
+                    DOM._removeEvent(node, events, callback, delegate);
+                    continue;
+                }
 
-                for (const event of eventArray) {
+                for (const event of events) {
                     DOM._removeEvent(node, event, callback, delegate);
                 }
             }
@@ -2240,22 +2241,7 @@
             nodes = this.parseNodes(nodes, { fragment: true, shadow: true, document: true });
 
             for (const node of nodes) {
-                // Remove descendent elements
-                const children = Core.wrap(DOMNode.childNodes(node));
-
-                // Remove ShadowRoot
-                if (DOM._hasShadow(node)) {
-                    const shadow = DOMNode.shadow(node);
-                    children.push(shadow);
-                }
-
-                // Remove DocumentFragment
-                if (DOM._hasFragment(node)) {
-                    const fragment = DOMNode.fragment(node);
-                    children.push(fragment);
-                }
-
-                this.remove(children, true);
+                DOM._empty(node);
             }
         },
 
@@ -2264,35 +2250,19 @@
          * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
          */
         remove(nodes) {
-            nodes = this.parseNodes(nodes, { node: true, fragment: true, shadow: true });
 
-            this.empty(nodes);
+            // DocumentFragment and ShadowRoot nodes can not be removed
+            nodes = this.parseNodes(nodes, { node: true });
 
             for (const node of nodes) {
-                DOMNode.triggerEvent(node, 'remove');
+                const parent = DOMNode.parent(node);
 
-                if (Core.isElement(node)) {
-                    DOM._clearQueue(node);
-                    DOM._stop(node);
-
-                    if (DOM._styles.has(node)) {
-                        DOM._styles.delete(node);
-                    }
+                if (!parent) {
+                    continue;
                 }
 
-                this.removeEvent(node);
-                DOM._removeData(node);
-
-                // DocumentFragment and ShadowRoot nodes can not be removed
-                if (Core.isNode(node)) {
-                    const parent = DOMNode.parent(node);
-
-                    if (!parent) {
-                        continue;
-                    }
-
-                    DOMNode.removeChild(parent, node);
-                }
+                DOM._remove(node);
+                DOMNode.removeChild(parent, node);
             }
         },
 
@@ -2319,18 +2289,7 @@
             others = this.parseNodes(others, { node: true, fragment: true, html: true });
 
             for (const node of nodes) {
-                const parent = DOMNode.parent(node);
-
-                if (!parent) {
-                    return;
-                }
-
-                for (const other of others) {
-                    const clone = DOM._clone(other, true);
-                    DOMNode.insertBefore(parent, clone, node);
-                }
-
-                this.remove(node);
+                DOM._replaceWith(node, others);
             }
         }
 
@@ -2497,25 +2456,7 @@
             filter = this.parseFilter(filter);
 
             for (const node of nodes) {
-                const parent = DOMNode.parent(node, filter);
-
-                if (!parent) {
-                    return;
-                }
-
-                const outerParent = DOMNode.parent(parent);
-
-                if (!parent) {
-                    return;
-                }
-
-                const children = Core.wrap(DOMNode.childNodes(parent));
-
-                for (const child of children) {
-                    DOMNode.insertBefore(outerParent, child, parent);
-                }
-
-                this.remove(parent);
+                DOM._unwrap(node, filter);
             }
         },
 
@@ -5133,9 +5074,9 @@
         },
 
         /**
-         * Remove events from a single node.
+         * Remove an event from a single node.
          * @param {HTMLElement|ShadowRoot|Document|Window} nodes The input node.
-         * @param {string} event The event name.
+         * @param {string} [event] The event name.
          * @param {DOM~eventCallback} [callback] The callback to remove.
          * @param {string} [delegate] The delegate selector.
          */
@@ -5144,8 +5085,19 @@
                 return;
             }
 
-            const nodeEvents = this._events.get(node),
-                realEvent = this._parseEvent(event);
+            const nodeEvents = this._events.get(node);
+
+            if (!event) {
+                const realEvents = Object.keys(nodeEvents);
+
+                for (const realEvent of realEvents) {
+                    this._removeEvent(node, realEvent, callback, delegate);
+                }
+
+                return;
+            }
+
+            const realEvent = this._parseEvent(event);
 
             if (!nodeEvents[realEvent]) {
                 return;
@@ -5190,7 +5142,7 @@
         },
 
         /**
-         * Trigger events on a single node.
+         * Trigger an event on a single node.
          * @param {HTMLElement|DocumentFragment|ShadowRoot|Document|Window} node The input node.
          * @param {string} event The event name.
          * @param {object} [data] Additional data to attach to the Event object.
@@ -5509,6 +5461,75 @@
             }
 
             DOMNode.removeChild(parent, node);
+        },
+
+        /**
+         * Remove all children of a single node from the DOM.
+         * @param {HTMLElement|DocumentFragment|ShadowRoot|Document} node The input node.
+         */
+        _empty(node) {
+            // Remove descendent elements
+            const children = Core.wrap(DOMNode.childNodes(node));
+
+            for (const child of children) {
+                this._remove(child);
+                DOMNode.removeChild(node, child);
+            }
+
+            // Remove ShadowRoot
+            if (this._hasShadow(node)) {
+                const shadow = DOMNode.shadow(node);
+                this._remove(shadow);
+            }
+
+            // Remove DocumentFragment
+            if (this._hasFragment(node)) {
+                const fragment = DOMNode.fragment(node);
+                this._remove(fragment);
+            }
+        },
+
+        /**
+         * Remove a single node from the DOM.
+         * @param {Node|HTMLElement|DocumentFragment|ShadowRoot} node The input node.
+         */
+        _remove(node) {
+            DOMNode.triggerEvent(node, 'remove');
+
+            this._empty(node);
+
+            if (Core.isElement(node)) {
+                this._clearQueue(node);
+                this._stop(node);
+
+                if (this._styles.has(node)) {
+                    this._styles.delete(node);
+                }
+            }
+
+            this._removeEvent(node);
+            this._removeData(node);
+        },
+
+        /**
+         * Replace a single node with other nodes.
+         * @param {Node|HTMLElement} node The input node.
+         * @param {array} others The other node(s).
+         */
+        _replaceWith(node, others) {
+            const parent = DOMNode.parent(node);
+
+            if (!parent) {
+                return;
+            }
+
+            for (const other of others) {
+                const clone = this._clone(other, true);
+                DOMNode.insertBefore(parent, clone, node);
+            }
+
+            this._remove(node);
+            DOMNode.removeChild(parent, node);
         }
 
     });
@@ -5518,6 +5539,34 @@
      */
 
     Object.assign(DOM, {
+
+        /**
+         * Unwrap a single node.
+         * @param {Node|HTMLElement} node The input node.
+         * @param {DOM~filterCallback} [filter] The filter function.
+         */
+        _unwrap(node, filter) {
+            const parent = DOMNode.parent(node, filter);
+
+            if (!parent) {
+                return;
+            }
+
+            const outerParent = DOMNode.parent(parent);
+
+            if (!parent) {
+                return;
+            }
+
+            const children = Core.wrap(DOMNode.childNodes(parent));
+
+            for (const child of children) {
+                DOMNode.insertBefore(outerParent, child, parent);
+            }
+
+            this._remove(parent);
+            DOMNode.removeChild(outerParent, parent);
+        },
 
         /**
          * Wrap a single node with other nodes.
