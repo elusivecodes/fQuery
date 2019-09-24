@@ -42,7 +42,7 @@ Object.assign(DOMNode, {
      */
     widthWindow(node, outer) {
         return outer ?
-            node.outerWeight :
+            node.outerWidth :
             node.innerWidth;
     }
 
