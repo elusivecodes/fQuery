@@ -666,7 +666,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
           inverse = dir === 'left';
         }
 
-        var translateAmount = Math.round(size - size * progress) * (inverse ? -1 : 1);
+        var translateAmount = (size - size * progress) * (inverse ? -1 : 1);
 
         if (options.useGpu) {
           DOMNode.setStyle(node, 'transform', "translate".concat(translateStyle, "(").concat(translateAmount, "px)"));
@@ -718,7 +718,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
           inverse = dir === 'left';
         }
 
-        var translateAmount = Math.round(size * progress) * (inverse ? -1 : 1);
+        var translateAmount = size * progress * (inverse ? -1 : 1);
 
         if (options.useGpu) {
           DOMNode.setStyle(node, 'transform', "translate".concat(translateStyle, "(").concat(translateAmount, "px)"));
@@ -792,8 +792,8 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
             }
           }
 
-          var size = Math.round(DOM["_".concat(sizeStyle)](node)),
-              amount = Math.round(size * progress);
+          var size = DOM["_".concat(sizeStyle)](node),
+              amount = size * progress;
           DOMNode.setStyle(node, sizeStyle, "".concat(amount, "px"));
           DOMNode.setStyle(node, minSizeStyle, "0px");
 
@@ -875,8 +875,8 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
             }
           }
 
-          var size = Math.round(DOM["_".concat(sizeStyle)](node)),
-              amount = Math.round(size - size * progress);
+          var size = DOM["_".concat(sizeStyle)](node),
+              amount = size - size * progress;
           DOMNode.setStyle(node, sizeStyle, "".concat(amount, "px"));
           DOMNode.setStyle(node, minSizeStyle, "0px");
 

@@ -663,7 +663,7 @@
                         inverse = dir === 'left';
                     }
 
-                    const translateAmount = Math.round(size - (size * progress)) * (inverse ? -1 : 1);
+                    const translateAmount = (size - (size * progress)) * (inverse ? -1 : 1);
                     if (options.useGpu) {
                         DOMNode.setStyle(node, 'transform', `translate${translateStyle}(${translateAmount}px)`);
                     } else {
@@ -723,7 +723,7 @@
                         inverse = dir === 'left';
                     }
 
-                    const translateAmount = Math.round(size * progress) * (inverse ? -1 : 1);
+                    const translateAmount = size * progress * (inverse ? -1 : 1);
                     if (options.useGpu) {
                         DOMNode.setStyle(node, 'transform', `translate${translateStyle}(${translateAmount}px)`);
                     } else {
@@ -808,8 +808,8 @@
                             }
                         }
 
-                        const size = Math.round(DOM[`_${sizeStyle}`](node)),
-                            amount = Math.round(size * progress);
+                        const size = DOM[`_${sizeStyle}`](node),
+                            amount = size * progress;
 
                         DOMNode.setStyle(node, sizeStyle, `${amount}px`);
                         DOMNode.setStyle(node, minSizeStyle, `0px`);
@@ -902,8 +902,8 @@
                             }
                         }
 
-                        const size = Math.round(DOM[`_${sizeStyle}`](node)),
-                            amount = Math.round(size - (size * progress));
+                        const size = DOM[`_${sizeStyle}`](node),
+                            amount = size - (size * progress);
 
                         DOMNode.setStyle(node, sizeStyle, `${amount}px`);
                         DOMNode.setStyle(node, minSizeStyle, `0px`);
