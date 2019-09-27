@@ -743,26 +743,30 @@ dom.setScrollY(nodes, y);
 Get the computed height of the first node (and optionally padding, border or margin).
 
 - `nodes` is a query selector string, a *HTMLElement*, *Document*, *Window*, *NodeList*, *HTMLCollection*, [*QuerySet*](https://github.com/elusivecodes/fQuery) or an array of nodes.
-- `padding` is a boolean indicating whether to include padding in the calculation, and the default is *true*.
-- `border` is a boolean indicating whether to include border width in the calculation, and the default is *false*.
-- `margin` is a boolean indicating whether to include the margin in the calculation, and the default is *false*.
+- `padding` is a boolean indicating whether to include padding in the calculation, and will default to *true*.
+- `border` is a boolean indicating whether to include border width in the calculation, and will default to *false*.
+- `margin` is a boolean indicating whether to include the margin in the calculation, and will default to *false*.
 
 ```javascript
 const height = dom.height(nodes, padding, border, margin);
 ```
+
+If the first node passed to this method is a *Window*, the second argument will instead determine whether to use the outer height, and will default to *false*. The last 2 arguments will be ignored.
 
 **Width**
 
 Get the computed width of the first node (and optionally padding, border or margin).
 
 - `nodes` is a query selector string, a *HTMLElement*, *Document*, *Window*, *NodeList*, *HTMLCollection*, [*QuerySet*](https://github.com/elusivecodes/fQuery) or an array of nodes.
-- `padding` is a boolean indicating whether to include padding in the calculation, and the default is *true*.
-- `border` is a boolean indicating whether to include border width in the calculation, and the default is *false*.
-- `margin` is a boolean indicating whether to include the margin in the calculation, and the default is *false*.
+- `padding` is a boolean indicating whether to include padding in the calculation, and will default to *true*.
+- `border` is a boolean indicating whether to include border width in the calculation, and will default to *false*.
+- `margin` is a boolean indicating whether to include the margin in the calculation, and will default to *false*.
 
 ```javascript
 const width = dom.width(nodes, padding, border, margin);
 ```
+
+If the first node passed to this method is a *Window*, the second argument will instead determine whether to use the outer width, and will default to *false*. The last 2 arguments will be ignored.
 
 ##### Styles
 
