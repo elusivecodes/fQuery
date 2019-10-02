@@ -2664,13 +2664,9 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       }
 
       if ('html' in options) {
-        DOMNode.setProperty(node, {
-          innerHTML: options.html
-        });
+        DOMNode.setProperty(node, 'innerHTML', options.html);
       } else if ('text' in options) {
-        DOMNode.setProperty(node, {
-          innerText: options.text
-        });
+        DOMNode.setProperty(node, 'innerText', options.text);
       }
 
       if ('class' in options) {
@@ -2682,9 +2678,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       }
 
       if ('value' in options) {
-        DOMNode.setProperty(node, {
-          value: options.value
-        });
+        DOMNode.setProperty(node, 'value', options.value);
       }
 
       if ('attributes' in options) {
@@ -2692,11 +2686,11 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       }
 
       if ('properties' in options) {
-        DOMNode.setProperty(node, options.properties);
+        DOM._setProperty(node, options.properties);
       }
 
       if ('dataset' in options) {
-        DOMNode.setDataset(node, options.dataset);
+        DOM._setDataset(node, options.dataset);
       }
 
       return node;
