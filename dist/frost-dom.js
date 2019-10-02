@@ -1149,7 +1149,7 @@
             const properties = DOM._parseData(property, value);
 
             for (const node of nodes) {
-                for (const property of properties) {
+                for (const property in properties) {
                     DOMNode.setProperty(node, property, properties[property]);
                 }
             }
