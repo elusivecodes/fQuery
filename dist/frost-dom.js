@@ -1073,7 +1073,7 @@
             nodes = this.parseNodes(nodes);
 
             for (const node of nodes) {
-                DOMNode.removeDataset(node, key);
+                DOM._removeDataset(node, key);
             }
         },
 
@@ -1118,7 +1118,7 @@
             const dataset = DOM._parseData(key, value, true);
 
             for (const node of nodes) {
-                DOMNode.setDataset(node, dataset);
+                DOM._setDataset(node, dataset);
             }
         },
 
@@ -1149,7 +1149,9 @@
             const properties = DOM._parseData(property, value);
 
             for (const node of nodes) {
-                DOMNode.setProperty(node, properties);
+                for (const property of properties) {
+                    DOMNode.setProperty(node, property, properties[property]);
+                }
             }
         },
 
@@ -4407,6 +4409,8 @@
          */
         _getDataset(node, key) {
             if (key) {
+                key = Core.camelCase(key);
+
                 return DOM._parseDataset(
                     DOMNode.getDataset(node, key)
                 );
@@ -4424,6 +4428,17 @@
         },
 
         /**
+         * Remove a dataset value from a single node.
+         * @param {HTMLElement} node The input node.
+         * @param {string} key The dataset key.
+         */
+        _removeDataset(node, key) {
+            key = Core.camelCase(key);
+
+            DOMNode.removeDataset(node, key);
+        },
+
+        /**
          * Set an attribute value for a single node.
          * @param {HTMLElement} node The input node.
          * @param {object} attributes An object containing attributes.
@@ -4434,6 +4449,23 @@
                     node,
                     key,
                     attributes[key]
+                );
+            }
+        },
+
+        /**
+         * Set dataset values for a single node.
+         * @param {HTMLElement} node The input node.
+         * @param {object} dataset An object containing dataset values.
+         */
+        _setDataset(node, dataset) {
+            for (const key in dataset) {
+                const realKey = Core.camelCase(key);
+
+                DOMNode.setDataset(
+                    node,
+                    realKey,
+                    dataset[key]
                 );
             }
         }
@@ -4828,6 +4860,8 @@
                     ...this._styles.get(node)
                 };
             }
+
+            style = Core.snakeCase(style);
 
             return this._styles.get(node)
                 .getPropertyValue(style);
@@ -6527,7 +6561,8 @@
         /**
          * Set an attribute value for a single node.
          * @param {HTMLElement} node The input node.
-         * @param {object} attributes An object containing attributes.
+         * @param {string} attribute The attribute name.
+         * @param {string} value The attribute value.
          */
         setAttribute(node, attribute, value) {
             node.setAttribute(
@@ -6539,25 +6574,21 @@
         /**
          * Set a dataset value for a single node.
          * @param {HTMLElement} node The input node.
-         * @param {object} dataset An object containing dataset values.
+         * @param {string} key The dataset key.
+         * @param {string} value The dataset value.
          */
-        setDataset(node, dataset) {
-            Object.assign(
-                node.dataset,
-                dataset
-            );
+        setDataset(node, key, value) {
+            this.dataset(node)[key] = value;
         },
 
         /**
          * Set a property value for a single node.
          * @param {HTMLElement} node The input node.
-         * @param {object} properties An object containing properties.
+         * @param {string} property The property name.
+         * @param {string} value The property value.
          */
-        setProperty(node, properties) {
-            Object.assign(
-                node,
-                properties
-            );
+        setProperty(node, property, value) {
+            node[property] = value;
         }
 
     });

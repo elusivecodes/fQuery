@@ -82,7 +82,8 @@ Object.assign(DOMNode, {
     /**
      * Set an attribute value for a single node.
      * @param {HTMLElement} node The input node.
-     * @param {object} attributes An object containing attributes.
+     * @param {string} attribute The attribute name.
+     * @param {string} value The attribute value.
      */
     setAttribute(node, attribute, value) {
         node.setAttribute(
@@ -94,25 +95,21 @@ Object.assign(DOMNode, {
     /**
      * Set a dataset value for a single node.
      * @param {HTMLElement} node The input node.
-     * @param {object} dataset An object containing dataset values.
+     * @param {string} key The dataset key.
+     * @param {string} value The dataset value.
      */
-    setDataset(node, dataset) {
-        Object.assign(
-            node.dataset,
-            dataset
-        );
+    setDataset(node, key, value) {
+        this.dataset(node)[key] = value;
     },
 
     /**
      * Set a property value for a single node.
      * @param {HTMLElement} node The input node.
-     * @param {object} properties An object containing properties.
+     * @param {string} property The property name.
+     * @param {string} value The property value.
      */
-    setProperty(node, properties) {
-        Object.assign(
-            node,
-            properties
-        );
+    setProperty(node, property, value) {
+        node[property] = value;
     }
 
 });

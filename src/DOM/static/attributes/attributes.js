@@ -33,6 +33,8 @@ Object.assign(DOM, {
      */
     _getDataset(node, key) {
         if (key) {
+            key = Core.camelCase(key);
+
             return DOM._parseDataset(
                 DOMNode.getDataset(node, key)
             );
@@ -50,6 +52,17 @@ Object.assign(DOM, {
     },
 
     /**
+     * Remove a dataset value from a single node.
+     * @param {HTMLElement} node The input node.
+     * @param {string} key The dataset key.
+     */
+    _removeDataset(node, key) {
+        key = Core.camelCase(key);
+
+        DOMNode.removeDataset(node, key);
+    },
+
+    /**
      * Set an attribute value for a single node.
      * @param {HTMLElement} node The input node.
      * @param {object} attributes An object containing attributes.
@@ -60,6 +73,23 @@ Object.assign(DOM, {
                 node,
                 key,
                 attributes[key]
+            );
+        }
+    },
+
+    /**
+     * Set dataset values for a single node.
+     * @param {HTMLElement} node The input node.
+     * @param {object} dataset An object containing dataset values.
+     */
+    _setDataset(node, dataset) {
+        for (const key in dataset) {
+            const realKey = Core.camelCase(key);
+
+            DOMNode.setDataset(
+                node,
+                realKey,
+                dataset[key]
             );
         }
     }

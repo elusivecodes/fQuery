@@ -24,6 +24,8 @@ Object.assign(DOM, {
             };
         }
 
+        style = Core.snakeCase(style);
+
         return this._styles.get(node)
             .getPropertyValue(style);
     },

@@ -110,7 +110,7 @@ Object.assign(DOM.prototype, {
         nodes = this.parseNodes(nodes);
 
         for (const node of nodes) {
-            DOMNode.removeDataset(node, key);
+            DOM._removeDataset(node, key);
         }
     },
 
@@ -155,7 +155,7 @@ Object.assign(DOM.prototype, {
         const dataset = DOM._parseData(key, value, true);
 
         for (const node of nodes) {
-            DOMNode.setDataset(node, dataset);
+            DOM._setDataset(node, dataset);
         }
     },
 
@@ -186,7 +186,9 @@ Object.assign(DOM.prototype, {
         const properties = DOM._parseData(property, value);
 
         for (const node of nodes) {
-            DOMNode.setProperty(node, properties);
+            for (const property of properties) {
+                DOMNode.setProperty(node, property, properties[property]);
+            }
         }
     },
 
