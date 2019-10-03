@@ -299,18 +299,14 @@ Object.assign(DOM.prototype, {
 
         const promises = nodes.map(node => {
             const initialHeight = DOMNode.getStyle(node, 'height');
-            const initialMinHeight = DOMNode.getStyle(node, 'min-height');
             const initialWidth = DOMNode.getStyle(node, 'width');
-            const initialMinWidth = DOMNode.getStyle(node, 'min-width');
             DOMNode.setStyle(node, 'overflow', 'hidden');
 
             return DOM._animate(
                 node,
                 (node, progress, options) => {
                     DOMNode.setStyle(node, 'height', initialHeight);
-                    DOMNode.setStyle(node, 'min-height', initialMinHeight);
                     DOMNode.setStyle(node, 'width', initialWidth);
-                    DOMNode.setStyle(node, 'min-width', initialMinWidth);
 
                     if (progress === 1) {
                         DOMNode.setStyle(node, 'overflow', '');
@@ -327,10 +323,9 @@ Object.assign(DOM.prototype, {
                         options.direction() :
                         options.direction;
 
-                    let sizeStyle, minSizeStyle, translateStyle;
+                    let sizeStyle, translateStyle;
                     if (dir === 'top' || dir === 'bottom') {
                         sizeStyle = 'height';
-                        minSizeStyle = 'min-height';
                         if (dir === 'top') {
                             translateStyle = options.useGpu ?
                                 'Y' :
@@ -338,7 +333,6 @@ Object.assign(DOM.prototype, {
                         }
                     } else if (dir === 'left' || dir === 'right') {
                         sizeStyle = 'width';
-                        minSizeStyle = 'min-width';
                         if (dir === 'left') {
                             translateStyle = options.useGpu ?
                                 'X' :
@@ -350,7 +344,6 @@ Object.assign(DOM.prototype, {
                         amount = size * progress;
 
                     DOMNode.setStyle(node, sizeStyle, `${amount}px`);
-                    DOMNode.setStyle(node, minSizeStyle, `0px`);
 
                     if (translateStyle) {
                         const translateAmount = size - amount;
@@ -393,18 +386,14 @@ Object.assign(DOM.prototype, {
 
         const promises = nodes.map(node => {
             const initialHeight = DOMNode.getStyle(node, 'height');
-            const initialMinHeight = DOMNode.getStyle(node, 'min-height');
             const initialWidth = DOMNode.getStyle(node, 'width');
-            const initialMinWidth = DOMNode.getStyle(node, 'min-width');
             DOMNode.setStyle(node, 'overflow', 'hidden');
 
             return DOM._animate(
                 node,
                 (node, progress, options) => {
                     DOMNode.setStyle(node, 'height', initialHeight);
-                    DOMNode.setStyle(node, 'min-height', initialMinHeight);
                     DOMNode.setStyle(node, 'width', initialWidth);
-                    DOMNode.setStyle(node, 'min-width', initialMinWidth);
 
                     if (progress === 1) {
                         DOMNode.setStyle(node, 'overflow', '');
@@ -421,10 +410,9 @@ Object.assign(DOM.prototype, {
                         options.direction() :
                         options.direction;
 
-                    let sizeStyle, minSizeStyle, translateStyle;
+                    let sizeStyle, translateStyle;
                     if (dir === 'top' || dir === 'bottom') {
                         sizeStyle = 'height';
-                        minSizeStyle = 'min-height';
                         if (dir === 'top') {
                             translateStyle = options.useGpu ?
                                 'Y' :
@@ -432,7 +420,6 @@ Object.assign(DOM.prototype, {
                         }
                     } else if (dir === 'left' || dir === 'right') {
                         sizeStyle = 'width';
-                        minSizeStyle = 'min-width';
                         if (dir === 'left') {
                             translateStyle = options.useGpu ?
                                 'X' :
@@ -444,7 +431,6 @@ Object.assign(DOM.prototype, {
                         amount = size - (size * progress);
 
                     DOMNode.setStyle(node, sizeStyle, `${amount}px`);
-                    DOMNode.setStyle(node, minSizeStyle, `0px`);
 
                     if (translateStyle) {
                         const translateAmount = size - amount;

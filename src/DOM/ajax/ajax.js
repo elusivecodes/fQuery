@@ -104,6 +104,29 @@ Object.assign(DOM.prototype, {
     },
 
     /**
+     * Perform an XHR DELETE request.
+     * @param {string} url The URL of the request.
+     * @param {object} [options] The options to use for the request.
+     * @param {string} [options.method=DELETE] The HTTP method of the request.
+     * @param {Boolean|string|array|object} [options.data=false] The data to send with the request.
+     * @param {Boolean|string} [options.contentType=application/x-www-form-urlencoded] The content type of the request.
+     * @param {Boolean|string} [options.responseType] The content type of the response.
+     * @param {Boolean} [options.cache=true] Whether to cache the request.
+     * @param {Boolean} [options.processData=true] Whether to process the data based on the content type.
+     * @param {object} [options.headers] Additional headers to send with the request.
+     * @param {Boolean|function} [options.beforeSend=false] A callback to execute before making the request.
+     * @param {Boolean|function} [options.uploadProgress=false] A callback to execute on upload progress.
+     * @returns {Promise} A new Promise that resolves when the request is completed, or rejects on failure.
+     */
+    delete(url, options) {
+        return this.ajax({
+            url,
+            method: 'DELETE',
+            ...options
+        });
+    },
+
+    /**
      * Perform an XHR GET request.
      * @param {string} url The URL of the request.
      * @param {object} [options] The options to use for the request.
@@ -121,6 +144,30 @@ Object.assign(DOM.prototype, {
     get(url, options) {
         return this.ajax({
             url,
+            ...options
+        });
+    },
+
+    /**
+     * Perform an XHR PATCH request.
+     * @param {string} url The URL of the request.
+     * @param {string|array|object|FormData} data The data to send with the request.
+     * @param {object} [options] The options to use for the request.
+     * @param {string} [options.method=PATCH] The HTTP method of the request.
+     * @param {Boolean|string} [options.contentType=application/x-www-form-urlencoded] The content type of the request.
+     * @param {Boolean|string} [options.responseType] The content type of the response.
+     * @param {Boolean} [options.cache=true] Whether to cache the request.
+     * @param {Boolean} [options.processData=true] Whether to process the data based on the content type.
+     * @param {object} [options.headers] Additional headers to send with the request.
+     * @param {Boolean|function} [options.beforeSend=false] A callback to execute before making the request.
+     * @param {Boolean|function} [options.uploadProgress=false] A callback to execute on upload progress.
+     * @returns {Promise} A new Promise that resolves when the request is completed, or rejects on failure.
+     */
+    patch(url, data, options) {
+        return this.ajax({
+            url,
+            data,
+            method: 'PATCH',
             ...options
         });
     },
@@ -145,6 +192,30 @@ Object.assign(DOM.prototype, {
             url,
             data,
             method: 'POST',
+            ...options
+        });
+    },
+
+    /**
+     * Perform an XHR PUT request.
+     * @param {string} url The URL of the request.
+     * @param {string|array|object|FormData} data The data to send with the request.
+     * @param {object} [options] The options to use for the request.
+     * @param {string} [options.method=PUT] The HTTP method of the request.
+     * @param {Boolean|string} [options.contentType=application/x-www-form-urlencoded] The content type of the request.
+     * @param {Boolean|string} [options.responseType] The content type of the response.
+     * @param {Boolean} [options.cache=true] Whether to cache the request.
+     * @param {Boolean} [options.processData=true] Whether to process the data based on the content type.
+     * @param {object} [options.headers] Additional headers to send with the request.
+     * @param {Boolean|function} [options.beforeSend=false] A callback to execute before making the request.
+     * @param {Boolean|function} [options.uploadProgress=false] A callback to execute on upload progress.
+     * @returns {Promise} A new Promise that resolves when the request is completed, or rejects on failure.
+     */
+    put(url, data, options) {
+        return this.ajax({
+            url,
+            data,
+            method: 'PUT',
             ...options
         });
     },

@@ -113,6 +113,6 @@ Object.assign(DOM, {
     _splitRegExp: /\,(?=(?:(?:[^"]*"){2})*[^"]*$)\s*/,
 
     // Temporary ID
-    _tempId: 'frost' + (Date.now().toString(16))
+    _tempId: `frost${Date.now().toString(16)}`
 
 });

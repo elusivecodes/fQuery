@@ -1601,7 +1601,7 @@ Return all nodes not matching a filter.
 - `filter` is either a function that accepts a `node` argument, a query selector string, a *Node*, *HTMLElement*, *DocumentFragment*, *ShadowRoot*, *NodeList*, *HTMLCollection*, [*QuerySet*](https://github.com/elusivecodes/fQuery) or an array of nodes that the nodes will be filtered by.
 
 ```javascript
-const notOne = dom.notOne(nodes, filter);
+const not = dom.not(nodes, filter);
 ```
 
 **Not One**
@@ -1612,7 +1612,7 @@ Return the first node not matching a filter.
 - `filter` is either a function that accepts a `node` argument, a query selector string, a *Node*, *HTMLElement*, *DocumentFragment*, *ShadowRoot*, *NodeList*, *HTMLCollection*, [*QuerySet*](https://github.com/elusivecodes/fQuery) or an array of nodes that the nodes will be filtered by.
 
 ```javascript
-const not = dom.not(nodes, filter);
+const notOne = dom.notOne(nodes, filter);
 ```
 
 **Same**
@@ -1922,6 +1922,16 @@ Sort nodes by their position in the document
 
 ```javascript
 const sorted = dom.sort(nodes);
+```
+
+**Tag Name**
+
+Return the tag name (lowercase) of the first node.
+
+- `nodes` is a query selector string, a *HTMLElement*, *NodeList*, *HTMLCollection*, [*QuerySet*](https://github.com/elusivecodes/fQuery) or an array of nodes.
+
+```javascript
+const tagName = dom.tagName(nodes);
 ```
 
 ##### Selection

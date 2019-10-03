@@ -175,6 +175,28 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
     },
 
     /**
+     * Perform an XHR DELETE request.
+     * @param {string} url The URL of the request.
+     * @param {object} [options] The options to use for the request.
+     * @param {string} [options.method=DELETE] The HTTP method of the request.
+     * @param {Boolean|string|array|object} [options.data=false] The data to send with the request.
+     * @param {Boolean|string} [options.contentType=application/x-www-form-urlencoded] The content type of the request.
+     * @param {Boolean|string} [options.responseType] The content type of the response.
+     * @param {Boolean} [options.cache=true] Whether to cache the request.
+     * @param {Boolean} [options.processData=true] Whether to process the data based on the content type.
+     * @param {object} [options.headers] Additional headers to send with the request.
+     * @param {Boolean|function} [options.beforeSend=false] A callback to execute before making the request.
+     * @param {Boolean|function} [options.uploadProgress=false] A callback to execute on upload progress.
+     * @returns {Promise} A new Promise that resolves when the request is completed, or rejects on failure.
+     */
+    "delete": function _delete(url, options) {
+      return this.ajax(_objectSpread({
+        url: url,
+        method: 'DELETE'
+      }, options));
+    },
+
+    /**
      * Perform an XHR GET request.
      * @param {string} url The URL of the request.
      * @param {object} [options] The options to use for the request.
@@ -192,6 +214,29 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
     get: function get(url, options) {
       return this.ajax(_objectSpread({
         url: url
+      }, options));
+    },
+
+    /**
+     * Perform an XHR PATCH request.
+     * @param {string} url The URL of the request.
+     * @param {string|array|object|FormData} data The data to send with the request.
+     * @param {object} [options] The options to use for the request.
+     * @param {string} [options.method=PATCH] The HTTP method of the request.
+     * @param {Boolean|string} [options.contentType=application/x-www-form-urlencoded] The content type of the request.
+     * @param {Boolean|string} [options.responseType] The content type of the response.
+     * @param {Boolean} [options.cache=true] Whether to cache the request.
+     * @param {Boolean} [options.processData=true] Whether to process the data based on the content type.
+     * @param {object} [options.headers] Additional headers to send with the request.
+     * @param {Boolean|function} [options.beforeSend=false] A callback to execute before making the request.
+     * @param {Boolean|function} [options.uploadProgress=false] A callback to execute on upload progress.
+     * @returns {Promise} A new Promise that resolves when the request is completed, or rejects on failure.
+     */
+    patch: function patch(url, data, options) {
+      return this.ajax(_objectSpread({
+        url: url,
+        data: data,
+        method: 'PATCH'
       }, options));
     },
 
@@ -215,6 +260,29 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         url: url,
         data: data,
         method: 'POST'
+      }, options));
+    },
+
+    /**
+     * Perform an XHR PUT request.
+     * @param {string} url The URL of the request.
+     * @param {string|array|object|FormData} data The data to send with the request.
+     * @param {object} [options] The options to use for the request.
+     * @param {string} [options.method=PUT] The HTTP method of the request.
+     * @param {Boolean|string} [options.contentType=application/x-www-form-urlencoded] The content type of the request.
+     * @param {Boolean|string} [options.responseType] The content type of the response.
+     * @param {Boolean} [options.cache=true] Whether to cache the request.
+     * @param {Boolean} [options.processData=true] Whether to process the data based on the content type.
+     * @param {object} [options.headers] Additional headers to send with the request.
+     * @param {Boolean|function} [options.beforeSend=false] A callback to execute before making the request.
+     * @param {Boolean|function} [options.uploadProgress=false] A callback to execute on upload progress.
+     * @returns {Promise} A new Promise that resolves when the request is completed, or rejects on failure.
+     */
+    put: function put(url, data, options) {
+      return this.ajax(_objectSpread({
+        url: url,
+        data: data,
+        method: 'PUT'
       }, options));
     },
 
@@ -750,15 +818,11 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       }, options);
       var promises = nodes.map(function (node) {
         var initialHeight = DOMNode.getStyle(node, 'height');
-        var initialMinHeight = DOMNode.getStyle(node, 'min-height');
         var initialWidth = DOMNode.getStyle(node, 'width');
-        var initialMinWidth = DOMNode.getStyle(node, 'min-width');
         DOMNode.setStyle(node, 'overflow', 'hidden');
         return DOM._animate(node, function (node, progress, options) {
           DOMNode.setStyle(node, 'height', initialHeight);
-          DOMNode.setStyle(node, 'min-height', initialMinHeight);
           DOMNode.setStyle(node, 'width', initialWidth);
-          DOMNode.setStyle(node, 'min-width', initialMinWidth);
 
           if (progress === 1) {
             DOMNode.setStyle(node, 'overflow', '');
@@ -774,18 +838,16 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
           }
 
           var dir = Core.isFunction(options.direction) ? options.direction() : options.direction;
-          var sizeStyle, minSizeStyle, translateStyle;
+          var sizeStyle, translateStyle;
 
           if (dir === 'top' || dir === 'bottom') {
             sizeStyle = 'height';
-            minSizeStyle = 'min-height';
 
             if (dir === 'top') {
               translateStyle = options.useGpu ? 'Y' : 'margin-top';
             }
           } else if (dir === 'left' || dir === 'right') {
             sizeStyle = 'width';
-            minSizeStyle = 'min-width';
 
             if (dir === 'left') {
               translateStyle = options.useGpu ? 'X' : 'margin-left';
@@ -795,7 +857,6 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
           var size = DOM["_".concat(sizeStyle)](node),
               amount = size * progress;
           DOMNode.setStyle(node, sizeStyle, "".concat(amount, "px"));
-          DOMNode.setStyle(node, minSizeStyle, "0px");
 
           if (translateStyle) {
             var translateAmount = size - amount;
@@ -833,15 +894,11 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       }, options);
       var promises = nodes.map(function (node) {
         var initialHeight = DOMNode.getStyle(node, 'height');
-        var initialMinHeight = DOMNode.getStyle(node, 'min-height');
         var initialWidth = DOMNode.getStyle(node, 'width');
-        var initialMinWidth = DOMNode.getStyle(node, 'min-width');
         DOMNode.setStyle(node, 'overflow', 'hidden');
         return DOM._animate(node, function (node, progress, options) {
           DOMNode.setStyle(node, 'height', initialHeight);
-          DOMNode.setStyle(node, 'min-height', initialMinHeight);
           DOMNode.setStyle(node, 'width', initialWidth);
-          DOMNode.setStyle(node, 'min-width', initialMinWidth);
 
           if (progress === 1) {
             DOMNode.setStyle(node, 'overflow', '');
@@ -857,18 +914,16 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
           }
 
           var dir = Core.isFunction(options.direction) ? options.direction() : options.direction;
-          var sizeStyle, minSizeStyle, translateStyle;
+          var sizeStyle, translateStyle;
 
           if (dir === 'top' || dir === 'bottom') {
             sizeStyle = 'height';
-            minSizeStyle = 'min-height';
 
             if (dir === 'top') {
               translateStyle = options.useGpu ? 'Y' : 'margin-top';
             }
           } else if (dir === 'left' || dir === 'right') {
             sizeStyle = 'width';
-            minSizeStyle = 'min-width';
 
             if (dir === 'left') {
               translateStyle = options.useGpu ? 'X' : 'margin-left';
@@ -878,7 +933,6 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
           var size = DOM["_".concat(sizeStyle)](node),
               amount = size - size * progress;
           DOMNode.setStyle(node, sizeStyle, "".concat(amount, "px"));
-          DOMNode.setStyle(node, minSizeStyle, "0px");
 
           if (translateStyle) {
             var translateAmount = size - amount;
@@ -5354,6 +5408,21 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
         return 0;
       });
+    },
+
+    /**
+     * Return the tag name (lowercase) of the first node.
+     * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
+     * @returns {string} The elements tag name (lowercase).
+     */
+    tagName: function tagName(nodes) {
+      var node = this.parseNode(nodes);
+
+      if (!node) {
+        return;
+      }
+
+      return DOMNode.tagName(node);
     }
   });
   /**
@@ -6403,7 +6472,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
      * @returns {RegExp} The namespaced event RegExp.
      */
     _eventNamespacedRegExp: function _eventNamespacedRegExp(event) {
-      return new RegExp('^' + Core.escapeRegExp(event) + '(?:\\.|$)', 'i');
+      return new RegExp("^".concat(Core.escapeRegExp(event), "(?:\\.|$)"), 'i');
     },
 
     /**
@@ -6584,50 +6653,50 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
     },
 
     /**
-     * Return a URI-encoded attribute string from an array or object.
-     * @param {array|object} data The input data.
-     * @returns {string} The URI-encoded attribute string.
-     */
-    _parseParams: function _parseParams(data) {
-      var _this14 = this;
-
-      var values = [];
-
-      if (Core.isArray(data)) {
-        values = data.map(function (value) {
-          return _this14._parseParam(value.name, value.value);
-        });
-      } else if (Core.isObject(data)) {
-        values = Object.keys(data).map(function (key) {
-          return _this14._parseParam(key, data[key]);
-        });
-      }
-
-      return values.flatMap(encodeURI).join('&');
-    },
-
-    /**
      * Return a string attribute, or a flat array of attributes from a key and value.
      * @param {string} key The input key.
      * @param {array|object|string} value The input value.
      * @returns {string|array} The parsed attributes.
      */
     _parseParam: function _parseParam(key, value) {
-      var _this15 = this;
+      var _this14 = this;
 
       if (Core.isArray(value)) {
         return value.map(function (val) {
-          return _this15._parseParam(key, val);
+          return _this14._parseParam(key, val);
         }).flat();
       }
 
       if (Core.isObject(value)) {
         return Object.keys(value).map(function (subKey) {
-          return _this15._parseParam(key + '[' + subKey + ']', value[subKey]);
+          return _this14._parseParam("".concat(key, "[").concat(subKey, "]"), value[subKey]);
         }).flat();
       }
 
-      return key + '=' + value;
+      return "".concat(key, "=").concat(value);
+    },
+
+    /**
+     * Return a URI-encoded attribute string from an array or object.
+     * @param {array|object} data The input data.
+     * @returns {string} The URI-encoded attribute string.
+     */
+    _parseParams: function _parseParams(data) {
+      var _this15 = this;
+
+      var values = [];
+
+      if (Core.isArray(data)) {
+        values = data.map(function (value) {
+          return _this15._parseParam(value.name, value.value);
+        });
+      } else if (Core.isObject(data)) {
+        values = Object.keys(data).map(function (key) {
+          return _this15._parseParam(key, data[key]);
+        });
+      }
+
+      return values.flatMap(encodeURI).join('&');
     },
 
     /**
@@ -7964,7 +8033,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
     // Comma seperated selector RegExp
     _splitRegExp: /\,(?=(?:(?:[^"]*"){2})*[^"]*$)\s*/,
     // Temporary ID
-    _tempId: 'frost' + Date.now().toString(16)
+    _tempId: "frost".concat(Date.now().toString(16))
   });
   /**
    * DOMNode Class

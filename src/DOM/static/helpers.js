@@ -10,7 +10,7 @@ Object.assign(DOM, {
      * @returns {RegExp} The namespaced event RegExp.
      */
     _eventNamespacedRegExp(event) {
-        return new RegExp('^' + Core.escapeRegExp(event) + '(?:\\.|$)', 'i');
+        return new RegExp(`^${Core.escapeRegExp(event)}(?:\\.|$)`, 'i');
     },
 
     /**
@@ -154,6 +154,32 @@ Object.assign(DOM, {
     },
 
     /**
+     * Return a string attribute, or a flat array of attributes from a key and value.
+     * @param {string} key The input key.
+     * @param {array|object|string} value The input value.
+     * @returns {string|array} The parsed attributes.
+     */
+    _parseParam(key, value) {
+        if (Core.isArray(value)) {
+            return value.map(val =>
+                this._parseParam(key, val)
+            ).flat();
+        }
+
+        if (Core.isObject(value)) {
+            return Object.keys(value)
+                .map(subKey =>
+                    this._parseParam(
+                        `${key}[${subKey}]`,
+                        value[subKey]
+                    )
+                ).flat();
+        }
+
+        return `${key}=${value}`;
+    },
+
+    /**
      * Return a URI-encoded attribute string from an array or object.
      * @param {array|object} data The input data.
      * @returns {string} The URI-encoded attribute string.
@@ -178,32 +204,6 @@ Object.assign(DOM, {
         return values
             .flatMap(encodeURI)
             .join('&');
-    },
-
-    /**
-     * Return a string attribute, or a flat array of attributes from a key and value.
-     * @param {string} key The input key.
-     * @param {array|object|string} value The input value.
-     * @returns {string|array} The parsed attributes.
-     */
-    _parseParam(key, value) {
-        if (Core.isArray(value)) {
-            return value.map(val =>
-                this._parseParam(key, val)
-            ).flat();
-        }
-
-        if (Core.isObject(value)) {
-            return Object.keys(value)
-                .map(subKey =>
-                    this._parseParam(
-                        key + '[' + subKey + ']',
-                        value[subKey]
-                    )
-                ).flat();
-        }
-
-        return key + '=' + value;
     },
 
     /**

@@ -177,6 +177,21 @@ Object.assign(DOM.prototype, {
 
                 return 0;
             });
+    },
+
+    /**
+     * Return the tag name (lowercase) of the first node.
+     * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
+     * @returns {string} The elements tag name (lowercase).
+     */
+    tagName(nodes) {
+        const node = this.parseNode(nodes);
+
+        if (!node) {
+            return;
+        }
+
+        return DOMNode.tagName(node);
     }
 
 });

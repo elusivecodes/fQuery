@@ -148,6 +148,29 @@
         },
 
         /**
+         * Perform an XHR DELETE request.
+         * @param {string} url The URL of the request.
+         * @param {object} [options] The options to use for the request.
+         * @param {string} [options.method=DELETE] The HTTP method of the request.
+         * @param {Boolean|string|array|object} [options.data=false] The data to send with the request.
+         * @param {Boolean|string} [options.contentType=application/x-www-form-urlencoded] The content type of the request.
+         * @param {Boolean|string} [options.responseType] The content type of the response.
+         * @param {Boolean} [options.cache=true] Whether to cache the request.
+         * @param {Boolean} [options.processData=true] Whether to process the data based on the content type.
+         * @param {object} [options.headers] Additional headers to send with the request.
+         * @param {Boolean|function} [options.beforeSend=false] A callback to execute before making the request.
+         * @param {Boolean|function} [options.uploadProgress=false] A callback to execute on upload progress.
+         * @returns {Promise} A new Promise that resolves when the request is completed, or rejects on failure.
+         */
+        delete(url, options) {
+            return this.ajax({
+                url,
+                method: 'DELETE',
+                ...options
+            });
+        },
+
+        /**
          * Perform an XHR GET request.
          * @param {string} url The URL of the request.
          * @param {object} [options] The options to use for the request.
@@ -165,6 +188,30 @@
         get(url, options) {
             return this.ajax({
                 url,
+                ...options
+            });
+        },
+
+        /**
+         * Perform an XHR PATCH request.
+         * @param {string} url The URL of the request.
+         * @param {string|array|object|FormData} data The data to send with the request.
+         * @param {object} [options] The options to use for the request.
+         * @param {string} [options.method=PATCH] The HTTP method of the request.
+         * @param {Boolean|string} [options.contentType=application/x-www-form-urlencoded] The content type of the request.
+         * @param {Boolean|string} [options.responseType] The content type of the response.
+         * @param {Boolean} [options.cache=true] Whether to cache the request.
+         * @param {Boolean} [options.processData=true] Whether to process the data based on the content type.
+         * @param {object} [options.headers] Additional headers to send with the request.
+         * @param {Boolean|function} [options.beforeSend=false] A callback to execute before making the request.
+         * @param {Boolean|function} [options.uploadProgress=false] A callback to execute on upload progress.
+         * @returns {Promise} A new Promise that resolves when the request is completed, or rejects on failure.
+         */
+        patch(url, data, options) {
+            return this.ajax({
+                url,
+                data,
+                method: 'PATCH',
                 ...options
             });
         },
@@ -189,6 +236,30 @@
                 url,
                 data,
                 method: 'POST',
+                ...options
+            });
+        },
+
+        /**
+         * Perform an XHR PUT request.
+         * @param {string} url The URL of the request.
+         * @param {string|array|object|FormData} data The data to send with the request.
+         * @param {object} [options] The options to use for the request.
+         * @param {string} [options.method=PUT] The HTTP method of the request.
+         * @param {Boolean|string} [options.contentType=application/x-www-form-urlencoded] The content type of the request.
+         * @param {Boolean|string} [options.responseType] The content type of the response.
+         * @param {Boolean} [options.cache=true] Whether to cache the request.
+         * @param {Boolean} [options.processData=true] Whether to process the data based on the content type.
+         * @param {object} [options.headers] Additional headers to send with the request.
+         * @param {Boolean|function} [options.beforeSend=false] A callback to execute before making the request.
+         * @param {Boolean|function} [options.uploadProgress=false] A callback to execute on upload progress.
+         * @returns {Promise} A new Promise that resolves when the request is completed, or rejects on failure.
+         */
+        put(url, data, options) {
+            return this.ajax({
+                url,
+                data,
+                method: 'PUT',
                 ...options
             });
         },
@@ -761,18 +832,14 @@
 
             const promises = nodes.map(node => {
                 const initialHeight = DOMNode.getStyle(node, 'height');
-                const initialMinHeight = DOMNode.getStyle(node, 'min-height');
                 const initialWidth = DOMNode.getStyle(node, 'width');
-                const initialMinWidth = DOMNode.getStyle(node, 'min-width');
                 DOMNode.setStyle(node, 'overflow', 'hidden');
 
                 return DOM._animate(
                     node,
                     (node, progress, options) => {
                         DOMNode.setStyle(node, 'height', initialHeight);
-                        DOMNode.setStyle(node, 'min-height', initialMinHeight);
                         DOMNode.setStyle(node, 'width', initialWidth);
-                        DOMNode.setStyle(node, 'min-width', initialMinWidth);
 
                         if (progress === 1) {
                             DOMNode.setStyle(node, 'overflow', '');
@@ -789,10 +856,9 @@
                             options.direction() :
                             options.direction;
 
-                        let sizeStyle, minSizeStyle, translateStyle;
+                        let sizeStyle, translateStyle;
                         if (dir === 'top' || dir === 'bottom') {
                             sizeStyle = 'height';
-                            minSizeStyle = 'min-height';
                             if (dir === 'top') {
                                 translateStyle = options.useGpu ?
                                     'Y' :
@@ -800,7 +866,6 @@
                             }
                         } else if (dir === 'left' || dir === 'right') {
                             sizeStyle = 'width';
-                            minSizeStyle = 'min-width';
                             if (dir === 'left') {
                                 translateStyle = options.useGpu ?
                                     'X' :
@@ -812,7 +877,6 @@
                             amount = size * progress;
 
                         DOMNode.setStyle(node, sizeStyle, `${amount}px`);
-                        DOMNode.setStyle(node, minSizeStyle, `0px`);
 
                         if (translateStyle) {
                             const translateAmount = size - amount;
@@ -855,18 +919,14 @@
 
             const promises = nodes.map(node => {
                 const initialHeight = DOMNode.getStyle(node, 'height');
-                const initialMinHeight = DOMNode.getStyle(node, 'min-height');
                 const initialWidth = DOMNode.getStyle(node, 'width');
-                const initialMinWidth = DOMNode.getStyle(node, 'min-width');
                 DOMNode.setStyle(node, 'overflow', 'hidden');
 
                 return DOM._animate(
                     node,
                     (node, progress, options) => {
                         DOMNode.setStyle(node, 'height', initialHeight);
-                        DOMNode.setStyle(node, 'min-height', initialMinHeight);
                         DOMNode.setStyle(node, 'width', initialWidth);
-                        DOMNode.setStyle(node, 'min-width', initialMinWidth);
 
                         if (progress === 1) {
                             DOMNode.setStyle(node, 'overflow', '');
@@ -883,10 +943,9 @@
                             options.direction() :
                             options.direction;
 
-                        let sizeStyle, minSizeStyle, translateStyle;
+                        let sizeStyle, translateStyle;
                         if (dir === 'top' || dir === 'bottom') {
                             sizeStyle = 'height';
-                            minSizeStyle = 'min-height';
                             if (dir === 'top') {
                                 translateStyle = options.useGpu ?
                                     'Y' :
@@ -894,7 +953,6 @@
                             }
                         } else if (dir === 'left' || dir === 'right') {
                             sizeStyle = 'width';
-                            minSizeStyle = 'min-width';
                             if (dir === 'left') {
                                 translateStyle = options.useGpu ?
                                     'X' :
@@ -906,7 +964,6 @@
                             amount = size - (size * progress);
 
                         DOMNode.setStyle(node, sizeStyle, `${amount}px`);
-                        DOMNode.setStyle(node, minSizeStyle, `0px`);
 
                         if (translateStyle) {
                             const translateAmount = size - amount;
@@ -4181,6 +4238,21 @@
 
                     return 0;
                 });
+        },
+
+        /**
+         * Return the tag name (lowercase) of the first node.
+         * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
+         * @returns {string} The elements tag name (lowercase).
+         */
+        tagName(nodes) {
+            const node = this.parseNode(nodes);
+
+            if (!node) {
+                return;
+            }
+
+            return DOMNode.tagName(node);
         }
 
     });
@@ -5221,7 +5293,7 @@
          * @returns {RegExp} The namespaced event RegExp.
          */
         _eventNamespacedRegExp(event) {
-            return new RegExp('^' + Core.escapeRegExp(event) + '(?:\\.|$)', 'i');
+            return new RegExp(`^${Core.escapeRegExp(event)}(?:\\.|$)`, 'i');
         },
 
         /**
@@ -5365,6 +5437,32 @@
         },
 
         /**
+         * Return a string attribute, or a flat array of attributes from a key and value.
+         * @param {string} key The input key.
+         * @param {array|object|string} value The input value.
+         * @returns {string|array} The parsed attributes.
+         */
+        _parseParam(key, value) {
+            if (Core.isArray(value)) {
+                return value.map(val =>
+                    this._parseParam(key, val)
+                ).flat();
+            }
+
+            if (Core.isObject(value)) {
+                return Object.keys(value)
+                    .map(subKey =>
+                        this._parseParam(
+                            `${key}[${subKey}]`,
+                            value[subKey]
+                        )
+                    ).flat();
+            }
+
+            return `${key}=${value}`;
+        },
+
+        /**
          * Return a URI-encoded attribute string from an array or object.
          * @param {array|object} data The input data.
          * @returns {string} The URI-encoded attribute string.
@@ -5389,32 +5487,6 @@
             return values
                 .flatMap(encodeURI)
                 .join('&');
-        },
-
-        /**
-         * Return a string attribute, or a flat array of attributes from a key and value.
-         * @param {string} key The input key.
-         * @param {array|object|string} value The input value.
-         * @returns {string|array} The parsed attributes.
-         */
-        _parseParam(key, value) {
-            if (Core.isArray(value)) {
-                return value.map(val =>
-                    this._parseParam(key, val)
-                ).flat();
-            }
-
-            if (Core.isObject(value)) {
-                return Object.keys(value)
-                    .map(subKey =>
-                        this._parseParam(
-                            key + '[' + subKey + ']',
-                            value[subKey]
-                        )
-                    ).flat();
-            }
-
-            return key + '=' + value;
         },
 
         /**
@@ -6459,7 +6531,7 @@
         _splitRegExp: /\,(?=(?:(?:[^"]*"){2})*[^"]*$)\s*/,
 
         // Temporary ID
-        _tempId: 'frost' + (Date.now().toString(16))
+        _tempId: `frost${Date.now().toString(16)}`
 
     });
 
