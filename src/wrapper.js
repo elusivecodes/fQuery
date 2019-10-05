@@ -27,6 +27,7 @@
 
     // {{code}}
     return {
+        AjaxRequest,
         DOM,
         DOMNode,
         dom: new DOM

@@ -39,16 +39,6 @@ Object.assign(DOM, {
     _events: new WeakMap,
     _styles: new WeakMap,
 
-    // Default AJAX options
-    ajaxDefaults: {
-        beforeSend: false,
-        cache: true,
-        contentType: 'application/x-www-form-urlencoded',
-        data: false,
-        method: 'GET',
-        processData: true
-    },
-
     // Default allowed tags/attributes for sanitizer
     allowedTags: {
         '*': ['class', 'dir', 'id', 'lang', 'role', /^aria-[\w-]*$/i],
@@ -105,9 +95,6 @@ Object.assign(DOM, {
 
     // Fast selector RegExp
     _fastRegExp: /^([\#\.]?)([\w\-]+)$/,
-
-    // Local protocol RegExp
-    _localRegExp: /^(?:about|app|app-storage|.+-extension|file|res|widget):$/,
 
     // Comma seperated selector RegExp
     _splitRegExp: /\,(?=(?:(?:[^"]*"){2})*[^"]*$)\s*/,

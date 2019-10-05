@@ -102,7 +102,7 @@ Object.assign(DOM.prototype, {
      * @returns {string} The serialized string.
      */
     serialize(nodes) {
-        return DOM._parseParams(
+        return AjaxRequest._parseParams(
             this.serializeArray(nodes)
         );
     },

@@ -26,6 +26,360 @@
     const document = window.document;
 
     /**
+     * AjaxRequest Class
+     * @class
+     */
+    class AjaxRequest {
+
+        /**
+         * New AjaxRequest constructor.
+         * @param {object} [options] The options to use for the request.
+         * @param {string} [options.url=window.location] The URL of the request.
+         * @param {string} [options.method=GET] The HTTP method of the request.
+         * @param {Boolean|string|array|object|FormData} [options.data=false] The data to send with the request.
+         * @param {Boolean|string} [options.contentType=application/x-www-form-urlencoded] The content type of the request.
+         * @param {Boolean|string} [options.responseType] The content type of the response.
+         * @param {Boolean} [options.cache=true] Whether to cache the request.
+         * @param {Boolean} [options.processData=true] Whether to process the data based on the content type.
+         * @param {Boolean} [options.rejectOnCancel=true] Whether to reject the promise if the request is cancelled.
+         * @param {object} [options.headers] Additional headers to send with the request.
+         * @param {Boolean|function} [options.afterSend=false] A callback to execute after making the request.
+         * @param {Boolean|function} [options.beforeSend=false] A callback to execute before making the request.
+         * @param {Boolean|function} [options.onProgress=false] A callback to execute on download progress.
+         * @param {Boolean|function} [options.onUploadProgress=false] A callback to execute on upload progress.
+         * @returns {AjaxRequest} A new AjaxRequest that resolves when the request is completed, or rejects on failure.
+         */
+        constructor(settings) {
+            this._settings = Core.extend(
+                {},
+                AjaxRequest.defaults,
+                settings
+            );
+
+            if (!this._settings.url) {
+                this._settings.url = window.location;
+            }
+
+            if (!this._settings.cache) {
+                const url = new URL(this._settings.url);
+                url.searchParams.append('_', Date.now());
+                this._settings.url = url.toString();
+            }
+
+            if (!('Content-Type' in this._settings.headers) && this._settings.contentType) {
+                this._settings.headers['Content-Type'] = this._settings.contentType;
+            }
+
+            this._isLocal = AjaxRequest._localRegExp.test(location.protocol);
+
+            if (!this._isLocal && !('X-Requested-With' in this._settings.headers)) {
+                this._settings.headers['X-Requested-With'] = 'XMLHttpRequest';
+            }
+
+            this._isResolved = false;
+            this._isRejected = false;
+            this._isCancelled = false;
+
+            this._promise = new Promise((resolve, reject) => {
+                this._resolve = value => {
+                    this._isResolved = true;
+                    resolve(value);
+                };
+
+                this._reject = error => {
+                    this._isRejected = true;
+                    reject(error);
+                };
+            });
+
+            this._build();
+            this._events();
+            this._send();
+        }
+
+        /**
+         * Cancel a pending request.
+         * @param {string} [reason=Request was cancelled] The reason for cancelling the request.
+         */
+        cancel(reason = 'Request was cancelled') {
+            if (this._isResolved || this._isRejected || this._isCancelled) {
+                return;
+            }
+
+            try {
+                this._xhr.abort();
+            } catch (error) {
+                this._reject(error);
+            }
+
+            this._isCancelled = true;
+
+            if (this._settings.rejectOnCancel) {
+                this._reject(new Error(reason));
+            }
+        }
+
+        /**
+         * Execute a callback if the request is rejected.
+         * @param {function} [onRejected] The callback to execute if the request is rejected.
+         * @returns {Promise} A new pending Promise.
+         */
+        catch(onRejected) {
+            return this._promise.catch(onRejected);
+        }
+
+        /**
+         * Execute a callback once the request is settled (resolved or rejected).
+         * @param {function} [onRejected] The callback to execute once the request is settled.
+         * @returns {Promise} A new pending Promise.
+         */
+        finally(onFinally) {
+            return this._promise.finally(onFinally);
+        }
+
+        /**
+         * Execute a callback once the request is resolved (or optionally rejected).
+         * @param {function} onFulfilled The callback to execute if the request is resolved.
+         * @param {function} [onRejected] The callback to execute if the request is rejected.
+         * @returns {Promise} A new pending Promise.
+         */
+        then(onFulfilled, onRejected) {
+            return this._promise.then(onFulfilled, onRejected);
+        }
+
+    }
+
+    /**
+     * AjaxRequest Helpers
+     */
+
+    Object.assign(AjaxRequest.prototype, {
+
+        /**
+         * Build the XHR request object.
+         */
+        _build() {
+            this._xhr = new XMLHttpRequest;
+
+            this._xhr.open(this._settings.method, this._settings.url, true);
+
+            for (const key in this._settings.headers) {
+                this._xhr.setRequestHeader(key, this._settings.headers[key]);
+            }
+
+            if (this._settings.responseType) {
+                this._xhr.responseType = this._settings.responseType;
+            }
+        },
+
+        /**
+         * Attach events to the XHR request object.
+         */
+        _events() {
+            this._xhr.onload = e => {
+                if (this._xhr.status > 400) {
+                    this._reject({
+                        status: this._xhr.status,
+                        xhr: this._xhr,
+                        event: e
+                    });
+                } else {
+                    this._resolve({
+                        response: this._xhr.response,
+                        xhr: this._xhr,
+                        event: e
+                    });
+                }
+            };
+
+            if (!this._isLocal) {
+                this._xhr.onerror = e =>
+                    this._reject({
+                        status: this._xhr.status,
+                        xhr: this._xhr,
+                        event: e
+                    });
+            }
+
+            if (this._settings.onProgress) {
+                this._xhr.onprogress = e =>
+                    this._settings.onProgress(e.loaded / e.total, this._xhr, e);
+            }
+
+            if (this._settings.onUploadProgress) {
+                this._xhr.upload.onprogress = e =>
+                    this._settings.onUploadProgress(e.loaded / e.total, this._xhr, e);
+            }
+        },
+
+        /**
+         * Process the data and send the XHR request.
+         */
+        _send() {
+            if (this._settings.beforeSend) {
+                this._settings.beforeSend(this._xhr);
+            }
+
+            if (this._settings.data && this._settings.processData) {
+                if (this._settings.contentType === 'application/json') {
+                    this._settings.data = JSON.stringify(this._settings.data);
+                } else if (this._settings.contentType === 'application/x-www-form-urlencoded') {
+                    this._settings.data = AjaxRequest._parseParams(this._settings.data);
+                } else {
+                    this._settings.data = AjaxRequest._parseFormData(this._settings.data);
+                }
+            }
+
+            this._xhr.send(this._settings.data);
+
+            if (this._settings.afterSend) {
+                this._settings.afterSend(this._xhr);
+            }
+        }
+
+    });
+
+    /**
+     * AjaxRequest (Static) Helpers
+     */
+
+    Object.assign(AjaxRequest, {
+
+        /**
+         * Return a FormData object from an array or object.
+         * @param {array|object} data The input data.
+         * @returns {FormData} The FormData object.
+         */
+        _parseFormData(data) {
+            const formData = new FormData;
+
+            if (Core.isArray(data)) {
+                const obj = {};
+                for (const value of data) {
+                    obj[value.name] = value.value;
+                }
+                data = obj;
+            }
+
+            this._parseFormValues(data, formData);
+
+            return formData;
+        },
+
+        /**
+         * Recursively append an object to a FormData object.
+         * @param {object} data The input object.
+         * @param {FormData} formData The FormData object to append to.
+         * @param {string} [prevKey] The previous key value.
+         */
+        _parseFormValues(data, formData, prevKey) {
+            let key;
+            for (key in data) {
+                const value = data[key];
+
+                if (prevKey) {
+                    key = `${prevKey}[${key}]`;
+                }
+
+                if (Core.isPlainObject(value)) {
+                    this._parseFormValues(value, formData, key);
+                } else if (!Core.isArray(value)) {
+                    formData.set(key, value);
+                } else {
+                    for (const val of value) {
+                        formData.append(key, val);
+                    }
+                }
+            }
+        },
+
+        /**
+         * Return a string attribute, or a flat array of attributes from a key and value.
+         * @param {string} key The input key.
+         * @param {array|object|string} value The input value.
+         * @returns {string|array} The parsed attributes.
+         */
+        _parseParam(key, value) {
+            if (Core.isArray(value)) {
+                return value.map(val =>
+                    this._parseParam(key, val)
+                ).flat();
+            }
+
+            if (Core.isObject(value)) {
+                return Object.keys(value)
+                    .map(subKey =>
+                        this._parseParam(
+                            `${key}[${subKey}]`,
+                            value[subKey]
+                        )
+                    ).flat();
+            }
+
+            return `${key}=${value}`;
+        },
+
+        /**
+         * Return a URI-encoded attribute string from an array or object.
+         * @param {array|object} data The input data.
+         * @returns {string} The URI-encoded attribute string.
+         */
+        _parseParams(data) {
+            let values = [];
+
+            if (Core.isArray(data)) {
+                values = data.map(value =>
+                    this._parseParam(
+                        value.name,
+                        value.value
+                    )
+                );
+            } else if (Core.isObject(data)) {
+                values = Object.keys(data)
+                    .map(key =>
+                        this._parseParam(key, data[key])
+                    );
+            }
+
+            return values
+                .flatMap(encodeURI)
+                .join('&');
+        }
+
+    });
+
+    /**
+     * AjaxRequest (Static) Properties
+     */
+
+    Object.assign(AjaxRequest, {
+
+        // AjaxRequest defaults
+        defaults: {
+            afterSend: false,
+            beforeSend: false,
+            cache: true,
+            contentType: 'application/x-www-form-urlencoded',
+            data: false,
+            headers: {},
+            method: 'GET',
+            onProgress: false,
+            onUploadProgress: false,
+            processData: true,
+            rejectOnCancel: true,
+            responseType: false,
+            url: false
+        },
+
+        // Local protocol test
+        _localRegExp: /^(?:about|app|app-storage|.+-extension|file|res|widget):$/
+
+    });
+
+    // Set the AjaxRequest prototype
+    Object.setPrototypeOf(AjaxRequest.prototype, Promise.prototype);
+
+    /**
      * DOM Class
      * @class
      */
@@ -49,7 +403,7 @@
     Object.assign(DOM.prototype, {
 
         /**
-         * Perform an XHR request.
+         * New AjaxRequest constructor.
          * @param {object} [options] The options to use for the request.
          * @param {string} [options.url=window.location] The URL of the request.
          * @param {string} [options.method=GET] The HTTP method of the request.
@@ -58,93 +412,16 @@
          * @param {Boolean|string} [options.responseType] The content type of the response.
          * @param {Boolean} [options.cache=true] Whether to cache the request.
          * @param {Boolean} [options.processData=true] Whether to process the data based on the content type.
+         * @param {Boolean} [options.rejectOnCancel=true] Whether to reject the promise if the request is cancelled.
          * @param {object} [options.headers] Additional headers to send with the request.
+         * @param {Boolean|function} [options.afterSend=false] A callback to execute after making the request.
          * @param {Boolean|function} [options.beforeSend=false] A callback to execute before making the request.
-         * @param {Boolean|function} [options.uploadProgress=false] A callback to execute on upload progress.
-         * @returns {Promise} A new Promise that resolves when the request is completed, or rejects on failure.
+         * @param {Boolean|function} [options.onProgress=false] A callback to execute on download progress.
+         * @param {Boolean|function} [options.onUploadProgress=false] A callback to execute on upload progress.
+         * @returns {AjaxRequest} A new AjaxRequest that resolves when the request is completed, or rejects on failure.
          */
         ajax(options) {
-            options = {
-                url: window.location,
-                headers: {},
-                ...DOM.ajaxDefaults,
-                ...options
-            };
-
-            const isLocal = DOM._localRegExp.test(location.protocol);
-
-            if (!options.cache) {
-                const url = new URL(options.url);
-                url.searchParams.append('_', Date.now());
-                options.url = url.toString();
-            }
-
-            if ('Content-Type' in options.headers && !options.headers['Content-Type']) {
-                options.headers['Content-Type'] = options.contentType;
-            }
-
-            if (!isLocal && !('X-Requested-With' in options.headers)) {
-                options.headers['X-Requested-With'] = 'XMLHttpRequest';
-            }
-
-            return new Promise((resolve, reject) => {
-                const xhr = new XMLHttpRequest;
-
-                xhr.open(options.method, options.url, true);
-
-                for (const key in options.headers) {
-                    xhr.setRequestHeader(key, options.headers[key]);
-                }
-
-                if (options.responseType) {
-                    xhr.responseType = options.responseType;
-                }
-
-                xhr.onload = e => {
-                    if (xhr.status > 400) {
-                        reject({
-                            status: xhr.status,
-                            xhr: xhr,
-                            event: e
-                        });
-                    } else {
-                        resolve({
-                            response: xhr.response,
-                            xhr: xhr,
-                            event: e
-                        });
-                    }
-                };
-
-                if (!isLocal) {
-                    xhr.onerror = e =>
-                        reject({
-                            status: xhr.status,
-                            xhr: xhr,
-                            event: e
-                        });
-                }
-
-                if (options.uploadProgress) {
-                    xhr.upload.onprogress = e =>
-                        options.uploadProgress(e.loaded / e.total, xhr, e);
-                }
-
-                if (options.beforeSend) {
-                    options.beforeSend(xhr);
-                }
-
-                if (options.data && options.processData) {
-                    if (options.contentType === 'application/json') {
-                        options.data = JSON.stringify(options.data);
-                    } else if (options.contentType === 'application/x-www-form-urlencoded') {
-                        options.data = DOM._parseParams(options.data);
-                    } else {
-                        options.data = DOM._parseFormData(options.data);
-                    }
-                }
-                xhr.send(options.data);
-            });
+            return new AjaxRequest(options);
         },
 
         /**
@@ -157,13 +434,16 @@
          * @param {Boolean|string} [options.responseType] The content type of the response.
          * @param {Boolean} [options.cache=true] Whether to cache the request.
          * @param {Boolean} [options.processData=true] Whether to process the data based on the content type.
+         * @param {Boolean} [options.rejectOnCancel=true] Whether to reject the promise if the request is cancelled.
          * @param {object} [options.headers] Additional headers to send with the request.
+         * @param {Boolean|function} [options.afterSend=false] A callback to execute after making the request.
          * @param {Boolean|function} [options.beforeSend=false] A callback to execute before making the request.
-         * @param {Boolean|function} [options.uploadProgress=false] A callback to execute on upload progress.
-         * @returns {Promise} A new Promise that resolves when the request is completed, or rejects on failure.
+         * @param {Boolean|function} [options.onProgress=false] A callback to execute on download progress.
+         * @param {Boolean|function} [options.onUploadProgress=false] A callback to execute on upload progress.
+         * @returns {AjaxRequest} A new AjaxRequest that resolves when the request is completed, or rejects on failure.
          */
         delete(url, options) {
-            return this.ajax({
+            return new AjaxRequest({
                 url,
                 method: 'DELETE',
                 ...options
@@ -180,13 +460,16 @@
          * @param {Boolean|string} [options.responseType] The content type of the response.
          * @param {Boolean} [options.cache=true] Whether to cache the request.
          * @param {Boolean} [options.processData=true] Whether to process the data based on the content type.
+         * @param {Boolean} [options.rejectOnCancel=true] Whether to reject the promise if the request is cancelled.
          * @param {object} [options.headers] Additional headers to send with the request.
+         * @param {Boolean|function} [options.afterSend=false] A callback to execute after making the request.
          * @param {Boolean|function} [options.beforeSend=false] A callback to execute before making the request.
-         * @param {Boolean|function} [options.uploadProgress=false] A callback to execute on upload progress.
-         * @returns {Promise} A new Promise that resolves when the request is completed, or rejects on failure.
+         * @param {Boolean|function} [options.onProgress=false] A callback to execute on download progress.
+         * @param {Boolean|function} [options.onUploadProgress=false] A callback to execute on upload progress.
+         * @returns {AjaxRequest} A new AjaxRequest that resolves when the request is completed, or rejects on failure.
          */
         get(url, options) {
-            return this.ajax({
+            return new AjaxRequest({
                 url,
                 ...options
             });
@@ -202,13 +485,16 @@
          * @param {Boolean|string} [options.responseType] The content type of the response.
          * @param {Boolean} [options.cache=true] Whether to cache the request.
          * @param {Boolean} [options.processData=true] Whether to process the data based on the content type.
+         * @param {Boolean} [options.rejectOnCancel=true] Whether to reject the promise if the request is cancelled.
          * @param {object} [options.headers] Additional headers to send with the request.
+         * @param {Boolean|function} [options.afterSend=false] A callback to execute after making the request.
          * @param {Boolean|function} [options.beforeSend=false] A callback to execute before making the request.
-         * @param {Boolean|function} [options.uploadProgress=false] A callback to execute on upload progress.
-         * @returns {Promise} A new Promise that resolves when the request is completed, or rejects on failure.
+         * @param {Boolean|function} [options.onProgress=false] A callback to execute on download progress.
+         * @param {Boolean|function} [options.onUploadProgress=false] A callback to execute on upload progress.
+         * @returns {AjaxRequest} A new AjaxRequest that resolves when the request is completed, or rejects on failure.
          */
         patch(url, data, options) {
-            return this.ajax({
+            return new AjaxRequest({
                 url,
                 data,
                 method: 'PATCH',
@@ -226,13 +512,16 @@
          * @param {Boolean|string} [options.responseType] The content type of the response.
          * @param {Boolean} [options.cache=true] Whether to cache the request.
          * @param {Boolean} [options.processData=true] Whether to process the data based on the content type.
+         * @param {Boolean} [options.rejectOnCancel=true] Whether to reject the promise if the request is cancelled.
          * @param {object} [options.headers] Additional headers to send with the request.
+         * @param {Boolean|function} [options.afterSend=false] A callback to execute after making the request.
          * @param {Boolean|function} [options.beforeSend=false] A callback to execute before making the request.
-         * @param {Boolean|function} [options.uploadProgress=false] A callback to execute on upload progress.
-         * @returns {Promise} A new Promise that resolves when the request is completed, or rejects on failure.
+         * @param {Boolean|function} [options.onProgress=false] A callback to execute on download progress.
+         * @param {Boolean|function} [options.onUploadProgress=false] A callback to execute on upload progress.
+         * @returns {AjaxRequest} A new AjaxRequest that resolves when the request is completed, or rejects on failure.
          */
         post(url, data, options) {
-            return this.ajax({
+            return new AjaxRequest({
                 url,
                 data,
                 method: 'POST',
@@ -250,13 +539,16 @@
          * @param {Boolean|string} [options.responseType] The content type of the response.
          * @param {Boolean} [options.cache=true] Whether to cache the request.
          * @param {Boolean} [options.processData=true] Whether to process the data based on the content type.
+         * @param {Boolean} [options.rejectOnCancel=true] Whether to reject the promise if the request is cancelled.
          * @param {object} [options.headers] Additional headers to send with the request.
+         * @param {Boolean|function} [options.afterSend=false] A callback to execute after making the request.
          * @param {Boolean|function} [options.beforeSend=false] A callback to execute before making the request.
-         * @param {Boolean|function} [options.uploadProgress=false] A callback to execute on upload progress.
-         * @returns {Promise} A new Promise that resolves when the request is completed, or rejects on failure.
+         * @param {Boolean|function} [options.onProgress=false] A callback to execute on download progress.
+         * @param {Boolean|function} [options.onUploadProgress=false] A callback to execute on upload progress.
+         * @returns {AjaxRequest} A new AjaxRequest that resolves when the request is completed, or rejects on failure.
          */
         put(url, data, options) {
-            return this.ajax({
+            return new AjaxRequest({
                 url,
                 data,
                 method: 'PUT',
@@ -274,13 +566,16 @@
          * @param {Boolean|string} [options.responseType] The content type of the response.
          * @param {Boolean} [options.cache=true] Whether to cache the request.
          * @param {Boolean} [options.processData=false] Whether to process the data based on the content type.
+         * @param {Boolean} [options.rejectOnCancel=true] Whether to reject the promise if the request is cancelled.
          * @param {object} [options.headers] Additional headers to send with the request.
+         * @param {Boolean|function} [options.afterSend=false] A callback to execute after making the request.
          * @param {Boolean|function} [options.beforeSend=false] A callback to execute before making the request.
-         * @param {Boolean|function} [options.uploadProgress=false] A callback to execute on upload progress.
-         * @returns {Promise} A new Promise that resolves when the request is completed, or rejects on failure.
+         * @param {Boolean|function} [options.onProgress=false] A callback to execute on download progress.
+         * @param {Boolean|function} [options.onUploadProgress=false] A callback to execute on upload progress.
+         * @returns {AjaxRequest} A new AjaxRequest that resolves when the request is completed, or rejects on failure.
          */
         upload(url, data, options) {
-            return this.ajax({
+            return new AjaxRequest({
                 url,
                 data,
                 method: 'POST',
@@ -301,10 +596,10 @@
          * Load and execute a JavaScript file.
          * @param {string} url The URL of the script.
          * @param {Boolean} [cache=true] Whether to cache the request.
-         * @returns {Promise} A new Promise that resolves when the request is completed, or rejects on failure.
+         * @returns {AjaxRequest} A new AjaxRequest that resolves when the request is completed, or rejects on failure.
          */
         loadScript(url, cache = true) {
-            return this.ajax({ url, cache })
+            return new AjaxRequest({ url, cache })
                 .then(response =>
                     eval.call(window, response.response)
                 );
@@ -320,7 +615,7 @@
             return Promise.all
                 (
                     urls.map(url =>
-                        this.ajax({ url, cache })
+                        new AjaxRequest({ url, cache })
                     )
                 )
                 .then(responses => {
@@ -342,10 +637,10 @@
          * Import a CSS Stylesheet file.
          * @param {string} url The URL of the stylesheet.
          * @param {Boolean} [cache=true] Whether to cache the request.
-         * @returns {Promise} A new Promise that resolves when the request is completed, or rejects on failure.
+         * @returns {AjaxRequest} A new AjaxRequest that resolves when the request is completed, or rejects on failure.
          */
         loadStyle(url, cache = true) {
-            return this.ajax({ url, cache })
+            return new AjaxRequest({ url, cache })
                 .then(response =>
                     DOMNode.insertBefore(
                         this._context.head,
@@ -369,7 +664,7 @@
             return Promise.all
                 (
                     urls.map(url =>
-                        this.ajax({ url, cache })
+                        new AjaxRequest({ url, cache })
                     )
                 )
                 .then(responses => {
@@ -4163,7 +4458,7 @@
          * @returns {string} The serialized string.
          */
         serialize(nodes) {
-            return DOM._parseParams(
+            return AjaxRequest._parseParams(
                 this.serializeArray(nodes)
             );
         },
@@ -5389,107 +5684,6 @@
         },
 
         /**
-         * Return a FormData object from an array or object.
-         * @param {array|object} data The input data.
-         * @returns {FormData} The FormData object.
-         */
-        _parseFormData(data) {
-            const formData = new FormData;
-
-            if (Core.isArray(data)) {
-                const obj = {};
-                for (const value of data) {
-                    obj[value.name] = value.value;
-                }
-                data = obj;
-            }
-
-            this._parseFormValues(data, formData);
-
-            return formData;
-        },
-
-        /**
-         * Recursively append an object to a FormData object.
-         * @param {object} data The input object.
-         * @param {FormData} formData The FormData object to append to.
-         * @param {string} [prevKey] The previous key value.
-         */
-        _parseFormValues(data, formData, prevKey) {
-            let key;
-            for (key in data) {
-                const value = data[key];
-
-                if (prevKey) {
-                    key = `${prevKey}[${key}]`;
-                }
-
-                if (Core.isPlainObject(value)) {
-                    this._parseFormValues(value, formData, key);
-                } else if (!Core.isArray(value)) {
-                    formData.set(key, value);
-                } else {
-                    for (const val of value) {
-                        formData.append(key, val);
-                    }
-                }
-            }
-        },
-
-        /**
-         * Return a string attribute, or a flat array of attributes from a key and value.
-         * @param {string} key The input key.
-         * @param {array|object|string} value The input value.
-         * @returns {string|array} The parsed attributes.
-         */
-        _parseParam(key, value) {
-            if (Core.isArray(value)) {
-                return value.map(val =>
-                    this._parseParam(key, val)
-                ).flat();
-            }
-
-            if (Core.isObject(value)) {
-                return Object.keys(value)
-                    .map(subKey =>
-                        this._parseParam(
-                            `${key}[${subKey}]`,
-                            value[subKey]
-                        )
-                    ).flat();
-            }
-
-            return `${key}=${value}`;
-        },
-
-        /**
-         * Return a URI-encoded attribute string from an array or object.
-         * @param {array|object} data The input data.
-         * @returns {string} The URI-encoded attribute string.
-         */
-        _parseParams(data) {
-            let values = [];
-
-            if (Core.isArray(data)) {
-                values = data.map(value =>
-                    this._parseParam(
-                        value.name,
-                        value.value
-                    )
-                );
-            } else if (Core.isObject(data)) {
-                values = Object.keys(data)
-                    .map(key =>
-                        this._parseParam(key, data[key])
-                    );
-            }
-
-            return values
-                .flatMap(encodeURI)
-                .join('&');
-        },
-
-        /**
          * Return a prefixed selector string.
          * @param {string} selectors The input selectors.
          * @param {string} prefix The input prefix.
@@ -6457,16 +6651,6 @@
         _events: new WeakMap,
         _styles: new WeakMap,
 
-        // Default AJAX options
-        ajaxDefaults: {
-            beforeSend: false,
-            cache: true,
-            contentType: 'application/x-www-form-urlencoded',
-            data: false,
-            method: 'GET',
-            processData: true
-        },
-
         // Default allowed tags/attributes for sanitizer
         allowedTags: {
             '*': ['class', 'dir', 'id', 'lang', 'role', /^aria-[\w-]*$/i],
@@ -6523,9 +6707,6 @@
 
         // Fast selector RegExp
         _fastRegExp: /^([\#\.]?)([\w\-]+)$/,
-
-        // Local protocol RegExp
-        _localRegExp: /^(?:about|app|app-storage|.+-extension|file|res|widget):$/,
 
         // Comma seperated selector RegExp
         _splitRegExp: /\,(?=(?:(?:[^"]*"){2})*[^"]*$)\s*/,
@@ -7532,6 +7713,7 @@
     });
 
     return {
+        AjaxRequest,
         DOM,
         DOMNode,
         dom: new DOM

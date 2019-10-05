@@ -8,10 +8,10 @@ Object.assign(DOM.prototype, {
      * Load and execute a JavaScript file.
      * @param {string} url The URL of the script.
      * @param {Boolean} [cache=true] Whether to cache the request.
-     * @returns {Promise} A new Promise that resolves when the request is completed, or rejects on failure.
+     * @returns {AjaxRequest} A new AjaxRequest that resolves when the request is completed, or rejects on failure.
      */
     loadScript(url, cache = true) {
-        return this.ajax({ url, cache })
+        return new AjaxRequest({ url, cache })
             .then(response =>
                 eval.call(window, response.response)
             );
@@ -27,7 +27,7 @@ Object.assign(DOM.prototype, {
         return Promise.all
             (
                 urls.map(url =>
-                    this.ajax({ url, cache })
+                    new AjaxRequest({ url, cache })
                 )
             )
             .then(responses => {

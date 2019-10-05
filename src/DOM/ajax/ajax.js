@@ -5,7 +5,7 @@
 Object.assign(DOM.prototype, {
 
     /**
-     * Perform an XHR request.
+     * New AjaxRequest constructor.
      * @param {object} [options] The options to use for the request.
      * @param {string} [options.url=window.location] The URL of the request.
      * @param {string} [options.method=GET] The HTTP method of the request.
@@ -14,93 +14,16 @@ Object.assign(DOM.prototype, {
      * @param {Boolean|string} [options.responseType] The content type of the response.
      * @param {Boolean} [options.cache=true] Whether to cache the request.
      * @param {Boolean} [options.processData=true] Whether to process the data based on the content type.
+     * @param {Boolean} [options.rejectOnCancel=true] Whether to reject the promise if the request is cancelled.
      * @param {object} [options.headers] Additional headers to send with the request.
+     * @param {Boolean|function} [options.afterSend=false] A callback to execute after making the request.
      * @param {Boolean|function} [options.beforeSend=false] A callback to execute before making the request.
-     * @param {Boolean|function} [options.uploadProgress=false] A callback to execute on upload progress.
-     * @returns {Promise} A new Promise that resolves when the request is completed, or rejects on failure.
+     * @param {Boolean|function} [options.onProgress=false] A callback to execute on download progress.
+     * @param {Boolean|function} [options.onUploadProgress=false] A callback to execute on upload progress.
+     * @returns {AjaxRequest} A new AjaxRequest that resolves when the request is completed, or rejects on failure.
      */
     ajax(options) {
-        options = {
-            url: window.location,
-            headers: {},
-            ...DOM.ajaxDefaults,
-            ...options
-        };
-
-        const isLocal = DOM._localRegExp.test(location.protocol);
-
-        if (!options.cache) {
-            const url = new URL(options.url);
-            url.searchParams.append('_', Date.now());
-            options.url = url.toString();
-        }
-
-        if ('Content-Type' in options.headers && !options.headers['Content-Type']) {
-            options.headers['Content-Type'] = options.contentType;
-        }
-
-        if (!isLocal && !('X-Requested-With' in options.headers)) {
-            options.headers['X-Requested-With'] = 'XMLHttpRequest';
-        }
-
-        return new Promise((resolve, reject) => {
-            const xhr = new XMLHttpRequest;
-
-            xhr.open(options.method, options.url, true);
-
-            for (const key in options.headers) {
-                xhr.setRequestHeader(key, options.headers[key]);
-            }
-
-            if (options.responseType) {
-                xhr.responseType = options.responseType;
-            }
-
-            xhr.onload = e => {
-                if (xhr.status > 400) {
-                    reject({
-                        status: xhr.status,
-                        xhr: xhr,
-                        event: e
-                    });
-                } else {
-                    resolve({
-                        response: xhr.response,
-                        xhr: xhr,
-                        event: e
-                    });
-                }
-            };
-
-            if (!isLocal) {
-                xhr.onerror = e =>
-                    reject({
-                        status: xhr.status,
-                        xhr: xhr,
-                        event: e
-                    });
-            }
-
-            if (options.uploadProgress) {
-                xhr.upload.onprogress = e =>
-                    options.uploadProgress(e.loaded / e.total, xhr, e);
-            }
-
-            if (options.beforeSend) {
-                options.beforeSend(xhr);
-            }
-
-            if (options.data && options.processData) {
-                if (options.contentType === 'application/json') {
-                    options.data = JSON.stringify(options.data);
-                } else if (options.contentType === 'application/x-www-form-urlencoded') {
-                    options.data = DOM._parseParams(options.data);
-                } else {
-                    options.data = DOM._parseFormData(options.data);
-                }
-            }
-            xhr.send(options.data);
-        });
+        return new AjaxRequest(options);
     },
 
     /**
@@ -113,13 +36,16 @@ Object.assign(DOM.prototype, {
      * @param {Boolean|string} [options.responseType] The content type of the response.
      * @param {Boolean} [options.cache=true] Whether to cache the request.
      * @param {Boolean} [options.processData=true] Whether to process the data based on the content type.
+     * @param {Boolean} [options.rejectOnCancel=true] Whether to reject the promise if the request is cancelled.
      * @param {object} [options.headers] Additional headers to send with the request.
+     * @param {Boolean|function} [options.afterSend=false] A callback to execute after making the request.
      * @param {Boolean|function} [options.beforeSend=false] A callback to execute before making the request.
-     * @param {Boolean|function} [options.uploadProgress=false] A callback to execute on upload progress.
-     * @returns {Promise} A new Promise that resolves when the request is completed, or rejects on failure.
+     * @param {Boolean|function} [options.onProgress=false] A callback to execute on download progress.
+     * @param {Boolean|function} [options.onUploadProgress=false] A callback to execute on upload progress.
+     * @returns {AjaxRequest} A new AjaxRequest that resolves when the request is completed, or rejects on failure.
      */
     delete(url, options) {
-        return this.ajax({
+        return new AjaxRequest({
             url,
             method: 'DELETE',
             ...options
@@ -136,13 +62,16 @@ Object.assign(DOM.prototype, {
      * @param {Boolean|string} [options.responseType] The content type of the response.
      * @param {Boolean} [options.cache=true] Whether to cache the request.
      * @param {Boolean} [options.processData=true] Whether to process the data based on the content type.
+     * @param {Boolean} [options.rejectOnCancel=true] Whether to reject the promise if the request is cancelled.
      * @param {object} [options.headers] Additional headers to send with the request.
+     * @param {Boolean|function} [options.afterSend=false] A callback to execute after making the request.
      * @param {Boolean|function} [options.beforeSend=false] A callback to execute before making the request.
-     * @param {Boolean|function} [options.uploadProgress=false] A callback to execute on upload progress.
-     * @returns {Promise} A new Promise that resolves when the request is completed, or rejects on failure.
+     * @param {Boolean|function} [options.onProgress=false] A callback to execute on download progress.
+     * @param {Boolean|function} [options.onUploadProgress=false] A callback to execute on upload progress.
+     * @returns {AjaxRequest} A new AjaxRequest that resolves when the request is completed, or rejects on failure.
      */
     get(url, options) {
-        return this.ajax({
+        return new AjaxRequest({
             url,
             ...options
         });
@@ -158,13 +87,16 @@ Object.assign(DOM.prototype, {
      * @param {Boolean|string} [options.responseType] The content type of the response.
      * @param {Boolean} [options.cache=true] Whether to cache the request.
      * @param {Boolean} [options.processData=true] Whether to process the data based on the content type.
+     * @param {Boolean} [options.rejectOnCancel=true] Whether to reject the promise if the request is cancelled.
      * @param {object} [options.headers] Additional headers to send with the request.
+     * @param {Boolean|function} [options.afterSend=false] A callback to execute after making the request.
      * @param {Boolean|function} [options.beforeSend=false] A callback to execute before making the request.
-     * @param {Boolean|function} [options.uploadProgress=false] A callback to execute on upload progress.
-     * @returns {Promise} A new Promise that resolves when the request is completed, or rejects on failure.
+     * @param {Boolean|function} [options.onProgress=false] A callback to execute on download progress.
+     * @param {Boolean|function} [options.onUploadProgress=false] A callback to execute on upload progress.
+     * @returns {AjaxRequest} A new AjaxRequest that resolves when the request is completed, or rejects on failure.
      */
     patch(url, data, options) {
-        return this.ajax({
+        return new AjaxRequest({
             url,
             data,
             method: 'PATCH',
@@ -182,13 +114,16 @@ Object.assign(DOM.prototype, {
      * @param {Boolean|string} [options.responseType] The content type of the response.
      * @param {Boolean} [options.cache=true] Whether to cache the request.
      * @param {Boolean} [options.processData=true] Whether to process the data based on the content type.
+     * @param {Boolean} [options.rejectOnCancel=true] Whether to reject the promise if the request is cancelled.
      * @param {object} [options.headers] Additional headers to send with the request.
+     * @param {Boolean|function} [options.afterSend=false] A callback to execute after making the request.
      * @param {Boolean|function} [options.beforeSend=false] A callback to execute before making the request.
-     * @param {Boolean|function} [options.uploadProgress=false] A callback to execute on upload progress.
-     * @returns {Promise} A new Promise that resolves when the request is completed, or rejects on failure.
+     * @param {Boolean|function} [options.onProgress=false] A callback to execute on download progress.
+     * @param {Boolean|function} [options.onUploadProgress=false] A callback to execute on upload progress.
+     * @returns {AjaxRequest} A new AjaxRequest that resolves when the request is completed, or rejects on failure.
      */
     post(url, data, options) {
-        return this.ajax({
+        return new AjaxRequest({
             url,
             data,
             method: 'POST',
@@ -206,13 +141,16 @@ Object.assign(DOM.prototype, {
      * @param {Boolean|string} [options.responseType] The content type of the response.
      * @param {Boolean} [options.cache=true] Whether to cache the request.
      * @param {Boolean} [options.processData=true] Whether to process the data based on the content type.
+     * @param {Boolean} [options.rejectOnCancel=true] Whether to reject the promise if the request is cancelled.
      * @param {object} [options.headers] Additional headers to send with the request.
+     * @param {Boolean|function} [options.afterSend=false] A callback to execute after making the request.
      * @param {Boolean|function} [options.beforeSend=false] A callback to execute before making the request.
-     * @param {Boolean|function} [options.uploadProgress=false] A callback to execute on upload progress.
-     * @returns {Promise} A new Promise that resolves when the request is completed, or rejects on failure.
+     * @param {Boolean|function} [options.onProgress=false] A callback to execute on download progress.
+     * @param {Boolean|function} [options.onUploadProgress=false] A callback to execute on upload progress.
+     * @returns {AjaxRequest} A new AjaxRequest that resolves when the request is completed, or rejects on failure.
      */
     put(url, data, options) {
-        return this.ajax({
+        return new AjaxRequest({
             url,
             data,
             method: 'PUT',
@@ -230,13 +168,16 @@ Object.assign(DOM.prototype, {
      * @param {Boolean|string} [options.responseType] The content type of the response.
      * @param {Boolean} [options.cache=true] Whether to cache the request.
      * @param {Boolean} [options.processData=false] Whether to process the data based on the content type.
+     * @param {Boolean} [options.rejectOnCancel=true] Whether to reject the promise if the request is cancelled.
      * @param {object} [options.headers] Additional headers to send with the request.
+     * @param {Boolean|function} [options.afterSend=false] A callback to execute after making the request.
      * @param {Boolean|function} [options.beforeSend=false] A callback to execute before making the request.
-     * @param {Boolean|function} [options.uploadProgress=false] A callback to execute on upload progress.
-     * @returns {Promise} A new Promise that resolves when the request is completed, or rejects on failure.
+     * @param {Boolean|function} [options.onProgress=false] A callback to execute on download progress.
+     * @param {Boolean|function} [options.onUploadProgress=false] A callback to execute on upload progress.
+     * @returns {AjaxRequest} A new AjaxRequest that resolves when the request is completed, or rejects on failure.
      */
     upload(url, data, options) {
-        return this.ajax({
+        return new AjaxRequest({
             url,
             data,
             method: 'POST',
