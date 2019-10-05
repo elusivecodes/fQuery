@@ -36,9 +36,9 @@ For an OOP implementation, also check out my [fQuery](https://github.com/elusive
     - [Scripts](#scripts)
     - [Stylesheets](#stylesheets)
 - [Cookie](#cookie)
-- [Ajax Request](#ajax-request)
 - [Static Methods](#static-methods)
     - [Parsing](#parsing)
+- [Ajax Request](#ajax-request)
 
 
 
@@ -2480,6 +2480,31 @@ dom.setCookie(name, value, options, json);
 ```
 
 
+## Static Methods
+
+### Parsing
+
+**Parse HTML**
+
+Create a *Document* object from a HTML string.
+
+- `html` is the HTML string.
+
+```javascript
+const doc = DOM.parseHTML(html);
+```
+
+**Parse XML**
+
+Create a *Document* object from an XML string.
+
+- `xml` is the XML string.
+
+```javascript
+const doc = DOM.parseXML(xml);
+```
+
+
 ## Ajax Request
 
 The *AjaxRequest* class provides a Promise-based wrapper for performing XHR requests.
@@ -2513,29 +2538,4 @@ It is also possible to cancel a pending *AjaxRequest*.
 
 ```javascript
 request.cancel(reason);
-```
-
-
-## Static Methods
-
-### Parsing
-
-**Parse HTML**
-
-Create a *Document* object from a HTML string.
-
-- `html` is the HTML string.
-
-```javascript
-const doc = DOM.parseHTML(html);
-```
-
-**Parse XML**
-
-Create a *Document* object from an XML string.
-
-- `xml` is the XML string.
-
-```javascript
-const doc = DOM.parseXML(xml);
 ```
