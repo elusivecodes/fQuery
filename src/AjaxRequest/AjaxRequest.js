@@ -79,16 +79,16 @@ class AjaxRequest {
             return;
         }
 
-        try {
-            this._xhr.abort();
-        } catch (error) {
-            this._reject(error);
-        }
+        this._xhr.abort();
 
         this._isCancelled = true;
 
         if (this._settings.rejectOnCancel) {
-            this._reject(new Error(reason));
+            this._reject({
+                status: this._xhr.status,
+                xhr: this._xhr,
+                reason
+            });
         }
     }
 

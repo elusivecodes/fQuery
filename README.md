@@ -39,6 +39,7 @@ For an OOP implementation, also check out my [fQuery](https://github.com/elusive
 - [Static Methods](#static-methods)
     - [Parsing](#parsing)
 - [Ajax Request](#ajax-request)
+    - [Cancelling A Request](#cancelling-a-request)
 
 
 
