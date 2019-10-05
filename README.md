@@ -32,9 +32,10 @@ For an OOP implementation, also check out my [fQuery](https://github.com/elusive
     - [Utility](#utility)
         - [Selection](#selection)
         - [Tests](#tests)
-- [Ajax Request](#ajax-request)
+- [Ajax](#ajax)
     - [Scripts](#scripts)
     - [Stylesheets](#stylesheets)
+- [Ajax Request](#ajax-request)
 - [Cookie](#cookie)
 - [Static Methods](#static-methods)
     - [Parsing](#parsing)
@@ -2205,38 +2206,7 @@ const isVisible = dom.isVisible(nodes);
 ```
 
 
-## Ajax Request
-
-The *AjaxRequest* class provides a Promise-based wrapper for performing XHR requests.
-
-- `options` is an object containing options for the request.
-    - `url` is a string containing the URL for the request, and will default to the current window location.
-    - `method` is a string containing the method to use for the request, and will default to "*GET*".
-    - `data` is an object containing data to send with the request, and will default to *false*.
-    - `contentType` is a string containing the Content-Type header to send with the request, and will default to "*application/x-www-form-urlencoded*".
-    - `responseType` is a string containing the expected Content-Type header of the response.
-    - `cache` is a boolean indicating whether to cache the request, and will default to *true*.
-    - `processData` is a boolean indicating whether to process the data depending on the `contentType`, and will default to *true*.
-    - `rejectOnCancel` is a boolean indicating whether to reject the promise if the request is cancelled, and will default to *true*.
-    - `headers` is an object containing additional headers to send with the request.
-    - `afterSend` is a function that accepts an `xhr` argument, and will be called after the request is sent.
-    - `beforeSend` is a function that accepts an `xhr` argument, and will be called before the request is sent.
-    - `onProgress` is a function that accepts `progress`, `xhr` and `event` as arguments and will be called on XHR download progress.
-    - `onUploadProgress` is a function that accepts `progress`, `xhr` and `event` as arguments and will be called on XHR upload progress.
-
-```javascript
-const request = new AjaxRequest(options);
-```
-
-The *AjaxRequest* object resolves when the request is completed, or rejects on failure.
-
-It is also possible to cancel a pending *AjaxRequest*.
-
-- `reason` is a string indicating the reason the request was cancelled, and will default to "*Request was cancelled*".
-
-```javascript
-request.cancel(reason);
-```
+## Ajax
 
 **Ajax**
 
@@ -2257,7 +2227,7 @@ Perform an XHR request.
     - `onProgress` is a function that accepts `progress`, `xhr` and `event` as arguments and will be called on XHR download progress.
     - `onUploadProgress` is a function that accepts `progress`, `xhr` and `event` as arguments and will be called on XHR upload progress.
 
-This method returns a *AjaxRequest* that resolves when the request is completed, or rejects on failure.
+This method returns an *AjaxRequest* that resolves when the request is completed, or rejects on failure.
 
 ```javascript
 dom.ajax(options);
@@ -2282,7 +2252,7 @@ Perform an XHR DELETE request.
     - `onProgress` is a function that accepts `progress`, `xhr` and `event` as arguments and will be called on XHR download progress.
     - `onUploadProgress` is a function that accepts `progress`, `xhr` and `event` as arguments and will be called on XHR upload progress.
 
-This method returns a *AjaxRequest* that resolves when the request is completed, or rejects on failure.
+This method returns an *AjaxRequest* that resolves when the request is completed, or rejects on failure.
 
 ```javascript
 dom.delete(url, options);
@@ -2307,7 +2277,7 @@ Perform an XHR GET request.
     - `onProgress` is a function that accepts `progress`, `xhr` and `event` as arguments and will be called on XHR download progress.
     - `onUploadProgress` is a function that accepts `progress`, `xhr` and `event` as arguments and will be called on XHR upload progress.
 
-This method returns a *AjaxRequest* that resolves when the request is completed, or rejects on failure.
+This method returns an *AjaxRequest* that resolves when the request is completed, or rejects on failure.
 
 ```javascript
 dom.get(url, options);
@@ -2332,7 +2302,7 @@ Perform an XHR PATCH request.
     - `onProgress` is a function that accepts `progress`, `xhr` and `event` as arguments and will be called on XHR download progress.
     - `onUploadProgress` is a function that accepts `progress`, `xhr` and `event` as arguments and will be called on XHR upload progress.
 
-This method returns a *AjaxRequest* that resolves when the request is completed, or rejects on failure.
+This method returns an *AjaxRequest* that resolves when the request is completed, or rejects on failure.
 
 ```javascript
 dom.patch(url, data, options);
@@ -2357,7 +2327,7 @@ Perform an XHR POST request.
     - `onProgress` is a function that accepts `progress`, `xhr` and `event` as arguments and will be called on XHR download progress.
     - `onUploadProgress` is a function that accepts `progress`, `xhr` and `event` as arguments and will be called on XHR upload progress.
 
-This method returns a *AjaxRequest* that resolves when the request is completed, or rejects on failure.
+This method returns an *AjaxRequest* that resolves when the request is completed, or rejects on failure.
 
 ```javascript
 dom.post(url, data, options);
@@ -2382,7 +2352,7 @@ Perform an XHR PUT request.
     - `onProgress` is a function that accepts `progress`, `xhr` and `event` as arguments and will be called on XHR download progress.
     - `onUploadProgress` is a function that accepts `progress`, `xhr` and `event` as arguments and will be called on XHR upload progress.
 
-This method returns a *AjaxRequest* that resolves when the request is completed, or rejects on failure.
+This method returns an *AjaxRequest* that resolves when the request is completed, or rejects on failure.
 
 ```javascript
 dom.put(url, data, options);
@@ -2407,7 +2377,7 @@ Perform an XHR request for a file upload.
     - `onProgress` is a function that accepts `progress`, `xhr` and `event` as arguments and will be called on XHR download progress.
     - `onUploadProgress` is a function that accepts `progress`, `xhr` and `event` as arguments and will be called on XHR upload progress.
 
-This method returns a *AjaxRequest* that resolves when the request is completed, or rejects on failure.
+This method returns an *AjaxRequest* that resolves when the request is completed, or rejects on failure.
 
 ```javascript
 dom.upload(url, data, options);
@@ -2421,7 +2391,7 @@ Load and execute a JavaScript file.
 
 - `script` is a string containing the URL for the script to load.
 
-This method returns a *AjaxRequest* that resolves when the request is completed, or rejects on failure.
+This method returns an *AjaxRequest* that resolves when the request is completed, or rejects on failure.
 
 ```javascript
 dom.loadScript(script);
@@ -2447,7 +2417,7 @@ Import A CSS Stylesheet file.
 
 - `stylesheet` is a string containing the URL for the stylesheet to load.
 
-This method returns a *AjaxRequest* that resolves when the request is completed, or rejects on failure.
+This method returns an *AjaxRequest* that resolves when the request is completed, or rejects on failure.
 
 ```javascript
 dom.loadStyle(stylesheet);
@@ -2507,6 +2477,42 @@ Set a cookie (optionally json encoded).
 
 ```javascript
 dom.setCookie(name, value, options, json);
+```
+
+
+## Ajax Request
+
+The *AjaxRequest* class provides a Promise-based wrapper for performing XHR requests.
+
+- `options` is an object containing options for the request.
+    - `url` is a string containing the URL for the request, and will default to the current window location.
+    - `method` is a string containing the method to use for the request, and will default to "*GET*".
+    - `data` is an object containing data to send with the request, and will default to *false*.
+    - `contentType` is a string containing the Content-Type header to send with the request, and will default to "*application/x-www-form-urlencoded*".
+    - `responseType` is a string containing the expected Content-Type header of the response.
+    - `cache` is a boolean indicating whether to cache the request, and will default to *true*.
+    - `processData` is a boolean indicating whether to process the data depending on the `contentType`, and will default to *true*.
+    - `rejectOnCancel` is a boolean indicating whether to reject the promise if the request is cancelled, and will default to *true*.
+    - `headers` is an object containing additional headers to send with the request.
+    - `afterSend` is a function that accepts an `xhr` argument, and will be called after the request is sent.
+    - `beforeSend` is a function that accepts an `xhr` argument, and will be called before the request is sent.
+    - `onProgress` is a function that accepts `progress`, `xhr` and `event` as arguments and will be called on XHR download progress.
+    - `onUploadProgress` is a function that accepts `progress`, `xhr` and `event` as arguments and will be called on XHR upload progress.
+
+```javascript
+const request = new AjaxRequest(options);
+```
+
+The *AjaxRequest* object resolves when the request is completed, or rejects on failure.
+
+### Cancelling A Request
+
+It is also possible to cancel a pending *AjaxRequest*.
+
+- `reason` is a string indicating the reason the request was cancelled, and will default to "*Request was cancelled*".
+
+```javascript
+request.cancel(reason);
 ```
 
 
