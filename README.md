@@ -35,8 +35,8 @@ For an OOP implementation, also check out my [fQuery](https://github.com/elusive
 - [Ajax](#ajax)
     - [Scripts](#scripts)
     - [Stylesheets](#stylesheets)
-- [Ajax Request](#ajax-request)
 - [Cookie](#cookie)
+- [Ajax Request](#ajax-request)
 - [Static Methods](#static-methods)
     - [Parsing](#parsing)
 
