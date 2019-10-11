@@ -1,7 +1,7 @@
 const path = require('path');
 const fs = require('fs');
 const filepath = require('filepath');
-const uglify = require('uglify-es');
+const terser = require('terser');
 const babel = require('@babel/core');
 
 const srcFolder = 'src';
@@ -46,7 +46,12 @@ const code = wrapper.replace(
 );
 
 // minify
-const minified = uglify.minify(code);
+const minified = terser.minify(code, {
+    ecma: 8,
+    compress: {
+        ecma: 8
+    }
+});
 
 // write files
 if (minified.error) {
@@ -66,7 +71,9 @@ if (minified.error) {
 // es5 transpile
 const es5 = babel.transformSync(code, { presets: ['@babel/env'] });
 
-const minifiedes5 = uglify.minify(es5.code);
+const minifiedes5 = terser.minify(es5.code, {
+    ecma: 5
+});
 
 if (minifiedes5.error) {
     console.error(minifiedes5.error);
