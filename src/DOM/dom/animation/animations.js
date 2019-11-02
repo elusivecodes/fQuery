@@ -187,7 +187,7 @@ Object.assign(DOM.prototype, {
                     options.direction;
 
                 let translateStyle, size, inverse;
-                if (dir === 'top' || dir === 'bottom') {
+                if (['top', 'bottom'].includes(dir)) {
                     translateStyle = options.useGpu ?
                         'Y' :
                         'margin-top';
@@ -247,7 +247,7 @@ Object.assign(DOM.prototype, {
                     options.direction;
 
                 let translateStyle, size, inverse;
-                if (dir === 'top' || dir === 'bottom') {
+                if (['top', 'bottom'].includes(dir)) {
                     translateStyle = options.useGpu ?
                         'Y' :
                         'margin-top';
@@ -324,14 +324,14 @@ Object.assign(DOM.prototype, {
                         options.direction;
 
                     let sizeStyle, translateStyle;
-                    if (dir === 'top' || dir === 'bottom') {
+                    if (['top', 'bottom'].includes(dir)) {
                         sizeStyle = 'height';
                         if (dir === 'top') {
                             translateStyle = options.useGpu ?
                                 'Y' :
                                 'margin-top';
                         }
-                    } else if (dir === 'left' || dir === 'right') {
+                    } else {
                         sizeStyle = 'width';
                         if (dir === 'left') {
                             translateStyle = options.useGpu ?
@@ -411,14 +411,14 @@ Object.assign(DOM.prototype, {
                         options.direction;
 
                     let sizeStyle, translateStyle;
-                    if (dir === 'top' || dir === 'bottom') {
+                    if (['top', 'bottom'].includes(dir)) {
                         sizeStyle = 'height';
                         if (dir === 'top') {
                             translateStyle = options.useGpu ?
                                 'Y' :
                                 'margin-top';
                         }
-                    } else if (dir === 'left' || dir === 'right') {
+                    } else {
                         sizeStyle = 'width';
                         if (dir === 'left') {
                             translateStyle = options.useGpu ?

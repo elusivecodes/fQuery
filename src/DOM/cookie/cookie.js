@@ -14,7 +14,8 @@ Object.assign(DOM.prototype, {
         const cookie = decodeURIComponent(this._context.cookie)
             .split(';')
             .find(cookie =>
-                cookie.trimStart()
+                cookie
+                    .trimStart()
                     .substring(0, name.length) === name
             );
 
@@ -72,8 +73,11 @@ Object.assign(DOM.prototype, {
 
         if (options) {
             if (options.expires) {
-                let date = new Date;
-                date.setTime(date.getTime() + (options.expires * 1000));
+                const date = new Date;
+                date.setTime(
+                    date.getTime()
+                    + options.expires * 1000
+                );
                 cookie += `;expires=${date.toUTCString()}`;
             }
 

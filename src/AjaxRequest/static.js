@@ -60,19 +60,26 @@ Object.assign(AjaxRequest, {
      */
     _parseParam(key, value) {
         if (Core.isArray(value)) {
-            return value.map(val =>
-                this._parseParam(key, val)
-            ).flat();
+            const values = [];
+            for (const val of value) {
+                values.push(
+                    this._parseParam(key, val)
+                );
+            }
+            return values.flat();
         }
 
         if (Core.isObject(value)) {
-            return Object.keys(value)
-                .map(subKey =>
+            const values = [];
+            for (const key in value) {
+                values.push(
                     this._parseParam(
                         `${key}[${subKey}]`,
                         value[subKey]
                     )
-                ).flat();
+                );
+            }
+            return values.flat();
         }
 
         return `${key}=${value}`;
@@ -84,20 +91,23 @@ Object.assign(AjaxRequest, {
      * @returns {string} The URI-encoded attribute string.
      */
     _parseParams(data) {
-        let values = [];
+        const values = [];
 
         if (Core.isArray(data)) {
-            values = data.map(value =>
-                this._parseParam(
-                    value.name,
-                    value.value
+            for (const value of data) {
+                values.push(
+                    this._parseParam(
+                        value.name,
+                        value.value
+                    )
                 )
-            );
+            }
         } else if (Core.isObject(data)) {
-            values = Object.keys(data)
-                .map(key =>
+            for (const key in data) {
+                values.push(
                     this._parseParam(key, data[key])
                 );
+            }
         }
 
         return values

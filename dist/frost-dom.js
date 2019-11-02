@@ -301,19 +301,26 @@
          */
         _parseParam(key, value) {
             if (Core.isArray(value)) {
-                return value.map(val =>
-                    this._parseParam(key, val)
-                ).flat();
+                const values = [];
+                for (const val of value) {
+                    values.push(
+                        this._parseParam(key, val)
+                    );
+                }
+                return values.flat();
             }
 
             if (Core.isObject(value)) {
-                return Object.keys(value)
-                    .map(subKey =>
+                const values = [];
+                for (const key in value) {
+                    values.push(
                         this._parseParam(
                             `${key}[${subKey}]`,
                             value[subKey]
                         )
-                    ).flat();
+                    );
+                }
+                return values.flat();
             }
 
             return `${key}=${value}`;
@@ -325,20 +332,23 @@
          * @returns {string} The URI-encoded attribute string.
          */
         _parseParams(data) {
-            let values = [];
+            const values = [];
 
             if (Core.isArray(data)) {
-                values = data.map(value =>
-                    this._parseParam(
-                        value.name,
-                        value.value
+                for (const value of data) {
+                    values.push(
+                        this._parseParam(
+                            value.name,
+                            value.value
+                        )
                     )
-                );
+                }
             } else if (Core.isObject(data)) {
-                values = Object.keys(data)
-                    .map(key =>
+                for (const key in data) {
+                    values.push(
                         this._parseParam(key, data[key])
                     );
+                }
             }
 
             return values
@@ -701,7 +711,8 @@
             const cookie = decodeURIComponent(this._context.cookie)
                 .split(';')
                 .find(cookie =>
-                    cookie.trimStart()
+                    cookie
+                        .trimStart()
                         .substring(0, name.length) === name
                 );
 
@@ -759,8 +770,11 @@
 
             if (options) {
                 if (options.expires) {
-                    let date = new Date;
-                    date.setTime(date.getTime() + (options.expires * 1000));
+                    const date = new Date;
+                    date.setTime(
+                        date.getTime()
+                        + options.expires * 1000
+                    );
                     cookie += `;expires=${date.toUTCString()}`;
                 }
 
@@ -797,13 +811,11 @@
         animate(nodes, callback, options) {
             nodes = this.parseNodes(nodes);
 
-            options = {
-                ...DOM.animationDefaults,
-                ...options
-            };
-
             const promises = nodes.map(node =>
-                DOM._animate(node, callback, options)
+                DOM._animate(node, callback, {
+                    ...DOM.animationDefaults,
+                    ...options
+                })
             );
 
             DOM._start();
@@ -1015,7 +1027,7 @@
                         options.direction;
 
                     let translateStyle, size, inverse;
-                    if (dir === 'top' || dir === 'bottom') {
+                    if (['top', 'bottom'].includes(dir)) {
                         translateStyle = options.useGpu ?
                             'Y' :
                             'margin-top';
@@ -1075,7 +1087,7 @@
                         options.direction;
 
                     let translateStyle, size, inverse;
-                    if (dir === 'top' || dir === 'bottom') {
+                    if (['top', 'bottom'].includes(dir)) {
                         translateStyle = options.useGpu ?
                             'Y' :
                             'margin-top';
@@ -1152,14 +1164,14 @@
                             options.direction;
 
                         let sizeStyle, translateStyle;
-                        if (dir === 'top' || dir === 'bottom') {
+                        if (['top', 'bottom'].includes(dir)) {
                             sizeStyle = 'height';
                             if (dir === 'top') {
                                 translateStyle = options.useGpu ?
                                     'Y' :
                                     'margin-top';
                             }
-                        } else if (dir === 'left' || dir === 'right') {
+                        } else {
                             sizeStyle = 'width';
                             if (dir === 'left') {
                                 translateStyle = options.useGpu ?
@@ -1239,14 +1251,14 @@
                             options.direction;
 
                         let sizeStyle, translateStyle;
-                        if (dir === 'top' || dir === 'bottom') {
+                        if (['top', 'bottom'].includes(dir)) {
                             sizeStyle = 'height';
                             if (dir === 'top') {
                                 translateStyle = options.useGpu ?
                                     'Y' :
                                     'margin-top';
                             }
-                        } else if (dir === 'left' || dir === 'right') {
+                        } else {
                             sizeStyle = 'width';
                             if (dir === 'left') {
                                 translateStyle = options.useGpu ?

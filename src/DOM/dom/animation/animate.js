@@ -17,13 +17,11 @@ Object.assign(DOM.prototype, {
     animate(nodes, callback, options) {
         nodes = this.parseNodes(nodes);
 
-        options = {
-            ...DOM.animationDefaults,
-            ...options
-        };
-
         const promises = nodes.map(node =>
-            DOM._animate(node, callback, options)
+            DOM._animate(node, callback, {
+                ...DOM.animationDefaults,
+                ...options
+            })
         );
 
         DOM._start();
