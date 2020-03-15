@@ -56,7 +56,7 @@ Object.assign(DOM.prototype, {
             return;
         }
 
-        DOM._addEvent(
+        this.constructor._addEvent(
             window,
             'DOMContentLoaded',
             callback

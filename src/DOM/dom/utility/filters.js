@@ -97,7 +97,7 @@ Object.assign(DOM.prototype, {
                 null;
         }
 
-        const nodeFilter = DOM.parseNodesFactory(options);
+        const nodeFilter = this.constructor.parseNodesFactory(options);
 
         if (nodeFilter(nodes)) {
             return nodes;
@@ -137,7 +137,7 @@ Object.assign(DOM.prototype, {
             );
         }
 
-        const nodeFilter = DOM.parseNodesFactory(options);
+        const nodeFilter = this.constructor.parseNodesFactory(options);
 
         if (nodeFilter(nodes)) {
             return [nodes];

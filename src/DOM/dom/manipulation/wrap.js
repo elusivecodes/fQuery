@@ -17,7 +17,7 @@ Object.assign(DOM.prototype, {
         filter = this.parseFilter(filter);
 
         for (const node of nodes) {
-            DOM._unwrap(node, filter);
+            this.constructor._unwrap(node, filter);
         }
     },
 
@@ -35,7 +35,7 @@ Object.assign(DOM.prototype, {
         others = this.parseNodes(others, { fragment: true, html: true });
 
         for (const node of nodes) {
-            DOM._wrap(node, others);
+            this.constructor._wrap(node, others);
         }
     },
 
@@ -54,7 +54,7 @@ Object.assign(DOM.prototype, {
 
         const clones = this.clone(others, true);
 
-        DOM._wrapAll(nodes, clones);
+        this.constructor._wrapAll(nodes, clones);
     },
 
     /**
@@ -69,7 +69,7 @@ Object.assign(DOM.prototype, {
         others = this.parseNodes(others, { fragment: true, html: true });
 
         for (const node of nodes) {
-            DOM._wrapInner(node, others);
+            this.constructor._wrapInner(node, others);
         }
     }
 

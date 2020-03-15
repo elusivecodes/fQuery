@@ -18,13 +18,13 @@ Object.assign(DOM.prototype, {
         nodes = this.parseNodes(nodes);
 
         const promises = nodes.map(node =>
-            DOM._animate(node, callback, {
-                ...DOM.animationDefaults,
+            this.constructor._animate(node, callback, {
+                ...this.constructor.animationDefaults,
                 ...options
             })
         );
 
-        DOM._start();
+        this.constructor._start();
 
         return Promise.all(promises);
     },
@@ -38,7 +38,7 @@ Object.assign(DOM.prototype, {
         nodes = this.parseNodes(nodes);
 
         for (const node of nodes) {
-            DOM._stop(node, finish);
+            this.constructor._stop(node, finish);
         }
     }
 

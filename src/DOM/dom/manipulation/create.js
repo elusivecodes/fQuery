@@ -50,14 +50,14 @@ Object.assign(DOM.prototype, {
         if ('class' in options) {
             DOMNode.addClass(
                 node,
-                ...DOM._parseClasses(
+                ...this.constructor._parseClasses(
                     Core.wrap(options.class)
                 )
             );
         }
 
         if ('style' in options) {
-            DOM._setStyle(node, options.style);
+            this.constructor._setStyle(node, options.style);
         }
 
         if ('value' in options) {
@@ -65,15 +65,15 @@ Object.assign(DOM.prototype, {
         }
 
         if ('attributes' in options) {
-            DOM._setAttribute(node, options.attributes);
+            this.constructor._setAttribute(node, options.attributes);
         }
 
         if ('properties' in options) {
-            DOM._setProperty(node, options.properties);
+            this.constructor._setProperty(node, options.properties);
         }
 
         if ('dataset' in options) {
-            DOM._setDataset(node, options.dataset);
+            this.constructor._setDataset(node, options.dataset);
         }
 
         return node;

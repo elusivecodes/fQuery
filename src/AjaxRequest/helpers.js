@@ -73,9 +73,9 @@ Object.assign(AjaxRequest.prototype, {
             if (this._settings.contentType === 'application/json') {
                 this._settings.data = JSON.stringify(this._settings.data);
             } else if (this._settings.contentType === 'application/x-www-form-urlencoded') {
-                this._settings.data = AjaxRequest._parseParams(this._settings.data);
+                this._settings.data = this.constructor._parseParams(this._settings.data);
             } else {
-                this._settings.data = AjaxRequest._parseFormData(this._settings.data);
+                this._settings.data = this.constructor._parseFormData(this._settings.data);
             }
         }
 

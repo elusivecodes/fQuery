@@ -18,7 +18,7 @@ Object.assign(DOM.prototype, {
         nodes = this.parseNodes(nodes, { node: true, fragment: true });
 
         return nodes.map(node =>
-            DOM._clone(node, deep, cloneEvents, cloneData)
+            this.constructor._clone(node, deep, cloneEvents, cloneData)
         );
     },
 
@@ -50,7 +50,7 @@ Object.assign(DOM.prototype, {
         nodes = this.parseNodes(nodes, { fragment: true, shadow: true, document: true });
 
         for (const node of nodes) {
-            DOM._empty(node);
+            this.constructor._empty(node);
         }
     },
 
@@ -70,7 +70,7 @@ Object.assign(DOM.prototype, {
                 continue;
             }
 
-            DOM._remove(node);
+            this.constructor._remove(node);
             DOMNode.removeChild(parent, node);
         }
     },
@@ -98,7 +98,7 @@ Object.assign(DOM.prototype, {
         others = this.parseNodes(others, { node: true, fragment: true, html: true });
 
         for (const node of nodes) {
-            DOM._replaceWith(node, others);
+            this.constructor._replaceWith(node, others);
         }
     }
 

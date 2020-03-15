@@ -90,6 +90,10 @@ Object.assign(DOM, {
         'z-index'
     ],
 
+    INNER: 0,
+    OUTER: 2,
+    OUTER_MARGIN: 3,
+
     // Complex selector RegExp
     _complexRegExp: /(?:^\s*[\>\+\~]|\,(?=(?:(?:[^"']*["']){2})*[^"']*$)\s*[\>\+\~])/,
 

@@ -52,7 +52,7 @@
         constructor(settings) {
             this._settings = Core.extend(
                 {},
-                AjaxRequest.defaults,
+                this.constructor.defaults,
                 settings
             );
 
@@ -70,7 +70,7 @@
                 this._settings.headers['Content-Type'] = this._settings.contentType;
             }
 
-            this._isLocal = AjaxRequest._localRegExp.test(location.protocol);
+            this._isLocal = this.constructor._localRegExp.test(location.protocol);
 
             if (!this._isLocal && !('X-Requested-With' in this._settings.headers)) {
                 this._settings.headers['X-Requested-With'] = 'XMLHttpRequest';
@@ -224,9 +224,9 @@
                 if (this._settings.contentType === 'application/json') {
                     this._settings.data = JSON.stringify(this._settings.data);
                 } else if (this._settings.contentType === 'application/x-www-form-urlencoded') {
-                    this._settings.data = AjaxRequest._parseParams(this._settings.data);
+                    this._settings.data = this.constructor._parseParams(this._settings.data);
                 } else {
-                    this._settings.data = AjaxRequest._parseFormData(this._settings.data);
+                    this._settings.data = this.constructor._parseFormData(this._settings.data);
                 }
             }
 
@@ -351,9 +351,9 @@
                 }
             }
 
-            return values
-                .flatMap(encodeURI)
-                .join('&');
+            const paramString = values.flat().join('&');
+
+            return encodeURI(paramString);
         }
 
     });
@@ -812,13 +812,13 @@
             nodes = this.parseNodes(nodes);
 
             const promises = nodes.map(node =>
-                DOM._animate(node, callback, {
-                    ...DOM.animationDefaults,
+                this.constructor._animate(node, callback, {
+                    ...this.constructor.animationDefaults,
                     ...options
                 })
             );
 
-            DOM._start();
+            this.constructor._start();
 
             return Promise.all(promises);
         },
@@ -832,7 +832,7 @@
             nodes = this.parseNodes(nodes);
 
             for (const node of nodes) {
-                DOM._stop(node, finish);
+                this.constructor._stop(node, finish);
             }
         }
 
@@ -1031,13 +1031,13 @@
                         translateStyle = options.useGpu ?
                             'Y' :
                             'margin-top';
-                        size = DOM._height(node);
+                        size = this.constructor._height(node);
                         inverse = dir === 'top';
                     } else {
                         translateStyle = options.useGpu ?
                             'X' :
                             'margin-left';
-                        size = DOM._width(node);
+                        size = this.constructor._width(node);
                         inverse = dir === 'left';
                     }
 
@@ -1091,13 +1091,13 @@
                         translateStyle = options.useGpu ?
                             'Y' :
                             'margin-top';
-                        size = DOM._height(node);
+                        size = this.constructor._height(node);
                         inverse = dir === 'top';
                     } else {
                         translateStyle = options.useGpu ?
                             'X' :
                             'margin-left';
-                        size = DOM._width(node);
+                        size = this.constructor._width(node);
                         inverse = dir === 'left';
                     }
 
@@ -1131,7 +1131,7 @@
             nodes = this.parseNodes(nodes);
 
             options = {
-                ...DOM.animationDefaults,
+                ...this.constructor.animationDefaults,
                 direction: 'bottom',
                 useGpu: true,
                 ...options
@@ -1142,7 +1142,7 @@
                 const initialWidth = DOMNode.getStyle(node, 'width');
                 DOMNode.setStyle(node, 'overflow', 'hidden');
 
-                return DOM._animate(
+                return this.constructor._animate(
                     node,
                     (node, progress, options) => {
                         DOMNode.setStyle(node, 'height', initialHeight);
@@ -1198,7 +1198,7 @@
                 );
             });
 
-            DOM._start();
+            this.constructor._start();
 
             return Promise.all(promises);
         },
@@ -1218,7 +1218,7 @@
             nodes = this.parseNodes(nodes);
 
             options = {
-                ...DOM.animationDefaults,
+                ...this.constructor.animationDefaults,
                 direction: 'bottom',
                 useGpu: true,
                 ...options
@@ -1229,7 +1229,7 @@
                 const initialWidth = DOMNode.getStyle(node, 'width');
                 DOMNode.setStyle(node, 'overflow', 'hidden');
 
-                return DOM._animate(
+                return this.constructor._animate(
                     node,
                     (node, progress, options) => {
                         DOMNode.setStyle(node, 'height', initialHeight);
@@ -1285,7 +1285,7 @@
                 );
             });
 
-            DOM._start();
+            this.constructor._start();
 
             return Promise.all(promises);
         }
@@ -1306,7 +1306,7 @@
             nodes = this.parseNodes(nodes);
 
             for (const node of nodes) {
-                DOM._clearQueue(node);
+                this.constructor._clearQueue(node);
             }
         },
 
@@ -1319,7 +1319,7 @@
             nodes = this.parseNodes(nodes);
 
             for (const node of nodes) {
-                DOM._queue(node, callback);
+                this.constructor._queue(node, callback);
             }
         }
 
@@ -1344,7 +1344,7 @@
                 return;
             }
 
-            return DOM._getAttribute(node, attribute);
+            return this.constructor._getAttribute(node, attribute);
         },
 
         /**
@@ -1360,7 +1360,7 @@
                 return;
             }
 
-            return DOM._getDataset(node, key);
+            return this.constructor._getDataset(node, key);
         },
 
         /**
@@ -1437,7 +1437,7 @@
             nodes = this.parseNodes(nodes);
 
             for (const node of nodes) {
-                DOM._removeDataset(node, key);
+                this.constructor._removeDataset(node, key);
             }
         },
 
@@ -1463,10 +1463,10 @@
         setAttribute(nodes, attribute, value) {
             nodes = this.parseNodes(nodes);
 
-            const attributes = DOM._parseData(attribute, value);
+            const attributes = this.constructor._parseData(attribute, value);
 
             for (const node of nodes) {
-                DOM._setAttribute(node, attributes);
+                this.constructor._setAttribute(node, attributes);
             }
         },
 
@@ -1479,10 +1479,10 @@
         setDataset(nodes, key, value) {
             nodes = this.parseNodes(nodes);
 
-            const dataset = DOM._parseData(key, value, true);
+            const dataset = this.constructor._parseData(key, value, true);
 
             for (const node of nodes) {
-                DOM._setDataset(node, dataset);
+                this.constructor._setDataset(node, dataset);
             }
         },
 
@@ -1510,7 +1510,7 @@
         setProperty(nodes, property, value) {
             nodes = this.parseNodes(nodes);
 
-            const properties = DOM._parseData(property, value);
+            const properties = this.constructor._parseData(property, value);
 
             for (const node of nodes) {
                 for (const property in properties) {
@@ -1566,7 +1566,7 @@
 
             for (const node of nodes) {
                 for (const other of others) {
-                    DOM._cloneData(node, other);
+                    this.constructor._cloneData(node, other);
                 }
             }
         },
@@ -1584,7 +1584,7 @@
                 return;
             }
 
-            return DOM._getData(node, key);
+            return this.constructor._getData(node, key);
         },
 
         /**
@@ -1596,7 +1596,7 @@
             nodes = this.parseNodes(nodes, { fragment: true, shadow: true, document: true, window: true });
 
             for (const node of nodes) {
-                DOM._removeData(node, key);
+                this.constructor._removeData(node, key);
             }
         },
 
@@ -1609,10 +1609,10 @@
         setData(nodes, key, value) {
             nodes = this.parseNodes(nodes, { fragment: true, shadow: true, document: true, window: true });
 
-            const data = DOM._parseData(key, value);
+            const data = this.constructor._parseData(key, value);
 
             for (const node of nodes) {
-                DOM._setData(node, data);
+                this.constructor._setData(node, data);
             }
         }
 
@@ -1658,7 +1658,7 @@
             nodes = this.parseNodes(nodes);
 
             for (const node of nodes) {
-                DOM._constrain(node, containerBox);
+                this.constructor._constrain(node, containerBox);
             }
         },
 
@@ -1811,7 +1811,7 @@
                 return;
             }
 
-            return DOM._position(node, offset);
+            return this.constructor._position(node, offset);
         },
 
         /**
@@ -1827,7 +1827,7 @@
                 return;
             }
 
-            return DOM._rect(node, offset);
+            return this.constructor._rect(node, offset);
         }
 
     });
@@ -1855,7 +1855,7 @@
             }
 
             if (Core.isDocument(node)) {
-                return DOM._getScrollXDocument(node);
+                return this.constructor._getScrollXDocument(node);
             }
 
             return DOMNode.getScrollX(node);
@@ -1878,7 +1878,7 @@
             }
 
             if (Core.isDocument(node)) {
-                return DOM._getScrollYDocument(node);
+                return this.constructor._getScrollYDocument(node);
             }
 
             return DOMNode.getScrollY(node);
@@ -1897,9 +1897,9 @@
                 if (Core.isWindow(node)) {
                     DOMNode.setScrollWindow(node, x, y);
                 } else if (Core.isDocument(node)) {
-                    DOM._setScrollDocument(node, x, y);
+                    this.constructor._setScrollDocument(node, x, y);
                 } else {
-                    DOM._setScroll(node, x, y);
+                    this.constructor._setScroll(node, x, y);
                 }
             }
         },
@@ -1914,9 +1914,9 @@
 
             for (const node of nodes) {
                 if (Core.isWindow(node)) {
-                    DOM._setScrollXWindow(node, x);
+                    this.constructor._setScrollXWindow(node, x);
                 } else if (Core.isDocument(node)) {
-                    DOM._setScrollXDocument(node, x);
+                    this.constructor._setScrollXDocument(node, x);
                 } else {
                     DOMNode.setScrollX(node, x);
                 }
@@ -1933,9 +1933,9 @@
 
             for (const node of nodes) {
                 if (Core.isWindow(node)) {
-                    DOM._setScrollYWindow(node, y);
+                    this.constructor._setScrollYWindow(node, y);
                 } else if (Core.isDocument(node)) {
-                    DOM._setScrollYDocument(node, y);
+                    this.constructor._setScrollYDocument(node, y);
                 } else {
                     DOMNode.setScrollY(node, y);
                 }
@@ -1953,12 +1953,10 @@
         /**
          * Get the computed height of the first node.
          * @param {string|array|HTMLElement|Document|Window|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
-         * @param {Boolean} [padding] Whether to include padding height.
-         * @param {Boolean} [border] Whether to include border height.
-         * @param {Boolean} [margin] Whether to include margin height.
+         * @param {number} [innerOuter=1] Whether to include padding, border and margin heights.
          * @returns {number} The height.
          */
-        height(nodes, padding, border, margin) {
+        height(nodes, innerOuter) {
             const node = this.parseNode(nodes, { document: true, window: true });
 
             if (!node) {
@@ -1968,35 +1966,33 @@
             if (Core.isWindow(node)) {
                 return DOMNode.heightWindow(
                     node,
-                    Core.isUndefined(padding) ?
-                        false :
-                        padding
+                    Core.isUndefined(innerOuter) ?
+                        0 :
+                        innerOuter
                 );
+            }
+
+            if (Core.isUndefined(innerOuter)) {
+                innerOuter = 1;
             }
 
             if (Core.isDocument(node)) {
-                return DOM._height(
+                return this.constructor._height(
                     DOMNode.documentElement(node),
-                    Core.isUndefined(padding) ?
-                        true :
-                        padding,
-                    border,
-                    margin
+                    innerOuter
                 );
             }
 
-            return DOM._height(node, padding, border, margin);
+            return this.constructor._height(node, innerOuter);
         },
 
         /**
          * Get the computed width of the first node.
          * @param {string|array|HTMLElement|Document|Window|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
-         * @param {Boolean} [padding] Whether to include padding width.
-         * @param {Boolean} [border] Whether to include border width.
-         * @param {Boolean} [margin] Whether to include margin width.
+         * @param {number} [innerOuter] Whether to include padding, border and margin widths.
          * @returns {number} The width.
          */
-        width(nodes, padding, border, margin) {
+        width(nodes, innerOuter) {
             const node = this.parseNode(nodes, { document: true, window: true });
 
             if (!node) {
@@ -2006,24 +2002,24 @@
             if (Core.isWindow(node)) {
                 return DOMNode.widthWindow(
                     node,
-                    Core.isUndefined(padding) ?
-                        false :
-                        padding
+                    Core.isUndefined(innerOuter) ?
+                        0 :
+                        innerOuter
                 );
+            }
+
+            if (Core.isUndefined(innerOuter)) {
+                innerOuter = 1;
             }
 
             if (Core.isDocument(node)) {
-                return DOM._width(
+                return this.constructor._width(
                     DOMNode.documentElement(node),
-                    Core.isUndefined(padding) ?
-                        true :
-                        padding,
-                    border,
-                    margin
+                    innerOuter
                 );
             }
 
-            return DOM._width(node, padding, border, margin);
+            return this.constructor._width(node, innerOuter);
         }
 
     });
@@ -2042,7 +2038,7 @@
         addClass(nodes, ...classes) {
             nodes = this.parseNodes(nodes);
 
-            classes = DOM._parseClasses(classes);
+            classes = this._constructor._parseClasses(classes);
 
             if (!classes.length) {
                 return;
@@ -2066,7 +2062,7 @@
                 return;
             }
 
-            return DOM._css(node, style);
+            return this._constructor._css(node, style);
         },
 
         /**
@@ -2082,7 +2078,7 @@
                 return;
             }
 
-            return DOM._getStyle(node, style);
+            return this._constructor._getStyle(node, style);
         },
 
         /**
@@ -2105,7 +2101,7 @@
         removeClass(nodes, ...classes) {
             nodes = this.parseNodes(nodes);
 
-            classes = DOM._parseClasses(classes);
+            classes = this._constructor._parseClasses(classes);
 
             if (!classes.length) {
                 return;
@@ -2126,10 +2122,10 @@
         setStyle(nodes, style, value, important) {
             nodes = this.parseNodes(nodes);
 
-            const styles = DOM._parseData(style, value);
+            const styles = this._constructor._parseData(style, value);
 
             for (const node of nodes) {
-                DOM._setStyle(node, styles, important);
+                this._constructor._setStyle(node, styles, important);
             }
         },
 
@@ -2167,7 +2163,7 @@
         toggleClass(nodes, ...classes) {
             nodes = this.parseNodes(nodes);
 
-            classes = DOM._parseClasses(classes);
+            classes = this._constructor._parseClasses(classes);
 
             if (!classes.length) {
                 return;
@@ -2210,13 +2206,13 @@
                 }
 
                 if (move) {
-                    DOM._addEvent(window, 'mousemove', move);
+                    this.addEvent(window, 'mousemove', move);
                 }
 
                 if (move || up) {
-                    DOM._addEvent(window, 'mouseup', e => {
+                    this.addEvent(window, 'mouseup', e => {
                         if (move) {
-                            DOM._removeEvent(window, 'mousemove', move);
+                            this.removeEvent(window, 'mousemove', move);
                         }
 
                         if (up) {
@@ -2287,7 +2283,7 @@
                 return;
             }
 
-            DOM._addEvent(
+            this.constructor._addEvent(
                 window,
                 'DOMContentLoaded',
                 callback
@@ -2314,8 +2310,8 @@
             nodes = this.parseNodes(nodes, { shadow: true, document: true, window: true });
 
             for (const node of nodes) {
-                for (const event of DOM._parseEvents(events)) {
-                    DOM._addEvent(node, event, callback, delegate, selfDestruct);
+                for (const event of this.constructor._parseEvents(events)) {
+                    this.constructor._addEvent(node, event, callback, delegate, selfDestruct);
                 }
             }
         },
@@ -2363,7 +2359,7 @@
 
             for (const node of nodes) {
                 for (const other of others) {
-                    DOM._cloneEvents(node, other);
+                    this.constructor._cloneEvents(node, other);
                 }
             }
         },
@@ -2379,21 +2375,21 @@
             nodes = this.parseNodes(nodes, { shadow: true, document: true, window: true });
 
             events = events ?
-                DOM._parseEvents(events) :
+                this.constructor._parseEvents(events) :
                 false;
 
             for (const node of nodes) {
-                if (!DOM._events.has(node)) {
+                if (!this.constructor._events.has(node)) {
                     continue;
                 }
 
                 if (!events) {
-                    DOM._removeEvent(node, events, callback, delegate);
+                    this.constructor._removeEvent(node, events, callback, delegate);
                     continue;
                 }
 
                 for (const event of events) {
-                    DOM._removeEvent(node, event, callback, delegate);
+                    this.constructor._removeEvent(node, event, callback, delegate);
                 }
             }
         },
@@ -2421,11 +2417,11 @@
         triggerEvent(nodes, events, data, options) {
             nodes = this.parseNodes(nodes, { shadow: true, document: true, window: true });
 
-            events = DOM._parseEvents(events);
+            events = this.constructor._parseEvents(events);
 
             for (const node of nodes) {
                 for (const event of events) {
-                    DOM._triggerEvent(node, event, data, options);
+                    this.constructor._triggerEvent(node, event, data, options);
                 }
             }
         }
@@ -2484,14 +2480,14 @@
             if ('class' in options) {
                 DOMNode.addClass(
                     node,
-                    ...DOM._parseClasses(
+                    ...this.constructor._parseClasses(
                         Core.wrap(options.class)
                     )
                 );
             }
 
             if ('style' in options) {
-                DOM._setStyle(node, options.style);
+                this.constructor._setStyle(node, options.style);
             }
 
             if ('value' in options) {
@@ -2499,15 +2495,15 @@
             }
 
             if ('attributes' in options) {
-                DOM._setAttribute(node, options.attributes);
+                this.constructor._setAttribute(node, options.attributes);
             }
 
             if ('properties' in options) {
-                DOM._setProperty(node, options.properties);
+                this.constructor._setProperty(node, options.properties);
             }
 
             if ('dataset' in options) {
-                DOM._setDataset(node, options.dataset);
+                this.constructor._setDataset(node, options.dataset);
             }
 
             return node;
@@ -2583,7 +2579,7 @@
             nodes = this.parseNodes(nodes, { node: true, fragment: true });
 
             return nodes.map(node =>
-                DOM._clone(node, deep, cloneEvents, cloneData)
+                this.constructor._clone(node, deep, cloneEvents, cloneData)
             );
         },
 
@@ -2615,7 +2611,7 @@
             nodes = this.parseNodes(nodes, { fragment: true, shadow: true, document: true });
 
             for (const node of nodes) {
-                DOM._empty(node);
+                this.constructor._empty(node);
             }
         },
 
@@ -2635,7 +2631,7 @@
                     continue;
                 }
 
-                DOM._remove(node);
+                this.constructor._remove(node);
                 DOMNode.removeChild(parent, node);
             }
         },
@@ -2663,7 +2659,7 @@
             others = this.parseNodes(others, { node: true, fragment: true, html: true });
 
             for (const node of nodes) {
-                DOM._replaceWith(node, others);
+                this.constructor._replaceWith(node, others);
             }
         }
 
@@ -2830,7 +2826,7 @@
             filter = this.parseFilter(filter);
 
             for (const node of nodes) {
-                DOM._unwrap(node, filter);
+                this.constructor._unwrap(node, filter);
             }
         },
 
@@ -2848,7 +2844,7 @@
             others = this.parseNodes(others, { fragment: true, html: true });
 
             for (const node of nodes) {
-                DOM._wrap(node, others);
+                this.constructor._wrap(node, others);
             }
         },
 
@@ -2867,7 +2863,7 @@
 
             const clones = this.clone(others, true);
 
-            DOM._wrapAll(nodes, clones);
+            this.constructor._wrapAll(nodes, clones);
         },
 
         /**
@@ -2882,7 +2878,7 @@
             others = this.parseNodes(others, { fragment: true, html: true });
 
             for (const node of nodes) {
-                DOM._wrapInner(node, others);
+                this.constructor._wrapInner(node, others);
             }
         }
 
@@ -2953,11 +2949,11 @@
         fixed(nodes) {
             return this.parseNodes(nodes, { node: true })
                 .filter(node =>
-                    (Core.isElement(node) && DOM._css(node, 'position') === 'fixed') ||
-                    DOM._parents(
+                    (Core.isElement(node) && this.constructor._css(node, 'position') === 'fixed') ||
+                    this.constructor._parents(
                         node,
                         parent =>
-                            Core.isElement(parent) && DOM._css(parent, 'position') === 'fixed',
+                            Core.isElement(parent) && this.constructor._css(parent, 'position') === 'fixed',
                         false,
                         true
                     ).length
@@ -2971,7 +2967,7 @@
          */
         hidden(nodes) {
             return this.parseNodes(nodes, { node: true, document: true, window: true })
-                .filter(node => !DOM._isVisible(node));
+                .filter(node => !this.constructor._isVisible(node));
         },
 
         /**
@@ -3022,7 +3018,7 @@
          */
         visible(nodes) {
             return this.parseNodes(nodes, { node: true, document: true, window: true })
-                .filter(node => DOM._isVisible(node));
+                .filter(node => this.constructor._isVisible(node));
         },
 
         /**
@@ -3033,7 +3029,7 @@
         withAnimation(nodes) {
             return this.parseNodes(nodes)
                 .filter(node =>
-                    DOM._hasAnimation(node)
+                    this.constructor._hasAnimation(node)
                 );
         },
 
@@ -3069,7 +3065,7 @@
          * @returns {array} The filtered nodes.
          */
         withClass(nodes, ...classes) {
-            classes = DOM._parseClasses(classes);
+            classes = this.constructor._parseClasses(classes);
 
             return this.parseNodes(nodes)
                 .filter(node =>
@@ -3087,7 +3083,7 @@
         withCSSAnimation(nodes) {
             return this.parseNodes(nodes)
                 .filter(node =>
-                    DOM._hasCSSAnimation(node)
+                    this.constructor._hasCSSAnimation(node)
                 );
         },
 
@@ -3099,7 +3095,7 @@
         withCSSTransition(nodes) {
             return this.parseNodes(nodes)
                 .filter(node =>
-                    DOM._hasCSSTransition(node)
+                    this.constructor._hasCSSTransition(node)
                 );
         },
 
@@ -3112,7 +3108,7 @@
         withData(nodes, key) {
             return this.parseNodes(nodes, { node: true, fragment: true, shadow: true, document: true, window: true })
                 .filter(node =>
-                    DOM._hasData(node, key)
+                    this.constructor._hasData(node, key)
                 );
         },
 
@@ -3158,7 +3154,7 @@
          */
         find(selector, nodes = this._context) {
             // fast selector
-            const match = selector.match(DOM._fastRegExp);
+            const match = selector.match(this.constructor._fastRegExp);
             if (match) {
                 if (match[1] === '#') {
                     return this.findById(match[2], nodes);
@@ -3172,16 +3168,16 @@
             }
 
             // custom selector
-            if (selector.match(DOM._complexRegExp)) {
-                const selectors = DOM._prefixSelectors(selector, `#${DOM._tempId} `);
+            if (selector.match(this.constructor._complexRegExp)) {
+                const selectors = this.constructor._prefixSelectors(selector, `#${this.constructor._tempId} `);
 
                 if (Core.isElement(nodes)) {
-                    return DOM.__findByCustom(selectors, nodes);
+                    return this.constructor.__findByCustom(selectors, nodes);
                 }
 
                 nodes = this.parseNodes(nodes);
 
-                return DOM._findByCustom(selectors, nodes);
+                return this.constructor._findByCustom(selectors, nodes);
             }
 
             // standard selector
@@ -3193,7 +3189,7 @@
 
             nodes = this.parseNodes(nodes, { fragment: true, shadow: true, document: true });
 
-            return DOM._findBySelector(selector, nodes);
+            return this.constructor._findBySelector(selector, nodes);
         },
 
         /**
@@ -3274,7 +3270,7 @@
          */
         findOne(selector, nodes = this._context) {
             // fast selector
-            const match = selector.match(DOM._fastRegExp);
+            const match = selector.match(this.constructor._fastRegExp);
             if (match) {
                 if (match[1] === '#') {
                     return this.findOneById(match[2], nodes);
@@ -3288,16 +3284,16 @@
             }
 
             // custom selector
-            if (selector.match(DOM._complexRegExp)) {
-                const selectors = DOM._prefixSelectors(selector, `#${DOM._tempId} `);
+            if (selector.match(this.constructor._complexRegExp)) {
+                const selectors = this.constructor._prefixSelectors(selector, `#${this.constructor._tempId} `);
 
                 if (Core.isElement(nodes)) {
-                    return DOM.__findOneByCustom(selectors, nodes);
+                    return this.constructor.__findOneByCustom(selectors, nodes);
                 }
 
                 nodes = this.parseNodes(nodes);
 
-                return DOM._findOneByCustom(selectors, nodes);
+                return this.constructor._findOneByCustom(selectors, nodes);
             }
 
             // standard selector
@@ -3307,7 +3303,7 @@
 
             nodes = this.parseNodes(nodes, { fragment: true, shadow: true, document: true });
 
-            return DOM._findOneBySelector(selector, nodes);
+            return this.constructor._findOneBySelector(selector, nodes);
         },
 
         /**
@@ -3424,7 +3420,7 @@
             filter = this.parseFilter(filter);
 
             if (Core.isElement(nodes) || Core.isDocument(nodes) || Core.isFragment(nodes) || Core.isShadow(nodes)) {
-                return DOM._children(nodes, filter, first, elementsOnly);
+                return this.constructor._children(nodes, filter, first, elementsOnly);
             }
 
             nodes = this.parseNodes(nodes, { fragment: true, shadow: true, document: true });
@@ -3434,7 +3430,7 @@
             for (const node of nodes) {
                 Core.merge(
                     results,
-                    DOM._children(node, filter, first, elementsOnly)
+                    this.constructor._children(node, filter, first, elementsOnly)
                 )
             }
 
@@ -3522,7 +3518,7 @@
             filter = this.parseFilter(filter);
 
             if (Core.isNode(nodes)) {
-                return DOM._next(nodes, filter);
+                return this.constructor._next(nodes, filter);
             }
 
             // DocumentFragment and ShadowRoot nodes can not have siblings
@@ -3533,7 +3529,7 @@
             for (const node of nodes) {
                 Core.merge(
                     results,
-                    DOM._next(node, filter)
+                    this.constructor._next(node, filter)
                 )
             }
 
@@ -3555,7 +3551,7 @@
             limit = this.parseFilter(limit);
 
             if (Core.isNode(nodes)) {
-                return DOM._nextAll(nodes, filter, limit, first);
+                return this.constructor._nextAll(nodes, filter, limit, first);
             }
 
             // DocumentFragment and ShadowRoot nodes can not have siblings
@@ -3566,7 +3562,7 @@
             for (const node of nodes) {
                 Core.merge(
                     results,
-                    DOM._nextAll(node, filter, limit, first)
+                    this.constructor._nextAll(node, filter, limit, first)
                 )
             }
 
@@ -3597,7 +3593,7 @@
             filter = this.parseFilter(filter);
 
             if (Core.isNode(nodes)) {
-                return DOM._parent(nodes, filter);
+                return this.constructor._parent(nodes, filter);
             }
 
             // DocumentFragment and ShadowRoot nodes have no parent
@@ -3608,7 +3604,7 @@
             for (const node of nodes) {
                 Core.merge(
                     results,
-                    DOM._parent(node, filter)
+                    this.constructor._parent(node, filter)
                 )
             }
 
@@ -3630,7 +3626,7 @@
             limit = this.parseFilter(limit);
 
             if (Core.isNode(nodes)) {
-                return DOM._parents(nodes, filter, limit, first);
+                return this.constructor._parents(nodes, filter, limit, first);
             }
 
             // DocumentFragment and ShadowRoot nodes have no parent
@@ -3641,7 +3637,7 @@
             for (const node of nodes) {
                 Core.merge(
                     results,
-                    DOM._parents(node, filter, limit, first)
+                    this.constructor._parents(node, filter, limit, first)
                 )
             }
 
@@ -3660,7 +3656,7 @@
             filter = this.parseFilter(filter);
 
             if (Core.isNode(nodes)) {
-                return DOM._prev(nodes, filter);
+                return this.constructor._prev(nodes, filter);
             }
 
             // DocumentFragment and ShadowRoot nodes can not have siblings
@@ -3671,7 +3667,7 @@
             for (const node of nodes) {
                 Core.merge(
                     results,
-                    DOM._prev(node, filter)
+                    this.constructor._prev(node, filter)
                 )
             }
 
@@ -3693,7 +3689,7 @@
             limit = this.parseFilter(limit);
 
             if (Core.isNode(nodes)) {
-                return DOM._prevAll(nodes, filter, limit, first);
+                return this.constructor._prevAll(nodes, filter, limit, first);
             }
 
             // DocumentFragment and ShadowRoot nodes can not have siblings
@@ -3704,7 +3700,7 @@
             for (const node of nodes) {
                 Core.merge(
                     results,
-                    DOM._prevAll(node, filter, limit, first)
+                    this.constructor._prevAll(node, filter, limit, first)
                 )
             }
 
@@ -3739,7 +3735,7 @@
             filter = this.parseFilter(filter);
 
             if (Core.isNode(nodes)) {
-                return DOM._siblings(nodes, filter, elementsOnly);
+                return this.constructor._siblings(nodes, filter, elementsOnly);
             }
 
             // DocumentFragment and ShadowRoot nodes can not have siblings
@@ -3750,7 +3746,7 @@
             for (const node of nodes) {
                 Core.merge(
                     results,
-                    DOM._siblings(node, filter, elementsOnly)
+                    this.constructor._siblings(node, filter, elementsOnly)
                 )
             }
 
@@ -3860,7 +3856,7 @@
                     null;
             }
 
-            const nodeFilter = DOM.parseNodesFactory(options);
+            const nodeFilter = this.constructor.parseNodesFactory(options);
 
             if (nodeFilter(nodes)) {
                 return nodes;
@@ -3900,7 +3896,7 @@
                 );
             }
 
-            const nodeFilter = DOM.parseNodesFactory(options);
+            const nodeFilter = this.constructor.parseNodesFactory(options);
 
             if (nodeFilter(nodes)) {
                 return [nodes];
@@ -4101,7 +4097,7 @@
             DOMNode.removeRanges(selection);
 
             const fragment = DOMNode.extract(range),
-                deepest = DOM._deepest(nodes.slice().shift()),
+                deepest = this.constructor._deepest(nodes.slice().shift()),
                 children = Core.wrap(DOMNode.childNodes(fragment));
 
             for (const child of children) {
@@ -4129,7 +4125,7 @@
         hasAnimation(nodes) {
             return this.parseNodes(nodes)
                 .some(node =>
-                    DOM._hasAnimation(node)
+                    this.constructor._hasAnimation(node)
                 );
         },
 
@@ -4165,7 +4161,7 @@
          * @returns {Boolean} TRUE if any of the nodes has any of the classes, otherwise FALSE.
          */
         hasClass(nodes, ...classes) {
-            classes = DOM._parseClasses(classes);
+            classes = this.constructor._parseClasses(classes);
 
             return this.parseNodes(nodes)
                 .some(node =>
@@ -4183,7 +4179,7 @@
         hasCSSAnimation(nodes) {
             return this.parseNodes(nodes)
                 .some(node =>
-                    DOM._hasCSSAnimation(node)
+                    this.constructor._hasCSSAnimation(node)
                 );
         },
 
@@ -4195,7 +4191,7 @@
         hasCSSTransition(nodes) {
             return this.parseNodes(nodes)
                 .some(node =>
-                    DOM._hasCSSTransition(node)
+                    this.constructor._hasCSSTransition(node)
                 );
         },
 
@@ -4208,7 +4204,7 @@
         hasData(nodes, key) {
             return this.parseNodes(nodes, { fragment: true, shadow: true, document: true, window: true })
                 .some(node =>
-                    DOM._hasData(node, key)
+                    this.constructor._hasData(node, key)
                 );
         },
 
@@ -4236,7 +4232,7 @@
         hasFragment(nodes) {
             return this.parseNodes(nodes)
                 .some(node =>
-                    DOM._hasFragment(node)
+                    this.constructor._hasFragment(node)
                 );
         },
 
@@ -4261,7 +4257,7 @@
         hasShadow(nodes) {
             return this.parseNodes(nodes)
                 .some(node =>
-                    DOM._hasShadow(node)
+                    this.constructor._hasShadow(node)
                 );
         },
 
@@ -4314,11 +4310,11 @@
         isFixed(nodes) {
             return this.parseNodes(nodes, { node: true })
                 .some(node =>
-                    (Core.isElement(node) && DOM._css(node, 'position') === 'fixed') ||
-                    DOM._parents(
+                    (Core.isElement(node) && this.constructor._css(node, 'position') === 'fixed') ||
+                    this.constructor._parents(
                         node,
                         parent =>
-                            Core.isElement(parent) && DOM._css(parent, 'position') === 'fixed',
+                            Core.isElement(parent) && this.constructor._css(parent, 'position') === 'fixed',
                         false,
                         true
                     ).length
@@ -4333,7 +4329,7 @@
         isHidden(nodes) {
             return this.parseNodes(nodes, { node: true, document: true, window: true })
                 .some(node =>
-                    !DOM._isVisible(node)
+                    !this.constructor._isVisible(node)
                 );
         },
 
@@ -4360,7 +4356,7 @@
         isVisible(nodes) {
             return this.parseNodes(nodes, { node: true, document: true, window: true })
                 .some(node =>
-                    DOM._isVisible(node)
+                    this.constructor._isVisible(node)
                 );
         }
 
@@ -4397,7 +4393,7 @@
                 return;
             }
 
-            return DOM._forceShow(node, callback);
+            return this.constructor._forceShow(node, callback);
         },
 
         /**
@@ -4458,7 +4454,7 @@
                 children = DOMNode.children(fragment);
 
             for (const child of children) {
-                DOM._sanitize(child, fragment, allowedTags);
+                this.constructor._sanitize(child, fragment, allowedTags);
             }
 
             return this.getHTML(template);
@@ -5141,28 +5137,26 @@
         /**
          * Get the computed height of a single node.
          * @param {HTMLElement} node The input node.
-         * @param {Boolean} [padding=true] Whether to include padding height.
-         * @param {Boolean} [border] Whether to include border height.
-         * @param {Boolean} [margin] Whether to include margin height.
+         * @param {number} [innerOuter=1] Whether to include padding, border and margin heights.
          * @returns {number} The height.
          */
-        _height(node, padding = true, border, margin) {
+        _height(node, innerOuter = 1) {
             return this._forceShow(
                 node,
                 node => {
                     let result = DOMNode.height(node);
 
-                    if (!padding) {
+                    if (innerOuter === this.INNER) {
                         result -= parseInt(this._css(node, 'padding-top'))
                             + parseInt(this._css(node, 'padding-bottom'));
                     }
 
-                    if (border) {
+                    if (innerOuter >= this.OUTER) {
                         result += parseInt(this._css(node, 'border-top-width'))
                             + parseInt(this._css(node, 'border-bottom-width'));
                     }
 
-                    if (margin) {
+                    if (innerOuter === this.OUTER_MARGIN) {
                         result += parseInt(this._css(node, 'margin-top'))
                             + parseInt(this._css(node, 'margin-bottom'));
                     }
@@ -5175,28 +5169,26 @@
         /**
          * Get the computed width of a single node.
          * @param {HTMLElement} node The input node.
-         * @param {Boolean} [padding=true] Whether to include padding width.
-         * @param {Boolean} [border] Whether to include border width.
-         * @param {Boolean} [margin] Whether to include margin width.
+         * @param {number} [innerOuter] Whether to include padding, border and margin widths.
          * @returns {number} The width.
          */
-        _width(node, padding = true, border, margin) {
+        _width(node, innerOuter = 1) {
             return this._forceShow(
                 node,
                 node => {
                     let result = DOMNode.width(node);
 
-                    if (!padding) {
+                    if (innerOuter === this.INNER) {
                         result -= parseInt(this._css(node, 'padding-left'))
                             + parseInt(this._css(node, 'padding-right'));
                     }
 
-                    if (border) {
+                    if (innerOuter >= this.OUTER) {
                         result += parseInt(this._css(node, 'border-left-width'))
                             + parseInt(this._css(node, 'border-right-width'));
                     }
 
-                    if (margin) {
+                    if (innerOuter === this.OUTER_MARGIN) {
                         result += parseInt(this._css(node, 'margin-left'))
                             + parseInt(this._css(node, 'margin-right'));
                     }
@@ -5234,7 +5226,7 @@
                 };
             }
 
-            style = Core.snakeCase(style);
+            style = Core.kebabCase(style);
 
             return this._styles.get(node)
                 .getPropertyValue(style);
@@ -5248,7 +5240,7 @@
          */
         _getStyle(node, style) {
             if (style) {
-                style = Core.snakeCase(style);
+                style = Core.kebabCase(style);
 
                 return DOMNode.getStyle(node, style);
             }
@@ -5272,7 +5264,7 @@
         _setStyle(node, styles, important) {
             for (let style in styles) {
                 let value = styles[style];
-                style = Core.snakeCase(style);
+                style = Core.kebabCase(style);
 
                 // if value is numeric and not a number property, add px
                 if (value && Core.isNumeric(value) && !this.cssNumberProperties.includes(style)) {
@@ -6713,6 +6705,10 @@
             'widows',
             'z-index'
         ],
+
+        INNER: 0,
+        OUTER: 2,
+        OUTER_MARGIN: 3,
 
         // Complex selector RegExp
         _complexRegExp: /(?:^\s*[\>\+\~]|\,(?=(?:(?:[^"']*["']){2})*[^"']*$)\s*[\>\+\~])/,

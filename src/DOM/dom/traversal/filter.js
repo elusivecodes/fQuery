@@ -63,11 +63,11 @@ Object.assign(DOM.prototype, {
     fixed(nodes) {
         return this.parseNodes(nodes, { node: true })
             .filter(node =>
-                (Core.isElement(node) && DOM._css(node, 'position') === 'fixed') ||
-                DOM._parents(
+                (Core.isElement(node) && this.constructor._css(node, 'position') === 'fixed') ||
+                this.constructor._parents(
                     node,
                     parent =>
-                        Core.isElement(parent) && DOM._css(parent, 'position') === 'fixed',
+                        Core.isElement(parent) && this.constructor._css(parent, 'position') === 'fixed',
                     false,
                     true
                 ).length
@@ -81,7 +81,7 @@ Object.assign(DOM.prototype, {
      */
     hidden(nodes) {
         return this.parseNodes(nodes, { node: true, document: true, window: true })
-            .filter(node => !DOM._isVisible(node));
+            .filter(node => !this.constructor._isVisible(node));
     },
 
     /**
@@ -132,7 +132,7 @@ Object.assign(DOM.prototype, {
      */
     visible(nodes) {
         return this.parseNodes(nodes, { node: true, document: true, window: true })
-            .filter(node => DOM._isVisible(node));
+            .filter(node => this.constructor._isVisible(node));
     },
 
     /**
@@ -143,7 +143,7 @@ Object.assign(DOM.prototype, {
     withAnimation(nodes) {
         return this.parseNodes(nodes)
             .filter(node =>
-                DOM._hasAnimation(node)
+                this.constructor._hasAnimation(node)
             );
     },
 
@@ -179,7 +179,7 @@ Object.assign(DOM.prototype, {
      * @returns {array} The filtered nodes.
      */
     withClass(nodes, ...classes) {
-        classes = DOM._parseClasses(classes);
+        classes = this.constructor._parseClasses(classes);
 
         return this.parseNodes(nodes)
             .filter(node =>
@@ -197,7 +197,7 @@ Object.assign(DOM.prototype, {
     withCSSAnimation(nodes) {
         return this.parseNodes(nodes)
             .filter(node =>
-                DOM._hasCSSAnimation(node)
+                this.constructor._hasCSSAnimation(node)
             );
     },
 
@@ -209,7 +209,7 @@ Object.assign(DOM.prototype, {
     withCSSTransition(nodes) {
         return this.parseNodes(nodes)
             .filter(node =>
-                DOM._hasCSSTransition(node)
+                this.constructor._hasCSSTransition(node)
             );
     },
 
@@ -222,7 +222,7 @@ Object.assign(DOM.prototype, {
     withData(nodes, key) {
         return this.parseNodes(nodes, { node: true, fragment: true, shadow: true, document: true, window: true })
             .filter(node =>
-                DOM._hasData(node, key)
+                this.constructor._hasData(node, key)
             );
     },
 

@@ -15,7 +15,7 @@ Object.assign(DOM.prototype, {
 
         for (const node of nodes) {
             for (const other of others) {
-                DOM._cloneData(node, other);
+                this.constructor._cloneData(node, other);
             }
         }
     },
@@ -33,7 +33,7 @@ Object.assign(DOM.prototype, {
             return;
         }
 
-        return DOM._getData(node, key);
+        return this.constructor._getData(node, key);
     },
 
     /**
@@ -45,7 +45,7 @@ Object.assign(DOM.prototype, {
         nodes = this.parseNodes(nodes, { fragment: true, shadow: true, document: true, window: true });
 
         for (const node of nodes) {
-            DOM._removeData(node, key);
+            this.constructor._removeData(node, key);
         }
     },
 
@@ -58,10 +58,10 @@ Object.assign(DOM.prototype, {
     setData(nodes, key, value) {
         nodes = this.parseNodes(nodes, { fragment: true, shadow: true, document: true, window: true });
 
-        const data = DOM._parseData(key, value);
+        const data = this.constructor._parseData(key, value);
 
         for (const node of nodes) {
-            DOM._setData(node, data);
+            this.constructor._setData(node, data);
         }
     }
 

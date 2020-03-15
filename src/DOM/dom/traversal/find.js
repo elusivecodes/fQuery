@@ -12,7 +12,7 @@ Object.assign(DOM.prototype, {
      */
     find(selector, nodes = this._context) {
         // fast selector
-        const match = selector.match(DOM._fastRegExp);
+        const match = selector.match(this.constructor._fastRegExp);
         if (match) {
             if (match[1] === '#') {
                 return this.findById(match[2], nodes);
@@ -26,16 +26,16 @@ Object.assign(DOM.prototype, {
         }
 
         // custom selector
-        if (selector.match(DOM._complexRegExp)) {
-            const selectors = DOM._prefixSelectors(selector, `#${DOM._tempId} `);
+        if (selector.match(this.constructor._complexRegExp)) {
+            const selectors = this.constructor._prefixSelectors(selector, `#${this.constructor._tempId} `);
 
             if (Core.isElement(nodes)) {
-                return DOM.__findByCustom(selectors, nodes);
+                return this.constructor.__findByCustom(selectors, nodes);
             }
 
             nodes = this.parseNodes(nodes);
 
-            return DOM._findByCustom(selectors, nodes);
+            return this.constructor._findByCustom(selectors, nodes);
         }
 
         // standard selector
@@ -47,7 +47,7 @@ Object.assign(DOM.prototype, {
 
         nodes = this.parseNodes(nodes, { fragment: true, shadow: true, document: true });
 
-        return DOM._findBySelector(selector, nodes);
+        return this.constructor._findBySelector(selector, nodes);
     },
 
     /**
@@ -128,7 +128,7 @@ Object.assign(DOM.prototype, {
      */
     findOne(selector, nodes = this._context) {
         // fast selector
-        const match = selector.match(DOM._fastRegExp);
+        const match = selector.match(this.constructor._fastRegExp);
         if (match) {
             if (match[1] === '#') {
                 return this.findOneById(match[2], nodes);
@@ -142,16 +142,16 @@ Object.assign(DOM.prototype, {
         }
 
         // custom selector
-        if (selector.match(DOM._complexRegExp)) {
-            const selectors = DOM._prefixSelectors(selector, `#${DOM._tempId} `);
+        if (selector.match(this.constructor._complexRegExp)) {
+            const selectors = this.constructor._prefixSelectors(selector, `#${this.constructor._tempId} `);
 
             if (Core.isElement(nodes)) {
-                return DOM.__findOneByCustom(selectors, nodes);
+                return this.constructor.__findOneByCustom(selectors, nodes);
             }
 
             nodes = this.parseNodes(nodes);
 
-            return DOM._findOneByCustom(selectors, nodes);
+            return this.constructor._findOneByCustom(selectors, nodes);
         }
 
         // standard selector
@@ -161,7 +161,7 @@ Object.assign(DOM.prototype, {
 
         nodes = this.parseNodes(nodes, { fragment: true, shadow: true, document: true });
 
-        return DOM._findOneBySelector(selector, nodes);
+        return this.constructor._findOneBySelector(selector, nodes);
     },
 
     /**

@@ -38,7 +38,7 @@ Object.assign(DOM.prototype, {
         nodes = this.parseNodes(nodes);
 
         for (const node of nodes) {
-            DOM._constrain(node, containerBox);
+            this.constructor._constrain(node, containerBox);
         }
     },
 
@@ -191,7 +191,7 @@ Object.assign(DOM.prototype, {
             return;
         }
 
-        return DOM._position(node, offset);
+        return this.constructor._position(node, offset);
     },
 
     /**
@@ -207,7 +207,7 @@ Object.assign(DOM.prototype, {
             return;
         }
 
-        return DOM._rect(node, offset);
+        return this.constructor._rect(node, offset);
     }
 
 });

@@ -30,7 +30,7 @@ Object.assign(DOM.prototype, {
         filter = this.parseFilter(filter);
 
         if (Core.isElement(nodes) || Core.isDocument(nodes) || Core.isFragment(nodes) || Core.isShadow(nodes)) {
-            return DOM._children(nodes, filter, first, elementsOnly);
+            return this.constructor._children(nodes, filter, first, elementsOnly);
         }
 
         nodes = this.parseNodes(nodes, { fragment: true, shadow: true, document: true });
@@ -40,7 +40,7 @@ Object.assign(DOM.prototype, {
         for (const node of nodes) {
             Core.merge(
                 results,
-                DOM._children(node, filter, first, elementsOnly)
+                this.constructor._children(node, filter, first, elementsOnly)
             )
         }
 
@@ -128,7 +128,7 @@ Object.assign(DOM.prototype, {
         filter = this.parseFilter(filter);
 
         if (Core.isNode(nodes)) {
-            return DOM._next(nodes, filter);
+            return this.constructor._next(nodes, filter);
         }
 
         // DocumentFragment and ShadowRoot nodes can not have siblings
@@ -139,7 +139,7 @@ Object.assign(DOM.prototype, {
         for (const node of nodes) {
             Core.merge(
                 results,
-                DOM._next(node, filter)
+                this.constructor._next(node, filter)
             )
         }
 
@@ -161,7 +161,7 @@ Object.assign(DOM.prototype, {
         limit = this.parseFilter(limit);
 
         if (Core.isNode(nodes)) {
-            return DOM._nextAll(nodes, filter, limit, first);
+            return this.constructor._nextAll(nodes, filter, limit, first);
         }
 
         // DocumentFragment and ShadowRoot nodes can not have siblings
@@ -172,7 +172,7 @@ Object.assign(DOM.prototype, {
         for (const node of nodes) {
             Core.merge(
                 results,
-                DOM._nextAll(node, filter, limit, first)
+                this.constructor._nextAll(node, filter, limit, first)
             )
         }
 
@@ -203,7 +203,7 @@ Object.assign(DOM.prototype, {
         filter = this.parseFilter(filter);
 
         if (Core.isNode(nodes)) {
-            return DOM._parent(nodes, filter);
+            return this.constructor._parent(nodes, filter);
         }
 
         // DocumentFragment and ShadowRoot nodes have no parent
@@ -214,7 +214,7 @@ Object.assign(DOM.prototype, {
         for (const node of nodes) {
             Core.merge(
                 results,
-                DOM._parent(node, filter)
+                this.constructor._parent(node, filter)
             )
         }
 
@@ -236,7 +236,7 @@ Object.assign(DOM.prototype, {
         limit = this.parseFilter(limit);
 
         if (Core.isNode(nodes)) {
-            return DOM._parents(nodes, filter, limit, first);
+            return this.constructor._parents(nodes, filter, limit, first);
         }
 
         // DocumentFragment and ShadowRoot nodes have no parent
@@ -247,7 +247,7 @@ Object.assign(DOM.prototype, {
         for (const node of nodes) {
             Core.merge(
                 results,
-                DOM._parents(node, filter, limit, first)
+                this.constructor._parents(node, filter, limit, first)
             )
         }
 
@@ -266,7 +266,7 @@ Object.assign(DOM.prototype, {
         filter = this.parseFilter(filter);
 
         if (Core.isNode(nodes)) {
-            return DOM._prev(nodes, filter);
+            return this.constructor._prev(nodes, filter);
         }
 
         // DocumentFragment and ShadowRoot nodes can not have siblings
@@ -277,7 +277,7 @@ Object.assign(DOM.prototype, {
         for (const node of nodes) {
             Core.merge(
                 results,
-                DOM._prev(node, filter)
+                this.constructor._prev(node, filter)
             )
         }
 
@@ -299,7 +299,7 @@ Object.assign(DOM.prototype, {
         limit = this.parseFilter(limit);
 
         if (Core.isNode(nodes)) {
-            return DOM._prevAll(nodes, filter, limit, first);
+            return this.constructor._prevAll(nodes, filter, limit, first);
         }
 
         // DocumentFragment and ShadowRoot nodes can not have siblings
@@ -310,7 +310,7 @@ Object.assign(DOM.prototype, {
         for (const node of nodes) {
             Core.merge(
                 results,
-                DOM._prevAll(node, filter, limit, first)
+                this.constructor._prevAll(node, filter, limit, first)
             )
         }
 
@@ -345,7 +345,7 @@ Object.assign(DOM.prototype, {
         filter = this.parseFilter(filter);
 
         if (Core.isNode(nodes)) {
-            return DOM._siblings(nodes, filter, elementsOnly);
+            return this.constructor._siblings(nodes, filter, elementsOnly);
         }
 
         // DocumentFragment and ShadowRoot nodes can not have siblings
@@ -356,7 +356,7 @@ Object.assign(DOM.prototype, {
         for (const node of nodes) {
             Core.merge(
                 results,
-                DOM._siblings(node, filter, elementsOnly)
+                this.constructor._siblings(node, filter, elementsOnly)
             )
         }
 

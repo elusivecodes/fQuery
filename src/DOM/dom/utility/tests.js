@@ -12,7 +12,7 @@ Object.assign(DOM.prototype, {
     hasAnimation(nodes) {
         return this.parseNodes(nodes)
             .some(node =>
-                DOM._hasAnimation(node)
+                this.constructor._hasAnimation(node)
             );
     },
 
@@ -48,7 +48,7 @@ Object.assign(DOM.prototype, {
      * @returns {Boolean} TRUE if any of the nodes has any of the classes, otherwise FALSE.
      */
     hasClass(nodes, ...classes) {
-        classes = DOM._parseClasses(classes);
+        classes = this.constructor._parseClasses(classes);
 
         return this.parseNodes(nodes)
             .some(node =>
@@ -66,7 +66,7 @@ Object.assign(DOM.prototype, {
     hasCSSAnimation(nodes) {
         return this.parseNodes(nodes)
             .some(node =>
-                DOM._hasCSSAnimation(node)
+                this.constructor._hasCSSAnimation(node)
             );
     },
 
@@ -78,7 +78,7 @@ Object.assign(DOM.prototype, {
     hasCSSTransition(nodes) {
         return this.parseNodes(nodes)
             .some(node =>
-                DOM._hasCSSTransition(node)
+                this.constructor._hasCSSTransition(node)
             );
     },
 
@@ -91,7 +91,7 @@ Object.assign(DOM.prototype, {
     hasData(nodes, key) {
         return this.parseNodes(nodes, { fragment: true, shadow: true, document: true, window: true })
             .some(node =>
-                DOM._hasData(node, key)
+                this.constructor._hasData(node, key)
             );
     },
 
@@ -119,7 +119,7 @@ Object.assign(DOM.prototype, {
     hasFragment(nodes) {
         return this.parseNodes(nodes)
             .some(node =>
-                DOM._hasFragment(node)
+                this.constructor._hasFragment(node)
             );
     },
 
@@ -144,7 +144,7 @@ Object.assign(DOM.prototype, {
     hasShadow(nodes) {
         return this.parseNodes(nodes)
             .some(node =>
-                DOM._hasShadow(node)
+                this.constructor._hasShadow(node)
             );
     },
 
@@ -197,11 +197,11 @@ Object.assign(DOM.prototype, {
     isFixed(nodes) {
         return this.parseNodes(nodes, { node: true })
             .some(node =>
-                (Core.isElement(node) && DOM._css(node, 'position') === 'fixed') ||
-                DOM._parents(
+                (Core.isElement(node) && this.constructor._css(node, 'position') === 'fixed') ||
+                this.constructor._parents(
                     node,
                     parent =>
-                        Core.isElement(parent) && DOM._css(parent, 'position') === 'fixed',
+                        Core.isElement(parent) && this.constructor._css(parent, 'position') === 'fixed',
                     false,
                     true
                 ).length
@@ -216,7 +216,7 @@ Object.assign(DOM.prototype, {
     isHidden(nodes) {
         return this.parseNodes(nodes, { node: true, document: true, window: true })
             .some(node =>
-                !DOM._isVisible(node)
+                !this.constructor._isVisible(node)
             );
     },
 
@@ -243,7 +243,7 @@ Object.assign(DOM.prototype, {
     isVisible(nodes) {
         return this.parseNodes(nodes, { node: true, document: true, window: true })
             .some(node =>
-                DOM._isVisible(node)
+                this.constructor._isVisible(node)
             );
     }
 

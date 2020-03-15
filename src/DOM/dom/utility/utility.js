@@ -29,7 +29,7 @@ Object.assign(DOM.prototype, {
             return;
         }
 
-        return DOM._forceShow(node, callback);
+        return this.constructor._forceShow(node, callback);
     },
 
     /**
@@ -90,7 +90,7 @@ Object.assign(DOM.prototype, {
             children = DOMNode.children(fragment);
 
         for (const child of children) {
-            DOM._sanitize(child, fragment, allowedTags);
+            this.constructor._sanitize(child, fragment, allowedTags);
         }
 
         return this.getHTML(template);

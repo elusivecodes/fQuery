@@ -25,7 +25,7 @@ class AjaxRequest {
     constructor(settings) {
         this._settings = Core.extend(
             {},
-            AjaxRequest.defaults,
+            this.constructor.defaults,
             settings
         );
 
@@ -43,7 +43,7 @@ class AjaxRequest {
             this._settings.headers['Content-Type'] = this._settings.contentType;
         }
 
-        this._isLocal = AjaxRequest._localRegExp.test(location.protocol);
+        this._isLocal = this.constructor._localRegExp.test(location.protocol);
 
         if (!this._isLocal && !('X-Requested-With' in this._settings.headers)) {
             this._settings.headers['X-Requested-With'] = 'XMLHttpRequest';

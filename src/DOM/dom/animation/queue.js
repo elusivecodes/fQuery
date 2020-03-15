@@ -12,7 +12,7 @@ Object.assign(DOM.prototype, {
         nodes = this.parseNodes(nodes);
 
         for (const node of nodes) {
-            DOM._clearQueue(node);
+            this.constructor._clearQueue(node);
         }
     },
 
@@ -25,7 +25,7 @@ Object.assign(DOM.prototype, {
         nodes = this.parseNodes(nodes);
 
         for (const node of nodes) {
-            DOM._queue(node, callback);
+            this.constructor._queue(node, callback);
         }
     }
 

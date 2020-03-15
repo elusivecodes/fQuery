@@ -110,9 +110,9 @@ Object.assign(AjaxRequest, {
             }
         }
 
-        return values
-            .flatMap(encodeURI)
-            .join('&');
+        const paramString = values.flat().join('&');
+
+        return encodeURI(paramString);
     }
 
 });

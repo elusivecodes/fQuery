@@ -86,7 +86,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
       _classCallCheck(this, AjaxRequest);
 
-      this._settings = Core.extend({}, AjaxRequest.defaults, settings);
+      this._settings = Core.extend({}, this.constructor.defaults, settings);
 
       if (!this._settings.url) {
         this._settings.url = window.location;
@@ -102,7 +102,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         this._settings.headers['Content-Type'] = this._settings.contentType;
       }
 
-      this._isLocal = AjaxRequest._localRegExp.test(location.protocol);
+      this._isLocal = this.constructor._localRegExp.test(location.protocol);
 
       if (!this._isLocal && !('X-Requested-With' in this._settings.headers)) {
         this._settings.headers['X-Requested-With'] = 'XMLHttpRequest';
@@ -274,9 +274,9 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         if (this._settings.contentType === 'application/json') {
           this._settings.data = JSON.stringify(this._settings.data);
         } else if (this._settings.contentType === 'application/x-www-form-urlencoded') {
-          this._settings.data = AjaxRequest._parseParams(this._settings.data);
+          this._settings.data = this.constructor._parseParams(this._settings.data);
         } else {
-          this._settings.data = AjaxRequest._parseFormData(this._settings.data);
+          this._settings.data = this.constructor._parseFormData(this._settings.data);
         }
       }
 
@@ -469,7 +469,8 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         }
       }
 
-      return values.flatMap(encodeURI).join('&');
+      var paramString = values.flat().join('&');
+      return encodeURI(paramString);
     }
   });
   /**
@@ -925,12 +926,14 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
      * @returns {Promise} A new Promise that resolves when the animation has completed.
      */
     animate: function animate(nodes, callback, options) {
+      var _this5 = this;
+
       nodes = this.parseNodes(nodes);
       var promises = nodes.map(function (node) {
-        return DOM._animate(node, callback, _objectSpread({}, DOM.animationDefaults, {}, options));
+        return _this5.constructor._animate(node, callback, _objectSpread({}, _this5.constructor.animationDefaults, {}, options));
       });
 
-      DOM._start();
+      this.constructor._start();
 
       return Promise.all(promises);
     },
@@ -951,7 +954,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         for (var _iterator7 = nodes[Symbol.iterator](), _step7; !(_iteratorNormalCompletion7 = (_step7 = _iterator7.next()).done); _iteratorNormalCompletion7 = true) {
           var node = _step7.value;
 
-          DOM._stop(node, finish);
+          this.constructor._stop(node, finish);
         }
       } catch (err) {
         _didIteratorError7 = true;
@@ -1092,6 +1095,8 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
      * @returns {Promise} A new Promise that resolves when the animation has completed.
      */
     slideIn: function slideIn(nodes, options) {
+      var _this6 = this;
+
       return this.animate(nodes, function (node, progress, options) {
         if (progress === 1) {
           DOMNode.setStyle(node, 'overflow', '');
@@ -1111,11 +1116,11 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
         if (['top', 'bottom'].includes(dir)) {
           translateStyle = options.useGpu ? 'Y' : 'margin-top';
-          size = DOM._height(node);
+          size = _this6.constructor._height(node);
           inverse = dir === 'top';
         } else {
           translateStyle = options.useGpu ? 'X' : 'margin-left';
-          size = DOM._width(node);
+          size = _this6.constructor._width(node);
           inverse = dir === 'left';
         }
 
@@ -1144,6 +1149,8 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
      * @returns {Promise} A new Promise that resolves when the animation has completed.
      */
     slideOut: function slideOut(nodes, options) {
+      var _this7 = this;
+
       return this.animate(nodes, function (node, progress, options) {
         if (progress === 1) {
           DOMNode.setStyle(node, 'overflow', '');
@@ -1163,11 +1170,11 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
         if (['top', 'bottom'].includes(dir)) {
           translateStyle = options.useGpu ? 'Y' : 'margin-top';
-          size = DOM._height(node);
+          size = _this7.constructor._height(node);
           inverse = dir === 'top';
         } else {
           translateStyle = options.useGpu ? 'X' : 'margin-left';
-          size = DOM._width(node);
+          size = _this7.constructor._width(node);
           inverse = dir === 'left';
         }
 
@@ -1196,8 +1203,10 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
      * @returns {Promise} A new Promise that resolves when the animation has completed.
      */
     squeezeIn: function squeezeIn(nodes, options) {
+      var _this8 = this;
+
       nodes = this.parseNodes(nodes);
-      options = _objectSpread({}, DOM.animationDefaults, {
+      options = _objectSpread({}, this.constructor.animationDefaults, {
         direction: 'bottom',
         useGpu: true
       }, options);
@@ -1205,7 +1214,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         var initialHeight = DOMNode.getStyle(node, 'height');
         var initialWidth = DOMNode.getStyle(node, 'width');
         DOMNode.setStyle(node, 'overflow', 'hidden');
-        return DOM._animate(node, function (node, progress, options) {
+        return _this8.constructor._animate(node, function (node, progress, options) {
           DOMNode.setStyle(node, 'height', initialHeight);
           DOMNode.setStyle(node, 'width', initialWidth);
 
@@ -1255,7 +1264,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         }, options);
       });
 
-      DOM._start();
+      this.constructor._start();
 
       return Promise.all(promises);
     },
@@ -1272,8 +1281,10 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
      * @returns {Promise} A new Promise that resolves when the animation has completed.
      */
     squeezeOut: function squeezeOut(nodes, options) {
+      var _this9 = this;
+
       nodes = this.parseNodes(nodes);
-      options = _objectSpread({}, DOM.animationDefaults, {
+      options = _objectSpread({}, this.constructor.animationDefaults, {
         direction: 'bottom',
         useGpu: true
       }, options);
@@ -1281,7 +1292,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         var initialHeight = DOMNode.getStyle(node, 'height');
         var initialWidth = DOMNode.getStyle(node, 'width');
         DOMNode.setStyle(node, 'overflow', 'hidden');
-        return DOM._animate(node, function (node, progress, options) {
+        return _this9.constructor._animate(node, function (node, progress, options) {
           DOMNode.setStyle(node, 'height', initialHeight);
           DOMNode.setStyle(node, 'width', initialWidth);
 
@@ -1331,7 +1342,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         }, options);
       });
 
-      DOM._start();
+      this.constructor._start();
 
       return Promise.all(promises);
     }
@@ -1355,7 +1366,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         for (var _iterator8 = nodes[Symbol.iterator](), _step8; !(_iteratorNormalCompletion8 = (_step8 = _iterator8.next()).done); _iteratorNormalCompletion8 = true) {
           var node = _step8.value;
 
-          DOM._clearQueue(node);
+          this.constructor._clearQueue(node);
         }
       } catch (err) {
         _didIteratorError8 = true;
@@ -1388,7 +1399,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         for (var _iterator9 = nodes[Symbol.iterator](), _step9; !(_iteratorNormalCompletion9 = (_step9 = _iterator9.next()).done); _iteratorNormalCompletion9 = true) {
           var node = _step9.value;
 
-          DOM._queue(node, callback);
+          this.constructor._queue(node, callback);
         }
       } catch (err) {
         _didIteratorError9 = true;
@@ -1424,7 +1435,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         return;
       }
 
-      return DOM._getAttribute(node, attribute);
+      return this.constructor._getAttribute(node, attribute);
     },
 
     /**
@@ -1440,7 +1451,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         return;
       }
 
-      return DOM._getDataset(node, key);
+      return this.constructor._getDataset(node, key);
     },
 
     /**
@@ -1533,7 +1544,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         for (var _iterator11 = nodes[Symbol.iterator](), _step11; !(_iteratorNormalCompletion11 = (_step11 = _iterator11.next()).done); _iteratorNormalCompletion11 = true) {
           var node = _step11.value;
 
-          DOM._removeDataset(node, key);
+          this.constructor._removeDataset(node, key);
         }
       } catch (err) {
         _didIteratorError11 = true;
@@ -1592,7 +1603,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
     setAttribute: function setAttribute(nodes, attribute, value) {
       nodes = this.parseNodes(nodes);
 
-      var attributes = DOM._parseData(attribute, value);
+      var attributes = this.constructor._parseData(attribute, value);
 
       var _iteratorNormalCompletion13 = true;
       var _didIteratorError13 = false;
@@ -1602,7 +1613,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         for (var _iterator13 = nodes[Symbol.iterator](), _step13; !(_iteratorNormalCompletion13 = (_step13 = _iterator13.next()).done); _iteratorNormalCompletion13 = true) {
           var node = _step13.value;
 
-          DOM._setAttribute(node, attributes);
+          this.constructor._setAttribute(node, attributes);
         }
       } catch (err) {
         _didIteratorError13 = true;
@@ -1629,7 +1640,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
     setDataset: function setDataset(nodes, key, value) {
       nodes = this.parseNodes(nodes);
 
-      var dataset = DOM._parseData(key, value, true);
+      var dataset = this.constructor._parseData(key, value, true);
 
       var _iteratorNormalCompletion14 = true;
       var _didIteratorError14 = false;
@@ -1639,7 +1650,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         for (var _iterator14 = nodes[Symbol.iterator](), _step14; !(_iteratorNormalCompletion14 = (_step14 = _iterator14.next()).done); _iteratorNormalCompletion14 = true) {
           var node = _step14.value;
 
-          DOM._setDataset(node, dataset);
+          this.constructor._setDataset(node, dataset);
         }
       } catch (err) {
         _didIteratorError14 = true;
@@ -1676,7 +1687,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
     setProperty: function setProperty(nodes, property, value) {
       nodes = this.parseNodes(nodes);
 
-      var properties = DOM._parseData(property, value);
+      var properties = this.constructor._parseData(property, value);
 
       var _iteratorNormalCompletion15 = true;
       var _didIteratorError15 = false;
@@ -1763,7 +1774,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
             for (var _iterator17 = others[Symbol.iterator](), _step17; !(_iteratorNormalCompletion17 = (_step17 = _iterator17.next()).done); _iteratorNormalCompletion17 = true) {
               var other = _step17.value;
 
-              DOM._cloneData(node, other);
+              this.constructor._cloneData(node, other);
             }
           } catch (err) {
             _didIteratorError17 = true;
@@ -1814,7 +1825,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         return;
       }
 
-      return DOM._getData(node, key);
+      return this.constructor._getData(node, key);
     },
 
     /**
@@ -1837,7 +1848,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         for (var _iterator18 = nodes[Symbol.iterator](), _step18; !(_iteratorNormalCompletion18 = (_step18 = _iterator18.next()).done); _iteratorNormalCompletion18 = true) {
           var node = _step18.value;
 
-          DOM._removeData(node, key);
+          this.constructor._removeData(node, key);
         }
       } catch (err) {
         _didIteratorError18 = true;
@@ -1869,7 +1880,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         window: true
       });
 
-      var data = DOM._parseData(key, value);
+      var data = this.constructor._parseData(key, value);
 
       var _iteratorNormalCompletion19 = true;
       var _didIteratorError19 = false;
@@ -1879,7 +1890,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         for (var _iterator19 = nodes[Symbol.iterator](), _step19; !(_iteratorNormalCompletion19 = (_step19 = _iterator19.next()).done); _iteratorNormalCompletion19 = true) {
           var node = _step19.value;
 
-          DOM._setData(node, data);
+          this.constructor._setData(node, data);
         }
       } catch (err) {
         _didIteratorError19 = true;
@@ -1942,7 +1953,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         for (var _iterator20 = nodes[Symbol.iterator](), _step20; !(_iteratorNormalCompletion20 = (_step20 = _iterator20.next()).done); _iteratorNormalCompletion20 = true) {
           var node = _step20.value;
 
-          DOM._constrain(node, containerBox);
+          this.constructor._constrain(node, containerBox);
         }
       } catch (err) {
         _didIteratorError20 = true;
@@ -2106,7 +2117,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         return;
       }
 
-      return DOM._position(node, offset);
+      return this.constructor._position(node, offset);
     },
 
     /**
@@ -2122,7 +2133,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         return;
       }
 
-      return DOM._rect(node, offset);
+      return this.constructor._rect(node, offset);
     }
   });
   /**
@@ -2150,7 +2161,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       }
 
       if (Core.isDocument(node)) {
-        return DOM._getScrollXDocument(node);
+        return this.constructor._getScrollXDocument(node);
       }
 
       return DOMNode.getScrollX(node);
@@ -2176,7 +2187,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       }
 
       if (Core.isDocument(node)) {
-        return DOM._getScrollYDocument(node);
+        return this.constructor._getScrollYDocument(node);
       }
 
       return DOMNode.getScrollY(node);
@@ -2204,9 +2215,9 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
           if (Core.isWindow(node)) {
             DOMNode.setScrollWindow(node, x, y);
           } else if (Core.isDocument(node)) {
-            DOM._setScrollDocument(node, x, y);
+            this.constructor._setScrollDocument(node, x, y);
           } else {
-            DOM._setScroll(node, x, y);
+            this.constructor._setScroll(node, x, y);
           }
         }
       } catch (err) {
@@ -2244,9 +2255,9 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
           var node = _step23.value;
 
           if (Core.isWindow(node)) {
-            DOM._setScrollXWindow(node, x);
+            this.constructor._setScrollXWindow(node, x);
           } else if (Core.isDocument(node)) {
-            DOM._setScrollXDocument(node, x);
+            this.constructor._setScrollXDocument(node, x);
           } else {
             DOMNode.setScrollX(node, x);
           }
@@ -2286,9 +2297,9 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
           var node = _step24.value;
 
           if (Core.isWindow(node)) {
-            DOM._setScrollYWindow(node, y);
+            this.constructor._setScrollYWindow(node, y);
           } else if (Core.isDocument(node)) {
-            DOM._setScrollYDocument(node, y);
+            this.constructor._setScrollYDocument(node, y);
           } else {
             DOMNode.setScrollY(node, y);
           }
@@ -2317,12 +2328,10 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
     /**
      * Get the computed height of the first node.
      * @param {string|array|HTMLElement|Document|Window|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
-     * @param {Boolean} [padding] Whether to include padding height.
-     * @param {Boolean} [border] Whether to include border height.
-     * @param {Boolean} [margin] Whether to include margin height.
+     * @param {number} [innerOuter=1] Whether to include padding, border and margin heights.
      * @returns {number} The height.
      */
-    height: function height(nodes, padding, border, margin) {
+    height: function height(nodes, innerOuter) {
       var node = this.parseNode(nodes, {
         document: true,
         window: true
@@ -2333,25 +2342,27 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       }
 
       if (Core.isWindow(node)) {
-        return DOMNode.heightWindow(node, Core.isUndefined(padding) ? false : padding);
+        return DOMNode.heightWindow(node, Core.isUndefined(innerOuter) ? 0 : innerOuter);
+      }
+
+      if (Core.isUndefined(innerOuter)) {
+        innerOuter = 1;
       }
 
       if (Core.isDocument(node)) {
-        return DOM._height(DOMNode.documentElement(node), Core.isUndefined(padding) ? true : padding, border, margin);
+        return this.constructor._height(DOMNode.documentElement(node), innerOuter);
       }
 
-      return DOM._height(node, padding, border, margin);
+      return this.constructor._height(node, innerOuter);
     },
 
     /**
      * Get the computed width of the first node.
      * @param {string|array|HTMLElement|Document|Window|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
-     * @param {Boolean} [padding] Whether to include padding width.
-     * @param {Boolean} [border] Whether to include border width.
-     * @param {Boolean} [margin] Whether to include margin width.
+     * @param {number} [innerOuter] Whether to include padding, border and margin widths.
      * @returns {number} The width.
      */
-    width: function width(nodes, padding, border, margin) {
+    width: function width(nodes, innerOuter) {
       var node = this.parseNode(nodes, {
         document: true,
         window: true
@@ -2362,14 +2373,18 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       }
 
       if (Core.isWindow(node)) {
-        return DOMNode.widthWindow(node, Core.isUndefined(padding) ? false : padding);
+        return DOMNode.widthWindow(node, Core.isUndefined(innerOuter) ? 0 : innerOuter);
+      }
+
+      if (Core.isUndefined(innerOuter)) {
+        innerOuter = 1;
       }
 
       if (Core.isDocument(node)) {
-        return DOM._width(DOMNode.documentElement(node), Core.isUndefined(padding) ? true : padding, border, margin);
+        return this.constructor._width(DOMNode.documentElement(node), innerOuter);
       }
 
-      return DOM._width(node, padding, border, margin);
+      return this.constructor._width(node, innerOuter);
     }
   });
   /**
@@ -2388,7 +2403,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       }
 
       nodes = this.parseNodes(nodes);
-      classes = DOM._parseClasses(classes);
+      classes = this._constructor._parseClasses(classes);
 
       if (!classes.length) {
         return;
@@ -2432,7 +2447,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         return;
       }
 
-      return DOM._css(node, style);
+      return this._constructor._css(node, style);
     },
 
     /**
@@ -2448,7 +2463,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         return;
       }
 
-      return DOM._getStyle(node, style);
+      return this._constructor._getStyle(node, style);
     },
 
     /**
@@ -2470,7 +2485,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       }
 
       nodes = this.parseNodes(nodes);
-      classes = DOM._parseClasses(classes);
+      classes = this._constructor._parseClasses(classes);
 
       if (!classes.length) {
         return;
@@ -2511,7 +2526,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
     setStyle: function setStyle(nodes, style, value, important) {
       nodes = this.parseNodes(nodes);
 
-      var styles = DOM._parseData(style, value);
+      var styles = this._constructor._parseData(style, value);
 
       var _iteratorNormalCompletion27 = true;
       var _didIteratorError27 = false;
@@ -2521,7 +2536,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         for (var _iterator27 = nodes[Symbol.iterator](), _step27; !(_iteratorNormalCompletion27 = (_step27 = _iterator27.next()).done); _iteratorNormalCompletion27 = true) {
           var node = _step27.value;
 
-          DOM._setStyle(node, styles, important);
+          this._constructor._setStyle(node, styles, important);
         }
       } catch (err) {
         _didIteratorError27 = true;
@@ -2589,7 +2604,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       }
 
       nodes = this.parseNodes(nodes);
-      classes = DOM._parseClasses(classes);
+      classes = this._constructor._parseClasses(classes);
 
       if (!classes.length) {
         return;
@@ -2634,6 +2649,8 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
      * @returns {DOM~eventCallback} The mouse drag event callback.
      */
     mouseDragFactory: function mouseDragFactory(down, move, up) {
+      var _this10 = this;
+
       var animated = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : true;
 
       if (move && animated) {
@@ -2650,13 +2667,13 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         }
 
         if (move) {
-          DOM._addEvent(window, 'mousemove', move);
+          _this10.addEvent(window, 'mousemove', move);
         }
 
         if (move || up) {
-          DOM._addEvent(window, 'mouseup', function (e) {
+          _this10.addEvent(window, 'mouseup', function (e) {
             if (move) {
-              DOM._removeEvent(window, 'mousemove', move);
+              _this10.removeEvent(window, 'mousemove', move);
             }
 
             if (up) {
@@ -2724,7 +2741,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         return;
       }
 
-      DOM._addEvent(window, 'DOMContentLoaded', callback);
+      this.constructor._addEvent(window, 'DOMContentLoaded', callback);
     }
   });
   /**
@@ -2758,10 +2775,10 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
           var _iteratorError31 = undefined;
 
           try {
-            for (var _iterator31 = DOM._parseEvents(events)[Symbol.iterator](), _step31; !(_iteratorNormalCompletion31 = (_step31 = _iterator31.next()).done); _iteratorNormalCompletion31 = true) {
+            for (var _iterator31 = this.constructor._parseEvents(events)[Symbol.iterator](), _step31; !(_iteratorNormalCompletion31 = (_step31 = _iterator31.next()).done); _iteratorNormalCompletion31 = true) {
               var event = _step31.value;
 
-              DOM._addEvent(node, event, callback, delegate, selfDestruct);
+              this.constructor._addEvent(node, event, callback, delegate, selfDestruct);
             }
           } catch (err) {
             _didIteratorError31 = true;
@@ -2857,7 +2874,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
             for (var _iterator33 = others[Symbol.iterator](), _step33; !(_iteratorNormalCompletion33 = (_step33 = _iterator33.next()).done); _iteratorNormalCompletion33 = true) {
               var other = _step33.value;
 
-              DOM._cloneEvents(node, other);
+              this.constructor._cloneEvents(node, other);
             }
           } catch (err) {
             _didIteratorError33 = true;
@@ -2903,7 +2920,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         document: true,
         window: true
       });
-      events = events ? DOM._parseEvents(events) : false;
+      events = events ? this.constructor._parseEvents(events) : false;
       var _iteratorNormalCompletion34 = true;
       var _didIteratorError34 = false;
       var _iteratorError34 = undefined;
@@ -2912,12 +2929,12 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         for (var _iterator34 = nodes[Symbol.iterator](), _step34; !(_iteratorNormalCompletion34 = (_step34 = _iterator34.next()).done); _iteratorNormalCompletion34 = true) {
           var node = _step34.value;
 
-          if (!DOM._events.has(node)) {
+          if (!this.constructor._events.has(node)) {
             continue;
           }
 
           if (!events) {
-            DOM._removeEvent(node, events, callback, delegate);
+            this.constructor._removeEvent(node, events, callback, delegate);
 
             continue;
           }
@@ -2930,7 +2947,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
             for (var _iterator35 = events[Symbol.iterator](), _step35; !(_iteratorNormalCompletion35 = (_step35 = _iterator35.next()).done); _iteratorNormalCompletion35 = true) {
               var event = _step35.value;
 
-              DOM._removeEvent(node, event, callback, delegate);
+              this.constructor._removeEvent(node, event, callback, delegate);
             }
           } catch (err) {
             _didIteratorError35 = true;
@@ -2989,7 +3006,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         document: true,
         window: true
       });
-      events = DOM._parseEvents(events);
+      events = this.constructor._parseEvents(events);
       var _iteratorNormalCompletion36 = true;
       var _didIteratorError36 = false;
       var _iteratorError36 = undefined;
@@ -3005,7 +3022,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
             for (var _iterator37 = events[Symbol.iterator](), _step37; !(_iteratorNormalCompletion37 = (_step37 = _iterator37.next()).done); _iteratorNormalCompletion37 = true) {
               var event = _step37.value;
 
-              DOM._triggerEvent(node, event, data, options);
+              this.constructor._triggerEvent(node, event, data, options);
             }
           } catch (err) {
             _didIteratorError37 = true;
@@ -3090,11 +3107,11 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       }
 
       if ('class' in options) {
-        DOMNode.addClass.apply(DOMNode, [node].concat(_toConsumableArray(DOM._parseClasses(Core.wrap(options["class"])))));
+        DOMNode.addClass.apply(DOMNode, [node].concat(_toConsumableArray(this.constructor._parseClasses(Core.wrap(options["class"])))));
       }
 
       if ('style' in options) {
-        DOM._setStyle(node, options.style);
+        this.constructor._setStyle(node, options.style);
       }
 
       if ('value' in options) {
@@ -3102,15 +3119,15 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       }
 
       if ('attributes' in options) {
-        DOM._setAttribute(node, options.attributes);
+        this.constructor._setAttribute(node, options.attributes);
       }
 
       if ('properties' in options) {
-        DOM._setProperty(node, options.properties);
+        this.constructor._setProperty(node, options.properties);
       }
 
       if ('dataset' in options) {
-        DOM._setDataset(node, options.dataset);
+        this.constructor._setDataset(node, options.dataset);
       }
 
       return node;
@@ -3173,6 +3190,8 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
      * @returns {array} The cloned nodes.
      */
     clone: function clone(nodes) {
+      var _this11 = this;
+
       var deep = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
       var cloneEvents = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
       var cloneData = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : false;
@@ -3182,7 +3201,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         fragment: true
       });
       return nodes.map(function (node) {
-        return DOM._clone(node, deep, cloneEvents, cloneData);
+        return _this11.constructor._clone(node, deep, cloneEvents, cloneData);
       });
     },
 
@@ -3244,7 +3263,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         for (var _iterator39 = nodes[Symbol.iterator](), _step39; !(_iteratorNormalCompletion39 = (_step39 = _iterator39.next()).done); _iteratorNormalCompletion39 = true) {
           var node = _step39.value;
 
-          DOM._empty(node);
+          this.constructor._empty(node);
         }
       } catch (err) {
         _didIteratorError39 = true;
@@ -3284,7 +3303,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
             continue;
           }
 
-          DOM._remove(node);
+          this.constructor._remove(node);
 
           DOMNode.removeChild(parent, node);
         }
@@ -3337,7 +3356,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         for (var _iterator41 = nodes[Symbol.iterator](), _step41; !(_iteratorNormalCompletion41 = (_step41 = _iterator41.next()).done); _iteratorNormalCompletion41 = true) {
           var node = _step41.value;
 
-          DOM._replaceWith(node, others);
+          this.constructor._replaceWith(node, others);
         }
       } catch (err) {
         _didIteratorError41 = true;
@@ -3619,7 +3638,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         for (var _iterator46 = nodes[Symbol.iterator](), _step46; !(_iteratorNormalCompletion46 = (_step46 = _iterator46.next()).done); _iteratorNormalCompletion46 = true) {
           var node = _step46.value;
 
-          DOM._unwrap(node, filter);
+          this.constructor._unwrap(node, filter);
         }
       } catch (err) {
         _didIteratorError46 = true;
@@ -3660,7 +3679,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         for (var _iterator47 = nodes[Symbol.iterator](), _step47; !(_iteratorNormalCompletion47 = (_step47 = _iterator47.next()).done); _iteratorNormalCompletion47 = true) {
           var node = _step47.value;
 
-          DOM._wrap(node, others);
+          this.constructor._wrap(node, others);
         }
       } catch (err) {
         _didIteratorError47 = true;
@@ -3695,7 +3714,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       });
       var clones = this.clone(others, true);
 
-      DOM._wrapAll(nodes, clones);
+      this.constructor._wrapAll(nodes, clones);
     },
 
     /**
@@ -3722,7 +3741,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         for (var _iterator48 = nodes[Symbol.iterator](), _step48; !(_iteratorNormalCompletion48 = (_step48 = _iterator48.next()).done); _iteratorNormalCompletion48 = true) {
           var node = _step48.value;
 
-          DOM._wrapInner(node, others);
+          this.constructor._wrapInner(node, others);
         }
       } catch (err) {
         _didIteratorError48 = true;
@@ -3823,11 +3842,13 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
      * @returns {array} The filtered nodes.
      */
     fixed: function fixed(nodes) {
+      var _this12 = this;
+
       return this.parseNodes(nodes, {
         node: true
       }).filter(function (node) {
-        return Core.isElement(node) && DOM._css(node, 'position') === 'fixed' || DOM._parents(node, function (parent) {
-          return Core.isElement(parent) && DOM._css(parent, 'position') === 'fixed';
+        return Core.isElement(node) && _this12.constructor._css(node, 'position') === 'fixed' || _this12.constructor._parents(node, function (parent) {
+          return Core.isElement(parent) && _this12.constructor._css(parent, 'position') === 'fixed';
         }, false, true).length;
       });
     },
@@ -3838,12 +3859,14 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
      * @returns {array} The filtered nodes.
      */
     hidden: function hidden(nodes) {
+      var _this13 = this;
+
       return this.parseNodes(nodes, {
         node: true,
         document: true,
         window: true
       }).filter(function (node) {
-        return !DOM._isVisible(node);
+        return !_this13.constructor._isVisible(node);
       });
     },
 
@@ -3910,12 +3933,14 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
      * @returns {array} The filtered nodes.
      */
     visible: function visible(nodes) {
+      var _this14 = this;
+
       return this.parseNodes(nodes, {
         node: true,
         document: true,
         window: true
       }).filter(function (node) {
-        return DOM._isVisible(node);
+        return _this14.constructor._isVisible(node);
       });
     },
 
@@ -3925,8 +3950,10 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
      * @returns {array} The filtered nodes.
      */
     withAnimation: function withAnimation(nodes) {
+      var _this15 = this;
+
       return this.parseNodes(nodes).filter(function (node) {
-        return DOM._hasAnimation(node);
+        return _this15.constructor._hasAnimation(node);
       });
     },
 
@@ -3968,7 +3995,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         classes[_key5 - 1] = arguments[_key5];
       }
 
-      classes = DOM._parseClasses(classes);
+      classes = this.constructor._parseClasses(classes);
       return this.parseNodes(nodes).filter(function (node) {
         return classes.some(function (className) {
           return DOMNode.hasClass(node, className);
@@ -3982,8 +4009,10 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
      * @returns {array} The filtered nodes.
      */
     withCSSAnimation: function withCSSAnimation(nodes) {
+      var _this16 = this;
+
       return this.parseNodes(nodes).filter(function (node) {
-        return DOM._hasCSSAnimation(node);
+        return _this16.constructor._hasCSSAnimation(node);
       });
     },
 
@@ -3993,8 +4022,10 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
      * @returns {array} The filtered nodes.
      */
     withCSSTransition: function withCSSTransition(nodes) {
+      var _this17 = this;
+
       return this.parseNodes(nodes).filter(function (node) {
-        return DOM._hasCSSTransition(node);
+        return _this17.constructor._hasCSSTransition(node);
       });
     },
 
@@ -4005,6 +4036,8 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
      * @returns {array} The filtered nodes.
      */
     withData: function withData(nodes, key) {
+      var _this18 = this;
+
       return this.parseNodes(nodes, {
         node: true,
         fragment: true,
@@ -4012,7 +4045,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         document: true,
         window: true
       }).filter(function (node) {
-        return DOM._hasData(node, key);
+        return _this18.constructor._hasData(node, key);
       });
     },
 
@@ -4059,7 +4092,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
     find: function find(selector) {
       var nodes = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : this._context;
       // fast selector
-      var match = selector.match(DOM._fastRegExp);
+      var match = selector.match(this.constructor._fastRegExp);
 
       if (match) {
         if (match[1] === '#') {
@@ -4074,15 +4107,15 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       } // custom selector
 
 
-      if (selector.match(DOM._complexRegExp)) {
-        var _selectors = DOM._prefixSelectors(selector, "#".concat(DOM._tempId, " "));
+      if (selector.match(this.constructor._complexRegExp)) {
+        var _selectors = this.constructor._prefixSelectors(selector, "#".concat(this.constructor._tempId, " "));
 
         if (Core.isElement(nodes)) {
-          return DOM.__findByCustom(_selectors, nodes);
+          return this.constructor.__findByCustom(_selectors, nodes);
         }
 
         nodes = this.parseNodes(nodes);
-        return DOM._findByCustom(_selectors, nodes);
+        return this.constructor._findByCustom(_selectors, nodes);
       } // standard selector
 
 
@@ -4095,7 +4128,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         shadow: true,
         document: true
       });
-      return DOM._findBySelector(selector, nodes);
+      return this.constructor._findBySelector(selector, nodes);
     },
 
     /**
@@ -4216,7 +4249,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
     findOne: function findOne(selector) {
       var nodes = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : this._context;
       // fast selector
-      var match = selector.match(DOM._fastRegExp);
+      var match = selector.match(this.constructor._fastRegExp);
 
       if (match) {
         if (match[1] === '#') {
@@ -4231,15 +4264,15 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       } // custom selector
 
 
-      if (selector.match(DOM._complexRegExp)) {
-        var _selectors2 = DOM._prefixSelectors(selector, "#".concat(DOM._tempId, " "));
+      if (selector.match(this.constructor._complexRegExp)) {
+        var _selectors2 = this.constructor._prefixSelectors(selector, "#".concat(this.constructor._tempId, " "));
 
         if (Core.isElement(nodes)) {
-          return DOM.__findOneByCustom(_selectors2, nodes);
+          return this.constructor.__findOneByCustom(_selectors2, nodes);
         }
 
         nodes = this.parseNodes(nodes);
-        return DOM._findOneByCustom(_selectors2, nodes);
+        return this.constructor._findOneByCustom(_selectors2, nodes);
       } // standard selector
 
 
@@ -4252,7 +4285,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         shadow: true,
         document: true
       });
-      return DOM._findOneBySelector(selector, nodes);
+      return this.constructor._findOneBySelector(selector, nodes);
     },
 
     /**
@@ -4419,7 +4452,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       filter = this.parseFilter(filter);
 
       if (Core.isElement(nodes) || Core.isDocument(nodes) || Core.isFragment(nodes) || Core.isShadow(nodes)) {
-        return DOM._children(nodes, filter, first, elementsOnly);
+        return this.constructor._children(nodes, filter, first, elementsOnly);
       }
 
       nodes = this.parseNodes(nodes, {
@@ -4435,7 +4468,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       try {
         for (var _iterator53 = nodes[Symbol.iterator](), _step53; !(_iteratorNormalCompletion53 = (_step53 = _iterator53.next()).done); _iteratorNormalCompletion53 = true) {
           var node = _step53.value;
-          Core.merge(results, DOM._children(node, filter, first, elementsOnly));
+          Core.merge(results, this.constructor._children(node, filter, first, elementsOnly));
         }
       } catch (err) {
         _didIteratorError53 = true;
@@ -4524,7 +4557,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       filter = this.parseFilter(filter);
 
       if (Core.isNode(nodes)) {
-        return DOM._next(nodes, filter);
+        return this.constructor._next(nodes, filter);
       } // DocumentFragment and ShadowRoot nodes can not have siblings
 
 
@@ -4539,7 +4572,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       try {
         for (var _iterator54 = nodes[Symbol.iterator](), _step54; !(_iteratorNormalCompletion54 = (_step54 = _iterator54.next()).done); _iteratorNormalCompletion54 = true) {
           var node = _step54.value;
-          Core.merge(results, DOM._next(node, filter));
+          Core.merge(results, this.constructor._next(node, filter));
         }
       } catch (err) {
         _didIteratorError54 = true;
@@ -4573,7 +4606,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       limit = this.parseFilter(limit);
 
       if (Core.isNode(nodes)) {
-        return DOM._nextAll(nodes, filter, limit, first);
+        return this.constructor._nextAll(nodes, filter, limit, first);
       } // DocumentFragment and ShadowRoot nodes can not have siblings
 
 
@@ -4588,7 +4621,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       try {
         for (var _iterator55 = nodes[Symbol.iterator](), _step55; !(_iteratorNormalCompletion55 = (_step55 = _iterator55.next()).done); _iteratorNormalCompletion55 = true) {
           var node = _step55.value;
-          Core.merge(results, DOM._nextAll(node, filter, limit, first));
+          Core.merge(results, this.constructor._nextAll(node, filter, limit, first));
         }
       } catch (err) {
         _didIteratorError55 = true;
@@ -4629,7 +4662,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       filter = this.parseFilter(filter);
 
       if (Core.isNode(nodes)) {
-        return DOM._parent(nodes, filter);
+        return this.constructor._parent(nodes, filter);
       } // DocumentFragment and ShadowRoot nodes have no parent
 
 
@@ -4644,7 +4677,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       try {
         for (var _iterator56 = nodes[Symbol.iterator](), _step56; !(_iteratorNormalCompletion56 = (_step56 = _iterator56.next()).done); _iteratorNormalCompletion56 = true) {
           var node = _step56.value;
-          Core.merge(results, DOM._parent(node, filter));
+          Core.merge(results, this.constructor._parent(node, filter));
         }
       } catch (err) {
         _didIteratorError56 = true;
@@ -4678,7 +4711,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       limit = this.parseFilter(limit);
 
       if (Core.isNode(nodes)) {
-        return DOM._parents(nodes, filter, limit, first);
+        return this.constructor._parents(nodes, filter, limit, first);
       } // DocumentFragment and ShadowRoot nodes have no parent
 
 
@@ -4693,7 +4726,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       try {
         for (var _iterator57 = nodes[Symbol.iterator](), _step57; !(_iteratorNormalCompletion57 = (_step57 = _iterator57.next()).done); _iteratorNormalCompletion57 = true) {
           var node = _step57.value;
-          Core.merge(results, DOM._parents(node, filter, limit, first));
+          Core.merge(results, this.constructor._parents(node, filter, limit, first));
         }
       } catch (err) {
         _didIteratorError57 = true;
@@ -4723,7 +4756,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       filter = this.parseFilter(filter);
 
       if (Core.isNode(nodes)) {
-        return DOM._prev(nodes, filter);
+        return this.constructor._prev(nodes, filter);
       } // DocumentFragment and ShadowRoot nodes can not have siblings
 
 
@@ -4738,7 +4771,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       try {
         for (var _iterator58 = nodes[Symbol.iterator](), _step58; !(_iteratorNormalCompletion58 = (_step58 = _iterator58.next()).done); _iteratorNormalCompletion58 = true) {
           var node = _step58.value;
-          Core.merge(results, DOM._prev(node, filter));
+          Core.merge(results, this.constructor._prev(node, filter));
         }
       } catch (err) {
         _didIteratorError58 = true;
@@ -4772,7 +4805,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       limit = this.parseFilter(limit);
 
       if (Core.isNode(nodes)) {
-        return DOM._prevAll(nodes, filter, limit, first);
+        return this.constructor._prevAll(nodes, filter, limit, first);
       } // DocumentFragment and ShadowRoot nodes can not have siblings
 
 
@@ -4787,7 +4820,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       try {
         for (var _iterator59 = nodes[Symbol.iterator](), _step59; !(_iteratorNormalCompletion59 = (_step59 = _iterator59.next()).done); _iteratorNormalCompletion59 = true) {
           var node = _step59.value;
-          Core.merge(results, DOM._prevAll(node, filter, limit, first));
+          Core.merge(results, this.constructor._prevAll(node, filter, limit, first));
         }
       } catch (err) {
         _didIteratorError59 = true;
@@ -4834,7 +4867,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       filter = this.parseFilter(filter);
 
       if (Core.isNode(nodes)) {
-        return DOM._siblings(nodes, filter, elementsOnly);
+        return this.constructor._siblings(nodes, filter, elementsOnly);
       } // DocumentFragment and ShadowRoot nodes can not have siblings
 
 
@@ -4849,7 +4882,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       try {
         for (var _iterator60 = nodes[Symbol.iterator](), _step60; !(_iteratorNormalCompletion60 = (_step60 = _iterator60.next()).done); _iteratorNormalCompletion60 = true) {
           var node = _step60.value;
-          Core.merge(results, DOM._siblings(node, filter, elementsOnly));
+          Core.merge(results, this.constructor._siblings(node, filter, elementsOnly));
         }
       } catch (err) {
         _didIteratorError60 = true;
@@ -4921,7 +4954,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
      * @returns {DOM~filterCallback} The node contains filter callback.
      */
     parseFilterContains: function parseFilterContains(filter) {
-      var _this5 = this;
+      var _this19 = this;
 
       if (!filter) {
         return false;
@@ -4933,7 +4966,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
       if (Core.isString(filter)) {
         return function (node) {
-          return !!_this5.findOne(filter, node);
+          return !!_this19.findOne(filter, node);
         };
       }
 
@@ -4986,7 +5019,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         return _node ? _node : null;
       }
 
-      var nodeFilter = DOM.parseNodesFactory(options);
+      var nodeFilter = this.constructor.parseNodesFactory(options);
 
       if (nodeFilter(nodes)) {
         return nodes;
@@ -5020,7 +5053,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         return this.find(nodes, 'context' in options ? options.context : this._context);
       }
 
-      var nodeFilter = DOM.parseNodesFactory(options);
+      var nodeFilter = this.constructor.parseNodesFactory(options);
 
       if (nodeFilter(nodes)) {
         return [nodes];
@@ -5247,7 +5280,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       DOMNode.removeRanges(selection);
 
       var fragment = DOMNode.extract(range),
-          deepest = DOM._deepest(nodes.slice().shift()),
+          deepest = this.constructor._deepest(nodes.slice().shift()),
           children = Core.wrap(DOMNode.childNodes(fragment));
 
       var _iteratorNormalCompletion63 = true;
@@ -5310,8 +5343,10 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
      * @returns {Boolean} TRUE if any of the nodes has an animation, otherwise FALSE.
      */
     hasAnimation: function hasAnimation(nodes) {
+      var _this20 = this;
+
       return this.parseNodes(nodes).some(function (node) {
-        return DOM._hasAnimation(node);
+        return _this20.constructor._hasAnimation(node);
       });
     },
 
@@ -5353,7 +5388,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         classes[_key6 - 1] = arguments[_key6];
       }
 
-      classes = DOM._parseClasses(classes);
+      classes = this.constructor._parseClasses(classes);
       return this.parseNodes(nodes).some(function (node) {
         return classes.some(function (className) {
           return DOMNode.hasClass(node, className);
@@ -5367,8 +5402,10 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
      * @returns {Boolean} TRUE if any of the nodes has a CSS animation, otherwise FALSE.
      */
     hasCSSAnimation: function hasCSSAnimation(nodes) {
+      var _this21 = this;
+
       return this.parseNodes(nodes).some(function (node) {
-        return DOM._hasCSSAnimation(node);
+        return _this21.constructor._hasCSSAnimation(node);
       });
     },
 
@@ -5378,8 +5415,10 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
      * @returns {Boolean} TRUE if any of the nodes has a CSS transition, otherwise FALSE.
      */
     hasCSSTransition: function hasCSSTransition(nodes) {
+      var _this22 = this;
+
       return this.parseNodes(nodes).some(function (node) {
-        return DOM._hasCSSTransition(node);
+        return _this22.constructor._hasCSSTransition(node);
       });
     },
 
@@ -5390,13 +5429,15 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
      * @returns {Boolean} TRUE if any of the nodes has custom data, otherwise FALSE.
      */
     hasData: function hasData(nodes, key) {
+      var _this23 = this;
+
       return this.parseNodes(nodes, {
         fragment: true,
         shadow: true,
         document: true,
         window: true
       }).some(function (node) {
-        return DOM._hasData(node, key);
+        return _this23.constructor._hasData(node, key);
       });
     },
 
@@ -5423,8 +5464,10 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
      * @returns {Boolean} TRUE if any of the nodes has a DocumentFragment, otherwise FALSE.
      */
     hasFragment: function hasFragment(nodes) {
+      var _this24 = this;
+
       return this.parseNodes(nodes).some(function (node) {
-        return DOM._hasFragment(node);
+        return _this24.constructor._hasFragment(node);
       });
     },
 
@@ -5446,8 +5489,10 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
      * @returns {Boolean} TRUE if any of the nodes has a ShadowRoot, otherwise FALSE.
      */
     hasShadow: function hasShadow(nodes) {
+      var _this25 = this;
+
       return this.parseNodes(nodes).some(function (node) {
-        return DOM._hasShadow(node);
+        return _this25.constructor._hasShadow(node);
       });
     },
 
@@ -5512,11 +5557,13 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
      * @returns {Boolean} TRUE if any of the nodes is "fixed", otherwise FALSE.
      */
     isFixed: function isFixed(nodes) {
+      var _this26 = this;
+
       return this.parseNodes(nodes, {
         node: true
       }).some(function (node) {
-        return Core.isElement(node) && DOM._css(node, 'position') === 'fixed' || DOM._parents(node, function (parent) {
-          return Core.isElement(parent) && DOM._css(parent, 'position') === 'fixed';
+        return Core.isElement(node) && _this26.constructor._css(node, 'position') === 'fixed' || _this26.constructor._parents(node, function (parent) {
+          return Core.isElement(parent) && _this26.constructor._css(parent, 'position') === 'fixed';
         }, false, true).length;
       });
     },
@@ -5527,12 +5574,14 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
      * @returns {Boolean} TRUE if any of the nodes is hidden, otherwise FALSE.
      */
     isHidden: function isHidden(nodes) {
+      var _this27 = this;
+
       return this.parseNodes(nodes, {
         node: true,
         document: true,
         window: true
       }).some(function (node) {
-        return !DOM._isVisible(node);
+        return !_this27.constructor._isVisible(node);
       });
     },
 
@@ -5565,12 +5614,14 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
      * @returns {Boolean} TRUE if any of the nodes is visible, otherwise FALSE.
      */
     isVisible: function isVisible(nodes) {
+      var _this28 = this;
+
       return this.parseNodes(nodes, {
         node: true,
         document: true,
         window: true
       }).some(function (node) {
-        return DOM._isVisible(node);
+        return _this28.constructor._isVisible(node);
       });
     }
   });
@@ -5608,7 +5659,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         return;
       }
 
-      return DOM._forceShow(node, callback);
+      return this.constructor._forceShow(node, callback);
     },
 
     /**
@@ -5702,7 +5753,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         for (var _iterator66 = children[Symbol.iterator](), _step66; !(_iteratorNormalCompletion66 = (_step66 = _iterator66.next()).done); _iteratorNormalCompletion66 = true) {
           var child = _step66.value;
 
-          DOM._sanitize(child, fragment, allowedTags);
+          this.constructor._sanitize(child, fragment, allowedTags);
         }
       } catch (err) {
         _didIteratorError66 = true;
@@ -5737,14 +5788,14 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
      * @returns {array} The serialized array.
      */
     serializeArray: function serializeArray(nodes) {
-      var _this6 = this;
+      var _this29 = this;
 
       return this.parseNodes(nodes, {
         fragment: true,
         shadow: true
       }).reduce(function (values, node) {
         if (DOMNode.is(node, 'form') || Core.isFragment(node) || Core.isShadow(node)) {
-          return values.concat(_this6.serializeArray(DOMNode.findBySelector('input, select, textarea', node)));
+          return values.concat(_this29.serializeArray(DOMNode.findBySelector('input, select, textarea', node)));
         }
 
         if (DOMNode.is(node, '[disabled], input[type=submit], input[type=reset], input[type=file], input[type=radio]:not(:checked), input[type=checkbox]:not(:checked)')) {
@@ -5826,7 +5877,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
      * @returns {Promise} A new Promise that resolves when the animation has completed.
      */
     _animate: function _animate(node, callback, options) {
-      var _this7 = this;
+      var _this30 = this;
 
       if (!DOM._hasAnimation(node)) {
         this._animations.set(node, []);
@@ -5834,7 +5885,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
       var start = performance.now();
       return new Promise(function (resolve, reject) {
-        _this7._animations.get(node).push(function () {
+        _this30._animations.get(node).push(function () {
           var stop = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
           var finish = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
 
@@ -5883,7 +5934,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
      * Run a single frame of all animations, and then queue up the next frame.
      */
     _animationFrame: function _animationFrame() {
-      var _this8 = this;
+      var _this31 = this;
 
       var _iteratorNormalCompletion67 = true;
       var _didIteratorError67 = false;
@@ -5922,7 +5973,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
       if (this._animations.size) {
         window.requestAnimationFrame(function (_) {
-          return _this8._animationFrame();
+          return _this31._animationFrame();
         });
       } else {
         this._animating = false;
@@ -6005,7 +6056,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
      * @param {HTMLElement} node The input node.
      */
     _dequeueNode: function _dequeueNode(node) {
-      var _this9 = this;
+      var _this32 = this;
 
       if (!this._queues.has(node)) {
         return;
@@ -6020,7 +6071,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       }
 
       Promise.resolve(next(node))["finally"](function (_) {
-        return _this9._dequeueNode(node);
+        return _this32._dequeueNode(node);
       });
     },
 
@@ -6398,30 +6449,26 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
     /**
      * Get the computed height of a single node.
      * @param {HTMLElement} node The input node.
-     * @param {Boolean} [padding=true] Whether to include padding height.
-     * @param {Boolean} [border] Whether to include border height.
-     * @param {Boolean} [margin] Whether to include margin height.
+     * @param {number} [innerOuter=1] Whether to include padding, border and margin heights.
      * @returns {number} The height.
      */
     _height: function _height(node) {
-      var _this10 = this;
+      var _this33 = this;
 
-      var padding = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
-      var border = arguments.length > 2 ? arguments[2] : undefined;
-      var margin = arguments.length > 3 ? arguments[3] : undefined;
+      var innerOuter = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 1;
       return this._forceShow(node, function (node) {
         var result = DOMNode.height(node);
 
-        if (!padding) {
-          result -= parseInt(_this10._css(node, 'padding-top')) + parseInt(_this10._css(node, 'padding-bottom'));
+        if (innerOuter === _this33.INNER) {
+          result -= parseInt(_this33._css(node, 'padding-top')) + parseInt(_this33._css(node, 'padding-bottom'));
         }
 
-        if (border) {
-          result += parseInt(_this10._css(node, 'border-top-width')) + parseInt(_this10._css(node, 'border-bottom-width'));
+        if (innerOuter >= _this33.OUTER) {
+          result += parseInt(_this33._css(node, 'border-top-width')) + parseInt(_this33._css(node, 'border-bottom-width'));
         }
 
-        if (margin) {
-          result += parseInt(_this10._css(node, 'margin-top')) + parseInt(_this10._css(node, 'margin-bottom'));
+        if (innerOuter === _this33.OUTER_MARGIN) {
+          result += parseInt(_this33._css(node, 'margin-top')) + parseInt(_this33._css(node, 'margin-bottom'));
         }
 
         return result;
@@ -6431,30 +6478,26 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
     /**
      * Get the computed width of a single node.
      * @param {HTMLElement} node The input node.
-     * @param {Boolean} [padding=true] Whether to include padding width.
-     * @param {Boolean} [border] Whether to include border width.
-     * @param {Boolean} [margin] Whether to include margin width.
+     * @param {number} [innerOuter] Whether to include padding, border and margin widths.
      * @returns {number} The width.
      */
     _width: function _width(node) {
-      var _this11 = this;
+      var _this34 = this;
 
-      var padding = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
-      var border = arguments.length > 2 ? arguments[2] : undefined;
-      var margin = arguments.length > 3 ? arguments[3] : undefined;
+      var innerOuter = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 1;
       return this._forceShow(node, function (node) {
         var result = DOMNode.width(node);
 
-        if (!padding) {
-          result -= parseInt(_this11._css(node, 'padding-left')) + parseInt(_this11._css(node, 'padding-right'));
+        if (innerOuter === _this34.INNER) {
+          result -= parseInt(_this34._css(node, 'padding-left')) + parseInt(_this34._css(node, 'padding-right'));
         }
 
-        if (border) {
-          result += parseInt(_this11._css(node, 'border-left-width')) + parseInt(_this11._css(node, 'border-right-width'));
+        if (innerOuter >= _this34.OUTER) {
+          result += parseInt(_this34._css(node, 'border-left-width')) + parseInt(_this34._css(node, 'border-right-width'));
         }
 
-        if (margin) {
-          result += parseInt(_this11._css(node, 'margin-left')) + parseInt(_this11._css(node, 'margin-right'));
+        if (innerOuter === _this34.OUTER_MARGIN) {
+          result += parseInt(_this34._css(node, 'margin-left')) + parseInt(_this34._css(node, 'margin-right'));
         }
 
         return result;
@@ -6481,7 +6524,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         return _objectSpread({}, this._styles.get(node));
       }
 
-      style = Core.snakeCase(style);
+      style = Core.kebabCase(style);
       return this._styles.get(node).getPropertyValue(style);
     },
 
@@ -6493,7 +6536,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
      */
     _getStyle: function _getStyle(node, style) {
       if (style) {
-        style = Core.snakeCase(style);
+        style = Core.kebabCase(style);
         return DOMNode.getStyle(node, style);
       }
 
@@ -6535,7 +6578,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
     _setStyle: function _setStyle(node, styles, important) {
       for (var style in styles) {
         var value = styles[style];
-        style = Core.snakeCase(style); // if value is numeric and not a number property, add px
+        style = Core.kebabCase(style); // if value is numeric and not a number property, add px
 
         if (value && Core.isNumeric(value) && !this.cssNumberProperties.includes(style)) {
           value += 'px';
@@ -6597,11 +6640,11 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
      * @returns {DOM~delegateCallback} The callback for finding the matching delegate.
      */
     _getDelegateContainsFactory: function _getDelegateContainsFactory(node, selector) {
-      var _this12 = this;
+      var _this35 = this;
 
       selector = DOM._prefixSelectors(selectors, "#".concat(DOM._tempId));
       return function (target) {
-        var matches = _this12.__findByCustom(selector, node);
+        var matches = _this35.__findByCustom(selector, node);
 
         if (!matches.length) {
           return false;
@@ -6611,7 +6654,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
           return target;
         }
 
-        return _this12._parents(target, function (parent) {
+        return _this35._parents(target, function (parent) {
           return matches.includes(parent);
         }, function (parent) {
           return DOMNode.isSame(node, parent);
@@ -6626,10 +6669,10 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
      * @returns {DOM~delegateCallback} The callback for finding the matching delegate.
      */
     _getDelegateMatchFactory: function _getDelegateMatchFactory(node, selector) {
-      var _this13 = this;
+      var _this36 = this;
 
       return function (target) {
-        return DOMNode.is(target, selector) ? target : _this13._parents(target, function (parent) {
+        return DOMNode.is(target, selector) ? target : _this36._parents(target, function (parent) {
           return DOMNode.is(parent, selector);
         }, function (parent) {
           return DOMNode.isSame(node, parent);
@@ -6662,10 +6705,10 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
      * @returns {DOM~eventCallback} The wrapped event callback.
      */
     _selfDestructFactory: function _selfDestructFactory(node, events, delegate, callback) {
-      var _this14 = this;
+      var _this37 = this;
 
       return function (e) {
-        delegate ? _this14._removeEvent(node, events, callback, delegate) : _this14._removeEvent(node, events, callback);
+        delegate ? _this37._removeEvent(node, events, callback, delegate) : _this37._removeEvent(node, events, callback);
         return callback(e);
       };
     }
@@ -7215,7 +7258,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
      * @param {array} others The other node(s).
      */
     _wrap: function _wrap(node, others) {
-      var _this15 = this;
+      var _this38 = this;
 
       var parent = DOMNode.parent(node);
 
@@ -7224,7 +7267,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       }
 
       var clones = others.map(function (other) {
-        return _this15._clone(other, true);
+        return _this38._clone(other, true);
       });
       var _iteratorNormalCompletion75 = true;
       var _didIteratorError75 = false;
@@ -7330,11 +7373,11 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
      * @param {array} others The other node(s).
      */
     _wrapInner: function _wrapInner(node, others) {
-      var _this16 = this;
+      var _this39 = this;
 
       var children = Core.wrap(DOMNode.childNodes(node));
       var clones = others.map(function (other) {
-        return _this16._clone(other, true);
+        return _this39._clone(other, true);
       });
       var _iteratorNormalCompletion78 = true;
       var _didIteratorError78 = false;
@@ -8053,7 +8096,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
      * @returns {*} The result of the callback.
      */
     _forceShow: function _forceShow(node, callback) {
-      var _this17 = this;
+      var _this40 = this;
 
       if (Core.isDocument(node) || Core.isWindow(node) || this._isVisible(node)) {
         return callback(node);
@@ -8066,7 +8109,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       }
 
       Core.merge(elements, this._parents(node, function (parent) {
-        return Core.isElement(parent) && _this17._css(parent, 'display') === 'none';
+        return Core.isElement(parent) && _this40._css(parent, 'display') === 'none';
       }));
       var hidden = new Map();
 
@@ -8263,6 +8306,9 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
     },
     // CSS properties that can have number-only values
     cssNumberProperties: ['font-weight', 'line-height', 'opacity', 'orphans', 'widows', 'z-index'],
+    INNER: 0,
+    OUTER: 2,
+    OUTER_MARGIN: 3,
     // Complex selector RegExp
     _complexRegExp: /(?:^\s*[\>\+\~]|\,(?=(?:(?:[^"']*["']){2})*[^"']*$)\s*[\>\+\~])/,
     // Fast selector RegExp

@@ -191,13 +191,13 @@ Object.assign(DOM.prototype, {
                     translateStyle = options.useGpu ?
                         'Y' :
                         'margin-top';
-                    size = DOM._height(node);
+                    size = this.constructor._height(node);
                     inverse = dir === 'top';
                 } else {
                     translateStyle = options.useGpu ?
                         'X' :
                         'margin-left';
-                    size = DOM._width(node);
+                    size = this.constructor._width(node);
                     inverse = dir === 'left';
                 }
 
@@ -251,13 +251,13 @@ Object.assign(DOM.prototype, {
                     translateStyle = options.useGpu ?
                         'Y' :
                         'margin-top';
-                    size = DOM._height(node);
+                    size = this.constructor._height(node);
                     inverse = dir === 'top';
                 } else {
                     translateStyle = options.useGpu ?
                         'X' :
                         'margin-left';
-                    size = DOM._width(node);
+                    size = this.constructor._width(node);
                     inverse = dir === 'left';
                 }
 
@@ -291,7 +291,7 @@ Object.assign(DOM.prototype, {
         nodes = this.parseNodes(nodes);
 
         options = {
-            ...DOM.animationDefaults,
+            ...this.constructor.animationDefaults,
             direction: 'bottom',
             useGpu: true,
             ...options
@@ -302,7 +302,7 @@ Object.assign(DOM.prototype, {
             const initialWidth = DOMNode.getStyle(node, 'width');
             DOMNode.setStyle(node, 'overflow', 'hidden');
 
-            return DOM._animate(
+            return this.constructor._animate(
                 node,
                 (node, progress, options) => {
                     DOMNode.setStyle(node, 'height', initialHeight);
@@ -358,7 +358,7 @@ Object.assign(DOM.prototype, {
             );
         });
 
-        DOM._start();
+        this.constructor._start();
 
         return Promise.all(promises);
     },
@@ -378,7 +378,7 @@ Object.assign(DOM.prototype, {
         nodes = this.parseNodes(nodes);
 
         options = {
-            ...DOM.animationDefaults,
+            ...this.constructor.animationDefaults,
             direction: 'bottom',
             useGpu: true,
             ...options
@@ -389,7 +389,7 @@ Object.assign(DOM.prototype, {
             const initialWidth = DOMNode.getStyle(node, 'width');
             DOMNode.setStyle(node, 'overflow', 'hidden');
 
-            return DOM._animate(
+            return this.constructor._animate(
                 node,
                 (node, progress, options) => {
                     DOMNode.setStyle(node, 'height', initialHeight);
@@ -445,7 +445,7 @@ Object.assign(DOM.prototype, {
             );
         });
 
-        DOM._start();
+        this.constructor._start();
 
         return Promise.all(promises);
     }

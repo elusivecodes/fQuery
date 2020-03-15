@@ -21,7 +21,7 @@ Object.assign(DOM.prototype, {
         }
 
         if (Core.isDocument(node)) {
-            return DOM._getScrollXDocument(node);
+            return this.constructor._getScrollXDocument(node);
         }
 
         return DOMNode.getScrollX(node);
@@ -44,7 +44,7 @@ Object.assign(DOM.prototype, {
         }
 
         if (Core.isDocument(node)) {
-            return DOM._getScrollYDocument(node);
+            return this.constructor._getScrollYDocument(node);
         }
 
         return DOMNode.getScrollY(node);
@@ -63,9 +63,9 @@ Object.assign(DOM.prototype, {
             if (Core.isWindow(node)) {
                 DOMNode.setScrollWindow(node, x, y);
             } else if (Core.isDocument(node)) {
-                DOM._setScrollDocument(node, x, y);
+                this.constructor._setScrollDocument(node, x, y);
             } else {
-                DOM._setScroll(node, x, y);
+                this.constructor._setScroll(node, x, y);
             }
         }
     },
@@ -80,9 +80,9 @@ Object.assign(DOM.prototype, {
 
         for (const node of nodes) {
             if (Core.isWindow(node)) {
-                DOM._setScrollXWindow(node, x);
+                this.constructor._setScrollXWindow(node, x);
             } else if (Core.isDocument(node)) {
-                DOM._setScrollXDocument(node, x);
+                this.constructor._setScrollXDocument(node, x);
             } else {
                 DOMNode.setScrollX(node, x);
             }
@@ -99,9 +99,9 @@ Object.assign(DOM.prototype, {
 
         for (const node of nodes) {
             if (Core.isWindow(node)) {
-                DOM._setScrollYWindow(node, y);
+                this.constructor._setScrollYWindow(node, y);
             } else if (Core.isDocument(node)) {
-                DOM._setScrollYDocument(node, y);
+                this.constructor._setScrollYDocument(node, y);
             } else {
                 DOMNode.setScrollY(node, y);
             }

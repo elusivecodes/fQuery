@@ -7,12 +7,10 @@ Object.assign(DOM.prototype, {
     /**
      * Get the computed height of the first node.
      * @param {string|array|HTMLElement|Document|Window|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
-     * @param {Boolean} [padding] Whether to include padding height.
-     * @param {Boolean} [border] Whether to include border height.
-     * @param {Boolean} [margin] Whether to include margin height.
+     * @param {number} [innerOuter=1] Whether to include padding, border and margin heights.
      * @returns {number} The height.
      */
-    height(nodes, padding, border, margin) {
+    height(nodes, innerOuter) {
         const node = this.parseNode(nodes, { document: true, window: true });
 
         if (!node) {
@@ -22,35 +20,33 @@ Object.assign(DOM.prototype, {
         if (Core.isWindow(node)) {
             return DOMNode.heightWindow(
                 node,
-                Core.isUndefined(padding) ?
-                    false :
-                    padding
+                Core.isUndefined(innerOuter) ?
+                    0 :
+                    innerOuter
             );
+        }
+
+        if (Core.isUndefined(innerOuter)) {
+            innerOuter = 1;
         }
 
         if (Core.isDocument(node)) {
-            return DOM._height(
+            return this.constructor._height(
                 DOMNode.documentElement(node),
-                Core.isUndefined(padding) ?
-                    true :
-                    padding,
-                border,
-                margin
+                innerOuter
             );
         }
 
-        return DOM._height(node, padding, border, margin);
+        return this.constructor._height(node, innerOuter);
     },
 
     /**
      * Get the computed width of the first node.
      * @param {string|array|HTMLElement|Document|Window|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
-     * @param {Boolean} [padding] Whether to include padding width.
-     * @param {Boolean} [border] Whether to include border width.
-     * @param {Boolean} [margin] Whether to include margin width.
+     * @param {number} [innerOuter] Whether to include padding, border and margin widths.
      * @returns {number} The width.
      */
-    width(nodes, padding, border, margin) {
+    width(nodes, innerOuter) {
         const node = this.parseNode(nodes, { document: true, window: true });
 
         if (!node) {
@@ -60,24 +56,24 @@ Object.assign(DOM.prototype, {
         if (Core.isWindow(node)) {
             return DOMNode.widthWindow(
                 node,
-                Core.isUndefined(padding) ?
-                    false :
-                    padding
+                Core.isUndefined(innerOuter) ?
+                    0 :
+                    innerOuter
             );
+        }
+
+        if (Core.isUndefined(innerOuter)) {
+            innerOuter = 1;
         }
 
         if (Core.isDocument(node)) {
-            return DOM._width(
+            return this.constructor._width(
                 DOMNode.documentElement(node),
-                Core.isUndefined(padding) ?
-                    true :
-                    padding,
-                border,
-                margin
+                innerOuter
             );
         }
 
-        return DOM._width(node, padding, border, margin);
+        return this.constructor._width(node, innerOuter);
     }
 
 });

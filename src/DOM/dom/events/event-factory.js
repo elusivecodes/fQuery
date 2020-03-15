@@ -28,13 +28,13 @@ Object.assign(DOM.prototype, {
             }
 
             if (move) {
-                DOM._addEvent(window, 'mousemove', move);
+                this.addEvent(window, 'mousemove', move);
             }
 
             if (move || up) {
-                DOM._addEvent(window, 'mouseup', e => {
+                this.addEvent(window, 'mouseup', e => {
                     if (move) {
-                        DOM._removeEvent(window, 'mousemove', move);
+                        this.removeEvent(window, 'mousemove', move);
                     }
 
                     if (up) {

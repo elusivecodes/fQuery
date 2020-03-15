@@ -187,7 +187,7 @@ Object.assign(DOM.prototype, {
         DOMNode.removeRanges(selection);
 
         const fragment = DOMNode.extract(range),
-            deepest = DOM._deepest(nodes.slice().shift()),
+            deepest = this.constructor._deepest(nodes.slice().shift()),
             children = Core.wrap(DOMNode.childNodes(fragment));
 
         for (const child of children) {

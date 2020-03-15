@@ -24,7 +24,7 @@ Object.assign(DOM, {
             };
         }
 
-        style = Core.snakeCase(style);
+        style = Core.kebabCase(style);
 
         return this._styles.get(node)
             .getPropertyValue(style);
@@ -38,7 +38,7 @@ Object.assign(DOM, {
      */
     _getStyle(node, style) {
         if (style) {
-            style = Core.snakeCase(style);
+            style = Core.kebabCase(style);
 
             return DOMNode.getStyle(node, style);
         }
@@ -62,7 +62,7 @@ Object.assign(DOM, {
     _setStyle(node, styles, important) {
         for (let style in styles) {
             let value = styles[style];
-            style = Core.snakeCase(style);
+            style = Core.kebabCase(style);
 
             // if value is numeric and not a number property, add px
             if (value && Core.isNumeric(value) && !this.cssNumberProperties.includes(style)) {

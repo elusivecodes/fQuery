@@ -17,7 +17,7 @@ Object.assign(DOM.prototype, {
             return;
         }
 
-        return DOM._getAttribute(node, attribute);
+        return this.constructor._getAttribute(node, attribute);
     },
 
     /**
@@ -33,7 +33,7 @@ Object.assign(DOM.prototype, {
             return;
         }
 
-        return DOM._getDataset(node, key);
+        return this.constructor._getDataset(node, key);
     },
 
     /**
@@ -110,7 +110,7 @@ Object.assign(DOM.prototype, {
         nodes = this.parseNodes(nodes);
 
         for (const node of nodes) {
-            DOM._removeDataset(node, key);
+            this.constructor._removeDataset(node, key);
         }
     },
 
@@ -136,10 +136,10 @@ Object.assign(DOM.prototype, {
     setAttribute(nodes, attribute, value) {
         nodes = this.parseNodes(nodes);
 
-        const attributes = DOM._parseData(attribute, value);
+        const attributes = this.constructor._parseData(attribute, value);
 
         for (const node of nodes) {
-            DOM._setAttribute(node, attributes);
+            this.constructor._setAttribute(node, attributes);
         }
     },
 
@@ -152,10 +152,10 @@ Object.assign(DOM.prototype, {
     setDataset(nodes, key, value) {
         nodes = this.parseNodes(nodes);
 
-        const dataset = DOM._parseData(key, value, true);
+        const dataset = this.constructor._parseData(key, value, true);
 
         for (const node of nodes) {
-            DOM._setDataset(node, dataset);
+            this.constructor._setDataset(node, dataset);
         }
     },
 
@@ -183,7 +183,7 @@ Object.assign(DOM.prototype, {
     setProperty(nodes, property, value) {
         nodes = this.parseNodes(nodes);
 
-        const properties = DOM._parseData(property, value);
+        const properties = this.constructor._parseData(property, value);
 
         for (const node of nodes) {
             for (const property in properties) {

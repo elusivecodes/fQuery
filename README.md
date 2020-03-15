@@ -745,30 +745,36 @@ dom.setScrollY(nodes, y);
 Get the computed height of the first node (and optionally padding, border or margin).
 
 - `nodes` is a query selector string, a *HTMLElement*, *Document*, *Window*, *NodeList*, *HTMLCollection*, [*QuerySet*](https://github.com/elusivecodes/fQuery) or an array of nodes.
-- `padding` is a boolean indicating whether to include padding in the calculation, and will default to *true*.
-- `border` is a boolean indicating whether to include border width in the calculation, and will default to *false*.
-- `margin` is a boolean indicating whether to include the margin in the calculation, and will default to *false*.
+- `innerNumber` is a number indicating whether to include padding, border or margin sizes in the calculation. Allowed values are *0* (no padding), *1* (padding), *2* (padding and border) and *3* (padding, border and margin), and will default to *1*.
 
 ```javascript
 const height = dom.height(nodes, padding, border, margin);
 ```
 
-If the first node passed to this method is a *Window*, the second argument will instead determine whether to use the outer height, and will default to *false*. The last 2 arguments will be ignored.
+If the first node passed to this method is a *Window*, the second argument will instead determine whether to use the outer height, and will default to *0*.
+
+The following constants can also be used as the second argument for brevity.
+- `DOM.INNER` *0*
+- `DOM.OUTER` *2*
+- `DOM.OUTER_MARGIN` *3*
 
 **Width**
 
 Get the computed width of the first node (and optionally padding, border or margin).
 
 - `nodes` is a query selector string, a *HTMLElement*, *Document*, *Window*, *NodeList*, *HTMLCollection*, [*QuerySet*](https://github.com/elusivecodes/fQuery) or an array of nodes.
-- `padding` is a boolean indicating whether to include padding in the calculation, and will default to *true*.
-- `border` is a boolean indicating whether to include border width in the calculation, and will default to *false*.
-- `margin` is a boolean indicating whether to include the margin in the calculation, and will default to *false*.
+- `innerNumber` is a number indicating whether to include padding, border or margin sizes in the calculation. Allowed values are *0* (no padding), *1* (padding), *2* (padding and border) and *3* (padding, border and margin), and will default to *1*.
 
 ```javascript
 const width = dom.width(nodes, padding, border, margin);
 ```
 
-If the first node passed to this method is a *Window*, the second argument will instead determine whether to use the outer width, and will default to *false*. The last 2 arguments will be ignored.
+If the first node passed to this method is a *Window*, the second argument will instead determine whether to use the outer width, and will default to *0*.
+
+The following constants can also be used as the second argument for brevity.
+- `DOM.INNER` *0*
+- `DOM.OUTER` *2*
+- `DOM.OUTER_MARGIN` *3*
 
 ##### Styles
 

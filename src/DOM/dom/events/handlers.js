@@ -16,8 +16,8 @@ Object.assign(DOM.prototype, {
         nodes = this.parseNodes(nodes, { shadow: true, document: true, window: true });
 
         for (const node of nodes) {
-            for (const event of DOM._parseEvents(events)) {
-                DOM._addEvent(node, event, callback, delegate, selfDestruct);
+            for (const event of this.constructor._parseEvents(events)) {
+                this.constructor._addEvent(node, event, callback, delegate, selfDestruct);
             }
         }
     },
@@ -65,7 +65,7 @@ Object.assign(DOM.prototype, {
 
         for (const node of nodes) {
             for (const other of others) {
-                DOM._cloneEvents(node, other);
+                this.constructor._cloneEvents(node, other);
             }
         }
     },
@@ -81,21 +81,21 @@ Object.assign(DOM.prototype, {
         nodes = this.parseNodes(nodes, { shadow: true, document: true, window: true });
 
         events = events ?
-            DOM._parseEvents(events) :
+            this.constructor._parseEvents(events) :
             false;
 
         for (const node of nodes) {
-            if (!DOM._events.has(node)) {
+            if (!this.constructor._events.has(node)) {
                 continue;
             }
 
             if (!events) {
-                DOM._removeEvent(node, events, callback, delegate);
+                this.constructor._removeEvent(node, events, callback, delegate);
                 continue;
             }
 
             for (const event of events) {
-                DOM._removeEvent(node, event, callback, delegate);
+                this.constructor._removeEvent(node, event, callback, delegate);
             }
         }
     },
@@ -123,11 +123,11 @@ Object.assign(DOM.prototype, {
     triggerEvent(nodes, events, data, options) {
         nodes = this.parseNodes(nodes, { shadow: true, document: true, window: true });
 
-        events = DOM._parseEvents(events);
+        events = this.constructor._parseEvents(events);
 
         for (const node of nodes) {
             for (const event of events) {
-                DOM._triggerEvent(node, event, data, options);
+                this.constructor._triggerEvent(node, event, data, options);
             }
         }
     }
