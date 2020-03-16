@@ -4,9 +4,11 @@ const exec = require('../../setup');
 describe('DOM Attributes (Scroll)', function() {
 
     describe('#getScrollX', function() {
+
         beforeEach(async function() {
             await exec(_ => {
-                document.body.innerHTML = '<div id="test1" style="display: block; width: 100px; overflow-x: scroll;"><div style="display: block; width: 1000px; height: 1px;"></div></div><div id="test2"></div>';
+                document.body.innerHTML = '<div id="test1" style="display: block; width: 100px; overflow-x: scroll;"><div style="display: block; width: 1000px; height: 1px;"></div></div>' +
+                    '<div id="test2"></div>';
                 document.getElementById('test1').scrollLeft = 100;
             });
         });
@@ -85,9 +87,11 @@ describe('DOM Attributes (Scroll)', function() {
     });
 
     describe('#getScrollY', function() {
+
         beforeEach(async function() {
             await exec(_ => {
-                document.body.innerHTML = '<div id="test1" style="display: block; height: 100px; overflow-y: scroll;"><div style="display: block; width: 1px; height: 1000px;"></div></div><div id="test2"></div>';
+                document.body.innerHTML = '<div id="test1" style="display: block; height: 100px; overflow-y: scroll;"><div style="display: block; width: 1px; height: 1000px;"></div></div>' +
+                    '<div id="test2"></div>';
                 document.getElementById('test1').scrollTop = 100;
             });
         });
@@ -166,10 +170,11 @@ describe('DOM Attributes (Scroll)', function() {
     });
 
     describe('#setScroll', function() {
+
         beforeEach(async function() {
             await exec(_ => {
-                document.body.innerHTML = '<div id="test1" style="display: block; width: 100px; height: 100px; overflow: scroll;"><div style="display: block; width: 1000px; height: 1000px;"></div></div><div id="test2" style="display: block; width: 100px; height: 100px; overflow: scroll;"><div style="display: block; width: 1000px; height: 1000px;"></div></div>';
-                document.getElementById('test1').scrollLeft = 100;
+                document.body.innerHTML = '<div id="test1" style="display: block; width: 100px; height: 100px; overflow: scroll;"><div style="display: block; width: 1000px; height: 1000px;"></div></div>' +
+                    '<div id="test2" style="display: block; width: 100px; height: 100px; overflow: scroll;"><div style="display: block; width: 1000px; height: 1000px;"></div></div>';
             });
         });
 
@@ -303,23 +308,211 @@ describe('DOM Attributes (Scroll)', function() {
 
     describe('#setScrollX', function() {
 
-        it('sets the scroll X position');
+        beforeEach(async function() {
+            await exec(_ => {
+                document.body.innerHTML = '<div id="test1" style="display: block; width: 100px; height: 1px; overflow: scroll;"><div style="display: block; width: 1000px; height: 1px;"></div></div>' +
+                    '<div id="test2" style="display: block; width: 100px; height: 1px; overflow: scroll;"><div style="display: block; width: 1000px; height: 1px;"></div></div>';
+            });
+        });
+
+        it('sets the scroll X position for all nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    dom.setScrollX(
+                        'div',
+                        100,
+                    );
+                    return [
+                        document.getElementById('test1').scrollLeft,
+                        document.getElementById('test2').scrollLeft
+                    ];
+                }),
+                [
+                    100,
+                    100
+                ]
+            );
+        });
+
         it('works with Window');
-        it('works with HTMLElement');
-        it('works with HTMLCollection');
-        it('works with NodeList');
-        it('works with array');
+
+        it('works with HTMLElement', async function() {
+            assert.equal(
+                await exec(_ => {
+                    dom.setScrollX(
+                        document.getElementById('test1'),
+                        100,
+                    );
+                    return document.getElementById('test1').scrollLeft;
+                }),
+                100
+            );
+        });
+
+        it('works with HTMLCollection', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    dom.setScrollX(
+                        document.body.children,
+                        100
+                    );
+                    return [
+                        document.getElementById('test1').scrollLeft,
+                        document.getElementById('test2').scrollLeft
+                    ];
+                }),
+                [
+                    100,
+                    100
+                ]
+            );
+        });
+
+        it('works with NodeList', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    dom.setScrollX(
+                        document.querySelectorAll('div'),
+                        100
+                    );
+                    return [
+                        document.getElementById('test1').scrollLeft,
+                        document.getElementById('test2').scrollLeft
+                    ];
+                }),
+                [
+                    100,
+                    100
+                ]
+            );
+        });
+
+        it('works with array', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    dom.setScrollX(
+                        [
+                            document.getElementById('test1'),
+                            document.getElementById('test2')
+                        ],
+                        100
+                    );
+                    return [
+                        document.getElementById('test1').scrollLeft,
+                        document.getElementById('test2').scrollLeft
+                    ];
+                }),
+                [
+                    100,
+                    100
+                ]
+            );
+        });
 
     });
 
     describe('#setScrollY', function() {
 
-        it('sets the scroll Y position');
+        beforeEach(async function() {
+            await exec(_ => {
+                document.body.innerHTML = '<div id="test1" style="display: block; width: 1px; height: 100px; overflow: scroll;"><div style="display: block; width: 1px; height: 1000px;"></div></div>' +
+                    '<div id="test2" style="display: block; width: 1px; height: 100px; overflow: scroll;"><div style="display: block; width: 1px; height: 1000px;"></div></div>';
+            });
+        });
+
+        it('sets the scroll Y position for all nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    dom.setScrollY(
+                        'div',
+                        100,
+                    );
+                    return [
+                        document.getElementById('test1').scrollTop,
+                        document.getElementById('test2').scrollTop
+                    ];
+                }),
+                [
+                    100,
+                    100
+                ]
+            );
+        });
+
         it('works with Window');
-        it('works with HTMLElement');
-        it('works with HTMLCollection');
-        it('works with NodeList');
-        it('works with array');
+
+        it('works with HTMLElement', async function() {
+            assert.equal(
+                await exec(_ => {
+                    dom.setScrollY(
+                        document.getElementById('test1'),
+                        100,
+                    );
+                    return document.getElementById('test1').scrollTop;
+                }),
+                100
+            );
+        });
+
+        it('works with HTMLCollection', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    dom.setScrollY(
+                        document.body.children,
+                        100
+                    );
+                    return [
+                        document.getElementById('test1').scrollTop,
+                        document.getElementById('test2').scrollTop
+                    ];
+                }),
+                [
+                    100,
+                    100
+                ]
+            );
+        });
+
+        it('works with NodeList', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    dom.setScrollY(
+                        document.querySelectorAll('div'),
+                        100
+                    );
+                    return [
+                        document.getElementById('test1').scrollTop,
+                        document.getElementById('test2').scrollTop
+                    ];
+                }),
+                [
+                    100,
+                    100
+                ]
+            );
+        });
+
+        it('works with array', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    dom.setScrollY(
+                        [
+                            document.getElementById('test1'),
+                            document.getElementById('test2')
+                        ],
+                        100
+                    );
+                    return [
+                        document.getElementById('test1').scrollTop,
+                        document.getElementById('test2').scrollTop
+                    ];
+                }),
+                [
+                    100,
+                    100
+                ]
+            );
+        });
 
     });
 

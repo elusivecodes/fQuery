@@ -17,7 +17,8 @@ describe('DOM Attributes (Data)', function() {
 
         beforeEach(async function() {
             await exec(_ => {
-                document.body.innerHTML = '<div id="test1"></div><div id="test2"></div>';
+                document.body.innerHTML = '<div id="test1"></div>' +
+                    '<div id="test2"></div>';
                 DOM._data.set(
                     document.getElementById('test1'),
                     {
@@ -109,7 +110,8 @@ describe('DOM Attributes (Data)', function() {
 
         beforeEach(async function() {
             await exec(_ => {
-                document.body.innerHTML = '<div id="test1"></div><div id="test2"></div>';
+                document.body.innerHTML = '<div id="test1"></div>' +
+                    '<div id="test2"></div>';
                 DOM._data.set(
                     document.getElementById('test1'),
                     {
@@ -281,12 +283,177 @@ describe('DOM Attributes (Data)', function() {
 
     describe('#setData', function() {
 
-        it('sets data for all nodes');
-        it('sets a data object for all nodes');
-        it('works with HTMLElement');
-        it('works with HTMLCollection');
-        it('works with NodeList');
-        it('works with array');
+        beforeEach(async function() {
+            await exec(_ => {
+                document.body.innerHTML = '<div id="test1"></div>' +
+                    '<div id="test2"></div>';
+            });
+        });
+
+        it('sets data for all nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    dom.setData(
+                        'div',
+                        'test',
+                        'Test 1'
+                    );
+                    return [
+                        DOM._data.get(
+                            document.getElementById('test1')
+                        ),
+                        DOM._data.get(
+                            document.getElementById('test2')
+                        )
+                    ];
+                }),
+                [
+                    {
+                        test: 'Test 1'
+                    },
+                    {
+                        test: 'Test 1'
+                    }
+                ]
+            );
+        });
+
+        it('sets a data object for all nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    dom.setData(
+                        'div',
+                        {
+                            testA: 'Test 1',
+                            testB: 'Test 2'
+                        }
+                    );
+                    return [
+                        DOM._data.get(
+                            document.getElementById('test1')
+                        ),
+                        DOM._data.get(
+                            document.getElementById('test2')
+                        )
+                    ];
+                }),
+                [
+                    {
+                        testA: 'Test 1',
+                        testB: 'Test 2'
+                    },
+                    {
+                        testA: 'Test 1',
+                        testB: 'Test 2'
+                    }
+                ]
+            );
+        });
+
+        it('works with HTMLElement', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    dom.setData(
+                        document.getElementById('test1'),
+                        'test',
+                        'Test 1'
+                    );
+                    return DOM._data.get(
+                        document.getElementById('test1')
+                    );
+                }),
+                {
+                    test: 'Test 1'
+                }
+            );
+        });
+
+        it('works with HTMLCollection', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    dom.setData(
+                        document.body.children,
+                        'test',
+                        'Test 1'
+                    );
+                    return [
+                        DOM._data.get(
+                            document.getElementById('test1')
+                        ),
+                        DOM._data.get(
+                            document.getElementById('test2')
+                        )
+                    ];
+                }),
+                [
+                    {
+                        test: 'Test 1'
+                    },
+                    {
+                        test: 'Test 1'
+                    }
+                ]
+            );
+        });
+
+        it('works with NodeList', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    dom.setData(
+                        document.querySelectorAll('div'),
+                        'test',
+                        'Test 1'
+                    );
+                    return [
+                        DOM._data.get(
+                            document.getElementById('test1')
+                        ),
+                        DOM._data.get(
+                            document.getElementById('test2')
+                        )
+                    ];
+                }),
+                [
+                    {
+                        test: 'Test 1'
+                    },
+                    {
+                        test: 'Test 1'
+                    }
+                ]
+            );
+        });
+
+        it('works with array', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    dom.setData(
+                        [
+                            document.getElementById('test1'),
+                            document.getElementById('test2')
+                        ],
+                        'test',
+                        'Test 1'
+                    );
+                    return [
+                        DOM._data.get(
+                            document.getElementById('test1')
+                        ),
+                        DOM._data.get(
+                            document.getElementById('test2')
+                        )
+                    ];
+                }),
+                [
+                    {
+                        test: 'Test 1'
+                    },
+                    {
+                        test: 'Test 1'
+                    }
+                ]
+            );
+        });
 
     });
 

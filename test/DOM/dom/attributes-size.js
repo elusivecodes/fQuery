@@ -7,7 +7,8 @@ describe('DOM Attributes (Size)', function() {
 
         beforeEach(async function() {
             await exec(_ => {
-                document.body.innerHTML = '<div id="test1" style="display: block; height: 1000px; width: 1200px; margin: 50px; padding: 25px; border: 1px solid grey;"></div><div id="test2"></div>';
+                document.body.innerHTML = '<div id="test1" style="display: block; height: 1000px; width: 1200px; margin: 50px; padding: 25px; border: 1px solid grey;"></div>' +
+                    '<div id="test2"></div>';
             });
         });
 
@@ -122,7 +123,8 @@ describe('DOM Attributes (Size)', function() {
 
         beforeEach(async function() {
             await exec(_ => {
-                document.body.innerHTML = '<div id="test1" style="display: block; height: 1000px; width: 1200px; margin: 50px; padding: 25px; border: 1px solid grey;"></div><div id="test2"></div>';
+                document.body.innerHTML = '<div id="test1" style="display: block; height: 1000px; width: 1200px; margin: 50px; padding: 25px; border: 1px solid grey;"></div>' +
+                    '<div id="test2"></div>';
             });
         });
 

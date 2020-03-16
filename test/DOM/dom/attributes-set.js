@@ -4,9 +4,11 @@ const exec = require('../../setup');
 describe('DOM Attributes (Set)', function() {
 
     describe('#setAttribute', function() {
+
         beforeEach(async function() {
             await exec(_ => {
-                document.body.innerHTML = '<input type="number" id="test1"><input type="number" id="test2">';
+                document.body.innerHTML = '<input type="number" id="test1">' +
+                    '<input type="number" id="test2">';
             });
         });
 
@@ -20,7 +22,8 @@ describe('DOM Attributes (Set)', function() {
                     );
                     return document.body.innerHTML;
                 }),
-                '<input type="number" id="test1" placeholder="123"><input type="number" id="test2" placeholder="123">'
+                '<input type="number" id="test1" placeholder="123">' +
+                '<input type="number" id="test2" placeholder="123">'
             );
         });
 
@@ -36,7 +39,8 @@ describe('DOM Attributes (Set)', function() {
                     );
                     return document.body.innerHTML;
                 }),
-                '<input type="number" id="test1" min="1" max="10"><input type="number" id="test2" min="1" max="10">'
+                '<input type="number" id="test1" min="1" max="10">' +
+                '<input type="number" id="test2" min="1" max="10">'
             );
         });
 
@@ -50,7 +54,8 @@ describe('DOM Attributes (Set)', function() {
                     );
                     return document.body.innerHTML;
                 }),
-                '<input type="number" id="test1" placeholder="123"><input type="number" id="test2">'
+                '<input type="number" id="test1" placeholder="123">' +
+                '<input type="number" id="test2">'
             );
         });
 
@@ -64,7 +69,8 @@ describe('DOM Attributes (Set)', function() {
                     );
                     return document.body.innerHTML;
                 }),
-                '<input type="number" id="test1" placeholder="123"><input type="number" id="test2" placeholder="123">'
+                '<input type="number" id="test1" placeholder="123">' +
+                '<input type="number" id="test2" placeholder="123">'
             );
         });
 
@@ -78,7 +84,8 @@ describe('DOM Attributes (Set)', function() {
                     );
                     return document.body.innerHTML;
                 }),
-                '<input type="number" id="test1" placeholder="123"><input type="number" id="test2" placeholder="123">'
+                '<input type="number" id="test1" placeholder="123">' +
+                '<input type="number" id="test2" placeholder="123">'
             );
         });
 
@@ -95,16 +102,19 @@ describe('DOM Attributes (Set)', function() {
                     );
                     return document.body.innerHTML;
                 }),
-                '<input type="number" id="test1" placeholder="123"><input type="number" id="test2" placeholder="123">'
+                '<input type="number" id="test1" placeholder="123">' +
+                '<input type="number" id="test2" placeholder="123">'
             );
         });
 
     });
 
     describe('#setHTML', function() {
+
         beforeEach(async function() {
             await exec(_ => {
-                document.body.innerHTML = '<div id="test1"><div><span id="inner">Test 1</span></div></div><div id="test2"></div>';
+                document.body.innerHTML = '<div id="test1"><div><span id="inner">Test 1</span></div></div>' +
+                    '<div id="test2"></div>';
             });
         });
 
@@ -117,7 +127,8 @@ describe('DOM Attributes (Set)', function() {
                     );
                     return document.body.innerHTML;
                 }),
-                '<div id="test1"><span>Test 2</span></div><div id="test2"><span>Test 2</span></div>'
+                '<div id="test1"><span>Test 2</span></div>' +
+                '<div id="test2"><span>Test 2</span></div>'
             );
         });
 
@@ -130,7 +141,8 @@ describe('DOM Attributes (Set)', function() {
                     );
                     return document.body.innerHTML;
                 }),
-                '<div id="test1"><span>Test 2</span></div><div id="test2"></div>'
+                '<div id="test1"><span>Test 2</span></div>' +
+                '<div id="test2"></div>'
             );
         });
 
@@ -143,7 +155,8 @@ describe('DOM Attributes (Set)', function() {
                     );
                     return document.body.innerHTML;
                 }),
-                '<div id="test1"><span>Test 2</span></div><div id="test2"><span>Test 2</span></div>'
+                '<div id="test1"><span>Test 2</span></div>' +
+                '<div id="test2"><span>Test 2</span></div>'
             );
         });
 
@@ -156,7 +169,8 @@ describe('DOM Attributes (Set)', function() {
                     );
                     return document.body.innerHTML;
                 }),
-                '<div id="test1"><span>Test 2</span></div><div id="test2"><span>Test 2</span></div>'
+                '<div id="test1"><span>Test 2</span></div>' +
+                '<div id="test2"><span>Test 2</span></div>'
             );
         });
 
@@ -172,7 +186,8 @@ describe('DOM Attributes (Set)', function() {
                     );
                     return document.body.innerHTML;
                 }),
-                '<div id="test1"><span>Test 2</span></div><div id="test2"><span>Test 2</span></div>'
+                '<div id="test1"><span>Test 2</span></div>' +
+                '<div id="test2"><span>Test 2</span></div>'
             );
         });
 
@@ -181,9 +196,11 @@ describe('DOM Attributes (Set)', function() {
     });
 
     describe('#setProperty', function() {
+
         beforeEach(async function() {
             await exec(_ => {
-                document.body.innerHTML = '<input type="text" id="test1"><input type="number" id="test2">';
+                document.body.innerHTML = '<input type="text" id="test1">' +
+                    '<input type="number" id="test2">';
             });
         });
 
@@ -315,9 +332,11 @@ describe('DOM Attributes (Set)', function() {
     });
 
     describe('#setText', function() {
+
         beforeEach(async function() {
             await exec(_ => {
-                document.body.innerHTML = '<div id="test1"><div><span id="inner">Test 1</span></div></div><div id="test2"></div>';
+                document.body.innerHTML = '<div id="test1"><div><span id="inner">Test 1</span></div></div>' +
+                    '<div id="test2"></div>';
             });
         });
 
@@ -330,7 +349,8 @@ describe('DOM Attributes (Set)', function() {
                     );
                     return document.body.innerHTML;
                 }),
-                '<div id="test1">Test 2</div><div id="test2">Test 2</div>'
+                '<div id="test1">Test 2</div>' +
+                '<div id="test2">Test 2</div>'
             );
         });
 
@@ -343,7 +363,8 @@ describe('DOM Attributes (Set)', function() {
                     );
                     return document.body.innerHTML;
                 }),
-                '<div id="test1">Test 2</div><div id="test2"></div>'
+                '<div id="test1">Test 2</div>' +
+                '<div id="test2"></div>'
             );
         });
 
@@ -356,7 +377,8 @@ describe('DOM Attributes (Set)', function() {
                     );
                     return document.body.innerHTML;
                 }),
-                '<div id="test1">Test 2</div><div id="test2">Test 2</div>'
+                '<div id="test1">Test 2</div>' +
+                '<div id="test2">Test 2</div>'
             );
         });
 
@@ -369,7 +391,8 @@ describe('DOM Attributes (Set)', function() {
                     );
                     return document.body.innerHTML;
                 }),
-                '<div id="test1">Test 2</div><div id="test2">Test 2</div>'
+                '<div id="test1">Test 2</div>' +
+                '<div id="test2">Test 2</div>'
             );
         });
 
@@ -385,7 +408,8 @@ describe('DOM Attributes (Set)', function() {
                     );
                     return document.body.innerHTML;
                 }),
-                '<div id="test1">Test 2</div><div id="test2">Test 2</div>'
+                '<div id="test1">Test 2</div>' +
+                '<div id="test2">Test 2</div>'
             );
         });
 
@@ -398,7 +422,8 @@ describe('DOM Attributes (Set)', function() {
                     );
                     return document.body.innerHTML;
                 }),
-                '<div id="test1">&lt;span&gt;Test 2&lt;/span&gt;</div><div id="test2"></div>'
+                '<div id="test1">&lt;span&gt;Test 2&lt;/span&gt;</div>' +
+                '<div id="test2"></div>'
             );
         });
 
@@ -407,9 +432,11 @@ describe('DOM Attributes (Set)', function() {
     });
 
     describe('#setValue', function() {
+
         beforeEach(async function() {
             await exec(_ => {
-                document.body.innerHTML = '<input type="text" id="test1"><input type="text" id="test2">';
+                document.body.innerHTML = '<input type="text" id="test1">' +
+                    '<input type="text" id="test2">';
             });
         });
 
@@ -435,7 +462,7 @@ describe('DOM Attributes (Set)', function() {
         it('works with textarea inputs', async function() {
             assert.equal(
                 await exec(_ => {
-                    document.body.innerHTML = '<textarea id="test1"></texta>';
+                    document.body.innerHTML = '<textarea id="test1"></textarea>';
                     dom.setValue(
                         'textarea',
                         'Test'

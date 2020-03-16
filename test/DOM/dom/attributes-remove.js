@@ -4,9 +4,11 @@ const exec = require('../../setup');
 describe('DOM Attributes (Remove)', function() {
 
     describe('#removeAttribute', function() {
+
         beforeEach(async function() {
             await exec(_ => {
-                document.body.innerHTML = '<input type="text" id="test1" disabled><input type="number" id="test2" disabled>';
+                document.body.innerHTML = '<input type="text" id="test1" disabled>' +
+                    '<input type="number" id="test2" disabled>';
             });
         });
 
@@ -19,7 +21,8 @@ describe('DOM Attributes (Remove)', function() {
                     );
                     return document.body.innerHTML;
                 }),
-                '<input type="text" id="test1"><input type="number" id="test2">'
+                '<input type="text" id="test1">' +
+                '<input type="number" id="test2">'
             );
         });
 
@@ -32,7 +35,8 @@ describe('DOM Attributes (Remove)', function() {
                     );
                     return document.body.innerHTML;
                 }),
-                '<input type="text" id="test1"><input type="number" id="test2" disabled="">'
+                '<input type="text" id="test1">' +
+                '<input type="number" id="test2" disabled="">'
             );
         });
 
@@ -45,7 +49,8 @@ describe('DOM Attributes (Remove)', function() {
                     );
                     return document.body.innerHTML;
                 }),
-                '<input type="text" id="test1"><input type="number" id="test2">'
+                '<input type="text" id="test1">' +
+                '<input type="number" id="test2">'
             );
         });
 
@@ -58,7 +63,8 @@ describe('DOM Attributes (Remove)', function() {
                     );
                     return document.body.innerHTML;
                 }),
-                '<input type="text" id="test1"><input type="number" id="test2">'
+                '<input type="text" id="test1">' +
+                '<input type="number" id="test2">'
             );
         });
 
@@ -74,16 +80,19 @@ describe('DOM Attributes (Remove)', function() {
                     );
                     return document.body.innerHTML;
                 }),
-                '<input type="text" id="test1"><input type="number" id="test2">'
+                '<input type="text" id="test1">' +
+                '<input type="number" id="test2">'
             );
         });
 
     });
 
     describe('#removeProperty', function() {
+
         beforeEach(async function() {
             await exec(_ => {
-                document.body.innerHTML = '<input type="checkbox" id="test1"><input type="checkbox" id="test2">';
+                document.body.innerHTML = '<input type="checkbox" id="test1">' +
+                    '<input type="checkbox" id="test2">';
                 document.getElementById('test1').test = 'Test 1';
                 document.getElementById('test2').test = 'Test 2';
             });
