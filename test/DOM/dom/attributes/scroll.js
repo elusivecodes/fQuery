@@ -1,5 +1,5 @@
 const assert = require('assert').strict;
-const exec = require('../../setup');
+const exec = require('../../../setup');
 
 describe('DOM Attributes (Scroll)', function() {
 
@@ -7,9 +7,11 @@ describe('DOM Attributes (Scroll)', function() {
 
         beforeEach(async function() {
             await exec(_ => {
-                document.body.innerHTML = '<div id="test1" style="display: block; width: 100px; overflow-x: scroll;"><div style="display: block; width: 1000px; height: 1px;"></div></div>' +
-                    '<div id="test2"></div>';
-                document.getElementById('test1').scrollLeft = 100;
+                dom.setHTML(
+                    document.body,
+                    '<div id="test1" style="display: block; width: 100px; overflow-x: scroll;"><div style="display: block; width: 1000px; height: 1px;"></div></div><div id="test2"></div>'
+                );
+                dom.setScrollX('#test1', 100);
             });
         });
 
@@ -27,8 +29,11 @@ describe('DOM Attributes (Scroll)', function() {
         it('works with Window', async function() {
             assert.equal(
                 await exec(_ => {
-                    document.body.innerHTML = '<div style="block; width: 1000px; height: 1px;"></div>';
-                    window.scrollTo(100, 0);
+                    dom.setHTML(
+                        document.body,
+                        '<div style="block; width: 1000px; height: 1000px;"></div>'
+                    );
+                    dom.setScrollX(window, 100);
                     return dom.getScrollX(
                         window
                     );
@@ -41,7 +46,7 @@ describe('DOM Attributes (Scroll)', function() {
             assert.equal(
                 await exec(_ => {
                     return dom.getScrollX(
-                        document.getElementById('test1')
+                        dom.findOne('#test1')
                     );
                 }),
                 100
@@ -74,10 +79,7 @@ describe('DOM Attributes (Scroll)', function() {
             assert.equal(
                 await exec(_ => {
                     return dom.getScrollX(
-                        [
-                            document.getElementById('test1'),
-                            document.getElementById('test2')
-                        ]
+                        dom.find('div')
                     );
                 }),
                 100
@@ -90,9 +92,11 @@ describe('DOM Attributes (Scroll)', function() {
 
         beforeEach(async function() {
             await exec(_ => {
-                document.body.innerHTML = '<div id="test1" style="display: block; height: 100px; overflow-y: scroll;"><div style="display: block; width: 1px; height: 1000px;"></div></div>' +
-                    '<div id="test2"></div>';
-                document.getElementById('test1').scrollTop = 100;
+                dom.setHTML(
+                    document.body,
+                    '<div id="test1" style="display: block; height: 100px; overflow-y: scroll;"><div style="display: block; width: 1px; height: 1000px;"></div></div><div id="test2"></div>'
+                );
+                dom.setScrollY('#test1', 100);
             });
         });
 
@@ -110,8 +114,11 @@ describe('DOM Attributes (Scroll)', function() {
         it('works with Window', async function() {
             assert.equal(
                 await exec(_ => {
-                    document.body.innerHTML = '<div style="block; width: 1px; height: 1000px;"></div>';
-                    window.scrollTo(0, 100);
+                    dom.setHTML(
+                        document.body,
+                        '<div style="block; width: 1000px; height: 1000px;"></div>'
+                    );
+                    dom.setScrollY(window, 100);
                     return dom.getScrollY(
                         window
                     );
@@ -124,7 +131,7 @@ describe('DOM Attributes (Scroll)', function() {
             assert.equal(
                 await exec(_ => {
                     return dom.getScrollY(
-                        document.getElementById('test1')
+                        dom.findOne('#test1')
                     );
                 }),
                 100
@@ -157,10 +164,7 @@ describe('DOM Attributes (Scroll)', function() {
             assert.equal(
                 await exec(_ => {
                     return dom.getScrollY(
-                        [
-                            document.getElementById('test1'),
-                            document.getElementById('test2')
-                        ]
+                        dom.find('div')
                     );
                 }),
                 100
@@ -173,8 +177,10 @@ describe('DOM Attributes (Scroll)', function() {
 
         beforeEach(async function() {
             await exec(_ => {
-                document.body.innerHTML = '<div id="test1" style="display: block; width: 100px; height: 100px; overflow: scroll;"><div style="display: block; width: 1000px; height: 1000px;"></div></div>' +
-                    '<div id="test2" style="display: block; width: 100px; height: 100px; overflow: scroll;"><div style="display: block; width: 1000px; height: 1000px;"></div></div>';
+                dom.setHTML(
+                    document.body,
+                    '<div id="test1" style="display: block; width: 100px; height: 100px; overflow: scroll;"><div style="display: block; width: 1000px; height: 1000px;"></div></div><div id="test2" style="display: block; width: 100px; height: 100px; overflow: scroll;"><div style="display: block; width: 1000px; height: 1000px;"></div></div>'
+                );
             });
         });
 
@@ -188,12 +194,12 @@ describe('DOM Attributes (Scroll)', function() {
                     );
                     return [
                         [
-                            document.getElementById('test1').scrollLeft,
-                            document.getElementById('test1').scrollTop
+                            dom.getScrollX('#test1'),
+                            dom.getScrollY('#test1')
                         ],
                         [
-                            document.getElementById('test2').scrollLeft,
-                            document.getElementById('test2').scrollTop
+                            dom.getScrollX('#test2'),
+                            dom.getScrollY('#test2')
                         ]
                     ];
                 }),
@@ -210,13 +216,13 @@ describe('DOM Attributes (Scroll)', function() {
             assert.deepEqual(
                 await exec(_ => {
                     dom.setScroll(
-                        document.getElementById('test1'),
+                        dom.findOne('#test1'),
                         100,
                         100
                     );
                     return [
-                        document.getElementById('test1').scrollLeft,
-                        document.getElementById('test1').scrollTop
+                        dom.getScrollX('#test1'),
+                        dom.getScrollY('#test1')
                     ];
                 }),
                 [100, 100]
@@ -233,12 +239,12 @@ describe('DOM Attributes (Scroll)', function() {
                     );
                     return [
                         [
-                            document.getElementById('test1').scrollLeft,
-                            document.getElementById('test1').scrollTop
+                            dom.getScrollX('#test1'),
+                            dom.getScrollY('#test1')
                         ],
                         [
-                            document.getElementById('test2').scrollLeft,
-                            document.getElementById('test2').scrollTop
+                            dom.getScrollX('#test2'),
+                            dom.getScrollY('#test2')
                         ]
                     ];
                 }),
@@ -259,12 +265,12 @@ describe('DOM Attributes (Scroll)', function() {
                     );
                     return [
                         [
-                            document.getElementById('test1').scrollLeft,
-                            document.getElementById('test1').scrollTop
+                            dom.getScrollX('#test1'),
+                            dom.getScrollY('#test1')
                         ],
                         [
-                            document.getElementById('test2').scrollLeft,
-                            document.getElementById('test2').scrollTop
+                            dom.getScrollX('#test2'),
+                            dom.getScrollY('#test2')
                         ]
                     ];
                 }),
@@ -279,21 +285,18 @@ describe('DOM Attributes (Scroll)', function() {
             assert.deepEqual(
                 await exec(_ => {
                     dom.setScroll(
-                        [
-                            document.getElementById('test1'),
-                            document.getElementById('test2')
-                        ],
+                        dom.find('div'),
                         100,
                         100
                     );
                     return [
                         [
-                            document.getElementById('test1').scrollLeft,
-                            document.getElementById('test1').scrollTop
+                            dom.getScrollX('#test1'),
+                            dom.getScrollY('#test1')
                         ],
                         [
-                            document.getElementById('test2').scrollLeft,
-                            document.getElementById('test2').scrollTop
+                            dom.getScrollX('#test2'),
+                            dom.getScrollY('#test2')
                         ]
                     ];
                 }),
@@ -310,8 +313,10 @@ describe('DOM Attributes (Scroll)', function() {
 
         beforeEach(async function() {
             await exec(_ => {
-                document.body.innerHTML = '<div id="test1" style="display: block; width: 100px; height: 1px; overflow: scroll;"><div style="display: block; width: 1000px; height: 1px;"></div></div>' +
-                    '<div id="test2" style="display: block; width: 100px; height: 1px; overflow: scroll;"><div style="display: block; width: 1000px; height: 1px;"></div></div>';
+                dom.setHTML(
+                    document.body,
+                    '<div id="test1" style="display: block; width: 100px; height: 1px; overflow: scroll;"><div style="display: block; width: 1000px; height: 1px;"></div></div><div id="test2" style="display: block; width: 100px; height: 1px; overflow: scroll;"><div style="display: block; width: 1000px; height: 1px;"></div></div>'
+                );
             });
         });
 
@@ -323,8 +328,8 @@ describe('DOM Attributes (Scroll)', function() {
                         100,
                     );
                     return [
-                        document.getElementById('test1').scrollLeft,
-                        document.getElementById('test2').scrollLeft
+                        dom.getScrollX('#test1'),
+                        dom.getScrollX('#test2')
                     ];
                 }),
                 [
@@ -340,10 +345,10 @@ describe('DOM Attributes (Scroll)', function() {
             assert.equal(
                 await exec(_ => {
                     dom.setScrollX(
-                        document.getElementById('test1'),
+                        dom.findOne('#test1'),
                         100,
                     );
-                    return document.getElementById('test1').scrollLeft;
+                    return dom.getScrollX('#test1');
                 }),
                 100
             );
@@ -357,8 +362,8 @@ describe('DOM Attributes (Scroll)', function() {
                         100
                     );
                     return [
-                        document.getElementById('test1').scrollLeft,
-                        document.getElementById('test2').scrollLeft
+                        dom.getScrollX('#test1'),
+                        dom.getScrollX('#test2')
                     ];
                 }),
                 [
@@ -376,8 +381,8 @@ describe('DOM Attributes (Scroll)', function() {
                         100
                     );
                     return [
-                        document.getElementById('test1').scrollLeft,
-                        document.getElementById('test2').scrollLeft
+                        dom.getScrollX('#test1'),
+                        dom.getScrollX('#test2')
                     ];
                 }),
                 [
@@ -391,15 +396,12 @@ describe('DOM Attributes (Scroll)', function() {
             assert.deepEqual(
                 await exec(_ => {
                     dom.setScrollX(
-                        [
-                            document.getElementById('test1'),
-                            document.getElementById('test2')
-                        ],
+                        dom.find('div'),
                         100
                     );
                     return [
-                        document.getElementById('test1').scrollLeft,
-                        document.getElementById('test2').scrollLeft
+                        dom.getScrollX('#test1'),
+                        dom.getScrollX('#test2')
                     ];
                 }),
                 [
@@ -415,8 +417,10 @@ describe('DOM Attributes (Scroll)', function() {
 
         beforeEach(async function() {
             await exec(_ => {
-                document.body.innerHTML = '<div id="test1" style="display: block; width: 1px; height: 100px; overflow: scroll;"><div style="display: block; width: 1px; height: 1000px;"></div></div>' +
-                    '<div id="test2" style="display: block; width: 1px; height: 100px; overflow: scroll;"><div style="display: block; width: 1px; height: 1000px;"></div></div>';
+                dom.setHTML(
+                    document.body,
+                    '<div id="test1" style="display: block; width: 1px; height: 100px; overflow: scroll;"><div style="display: block; width: 1px; height: 1000px;"></div></div><div id="test2" style="display: block; width: 1px; height: 100px; overflow: scroll;"><div style="display: block; width: 1px; height: 1000px;"></div></div>'
+                );
             });
         });
 
@@ -428,8 +432,8 @@ describe('DOM Attributes (Scroll)', function() {
                         100,
                     );
                     return [
-                        document.getElementById('test1').scrollTop,
-                        document.getElementById('test2').scrollTop
+                        dom.getScrollY('#test1'),
+                        dom.getScrollY('#test2')
                     ];
                 }),
                 [
@@ -445,10 +449,10 @@ describe('DOM Attributes (Scroll)', function() {
             assert.equal(
                 await exec(_ => {
                     dom.setScrollY(
-                        document.getElementById('test1'),
+                        dom.findOne('#test1'),
                         100,
                     );
-                    return document.getElementById('test1').scrollTop;
+                    return dom.getScrollY('#test1');
                 }),
                 100
             );
@@ -462,8 +466,8 @@ describe('DOM Attributes (Scroll)', function() {
                         100
                     );
                     return [
-                        document.getElementById('test1').scrollTop,
-                        document.getElementById('test2').scrollTop
+                        dom.getScrollY('#test1'),
+                        dom.getScrollY('#test2')
                     ];
                 }),
                 [
@@ -481,8 +485,8 @@ describe('DOM Attributes (Scroll)', function() {
                         100
                     );
                     return [
-                        document.getElementById('test1').scrollTop,
-                        document.getElementById('test2').scrollTop
+                        dom.getScrollY('#test1'),
+                        dom.getScrollY('#test2')
                     ];
                 }),
                 [
@@ -496,15 +500,12 @@ describe('DOM Attributes (Scroll)', function() {
             assert.deepEqual(
                 await exec(_ => {
                     dom.setScrollY(
-                        [
-                            document.getElementById('test1'),
-                            document.getElementById('test2')
-                        ],
+                        dom.find('div'),
                         100
                     );
                     return [
-                        document.getElementById('test1').scrollTop,
-                        document.getElementById('test2').scrollTop
+                        dom.getScrollY('#test1'),
+                        dom.getScrollY('#test2')
                     ];
                 }),
                 [

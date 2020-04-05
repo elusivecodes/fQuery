@@ -1,5 +1,5 @@
 const assert = require('assert').strict;
-const exec = require('../../setup');
+const exec = require('../../../setup');
 
 describe('DOM Attributes (Size)', function() {
 
@@ -7,8 +7,10 @@ describe('DOM Attributes (Size)', function() {
 
         beforeEach(async function() {
             await exec(_ => {
-                document.body.innerHTML = '<div id="test1" style="display: block; height: 1000px; width: 1200px; margin: 50px; padding: 25px; border: 1px solid grey;"></div>' +
-                    '<div id="test2"></div>';
+                dom.setHTML(
+                    document.body,
+                    '<div id="test1" style="display: block; height: 1000px; width: 1200px; margin: 50px; padding: 25px; border: 1px solid grey;"></div><div id="test2"></div>'
+                );
             });
         });
 
@@ -74,7 +76,7 @@ describe('DOM Attributes (Size)', function() {
             assert.equal(
                 await exec(_ => {
                     return dom.height(
-                        document.getElementById('test1')
+                        dom.findOne('#test1')
                     );
                 }),
                 1050
@@ -107,10 +109,7 @@ describe('DOM Attributes (Size)', function() {
             assert.equal(
                 await exec(_ => {
                     return dom.height(
-                        [
-                            document.getElementById('test1'),
-                            document.getElementById('test2')
-                        ]
+                        dom.find('div')
                     );
                 }),
                 1050
@@ -123,8 +122,10 @@ describe('DOM Attributes (Size)', function() {
 
         beforeEach(async function() {
             await exec(_ => {
-                document.body.innerHTML = '<div id="test1" style="display: block; height: 1000px; width: 1200px; margin: 50px; padding: 25px; border: 1px solid grey;"></div>' +
-                    '<div id="test2"></div>';
+                dom.setHTML(
+                    document.body,
+                    '<div id="test1" style="display: block; height: 1000px; width: 1200px; margin: 50px; padding: 25px; border: 1px solid grey;"></div><div id="test2"></div>'
+                );
             });
         });
 
@@ -190,7 +191,7 @@ describe('DOM Attributes (Size)', function() {
             assert.equal(
                 await exec(_ => {
                     return dom.width(
-                        document.getElementById('test1')
+                        dom.findOne('#test1')
                     );
                 }),
                 1250
@@ -223,10 +224,7 @@ describe('DOM Attributes (Size)', function() {
             assert.equal(
                 await exec(_ => {
                     return dom.width(
-                        [
-                            document.getElementById('test1'),
-                            document.getElementById('test2')
-                        ]
+                        dom.find('div')
                     );
                 }),
                 1250

@@ -1782,7 +1782,7 @@
          * @param {Boolean} [clamp=true] Whether to clamp the percent between 0 and 100.
          * @returns {number} The percent.
          */
-        percentY(nodes, y, offset) {
+        percentY(nodes, y, offset, clamp = true) {
             const nodeBox = this.rect(nodes, offset);
 
             if (!nodeBox) {
@@ -2038,7 +2038,7 @@
         addClass(nodes, ...classes) {
             nodes = this.parseNodes(nodes);
 
-            classes = this._constructor._parseClasses(classes);
+            classes = this.constructor._parseClasses(classes);
 
             if (!classes.length) {
                 return;
@@ -2062,7 +2062,7 @@
                 return;
             }
 
-            return this._constructor._css(node, style);
+            return this.constructor._css(node, style);
         },
 
         /**
@@ -2078,7 +2078,7 @@
                 return;
             }
 
-            return this._constructor._getStyle(node, style);
+            return this.constructor._getStyle(node, style);
         },
 
         /**
@@ -2101,7 +2101,7 @@
         removeClass(nodes, ...classes) {
             nodes = this.parseNodes(nodes);
 
-            classes = this._constructor._parseClasses(classes);
+            classes = this.constructor._parseClasses(classes);
 
             if (!classes.length) {
                 return;
@@ -2122,10 +2122,10 @@
         setStyle(nodes, style, value, important) {
             nodes = this.parseNodes(nodes);
 
-            const styles = this._constructor._parseData(style, value);
+            const styles = this.constructor._parseData(style, value);
 
             for (const node of nodes) {
-                this._constructor._setStyle(node, styles, important);
+                this.constructor._setStyle(node, styles, important);
             }
         },
 
@@ -2163,7 +2163,7 @@
         toggleClass(nodes, ...classes) {
             nodes = this.parseNodes(nodes);
 
-            classes = this._constructor._parseClasses(classes);
+            classes = this.constructor._parseClasses(classes);
 
             if (!classes.length) {
                 return;
@@ -4953,7 +4953,9 @@
             }
 
             if (leftOffset) {
-                style.left = `${parseFloat(this._css(node, 'left')) - leftOffset}px`;
+                const oldLeft = this._css(node, 'left');
+                const trueLeft = oldLeft && oldLeft !== 'auto' ? parseFloat(oldLeft) : 0;
+                style.left = `${trueLeft - leftOffset}px`;
             }
 
             let topOffset;
@@ -4964,7 +4966,13 @@
             }
 
             if (topOffset) {
-                style.top = `${parseFloat(this._css(node, 'top')) - topOffset}px`;
+                const oldTop = this._css(node, 'top');
+                const trueTop = oldTop && oldTop !== 'auto' ? parseFloat(oldTop) : 0;
+                style.top = `${trueTop - topOffset}px`;
+            }
+
+            if (this._css(node, 'position') === 'static') {
+                style.position = 'relative';
             }
 
             this._setStyle(node, style);

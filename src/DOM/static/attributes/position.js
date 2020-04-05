@@ -30,7 +30,9 @@ Object.assign(DOM, {
         }
 
         if (leftOffset) {
-            style.left = `${parseFloat(this._css(node, 'left')) - leftOffset}px`;
+            const oldLeft = this._css(node, 'left');
+            const trueLeft = oldLeft && oldLeft !== 'auto' ? parseFloat(oldLeft) : 0;
+            style.left = `${trueLeft - leftOffset}px`;
         }
 
         let topOffset;
@@ -41,7 +43,13 @@ Object.assign(DOM, {
         }
 
         if (topOffset) {
-            style.top = `${parseFloat(this._css(node, 'top')) - topOffset}px`;
+            const oldTop = this._css(node, 'top');
+            const trueTop = oldTop && oldTop !== 'auto' ? parseFloat(oldTop) : 0;
+            style.top = `${trueTop - topOffset}px`;
+        }
+
+        if (this._css(node, 'position') === 'static') {
+            style.position = 'relative';
         }
 
         this._setStyle(node, style);

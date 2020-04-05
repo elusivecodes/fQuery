@@ -162,7 +162,7 @@ Object.assign(DOM.prototype, {
      * @param {Boolean} [clamp=true] Whether to clamp the percent between 0 and 100.
      * @returns {number} The percent.
      */
-    percentY(nodes, y, offset) {
+    percentY(nodes, y, offset, clamp = true) {
         const nodeBox = this.rect(nodes, offset);
 
         if (!nodeBox) {

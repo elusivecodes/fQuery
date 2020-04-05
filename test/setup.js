@@ -5,6 +5,8 @@ let browser;
 let page;
 
 before(async function() {
+    this.timeout(30000);
+
     browser = await puppeteer.launch({
         args: ['--no-sandbox']
     });

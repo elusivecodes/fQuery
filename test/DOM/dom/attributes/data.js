@@ -1,15 +1,144 @@
 const assert = require('assert').strict;
-const exec = require('../../setup');
+const exec = require('../../../setup');
 
 describe('DOM Attributes (Data)', function() {
 
     describe('#cloneData', function() {
 
-        it('clones data from all nodes to all other nodes');
-        it('works with HTMLElement');
-        it('works with HTMLCollection');
-        it('works with NodeList');
-        it('works with array');
+        beforeEach(async function() {
+            await exec(_ => {
+                dom.setHTML(
+                    document.body,
+                    '<div id="dataParent"><div id="test1" data-toggle="data"></div><div id="test2" data-toggle="data"></div></div><div id="noDataParent"><div id="test3" data-toggle="noData"></div><div id="test4" data-toggle="noData"></div></div>'
+                );
+
+                dom.setData(
+                    '#test1',
+                    'test1',
+                    'Test 1'
+                );
+                dom.setData(
+                    '#test2',
+                    'test2',
+                    'Test 2'
+                );
+            });
+        });
+
+        it('clones data from all nodes to all other nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    dom.cloneData(
+                        '[data-toggle="data"]',
+                        '[data-toggle="noData"]'
+                    );
+                    return [
+                        dom.getData('#test3'),
+                        dom.getData('#test4')
+                    ];
+                }),
+                [
+                    {
+                        test1: 'Test 1',
+                        test2: 'Test 2'
+                    },
+                    {
+                        test1: 'Test 1',
+                        test2: 'Test 2'
+                    }
+                ]
+            );
+        });
+
+        it('works with HTMLElement', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    dom.cloneData(
+                        dom.findOne('#test1'),
+                        dom.findOne('#test3')
+                    );
+                    return dom.getData('#test3');
+                }),
+                {
+                    test1: 'Test 1'
+                }
+            );
+        });
+
+        it('works with HTMLCollection', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    dom.cloneData(
+                        dom.findOne('#dataParent').children,
+                        dom.findOne('#noDataParent').children
+                    );
+                    return [
+                        dom.getData('#test3'),
+                        dom.getData('#test4')
+                    ];
+                }),
+                [
+                    {
+                        test1: 'Test 1',
+                        test2: 'Test 2'
+                    },
+                    {
+                        test1: 'Test 1',
+                        test2: 'Test 2'
+                    }
+                ]
+            );
+        });
+
+        it('works with NodeList', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    dom.cloneData(
+                        document.querySelectorAll('[data-toggle="data"]'),
+                        document.querySelectorAll('[data-toggle="noData"]')
+                    );
+                    return [
+                        dom.getData('#test3'),
+                        dom.getData('#test4')
+                    ];
+                }),
+                [
+                    {
+                        test1: 'Test 1',
+                        test2: 'Test 2'
+                    },
+                    {
+                        test1: 'Test 1',
+                        test2: 'Test 2'
+                    }
+                ]
+            );
+        });
+
+        it('works with array', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    dom.cloneData(
+                        dom.find('[data-toggle="data"]'),
+                        dom.find('[data-toggle="noData"]')
+                    );
+                    return [
+                        dom.getData('#test3'),
+                        dom.getData('#test4')
+                    ];
+                }),
+                [
+                    {
+                        test1: 'Test 1',
+                        test2: 'Test 2'
+                    },
+                    {
+                        test1: 'Test 1',
+                        test2: 'Test 2'
+                    }
+                ]
+            );
+        });
 
     });
 
@@ -17,13 +146,15 @@ describe('DOM Attributes (Data)', function() {
 
         beforeEach(async function() {
             await exec(_ => {
-                document.body.innerHTML = '<div id="test1"></div>' +
-                    '<div id="test2"></div>';
-                DOM._data.set(
-                    document.getElementById('test1'),
-                    {
-                        test: 'Test 1'
-                    }
+                dom.setHTML(
+                    document.body,
+                    '<div id="test1"></div><div id="test2"></div>'
+                );
+
+                dom.setData(
+                    '#test1',
+                    'test',
+                    'Test 1'
                 );
             });
         });
@@ -57,7 +188,7 @@ describe('DOM Attributes (Data)', function() {
             assert.equal(
                 await exec(_ => {
                     return dom.getData(
-                        document.getElementById('test1'),
+                        dom.findOne('#test1'),
                         'test'
                     );
                 }),
@@ -93,10 +224,7 @@ describe('DOM Attributes (Data)', function() {
             assert.equal(
                 await exec(_ => {
                     return dom.getData(
-                        [
-                            document.getElementById('test1'),
-                            document.getElementById('test2')
-                        ],
+                        dom.find('div'),
                         'test'
                     );
                 }),
@@ -110,17 +238,13 @@ describe('DOM Attributes (Data)', function() {
 
         beforeEach(async function() {
             await exec(_ => {
-                document.body.innerHTML = '<div id="test1"></div>' +
-                    '<div id="test2"></div>';
-                DOM._data.set(
-                    document.getElementById('test1'),
-                    {
-                        testA: 'Test 1',
-                        testB: 'Test 2'
-                    }
+                dom.setHTML(
+                    document.body,
+                    '<div id="test1"></div><div id="test2"></div>'
                 );
-                DOM._data.set(
-                    document.getElementById('test2'),
+
+                dom.setData(
+                    'div',
                     {
                         testA: 'Test 1',
                         testB: 'Test 2'
@@ -137,12 +261,8 @@ describe('DOM Attributes (Data)', function() {
                         'testA'
                     );
                     return [
-                        DOM._data.get(
-                            document.getElementById('test1')
-                        ),
-                        DOM._data.get(
-                            document.getElementById('test2')
-                        )
+                        dom.getData('#test1'),
+                        dom.getData('#test2')
                     ];
                 }),
                 [
@@ -163,12 +283,8 @@ describe('DOM Attributes (Data)', function() {
                         'div'
                     );
                     return [
-                        DOM._data.get(
-                            document.getElementById('test1')
-                        ),
-                        DOM._data.get(
-                            document.getElementById('test2')
-                        )
+                        dom.getData('#test1'),
+                        dom.getData('#test2')
                     ];
                 }),
                 [
@@ -182,12 +298,10 @@ describe('DOM Attributes (Data)', function() {
             assert.deepEqual(
                 await exec(_ => {
                     dom.removeData(
-                        document.getElementById('test1'),
+                        dom.findOne('#test1'),
                         'testA'
                     );
-                    return DOM._data.get(
-                        document.getElementById('test1')
-                    );
+                    return dom.getData('#test1');
                 }),
                 {
                     testB: 'Test 2'
@@ -203,12 +317,8 @@ describe('DOM Attributes (Data)', function() {
                         'testA'
                     );
                     return [
-                        DOM._data.get(
-                            document.getElementById('test1')
-                        ),
-                        DOM._data.get(
-                            document.getElementById('test2')
-                        )
+                        dom.getData('#test1'),
+                        dom.getData('#test2')
                     ];
                 }),
                 [
@@ -230,12 +340,8 @@ describe('DOM Attributes (Data)', function() {
                         'testA'
                     );
                     return [
-                        DOM._data.get(
-                            document.getElementById('test1')
-                        ),
-                        DOM._data.get(
-                            document.getElementById('test2')
-                        )
+                        dom.getData('#test1'),
+                        dom.getData('#test2')
                     ];
                 }),
                 [
@@ -253,19 +359,12 @@ describe('DOM Attributes (Data)', function() {
             assert.deepEqual(
                 await exec(_ => {
                     dom.removeData(
-                        [
-                            document.getElementById('test1'),
-                            document.getElementById('test2')
-                        ],
+                        dom.find('div'),
                         'testA'
                     );
                     return [
-                        DOM._data.get(
-                            document.getElementById('test1')
-                        ),
-                        DOM._data.get(
-                            document.getElementById('test2')
-                        )
+                        dom.getData('#test1'),
+                        dom.getData('#test2')
                     ];
                 }),
                 [
@@ -285,8 +384,10 @@ describe('DOM Attributes (Data)', function() {
 
         beforeEach(async function() {
             await exec(_ => {
-                document.body.innerHTML = '<div id="test1"></div>' +
-                    '<div id="test2"></div>';
+                dom.setHTML(
+                    document.body,
+                    '<div id="test1"></div><div id="test2"></div>'
+                );
             });
         });
 
@@ -299,12 +400,8 @@ describe('DOM Attributes (Data)', function() {
                         'Test 1'
                     );
                     return [
-                        DOM._data.get(
-                            document.getElementById('test1')
-                        ),
-                        DOM._data.get(
-                            document.getElementById('test2')
-                        )
+                        dom.getData('#test1'),
+                        dom.getData('#test2')
                     ];
                 }),
                 [
@@ -329,12 +426,8 @@ describe('DOM Attributes (Data)', function() {
                         }
                     );
                     return [
-                        DOM._data.get(
-                            document.getElementById('test1')
-                        ),
-                        DOM._data.get(
-                            document.getElementById('test2')
-                        )
+                        dom.getData('#test1'),
+                        dom.getData('#test2')
                     ];
                 }),
                 [
@@ -354,13 +447,11 @@ describe('DOM Attributes (Data)', function() {
             assert.deepEqual(
                 await exec(_ => {
                     dom.setData(
-                        document.getElementById('test1'),
+                        dom.findOne('#test1'),
                         'test',
                         'Test 1'
                     );
-                    return DOM._data.get(
-                        document.getElementById('test1')
-                    );
+                    return dom.getData('#test1');
                 }),
                 {
                     test: 'Test 1'
@@ -377,12 +468,8 @@ describe('DOM Attributes (Data)', function() {
                         'Test 1'
                     );
                     return [
-                        DOM._data.get(
-                            document.getElementById('test1')
-                        ),
-                        DOM._data.get(
-                            document.getElementById('test2')
-                        )
+                        dom.getData('#test1'),
+                        dom.getData('#test2')
                     ];
                 }),
                 [
@@ -405,12 +492,8 @@ describe('DOM Attributes (Data)', function() {
                         'Test 1'
                     );
                     return [
-                        DOM._data.get(
-                            document.getElementById('test1')
-                        ),
-                        DOM._data.get(
-                            document.getElementById('test2')
-                        )
+                        dom.getData('#test1'),
+                        dom.getData('#test2')
                     ];
                 }),
                 [
@@ -428,20 +511,13 @@ describe('DOM Attributes (Data)', function() {
             assert.deepEqual(
                 await exec(_ => {
                     dom.setData(
-                        [
-                            document.getElementById('test1'),
-                            document.getElementById('test2')
-                        ],
+                        dom.find('div'),
                         'test',
                         'Test 1'
                     );
                     return [
-                        DOM._data.get(
-                            document.getElementById('test1')
-                        ),
-                        DOM._data.get(
-                            document.getElementById('test2')
-                        )
+                        dom.getData('#test1'),
+                        dom.getData('#test2')
                     ];
                 }),
                 [

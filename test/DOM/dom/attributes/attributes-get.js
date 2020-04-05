@@ -1,5 +1,5 @@
 const assert = require('assert').strict;
-const exec = require('../../setup');
+const exec = require('../../../setup');
 
 describe('DOM Attributes (Get)', function() {
 
@@ -7,8 +7,10 @@ describe('DOM Attributes (Get)', function() {
 
         beforeEach(async function() {
             await exec(_ => {
-                document.body.innerHTML = '<input type="text" id="test1">' +
-                    '<input type="number" id="test2">';
+                dom.setHTML(
+                    document.body,
+                    '<input type="text" id="test1"><input type="number" id="test2">'
+                );
             });
         });
 
@@ -42,7 +44,7 @@ describe('DOM Attributes (Get)', function() {
             assert.equal(
                 await exec(_ => {
                     return dom.getAttribute(
-                        document.getElementById('test1'),
+                        dom.findOne('#test1'),
                         'type'
                     );
                 }),
@@ -78,10 +80,7 @@ describe('DOM Attributes (Get)', function() {
             assert.equal(
                 await exec(_ => {
                     return dom.getAttribute(
-                        [
-                            document.getElementById('test1'),
-                            document.getElementById('test2')
-                        ],
+                        dom.find('input'),
                         'type'
                     );
                 }),
@@ -94,8 +93,10 @@ describe('DOM Attributes (Get)', function() {
 
         beforeEach(async function() {
             await exec(_ => {
-                document.body.innerHTML = '<div id="test1"><span>Test</span></div>' +
-                    '<div id="test2"></div>';
+                dom.setHTML(
+                    document.body,
+                    '<div id="test1"><span>Test</span></div><div id="test2"></div>'
+                );
             });
         });
 
@@ -114,7 +115,7 @@ describe('DOM Attributes (Get)', function() {
             assert.equal(
                 await exec(_ => {
                     return dom.getHTML(
-                        document.getElementById('test1')
+                        dom.findOne('#test1')
                     );
                 }),
                 '<span>Test</span>'
@@ -147,10 +148,7 @@ describe('DOM Attributes (Get)', function() {
             assert.equal(
                 await exec(_ => {
                     return dom.getHTML(
-                        [
-                            document.getElementById('test1'),
-                            document.getElementById('test2')
-                        ]
+                        dom.find('div')
                     );
                 }),
                 '<span>Test</span>'
@@ -162,10 +160,12 @@ describe('DOM Attributes (Get)', function() {
 
         beforeEach(async function() {
             await exec(_ => {
-                document.body.innerHTML = '<input type="text" id="test1">' +
-                    '<input type="number" id="test2">';
-                document.getElementById('test1').test = 'Test 1';
-                document.getElementById('test2').test = 'Test 2';
+                dom.setHTML(
+                    document.body,
+                    '<input type="text" id="test1"><input type="number" id="test2">'
+                );
+                dom.setProperty('#test1', 'test', 'Test 1');
+                dom.setProperty('#test2', 'test', 'Test 2');
             });
         });
 
@@ -185,7 +185,7 @@ describe('DOM Attributes (Get)', function() {
             assert.equal(
                 await exec(_ => {
                     return dom.getProperty(
-                        document.getElementById('test1'),
+                        dom.findOne('#test1'),
                         'test'
                     );
                 }),
@@ -221,10 +221,7 @@ describe('DOM Attributes (Get)', function() {
             assert.equal(
                 await exec(_ => {
                     return dom.getProperty(
-                        [
-                            document.getElementById('test1'),
-                            document.getElementById('test2')
-                        ],
+                        dom.find('input'),
                         'test'
                     );
                 }),
@@ -237,8 +234,10 @@ describe('DOM Attributes (Get)', function() {
 
         beforeEach(async function() {
             await exec(_ => {
-                document.body.innerHTML = '<div id="test1"><span>Test</span></div>' +
-                    '<div id="test2"></div>';
+                dom.setHTML(
+                    document.body,
+                    '<div id="test1"><span>Test</span></div><div id="test2"></div>'
+                );
             });
         });
 
@@ -257,7 +256,7 @@ describe('DOM Attributes (Get)', function() {
             assert.equal(
                 await exec(_ => {
                     return dom.getText(
-                        document.getElementById('test1')
+                        dom.findOne('#test1')
                     );
                 }),
                 'Test'
@@ -290,10 +289,7 @@ describe('DOM Attributes (Get)', function() {
             assert.equal(
                 await exec(_ => {
                     return dom.getText(
-                        [
-                            document.getElementById('test1'),
-                            document.getElementById('test2')
-                        ]
+                        dom.find('div')
                     );
                 }),
                 'Test'
@@ -305,8 +301,10 @@ describe('DOM Attributes (Get)', function() {
 
         beforeEach(async function() {
             await exec(_ => {
-                document.body.innerHTML = '<input type="text" id="test1" value="Test">' +
-                    '<input type="number" id="test2">';
+                dom.setHTML(
+                    document.body,
+                    '<input type="text" id="test1" value="Test"><input type="number" id="test2"><textarea id="test3">Test</textarea><select id="test4"><option value="1">1</option><option value="2" selected>2</option></select><select id="test5"><option value="3">3</option><option value="4" selected>4</option></select>'
+                );
             });
         });
 
@@ -324,7 +322,6 @@ describe('DOM Attributes (Get)', function() {
         it('works with textarea inputs', async function() {
             assert.equal(
                 await exec(_ => {
-                    document.body.innerHTML = '<textarea id="test1">Test</textarea><textarea id="test2"></textarea>';
                     return dom.getValue(
                         'textarea'
                     );
@@ -336,8 +333,6 @@ describe('DOM Attributes (Get)', function() {
         it('works with select inputs', async function() {
             assert.equal(
                 await exec(_ => {
-                    document.body.innerHTML = '<select id="test1"><option value="1">1</option><option value="2" selected>2</option></select>' +
-                        '<select id="test2"><option value="3">3</option><option value="4" selected>4</option></select>';
                     return dom.getValue(
                         'select'
                     );
@@ -350,7 +345,7 @@ describe('DOM Attributes (Get)', function() {
             assert.equal(
                 await exec(_ => {
                     return dom.getValue(
-                        document.getElementById('test1')
+                        dom.findOne('#test1')
                     );
                 }),
                 'Test'
@@ -383,10 +378,7 @@ describe('DOM Attributes (Get)', function() {
             assert.equal(
                 await exec(_ => {
                     return dom.getValue(
-                        [
-                            document.getElementById('test1'),
-                            document.getElementById('test2')
-                        ]
+                        dom.find('input')
                     );
                 }),
                 'Test'

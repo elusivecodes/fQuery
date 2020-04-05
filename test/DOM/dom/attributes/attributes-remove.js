@@ -1,5 +1,5 @@
 const assert = require('assert').strict;
-const exec = require('../../setup');
+const exec = require('../../../setup');
 
 describe('DOM Attributes (Remove)', function() {
 
@@ -7,8 +7,10 @@ describe('DOM Attributes (Remove)', function() {
 
         beforeEach(async function() {
             await exec(_ => {
-                document.body.innerHTML = '<input type="text" id="test1" disabled>' +
-                    '<input type="number" id="test2" disabled>';
+                dom.setHTML(
+                    document.body,
+                    '<input type="text" id="test1" disabled><input type="number" id="test2" disabled>'
+                );
             });
         });
 
@@ -19,10 +21,9 @@ describe('DOM Attributes (Remove)', function() {
                         'input',
                         'disabled'
                     );
-                    return document.body.innerHTML;
+                    return dom.getHTML(document.body);
                 }),
-                '<input type="text" id="test1">' +
-                '<input type="number" id="test2">'
+                '<input type="text" id="test1"><input type="number" id="test2">'
             );
         });
 
@@ -30,13 +31,12 @@ describe('DOM Attributes (Remove)', function() {
             assert.equal(
                 await exec(_ => {
                     dom.removeAttribute(
-                        document.getElementById('test1'),
+                        dom.findOne('#test1'),
                         'disabled'
                     );
-                    return document.body.innerHTML;
+                    return dom.getHTML(document.body);
                 }),
-                '<input type="text" id="test1">' +
-                '<input type="number" id="test2" disabled="">'
+                '<input type="text" id="test1"><input type="number" id="test2" disabled="">'
             );
         });
 
@@ -47,10 +47,9 @@ describe('DOM Attributes (Remove)', function() {
                         document.body.children,
                         'disabled'
                     );
-                    return document.body.innerHTML;
+                    return dom.getHTML(document.body);
                 }),
-                '<input type="text" id="test1">' +
-                '<input type="number" id="test2">'
+                '<input type="text" id="test1"><input type="number" id="test2">'
             );
         });
 
@@ -61,10 +60,9 @@ describe('DOM Attributes (Remove)', function() {
                         document.querySelectorAll('input'),
                         'disabled'
                     );
-                    return document.body.innerHTML;
+                    return dom.getHTML(document.body);
                 }),
-                '<input type="text" id="test1">' +
-                '<input type="number" id="test2">'
+                '<input type="text" id="test1"><input type="number" id="test2">'
             );
         });
 
@@ -72,16 +70,12 @@ describe('DOM Attributes (Remove)', function() {
             assert.equal(
                 await exec(_ => {
                     dom.removeAttribute(
-                        [
-                            document.getElementById('test1'),
-                            document.getElementById('test2')
-                        ],
+                        dom.find('input'),
                         'disabled'
                     );
-                    return document.body.innerHTML;
+                    return dom.getHTML(document.body);
                 }),
-                '<input type="text" id="test1">' +
-                '<input type="number" id="test2">'
+                '<input type="text" id="test1"><input type="number" id="test2">'
             );
         });
 
@@ -91,10 +85,12 @@ describe('DOM Attributes (Remove)', function() {
 
         beforeEach(async function() {
             await exec(_ => {
-                document.body.innerHTML = '<input type="checkbox" id="test1">' +
-                    '<input type="checkbox" id="test2">';
-                document.getElementById('test1').test = 'Test 1';
-                document.getElementById('test2').test = 'Test 2';
+                dom.setHTML(
+                    document.body,
+                    '<input type="checkbox" id="test1"><input type="checkbox" id="test2">'
+                );
+                dom.setProperty('#test1', 'test', 'Test 1');
+                dom.setProperty('#test2', 'test', 'Test 2');
             });
         });
 
@@ -105,8 +101,8 @@ describe('DOM Attributes (Remove)', function() {
                     'test'
                 );
                 return [
-                    document.getElementById('test1').test,
-                    document.getElementById('test2').test
+                    dom.getProperty('#test1', 'test'),
+                    dom.getProperty('#test2', 'test')
                 ];
             });
 
@@ -122,12 +118,12 @@ describe('DOM Attributes (Remove)', function() {
         it('works with HTMLElement', async function() {
             const result = await exec(_ => {
                 dom.removeProperty(
-                    document.getElementById('test1'),
+                    dom.findOne('#test1'),
                     'test'
                 );
                 return [
-                    document.getElementById('test1').test,
-                    document.getElementById('test2').test
+                    dom.getProperty('#test1', 'test'),
+                    dom.getProperty('#test2', 'test')
                 ];
             });
 
@@ -147,8 +143,8 @@ describe('DOM Attributes (Remove)', function() {
                     'test'
                 );
                 return [
-                    document.getElementById('test1').test,
-                    document.getElementById('test2').test
+                    dom.getProperty('#test1', 'test'),
+                    dom.getProperty('#test2', 'test')
                 ];
             });
 
@@ -168,8 +164,8 @@ describe('DOM Attributes (Remove)', function() {
                     'test'
                 );
                 return [
-                    document.getElementById('test1').test,
-                    document.getElementById('test2').test
+                    dom.getProperty('#test1', 'test'),
+                    dom.getProperty('#test2', 'test')
                 ];
             });
 
@@ -185,15 +181,12 @@ describe('DOM Attributes (Remove)', function() {
         it('works with array', async function() {
             const result = await exec(_ => {
                 dom.removeProperty(
-                    [
-                        document.getElementById('test1'),
-                        document.getElementById('test2')
-                    ],
+                    dom.find('input'),
                     'test'
                 );
                 return [
-                    document.getElementById('test1').test,
-                    document.getElementById('test2').test
+                    dom.getProperty('#test1', 'test'),
+                    dom.getProperty('#test2', 'test')
                 ];
             });
 

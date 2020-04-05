@@ -1,5 +1,5 @@
 const assert = require('assert').strict;
-const exec = require('../../setup');
+const exec = require('../../../setup');
 
 describe('DOM Attributes (Set)', function() {
 
@@ -7,8 +7,10 @@ describe('DOM Attributes (Set)', function() {
 
         beforeEach(async function() {
             await exec(_ => {
-                document.body.innerHTML = '<input type="number" id="test1">' +
-                    '<input type="number" id="test2">';
+                dom.setHTML(
+                    document.body,
+                    '<input type="number" id="test1"><input type="number" id="test2">'
+                );
             });
         });
 
@@ -20,10 +22,9 @@ describe('DOM Attributes (Set)', function() {
                         'placeholder',
                         '123'
                     );
-                    return document.body.innerHTML;
+                    return dom.getHTML(document.body);
                 }),
-                '<input type="number" id="test1" placeholder="123">' +
-                '<input type="number" id="test2" placeholder="123">'
+                '<input type="number" id="test1" placeholder="123"><input type="number" id="test2" placeholder="123">'
             );
         });
 
@@ -37,10 +38,9 @@ describe('DOM Attributes (Set)', function() {
                             max: '10'
                         }
                     );
-                    return document.body.innerHTML;
+                    return dom.getHTML(document.body);
                 }),
-                '<input type="number" id="test1" min="1" max="10">' +
-                '<input type="number" id="test2" min="1" max="10">'
+                '<input type="number" id="test1" min="1" max="10"><input type="number" id="test2" min="1" max="10">'
             );
         });
 
@@ -48,14 +48,13 @@ describe('DOM Attributes (Set)', function() {
             assert.equal(
                 await exec(_ => {
                     dom.setAttribute(
-                        document.getElementById('test1'),
+                        dom.findOne('#test1'),
                         'placeholder',
                         '123'
                     );
-                    return document.body.innerHTML;
+                    return dom.getHTML(document.body);
                 }),
-                '<input type="number" id="test1" placeholder="123">' +
-                '<input type="number" id="test2">'
+                '<input type="number" id="test1" placeholder="123"><input type="number" id="test2">'
             );
         });
 
@@ -67,10 +66,9 @@ describe('DOM Attributes (Set)', function() {
                         'placeholder',
                         '123'
                     );
-                    return document.body.innerHTML;
+                    return dom.getHTML(document.body);
                 }),
-                '<input type="number" id="test1" placeholder="123">' +
-                '<input type="number" id="test2" placeholder="123">'
+                '<input type="number" id="test1" placeholder="123"><input type="number" id="test2" placeholder="123">'
             );
         });
 
@@ -82,10 +80,9 @@ describe('DOM Attributes (Set)', function() {
                         'placeholder',
                         '123'
                     );
-                    return document.body.innerHTML;
+                    return dom.getHTML(document.body);
                 }),
-                '<input type="number" id="test1" placeholder="123">' +
-                '<input type="number" id="test2" placeholder="123">'
+                '<input type="number" id="test1" placeholder="123"><input type="number" id="test2" placeholder="123">'
             );
         });
 
@@ -93,17 +90,13 @@ describe('DOM Attributes (Set)', function() {
             assert.equal(
                 await exec(_ => {
                     dom.setAttribute(
-                        [
-                            document.getElementById('test1'),
-                            document.getElementById('test2')
-                        ],
+                        dom.find('input'),
                         'placeholder',
                         '123'
                     );
-                    return document.body.innerHTML;
+                    return dom.getHTML(document.body);
                 }),
-                '<input type="number" id="test1" placeholder="123">' +
-                '<input type="number" id="test2" placeholder="123">'
+                '<input type="number" id="test1" placeholder="123"><input type="number" id="test2" placeholder="123">'
             );
         });
 
@@ -113,8 +106,10 @@ describe('DOM Attributes (Set)', function() {
 
         beforeEach(async function() {
             await exec(_ => {
-                document.body.innerHTML = '<div id="test1"><div><span id="inner">Test 1</span></div></div>' +
-                    '<div id="test2"></div>';
+                dom.setHTML(
+                    document.body,
+                    '<div id="test1"><div><span id="inner">Test 1</span></div></div><div id="test2"></div>'
+                );
             });
         });
 
@@ -125,10 +120,9 @@ describe('DOM Attributes (Set)', function() {
                         'div',
                         '<span>Test 2</span>'
                     );
-                    return document.body.innerHTML;
+                    return dom.getHTML(document.body);
                 }),
-                '<div id="test1"><span>Test 2</span></div>' +
-                '<div id="test2"><span>Test 2</span></div>'
+                '<div id="test1"><span>Test 2</span></div><div id="test2"><span>Test 2</span></div>'
             );
         });
 
@@ -136,13 +130,12 @@ describe('DOM Attributes (Set)', function() {
             assert.equal(
                 await exec(_ => {
                     dom.setHTML(
-                        document.getElementById('test1'),
+                        dom.findOne('#test1'),
                         '<span>Test 2</span>'
                     );
-                    return document.body.innerHTML;
+                    return dom.getHTML(document.body);
                 }),
-                '<div id="test1"><span>Test 2</span></div>' +
-                '<div id="test2"></div>'
+                '<div id="test1"><span>Test 2</span></div><div id="test2"></div>'
             );
         });
 
@@ -153,10 +146,9 @@ describe('DOM Attributes (Set)', function() {
                         document.body.children,
                         '<span>Test 2</span>'
                     );
-                    return document.body.innerHTML;
+                    return dom.getHTML(document.body);
                 }),
-                '<div id="test1"><span>Test 2</span></div>' +
-                '<div id="test2"><span>Test 2</span></div>'
+                '<div id="test1"><span>Test 2</span></div><div id="test2"><span>Test 2</span></div>'
             );
         });
 
@@ -167,10 +159,9 @@ describe('DOM Attributes (Set)', function() {
                         document.querySelectorAll('div'),
                         '<span>Test 2</span>'
                     );
-                    return document.body.innerHTML;
+                    return dom.getHTML(document.body);
                 }),
-                '<div id="test1"><span>Test 2</span></div>' +
-                '<div id="test2"><span>Test 2</span></div>'
+                '<div id="test1"><span>Test 2</span></div><div id="test2"><span>Test 2</span></div>'
             );
         });
 
@@ -178,16 +169,12 @@ describe('DOM Attributes (Set)', function() {
             assert.equal(
                 await exec(_ => {
                     dom.setHTML(
-                        [
-                            document.getElementById('test1'),
-                            document.getElementById('test2')
-                        ],
+                        dom.find('div'),
                         '<span>Test 2</span>'
                     );
-                    return document.body.innerHTML;
+                    return dom.getHTML(document.body);
                 }),
-                '<div id="test1"><span>Test 2</span></div>' +
-                '<div id="test2"><span>Test 2</span></div>'
+                '<div id="test1"><span>Test 2</span></div><div id="test2"><span>Test 2</span></div>'
             );
         });
 
@@ -199,8 +186,10 @@ describe('DOM Attributes (Set)', function() {
 
         beforeEach(async function() {
             await exec(_ => {
-                document.body.innerHTML = '<input type="text" id="test1">' +
-                    '<input type="number" id="test2">';
+                dom.setHTML(
+                    document.body,
+                    '<input type="text" id="test1"><input type="number" id="test2">'
+                );
             });
         });
 
@@ -213,8 +202,8 @@ describe('DOM Attributes (Set)', function() {
                         'Test'
                     );
                     return [
-                        document.getElementById('test1').test,
-                        document.getElementById('test2').test
+                        dom.getProperty('#test1', 'test'),
+                        dom.getProperty('#test2', 'test')
                     ];
                 }),
                 [
@@ -235,8 +224,8 @@ describe('DOM Attributes (Set)', function() {
                         }
                     );
                     return [
-                        document.getElementById('test1').test1,
-                        document.getElementById('test1').test2
+                        dom.getProperty('#test1', 'test1'),
+                        dom.getProperty('#test1', 'test2')
                     ];
                 }),
                 [
@@ -250,13 +239,13 @@ describe('DOM Attributes (Set)', function() {
             assert.deepEqual(
                 await exec(_ => {
                     dom.setProperty(
-                        document.getElementById('test1'),
+                        dom.findOne('#test1'),
                         'test',
                         'Test'
                     );
                     return [
-                        document.getElementById('test1').test,
-                        document.getElementById('test2').test
+                        dom.getProperty('#test1', 'test'),
+                        dom.getProperty('#test2', 'test')
                     ];
                 }),
                 [
@@ -275,8 +264,8 @@ describe('DOM Attributes (Set)', function() {
                         'Test'
                     );
                     return [
-                        document.getElementById('test1').test,
-                        document.getElementById('test2').test
+                        dom.getProperty('#test1', 'test'),
+                        dom.getProperty('#test2', 'test')
                     ];
                 }),
                 [
@@ -295,8 +284,8 @@ describe('DOM Attributes (Set)', function() {
                         'Test'
                     );
                     return [
-                        document.getElementById('test1').test,
-                        document.getElementById('test2').test
+                        dom.getProperty('#test1', 'test'),
+                        dom.getProperty('#test2', 'test')
                     ];
                 }),
                 [
@@ -310,16 +299,13 @@ describe('DOM Attributes (Set)', function() {
             assert.deepEqual(
                 await exec(_ => {
                     dom.setProperty(
-                        [
-                            document.getElementById('test1'),
-                            document.getElementById('test2')
-                        ],
+                        dom.find('input'),
                         'test',
                         'Test'
                     );
                     return [
-                        document.getElementById('test1').test,
-                        document.getElementById('test2').test
+                        dom.getProperty('#test1', 'test'),
+                        dom.getProperty('#test2', 'test')
                     ];
                 }),
                 [
@@ -335,8 +321,10 @@ describe('DOM Attributes (Set)', function() {
 
         beforeEach(async function() {
             await exec(_ => {
-                document.body.innerHTML = '<div id="test1"><div><span id="inner">Test 1</span></div></div>' +
-                    '<div id="test2"></div>';
+                dom.setHTML(
+                    document.body,
+                    '<div id="test1"><div><span id="inner">Test 1</span></div></div><div id="test2"></div>'
+                );
             });
         });
 
@@ -347,10 +335,9 @@ describe('DOM Attributes (Set)', function() {
                         'div',
                         'Test 2'
                     );
-                    return document.body.innerHTML;
+                    return dom.getHTML(document.body);
                 }),
-                '<div id="test1">Test 2</div>' +
-                '<div id="test2">Test 2</div>'
+                '<div id="test1">Test 2</div><div id="test2">Test 2</div>'
             );
         });
 
@@ -358,13 +345,12 @@ describe('DOM Attributes (Set)', function() {
             assert.equal(
                 await exec(_ => {
                     dom.setText(
-                        document.getElementById('test1'),
+                        dom.findOne('#test1'),
                         'Test 2'
                     );
-                    return document.body.innerHTML;
+                    return dom.getHTML(document.body);
                 }),
-                '<div id="test1">Test 2</div>' +
-                '<div id="test2"></div>'
+                '<div id="test1">Test 2</div><div id="test2"></div>'
             );
         });
 
@@ -375,10 +361,9 @@ describe('DOM Attributes (Set)', function() {
                         document.body.children,
                         'Test 2'
                     );
-                    return document.body.innerHTML;
+                    return dom.getHTML(document.body);
                 }),
-                '<div id="test1">Test 2</div>' +
-                '<div id="test2">Test 2</div>'
+                '<div id="test1">Test 2</div><div id="test2">Test 2</div>'
             );
         });
 
@@ -389,10 +374,9 @@ describe('DOM Attributes (Set)', function() {
                         document.querySelectorAll('div'),
                         'Test 2'
                     );
-                    return document.body.innerHTML;
+                    return dom.getHTML(document.body);
                 }),
-                '<div id="test1">Test 2</div>' +
-                '<div id="test2">Test 2</div>'
+                '<div id="test1">Test 2</div><div id="test2">Test 2</div>'
             );
         });
 
@@ -400,16 +384,12 @@ describe('DOM Attributes (Set)', function() {
             assert.equal(
                 await exec(_ => {
                     dom.setText(
-                        [
-                            document.getElementById('test1'),
-                            document.getElementById('test2')
-                        ],
+                        dom.find('div'),
                         'Test 2'
                     );
-                    return document.body.innerHTML;
+                    return dom.getHTML(document.body);
                 }),
-                '<div id="test1">Test 2</div>' +
-                '<div id="test2">Test 2</div>'
+                '<div id="test1">Test 2</div><div id="test2">Test 2</div>'
             );
         });
 
@@ -417,13 +397,12 @@ describe('DOM Attributes (Set)', function() {
             assert.equal(
                 await exec(_ => {
                     dom.setText(
-                        document.getElementById('test1'),
+                        dom.findOne('#test1'),
                         '<span>Test 2</span>'
                     );
-                    return document.body.innerHTML;
+                    return dom.getHTML(document.body);
                 }),
-                '<div id="test1">&lt;span&gt;Test 2&lt;/span&gt;</div>' +
-                '<div id="test2"></div>'
+                '<div id="test1">&lt;span&gt;Test 2&lt;/span&gt;</div><div id="test2"></div>'
             );
         });
 
@@ -435,8 +414,10 @@ describe('DOM Attributes (Set)', function() {
 
         beforeEach(async function() {
             await exec(_ => {
-                document.body.innerHTML = '<input type="text" id="test1">' +
-                    '<input type="text" id="test2">';
+                dom.setHTML(
+                    document.body,
+                    '<input type="text" id="test1"><input type="text" id="test2"><textarea id="test3"></textarea><select id="test4"><option value="1">1</option><option value="2">2</option></select>'
+                );
             });
         });
 
@@ -448,8 +429,8 @@ describe('DOM Attributes (Set)', function() {
                         'Test'
                     );
                     return [
-                        document.getElementById('test1').value,
-                        document.getElementById('test2').value
+                        dom.getValue('#test1'),
+                        dom.getValue('#test2')
                     ]
                 }),
                 [
@@ -462,12 +443,11 @@ describe('DOM Attributes (Set)', function() {
         it('works with textarea inputs', async function() {
             assert.equal(
                 await exec(_ => {
-                    document.body.innerHTML = '<textarea id="test1"></textarea>';
                     dom.setValue(
                         'textarea',
                         'Test'
                     );
-                    return document.getElementById('test1').value
+                    return dom.getValue('#test3');
                 }),
                 'Test'
             );
@@ -476,12 +456,11 @@ describe('DOM Attributes (Set)', function() {
         it('works with select inputs', async function() {
             assert.equal(
                 await exec(_ => {
-                    document.body.innerHTML = '<select id="test1"><option value="1">1</option><option value="2">2</option></select>';
                     dom.setValue(
                         'select',
                         2
                     );
-                    return document.getElementById('test1').value
+                    return dom.getValue('#test4');
                 }),
                 '2'
             );
@@ -491,12 +470,12 @@ describe('DOM Attributes (Set)', function() {
             assert.deepEqual(
                 await exec(_ => {
                     dom.setValue(
-                        document.getElementById('test1'),
+                        dom.findOne('#test1'),
                         'Test'
                     );
                     return [
-                        document.getElementById('test1').value,
-                        document.getElementById('test2').value
+                        dom.getValue('#test1'),
+                        dom.getValue('#test2')
                     ]
                 }),
                 [
@@ -514,8 +493,8 @@ describe('DOM Attributes (Set)', function() {
                         'Test'
                     );
                     return [
-                        document.getElementById('test1').value,
-                        document.getElementById('test2').value
+                        dom.getValue('#test1'),
+                        dom.getValue('#test2')
                     ]
                 }),
                 [
@@ -533,8 +512,8 @@ describe('DOM Attributes (Set)', function() {
                         'Test'
                     );
                     return [
-                        document.getElementById('test1').value,
-                        document.getElementById('test2').value
+                        dom.getValue('#test1'),
+                        dom.getValue('#test2')
                     ]
                 }),
                 [
@@ -548,15 +527,12 @@ describe('DOM Attributes (Set)', function() {
             assert.deepEqual(
                 await exec(_ => {
                     dom.setValue(
-                        [
-                            document.getElementById('test1'),
-                            document.getElementById('test2')
-                        ],
+                        dom.find('input'),
                         'Test'
                     );
                     return [
-                        document.getElementById('test1').value,
-                        document.getElementById('test2').value
+                        dom.getValue('#test1'),
+                        dom.getValue('#test2')
                     ]
                 }),
                 [

@@ -12,7 +12,7 @@ Object.assign(DOM.prototype, {
     addClass(nodes, ...classes) {
         nodes = this.parseNodes(nodes);
 
-        classes = this._constructor._parseClasses(classes);
+        classes = this.constructor._parseClasses(classes);
 
         if (!classes.length) {
             return;
@@ -36,7 +36,7 @@ Object.assign(DOM.prototype, {
             return;
         }
 
-        return this._constructor._css(node, style);
+        return this.constructor._css(node, style);
     },
 
     /**
@@ -52,7 +52,7 @@ Object.assign(DOM.prototype, {
             return;
         }
 
-        return this._constructor._getStyle(node, style);
+        return this.constructor._getStyle(node, style);
     },
 
     /**
@@ -75,7 +75,7 @@ Object.assign(DOM.prototype, {
     removeClass(nodes, ...classes) {
         nodes = this.parseNodes(nodes);
 
-        classes = this._constructor._parseClasses(classes);
+        classes = this.constructor._parseClasses(classes);
 
         if (!classes.length) {
             return;
@@ -96,10 +96,10 @@ Object.assign(DOM.prototype, {
     setStyle(nodes, style, value, important) {
         nodes = this.parseNodes(nodes);
 
-        const styles = this._constructor._parseData(style, value);
+        const styles = this.constructor._parseData(style, value);
 
         for (const node of nodes) {
-            this._constructor._setStyle(node, styles, important);
+            this.constructor._setStyle(node, styles, important);
         }
     },
 
@@ -137,7 +137,7 @@ Object.assign(DOM.prototype, {
     toggleClass(nodes, ...classes) {
         nodes = this.parseNodes(nodes);
 
-        classes = this._constructor._parseClasses(classes);
+        classes = this.constructor._parseClasses(classes);
 
         if (!classes.length) {
             return;
