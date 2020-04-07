@@ -7,10 +7,9 @@ describe('DOM Attributes (Dataset)', function() {
 
         beforeEach(async function() {
             await exec(_ => {
-                dom.setHTML(
-                    document.body,
-                    '<div id="test1" data-text="Test" data-number="123.456" data-true="true" data-false="false" data-null="null" data-array="[1,2,3]" data-object="{&quot;a&quot;: 1}"></div><div id="test2"></div>'
-                );
+                document.body.innerHTML =
+                    '<div id="test1" data-text="Test" data-number="123.456" data-true="true" data-false="false" data-null="null" data-array="[1,2,3]" data-object="{&quot;a&quot;: 1}"></div>' +
+                    '<div id="test2"></div>';
             });
         });
 
@@ -121,7 +120,7 @@ describe('DOM Attributes (Dataset)', function() {
             assert.equal(
                 await exec(_ => {
                     return dom.getDataset(
-                        dom.findOne('#test1'),
+                        document.getElementById('test1'),
                         'text'
                     );
                 }),
@@ -157,7 +156,10 @@ describe('DOM Attributes (Dataset)', function() {
             assert.equal(
                 await exec(_ => {
                     return dom.getDataset(
-                        dom.find('div'),
+                        [
+                            document.getElementById('test1'),
+                            document.getElementById('test2')
+                        ],
                         'text'
                     );
                 }),
@@ -171,10 +173,9 @@ describe('DOM Attributes (Dataset)', function() {
 
         beforeEach(async function() {
             await exec(_ => {
-                dom.setHTML(
-                    document.body,
-                    '<div id="test1" data-text="Test"></div><div id="test2" data-text="Test"></div>'
-                );
+                document.body.innerHTML =
+                    '<div id="test1" data-text="Test"></div>' +
+                    '<div id="test2" data-text="Test"></div>';
             });
         });
 
@@ -185,9 +186,10 @@ describe('DOM Attributes (Dataset)', function() {
                         'div',
                         'text'
                     );
-                    return dom.getHTML(document.body);
+                    return document.body.innerHTML;
                 }),
-                '<div id="test1"></div><div id="test2"></div>'
+                '<div id="test1"></div>' +
+                '<div id="test2"></div>'
             );
         });
 
@@ -195,12 +197,13 @@ describe('DOM Attributes (Dataset)', function() {
             assert.equal(
                 await exec(_ => {
                     dom.removeDataset(
-                        dom.findOne('#test1'),
+                        document.getElementById('test1'),
                         'text'
                     );
-                    return dom.getHTML(document.body);
+                    return document.body.innerHTML;
                 }),
-                '<div id="test1"></div><div id="test2" data-text="Test"></div>'
+                '<div id="test1"></div>' +
+                '<div id="test2" data-text="Test"></div>'
             );
         });
 
@@ -211,9 +214,10 @@ describe('DOM Attributes (Dataset)', function() {
                         document.body.children,
                         'text'
                     );
-                    return dom.getHTML(document.body);
+                    return document.body.innerHTML;
                 }),
-                '<div id="test1"></div><div id="test2"></div>'
+                '<div id="test1"></div>' +
+                '<div id="test2"></div>'
             );
         });
 
@@ -224,9 +228,10 @@ describe('DOM Attributes (Dataset)', function() {
                         document.querySelectorAll('div'),
                         'text'
                     );
-                    return dom.getHTML(document.body);
+                    return document.body.innerHTML;
                 }),
-                '<div id="test1"></div><div id="test2"></div>'
+                '<div id="test1"></div>' +
+                '<div id="test2"></div>'
             );
         });
 
@@ -234,12 +239,16 @@ describe('DOM Attributes (Dataset)', function() {
             assert.equal(
                 await exec(_ => {
                     dom.removeDataset(
-                        dom.find('div'),
+                        [
+                            document.getElementById('test1'),
+                            document.getElementById('test2')
+                        ],
                         'text'
                     );
-                    return dom.getHTML(document.body);
+                    return document.body.innerHTML;
                 }),
-                '<div id="test1"></div><div id="test2"></div>'
+                '<div id="test1"></div>' +
+                '<div id="test2"></div>'
             );
         });
 
@@ -249,10 +258,9 @@ describe('DOM Attributes (Dataset)', function() {
 
         beforeEach(async function() {
             await exec(_ => {
-                dom.setHTML(
-                    document.body,
-                    '<div id="test1"></div><div id="test2"></div>'
-                );
+                document.body.innerHTML =
+                    '<div id="test1"></div>' +
+                    '<div id="test2"></div>';
             });
         });
 
@@ -264,9 +272,10 @@ describe('DOM Attributes (Dataset)', function() {
                         'text',
                         'Test'
                     );
-                    return dom.getHTML(document.body);
+                    return document.body.innerHTML;
                 }),
-                '<div id="test1" data-text="Test"></div><div id="test2" data-text="Test"></div>'
+                '<div id="test1" data-text="Test"></div>' +
+                '<div id="test2" data-text="Test"></div>'
             );
         });
 
@@ -280,9 +289,10 @@ describe('DOM Attributes (Dataset)', function() {
                             testB: 'Test 2'
                         }
                     );
-                    return dom.getHTML(document.body);
+                    return document.body.innerHTML;
                 }),
-                '<div id="test1" data-test-a="Test 1" data-test-b="Test 2"></div><div id="test2" data-test-a="Test 1" data-test-b="Test 2"></div>'
+                '<div id="test1" data-test-a="Test 1" data-test-b="Test 2"></div>' +
+                '<div id="test2" data-test-a="Test 1" data-test-b="Test 2"></div>'
             );
         });
 
@@ -290,13 +300,14 @@ describe('DOM Attributes (Dataset)', function() {
             assert.equal(
                 await exec(_ => {
                     dom.setDataset(
-                        dom.findOne('#test1'),
+                        document.getElementById('test1'),
                         'true',
                         true
                     );
-                    return dom.getHTML(document.body);
+                    return document.body.innerHTML;
                 }),
-                '<div id="test1" data-true="true"></div><div id="test2"></div>'
+                '<div id="test1" data-true="true"></div>' +
+                '<div id="test2"></div>'
             );
         });
 
@@ -304,13 +315,14 @@ describe('DOM Attributes (Dataset)', function() {
             assert.equal(
                 await exec(_ => {
                     dom.setDataset(
-                        dom.findOne('#test1'),
+                        document.getElementById('test1'),
                         'false',
                         false
                     );
-                    return dom.getHTML(document.body);
+                    return document.body.innerHTML;
                 }),
-                '<div id="test1" data-false="false"></div><div id="test2"></div>'
+                '<div id="test1" data-false="false"></div>' +
+                '<div id="test2"></div>'
             );
         });
 
@@ -318,13 +330,14 @@ describe('DOM Attributes (Dataset)', function() {
             assert.equal(
                 await exec(_ => {
                     dom.setDataset(
-                        dom.findOne('#test1'),
+                        document.getElementById('test1'),
                         'null',
                         null
                     );
-                    return dom.getHTML(document.body);
+                    return document.body.innerHTML;
                 }),
-                '<div id="test1" data-null="null"></div><div id="test2"></div>'
+                '<div id="test1" data-null="null"></div>' +
+                '<div id="test2"></div>'
             );
         });
 
@@ -332,13 +345,14 @@ describe('DOM Attributes (Dataset)', function() {
             assert.equal(
                 await exec(_ => {
                     dom.setDataset(
-                        dom.findOne('#test1'),
+                        document.getElementById('test1'),
                         'array',
                         [1, 2, 3]
                     );
-                    return dom.getHTML(document.body);
+                    return document.body.innerHTML;
                 }),
-                '<div id="test1" data-array="[1,2,3]"></div><div id="test2"></div>'
+                '<div id="test1" data-array="[1,2,3]"></div>' +
+                '<div id="test2"></div>'
             );
         });
 
@@ -346,13 +360,14 @@ describe('DOM Attributes (Dataset)', function() {
             assert.equal(
                 await exec(_ => {
                     dom.setDataset(
-                        dom.findOne('#test1'),
+                        document.getElementById('test1'),
                         'object',
                         { a: 1 }
                     );
-                    return dom.getHTML(document.body);
+                    return document.body.innerHTML;
                 }),
-                '<div id="test1" data-object="{&quot;a&quot;:1}"></div><div id="test2"></div>'
+                '<div id="test1" data-object="{&quot;a&quot;:1}"></div>' +
+                '<div id="test2"></div>'
             );
         });
 
@@ -360,13 +375,14 @@ describe('DOM Attributes (Dataset)', function() {
             assert.equal(
                 await exec(_ => {
                     dom.setDataset(
-                        dom.findOne('#test1'),
+                        document.getElementById('test1'),
                         'text',
                         'Test'
                     );
-                    return dom.getHTML(document.body);
+                    return document.body.innerHTML;
                 }),
-                '<div id="test1" data-text="Test"></div><div id="test2"></div>'
+                '<div id="test1" data-text="Test"></div>' +
+                '<div id="test2"></div>'
             );
         });
 
@@ -378,9 +394,10 @@ describe('DOM Attributes (Dataset)', function() {
                         'text',
                         'Test'
                     );
-                    return dom.getHTML(document.body);
+                    return document.body.innerHTML;
                 }),
-                '<div id="test1" data-text="Test"></div><div id="test2" data-text="Test"></div>'
+                '<div id="test1" data-text="Test"></div>' +
+                '<div id="test2" data-text="Test"></div>'
             );
         });
 
@@ -392,9 +409,10 @@ describe('DOM Attributes (Dataset)', function() {
                         'text',
                         'Test'
                     );
-                    return dom.getHTML(document.body);
+                    return document.body.innerHTML;
                 }),
-                '<div id="test1" data-text="Test"></div><div id="test2" data-text="Test"></div>'
+                '<div id="test1" data-text="Test"></div>' +
+                '<div id="test2" data-text="Test"></div>'
             );
         });
 
@@ -402,13 +420,17 @@ describe('DOM Attributes (Dataset)', function() {
             assert.equal(
                 await exec(_ => {
                     dom.setDataset(
-                        dom.find('div'),
+                        [
+                            document.getElementById('test1'),
+                            document.getElementById('test2')
+                        ],
                         'text',
                         'Test'
                     );
-                    return dom.getHTML(document.body);
+                    return document.body.innerHTML;
                 }),
-                '<div id="test1" data-text="Test"></div><div id="test2" data-text="Test"></div>'
+                '<div id="test1" data-text="Test"></div>' +
+                '<div id="test2" data-text="Test"></div>'
             );
         });
 

@@ -7,15 +7,10 @@ describe('DOM Attributes (Position)', function() {
 
         beforeEach(async function() {
             await exec(_ => {
-                dom.setHTML(
-                    document.body,
-                    '<div id="test1" style="display: block; width: 100px; height: 100px; margin: 1050px; padding: 50px;"></div><div id="test2"></div>'
-                );
-                dom.setScroll(
-                    window,
-                    1000,
-                    1000
-                );
+                document.body.innerHTML =
+                    '<div id="test1" style="display: block; width: 100px; height: 100px; margin: 1050px; padding: 50px;"></div>' +
+                    '<div id="test2"></div>';
+                window.scrollTo(1000, 1000);
             });
         });
 
@@ -52,7 +47,7 @@ describe('DOM Attributes (Position)', function() {
             assert.deepEqual(
                 await exec(_ => {
                     return dom.center(
-                        dom.findOne('#test1')
+                        document.getElementById('test1')
                     );
                 }),
                 {
@@ -94,7 +89,10 @@ describe('DOM Attributes (Position)', function() {
             assert.deepEqual(
                 await exec(_ => {
                     return dom.center(
-                        dom.find('div')
+                        [
+                            document.getElementById('test1'),
+                            document.getElementById('test2')
+                        ]
                     );
                 }),
                 {
@@ -110,10 +108,15 @@ describe('DOM Attributes (Position)', function() {
 
         beforeEach(async function() {
             await exec(_ => {
-                dom.setHTML(
-                    document.body,
-                    '<div id="fromParent"><div id="test1" data-toggle="from" style="display: block; width: 600px; height: 600px;"></div><div id="test2" data-toggle="from" style="display: block; width: 600px; height: 600px;"></div></div><div id="toParent"><div id="test3" data-toggle="to" style="position: absolute; top: 300px; left: 300px; width: 500px; height: 500px;"></div><div data-togle="to"></div></div>'
-                );
+                document.body.innerHTML =
+                    '<div id="fromParent">' +
+                    '<div id="test1" data-toggle="from" style="display: block; width: 600px; height: 600px;"></div>' +
+                    '<div id="test2" data-toggle="from" style="display: block; width: 600px; height: 600px;"></div>' +
+                    '</div>' +
+                    '<div id="toParent">' +
+                    '<div id="test3" data-toggle="to" style="position: absolute; top: 300px; left: 300px; width: 500px; height: 500px;"></div>' +
+                    '<div data-togle="to"></div>' +
+                    '</div>';
             });
         });
 
@@ -124,9 +127,16 @@ describe('DOM Attributes (Position)', function() {
                         '[data-toggle="from"]',
                         '[data-toggle="to"]'
                     );
-                    return dom.getHTML(document.body);
+                    return document.body.innerHTML;
                 }),
-                '<div id="fromParent"><div id="test1" data-toggle="from" style="display: block; width: 500px; height: 500px; left: 292px; top: 292px; position: relative;"></div><div id="test2" data-toggle="from" style="display: block; width: 500px; height: 500px; left: 292px; top: -308px; position: relative;"></div></div><div id="toParent"><div id="test3" data-toggle="to" style="position: absolute; top: 300px; left: 300px; width: 500px; height: 500px;"></div><div data-togle="to"></div></div>'
+                '<div id="fromParent">' +
+                '<div id="test1" data-toggle="from" style="display: block; width: 500px; height: 500px; left: 292px; top: 292px; position: relative;"></div>' +
+                '<div id="test2" data-toggle="from" style="display: block; width: 500px; height: 500px; left: 292px; top: -308px; position: relative;"></div>' +
+                '</div>' +
+                '<div id="toParent">' +
+                '<div id="test3" data-toggle="to" style="position: absolute; top: 300px; left: 300px; width: 500px; height: 500px;"></div>' +
+                '<div data-togle="to"></div>' +
+                '</div>'
             )
         });
 
@@ -134,12 +144,19 @@ describe('DOM Attributes (Position)', function() {
             assert.equal(
                 await exec(_ => {
                     dom.constrain(
-                        dom.findOne('#test1'),
-                        dom.findOne('#test3')
+                        document.getElementById('test1'),
+                        document.getElementById('test3')
                     );
-                    return dom.getHTML(document.body);
+                    return document.body.innerHTML;
                 }),
-                '<div id="fromParent"><div id="test1" data-toggle="from" style="display: block; width: 500px; height: 500px; left: 292px; top: 292px; position: relative;"></div><div id="test2" data-toggle="from" style="display: block; width: 600px; height: 600px;"></div></div><div id="toParent"><div id="test3" data-toggle="to" style="position: absolute; top: 300px; left: 300px; width: 500px; height: 500px;"></div><div data-togle="to"></div></div>'
+                '<div id="fromParent">' +
+                '<div id="test1" data-toggle="from" style="display: block; width: 500px; height: 500px; left: 292px; top: 292px; position: relative;"></div>' +
+                '<div id="test2" data-toggle="from" style="display: block; width: 600px; height: 600px;"></div>' +
+                '</div>' +
+                '<div id="toParent">' +
+                '<div id="test3" data-toggle="to" style="position: absolute; top: 300px; left: 300px; width: 500px; height: 500px;"></div>' +
+                '<div data-togle="to"></div>' +
+                '</div>'
             )
         });
 
@@ -147,12 +164,19 @@ describe('DOM Attributes (Position)', function() {
             assert.equal(
                 await exec(_ => {
                     dom.constrain(
-                        dom.findOne('#fromParent').children,
-                        dom.findOne('#toParent').children
+                        document.getElementById('fromParent').children,
+                        document.getElementById('toParent').children
                     );
-                    return dom.getHTML(document.body);
+                    return document.body.innerHTML;
                 }),
-                '<div id="fromParent"><div id="test1" data-toggle="from" style="display: block; width: 500px; height: 500px; left: 292px; top: 292px; position: relative;"></div><div id="test2" data-toggle="from" style="display: block; width: 500px; height: 500px; left: 292px; top: -308px; position: relative;"></div></div><div id="toParent"><div id="test3" data-toggle="to" style="position: absolute; top: 300px; left: 300px; width: 500px; height: 500px;"></div><div data-togle="to"></div></div>'
+                '<div id="fromParent">' +
+                '<div id="test1" data-toggle="from" style="display: block; width: 500px; height: 500px; left: 292px; top: 292px; position: relative;"></div>' +
+                '<div id="test2" data-toggle="from" style="display: block; width: 500px; height: 500px; left: 292px; top: -308px; position: relative;"></div>' +
+                '</div>' +
+                '<div id="toParent">' +
+                '<div id="test3" data-toggle="to" style="position: absolute; top: 300px; left: 300px; width: 500px; height: 500px;"></div>' +
+                '<div data-togle="to"></div>' +
+                '</div>'
             )
         });
 
@@ -163,9 +187,16 @@ describe('DOM Attributes (Position)', function() {
                         document.querySelectorAll('[data-toggle="from"]'),
                         document.querySelectorAll('[data-toggle="to"]')
                     );
-                    return dom.getHTML(document.body);
+                    return document.body.innerHTML;
                 }),
-                '<div id="fromParent"><div id="test1" data-toggle="from" style="display: block; width: 500px; height: 500px; left: 292px; top: 292px; position: relative;"></div><div id="test2" data-toggle="from" style="display: block; width: 500px; height: 500px; left: 292px; top: -308px; position: relative;"></div></div><div id="toParent"><div id="test3" data-toggle="to" style="position: absolute; top: 300px; left: 300px; width: 500px; height: 500px;"></div><div data-togle="to"></div></div>'
+                '<div id="fromParent">' +
+                '<div id="test1" data-toggle="from" style="display: block; width: 500px; height: 500px; left: 292px; top: 292px; position: relative;"></div>' +
+                '<div id="test2" data-toggle="from" style="display: block; width: 500px; height: 500px; left: 292px; top: -308px; position: relative;"></div>' +
+                '</div>' +
+                '<div id="toParent">' +
+                '<div id="test3" data-toggle="to" style="position: absolute; top: 300px; left: 300px; width: 500px; height: 500px;"></div>' +
+                '<div data-togle="to"></div>' +
+                '</div>'
             )
         });
 
@@ -173,12 +204,25 @@ describe('DOM Attributes (Position)', function() {
             assert.equal(
                 await exec(_ => {
                     dom.constrain(
-                        dom.find('[data-toggle="from"]'),
-                        dom.find('[data-toggle="to"]')
+                        [
+                            document.getElementById('test1'),
+                            document.getElementById('test2')
+                        ],
+                        [
+                            document.getElementById('test3'),
+                            document.getElementById('test4')
+                        ]
                     );
-                    return dom.getHTML(document.body);
+                    return document.body.innerHTML;
                 }),
-                '<div id="fromParent"><div id="test1" data-toggle="from" style="display: block; width: 500px; height: 500px; left: 292px; top: 292px; position: relative;"></div><div id="test2" data-toggle="from" style="display: block; width: 500px; height: 500px; left: 292px; top: -308px; position: relative;"></div></div><div id="toParent"><div id="test3" data-toggle="to" style="position: absolute; top: 300px; left: 300px; width: 500px; height: 500px;"></div><div data-togle="to"></div></div>'
+                '<div id="fromParent">' +
+                '<div id="test1" data-toggle="from" style="display: block; width: 500px; height: 500px; left: 292px; top: 292px; position: relative;"></div>' +
+                '<div id="test2" data-toggle="from" style="display: block; width: 500px; height: 500px; left: 292px; top: -308px; position: relative;"></div>' +
+                '</div>' +
+                '<div id="toParent">' +
+                '<div id="test3" data-toggle="to" style="position: absolute; top: 300px; left: 300px; width: 500px; height: 500px;"></div>' +
+                '<div data-togle="to"></div>' +
+                '</div>'
             )
         });
 
@@ -188,15 +232,10 @@ describe('DOM Attributes (Position)', function() {
 
         beforeEach(async function() {
             await exec(_ => {
-                dom.setHTML(
-                    document.body,
-                    '<div id="test1" style="display: block; width: 100px; height: 100px; margin: 1050px; padding: 50px;"></div><div id="test2"></div>'
-                );
-                dom.setScroll(
-                    window,
-                    1000,
-                    1000
-                );
+                document.body.innerHTML =
+                    '<div id="test1" style="display: block; width: 100px; height: 100px; margin: 1050px; padding: 50px;"></div>' +
+                    '<div id="test2"></div>';
+                window.scrollTo(1000, 1000);
             });
         });
 
@@ -231,7 +270,7 @@ describe('DOM Attributes (Position)', function() {
             assert.equal(
                 await exec(_ => {
                     return dom.distTo(
-                        dom.findOne('#test1'),
+                        document.getElementById('test1'),
                         580,
                         128
                     )
@@ -270,7 +309,10 @@ describe('DOM Attributes (Position)', function() {
             assert.equal(
                 await exec(_ => {
                     return dom.distTo(
-                        dom.find('div'),
+                        [
+                            document.getElementById('test1'),
+                            document.getElementById('test2')
+                        ],
                         580,
                         128
                     )
@@ -285,15 +327,16 @@ describe('DOM Attributes (Position)', function() {
 
         beforeEach(async function() {
             await exec(_ => {
-                dom.setHTML(
-                    document.body,
-                    '<div id="fromParent"><div id="test1" data-toggle="from" style="display: block; width: 100px; height: 100px; margin: 1050px; padding: 50px;"></div><div data-toggle="from"></div></div><div id="toParent"><div id="test2" data-toggle="to" style="display: block; width: 100px; height: 100px; margin: 1050px; padding: 50px;"></div><div data-toggle="to"></div></div>'
-                );
-                dom.setScroll(
-                    window,
-                    1000,
-                    1000
-                );
+                document.body.innerHTML =
+                    '<div id="fromParent">' +
+                    '<div id="test1" data-toggle="from" style="display: block; width: 100px; height: 100px; margin: 1050px; padding: 50px;"></div>' +
+                    '<div id="test2" data-toggle="from"></div>' +
+                    '</div>' +
+                    '<div id="toParent">' +
+                    '<div id="test3" data-toggle="to" style="display: block; width: 100px; height: 100px; margin: 1050px; padding: 50px;"></div>' +
+                    '<div id="test4" data-toggle="to"></div>' +
+                    '</div>';
+                window.scrollTo(1000, 1000);
             });
         });
 
@@ -313,8 +356,8 @@ describe('DOM Attributes (Position)', function() {
             assert.equal(
                 await exec(_ => {
                     return dom.distToNode(
-                        dom.findOne('#test1'),
-                        dom.findOne('#test2')
+                        document.getElementById('test1'),
+                        document.getElementById('test3')
                     );
                 }),
                 1250
@@ -325,8 +368,8 @@ describe('DOM Attributes (Position)', function() {
             assert.equal(
                 await exec(_ => {
                     return dom.distToNode(
-                        dom.findOne('#fromParent').children,
-                        dom.findOne('#toParent').children
+                        document.getElementById('fromParent').children,
+                        document.getElementById('toParent').children
                     );
                 }),
                 1250
@@ -349,8 +392,14 @@ describe('DOM Attributes (Position)', function() {
             assert.equal(
                 await exec(_ => {
                     return dom.distToNode(
-                        dom.find('[data-toggle="from"]'),
-                        dom.find('[data-toggle="to"]')
+                        [
+                            document.getElementById('test1'),
+                            document.getElementById('test2')
+                        ],
+                        [
+                            document.getElementById('test3'),
+                            document.getElementById('test4')
+                        ]
                     );
                 }),
                 1250
@@ -363,15 +412,10 @@ describe('DOM Attributes (Position)', function() {
 
         beforeEach(async function() {
             await exec(_ => {
-                dom.setHTML(
-                    document.body,
-                    '<div id="test1" style="display: block; width: 100px; height: 100px; margin: 1050px; padding: 50px;"></div><div id="test2" style="display: block; width: 100px; height: 100px; margin: 1050px; padding: 50px;"></div>'
-                );
-                dom.setScroll(
-                    window,
-                    1000,
-                    1000
-                );
+                document.body.innerHTML =
+                    '<div id="test1" style="display: block; width: 100px; height: 100px; margin: 1050px; padding: 50px;"></div>' +
+                    '<div id="test2" style="display: block; width: 100px; height: 100px; margin: 1050px; padding: 50px;"></div>';
+                window.scrollTo(1000, 1000);
             });
         });
 
@@ -383,7 +427,7 @@ describe('DOM Attributes (Position)', function() {
                         1000,
                         1000
                     );
-                    return dom.getAttribute(nearest, 'id');
+                    return nearest.id;
                 }),
                 'test2'
             );
@@ -398,7 +442,7 @@ describe('DOM Attributes (Position)', function() {
                         1000,
                         true
                     );
-                    return dom.getAttribute(nearest, 'id');
+                    return nearest.id;
                 }),
                 'test1'
             );
@@ -408,11 +452,11 @@ describe('DOM Attributes (Position)', function() {
             assert.equal(
                 await exec(_ => {
                     const nearest = dom.nearestTo(
-                        dom.findOne('#test1'),
+                        document.getElementById('test1'),
                         1000,
                         1000
                     );
-                    return dom.getAttribute(nearest, 'id');
+                    return nearest.id;
                 }),
                 'test1'
             );
@@ -426,7 +470,7 @@ describe('DOM Attributes (Position)', function() {
                         1000,
                         1000
                     );
-                    return dom.getAttribute(nearest, 'id');
+                    return nearest.id;
                 }),
                 'test2'
             );
@@ -440,7 +484,7 @@ describe('DOM Attributes (Position)', function() {
                         1000,
                         1000
                     );
-                    return dom.getAttribute(nearest, 'id');
+                    return nearest.id;
                 }),
                 'test2'
             );
@@ -450,11 +494,14 @@ describe('DOM Attributes (Position)', function() {
             assert.equal(
                 await exec(_ => {
                     const nearest = dom.nearestTo(
-                        dom.find('div'),
+                        [
+                            document.getElementById('test1'),
+                            document.getElementById('test2')
+                        ],
                         1000,
                         1000
                     );
-                    return dom.getAttribute(nearest, 'id');
+                    return nearest.id;
                 }),
                 'test2'
             );
@@ -466,15 +513,16 @@ describe('DOM Attributes (Position)', function() {
 
         beforeEach(async function() {
             await exec(_ => {
-                dom.setHTML(
-                    document.body,
-                    '<div id="fromParent"><div id="test1" data-toggle="from" style="display: block; width: 100px; height: 100px; margin: 1050px; padding: 50px;"></div><div id="test2" data-toggle="from" style="display: block; width: 100px; height: 100px; margin: 1050px; padding: 50px;"></div></div><div id="toParent"><div id="test3" data-toggle="to"></div><div id="test4" data-toggle="to"></div></div>'
-                );
-                dom.setScroll(
-                    window,
-                    1000,
-                    1000
-                );
+                document.body.innerHTML =
+                    '<div id="fromParent">' +
+                    '<div id="test1" data-toggle="from" style="display: block; width: 100px; height: 100px; margin: 1050px; padding: 50px;"></div>' +
+                    '<div id="test2" data-toggle="from" style="display: block; width: 100px; height: 100px; margin: 1050px; padding: 50px;"></div>' +
+                    '</div>' +
+                    '<div id="toParent">' +
+                    '<div id="test3" data-toggle="to"></div>' +
+                    '<div id="test4" data-toggle="to"></div>' +
+                    '</div>';
+                window.scrollTo(1000, 1000);
             });
         });
 
@@ -485,7 +533,7 @@ describe('DOM Attributes (Position)', function() {
                         '[data-toggle="from"]',
                         '[data-toggle="to"]'
                     );
-                    return dom.getAttribute(nearest, 'id');
+                    return nearest.id;
                 }),
                 'test2'
             );
@@ -495,10 +543,10 @@ describe('DOM Attributes (Position)', function() {
             assert.equal(
                 await exec(_ => {
                     const nearest = dom.nearestToNode(
-                        dom.findOne('#test1'),
-                        dom.findOne('#test3')
+                        document.getElementById('test1'),
+                        document.getElementById('test3')
                     );
-                    return dom.getAttribute(nearest, 'id');
+                    return nearest.id;
                 }),
                 'test1'
             );
@@ -508,10 +556,10 @@ describe('DOM Attributes (Position)', function() {
             assert.equal(
                 await exec(_ => {
                     const nearest = dom.nearestToNode(
-                        dom.findOne('#fromParent').children,
-                        dom.findOne('#toParent').children
+                        document.getElementById('fromParent').children,
+                        document.getElementById('toParent').children
                     );
-                    return dom.getAttribute(nearest, 'id');
+                    return nearest.id;
                 }),
                 'test2'
             );
@@ -524,7 +572,7 @@ describe('DOM Attributes (Position)', function() {
                         document.querySelectorAll('[data-toggle="from"]'),
                         document.querySelectorAll('[data-toggle="to"]')
                     );
-                    return dom.getAttribute(nearest, 'id');
+                    return nearest.id;
                 }),
                 'test2'
             );
@@ -534,10 +582,16 @@ describe('DOM Attributes (Position)', function() {
             assert.equal(
                 await exec(_ => {
                     const nearest = dom.nearestToNode(
-                        dom.find('[data-toggle="from"]'),
-                        dom.find('[data-toggle="to"]')
+                        [
+                            document.getElementById('test1'),
+                            document.getElementById('test2')
+                        ],
+                        [
+                            document.getElementById('test3'),
+                            document.getElementById('test4')
+                        ]
                     );
-                    return dom.getAttribute(nearest, 'id');
+                    return nearest.id;
                 }),
                 'test2'
             );
@@ -549,15 +603,10 @@ describe('DOM Attributes (Position)', function() {
 
         beforeEach(async function() {
             await exec(_ => {
-                dom.setHTML(
-                    document.body,
-                    '<div id="test1" style="display: block; width: 100px; height: 100px; margin: 1050px; padding: 50px;"></div><div id="test2"></div>'
-                );
-                dom.setScroll(
-                    window,
-                    1000,
-                    1000
-                );
+                document.body.innerHTML =
+                    '<div id="test1" style="display: block; width: 100px; height: 100px; margin: 1050px; padding: 50px;"></div>' +
+                    '<div id="test2"></div>';
+                window.scrollTo(1000, 1000);
             });
         });
 
@@ -611,7 +660,7 @@ describe('DOM Attributes (Position)', function() {
             assert.equal(
                 await exec(_ => {
                     return dom.percentX(
-                        dom.findOne('#test1'),
+                        document.getElementById('test1'),
                         700
                     );
                 }),
@@ -647,7 +696,10 @@ describe('DOM Attributes (Position)', function() {
             assert.equal(
                 await exec(_ => {
                     return dom.percentX(
-                        dom.find('div'),
+                        [
+                            document.getElementById('test1'),
+                            document.getElementById('test2')
+                        ],
                         700
                     );
                 }),
@@ -661,15 +713,10 @@ describe('DOM Attributes (Position)', function() {
 
         beforeEach(async function() {
             await exec(_ => {
-                dom.setHTML(
-                    document.body,
-                    '<div id="test1" style="display: block; width: 100px; height: 100px; margin: 1050px; padding: 50px;"></div><div id="test2"></div>'
-                );
-                dom.setScroll(
-                    window,
-                    1000,
-                    1000
-                );
+                document.body.innerHTML =
+                    '<div id="test1" style="display: block; width: 100px; height: 100px; margin: 1050px; padding: 50px;"></div>' +
+                    '<div id="test2"></div>';
+                window.scrollTo(1000, 1000);
             });
         });
 
@@ -723,7 +770,7 @@ describe('DOM Attributes (Position)', function() {
             assert.equal(
                 await exec(_ => {
                     return dom.percentY(
-                        dom.findOne('#test1'),
+                        document.getElementById('test1'),
                         150
                     );
                 }),
@@ -759,7 +806,10 @@ describe('DOM Attributes (Position)', function() {
             assert.equal(
                 await exec(_ => {
                     return dom.percentY(
-                        dom.find('div'),
+                        [
+                            document.getElementById('test1'),
+                            document.getElementById('test2')
+                        ],
                         150
                     );
                 }),
@@ -773,15 +823,11 @@ describe('DOM Attributes (Position)', function() {
 
         beforeEach(async function() {
             await exec(_ => {
-                dom.setHTML(
-                    document.body,
-                    '<div id="parent" style="position: relative; margin: 1050px; padding: 25px 50px;"><div id="test1" data-toggle="child" style="display: block; width: 100px; height: 100px; padding: 50px;"></div><div id="test2" data-toggle="child"></div>'
-                );
-                dom.setScroll(
-                    window,
-                    1000,
-                    1000
-                );
+                document.body.innerHTML =
+                    '<div id="parent" style="position: relative; margin: 1050px; padding: 25px 50px;">' +
+                    '<div id="test1" data-toggle="child" style="display: block; width: 100px; height: 100px; padding: 50px;"></div>' +
+                    '<div id="test2" data-toggle="child"></div>';
+                window.scrollTo(1000, 1000);
             });
         });
 
@@ -818,7 +864,7 @@ describe('DOM Attributes (Position)', function() {
             assert.deepEqual(
                 await exec(_ => {
                     return dom.position(
-                        dom.findOne('#test1')
+                        document.getElementById('test1')
                     );
                 }),
                 {
@@ -832,7 +878,7 @@ describe('DOM Attributes (Position)', function() {
             assert.deepEqual(
                 await exec(_ => {
                     return dom.position(
-                        dom.findOne('#parent').children
+                        document.getElementById('parent').children
                     );
                 }),
                 {
@@ -860,7 +906,10 @@ describe('DOM Attributes (Position)', function() {
             assert.deepEqual(
                 await exec(_ => {
                     return dom.position(
-                        dom.find('[data-toggle="child"]')
+                        [
+                            document.getElementById('test1'),
+                            document.getElementById('test2')
+                        ]
                     );
                 }),
                 {
@@ -876,15 +925,10 @@ describe('DOM Attributes (Position)', function() {
 
         beforeEach(async function() {
             await exec(_ => {
-                dom.setHTML(
-                    document.body,
-                    '<div id="test1" style="display: block; width: 100px; height: 100px; margin: 1050px; padding: 50px;"></div><div id="test2"></div>'
-                );
-                dom.setScroll(
-                    window,
-                    1000,
-                    1000
-                );
+                document.body.innerHTML =
+                    '<div id="test1" style="display: block; width: 100px; height: 100px; margin: 1050px; padding: 50px;"></div>' +
+                    '<div id="test2"></div>';
+                window.scrollTo(1000, 1000);
             });
         });
 
@@ -933,7 +977,7 @@ describe('DOM Attributes (Position)', function() {
             assert.deepEqual(
                 await exec(_ => {
                     return dom.rect(
-                        dom.findOne('#test1')
+                        document.getElementById('test1')
                     ).toJSON();
                 }),
                 {
@@ -993,7 +1037,10 @@ describe('DOM Attributes (Position)', function() {
             assert.deepEqual(
                 await exec(_ => {
                     return dom.rect(
-                        dom.find('div')
+                        [
+                            document.getElementById('test1'),
+                            document.getElementById('test2')
+                        ]
                     ).toJSON();
                 }),
                 {
