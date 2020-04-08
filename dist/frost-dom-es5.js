@@ -2358,7 +2358,20 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
       try {
         for (_iterator29.s(); !(_step29 = _iterator29.n()).done;) {
           var node = _step29.value;
-          DOMNode.toggleClass.apply(DOMNode, [node].concat(_toConsumableArray(classes)));
+
+          var _iterator30 = _createForOfIteratorHelper(classes),
+              _step30;
+
+          try {
+            for (_iterator30.s(); !(_step30 = _iterator30.n()).done;) {
+              var className = _step30.value;
+              DOMNode.toggleClass(node, className);
+            }
+          } catch (err) {
+            _iterator30.e(err);
+          } finally {
+            _iterator30.f();
+          }
         }
       } catch (err) {
         _iterator29.e(err);
@@ -2496,32 +2509,32 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
         window: true
       });
 
-      var _iterator30 = _createForOfIteratorHelper(nodes),
-          _step30;
+      var _iterator31 = _createForOfIteratorHelper(nodes),
+          _step31;
 
       try {
-        for (_iterator30.s(); !(_step30 = _iterator30.n()).done;) {
-          var node = _step30.value;
+        for (_iterator31.s(); !(_step31 = _iterator31.n()).done;) {
+          var node = _step31.value;
 
-          var _iterator31 = _createForOfIteratorHelper(this.constructor._parseEvents(events)),
-              _step31;
+          var _iterator32 = _createForOfIteratorHelper(this.constructor._parseEvents(events)),
+              _step32;
 
           try {
-            for (_iterator31.s(); !(_step31 = _iterator31.n()).done;) {
-              var event = _step31.value;
+            for (_iterator32.s(); !(_step32 = _iterator32.n()).done;) {
+              var event = _step32.value;
 
               this.constructor._addEvent(node, event, callback, delegate, selfDestruct);
             }
           } catch (err) {
-            _iterator31.e(err);
+            _iterator32.e(err);
           } finally {
-            _iterator31.f();
+            _iterator32.f();
           }
         }
       } catch (err) {
-        _iterator30.e(err);
+        _iterator31.e(err);
       } finally {
-        _iterator30.f();
+        _iterator31.f();
       }
     },
 
@@ -2574,32 +2587,32 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
         window: true
       });
 
-      var _iterator32 = _createForOfIteratorHelper(nodes),
-          _step32;
+      var _iterator33 = _createForOfIteratorHelper(nodes),
+          _step33;
 
       try {
-        for (_iterator32.s(); !(_step32 = _iterator32.n()).done;) {
-          var node = _step32.value;
+        for (_iterator33.s(); !(_step33 = _iterator33.n()).done;) {
+          var node = _step33.value;
 
-          var _iterator33 = _createForOfIteratorHelper(others),
-              _step33;
+          var _iterator34 = _createForOfIteratorHelper(others),
+              _step34;
 
           try {
-            for (_iterator33.s(); !(_step33 = _iterator33.n()).done;) {
-              var other = _step33.value;
+            for (_iterator34.s(); !(_step34 = _iterator34.n()).done;) {
+              var other = _step34.value;
 
               this.constructor._cloneEvents(node, other);
             }
           } catch (err) {
-            _iterator33.e(err);
+            _iterator34.e(err);
           } finally {
-            _iterator33.f();
+            _iterator34.f();
           }
         }
       } catch (err) {
-        _iterator32.e(err);
+        _iterator33.e(err);
       } finally {
-        _iterator32.f();
+        _iterator33.f();
       }
     },
 
@@ -2618,12 +2631,12 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
       });
       events = events ? this.constructor._parseEvents(events) : false;
 
-      var _iterator34 = _createForOfIteratorHelper(nodes),
-          _step34;
+      var _iterator35 = _createForOfIteratorHelper(nodes),
+          _step35;
 
       try {
-        for (_iterator34.s(); !(_step34 = _iterator34.n()).done;) {
-          var node = _step34.value;
+        for (_iterator35.s(); !(_step35 = _iterator35.n()).done;) {
+          var node = _step35.value;
 
           if (!this.constructor._events.has(node)) {
             continue;
@@ -2635,25 +2648,25 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
             continue;
           }
 
-          var _iterator35 = _createForOfIteratorHelper(events),
-              _step35;
+          var _iterator36 = _createForOfIteratorHelper(events),
+              _step36;
 
           try {
-            for (_iterator35.s(); !(_step35 = _iterator35.n()).done;) {
-              var event = _step35.value;
+            for (_iterator36.s(); !(_step36 = _iterator36.n()).done;) {
+              var event = _step36.value;
 
               this.constructor._removeEvent(node, event, callback, delegate);
             }
           } catch (err) {
-            _iterator35.e(err);
+            _iterator36.e(err);
           } finally {
-            _iterator35.f();
+            _iterator36.f();
           }
         }
       } catch (err) {
-        _iterator34.e(err);
+        _iterator35.e(err);
       } finally {
-        _iterator34.f();
+        _iterator35.f();
       }
     },
 
@@ -2685,32 +2698,32 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
       });
       events = this.constructor._parseEvents(events);
 
-      var _iterator36 = _createForOfIteratorHelper(nodes),
-          _step36;
+      var _iterator37 = _createForOfIteratorHelper(nodes),
+          _step37;
 
       try {
-        for (_iterator36.s(); !(_step36 = _iterator36.n()).done;) {
-          var node = _step36.value;
+        for (_iterator37.s(); !(_step37 = _iterator37.n()).done;) {
+          var node = _step37.value;
 
-          var _iterator37 = _createForOfIteratorHelper(events),
-              _step37;
+          var _iterator38 = _createForOfIteratorHelper(events),
+              _step38;
 
           try {
-            for (_iterator37.s(); !(_step37 = _iterator37.n()).done;) {
-              var event = _step37.value;
+            for (_iterator38.s(); !(_step38 = _iterator38.n()).done;) {
+              var event = _step38.value;
 
               this.constructor._triggerEvent(node, event, data, options);
             }
           } catch (err) {
-            _iterator37.e(err);
+            _iterator38.e(err);
           } finally {
-            _iterator37.f();
+            _iterator38.f();
           }
         }
       } catch (err) {
-        _iterator36.e(err);
+        _iterator37.e(err);
       } finally {
-        _iterator36.f();
+        _iterator37.f();
       }
     }
   });
@@ -2874,12 +2887,12 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
         node: true
       });
 
-      var _iterator38 = _createForOfIteratorHelper(nodes),
-          _step38;
+      var _iterator39 = _createForOfIteratorHelper(nodes),
+          _step39;
 
       try {
-        for (_iterator38.s(); !(_step38 = _iterator38.n()).done;) {
-          var node = _step38.value;
+        for (_iterator39.s(); !(_step39 = _iterator39.n()).done;) {
+          var node = _step39.value;
           var parent = DOMNode.parent(node);
 
           if (!parent) {
@@ -2889,9 +2902,9 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
           DOMNode.removeChild(parent, node);
         }
       } catch (err) {
-        _iterator38.e(err);
+        _iterator39.e(err);
       } finally {
-        _iterator38.f();
+        _iterator39.f();
       }
     },
 
@@ -2906,19 +2919,19 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
         document: true
       });
 
-      var _iterator39 = _createForOfIteratorHelper(nodes),
-          _step39;
+      var _iterator40 = _createForOfIteratorHelper(nodes),
+          _step40;
 
       try {
-        for (_iterator39.s(); !(_step39 = _iterator39.n()).done;) {
-          var node = _step39.value;
+        for (_iterator40.s(); !(_step40 = _iterator40.n()).done;) {
+          var node = _step40.value;
 
           this.constructor._empty(node);
         }
       } catch (err) {
-        _iterator39.e(err);
+        _iterator40.e(err);
       } finally {
-        _iterator39.f();
+        _iterator40.f();
       }
     },
 
@@ -2932,12 +2945,12 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
         node: true
       });
 
-      var _iterator40 = _createForOfIteratorHelper(nodes),
-          _step40;
+      var _iterator41 = _createForOfIteratorHelper(nodes),
+          _step41;
 
       try {
-        for (_iterator40.s(); !(_step40 = _iterator40.n()).done;) {
-          var node = _step40.value;
+        for (_iterator41.s(); !(_step41 = _iterator41.n()).done;) {
+          var node = _step41.value;
           var parent = DOMNode.parent(node);
 
           if (!parent) {
@@ -2949,9 +2962,9 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
           DOMNode.removeChild(parent, node);
         }
       } catch (err) {
-        _iterator40.e(err);
+        _iterator41.e(err);
       } finally {
-        _iterator40.f();
+        _iterator41.f();
       }
     },
 
@@ -2981,19 +2994,19 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
         html: true
       });
 
-      var _iterator41 = _createForOfIteratorHelper(nodes),
-          _step41;
+      var _iterator42 = _createForOfIteratorHelper(nodes),
+          _step42;
 
       try {
-        for (_iterator41.s(); !(_step41 = _iterator41.n()).done;) {
-          var node = _step41.value;
+        for (_iterator42.s(); !(_step42 = _iterator42.n()).done;) {
+          var node = _step42.value;
 
           this.constructor._replaceWith(node, others);
         }
       } catch (err) {
-        _iterator41.e(err);
+        _iterator42.e(err);
       } finally {
-        _iterator41.f();
+        _iterator42.f();
       }
     }
   });
@@ -3030,18 +3043,18 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
         html: true
       }).reverse();
 
-      var _iterator42 = _createForOfIteratorHelper(others),
-          _step42;
+      var _iterator43 = _createForOfIteratorHelper(others),
+          _step43;
 
       try {
-        for (_iterator42.s(); !(_step42 = _iterator42.n()).done;) {
-          var other = _step42.value;
+        for (_iterator43.s(); !(_step43 = _iterator43.n()).done;) {
+          var other = _step43.value;
           DOMNode.insertBefore(parent, other, DOMNode.next(node));
         }
       } catch (err) {
-        _iterator42.e(err);
+        _iterator43.e(err);
       } finally {
-        _iterator42.f();
+        _iterator43.f();
       }
     },
 
@@ -3068,18 +3081,18 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
         html: true
       });
 
-      var _iterator43 = _createForOfIteratorHelper(others),
-          _step43;
+      var _iterator44 = _createForOfIteratorHelper(others),
+          _step44;
 
       try {
-        for (_iterator43.s(); !(_step43 = _iterator43.n()).done;) {
-          var other = _step43.value;
+        for (_iterator44.s(); !(_step44 = _iterator44.n()).done;) {
+          var other = _step44.value;
           DOMNode.insertBefore(node, other);
         }
       } catch (err) {
-        _iterator43.e(err);
+        _iterator44.e(err);
       } finally {
-        _iterator43.f();
+        _iterator44.f();
       }
     },
 
@@ -3120,18 +3133,18 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
         html: true
       });
 
-      var _iterator44 = _createForOfIteratorHelper(others),
-          _step44;
+      var _iterator45 = _createForOfIteratorHelper(others),
+          _step45;
 
       try {
-        for (_iterator44.s(); !(_step44 = _iterator44.n()).done;) {
-          var other = _step44.value;
+        for (_iterator45.s(); !(_step45 = _iterator45.n()).done;) {
+          var other = _step45.value;
           DOMNode.insertBefore(parent, other, node);
         }
       } catch (err) {
-        _iterator44.e(err);
+        _iterator45.e(err);
       } finally {
-        _iterator44.f();
+        _iterator45.f();
       }
     },
 
@@ -3177,18 +3190,18 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
         html: true
       }).reverse();
 
-      var _iterator45 = _createForOfIteratorHelper(others),
-          _step45;
+      var _iterator46 = _createForOfIteratorHelper(others),
+          _step46;
 
       try {
-        for (_iterator45.s(); !(_step45 = _iterator45.n()).done;) {
-          var other = _step45.value;
+        for (_iterator46.s(); !(_step46 = _iterator46.n()).done;) {
+          var other = _step46.value;
           DOMNode.insertBefore(node, other, firstChild);
         }
       } catch (err) {
-        _iterator45.e(err);
+        _iterator46.e(err);
       } finally {
-        _iterator45.f();
+        _iterator46.f();
       }
     },
 
@@ -3218,19 +3231,19 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
       });
       filter = this.parseFilter(filter);
 
-      var _iterator46 = _createForOfIteratorHelper(nodes),
-          _step46;
+      var _iterator47 = _createForOfIteratorHelper(nodes),
+          _step47;
 
       try {
-        for (_iterator46.s(); !(_step46 = _iterator46.n()).done;) {
-          var node = _step46.value;
+        for (_iterator47.s(); !(_step47 = _iterator47.n()).done;) {
+          var node = _step47.value;
 
           this.constructor._unwrap(node, filter);
         }
       } catch (err) {
-        _iterator46.e(err);
+        _iterator47.e(err);
       } finally {
-        _iterator46.f();
+        _iterator47.f();
       }
     },
 
@@ -3250,19 +3263,19 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
         html: true
       });
 
-      var _iterator47 = _createForOfIteratorHelper(nodes),
-          _step47;
+      var _iterator48 = _createForOfIteratorHelper(nodes),
+          _step48;
 
       try {
-        for (_iterator47.s(); !(_step47 = _iterator47.n()).done;) {
-          var node = _step47.value;
+        for (_iterator48.s(); !(_step48 = _iterator48.n()).done;) {
+          var node = _step48.value;
 
           this.constructor._wrap(node, others);
         }
       } catch (err) {
-        _iterator47.e(err);
+        _iterator48.e(err);
       } finally {
-        _iterator47.f();
+        _iterator48.f();
       }
     },
 
@@ -3303,19 +3316,19 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
         html: true
       });
 
-      var _iterator48 = _createForOfIteratorHelper(nodes),
-          _step48;
+      var _iterator49 = _createForOfIteratorHelper(nodes),
+          _step49;
 
       try {
-        for (_iterator48.s(); !(_step48 = _iterator48.n()).done;) {
-          var node = _step48.value;
+        for (_iterator49.s(); !(_step49 = _iterator49.n()).done;) {
+          var node = _step49.value;
 
           this.constructor._wrapInner(node, others);
         }
       } catch (err) {
-        _iterator48.e(err);
+        _iterator49.e(err);
       } finally {
-        _iterator48.f();
+        _iterator49.f();
       }
     }
   });
@@ -3711,18 +3724,18 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
       });
       var results = [];
 
-      var _iterator49 = _createForOfIteratorHelper(nodes),
-          _step49;
+      var _iterator50 = _createForOfIteratorHelper(nodes),
+          _step50;
 
       try {
-        for (_iterator49.s(); !(_step49 = _iterator49.n()).done;) {
-          var node = _step49.value;
+        for (_iterator50.s(); !(_step50 = _iterator50.n()).done;) {
+          var node = _step50.value;
           Core.merge(results, DOMNode.findByClass(className, node));
         }
       } catch (err) {
-        _iterator49.e(err);
+        _iterator50.e(err);
       } finally {
-        _iterator49.f();
+        _iterator50.f();
       }
 
       return nodes.length > 1 && results.length > 1 ? Core.unique(results) : results;
@@ -3765,18 +3778,18 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
       });
       var results = [];
 
-      var _iterator50 = _createForOfIteratorHelper(nodes),
-          _step50;
+      var _iterator51 = _createForOfIteratorHelper(nodes),
+          _step51;
 
       try {
-        for (_iterator50.s(); !(_step50 = _iterator50.n()).done;) {
-          var node = _step50.value;
+        for (_iterator51.s(); !(_step51 = _iterator51.n()).done;) {
+          var node = _step51.value;
           Core.merge(results, DOMNode.findByTag(tagName, node));
         }
       } catch (err) {
-        _iterator50.e(err);
+        _iterator51.e(err);
       } finally {
-        _iterator50.f();
+        _iterator51.f();
       }
 
       return nodes.length > 1 && results.length > 1 ? Core.unique(results) : results;
@@ -3849,12 +3862,12 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
         document: true
       });
 
-      var _iterator51 = _createForOfIteratorHelper(nodes),
-          _step51;
+      var _iterator52 = _createForOfIteratorHelper(nodes),
+          _step52;
 
       try {
-        for (_iterator51.s(); !(_step51 = _iterator51.n()).done;) {
-          var node = _step51.value;
+        for (_iterator52.s(); !(_step52 = _iterator52.n()).done;) {
+          var node = _step52.value;
           var result = DOMNode.findByClass(className, node).item(0);
 
           if (result) {
@@ -3862,9 +3875,9 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
           }
         }
       } catch (err) {
-        _iterator51.e(err);
+        _iterator52.e(err);
       } finally {
-        _iterator51.f();
+        _iterator52.f();
       }
 
       return null;
@@ -3926,12 +3939,12 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
         document: true
       });
 
-      var _iterator52 = _createForOfIteratorHelper(nodes),
-          _step52;
+      var _iterator53 = _createForOfIteratorHelper(nodes),
+          _step53;
 
       try {
-        for (_iterator52.s(); !(_step52 = _iterator52.n()).done;) {
-          var node = _step52.value;
+        for (_iterator53.s(); !(_step53 = _iterator53.n()).done;) {
+          var node = _step53.value;
           var result = DOMNode.findByTag(tagName, node).item(0);
 
           if (result) {
@@ -3939,9 +3952,9 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
           }
         }
       } catch (err) {
-        _iterator52.e(err);
+        _iterator53.e(err);
       } finally {
-        _iterator52.f();
+        _iterator53.f();
       }
 
       return null;
@@ -3986,18 +3999,18 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
       });
       var results = [];
 
-      var _iterator53 = _createForOfIteratorHelper(nodes),
-          _step53;
+      var _iterator54 = _createForOfIteratorHelper(nodes),
+          _step54;
 
       try {
-        for (_iterator53.s(); !(_step53 = _iterator53.n()).done;) {
-          var node = _step53.value;
+        for (_iterator54.s(); !(_step54 = _iterator54.n()).done;) {
+          var node = _step54.value;
           Core.merge(results, this.constructor._children(node, filter, first, elementsOnly));
         }
       } catch (err) {
-        _iterator53.e(err);
+        _iterator54.e(err);
       } finally {
-        _iterator53.f();
+        _iterator54.f();
       }
 
       return nodes.length > 1 && results.length > 1 ? Core.unique(results) : results;
@@ -4081,18 +4094,18 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
       });
       var results = [];
 
-      var _iterator54 = _createForOfIteratorHelper(nodes),
-          _step54;
+      var _iterator55 = _createForOfIteratorHelper(nodes),
+          _step55;
 
       try {
-        for (_iterator54.s(); !(_step54 = _iterator54.n()).done;) {
-          var node = _step54.value;
+        for (_iterator55.s(); !(_step55 = _iterator55.n()).done;) {
+          var node = _step55.value;
           Core.merge(results, this.constructor._next(node, filter));
         }
       } catch (err) {
-        _iterator54.e(err);
+        _iterator55.e(err);
       } finally {
-        _iterator54.f();
+        _iterator55.f();
       }
 
       return nodes.length > 1 && results.length > 1 ? Core.unique(results) : results;
@@ -4121,18 +4134,18 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
       });
       var results = [];
 
-      var _iterator55 = _createForOfIteratorHelper(nodes),
-          _step55;
+      var _iterator56 = _createForOfIteratorHelper(nodes),
+          _step56;
 
       try {
-        for (_iterator55.s(); !(_step55 = _iterator55.n()).done;) {
-          var node = _step55.value;
+        for (_iterator56.s(); !(_step56 = _iterator56.n()).done;) {
+          var node = _step56.value;
           Core.merge(results, this.constructor._nextAll(node, filter, limit, first));
         }
       } catch (err) {
-        _iterator55.e(err);
+        _iterator56.e(err);
       } finally {
-        _iterator55.f();
+        _iterator56.f();
       }
 
       return nodes.length > 1 && results.length > 1 ? Core.unique(results) : results;
@@ -4168,18 +4181,18 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
       });
       var results = [];
 
-      var _iterator56 = _createForOfIteratorHelper(nodes),
-          _step56;
+      var _iterator57 = _createForOfIteratorHelper(nodes),
+          _step57;
 
       try {
-        for (_iterator56.s(); !(_step56 = _iterator56.n()).done;) {
-          var node = _step56.value;
+        for (_iterator57.s(); !(_step57 = _iterator57.n()).done;) {
+          var node = _step57.value;
           Core.merge(results, this.constructor._parent(node, filter));
         }
       } catch (err) {
-        _iterator56.e(err);
+        _iterator57.e(err);
       } finally {
-        _iterator56.f();
+        _iterator57.f();
       }
 
       return nodes.length > 1 && results.length > 1 ? Core.unique(results) : results;
@@ -4208,18 +4221,18 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
       });
       var results = [];
 
-      var _iterator57 = _createForOfIteratorHelper(nodes),
-          _step57;
+      var _iterator58 = _createForOfIteratorHelper(nodes),
+          _step58;
 
       try {
-        for (_iterator57.s(); !(_step57 = _iterator57.n()).done;) {
-          var node = _step57.value;
+        for (_iterator58.s(); !(_step58 = _iterator58.n()).done;) {
+          var node = _step58.value;
           Core.merge(results, this.constructor._parents(node, filter, limit, first));
         }
       } catch (err) {
-        _iterator57.e(err);
+        _iterator58.e(err);
       } finally {
-        _iterator57.f();
+        _iterator58.f();
       }
 
       return nodes.length > 1 && results.length > 1 ? Core.unique(results) : results;
@@ -4244,18 +4257,18 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
       });
       var results = [];
 
-      var _iterator58 = _createForOfIteratorHelper(nodes),
-          _step58;
+      var _iterator59 = _createForOfIteratorHelper(nodes),
+          _step59;
 
       try {
-        for (_iterator58.s(); !(_step58 = _iterator58.n()).done;) {
-          var node = _step58.value;
+        for (_iterator59.s(); !(_step59 = _iterator59.n()).done;) {
+          var node = _step59.value;
           Core.merge(results, this.constructor._prev(node, filter));
         }
       } catch (err) {
-        _iterator58.e(err);
+        _iterator59.e(err);
       } finally {
-        _iterator58.f();
+        _iterator59.f();
       }
 
       return nodes.length > 1 && results.length > 1 ? Core.unique(results) : results;
@@ -4284,18 +4297,18 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
       });
       var results = [];
 
-      var _iterator59 = _createForOfIteratorHelper(nodes),
-          _step59;
+      var _iterator60 = _createForOfIteratorHelper(nodes),
+          _step60;
 
       try {
-        for (_iterator59.s(); !(_step59 = _iterator59.n()).done;) {
-          var node = _step59.value;
+        for (_iterator60.s(); !(_step60 = _iterator60.n()).done;) {
+          var node = _step60.value;
           Core.merge(results, this.constructor._prevAll(node, filter, limit, first));
         }
       } catch (err) {
-        _iterator59.e(err);
+        _iterator60.e(err);
       } finally {
-        _iterator59.f();
+        _iterator60.f();
       }
 
       return nodes.length > 1 && results.length ? Core.unique(results) : results;
@@ -4337,18 +4350,18 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
       });
       var results = [];
 
-      var _iterator60 = _createForOfIteratorHelper(nodes),
-          _step60;
+      var _iterator61 = _createForOfIteratorHelper(nodes),
+          _step61;
 
       try {
-        for (_iterator60.s(); !(_step60 = _iterator60.n()).done;) {
-          var node = _step60.value;
+        for (_iterator61.s(); !(_step61 = _iterator61.n()).done;) {
+          var node = _step61.value;
           Core.merge(results, this.constructor._siblings(node, filter, elementsOnly));
         }
       } catch (err) {
-        _iterator60.e(err);
+        _iterator61.e(err);
       } finally {
-        _iterator60.f();
+        _iterator61.f();
       }
 
       return nodes.length > 1 && results.length > 1 ? Core.unique(results) : results;
@@ -4540,18 +4553,18 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
       DOMNode.removeRanges(selection);
       DOMNode.collapse(range);
 
-      var _iterator61 = _createForOfIteratorHelper(nodes),
-          _step61;
+      var _iterator62 = _createForOfIteratorHelper(nodes),
+          _step62;
 
       try {
-        for (_iterator61.s(); !(_step61 = _iterator61.n()).done;) {
-          var node = _step61.value;
+        for (_iterator62.s(); !(_step62 = _iterator62.n()).done;) {
+          var node = _step62.value;
           DOMNode.insert(range, node);
         }
       } catch (err) {
-        _iterator61.e(err);
+        _iterator62.e(err);
       } finally {
-        _iterator61.f();
+        _iterator62.f();
       }
     },
 
@@ -4575,18 +4588,18 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
       var range = DOMNode.getRange(selection);
       DOMNode.removeRanges(selection);
 
-      var _iterator62 = _createForOfIteratorHelper(nodes),
-          _step62;
+      var _iterator63 = _createForOfIteratorHelper(nodes),
+          _step63;
 
       try {
-        for (_iterator62.s(); !(_step62 = _iterator62.n()).done;) {
-          var node = _step62.value;
+        for (_iterator63.s(); !(_step63 = _iterator63.n()).done;) {
+          var node = _step63.value;
           DOMNode.insert(range, node);
         }
       } catch (err) {
-        _iterator62.e(err);
+        _iterator63.e(err);
       } finally {
-        _iterator62.f();
+        _iterator63.f();
       }
     },
 
@@ -4717,32 +4730,32 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
           deepest = this.constructor._deepest(nodes.slice().shift()),
           children = Core.wrap(DOMNode.childNodes(fragment));
 
-      var _iterator63 = _createForOfIteratorHelper(children),
-          _step63;
-
-      try {
-        for (_iterator63.s(); !(_step63 = _iterator63.n()).done;) {
-          var child = _step63.value;
-          DOMNode.insertBefore(deepest, child);
-        }
-      } catch (err) {
-        _iterator63.e(err);
-      } finally {
-        _iterator63.f();
-      }
-
-      var _iterator64 = _createForOfIteratorHelper(nodes),
+      var _iterator64 = _createForOfIteratorHelper(children),
           _step64;
 
       try {
         for (_iterator64.s(); !(_step64 = _iterator64.n()).done;) {
-          var node = _step64.value;
-          DOMNode.insert(range, node);
+          var child = _step64.value;
+          DOMNode.insertBefore(deepest, child);
         }
       } catch (err) {
         _iterator64.e(err);
       } finally {
         _iterator64.f();
+      }
+
+      var _iterator65 = _createForOfIteratorHelper(nodes),
+          _step65;
+
+      try {
+        for (_iterator65.s(); !(_step65 = _iterator65.n()).done;) {
+          var node = _step65.value;
+          DOMNode.insert(range, node);
+        }
+      } catch (err) {
+        _iterator65.e(err);
+      } finally {
+        _iterator65.f();
       }
     }
   });
@@ -5122,18 +5135,18 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
         document: true
       });
 
-      var _iterator65 = _createForOfIteratorHelper(nodes),
-          _step65;
+      var _iterator66 = _createForOfIteratorHelper(nodes),
+          _step66;
 
       try {
-        for (_iterator65.s(); !(_step65 = _iterator65.n()).done;) {
-          var node = _step65.value;
+        for (_iterator66.s(); !(_step66 = _iterator66.n()).done;) {
+          var node = _step66.value;
           DOMNode.normalize(node);
         }
       } catch (err) {
-        _iterator65.e(err);
+        _iterator66.e(err);
       } finally {
-        _iterator65.f();
+        _iterator66.f();
       }
     },
 
@@ -5151,19 +5164,19 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
           fragment = DOMNode.fragment(template),
           children = DOMNode.children(fragment);
 
-      var _iterator66 = _createForOfIteratorHelper(children),
-          _step66;
+      var _iterator67 = _createForOfIteratorHelper(children),
+          _step67;
 
       try {
-        for (_iterator66.s(); !(_step66 = _iterator66.n()).done;) {
-          var child = _step66.value;
+        for (_iterator67.s(); !(_step67 = _iterator67.n()).done;) {
+          var child = _step67.value;
 
           this.constructor._sanitize(child, fragment, allowedTags);
         }
       } catch (err) {
-        _iterator66.e(err);
+        _iterator67.e(err);
       } finally {
-        _iterator66.f();
+        _iterator67.f();
       }
 
       return this.getHTML(template);
@@ -5332,14 +5345,14 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
     _animationFrame: function _animationFrame() {
       var _this31 = this;
 
-      var _iterator67 = _createForOfIteratorHelper(this._animations),
-          _step67;
+      var _iterator68 = _createForOfIteratorHelper(this._animations),
+          _step68;
 
       try {
-        for (_iterator67.s(); !(_step67 = _iterator67.n()).done;) {
-          var _step67$value = _slicedToArray(_step67.value, 2),
-              node = _step67$value[0],
-              animations = _step67$value[1];
+        for (_iterator68.s(); !(_step68 = _iterator68.n()).done;) {
+          var _step68$value = _slicedToArray(_step68.value, 2),
+              node = _step68$value[0],
+              animations = _step68$value[1];
 
           animations = animations.filter(function (animation) {
             return !animation();
@@ -5352,9 +5365,9 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
           }
         }
       } catch (err) {
-        _iterator67.e(err);
+        _iterator68.e(err);
       } finally {
-        _iterator67.f();
+        _iterator68.f();
       }
 
       if (this._animations.size) {
@@ -5393,18 +5406,18 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
 
       var animations = this._animations.get(node);
 
-      var _iterator68 = _createForOfIteratorHelper(animations),
-          _step68;
+      var _iterator69 = _createForOfIteratorHelper(animations),
+          _step69;
 
       try {
-        for (_iterator68.s(); !(_step68 = _iterator68.n()).done;) {
-          var animation = _step68.value;
+        for (_iterator69.s(); !(_step69 = _iterator69.n()).done;) {
+          var animation = _step69.value;
           animation(true, finish);
         }
       } catch (err) {
-        _iterator68.e(err);
+        _iterator69.e(err);
       } finally {
-        _iterator68.f();
+        _iterator69.f();
       }
 
       this._animations["delete"](node);
@@ -5489,18 +5502,18 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
       var nodeAttributes = DOMNode.attributes(node),
           attributes = {};
 
-      var _iterator69 = _createForOfIteratorHelper(nodeAttributes),
-          _step69;
+      var _iterator70 = _createForOfIteratorHelper(nodeAttributes),
+          _step70;
 
       try {
-        for (_iterator69.s(); !(_step69 = _iterator69.n()).done;) {
-          var attr = _step69.value;
+        for (_iterator70.s(); !(_step70 = _iterator70.n()).done;) {
+          var attr = _step70.value;
           attributes[attr.nodeName] = attr.nodeValue;
         }
       } catch (err) {
-        _iterator69.e(err);
+        _iterator70.e(err);
       } finally {
-        _iterator69.f();
+        _iterator70.f();
       }
 
       return attributes;
@@ -5920,18 +5933,18 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
       var nodeStyles = DOMNode.style(node),
           styles = {};
 
-      var _iterator70 = _createForOfIteratorHelper(nodeStyles),
-          _step70;
+      var _iterator71 = _createForOfIteratorHelper(nodeStyles),
+          _step71;
 
       try {
-        for (_iterator70.s(); !(_step70 = _iterator70.n()).done;) {
-          var _style = _step70.value;
+        for (_iterator71.s(); !(_step71 = _iterator71.n()).done;) {
+          var _style = _step71.value;
           styles[_style] = DOMNode.getStyle(node, _style);
         }
       } catch (err) {
-        _iterator70.e(err);
+        _iterator71.e(err);
       } finally {
-        _iterator70.f();
+        _iterator71.f();
       }
 
       return styles;
@@ -6148,19 +6161,19 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
       var nodeEvents = this._events.get(node);
 
       for (var event in nodeEvents) {
-        var _iterator71 = _createForOfIteratorHelper(nodeEvents[event]),
-            _step71;
+        var _iterator72 = _createForOfIteratorHelper(nodeEvents[event]),
+            _step72;
 
         try {
-          for (_iterator71.s(); !(_step71 = _iterator71.n()).done;) {
-            var eventData = _step71.value;
+          for (_iterator72.s(); !(_step72 = _iterator72.n()).done;) {
+            var eventData = _step72.value;
 
             this._addEvent(other, eventData.event, eventData.callback, eventData.delegate, eventData.selfDestruct);
           }
         } catch (err) {
-          _iterator71.e(err);
+          _iterator72.e(err);
         } finally {
-          _iterator71.f();
+          _iterator72.f();
         }
       }
     },
@@ -6448,12 +6461,12 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
       // Remove descendent elements
       var children = Core.wrap(DOMNode.childNodes(node));
 
-      var _iterator72 = _createForOfIteratorHelper(children),
-          _step72;
+      var _iterator73 = _createForOfIteratorHelper(children),
+          _step73;
 
       try {
-        for (_iterator72.s(); !(_step72 = _iterator72.n()).done;) {
-          var child = _step72.value;
+        for (_iterator73.s(); !(_step73 = _iterator73.n()).done;) {
+          var child = _step73.value;
 
           this._remove(child);
 
@@ -6461,9 +6474,9 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
         } // Remove ShadowRoot
 
       } catch (err) {
-        _iterator72.e(err);
+        _iterator73.e(err);
       } finally {
-        _iterator72.f();
+        _iterator73.f();
       }
 
       if (this._hasShadow(node)) {
@@ -6516,21 +6529,21 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
         return;
       }
 
-      var _iterator73 = _createForOfIteratorHelper(others),
-          _step73;
+      var _iterator74 = _createForOfIteratorHelper(others),
+          _step74;
 
       try {
-        for (_iterator73.s(); !(_step73 = _iterator73.n()).done;) {
-          var other = _step73.value;
+        for (_iterator74.s(); !(_step74 = _iterator74.n()).done;) {
+          var other = _step74.value;
 
           var clone = this._clone(other, true);
 
           DOMNode.insertBefore(parent, clone, node);
         }
       } catch (err) {
-        _iterator73.e(err);
+        _iterator74.e(err);
       } finally {
-        _iterator73.f();
+        _iterator74.f();
       }
 
       this._remove(node);
@@ -6563,18 +6576,18 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
 
       var children = Core.wrap(DOMNode.childNodes(parent));
 
-      var _iterator74 = _createForOfIteratorHelper(children),
-          _step74;
+      var _iterator75 = _createForOfIteratorHelper(children),
+          _step75;
 
       try {
-        for (_iterator74.s(); !(_step74 = _iterator74.n()).done;) {
-          var child = _step74.value;
+        for (_iterator75.s(); !(_step75 = _iterator75.n()).done;) {
+          var child = _step75.value;
           DOMNode.insertBefore(outerParent, child, parent);
         }
       } catch (err) {
-        _iterator74.e(err);
+        _iterator75.e(err);
       } finally {
-        _iterator74.f();
+        _iterator75.f();
       }
 
       this._remove(parent);
@@ -6600,18 +6613,18 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
         return _this38._clone(other, true);
       });
 
-      var _iterator75 = _createForOfIteratorHelper(clones),
-          _step75;
+      var _iterator76 = _createForOfIteratorHelper(clones),
+          _step76;
 
       try {
-        for (_iterator75.s(); !(_step75 = _iterator75.n()).done;) {
-          var clone = _step75.value;
+        for (_iterator76.s(); !(_step76 = _iterator76.n()).done;) {
+          var clone = _step76.value;
           DOMNode.insertBefore(parent, clone, node);
         }
       } catch (err) {
-        _iterator75.e(err);
+        _iterator76.e(err);
       } finally {
-        _iterator75.f();
+        _iterator76.f();
       }
 
       var deepest = this._deepest(clones.shift());
@@ -6637,34 +6650,34 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
         return;
       }
 
-      var _iterator76 = _createForOfIteratorHelper(others),
-          _step76;
-
-      try {
-        for (_iterator76.s(); !(_step76 = _iterator76.n()).done;) {
-          var other = _step76.value;
-          DOMNode.insertBefore(parent, other, firstNode);
-        }
-      } catch (err) {
-        _iterator76.e(err);
-      } finally {
-        _iterator76.f();
-      }
-
-      var deepest = DOM._deepest(others.shift());
-
-      var _iterator77 = _createForOfIteratorHelper(nodes),
+      var _iterator77 = _createForOfIteratorHelper(others),
           _step77;
 
       try {
         for (_iterator77.s(); !(_step77 = _iterator77.n()).done;) {
-          var node = _step77.value;
-          DOMNode.insertBefore(deepest, node);
+          var other = _step77.value;
+          DOMNode.insertBefore(parent, other, firstNode);
         }
       } catch (err) {
         _iterator77.e(err);
       } finally {
         _iterator77.f();
+      }
+
+      var deepest = DOM._deepest(others.shift());
+
+      var _iterator78 = _createForOfIteratorHelper(nodes),
+          _step78;
+
+      try {
+        for (_iterator78.s(); !(_step78 = _iterator78.n()).done;) {
+          var node = _step78.value;
+          DOMNode.insertBefore(deepest, node);
+        }
+      } catch (err) {
+        _iterator78.e(err);
+      } finally {
+        _iterator78.f();
       }
     },
 
@@ -6681,34 +6694,34 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
         return _this39._clone(other, true);
       });
 
-      var _iterator78 = _createForOfIteratorHelper(clones),
-          _step78;
-
-      try {
-        for (_iterator78.s(); !(_step78 = _iterator78.n()).done;) {
-          var clone = _step78.value;
-          DOMNode.insertBefore(node, clone);
-        }
-      } catch (err) {
-        _iterator78.e(err);
-      } finally {
-        _iterator78.f();
-      }
-
-      var deepest = this._deepest(clones.shift());
-
-      var _iterator79 = _createForOfIteratorHelper(children),
+      var _iterator79 = _createForOfIteratorHelper(clones),
           _step79;
 
       try {
         for (_iterator79.s(); !(_step79 = _iterator79.n()).done;) {
-          var child = _step79.value;
-          DOMNode.insertBefore(deepest, child);
+          var clone = _step79.value;
+          DOMNode.insertBefore(node, clone);
         }
       } catch (err) {
         _iterator79.e(err);
       } finally {
         _iterator79.f();
+      }
+
+      var deepest = this._deepest(clones.shift());
+
+      var _iterator80 = _createForOfIteratorHelper(children),
+          _step80;
+
+      try {
+        for (_iterator80.s(); !(_step80 = _iterator80.n()).done;) {
+          var child = _step80.value;
+          DOMNode.insertBefore(deepest, child);
+        }
+      } catch (err) {
+        _iterator80.e(err);
+      } finally {
+        _iterator80.f();
       }
     }
   });
@@ -6750,18 +6763,18 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
       var nodes = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : this._context;
       var results = [];
 
-      var _iterator80 = _createForOfIteratorHelper(nodes),
-          _step80;
+      var _iterator81 = _createForOfIteratorHelper(nodes),
+          _step81;
 
       try {
-        for (_iterator80.s(); !(_step80 = _iterator80.n()).done;) {
-          var node = _step80.value;
+        for (_iterator81.s(); !(_step81 = _iterator81.n()).done;) {
+          var node = _step81.value;
           Core.merge(results, this.__findByCustom(selectors, node));
         }
       } catch (err) {
-        _iterator80.e(err);
+        _iterator81.e(err);
       } finally {
-        _iterator80.f();
+        _iterator81.f();
       }
 
       return nodes.length > 1 && results.length > 1 ? Core.unique(results) : results;
@@ -6776,18 +6789,18 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
     _findBySelector: function _findBySelector(selector, nodes) {
       var results = [];
 
-      var _iterator81 = _createForOfIteratorHelper(nodes),
-          _step81;
+      var _iterator82 = _createForOfIteratorHelper(nodes),
+          _step82;
 
       try {
-        for (_iterator81.s(); !(_step81 = _iterator81.n()).done;) {
-          var node = _step81.value;
+        for (_iterator82.s(); !(_step82 = _iterator82.n()).done;) {
+          var node = _step82.value;
           Core.merge(results, DOMNode.findBySelector(selector, node));
         }
       } catch (err) {
-        _iterator81.e(err);
+        _iterator82.e(err);
       } finally {
-        _iterator81.f();
+        _iterator82.f();
       }
 
       return nodes.length > 1 && results.length > 1 ? Core.unique(results) : results;
@@ -6800,12 +6813,12 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
      * @returns {HTMLElement} The matching node.
      */
     _findOneByCustom: function _findOneByCustom(selectors, nodes) {
-      var _iterator82 = _createForOfIteratorHelper(nodes),
-          _step82;
+      var _iterator83 = _createForOfIteratorHelper(nodes),
+          _step83;
 
       try {
-        for (_iterator82.s(); !(_step82 = _iterator82.n()).done;) {
-          var node = _step82.value;
+        for (_iterator83.s(); !(_step83 = _iterator83.n()).done;) {
+          var node = _step83.value;
 
           var result = this.__findOneByCustom(selectors, node);
 
@@ -6814,9 +6827,9 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
           }
         }
       } catch (err) {
-        _iterator82.e(err);
+        _iterator83.e(err);
       } finally {
-        _iterator82.f();
+        _iterator83.f();
       }
 
       return null;
@@ -6829,12 +6842,12 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
      * @returns {HTMLElement} The matching node.
      */
     _findOneBySelector: function _findOneBySelector(selector, nodes) {
-      var _iterator83 = _createForOfIteratorHelper(nodes),
-          _step83;
+      var _iterator84 = _createForOfIteratorHelper(nodes),
+          _step84;
 
       try {
-        for (_iterator83.s(); !(_step83 = _iterator83.n()).done;) {
-          var node = _step83.value;
+        for (_iterator84.s(); !(_step84 = _iterator84.n()).done;) {
+          var node = _step84.value;
           var result = DOMNode.findOneBySelector(selector, node);
 
           if (result) {
@@ -6842,9 +6855,9 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
           }
         }
       } catch (err) {
-        _iterator83.e(err);
+        _iterator84.e(err);
       } finally {
-        _iterator83.f();
+        _iterator84.f();
       }
 
       return null;
@@ -6862,18 +6875,18 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
       var parent = DOMNode.parent(node);
       var results = [];
 
-      var _iterator84 = _createForOfIteratorHelper(selectors),
-          _step84;
+      var _iterator85 = _createForOfIteratorHelper(selectors),
+          _step85;
 
       try {
-        for (_iterator84.s(); !(_step84 = _iterator84.n()).done;) {
-          var selector = _step84.value;
+        for (_iterator85.s(); !(_step85 = _iterator85.n()).done;) {
+          var selector = _step85.value;
           Core.merge(results, DOMNode.findBySelector(selector, parent));
         }
       } catch (err) {
-        _iterator84.e(err);
+        _iterator85.e(err);
       } finally {
-        _iterator84.f();
+        _iterator85.f();
       }
 
       if (nodeId) {
@@ -6902,12 +6915,12 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
 
       var result = null;
 
-      var _iterator85 = _createForOfIteratorHelper(selectors),
-          _step85;
+      var _iterator86 = _createForOfIteratorHelper(selectors),
+          _step86;
 
       try {
-        for (_iterator85.s(); !(_step85 = _iterator85.n()).done;) {
-          var selector = _step85.value;
+        for (_iterator86.s(); !(_step86 = _iterator86.n()).done;) {
+          var selector = _step86.value;
           result = DOMNode.findOneBySelector(selector, parent);
 
           if (result) {
@@ -6915,9 +6928,9 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
           }
         }
       } catch (err) {
-        _iterator85.e(err);
+        _iterator86.e(err);
       } finally {
-        _iterator85.f();
+        _iterator86.f();
       }
 
       if (nodeId) {
@@ -6949,12 +6962,12 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
       var results = [];
       var child;
 
-      var _iterator86 = _createForOfIteratorHelper(children),
-          _step86;
+      var _iterator87 = _createForOfIteratorHelper(children),
+          _step87;
 
       try {
-        for (_iterator86.s(); !(_step86 = _iterator86.n()).done;) {
-          child = _step86.value;
+        for (_iterator87.s(); !(_step87 = _iterator87.n()).done;) {
+          child = _step87.value;
 
           if (filter && !filter(child)) {
             continue;
@@ -6967,9 +6980,9 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
           }
         }
       } catch (err) {
-        _iterator86.e(err);
+        _iterator87.e(err);
       } finally {
-        _iterator86.f();
+        _iterator87.f();
       }
 
       return results;
@@ -7168,12 +7181,12 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
       var siblings = elementsOnly ? parent.children : parent.childNodes;
       var sibling;
 
-      var _iterator87 = _createForOfIteratorHelper(siblings),
-          _step87;
+      var _iterator88 = _createForOfIteratorHelper(siblings),
+          _step88;
 
       try {
-        for (_iterator87.s(); !(_step87 = _iterator87.n()).done;) {
-          sibling = _step87.value;
+        for (_iterator88.s(); !(_step88 = _iterator88.n()).done;) {
+          sibling = _step88.value;
 
           if (DOMNode.isSame(node, sibling)) {
             continue;
@@ -7186,9 +7199,9 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
           results.push(sibling);
         }
       } catch (err) {
-        _iterator87.e(err);
+        _iterator88.e(err);
       } finally {
-        _iterator87.f();
+        _iterator88.f();
       }
 
       return results;
@@ -7329,14 +7342,14 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
 
       var result = callback(node);
 
-      var _iterator88 = _createForOfIteratorHelper(hidden),
-          _step88;
+      var _iterator89 = _createForOfIteratorHelper(hidden),
+          _step89;
 
       try {
-        for (_iterator88.s(); !(_step88 = _iterator88.n()).done;) {
-          var _step88$value = _slicedToArray(_step88.value, 2),
-              _element = _step88$value[0],
-              style = _step88$value[1];
+        for (_iterator89.s(); !(_step89 = _iterator89.n()).done;) {
+          var _step89$value = _slicedToArray(_step89.value, 2),
+              _element = _step89$value[0],
+              style = _step89$value[1];
 
           if (style) {
             DOMNode.setAttribute(_element, 'style', style);
@@ -7345,9 +7358,9 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
           }
         }
       } catch (err) {
-        _iterator88.e(err);
+        _iterator89.e(err);
       } finally {
-        _iterator88.f();
+        _iterator89.f();
       }
 
       return result;
@@ -7392,19 +7405,19 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
 
       var children = DOMNode.children(node);
 
-      var _iterator89 = _createForOfIteratorHelper(children),
-          _step89;
+      var _iterator90 = _createForOfIteratorHelper(children),
+          _step90;
 
       try {
-        for (_iterator89.s(); !(_step89 = _iterator89.n()).done;) {
-          var child = _step89.value;
+        for (_iterator90.s(); !(_step90 = _iterator90.n()).done;) {
+          var child = _step90.value;
 
           this._sanitize(child, node, allowedTags);
         }
       } catch (err) {
-        _iterator89.e(err);
+        _iterator90.e(err);
       } finally {
-        _iterator89.f();
+        _iterator90.f();
       }
     },
 

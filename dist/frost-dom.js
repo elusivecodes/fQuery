@@ -2170,7 +2170,9 @@
             }
 
             for (const node of nodes) {
-                DOMNode.toggleClass(node, ...classes);
+                for (const className of classes) {
+                    DOMNode.toggleClass(node, className);
+                }
             }
         }
 
