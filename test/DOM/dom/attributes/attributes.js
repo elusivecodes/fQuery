@@ -1074,7 +1074,7 @@ describe('DOM Attributes', function() {
                     'Test',
                     'Test'
                 ]
-            )
+            );
         });
 
         it('works with textarea inputs', async function() {
