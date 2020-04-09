@@ -25,6 +25,7 @@ Object.assign(DOM.prototype, {
     /**
      * Detach each node from the DOM.
      * @param {string|array|Node|HTMLElement|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
+     * @return {array} The detached nodes.
      */
     detach(nodes) {
 
@@ -40,6 +41,8 @@ Object.assign(DOM.prototype, {
 
             DOMNode.removeChild(parent, node);
         }
+
+        return nodes;
     },
 
     /**
@@ -97,8 +100,13 @@ Object.assign(DOM.prototype, {
         // ShadowRoot nodes can not be cloned
         others = this.parseNodes(others, { node: true, fragment: true, html: true });
 
+        // Clone other nodes first, so they can not be removed during replacement
+        const clones = others.map(
+            other => this.constructor._clone(other, true)
+        );
+
         for (const node of nodes) {
-            this.constructor._replaceWith(node, others);
+            this.constructor._replaceWith(node, clones);
         }
     }
 
