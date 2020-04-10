@@ -310,9 +310,9 @@ describe('DOM Attributes', function() {
         beforeEach(async function() {
             await exec(_ => {
                 document.body.innerHTML =
-                    '<input type="text" id="test1" value="Test">' +
+                    '<input type="text" id="test1" value="Test 1">' +
                     '<input type="number" id="test2">' +
-                    '<textarea id="test3">Test</textarea>' +
+                    '<textarea id="test3">Test 2</textarea>' +
                     '<select id="test4"><option value="1">1</option><option value="2" selected>2</option></select>' +
                     '<select id="test5"><option value="3">3</option><option value="4" selected>4</option></select>';
             });
@@ -325,7 +325,7 @@ describe('DOM Attributes', function() {
                         'input'
                     );
                 }),
-                'Test'
+                'Test 1'
             );
         });
 
@@ -336,7 +336,7 @@ describe('DOM Attributes', function() {
                         'textarea'
                     );
                 }),
-                'Test'
+                'Test 2'
             );
         });
 
@@ -358,7 +358,7 @@ describe('DOM Attributes', function() {
                         document.getElementById('test1')
                     );
                 }),
-                'Test'
+                'Test 1'
             );
         });
 
@@ -369,7 +369,7 @@ describe('DOM Attributes', function() {
                         document.body.children
                     );
                 }),
-                'Test'
+                'Test 1'
             );
         });
 
@@ -380,7 +380,7 @@ describe('DOM Attributes', function() {
                         document.querySelectorAll('input')
                     );
                 }),
-                'Test'
+                'Test 1'
             );
         });
 
@@ -394,7 +394,7 @@ describe('DOM Attributes', function() {
                         ]
                     );
                 }),
-                'Test'
+                'Test 1'
             );
         });
     });
@@ -519,12 +519,13 @@ describe('DOM Attributes', function() {
 
         it('works with HTMLElement', async function() {
             const result = await exec(_ => {
+                const element = document.getElementById('test1');
                 dom.removeProperty(
-                    document.getElementById('test1'),
+                    element,
                     'test'
                 );
                 return [
-                    document.getElementById('test1').test,
+                    element.test,
                     document.getElementById('test2').test
                 ];
             });
@@ -582,16 +583,18 @@ describe('DOM Attributes', function() {
 
         it('works with array', async function() {
             const result = await exec(_ => {
+                const element1 = document.getElementById('test1');
+                const element2 = document.getElementById('test2');
                 dom.removeProperty(
                     [
-                        document.getElementById('test1'),
-                        document.getElementById('test2')
+                        element1,
+                        element2
                     ],
                     'test'
                 );
                 return [
-                    document.getElementById('test1').test,
-                    document.getElementById('test2').test
+                    element1.test,
+                    element2.test
                 ];
             });
 
@@ -791,7 +794,7 @@ describe('DOM Attributes', function() {
                         ],
                         '<span>Test 2</span>'
                     );
-                    return dom.getHTML(document.body);
+                    return document.body.innerHTML;
                 }),
                 '<div id="test1"><span>Test 2</span></div>' +
                 '<div id="test2"><span>Test 2</span></div>'
@@ -835,6 +838,8 @@ describe('DOM Attributes', function() {
         it('sets a properties object for all nodes', async function() {
             assert.deepEqual(
                 await exec(_ => {
+                    const element1 = document.getElementById('test1');
+                    const element2 = document.getElementById('test2');
                     dom.setProperty(
                         'input',
                         {
@@ -843,10 +848,10 @@ describe('DOM Attributes', function() {
                         }
                     );
                     return [
-                        document.getElementById('test1').test1,
-                        document.getElementById('test1').test2,
-                        document.getElementById('test2').test1,
-                        document.getElementById('test2').test2
+                        element1.test1,
+                        element1.test2,
+                        element2.test1,
+                        element2.test2
                     ];
                 }),
                 [
@@ -861,13 +866,14 @@ describe('DOM Attributes', function() {
         it('works with HTMLElement', async function() {
             assert.deepEqual(
                 await exec(_ => {
+                    const element = document.getElementById('test1');
                     dom.setProperty(
-                        document.getElementById('test1'),
+                        element,
                         'test',
                         'Test'
                     );
                     return [
-                        document.getElementById('test1').test,
+                        element.test,
                         document.getElementById('test2').test
                     ];
                 }),
@@ -921,17 +927,19 @@ describe('DOM Attributes', function() {
         it('works with array', async function() {
             assert.deepEqual(
                 await exec(_ => {
+                    const element1 = document.getElementById('test1');
+                    const element2 = document.getElementById('test2');
                     dom.setProperty(
                         [
-                            document.getElementById('test1'),
-                            document.getElementById('test2')
+                            element1,
+                            element2
                         ],
                         'test',
                         'Test'
                     );
                     return [
-                        document.getElementById('test1').test,
-                        document.getElementById('test2').test
+                        element1.test,
+                        element2.test
                     ];
                 }),
                 [
@@ -1106,12 +1114,13 @@ describe('DOM Attributes', function() {
         it('works with HTMLElement', async function() {
             assert.deepEqual(
                 await exec(_ => {
+                    const element = document.getElementById('test1');
                     dom.setValue(
-                        document.getElementById('test1'),
+                        element,
                         'Test'
                     );
                     return [
-                        document.getElementById('test1').value,
+                        element.value,
                         document.getElementById('test2').value
                     ]
                 }),
@@ -1119,7 +1128,7 @@ describe('DOM Attributes', function() {
                     'Test',
                     ''
                 ]
-            )
+            );
         });
 
         it('works with HTMLCollection', async function() {
@@ -1138,7 +1147,7 @@ describe('DOM Attributes', function() {
                     'Test',
                     'Test'
                 ]
-            )
+            );
         });
 
         it('works with NodeList', async function() {
@@ -1157,29 +1166,31 @@ describe('DOM Attributes', function() {
                     'Test',
                     'Test'
                 ]
-            )
+            );
         });
 
         it('works with array', async function() {
             assert.deepEqual(
                 await exec(_ => {
+                    const element1 = document.getElementById('test1');
+                    const element2 = document.getElementById('test2');
                     dom.setValue(
                         [
-                            document.getElementById('test1'),
-                            document.getElementById('test2')
+                            element1,
+                            element2
                         ],
                         'Test'
                     );
                     return [
-                        document.getElementById('test1').value,
-                        document.getElementById('test2').value
+                        element1.value,
+                        element2.value
                     ]
                 }),
                 [
                     'Test',
                     'Test'
                 ]
-            )
+            );
         });
 
     });

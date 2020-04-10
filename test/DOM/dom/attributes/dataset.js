@@ -300,7 +300,7 @@ describe('DOM Attributes (Dataset)', function() {
             assert.equal(
                 await exec(_ => {
                     dom.setDataset(
-                        document.getElementById('test1'),
+                        '#test1',
                         'true',
                         true
                     );
@@ -315,7 +315,7 @@ describe('DOM Attributes (Dataset)', function() {
             assert.equal(
                 await exec(_ => {
                     dom.setDataset(
-                        document.getElementById('test1'),
+                        '#test1',
                         'false',
                         false
                     );
@@ -330,7 +330,7 @@ describe('DOM Attributes (Dataset)', function() {
             assert.equal(
                 await exec(_ => {
                     dom.setDataset(
-                        document.getElementById('test1'),
+                        '#test1',
                         'null',
                         null
                     );
@@ -345,7 +345,7 @@ describe('DOM Attributes (Dataset)', function() {
             assert.equal(
                 await exec(_ => {
                     dom.setDataset(
-                        document.getElementById('test1'),
+                        '#test1',
                         'array',
                         [1, 2, 3]
                     );
@@ -360,7 +360,7 @@ describe('DOM Attributes (Dataset)', function() {
             assert.equal(
                 await exec(_ => {
                     dom.setDataset(
-                        document.getElementById('test1'),
+                        '#test1',
                         'object',
                         { a: 1 }
                     );

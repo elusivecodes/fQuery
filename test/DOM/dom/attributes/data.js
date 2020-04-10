@@ -176,7 +176,7 @@ describe('DOM Attributes (Data)', function() {
                     );
                 }),
                 'Test 1'
-            )
+            );
         });
 
         it('returns an object with all data for the first node', async function() {
@@ -189,7 +189,7 @@ describe('DOM Attributes (Data)', function() {
                 {
                     test: 'Test 1'
                 }
-            )
+            );
         });
 
         it('works with HTMLElement', async function() {
@@ -201,7 +201,7 @@ describe('DOM Attributes (Data)', function() {
                     );
                 }),
                 'Test 1'
-            )
+            );
         });
 
         it('works with HTMLCollection', async function() {
@@ -213,7 +213,7 @@ describe('DOM Attributes (Data)', function() {
                     );
                 }),
                 'Test 1'
-            )
+            );
         });
 
         it('works with NodeList', async function() {
@@ -225,7 +225,7 @@ describe('DOM Attributes (Data)', function() {
                     );
                 }),
                 'Test 1'
-            )
+            );
         });
 
         it('works with array', async function() {
@@ -240,7 +240,7 @@ describe('DOM Attributes (Data)', function() {
                     );
                 }),
                 'Test 1'
-            )
+            );
         });
 
     });

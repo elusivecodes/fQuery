@@ -5,6 +5,8 @@ describe('DOM Move', function() {
 
     describe('#after', function() {
 
+        // Insert each other node after the first node.
+
     });
 
     describe('#append', function() {
