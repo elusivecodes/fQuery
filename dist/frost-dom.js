@@ -2682,55 +2682,66 @@
     Object.assign(DOM.prototype, {
 
         /**
-         * Insert each other node after the first node.
+         * Insert each other node after each node.
          * @param {string|array|Node|HTMLElement|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
          * @param {string|array|Node|HTMLElement|DocumentFragment|NodeList|HTMLCollection|QuerySet} others The other node(s), or a query selector or HTML string.
          */
         after(nodes, others) {
 
             // DocumentFragment and ShadowRoot nodes can not have siblings
-            const node = this.parseNode(nodes, { node: true });
-
-            if (!node) {
-                return;
-            }
-
-            const parent = DOMNode.parent(node);
-
-            if (!parent) {
-                return;
-            }
+            nodes = this.parseNodes(nodes, { node: true });
 
             // ShadowRoot nodes can not be moved
             others = this.parseNodes(others, { node: true, fragment: true, html: true }).reverse();
 
-            for (const other of others) {
-                DOMNode.insertBefore(parent, other, DOMNode.next(node));
+            const lastNode = nodes.slice(-1).pop();
+
+            for (const node of nodes) {
+                const parent = DOMNode.parent(node);
+
+                if (!parent) {
+                    continue;
+                }
+
+                for (const other of others) {
+                    DOMNode.insertBefore(
+                        parent,
+                        DOMNode.isSame(node, lastNode) ?
+                            other :
+                            DOMNode.clone(other, true),
+                        DOMNode.next(node)
+                    );
+                }
             }
         },
 
         /**
-         * Append each other node to the first node.
+         * Append each other node to each node.
          * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
          * @param {string|array|Node|HTMLElement|DocumentFragment|NodeList|HTMLCollection|QuerySet} others The other node(s), or a query selector or HTML string.
          */
         append(nodes, others) {
-            const node = this.parseNode(nodes, { fragment: true, shadow: true, document: true });
-
-            if (!node) {
-                return;
-            }
+            nodes = this.parseNodes(nodes, { fragment: true, shadow: true, document: true });
 
             // ShadowRoot nodes can not be moved
             others = this.parseNodes(others, { node: true, fragment: true, html: true });
 
-            for (const other of others) {
-                DOMNode.insertBefore(node, other);
+            const lastNode = nodes.slice(-1).pop();
+
+            for (const node of nodes) {
+                for (const other of others) {
+                    DOMNode.insertBefore(
+                        node,
+                        DOMNode.isSame(node, lastNode) ?
+                            other :
+                            DOMNode.clone(other, true)
+                    );
+                }
             }
         },
 
         /**
-         * Append each node to the first other node.
+         * Append each node to each other node.
          * @param {string|array|Node|HTMLElement|DocumentFragment|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector or HTML string.
          * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|NodeList|HTMLCollection|QuerySet} others The other node(s), or a query selector string.
          */
@@ -2739,35 +2750,41 @@
         },
 
         /**
-         * Insert each other node before the first node.
+         * Insert each other node before each node.
          * @param {string|array|Node|HTMLElement|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
          * @param {string|array|Node|HTMLElement|DocumentFragment|NodeList|HTMLCollection|QuerySet} others The other node(s), or a query selector or HTML string.
          */
         before(nodes, others) {
 
             // DocumentFragment and ShadowRoot nodes can not have siblings
-            const node = this.parseNode(nodes, { node: true });
-
-            if (!node) {
-                return;
-            }
-
-            const parent = DOMNode.parent(node);
-
-            if (!parent) {
-                return;
-            }
+            nodes = this.parseNodes(nodes, { node: true });
 
             // ShadowRoot nodes can not be moved
             others = this.parseNodes(others, { node: true, fragment: true, html: true });
 
-            for (const other of others) {
-                DOMNode.insertBefore(parent, other, node);
+            const lastNode = nodes.slice(-1).pop();
+
+            for (const node of nodes) {
+                const parent = DOMNode.parent(node);
+
+                if (!parent) {
+                    continue;
+                }
+
+                for (const other of others) {
+                    DOMNode.insertBefore(
+                        parent,
+                        DOMNode.isSame(node, lastNode) ?
+                            other :
+                            DOMNode.clone(other, true),
+                        node
+                    );
+                }
             }
         },
 
         /**
-         * Insert each node after the first other node.
+         * Insert each node after each other node.
          * @param {string|array|Node|HTMLElement|DocumentFragment|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector or HTML string.
          * @param {string|array|Node|HTMLElement|NodeList|HTMLCollection|QuerySet} others The other node(s), or a query selector string.
          */
@@ -2776,7 +2793,7 @@
         },
 
         /**
-         * Insert each node before the first other node.
+         * Insert each node before each other node.
          * @param {string|array|Node|HTMLElement|DocumentFragment|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector or HTML string.
          * @param {string|array|Node|HTMLElement|NodeList|HTMLCollection|QuerySet} others The other node(s), or a query selector string.
          */
@@ -2785,29 +2802,35 @@
         },
 
         /**
-         * Prepend each other node to the first node.
+         * Prepend each other node to each node.
          * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
          * @param {string|array|Node|HTMLElement|DocumentFragment|NodeList|HTMLCollection} others The other node(s), or a query selector or HTML string.
          */
         prepend(nodes, others) {
-            const node = this.parseNode(nodes, { fragment: true, shadow: true, document: true });
-
-            if (!node) {
-                return;
-            }
-
-            const firstChild = DOMNode.firstChild(node);
+            nodes = this.parseNodes(nodes, { fragment: true, shadow: true, document: true });
 
             // ShadowRoot nodes can not be moved
-            others = this.parseNodes(others, { node: true, fragment: true, html: true }).reverse();
+            others = this.parseNodes(others, { node: true, fragment: true, html: true });
 
-            for (const other of others) {
-                DOMNode.insertBefore(node, other, firstChild);
+            const lastNode = nodes.slice(-1).pop();
+
+            for (const node of nodes) {
+                const firstChild = DOMNode.firstChild(node);
+
+                for (const other of others) {
+                    DOMNode.insertBefore(
+                        node,
+                        DOMNode.isSame(node, lastNode) ?
+                            other :
+                            DOMNode.clone(other, true),
+                        firstChild
+                    );
+                }
             }
         },
 
         /**
-         * Prepend each node to the first other node.
+         * Prepend each node to each other node.
          * @param {string|array|Node|HTMLElement|DocumentFragment|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector or HTML string.
          * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|NodeList|HTMLCollection|QuerySet} others The other node(s), or a query selector string.
          */
@@ -7207,16 +7230,6 @@
         },
 
         /**
-         * Create a clone of a node.
-         * @param {Node} node The input node.
-         * @param {Boolean} deep Whether to deep clone the node.
-         * @returns {Node} The cloned node.
-         */
-        clone(node, deep) {
-            return node.cloneNode(deep);
-        },
-
-        /**
          * Create a new DOM element.
          * @param {Document} context The document context.
          * @param {string} tagName The type of HTML element to create.
@@ -7271,6 +7284,16 @@
      */
 
     Object.assign(DOMNode, {
+
+        /**
+         * Create a clone of a node.
+         * @param {Node} node The input node.
+         * @param {Boolean} deep Whether to deep clone the node.
+         * @returns {Node} The cloned node.
+         */
+        clone(node, deep) {
+            return node.cloneNode(deep);
+        },
 
         /**
          * Remove a child node from a parent node in the DOM.

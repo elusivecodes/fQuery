@@ -19,16 +19,6 @@ Object.assign(DOMNode, {
     },
 
     /**
-     * Create a clone of a node.
-     * @param {Node} node The input node.
-     * @param {Boolean} deep Whether to deep clone the node.
-     * @returns {Node} The cloned node.
-     */
-    clone(node, deep) {
-        return node.cloneNode(deep);
-    },
-
-    /**
      * Create a new DOM element.
      * @param {Document} context The document context.
      * @param {string} tagName The type of HTML element to create.

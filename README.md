@@ -1080,7 +1080,7 @@ Detach each node from the DOM.
 - `nodes` is a query selector string, a *Node*, *HTMLElement*, *NodeList*, *HTMLCollection*, [*QuerySet*](https://github.com/elusivecodes/fQuery) or an array of nodes.
 
 ```javascript
-dom.detach(nodes);
+const detached = dom.detach(nodes);
 ```
 
 **Empty**
@@ -1211,7 +1211,7 @@ const nodes = dom.parseHTML(html);
 
 **After**
 
-Insert each other node after the first node.
+Insert each other node after each node.
 
 - `nodes` is a query selector string, a *Node*, *HTMLElement*, *NodeList*, *HTMLCollection*, [*QuerySet*](https://github.com/elusivecodes/fQuery) or an array of nodes.
 - `others` is a query selector string, a HTML string, a *Node*, *HTMLElement*, *DocumentFragment*, *NodeList*, *HTMLCollection*, [*QuerySet*](https://github.com/elusivecodes/fQuery) or an array of nodes.
@@ -1224,7 +1224,7 @@ If a node you are moving is a *DocumentFragment*, the contents will be moved ins
 
 **Append**
 
-Append each other node to the first node.
+Append each other node to each node.
 
 - `nodes` is a query selector string, a *HTMLElement*, *DocumentFragment*, *ShadowRoot*, *Document*, *NodeList*, *HTMLCollection*, [*QuerySet*](https://github.com/elusivecodes/fQuery) or an array of nodes.
 - `others` is a query selector string, a HTML string, a *Node*, *HTMLElement*, *DocumentFragment*, *NodeList*, *HTMLCollection*, [*QuerySet*](https://github.com/elusivecodes/fQuery) or an array of nodes.
@@ -1237,7 +1237,7 @@ If a node you are moving is a *DocumentFragment*, the contents will be moved ins
 
 **Append To**
 
-Append each node to the first other node.
+Append each node to each other node.
 
 - `nodes` is a query selector string, a HTML string, a *Node*, *HTMLElement*, *DocumentFragment*, *NodeList*, *HTMLCollection*, [*QuerySet*](https://github.com/elusivecodes/fQuery) or an array of nodes.
 - `others` is a query selector string, a *HTMLElement*, *DocumentFragment*, *ShadowRoot*, *Document*, *NodeList*, *HTMLCollection*, [*QuerySet*](https://github.com/elusivecodes/fQuery) or an array of nodes.
@@ -1250,7 +1250,7 @@ If a node you are moving is a *DocumentFragment*, the contents will be moved ins
 
 **Before**
 
-Insert each other node before the first node.
+Insert each other node before each node.
 
 - `nodes` is a query selector string, a *Node*, *HTMLElement*, *NodeList*, *HTMLCollection*, [*QuerySet*](https://github.com/elusivecodes/fQuery) or an array of nodes.
 - `others` is a query selector string, a HTML string, a *Node*, *HTMLElement*, *DocumentFragment*, *NodeList*, *HTMLCollection*, [*QuerySet*](https://github.com/elusivecodes/fQuery) or an array of nodes.
@@ -1263,7 +1263,7 @@ If a node you are moving is a *DocumentFragment*, the contents will be moved ins
 
 **Insert After**
 
-Insert each node after the first other node.
+Insert each node after each other node.
 
 - `nodes` is a query selector string, a HTML string, a *Node*, *HTMLElement*, *DocumentFragment*, *NodeList*, *HTMLCollection*, [*QuerySet*](https://github.com/elusivecodes/fQuery) or an array of nodes.
 - `others` is a query selector string, a *Node*, *HTMLElement*, *NodeList*, *HTMLCollection*, [*QuerySet*](https://github.com/elusivecodes/fQuery) or an array of nodes.
@@ -1276,7 +1276,7 @@ If a node you are moving is a *DocumentFragment*, the contents will be moved ins
 
 **Insert Before**
 
-Insert each node before the first other node.
+Insert each node before each other node.
 
 - `nodes` is a query selector string, a HTML string, a *Node*, *HTMLElement*, *DocumentFragment*, *NodeList*, *HTMLCollection*, [*QuerySet*](https://github.com/elusivecodes/fQuery) or an array of nodes.
 - `others` is a query selector string, a *Node*, *HTMLElement*, *NodeList*, *HTMLCollection*, [*QuerySet*](https://github.com/elusivecodes/fQuery) or an array of nodes.
@@ -1289,7 +1289,7 @@ If a node you are moving is a *DocumentFragment*, the contents will be moved ins
 
 **Prepend**
 
-Prepend each other node to the first node.
+Prepend each other node to each node.
 
 - `nodes` is a query selector string, a *HTMLElement*, *DocumentFragment*, *ShadowRoot*, *Document*, *NodeList*, *HTMLCollection*, [*QuerySet*](https://github.com/elusivecodes/fQuery) or an array of nodes.
 - `others` is a query selector string, a HTML string, a *Node*, *HTMLElement*, *DocumentFragment*, *NodeList*, *HTMLCollection*, [*QuerySet*](https://github.com/elusivecodes/fQuery) or an array of nodes.
@@ -1302,7 +1302,7 @@ If a node you are moving is a *DocumentFragment*, the contents will be moved ins
 
 **Prepend To**
 
-Prepend each node to the first other node.
+Prepend each node to each other node.
 
 - `nodes` is a query selector string, a HTML string, a *Node*, *HTMLElement*, *DocumentFragment*, *NodeList*, *HTMLCollection*, [*QuerySet*](https://github.com/elusivecodes/fQuery) or an array of nodes.
 - `others` is a query selector string, a *HTMLElement*, *DocumentFragment*, *ShadowRoot*, *Document*, *NodeList*, *HTMLCollection*, [*QuerySet*](https://github.com/elusivecodes/fQuery) or an array of nodes.
