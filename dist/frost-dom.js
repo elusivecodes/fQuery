@@ -2858,8 +2858,28 @@
 
             filter = this.parseFilter(filter);
 
+            const parents = [];
+
             for (const node of nodes) {
-                this.constructor._unwrap(node, filter);
+                const parent = DOMNode.parent(node);
+
+                if (!parent) {
+                    continue;
+                }
+
+                if (parents.includes(parent)) {
+                    continue;
+                }
+
+                if (filter && !filter(parent)) {
+                    continue;
+                }
+
+                parents.push(parent);
+            }
+
+            for (const parent of parents) {
+                this.constructor._unwrap(parent);
             }
         },
 
@@ -5895,19 +5915,12 @@
 
         /**
          * Unwrap a single node.
-         * @param {Node|HTMLElement} node The input node.
-         * @param {DOM~filterCallback} [filter] The filter function.
+         * @param {Node|HTMLElement} parent The input node.
          */
-        _unwrap(node, filter) {
-            const parent = DOMNode.parent(node, filter);
-
-            if (!parent) {
-                return;
-            }
-
+        _unwrap(parent) {
             const outerParent = DOMNode.parent(parent);
 
-            if (!parent) {
+            if (!outerParent) {
                 return;
             }
 

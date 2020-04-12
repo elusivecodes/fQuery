@@ -3273,6 +3273,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
         node: true
       });
       filter = this.parseFilter(filter);
+      var parents = [];
 
       var _iterator51 = _createForOfIteratorHelper(nodes),
           _step51;
@@ -3281,12 +3282,32 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
         for (_iterator51.s(); !(_step51 = _iterator51.n()).done;) {
           var node = _step51.value;
 
-          this.constructor._unwrap(node, filter);
+          var _parent = DOMNode.parent(node);
+
+          if (!_parent) {
+            continue;
+          }
+
+          if (parents.includes(_parent)) {
+            continue;
+          }
+
+          if (filter && !filter(_parent)) {
+            continue;
+          }
+
+          parents.push(_parent);
         }
       } catch (err) {
         _iterator51.e(err);
       } finally {
         _iterator51.f();
+      }
+
+      for (var _i = 0, _parents = parents; _i < _parents.length; _i++) {
+        var parent = _parents[_i];
+
+        this.constructor._unwrap(parent);
       }
     },
 
@@ -6601,19 +6622,12 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
   Object.assign(DOM, {
     /**
      * Unwrap a single node.
-     * @param {Node|HTMLElement} node The input node.
-     * @param {DOM~filterCallback} [filter] The filter function.
+     * @param {Node|HTMLElement} parent The input node.
      */
-    _unwrap: function _unwrap(node, filter) {
-      var parent = DOMNode.parent(node, filter);
-
-      if (!parent) {
-        return;
-      }
-
+    _unwrap: function _unwrap(parent) {
       var outerParent = DOMNode.parent(parent);
 
-      if (!parent) {
+      if (!outerParent) {
         return;
       }
 

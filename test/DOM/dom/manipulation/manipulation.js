@@ -8,13 +8,13 @@ describe('DOM Manipulation', function() {
         beforeEach(async function() {
             await exec(_ => {
                 document.body.innerHTML =
-                    '<div id="parent1">' +
-                    '<a href="#" id="test1">Test</a>' +
-                    '<a href="#" id="test2">Test</a>' +
+                    '<div class="parent1">' +
+                    '<a href="#" class="test1">Test</a>' +
+                    '<a href="#" class="test2">Test</a>' +
                     '</div>' +
-                    '<div id="parent2">' +
-                    '<a href="#" id="test3">Test</a>' +
-                    '<a href="#" id="test4">Test</a>' +
+                    '<div class="parent2">' +
+                    '<a href="#" class="test3">Test</a>' +
+                    '<a href="#" class="test4">Test</a>' +
                     '</div>';
             });
         });
@@ -23,26 +23,29 @@ describe('DOM Manipulation', function() {
             assert.equal(
                 await exec(_ => {
                     const clones = dom.clone(
-                        'a'
+                        'div'
                     );
                     for (const clone of clones) {
-                        clone.id += 'Clone';
                         document.body.appendChild(clone);
                     }
                     return document.body.innerHTML;
                 }),
-                '<div id="parent1">' +
-                '<a href="#" id="test1">Test</a>' +
-                '<a href="#" id="test2">Test</a>' +
+                '<div class="parent1">' +
+                '<a href="#" class="test1">Test</a>' +
+                '<a href="#" class="test2">Test</a>' +
                 '</div>' +
-                '<div id="parent2">' +
-                '<a href="#" id="test3">Test</a>' +
-                '<a href="#" id="test4">Test</a>' +
+                '<div class="parent2">' +
+                '<a href="#" class="test3">Test</a>' +
+                '<a href="#" class="test4">Test</a>' +
                 '</div>' +
-                '<a href="#" id="test1Clone">Test</a>' +
-                '<a href="#" id="test2Clone">Test</a>' +
-                '<a href="#" id="test3Clone">Test</a>' +
-                '<a href="#" id="test4Clone">Test</a>'
+                '<div class="parent1">' +
+                '<a href="#" class="test1">Test</a>' +
+                '<a href="#" class="test2">Test</a>' +
+                '</div>' +
+                '<div class="parent2">' +
+                '<a href="#" class="test3">Test</a>' +
+                '<a href="#" class="test4">Test</a>' +
+                '</div>'
             );
         });
 
@@ -51,7 +54,7 @@ describe('DOM Manipulation', function() {
                 await exec(_ => {
                     return Core.isArray(
                         dom.clone(
-                            'a'
+                            'div'
                         )
                     );
                 }),
@@ -67,23 +70,20 @@ describe('DOM Manipulation', function() {
                         false
                     );
                     for (const clone of clones) {
-                        clone.id += 'Clone';
                         document.body.appendChild(clone);
                     }
                     return document.body.innerHTML;
                 }),
-                '<div id="parent1">' +
-                '<a href="#" id="test1">Test</a>' +
-                '<a href="#" id="test2">Test</a>' +
+                '<div class="parent1">' +
+                '<a href="#" class="test1">Test</a>' +
+                '<a href="#" class="test2">Test</a>' +
                 '</div>' +
-                '<div id="parent2">' +
-                '<a href="#" id="test3">Test</a>' +
-                '<a href="#" id="test4">Test</a>' +
+                '<div class="parent2">' +
+                '<a href="#" class="test3">Test</a>' +
+                '<a href="#" class="test4">Test</a>' +
                 '</div>' +
-                '<div id="parent1Clone">' +
-                '</div>' +
-                '<div id="parent2Clone">' +
-                '</div>'
+                '<div class="parent1"></div>' +
+                '<div class="parent2"></div>'
             );
         });
 
@@ -102,7 +102,6 @@ describe('DOM Manipulation', function() {
                         true
                     );
                     for (const clone of clones) {
-                        clone.id += 'Clone';
                         document.body.appendChild(clone);
                     }
                     dom.triggerEvent(
@@ -119,12 +118,12 @@ describe('DOM Manipulation', function() {
             assert.deepEqual(
                 await exec(_ => {
                     dom.setData(
-                        '#test1',
+                        '.test1',
                         'test1',
                         'Test 1'
                     );
                     dom.setData(
-                        '#test2',
+                        '.test2',
                         'test2',
                         'Test 2'
                     );
@@ -135,12 +134,11 @@ describe('DOM Manipulation', function() {
                         true
                     );
                     for (const clone of clones) {
-                        clone.id += 'Clone';
                         document.body.appendChild(clone);
                     }
                     return [
-                        dom.getData('#test1Clone', 'test1'),
-                        dom.getData('#test2Clone', 'test2')
+                        dom.getData('body > .test1', 'test1'),
+                        dom.getData('body > .test2', 'test2')
                     ];
                 }),
                 [
@@ -154,23 +152,25 @@ describe('DOM Manipulation', function() {
             assert.equal(
                 await exec(_ => {
                     const clones = dom.clone(
-                        document.getElementById('test1')
+                        document.querySelector('.parent1')
                     );
                     for (const clone of clones) {
-                        clone.id += 'Clone';
                         document.body.appendChild(clone);
                     }
                     return document.body.innerHTML;
                 }),
-                '<div id="parent1">' +
-                '<a href="#" id="test1">Test</a>' +
-                '<a href="#" id="test2">Test</a>' +
+                '<div class="parent1">' +
+                '<a href="#" class="test1">Test</a>' +
+                '<a href="#" class="test2">Test</a>' +
                 '</div>' +
-                '<div id="parent2">' +
-                '<a href="#" id="test3">Test</a>' +
-                '<a href="#" id="test4">Test</a>' +
+                '<div class="parent2">' +
+                '<a href="#" class="test3">Test</a>' +
+                '<a href="#" class="test4">Test</a>' +
                 '</div>' +
-                '<a href="#" id="test1Clone">Test</a>'
+                '<div class="parent1">' +
+                '<a href="#" class="test1">Test</a>' +
+                '<a href="#" class="test2">Test</a>' +
+                '</div>'
             );
         });
 
@@ -182,23 +182,20 @@ describe('DOM Manipulation', function() {
                         false
                     );
                     for (const clone of clones) {
-                        clone.id += 'Clone';
                         document.body.appendChild(clone);
                     }
                     return document.body.innerHTML;
                 }),
-                '<div id="parent1">' +
-                '<a href="#" id="test1">Test</a>' +
-                '<a href="#" id="test2">Test</a>' +
+                '<div class="parent1">' +
+                '<a href="#" class="test1">Test</a>' +
+                '<a href="#" class="test2">Test</a>' +
                 '</div>' +
-                '<div id="parent2">' +
-                '<a href="#" id="test3">Test</a>' +
-                '<a href="#" id="test4">Test</a>' +
+                '<div class="parent2">' +
+                '<a href="#" class="test3">Test</a>' +
+                '<a href="#" class="test4">Test</a>' +
                 '</div>' +
-                '<div id="parent1Clone">' +
-                '</div>' +
-                '<div id="parent2Clone">' +
-                '</div>'
+                '<div class="parent1"></div>' +
+                '<div class="parent2"></div>'
             );
         });
 
@@ -206,26 +203,29 @@ describe('DOM Manipulation', function() {
             assert.equal(
                 await exec(_ => {
                     const clones = dom.clone(
-                        document.querySelectorAll('a')
+                        document.querySelectorAll('div')
                     );
                     for (const clone of clones) {
-                        clone.id += 'Clone';
                         document.body.appendChild(clone);
                     }
                     return document.body.innerHTML;
                 }),
-                '<div id="parent1">' +
-                '<a href="#" id="test1">Test</a>' +
-                '<a href="#" id="test2">Test</a>' +
+                '<div class="parent1">' +
+                '<a href="#" class="test1">Test</a>' +
+                '<a href="#" class="test2">Test</a>' +
                 '</div>' +
-                '<div id="parent2">' +
-                '<a href="#" id="test3">Test</a>' +
-                '<a href="#" id="test4">Test</a>' +
+                '<div class="parent2">' +
+                '<a href="#" class="test3">Test</a>' +
+                '<a href="#" class="test4">Test</a>' +
                 '</div>' +
-                '<a href="#" id="test1Clone">Test</a>' +
-                '<a href="#" id="test2Clone">Test</a>' +
-                '<a href="#" id="test3Clone">Test</a>' +
-                '<a href="#" id="test4Clone">Test</a>'
+                '<div class="parent1">' +
+                '<a href="#" class="test1">Test</a>' +
+                '<a href="#" class="test2">Test</a>' +
+                '</div>' +
+                '<div class="parent2">' +
+                '<a href="#" class="test3">Test</a>' +
+                '<a href="#" class="test4">Test</a>' +
+                '</div>'
             );
         });
 
@@ -234,30 +234,31 @@ describe('DOM Manipulation', function() {
                 await exec(_ => {
                     const clones = dom.clone(
                         [
-                            document.getElementById('test1'),
-                            document.getElementById('test2'),
-                            document.getElementById('test3'),
-                            document.getElementById('test4')
+                            document.querySelector('.parent1'),
+                            document.querySelector('.parent2')
                         ]
                     );
                     for (const clone of clones) {
-                        clone.id += 'Clone';
                         document.body.appendChild(clone);
                     }
                     return document.body.innerHTML;
                 }),
-                '<div id="parent1">' +
-                '<a href="#" id="test1">Test</a>' +
-                '<a href="#" id="test2">Test</a>' +
+                '<div class="parent1">' +
+                '<a href="#" class="test1">Test</a>' +
+                '<a href="#" class="test2">Test</a>' +
                 '</div>' +
-                '<div id="parent2">' +
-                '<a href="#" id="test3">Test</a>' +
-                '<a href="#" id="test4">Test</a>' +
+                '<div class="parent2">' +
+                '<a href="#" class="test3">Test</a>' +
+                '<a href="#" class="test4">Test</a>' +
                 '</div>' +
-                '<a href="#" id="test1Clone">Test</a>' +
-                '<a href="#" id="test2Clone">Test</a>' +
-                '<a href="#" id="test3Clone">Test</a>' +
-                '<a href="#" id="test4Clone">Test</a>'
+                '<div class="parent1">' +
+                '<a href="#" class="test1">Test</a>' +
+                '<a href="#" class="test2">Test</a>' +
+                '</div>' +
+                '<div class="parent2">' +
+                '<a href="#" class="test3">Test</a>' +
+                '<a href="#" class="test4">Test</a>' +
+                '</div>'
             );
         });
 
@@ -859,14 +860,14 @@ describe('DOM Manipulation', function() {
         beforeEach(async function() {
             await exec(_ => {
                 document.body.innerHTML =
-                    '<div id="outer1">' +
-                    '<div id="inner1">' +
+                    '<div class="outer1">' +
+                    '<div class="inner1">' +
                     '<a href="#">Test</a>' +
                     '<a href="#">Test</a>' +
                     '</div>' +
                     '</div>' +
-                    '<div id="outer2">' +
-                    '<div id="inner2">' +
+                    '<div class="outer2">' +
+                    '<div class="inner2">' +
                     '<a href="#">Test</a>' +
                     '<a href="#">Test</a>' +
                     '</div>' +
@@ -898,19 +899,19 @@ describe('DOM Manipulation', function() {
             assert.equal(
                 await exec(_ => {
                     dom.replaceAll(
-                        document.getElementById('inner1'),
-                        document.getElementById('inner2')
+                        document.querySelector('.inner1'),
+                        document.querySelector('.inner2')
                     );
                     return document.body.innerHTML;
                 }),
-                '<div id="outer1">' +
-                '<div id="inner1">' +
+                '<div class="outer1">' +
+                '<div class="inner1">' +
                 '<a href="#">Test</a>' +
                 '<a href="#">Test</a>' +
                 '</div>' +
                 '</div>' +
-                '<div id="outer2">' +
-                '<div id="inner1">' +
+                '<div class="outer2">' +
+                '<div class="inner1">' +
                 '<a href="#">Test</a>' +
                 '<a href="#">Test</a>' +
                 '</div>' +
@@ -922,19 +923,19 @@ describe('DOM Manipulation', function() {
             assert.equal(
                 await exec(_ => {
                     dom.replaceAll(
-                        document.getElementById('outer1').children,
-                        document.getElementById('outer2').children
+                        document.querySelector('.outer1').children,
+                        document.querySelector('.outer2').children
                     );
                     return document.body.innerHTML;
                 }),
-                '<div id="outer1">' +
-                '<div id="inner1">' +
+                '<div class="outer1">' +
+                '<div class="inner1">' +
                 '<a href="#">Test</a>' +
                 '<a href="#">Test</a>' +
                 '</div>' +
                 '</div>' +
-                '<div id="outer2">' +
-                '<div id="inner1">' +
+                '<div class="outer2">' +
+                '<div class="inner1">' +
                 '<a href="#">Test</a>' +
                 '<a href="#">Test</a>' +
                 '</div>' +
@@ -946,19 +947,19 @@ describe('DOM Manipulation', function() {
             assert.equal(
                 await exec(_ => {
                     dom.replaceAll(
-                        document.querySelectorAll('#outer1 > div'),
-                        document.querySelectorAll('#outer2 > div'),
+                        document.querySelectorAll('.outer1 > div'),
+                        document.querySelectorAll('.outer2 > div'),
                     );
                     return document.body.innerHTML;
                 }),
-                '<div id="outer1">' +
-                '<div id="inner1">' +
+                '<div class="outer1">' +
+                '<div class="inner1">' +
                 '<a href="#">Test</a>' +
                 '<a href="#">Test</a>' +
                 '</div>' +
                 '</div>' +
-                '<div id="outer2">' +
-                '<div id="inner1">' +
+                '<div class="outer2">' +
+                '<div class="inner1">' +
                 '<a href="#">Test</a>' +
                 '<a href="#">Test</a>' +
                 '</div>' +
@@ -971,22 +972,22 @@ describe('DOM Manipulation', function() {
                 await exec(_ => {
                     dom.replaceAll(
                         [
-                            document.getElementById('inner1')
+                            document.querySelector('.inner1')
                         ],
                         [
-                            document.getElementById('inner2')
+                            document.querySelector('.inner2')
                         ]
                     );
                     return document.body.innerHTML;
                 }),
-                '<div id="outer1">' +
-                '<div id="inner1">' +
+                '<div class="outer1">' +
+                '<div class="inner1">' +
                 '<a href="#">Test</a>' +
                 '<a href="#">Test</a>' +
                 '</div>' +
                 '</div>' +
-                '<div id="outer2">' +
-                '<div id="inner1">' +
+                '<div class="outer2">' +
+                '<div class="inner1">' +
                 '<a href="#">Test</a>' +
                 '<a href="#">Test</a>' +
                 '</div>' +
@@ -1003,14 +1004,14 @@ describe('DOM Manipulation', function() {
                     );
                     return document.body.innerHTML;
                 }),
-                '<div id="outer1">' +
-                '<div id="inner1">' +
+                '<div class="outer1">' +
+                '<div class="inner1">' +
                 '<div><span class="test">Test</span></div>' +
                 '<div><span class="test">Test</span></div>' +
                 '</div>' +
                 '</div>' +
-                '<div id="outer2">' +
-                '<div id="inner2">' +
+                '<div class="outer2">' +
+                '<div class="inner2">' +
                 '<div><span class="test">Test</span></div>' +
                 '<div><span class="test">Test</span></div>' +
                 '</div>' +
@@ -1025,14 +1026,14 @@ describe('DOM Manipulation', function() {
         beforeEach(async function() {
             await exec(_ => {
                 document.body.innerHTML =
-                    '<div id="outer1">' +
-                    '<div id="inner1">' +
+                    '<div class="outer1">' +
+                    '<div class="inner1">' +
                     '<a href="#">Test</a>' +
                     '<a href="#">Test</a>' +
                     '</div>' +
                     '</div>' +
-                    '<div id="outer2">' +
-                    '<div id="inner2">' +
+                    '<div class="outer2">' +
+                    '<div class="inner2">' +
                     '<a href="#">Test</a>' +
                     '<a href="#">Test</a>' +
                     '</div>' +
@@ -1064,19 +1065,19 @@ describe('DOM Manipulation', function() {
             assert.equal(
                 await exec(_ => {
                     dom.replaceWith(
-                        document.getElementById('inner2'),
-                        document.getElementById('inner1')
+                        document.querySelector('.inner2'),
+                        document.querySelector('.inner1')
                     );
                     return document.body.innerHTML;
                 }),
-                '<div id="outer1">' +
-                '<div id="inner1">' +
+                '<div class="outer1">' +
+                '<div class="inner1">' +
                 '<a href="#">Test</a>' +
                 '<a href="#">Test</a>' +
                 '</div>' +
                 '</div>' +
-                '<div id="outer2">' +
-                '<div id="inner1">' +
+                '<div class="outer2">' +
+                '<div class="inner1">' +
                 '<a href="#">Test</a>' +
                 '<a href="#">Test</a>' +
                 '</div>' +
@@ -1088,19 +1089,19 @@ describe('DOM Manipulation', function() {
             assert.equal(
                 await exec(_ => {
                     dom.replaceWith(
-                        document.getElementById('outer2').children,
-                        document.getElementById('outer1').children
+                        document.querySelector('.outer2').children,
+                        document.querySelector('.outer1').children
                     );
                     return document.body.innerHTML;
                 }),
-                '<div id="outer1">' +
-                '<div id="inner1">' +
+                '<div class="outer1">' +
+                '<div class="inner1">' +
                 '<a href="#">Test</a>' +
                 '<a href="#">Test</a>' +
                 '</div>' +
                 '</div>' +
-                '<div id="outer2">' +
-                '<div id="inner1">' +
+                '<div class="outer2">' +
+                '<div class="inner1">' +
                 '<a href="#">Test</a>' +
                 '<a href="#">Test</a>' +
                 '</div>' +
@@ -1112,19 +1113,19 @@ describe('DOM Manipulation', function() {
             assert.equal(
                 await exec(_ => {
                     dom.replaceWith(
-                        document.querySelectorAll('#outer2 > div'),
-                        document.querySelectorAll('#outer1 > div'),
+                        document.querySelectorAll('.outer2 > div'),
+                        document.querySelectorAll('.outer1 > div'),
                     );
                     return document.body.innerHTML;
                 }),
-                '<div id="outer1">' +
-                '<div id="inner1">' +
+                '<div class="outer1">' +
+                '<div class="inner1">' +
                 '<a href="#">Test</a>' +
                 '<a href="#">Test</a>' +
                 '</div>' +
                 '</div>' +
-                '<div id="outer2">' +
-                '<div id="inner1">' +
+                '<div class="outer2">' +
+                '<div class="inner1">' +
                 '<a href="#">Test</a>' +
                 '<a href="#">Test</a>' +
                 '</div>' +
@@ -1137,22 +1138,22 @@ describe('DOM Manipulation', function() {
                 await exec(_ => {
                     dom.replaceWith(
                         [
-                            document.getElementById('inner2')
+                            document.querySelector('.inner2')
                         ],
                         [
-                            document.getElementById('inner1')
+                            document.querySelector('.inner1')
                         ]
                     );
                     return document.body.innerHTML;
                 }),
-                '<div id="outer1">' +
-                '<div id="inner1">' +
+                '<div class="outer1">' +
+                '<div class="inner1">' +
                 '<a href="#">Test</a>' +
                 '<a href="#">Test</a>' +
                 '</div>' +
                 '</div>' +
-                '<div id="outer2">' +
-                '<div id="inner1">' +
+                '<div class="outer2">' +
+                '<div class="inner1">' +
                 '<a href="#">Test</a>' +
                 '<a href="#">Test</a>' +
                 '</div>' +
@@ -1169,14 +1170,14 @@ describe('DOM Manipulation', function() {
                     );
                     return document.body.innerHTML;
                 }),
-                '<div id="outer1">' +
-                '<div id="inner1">' +
+                '<div class="outer1">' +
+                '<div class="inner1">' +
                 '<div><span class="test">Test</span></div>' +
                 '<div><span class="test">Test</span></div>' +
                 '</div>' +
                 '</div>' +
-                '<div id="outer2">' +
-                '<div id="inner2">' +
+                '<div class="outer2">' +
+                '<div class="inner2">' +
                 '<div><span class="test">Test</span></div>' +
                 '<div><span class="test">Test</span></div>' +
                 '</div>' +

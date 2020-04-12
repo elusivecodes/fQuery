@@ -10,13 +10,13 @@ describe('DOM Move', function() {
                 document.body.innerHTML =
                     '<div id="parent1">' +
                     '<span></span>' +
-                    '<a href="#" data-id="test1">Test</a>' +
-                    '<a href="#" data-id="test2">Test</a>' +
+                    '<a href="#" class="test1">Test</a>' +
+                    '<a href="#" class="test2">Test</a>' +
                     '</div>' +
                     '<div id="parent2">' +
                     '<span></span>' +
-                    '<a href="#" data-id="test3">Test</a>' +
-                    '<a href="#" data-id="test4">Test</a>' +
+                    '<a href="#" class="test3">Test</a>' +
+                    '<a href="#" class="test4">Test</a>' +
                     '</div>';
             });
         });
@@ -33,29 +33,29 @@ describe('DOM Move', function() {
                 '<div id="parent1">' +
                 '<span></span>' +
                 '</div>' +
-                '<a href="#" data-id="test1">Test</a>' +
-                '<a href="#" data-id="test2">Test</a>' +
-                '<a href="#" data-id="test3">Test</a>' +
-                '<a href="#" data-id="test4">Test</a>' +
+                '<a href="#" class="test1">Test</a>' +
+                '<a href="#" class="test2">Test</a>' +
+                '<a href="#" class="test3">Test</a>' +
+                '<a href="#" class="test4">Test</a>' +
                 '<div id="parent2">' +
                 '<span></span>' +
                 '</div>' +
-                '<a href="#" data-id="test1">Test</a>' +
-                '<a href="#" data-id="test2">Test</a>' +
-                '<a href="#" data-id="test3">Test</a>' +
-                '<a href="#" data-id="test4">Test</a>'
+                '<a href="#" class="test1">Test</a>' +
+                '<a href="#" class="test2">Test</a>' +
+                '<a href="#" class="test3">Test</a>' +
+                '<a href="#" class="test4">Test</a>'
             );
         });
 
         it('clones all copies except last', async function() {
             assert.equal(
                 await exec(_ => {
-                    const element = document.querySelector('#parent1 > [data-id="test1"]');
+                    const element = document.querySelector('#parent1 > .test1');
                     dom.after(
                         'div',
                         'a'
                     );
-                    const clone = document.querySelector('#parent2 ~ [data-id="test1"]');
+                    const clone = document.querySelector('#parent2 ~ .test1');
                     return element.isSameNode(clone);
                 }),
                 true
@@ -67,19 +67,19 @@ describe('DOM Move', function() {
                 await exec(_ => {
                     dom.after(
                         document.getElementById('parent1'),
-                        document.querySelector('[data-id="test1"]')
+                        document.querySelector('.test1')
                     );
                     return document.body.innerHTML;
                 }),
                 '<div id="parent1">' +
                 '<span></span>' +
-                '<a href="#" data-id="test2">Test</a>' +
+                '<a href="#" class="test2">Test</a>' +
                 '</div>' +
-                '<a href="#" data-id="test1">Test</a>' +
+                '<a href="#" class="test1">Test</a>' +
                 '<div id="parent2">' +
                 '<span></span>' +
-                '<a href="#" data-id="test3">Test</a>' +
-                '<a href="#" data-id="test4">Test</a>' +
+                '<a href="#" class="test3">Test</a>' +
+                '<a href="#" class="test4">Test</a>' +
                 '</div>'
             );
         });
@@ -96,16 +96,16 @@ describe('DOM Move', function() {
                 '<div id="parent1">' +
                 '</div>' +
                 '<span></span>' +
-                '<a href="#" data-id="test1">Test</a>' +
-                '<a href="#" data-id="test2">Test</a>' +
+                '<a href="#" class="test1">Test</a>' +
+                '<a href="#" class="test2">Test</a>' +
                 '<div id="parent2">' +
                 '<span></span>' +
-                '<a href="#" data-id="test3">Test</a>' +
-                '<a href="#" data-id="test4">Test</a>' +
+                '<a href="#" class="test3">Test</a>' +
+                '<a href="#" class="test4">Test</a>' +
                 '</div>' +
                 '<span></span>' +
-                '<a href="#" data-id="test1">Test</a>' +
-                '<a href="#" data-id="test2">Test</a>'
+                '<a href="#" class="test1">Test</a>' +
+                '<a href="#" class="test2">Test</a>'
             );
         });
 
@@ -121,17 +121,17 @@ describe('DOM Move', function() {
                 '<div id="parent1">' +
                 '<span></span>' +
                 '</div>' +
-                '<a href="#" data-id="test1">Test</a>' +
-                '<a href="#" data-id="test2">Test</a>' +
-                '<a href="#" data-id="test3">Test</a>' +
-                '<a href="#" data-id="test4">Test</a>' +
+                '<a href="#" class="test1">Test</a>' +
+                '<a href="#" class="test2">Test</a>' +
+                '<a href="#" class="test3">Test</a>' +
+                '<a href="#" class="test4">Test</a>' +
                 '<div id="parent2">' +
                 '<span></span>' +
                 '</div>' +
-                '<a href="#" data-id="test1">Test</a>' +
-                '<a href="#" data-id="test2">Test</a>' +
-                '<a href="#" data-id="test3">Test</a>' +
-                '<a href="#" data-id="test4">Test</a>'
+                '<a href="#" class="test1">Test</a>' +
+                '<a href="#" class="test2">Test</a>' +
+                '<a href="#" class="test3">Test</a>' +
+                '<a href="#" class="test4">Test</a>'
             );
         });
 
@@ -144,10 +144,10 @@ describe('DOM Move', function() {
                             document.getElementById('parent2')
                         ],
                         [
-                            document.querySelector('[data-id="test1"]'),
-                            document.querySelector('[data-id="test2"]'),
-                            document.querySelector('[data-id="test3"]'),
-                            document.querySelector('[data-id="test4"]')
+                            document.querySelector('.test1'),
+                            document.querySelector('.test2'),
+                            document.querySelector('.test3'),
+                            document.querySelector('.test4')
                         ]
                     );
                     return document.body.innerHTML;
@@ -155,17 +155,17 @@ describe('DOM Move', function() {
                 '<div id="parent1">' +
                 '<span></span>' +
                 '</div>' +
-                '<a href="#" data-id="test1">Test</a>' +
-                '<a href="#" data-id="test2">Test</a>' +
-                '<a href="#" data-id="test3">Test</a>' +
-                '<a href="#" data-id="test4">Test</a>' +
+                '<a href="#" class="test1">Test</a>' +
+                '<a href="#" class="test2">Test</a>' +
+                '<a href="#" class="test3">Test</a>' +
+                '<a href="#" class="test4">Test</a>' +
                 '<div id="parent2">' +
                 '<span></span>' +
                 '</div>' +
-                '<a href="#" data-id="test1">Test</a>' +
-                '<a href="#" data-id="test2">Test</a>' +
-                '<a href="#" data-id="test3">Test</a>' +
-                '<a href="#" data-id="test4">Test</a>'
+                '<a href="#" class="test1">Test</a>' +
+                '<a href="#" class="test2">Test</a>' +
+                '<a href="#" class="test3">Test</a>' +
+                '<a href="#" class="test4">Test</a>'
             );
         });
 
@@ -180,14 +180,14 @@ describe('DOM Move', function() {
                 }),
                 '<div id="parent1">' +
                 '<span></span>' +
-                '<a href="#" data-id="test1">Test</a>' +
-                '<a href="#" data-id="test2">Test</a>' +
+                '<a href="#" class="test1">Test</a>' +
+                '<a href="#" class="test2">Test</a>' +
                 '</div>' +
                 '<div><span></span></div>' +
                 '<div id="parent2">' +
                 '<span></span>' +
-                '<a href="#" data-id="test3">Test</a>' +
-                '<a href="#" data-id="test4">Test</a>' +
+                '<a href="#" class="test3">Test</a>' +
+                '<a href="#" class="test4">Test</a>' +
                 '</div>' +
                 '<div><span></span></div>'
             );
@@ -201,13 +201,13 @@ describe('DOM Move', function() {
             await exec(_ => {
                 document.body.innerHTML =
                     '<div id="parent1">' +
-                    '<a href="#" data-id="test1">Test</a>' +
-                    '<a href="#" data-id="test2">Test</a>' +
+                    '<a href="#" class="test1">Test</a>' +
+                    '<a href="#" class="test2">Test</a>' +
                     '<span></span>' +
                     '</div>' +
                     '<div id="parent2">' +
-                    '<a href="#" data-id="test3">Test</a>' +
-                    '<a href="#" data-id="test4">Test</a>' +
+                    '<a href="#" class="test3">Test</a>' +
+                    '<a href="#" class="test4">Test</a>' +
                     '<span></span>' +
                     '</div>';
             });
@@ -224,17 +224,17 @@ describe('DOM Move', function() {
                 }),
                 '<div id="parent1">' +
                 '<span></span>' +
-                '<a href="#" data-id="test1">Test</a>' +
-                '<a href="#" data-id="test2">Test</a>' +
-                '<a href="#" data-id="test3">Test</a>' +
-                '<a href="#" data-id="test4">Test</a>' +
+                '<a href="#" class="test1">Test</a>' +
+                '<a href="#" class="test2">Test</a>' +
+                '<a href="#" class="test3">Test</a>' +
+                '<a href="#" class="test4">Test</a>' +
                 '</div>' +
                 '<div id="parent2">' +
                 '<span></span>' +
-                '<a href="#" data-id="test1">Test</a>' +
-                '<a href="#" data-id="test2">Test</a>' +
-                '<a href="#" data-id="test3">Test</a>' +
-                '<a href="#" data-id="test4">Test</a>' +
+                '<a href="#" class="test1">Test</a>' +
+                '<a href="#" class="test2">Test</a>' +
+                '<a href="#" class="test3">Test</a>' +
+                '<a href="#" class="test4">Test</a>' +
                 '</div>'
             );
         });
@@ -242,12 +242,12 @@ describe('DOM Move', function() {
         it('clones all copies except last', async function() {
             assert.equal(
                 await exec(_ => {
-                    const element = document.querySelector('#parent1 > [data-id="test1"]');
+                    const element = document.querySelector('#parent1 > .test1');
                     dom.append(
                         'div',
                         'a'
                     );
-                    const clone = document.querySelector('#parent2 > [data-id="test1"]');
+                    const clone = document.querySelector('#parent2 > .test1');
                     return element.isSameNode(clone);
                 }),
                 true
@@ -259,18 +259,18 @@ describe('DOM Move', function() {
                 await exec(_ => {
                     dom.append(
                         document.getElementById('parent1'),
-                        document.querySelector('[data-id="test1"]')
+                        document.querySelector('.test1')
                     );
                     return document.body.innerHTML;
                 }),
                 '<div id="parent1">' +
-                '<a href="#" data-id="test2">Test</a>' +
+                '<a href="#" class="test2">Test</a>' +
                 '<span></span>' +
-                '<a href="#" data-id="test1">Test</a>' +
+                '<a href="#" class="test1">Test</a>' +
                 '</div>' +
                 '<div id="parent2">' +
-                '<a href="#" data-id="test3">Test</a>' +
-                '<a href="#" data-id="test4">Test</a>' +
+                '<a href="#" class="test3">Test</a>' +
+                '<a href="#" class="test4">Test</a>' +
                 '<span></span>' +
                 '</div>'
             );
@@ -286,16 +286,16 @@ describe('DOM Move', function() {
                     return document.body.innerHTML;
                 }),
                 '<div id="parent1">' +
-                '<a href="#" data-id="test1">Test</a>' +
-                '<a href="#" data-id="test2">Test</a>' +
+                '<a href="#" class="test1">Test</a>' +
+                '<a href="#" class="test2">Test</a>' +
                 '<span></span>' +
                 '</div>' +
                 '<div id="parent2">' +
-                '<a href="#" data-id="test3">Test</a>' +
-                '<a href="#" data-id="test4">Test</a>' +
+                '<a href="#" class="test3">Test</a>' +
+                '<a href="#" class="test4">Test</a>' +
                 '<span></span>' +
-                '<a href="#" data-id="test1">Test</a>' +
-                '<a href="#" data-id="test2">Test</a>' +
+                '<a href="#" class="test1">Test</a>' +
+                '<a href="#" class="test2">Test</a>' +
                 '<span></span>' +
                 '</div>'
             );
@@ -312,17 +312,17 @@ describe('DOM Move', function() {
                 }),
                 '<div id="parent1">' +
                 '<span></span>' +
-                '<a href="#" data-id="test1">Test</a>' +
-                '<a href="#" data-id="test2">Test</a>' +
-                '<a href="#" data-id="test3">Test</a>' +
-                '<a href="#" data-id="test4">Test</a>' +
+                '<a href="#" class="test1">Test</a>' +
+                '<a href="#" class="test2">Test</a>' +
+                '<a href="#" class="test3">Test</a>' +
+                '<a href="#" class="test4">Test</a>' +
                 '</div>' +
                 '<div id="parent2">' +
                 '<span></span>' +
-                '<a href="#" data-id="test1">Test</a>' +
-                '<a href="#" data-id="test2">Test</a>' +
-                '<a href="#" data-id="test3">Test</a>' +
-                '<a href="#" data-id="test4">Test</a>' +
+                '<a href="#" class="test1">Test</a>' +
+                '<a href="#" class="test2">Test</a>' +
+                '<a href="#" class="test3">Test</a>' +
+                '<a href="#" class="test4">Test</a>' +
                 '</div>'
             );
         });
@@ -336,27 +336,27 @@ describe('DOM Move', function() {
                             document.getElementById('parent2')
                         ],
                         [
-                            document.querySelector('[data-id="test1"]'),
-                            document.querySelector('[data-id="test2"]'),
-                            document.querySelector('[data-id="test3"]'),
-                            document.querySelector('[data-id="test4"]')
+                            document.querySelector('.test1'),
+                            document.querySelector('.test2'),
+                            document.querySelector('.test3'),
+                            document.querySelector('.test4')
                         ]
                     );
                     return document.body.innerHTML;
                 }),
                 '<div id="parent1">' +
                 '<span></span>' +
-                '<a href="#" data-id="test1">Test</a>' +
-                '<a href="#" data-id="test2">Test</a>' +
-                '<a href="#" data-id="test3">Test</a>' +
-                '<a href="#" data-id="test4">Test</a>' +
+                '<a href="#" class="test1">Test</a>' +
+                '<a href="#" class="test2">Test</a>' +
+                '<a href="#" class="test3">Test</a>' +
+                '<a href="#" class="test4">Test</a>' +
                 '</div>' +
                 '<div id="parent2">' +
                 '<span></span>' +
-                '<a href="#" data-id="test1">Test</a>' +
-                '<a href="#" data-id="test2">Test</a>' +
-                '<a href="#" data-id="test3">Test</a>' +
-                '<a href="#" data-id="test4">Test</a>' +
+                '<a href="#" class="test1">Test</a>' +
+                '<a href="#" class="test2">Test</a>' +
+                '<a href="#" class="test3">Test</a>' +
+                '<a href="#" class="test4">Test</a>' +
                 '</div>'
             );
         });
@@ -371,14 +371,14 @@ describe('DOM Move', function() {
                     return document.body.innerHTML;
                 }),
                 '<div id="parent1">' +
-                '<a href="#" data-id="test1">Test</a>' +
-                '<a href="#" data-id="test2">Test</a>' +
+                '<a href="#" class="test1">Test</a>' +
+                '<a href="#" class="test2">Test</a>' +
                 '<span></span>' +
                 '<div><span></span></div>' +
                 '</div>' +
                 '<div id="parent2">' +
-                '<a href="#" data-id="test3">Test</a>' +
-                '<a href="#" data-id="test4">Test</a>' +
+                '<a href="#" class="test3">Test</a>' +
+                '<a href="#" class="test4">Test</a>' +
                 '<span></span>' +
                 '<div><span></span></div>' +
                 '</div>'
@@ -393,13 +393,13 @@ describe('DOM Move', function() {
             await exec(_ => {
                 document.body.innerHTML =
                     '<div id="parent1">' +
-                    '<a href="#" data-id="test1">Test</a>' +
-                    '<a href="#" data-id="test2">Test</a>' +
+                    '<a href="#" class="test1">Test</a>' +
+                    '<a href="#" class="test2">Test</a>' +
                     '<span></span>' +
                     '</div>' +
                     '<div id="parent2">' +
-                    '<a href="#" data-id="test3">Test</a>' +
-                    '<a href="#" data-id="test4">Test</a>' +
+                    '<a href="#" class="test3">Test</a>' +
+                    '<a href="#" class="test4">Test</a>' +
                     '<span></span>' +
                     '</div>';
             });
@@ -416,17 +416,17 @@ describe('DOM Move', function() {
                 }),
                 '<div id="parent1">' +
                 '<span></span>' +
-                '<a href="#" data-id="test1">Test</a>' +
-                '<a href="#" data-id="test2">Test</a>' +
-                '<a href="#" data-id="test3">Test</a>' +
-                '<a href="#" data-id="test4">Test</a>' +
+                '<a href="#" class="test1">Test</a>' +
+                '<a href="#" class="test2">Test</a>' +
+                '<a href="#" class="test3">Test</a>' +
+                '<a href="#" class="test4">Test</a>' +
                 '</div>' +
                 '<div id="parent2">' +
                 '<span></span>' +
-                '<a href="#" data-id="test1">Test</a>' +
-                '<a href="#" data-id="test2">Test</a>' +
-                '<a href="#" data-id="test3">Test</a>' +
-                '<a href="#" data-id="test4">Test</a>' +
+                '<a href="#" class="test1">Test</a>' +
+                '<a href="#" class="test2">Test</a>' +
+                '<a href="#" class="test3">Test</a>' +
+                '<a href="#" class="test4">Test</a>' +
                 '</div>'
             );
         });
@@ -434,12 +434,12 @@ describe('DOM Move', function() {
         it('clones all copies except last', async function() {
             assert.equal(
                 await exec(_ => {
-                    const element = document.querySelector('#parent1 > [data-id="test1"]');
+                    const element = document.querySelector('#parent1 > .test1');
                     dom.appendTo(
                         'a',
                         'div'
                     );
-                    const clone = document.querySelector('#parent2 > [data-id="test1"]');
+                    const clone = document.querySelector('#parent2 > .test1');
                     return element.isSameNode(clone);
                 }),
                 true
@@ -450,19 +450,19 @@ describe('DOM Move', function() {
             assert.equal(
                 await exec(_ => {
                     dom.appendTo(
-                        document.querySelector('[data-id="test1"]'),
+                        document.querySelector('.test1'),
                         document.getElementById('parent1')
                     );
                     return document.body.innerHTML;
                 }),
                 '<div id="parent1">' +
-                '<a href="#" data-id="test2">Test</a>' +
+                '<a href="#" class="test2">Test</a>' +
                 '<span></span>' +
-                '<a href="#" data-id="test1">Test</a>' +
+                '<a href="#" class="test1">Test</a>' +
                 '</div>' +
                 '<div id="parent2">' +
-                '<a href="#" data-id="test3">Test</a>' +
-                '<a href="#" data-id="test4">Test</a>' +
+                '<a href="#" class="test3">Test</a>' +
+                '<a href="#" class="test4">Test</a>' +
                 '<span></span>' +
                 '</div>'
             );
@@ -478,16 +478,16 @@ describe('DOM Move', function() {
                     return document.body.innerHTML;
                 }),
                 '<div id="parent1">' +
-                '<a href="#" data-id="test1">Test</a>' +
-                '<a href="#" data-id="test2">Test</a>' +
+                '<a href="#" class="test1">Test</a>' +
+                '<a href="#" class="test2">Test</a>' +
                 '<span></span>' +
                 '</div>' +
                 '<div id="parent2">' +
-                '<a href="#" data-id="test3">Test</a>' +
-                '<a href="#" data-id="test4">Test</a>' +
+                '<a href="#" class="test3">Test</a>' +
+                '<a href="#" class="test4">Test</a>' +
                 '<span></span>' +
-                '<a href="#" data-id="test1">Test</a>' +
-                '<a href="#" data-id="test2">Test</a>' +
+                '<a href="#" class="test1">Test</a>' +
+                '<a href="#" class="test2">Test</a>' +
                 '<span></span>' +
                 '</div>'
             );
@@ -504,17 +504,17 @@ describe('DOM Move', function() {
                 }),
                 '<div id="parent1">' +
                 '<span></span>' +
-                '<a href="#" data-id="test1">Test</a>' +
-                '<a href="#" data-id="test2">Test</a>' +
-                '<a href="#" data-id="test3">Test</a>' +
-                '<a href="#" data-id="test4">Test</a>' +
+                '<a href="#" class="test1">Test</a>' +
+                '<a href="#" class="test2">Test</a>' +
+                '<a href="#" class="test3">Test</a>' +
+                '<a href="#" class="test4">Test</a>' +
                 '</div>' +
                 '<div id="parent2">' +
                 '<span></span>' +
-                '<a href="#" data-id="test1">Test</a>' +
-                '<a href="#" data-id="test2">Test</a>' +
-                '<a href="#" data-id="test3">Test</a>' +
-                '<a href="#" data-id="test4">Test</a>' +
+                '<a href="#" class="test1">Test</a>' +
+                '<a href="#" class="test2">Test</a>' +
+                '<a href="#" class="test3">Test</a>' +
+                '<a href="#" class="test4">Test</a>' +
                 '</div>'
             );
         });
@@ -524,10 +524,10 @@ describe('DOM Move', function() {
                 await exec(_ => {
                     dom.appendTo(
                         [
-                            document.querySelector('[data-id="test1"]'),
-                            document.querySelector('[data-id="test2"]'),
-                            document.querySelector('[data-id="test3"]'),
-                            document.querySelector('[data-id="test4"]')
+                            document.querySelector('.test1'),
+                            document.querySelector('.test2'),
+                            document.querySelector('.test3'),
+                            document.querySelector('.test4')
                         ],
                         [
                             document.getElementById('parent1'),
@@ -538,17 +538,17 @@ describe('DOM Move', function() {
                 }),
                 '<div id="parent1">' +
                 '<span></span>' +
-                '<a href="#" data-id="test1">Test</a>' +
-                '<a href="#" data-id="test2">Test</a>' +
-                '<a href="#" data-id="test3">Test</a>' +
-                '<a href="#" data-id="test4">Test</a>' +
+                '<a href="#" class="test1">Test</a>' +
+                '<a href="#" class="test2">Test</a>' +
+                '<a href="#" class="test3">Test</a>' +
+                '<a href="#" class="test4">Test</a>' +
                 '</div>' +
                 '<div id="parent2">' +
                 '<span></span>' +
-                '<a href="#" data-id="test1">Test</a>' +
-                '<a href="#" data-id="test2">Test</a>' +
-                '<a href="#" data-id="test3">Test</a>' +
-                '<a href="#" data-id="test4">Test</a>' +
+                '<a href="#" class="test1">Test</a>' +
+                '<a href="#" class="test2">Test</a>' +
+                '<a href="#" class="test3">Test</a>' +
+                '<a href="#" class="test4">Test</a>' +
                 '</div>'
             );
         });
@@ -563,14 +563,14 @@ describe('DOM Move', function() {
                     return document.body.innerHTML;
                 }),
                 '<div id="parent1">' +
-                '<a href="#" data-id="test1">Test</a>' +
-                '<a href="#" data-id="test2">Test</a>' +
+                '<a href="#" class="test1">Test</a>' +
+                '<a href="#" class="test2">Test</a>' +
                 '<span></span>' +
                 '<div><span></span></div>' +
                 '</div>' +
                 '<div id="parent2">' +
-                '<a href="#" data-id="test3">Test</a>' +
-                '<a href="#" data-id="test4">Test</a>' +
+                '<a href="#" class="test3">Test</a>' +
+                '<a href="#" class="test4">Test</a>' +
                 '<span></span>' +
                 '<div><span></span></div>' +
                 '</div>'
@@ -586,13 +586,13 @@ describe('DOM Move', function() {
                 document.body.innerHTML =
                     '<div id="parent1">' +
                     '<span></span>' +
-                    '<a href="#" data-id="test1">Test</a>' +
-                    '<a href="#" data-id="test2">Test</a>' +
+                    '<a href="#" class="test1">Test</a>' +
+                    '<a href="#" class="test2">Test</a>' +
                     '</div>' +
                     '<div id="parent2">' +
                     '<span></span>' +
-                    '<a href="#" data-id="test3">Test</a>' +
-                    '<a href="#" data-id="test4">Test</a>' +
+                    '<a href="#" class="test3">Test</a>' +
+                    '<a href="#" class="test4">Test</a>' +
                     '</div>';
             });
         });
@@ -606,17 +606,17 @@ describe('DOM Move', function() {
                     );
                     return document.body.innerHTML;
                 }),
-                '<a href="#" data-id="test1">Test</a>' +
-                '<a href="#" data-id="test2">Test</a>' +
-                '<a href="#" data-id="test3">Test</a>' +
-                '<a href="#" data-id="test4">Test</a>' +
+                '<a href="#" class="test1">Test</a>' +
+                '<a href="#" class="test2">Test</a>' +
+                '<a href="#" class="test3">Test</a>' +
+                '<a href="#" class="test4">Test</a>' +
                 '<div id="parent1">' +
                 '<span></span>' +
                 '</div>' +
-                '<a href="#" data-id="test1">Test</a>' +
-                '<a href="#" data-id="test2">Test</a>' +
-                '<a href="#" data-id="test3">Test</a>' +
-                '<a href="#" data-id="test4">Test</a>' +
+                '<a href="#" class="test1">Test</a>' +
+                '<a href="#" class="test2">Test</a>' +
+                '<a href="#" class="test3">Test</a>' +
+                '<a href="#" class="test4">Test</a>' +
                 '<div id="parent2">' +
                 '<span></span>' +
                 '</div>'
@@ -626,12 +626,12 @@ describe('DOM Move', function() {
         it('clones all copies except last', async function() {
             assert.equal(
                 await exec(_ => {
-                    const element = document.querySelector('#parent1 > [data-id="test1"]');
+                    const element = document.querySelector('#parent1 > .test1');
                     dom.before(
                         'div',
                         'a'
                     );
-                    const clone = document.querySelector('#parent1 ~ [data-id="test1"]');
+                    const clone = document.querySelector('#parent1 ~ .test1');
                     return element.isSameNode(clone);
                 }),
                 true
@@ -643,19 +643,19 @@ describe('DOM Move', function() {
                 await exec(_ => {
                     dom.before(
                         document.getElementById('parent1'),
-                        document.querySelector('[data-id="test1"]')
+                        document.querySelector('.test1')
                     );
                     return document.body.innerHTML;
                 }),
-                '<a href="#" data-id="test1">Test</a>' +
+                '<a href="#" class="test1">Test</a>' +
                 '<div id="parent1">' +
                 '<span></span>' +
-                '<a href="#" data-id="test2">Test</a>' +
+                '<a href="#" class="test2">Test</a>' +
                 '</div>' +
                 '<div id="parent2">' +
                 '<span></span>' +
-                '<a href="#" data-id="test3">Test</a>' +
-                '<a href="#" data-id="test4">Test</a>' +
+                '<a href="#" class="test3">Test</a>' +
+                '<a href="#" class="test4">Test</a>' +
                 '</div>'
             );
         });
@@ -670,17 +670,17 @@ describe('DOM Move', function() {
                     return document.body.innerHTML;
                 }),
                 '<span></span>' +
-                '<a href="#" data-id="test1">Test</a>' +
-                '<a href="#" data-id="test2">Test</a>' +
+                '<a href="#" class="test1">Test</a>' +
+                '<a href="#" class="test2">Test</a>' +
                 '<div id="parent1">' +
                 '</div>' +
                 '<span></span>' +
-                '<a href="#" data-id="test1">Test</a>' +
-                '<a href="#" data-id="test2">Test</a>' +
+                '<a href="#" class="test1">Test</a>' +
+                '<a href="#" class="test2">Test</a>' +
                 '<div id="parent2">' +
                 '<span></span>' +
-                '<a href="#" data-id="test3">Test</a>' +
-                '<a href="#" data-id="test4">Test</a>' +
+                '<a href="#" class="test3">Test</a>' +
+                '<a href="#" class="test4">Test</a>' +
                 '</div>'
             );
         });
@@ -694,17 +694,17 @@ describe('DOM Move', function() {
                     );
                     return document.body.innerHTML;
                 }),
-                '<a href="#" data-id="test1">Test</a>' +
-                '<a href="#" data-id="test2">Test</a>' +
-                '<a href="#" data-id="test3">Test</a>' +
-                '<a href="#" data-id="test4">Test</a>' +
+                '<a href="#" class="test1">Test</a>' +
+                '<a href="#" class="test2">Test</a>' +
+                '<a href="#" class="test3">Test</a>' +
+                '<a href="#" class="test4">Test</a>' +
                 '<div id="parent1">' +
                 '<span></span>' +
                 '</div>' +
-                '<a href="#" data-id="test1">Test</a>' +
-                '<a href="#" data-id="test2">Test</a>' +
-                '<a href="#" data-id="test3">Test</a>' +
-                '<a href="#" data-id="test4">Test</a>' +
+                '<a href="#" class="test1">Test</a>' +
+                '<a href="#" class="test2">Test</a>' +
+                '<a href="#" class="test3">Test</a>' +
+                '<a href="#" class="test4">Test</a>' +
                 '<div id="parent2">' +
                 '<span></span>' +
                 '</div>'
@@ -720,25 +720,25 @@ describe('DOM Move', function() {
                             document.getElementById('parent2')
                         ],
                         [
-                            document.querySelector('[data-id="test1"]'),
-                            document.querySelector('[data-id="test2"]'),
-                            document.querySelector('[data-id="test3"]'),
-                            document.querySelector('[data-id="test4"]')
+                            document.querySelector('.test1'),
+                            document.querySelector('.test2'),
+                            document.querySelector('.test3'),
+                            document.querySelector('.test4')
                         ]
                     );
                     return document.body.innerHTML;
                 }),
-                '<a href="#" data-id="test1">Test</a>' +
-                '<a href="#" data-id="test2">Test</a>' +
-                '<a href="#" data-id="test3">Test</a>' +
-                '<a href="#" data-id="test4">Test</a>' +
+                '<a href="#" class="test1">Test</a>' +
+                '<a href="#" class="test2">Test</a>' +
+                '<a href="#" class="test3">Test</a>' +
+                '<a href="#" class="test4">Test</a>' +
                 '<div id="parent1">' +
                 '<span></span>' +
                 '</div>' +
-                '<a href="#" data-id="test1">Test</a>' +
-                '<a href="#" data-id="test2">Test</a>' +
-                '<a href="#" data-id="test3">Test</a>' +
-                '<a href="#" data-id="test4">Test</a>' +
+                '<a href="#" class="test1">Test</a>' +
+                '<a href="#" class="test2">Test</a>' +
+                '<a href="#" class="test3">Test</a>' +
+                '<a href="#" class="test4">Test</a>' +
                 '<div id="parent2">' +
                 '<span></span>' +
                 '</div>'
@@ -757,14 +757,14 @@ describe('DOM Move', function() {
                 '<div><span></span></div>' +
                 '<div id="parent1">' +
                 '<span></span>' +
-                '<a href="#" data-id="test1">Test</a>' +
-                '<a href="#" data-id="test2">Test</a>' +
+                '<a href="#" class="test1">Test</a>' +
+                '<a href="#" class="test2">Test</a>' +
                 '</div>' +
                 '<div><span></span></div>' +
                 '<div id="parent2">' +
                 '<span></span>' +
-                '<a href="#" data-id="test3">Test</a>' +
-                '<a href="#" data-id="test4">Test</a>' +
+                '<a href="#" class="test3">Test</a>' +
+                '<a href="#" class="test4">Test</a>' +
                 '</div>'
             );
         });
@@ -778,13 +778,13 @@ describe('DOM Move', function() {
                 document.body.innerHTML =
                     '<div id="parent1">' +
                     '<span></span>' +
-                    '<a href="#" data-id="test1">Test</a>' +
-                    '<a href="#" data-id="test2">Test</a>' +
+                    '<a href="#" class="test1">Test</a>' +
+                    '<a href="#" class="test2">Test</a>' +
                     '</div>' +
                     '<div id="parent2">' +
                     '<span></span>' +
-                    '<a href="#" data-id="test3">Test</a>' +
-                    '<a href="#" data-id="test4">Test</a>' +
+                    '<a href="#" class="test3">Test</a>' +
+                    '<a href="#" class="test4">Test</a>' +
                     '</div>';
             });
         });
@@ -801,29 +801,29 @@ describe('DOM Move', function() {
                 '<div id="parent1">' +
                 '<span></span>' +
                 '</div>' +
-                '<a href="#" data-id="test1">Test</a>' +
-                '<a href="#" data-id="test2">Test</a>' +
-                '<a href="#" data-id="test3">Test</a>' +
-                '<a href="#" data-id="test4">Test</a>' +
+                '<a href="#" class="test1">Test</a>' +
+                '<a href="#" class="test2">Test</a>' +
+                '<a href="#" class="test3">Test</a>' +
+                '<a href="#" class="test4">Test</a>' +
                 '<div id="parent2">' +
                 '<span></span>' +
                 '</div>' +
-                '<a href="#" data-id="test1">Test</a>' +
-                '<a href="#" data-id="test2">Test</a>' +
-                '<a href="#" data-id="test3">Test</a>' +
-                '<a href="#" data-id="test4">Test</a>'
+                '<a href="#" class="test1">Test</a>' +
+                '<a href="#" class="test2">Test</a>' +
+                '<a href="#" class="test3">Test</a>' +
+                '<a href="#" class="test4">Test</a>'
             );
         });
 
         it('clones all copies except last', async function() {
             assert.equal(
                 await exec(_ => {
-                    const element = document.querySelector('#parent1 > [data-id="test1"]');
+                    const element = document.querySelector('#parent1 > .test1');
                     dom.insertAfter(
                         'a',
                         'div'
                     );
-                    const clone = document.querySelector('#parent2 ~ [data-id="test1"]');
+                    const clone = document.querySelector('#parent2 ~ .test1');
                     return element.isSameNode(clone);
                 }),
                 true
@@ -834,20 +834,20 @@ describe('DOM Move', function() {
             assert.equal(
                 await exec(_ => {
                     dom.insertAfter(
-                        document.querySelector('[data-id="test1"]'),
+                        document.querySelector('.test1'),
                         document.getElementById('parent1')
                     );
                     return document.body.innerHTML;
                 }),
                 '<div id="parent1">' +
                 '<span></span>' +
-                '<a href="#" data-id="test2">Test</a>' +
+                '<a href="#" class="test2">Test</a>' +
                 '</div>' +
-                '<a href="#" data-id="test1">Test</a>' +
+                '<a href="#" class="test1">Test</a>' +
                 '<div id="parent2">' +
                 '<span></span>' +
-                '<a href="#" data-id="test3">Test</a>' +
-                '<a href="#" data-id="test4">Test</a>' +
+                '<a href="#" class="test3">Test</a>' +
+                '<a href="#" class="test4">Test</a>' +
                 '</div>'
             );
         });
@@ -864,16 +864,16 @@ describe('DOM Move', function() {
                 '<div id="parent1">' +
                 '</div>' +
                 '<span></span>' +
-                '<a href="#" data-id="test1">Test</a>' +
-                '<a href="#" data-id="test2">Test</a>' +
+                '<a href="#" class="test1">Test</a>' +
+                '<a href="#" class="test2">Test</a>' +
                 '<div id="parent2">' +
                 '<span></span>' +
-                '<a href="#" data-id="test3">Test</a>' +
-                '<a href="#" data-id="test4">Test</a>' +
+                '<a href="#" class="test3">Test</a>' +
+                '<a href="#" class="test4">Test</a>' +
                 '</div>' +
                 '<span></span>' +
-                '<a href="#" data-id="test1">Test</a>' +
-                '<a href="#" data-id="test2">Test</a>'
+                '<a href="#" class="test1">Test</a>' +
+                '<a href="#" class="test2">Test</a>'
             );
         });
 
@@ -889,17 +889,17 @@ describe('DOM Move', function() {
                 '<div id="parent1">' +
                 '<span></span>' +
                 '</div>' +
-                '<a href="#" data-id="test1">Test</a>' +
-                '<a href="#" data-id="test2">Test</a>' +
-                '<a href="#" data-id="test3">Test</a>' +
-                '<a href="#" data-id="test4">Test</a>' +
+                '<a href="#" class="test1">Test</a>' +
+                '<a href="#" class="test2">Test</a>' +
+                '<a href="#" class="test3">Test</a>' +
+                '<a href="#" class="test4">Test</a>' +
                 '<div id="parent2">' +
                 '<span></span>' +
                 '</div>' +
-                '<a href="#" data-id="test1">Test</a>' +
-                '<a href="#" data-id="test2">Test</a>' +
-                '<a href="#" data-id="test3">Test</a>' +
-                '<a href="#" data-id="test4">Test</a>'
+                '<a href="#" class="test1">Test</a>' +
+                '<a href="#" class="test2">Test</a>' +
+                '<a href="#" class="test3">Test</a>' +
+                '<a href="#" class="test4">Test</a>'
             );
         });
 
@@ -908,10 +908,10 @@ describe('DOM Move', function() {
                 await exec(_ => {
                     dom.insertAfter(
                         [
-                            document.querySelector('[data-id="test1"]'),
-                            document.querySelector('[data-id="test2"]'),
-                            document.querySelector('[data-id="test3"]'),
-                            document.querySelector('[data-id="test4"]')
+                            document.querySelector('.test1'),
+                            document.querySelector('.test2'),
+                            document.querySelector('.test3'),
+                            document.querySelector('.test4')
                         ],
                         [
                             document.getElementById('parent1'),
@@ -923,17 +923,17 @@ describe('DOM Move', function() {
                 '<div id="parent1">' +
                 '<span></span>' +
                 '</div>' +
-                '<a href="#" data-id="test1">Test</a>' +
-                '<a href="#" data-id="test2">Test</a>' +
-                '<a href="#" data-id="test3">Test</a>' +
-                '<a href="#" data-id="test4">Test</a>' +
+                '<a href="#" class="test1">Test</a>' +
+                '<a href="#" class="test2">Test</a>' +
+                '<a href="#" class="test3">Test</a>' +
+                '<a href="#" class="test4">Test</a>' +
                 '<div id="parent2">' +
                 '<span></span>' +
                 '</div>' +
-                '<a href="#" data-id="test1">Test</a>' +
-                '<a href="#" data-id="test2">Test</a>' +
-                '<a href="#" data-id="test3">Test</a>' +
-                '<a href="#" data-id="test4">Test</a>'
+                '<a href="#" class="test1">Test</a>' +
+                '<a href="#" class="test2">Test</a>' +
+                '<a href="#" class="test3">Test</a>' +
+                '<a href="#" class="test4">Test</a>'
             );
         });
 
@@ -948,14 +948,14 @@ describe('DOM Move', function() {
                 }),
                 '<div id="parent1">' +
                 '<span></span>' +
-                '<a href="#" data-id="test1">Test</a>' +
-                '<a href="#" data-id="test2">Test</a>' +
+                '<a href="#" class="test1">Test</a>' +
+                '<a href="#" class="test2">Test</a>' +
                 '</div>' +
                 '<div><span></span></div>' +
                 '<div id="parent2">' +
                 '<span></span>' +
-                '<a href="#" data-id="test3">Test</a>' +
-                '<a href="#" data-id="test4">Test</a>' +
+                '<a href="#" class="test3">Test</a>' +
+                '<a href="#" class="test4">Test</a>' +
                 '</div>' +
                 '<div><span></span></div>'
             );
@@ -970,13 +970,13 @@ describe('DOM Move', function() {
                 document.body.innerHTML =
                     '<div id="parent1">' +
                     '<span></span>' +
-                    '<a href="#" data-id="test1">Test</a>' +
-                    '<a href="#" data-id="test2">Test</a>' +
+                    '<a href="#" class="test1">Test</a>' +
+                    '<a href="#" class="test2">Test</a>' +
                     '</div>' +
                     '<div id="parent2">' +
                     '<span></span>' +
-                    '<a href="#" data-id="test3">Test</a>' +
-                    '<a href="#" data-id="test4">Test</a>' +
+                    '<a href="#" class="test3">Test</a>' +
+                    '<a href="#" class="test4">Test</a>' +
                     '</div>';
             });
         });
@@ -990,17 +990,17 @@ describe('DOM Move', function() {
                     );
                     return document.body.innerHTML;
                 }),
-                '<a href="#" data-id="test1">Test</a>' +
-                '<a href="#" data-id="test2">Test</a>' +
-                '<a href="#" data-id="test3">Test</a>' +
-                '<a href="#" data-id="test4">Test</a>' +
+                '<a href="#" class="test1">Test</a>' +
+                '<a href="#" class="test2">Test</a>' +
+                '<a href="#" class="test3">Test</a>' +
+                '<a href="#" class="test4">Test</a>' +
                 '<div id="parent1">' +
                 '<span></span>' +
                 '</div>' +
-                '<a href="#" data-id="test1">Test</a>' +
-                '<a href="#" data-id="test2">Test</a>' +
-                '<a href="#" data-id="test3">Test</a>' +
-                '<a href="#" data-id="test4">Test</a>' +
+                '<a href="#" class="test1">Test</a>' +
+                '<a href="#" class="test2">Test</a>' +
+                '<a href="#" class="test3">Test</a>' +
+                '<a href="#" class="test4">Test</a>' +
                 '<div id="parent2">' +
                 '<span></span>' +
                 '</div>'
@@ -1010,12 +1010,12 @@ describe('DOM Move', function() {
         it('clones all copies except last', async function() {
             assert.equal(
                 await exec(_ => {
-                    const element = document.querySelector('#parent1 > [data-id="test1"]');
+                    const element = document.querySelector('#parent1 > .test1');
                     dom.insertBefore(
                         'a',
                         'div'
                     );
-                    const clone = document.querySelector('#parent1 ~ [data-id="test1"]');
+                    const clone = document.querySelector('#parent1 ~ .test1');
                     return element.isSameNode(clone);
                 }),
                 true
@@ -1026,20 +1026,20 @@ describe('DOM Move', function() {
             assert.equal(
                 await exec(_ => {
                     dom.insertBefore(
-                        document.querySelector('[data-id="test1"]'),
+                        document.querySelector('.test1'),
                         document.getElementById('parent1')
                     );
                     return document.body.innerHTML;
                 }),
-                '<a href="#" data-id="test1">Test</a>' +
+                '<a href="#" class="test1">Test</a>' +
                 '<div id="parent1">' +
                 '<span></span>' +
-                '<a href="#" data-id="test2">Test</a>' +
+                '<a href="#" class="test2">Test</a>' +
                 '</div>' +
                 '<div id="parent2">' +
                 '<span></span>' +
-                '<a href="#" data-id="test3">Test</a>' +
-                '<a href="#" data-id="test4">Test</a>' +
+                '<a href="#" class="test3">Test</a>' +
+                '<a href="#" class="test4">Test</a>' +
                 '</div>'
             );
         });
@@ -1054,17 +1054,17 @@ describe('DOM Move', function() {
                     return document.body.innerHTML;
                 }),
                 '<span></span>' +
-                '<a href="#" data-id="test1">Test</a>' +
-                '<a href="#" data-id="test2">Test</a>' +
+                '<a href="#" class="test1">Test</a>' +
+                '<a href="#" class="test2">Test</a>' +
                 '<div id="parent1">' +
                 '</div>' +
                 '<span></span>' +
-                '<a href="#" data-id="test1">Test</a>' +
-                '<a href="#" data-id="test2">Test</a>' +
+                '<a href="#" class="test1">Test</a>' +
+                '<a href="#" class="test2">Test</a>' +
                 '<div id="parent2">' +
                 '<span></span>' +
-                '<a href="#" data-id="test3">Test</a>' +
-                '<a href="#" data-id="test4">Test</a>' +
+                '<a href="#" class="test3">Test</a>' +
+                '<a href="#" class="test4">Test</a>' +
                 '</div>'
             );
         });
@@ -1078,17 +1078,17 @@ describe('DOM Move', function() {
                     );
                     return document.body.innerHTML;
                 }),
-                '<a href="#" data-id="test1">Test</a>' +
-                '<a href="#" data-id="test2">Test</a>' +
-                '<a href="#" data-id="test3">Test</a>' +
-                '<a href="#" data-id="test4">Test</a>' +
+                '<a href="#" class="test1">Test</a>' +
+                '<a href="#" class="test2">Test</a>' +
+                '<a href="#" class="test3">Test</a>' +
+                '<a href="#" class="test4">Test</a>' +
                 '<div id="parent1">' +
                 '<span></span>' +
                 '</div>' +
-                '<a href="#" data-id="test1">Test</a>' +
-                '<a href="#" data-id="test2">Test</a>' +
-                '<a href="#" data-id="test3">Test</a>' +
-                '<a href="#" data-id="test4">Test</a>' +
+                '<a href="#" class="test1">Test</a>' +
+                '<a href="#" class="test2">Test</a>' +
+                '<a href="#" class="test3">Test</a>' +
+                '<a href="#" class="test4">Test</a>' +
                 '<div id="parent2">' +
                 '<span></span>' +
                 '</div>'
@@ -1100,10 +1100,10 @@ describe('DOM Move', function() {
                 await exec(_ => {
                     dom.insertBefore(
                         [
-                            document.querySelector('[data-id="test1"]'),
-                            document.querySelector('[data-id="test2"]'),
-                            document.querySelector('[data-id="test3"]'),
-                            document.querySelector('[data-id="test4"]')
+                            document.querySelector('.test1'),
+                            document.querySelector('.test2'),
+                            document.querySelector('.test3'),
+                            document.querySelector('.test4')
                         ],
                         [
                             document.getElementById('parent1'),
@@ -1112,17 +1112,17 @@ describe('DOM Move', function() {
                     );
                     return document.body.innerHTML;
                 }),
-                '<a href="#" data-id="test1">Test</a>' +
-                '<a href="#" data-id="test2">Test</a>' +
-                '<a href="#" data-id="test3">Test</a>' +
-                '<a href="#" data-id="test4">Test</a>' +
+                '<a href="#" class="test1">Test</a>' +
+                '<a href="#" class="test2">Test</a>' +
+                '<a href="#" class="test3">Test</a>' +
+                '<a href="#" class="test4">Test</a>' +
                 '<div id="parent1">' +
                 '<span></span>' +
                 '</div>' +
-                '<a href="#" data-id="test1">Test</a>' +
-                '<a href="#" data-id="test2">Test</a>' +
-                '<a href="#" data-id="test3">Test</a>' +
-                '<a href="#" data-id="test4">Test</a>' +
+                '<a href="#" class="test1">Test</a>' +
+                '<a href="#" class="test2">Test</a>' +
+                '<a href="#" class="test3">Test</a>' +
+                '<a href="#" class="test4">Test</a>' +
                 '<div id="parent2">' +
                 '<span></span>' +
                 '</div>'
@@ -1141,14 +1141,14 @@ describe('DOM Move', function() {
                 '<div><span></span></div>' +
                 '<div id="parent1">' +
                 '<span></span>' +
-                '<a href="#" data-id="test1">Test</a>' +
-                '<a href="#" data-id="test2">Test</a>' +
+                '<a href="#" class="test1">Test</a>' +
+                '<a href="#" class="test2">Test</a>' +
                 '</div>' +
                 '<div><span></span></div>' +
                 '<div id="parent2">' +
                 '<span></span>' +
-                '<a href="#" data-id="test3">Test</a>' +
-                '<a href="#" data-id="test4">Test</a>' +
+                '<a href="#" class="test3">Test</a>' +
+                '<a href="#" class="test4">Test</a>' +
                 '</div>'
             );
         });
@@ -1162,13 +1162,13 @@ describe('DOM Move', function() {
                 document.body.innerHTML =
                     '<div id="parent1">' +
                     '<span></span>' +
-                    '<a href="#" data-id="test1">Test</a>' +
-                    '<a href="#" data-id="test2">Test</a>' +
+                    '<a href="#" class="test1">Test</a>' +
+                    '<a href="#" class="test2">Test</a>' +
                     '</div>' +
                     '<div id="parent2">' +
                     '<span></span>' +
-                    '<a href="#" data-id="test3">Test</a>' +
-                    '<a href="#" data-id="test4">Test</a>' +
+                    '<a href="#" class="test3">Test</a>' +
+                    '<a href="#" class="test4">Test</a>' +
                     '</div>';
             });
         });
@@ -1183,17 +1183,17 @@ describe('DOM Move', function() {
                     return document.body.innerHTML;
                 }),
                 '<div id="parent1">' +
-                '<a href="#" data-id="test1">Test</a>' +
-                '<a href="#" data-id="test2">Test</a>' +
-                '<a href="#" data-id="test3">Test</a>' +
-                '<a href="#" data-id="test4">Test</a>' +
+                '<a href="#" class="test1">Test</a>' +
+                '<a href="#" class="test2">Test</a>' +
+                '<a href="#" class="test3">Test</a>' +
+                '<a href="#" class="test4">Test</a>' +
                 '<span></span>' +
                 '</div>' +
                 '<div id="parent2">' +
-                '<a href="#" data-id="test1">Test</a>' +
-                '<a href="#" data-id="test2">Test</a>' +
-                '<a href="#" data-id="test3">Test</a>' +
-                '<a href="#" data-id="test4">Test</a>' +
+                '<a href="#" class="test1">Test</a>' +
+                '<a href="#" class="test2">Test</a>' +
+                '<a href="#" class="test3">Test</a>' +
+                '<a href="#" class="test4">Test</a>' +
                 '<span></span>' +
                 '</div>'
             );
@@ -1202,12 +1202,12 @@ describe('DOM Move', function() {
         it('clones all copies except last', async function() {
             assert.equal(
                 await exec(_ => {
-                    const element = document.querySelector('#parent1 > [data-id="test1"]');
+                    const element = document.querySelector('#parent1 > .test1');
                     dom.prepend(
                         'div',
                         'a'
                     );
-                    const clone = document.querySelector('#parent2 > [data-id="test1"]');
+                    const clone = document.querySelector('#parent2 > .test1');
                     return element.isSameNode(clone);
                 }),
                 true
@@ -1219,19 +1219,19 @@ describe('DOM Move', function() {
                 await exec(_ => {
                     dom.prepend(
                         document.getElementById('parent1'),
-                        document.querySelector('[data-id="test1"]')
+                        document.querySelector('.test1')
                     );
                     return document.body.innerHTML;
                 }),
                 '<div id="parent1">' +
-                '<a href="#" data-id="test1">Test</a>' +
+                '<a href="#" class="test1">Test</a>' +
                 '<span></span>' +
-                '<a href="#" data-id="test2">Test</a>' +
+                '<a href="#" class="test2">Test</a>' +
                 '</div>' +
                 '<div id="parent2">' +
                 '<span></span>' +
-                '<a href="#" data-id="test3">Test</a>' +
-                '<a href="#" data-id="test4">Test</a>' +
+                '<a href="#" class="test3">Test</a>' +
+                '<a href="#" class="test4">Test</a>' +
                 '</div>'
             );
         });
@@ -1247,16 +1247,16 @@ describe('DOM Move', function() {
                 }),
                 '<div id="parent1">' +
                 '<span></span>' +
-                '<a href="#" data-id="test1">Test</a>' +
-                '<a href="#" data-id="test2">Test</a>' +
+                '<a href="#" class="test1">Test</a>' +
+                '<a href="#" class="test2">Test</a>' +
                 '</div>' +
                 '<div id="parent2">' +
                 '<span></span>' +
-                '<a href="#" data-id="test1">Test</a>' +
-                '<a href="#" data-id="test2">Test</a>' +
+                '<a href="#" class="test1">Test</a>' +
+                '<a href="#" class="test2">Test</a>' +
                 '<span></span>' +
-                '<a href="#" data-id="test3">Test</a>' +
-                '<a href="#" data-id="test4">Test</a>' +
+                '<a href="#" class="test3">Test</a>' +
+                '<a href="#" class="test4">Test</a>' +
                 '</div>'
             );
         });
@@ -1271,17 +1271,17 @@ describe('DOM Move', function() {
                     return document.body.innerHTML;
                 }),
                 '<div id="parent1">' +
-                '<a href="#" data-id="test1">Test</a>' +
-                '<a href="#" data-id="test2">Test</a>' +
-                '<a href="#" data-id="test3">Test</a>' +
-                '<a href="#" data-id="test4">Test</a>' +
+                '<a href="#" class="test1">Test</a>' +
+                '<a href="#" class="test2">Test</a>' +
+                '<a href="#" class="test3">Test</a>' +
+                '<a href="#" class="test4">Test</a>' +
                 '<span></span>' +
                 '</div>' +
                 '<div id="parent2">' +
-                '<a href="#" data-id="test1">Test</a>' +
-                '<a href="#" data-id="test2">Test</a>' +
-                '<a href="#" data-id="test3">Test</a>' +
-                '<a href="#" data-id="test4">Test</a>' +
+                '<a href="#" class="test1">Test</a>' +
+                '<a href="#" class="test2">Test</a>' +
+                '<a href="#" class="test3">Test</a>' +
+                '<a href="#" class="test4">Test</a>' +
                 '<span></span>' +
                 '</div>'
             );
@@ -1296,26 +1296,26 @@ describe('DOM Move', function() {
                             document.getElementById('parent2')
                         ],
                         [
-                            document.querySelector('[data-id="test1"]'),
-                            document.querySelector('[data-id="test2"]'),
-                            document.querySelector('[data-id="test3"]'),
-                            document.querySelector('[data-id="test4"]')
+                            document.querySelector('.test1'),
+                            document.querySelector('.test2'),
+                            document.querySelector('.test3'),
+                            document.querySelector('.test4')
                         ]
                     );
                     return document.body.innerHTML;
                 }),
                 '<div id="parent1">' +
-                '<a href="#" data-id="test1">Test</a>' +
-                '<a href="#" data-id="test2">Test</a>' +
-                '<a href="#" data-id="test3">Test</a>' +
-                '<a href="#" data-id="test4">Test</a>' +
+                '<a href="#" class="test1">Test</a>' +
+                '<a href="#" class="test2">Test</a>' +
+                '<a href="#" class="test3">Test</a>' +
+                '<a href="#" class="test4">Test</a>' +
                 '<span></span>' +
                 '</div>' +
                 '<div id="parent2">' +
-                '<a href="#" data-id="test1">Test</a>' +
-                '<a href="#" data-id="test2">Test</a>' +
-                '<a href="#" data-id="test3">Test</a>' +
-                '<a href="#" data-id="test4">Test</a>' +
+                '<a href="#" class="test1">Test</a>' +
+                '<a href="#" class="test2">Test</a>' +
+                '<a href="#" class="test3">Test</a>' +
+                '<a href="#" class="test4">Test</a>' +
                 '<span></span>' +
                 '</div>'
             );
@@ -1333,14 +1333,14 @@ describe('DOM Move', function() {
                 '<div id="parent1">' +
                 '<div><span></span></div>' +
                 '<span></span>' +
-                '<a href="#" data-id="test1">Test</a>' +
-                '<a href="#" data-id="test2">Test</a>' +
+                '<a href="#" class="test1">Test</a>' +
+                '<a href="#" class="test2">Test</a>' +
                 '</div>' +
                 '<div id="parent2">' +
                 '<div><span></span></div>' +
                 '<span></span>' +
-                '<a href="#" data-id="test3">Test</a>' +
-                '<a href="#" data-id="test4">Test</a>' +
+                '<a href="#" class="test3">Test</a>' +
+                '<a href="#" class="test4">Test</a>' +
                 '</div>'
             );
         });
@@ -1354,13 +1354,13 @@ describe('DOM Move', function() {
                 document.body.innerHTML =
                     '<div id="parent1">' +
                     '<span></span>' +
-                    '<a href="#" data-id="test1">Test</a>' +
-                    '<a href="#" data-id="test2">Test</a>' +
+                    '<a href="#" class="test1">Test</a>' +
+                    '<a href="#" class="test2">Test</a>' +
                     '</div>' +
                     '<div id="parent2">' +
                     '<span></span>' +
-                    '<a href="#" data-id="test3">Test</a>' +
-                    '<a href="#" data-id="test4">Test</a>' +
+                    '<a href="#" class="test3">Test</a>' +
+                    '<a href="#" class="test4">Test</a>' +
                     '</div>';
             });
         });
@@ -1375,17 +1375,17 @@ describe('DOM Move', function() {
                     return document.body.innerHTML;
                 }),
                 '<div id="parent1">' +
-                '<a href="#" data-id="test1">Test</a>' +
-                '<a href="#" data-id="test2">Test</a>' +
-                '<a href="#" data-id="test3">Test</a>' +
-                '<a href="#" data-id="test4">Test</a>' +
+                '<a href="#" class="test1">Test</a>' +
+                '<a href="#" class="test2">Test</a>' +
+                '<a href="#" class="test3">Test</a>' +
+                '<a href="#" class="test4">Test</a>' +
                 '<span></span>' +
                 '</div>' +
                 '<div id="parent2">' +
-                '<a href="#" data-id="test1">Test</a>' +
-                '<a href="#" data-id="test2">Test</a>' +
-                '<a href="#" data-id="test3">Test</a>' +
-                '<a href="#" data-id="test4">Test</a>' +
+                '<a href="#" class="test1">Test</a>' +
+                '<a href="#" class="test2">Test</a>' +
+                '<a href="#" class="test3">Test</a>' +
+                '<a href="#" class="test4">Test</a>' +
                 '<span></span>' +
                 '</div>'
             );
@@ -1394,12 +1394,12 @@ describe('DOM Move', function() {
         it('clones all copies except last', async function() {
             assert.equal(
                 await exec(_ => {
-                    const element = document.querySelector('#parent1 > [data-id="test1"]');
+                    const element = document.querySelector('#parent1 > .test1');
                     dom.prependTo(
                         'a',
                         'div'
                     );
-                    const clone = document.querySelector('#parent2 > [data-id="test1"]');
+                    const clone = document.querySelector('#parent2 > .test1');
                     return element.isSameNode(clone);
                 }),
                 true
@@ -1410,20 +1410,20 @@ describe('DOM Move', function() {
             assert.equal(
                 await exec(_ => {
                     dom.prependTo(
-                        document.querySelector('[data-id="test1"]'),
+                        document.querySelector('.test1'),
                         document.getElementById('parent1')
                     );
                     return document.body.innerHTML;
                 }),
                 '<div id="parent1">' +
-                '<a href="#" data-id="test1">Test</a>' +
+                '<a href="#" class="test1">Test</a>' +
                 '<span></span>' +
-                '<a href="#" data-id="test2">Test</a>' +
+                '<a href="#" class="test2">Test</a>' +
                 '</div>' +
                 '<div id="parent2">' +
                 '<span></span>' +
-                '<a href="#" data-id="test3">Test</a>' +
-                '<a href="#" data-id="test4">Test</a>' +
+                '<a href="#" class="test3">Test</a>' +
+                '<a href="#" class="test4">Test</a>' +
                 '</div>'
             );
         });
@@ -1439,16 +1439,16 @@ describe('DOM Move', function() {
                 }),
                 '<div id="parent1">' +
                 '<span></span>' +
-                '<a href="#" data-id="test1">Test</a>' +
-                '<a href="#" data-id="test2">Test</a>' +
+                '<a href="#" class="test1">Test</a>' +
+                '<a href="#" class="test2">Test</a>' +
                 '</div>' +
                 '<div id="parent2">' +
                 '<span></span>' +
-                '<a href="#" data-id="test1">Test</a>' +
-                '<a href="#" data-id="test2">Test</a>' +
+                '<a href="#" class="test1">Test</a>' +
+                '<a href="#" class="test2">Test</a>' +
                 '<span></span>' +
-                '<a href="#" data-id="test3">Test</a>' +
-                '<a href="#" data-id="test4">Test</a>' +
+                '<a href="#" class="test3">Test</a>' +
+                '<a href="#" class="test4">Test</a>' +
                 '</div>'
             );
         });
@@ -1463,17 +1463,17 @@ describe('DOM Move', function() {
                     return document.body.innerHTML;
                 }),
                 '<div id="parent1">' +
-                '<a href="#" data-id="test1">Test</a>' +
-                '<a href="#" data-id="test2">Test</a>' +
-                '<a href="#" data-id="test3">Test</a>' +
-                '<a href="#" data-id="test4">Test</a>' +
+                '<a href="#" class="test1">Test</a>' +
+                '<a href="#" class="test2">Test</a>' +
+                '<a href="#" class="test3">Test</a>' +
+                '<a href="#" class="test4">Test</a>' +
                 '<span></span>' +
                 '</div>' +
                 '<div id="parent2">' +
-                '<a href="#" data-id="test1">Test</a>' +
-                '<a href="#" data-id="test2">Test</a>' +
-                '<a href="#" data-id="test3">Test</a>' +
-                '<a href="#" data-id="test4">Test</a>' +
+                '<a href="#" class="test1">Test</a>' +
+                '<a href="#" class="test2">Test</a>' +
+                '<a href="#" class="test3">Test</a>' +
+                '<a href="#" class="test4">Test</a>' +
                 '<span></span>' +
                 '</div>'
             );
@@ -1484,10 +1484,10 @@ describe('DOM Move', function() {
                 await exec(_ => {
                     dom.prependTo(
                         [
-                            document.querySelector('[data-id="test1"]'),
-                            document.querySelector('[data-id="test2"]'),
-                            document.querySelector('[data-id="test3"]'),
-                            document.querySelector('[data-id="test4"]')
+                            document.querySelector('.test1'),
+                            document.querySelector('.test2'),
+                            document.querySelector('.test3'),
+                            document.querySelector('.test4')
                         ],
                         [
                             document.getElementById('parent1'),
@@ -1497,17 +1497,17 @@ describe('DOM Move', function() {
                     return document.body.innerHTML;
                 }),
                 '<div id="parent1">' +
-                '<a href="#" data-id="test1">Test</a>' +
-                '<a href="#" data-id="test2">Test</a>' +
-                '<a href="#" data-id="test3">Test</a>' +
-                '<a href="#" data-id="test4">Test</a>' +
+                '<a href="#" class="test1">Test</a>' +
+                '<a href="#" class="test2">Test</a>' +
+                '<a href="#" class="test3">Test</a>' +
+                '<a href="#" class="test4">Test</a>' +
                 '<span></span>' +
                 '</div>' +
                 '<div id="parent2">' +
-                '<a href="#" data-id="test1">Test</a>' +
-                '<a href="#" data-id="test2">Test</a>' +
-                '<a href="#" data-id="test3">Test</a>' +
-                '<a href="#" data-id="test4">Test</a>' +
+                '<a href="#" class="test1">Test</a>' +
+                '<a href="#" class="test2">Test</a>' +
+                '<a href="#" class="test3">Test</a>' +
+                '<a href="#" class="test4">Test</a>' +
                 '<span></span>' +
                 '</div>'
             );
@@ -1525,14 +1525,14 @@ describe('DOM Move', function() {
                 '<div id="parent1">' +
                 '<div><span></span></div>' +
                 '<span></span>' +
-                '<a href="#" data-id="test1">Test</a>' +
-                '<a href="#" data-id="test2">Test</a>' +
+                '<a href="#" class="test1">Test</a>' +
+                '<a href="#" class="test2">Test</a>' +
                 '</div>' +
                 '<div id="parent2">' +
                 '<div><span></span></div>' +
                 '<span></span>' +
-                '<a href="#" data-id="test3">Test</a>' +
-                '<a href="#" data-id="test4">Test</a>' +
+                '<a href="#" class="test3">Test</a>' +
+                '<a href="#" class="test4">Test</a>' +
                 '</div>'
             );
         });

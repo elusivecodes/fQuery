@@ -16,8 +16,28 @@ Object.assign(DOM.prototype, {
 
         filter = this.parseFilter(filter);
 
+        const parents = [];
+
         for (const node of nodes) {
-            this.constructor._unwrap(node, filter);
+            const parent = DOMNode.parent(node);
+
+            if (!parent) {
+                continue;
+            }
+
+            if (parents.includes(parent)) {
+                continue;
+            }
+
+            if (filter && !filter(parent)) {
+                continue;
+            }
+
+            parents.push(parent);
+        }
+
+        for (const parent of parents) {
+            this.constructor._unwrap(parent);
         }
     },
 

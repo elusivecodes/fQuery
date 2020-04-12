@@ -6,19 +6,12 @@ Object.assign(DOM, {
 
     /**
      * Unwrap a single node.
-     * @param {Node|HTMLElement} node The input node.
-     * @param {DOM~filterCallback} [filter] The filter function.
+     * @param {Node|HTMLElement} parent The input node.
      */
-    _unwrap(node, filter) {
-        const parent = DOMNode.parent(node, filter);
-
-        if (!parent) {
-            return;
-        }
-
+    _unwrap(parent) {
         const outerParent = DOMNode.parent(parent);
 
-        if (!parent) {
+        if (!outerParent) {
             return;
         }
 
