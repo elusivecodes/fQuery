@@ -3813,13 +3813,12 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
      */
     findById: function findById(id) {
       var nodes = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : this._context;
-      var result = this.findOneById(id, nodes);
-
-      if (result) {
-        return [result];
-      }
-
-      return [];
+      nodes = this.parseNodes(nodes, {
+        fragment: true,
+        shadow: true,
+        document: true
+      });
+      return this.constructor._findBySelector("#".concat(id), nodes);
     },
 
     /**
@@ -3955,33 +3954,17 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
      */
     findOneById: function findOneById(id) {
       var nodes = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : this._context;
-      var result = DOMNode.findById(id, this._context);
-
-      if (!result) {
-        return null;
-      }
 
       if (Core.isDocument(nodes)) {
-        return result;
+        return DOMNode.findById(id, nodes);
       }
 
-      if (Core.isElement(nodes)) {
-        if (DOMNode.contains(nodes, result)) {
-          return result;
-        }
-
-        return null;
-      }
-
-      nodes = this.parseNodes(nodes);
-
-      if (nodes.some(function (node) {
-        return DOMNode.contains(node, result);
-      })) {
-        return result;
-      }
-
-      return null;
+      nodes = this.parseNodes(nodes, {
+        fragment: true,
+        shadow: true,
+        document: true
+      });
+      return this.constructor._findOneBySelector("#".concat(id), nodes);
     },
 
     /**

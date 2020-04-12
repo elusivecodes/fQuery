@@ -84,13 +84,9 @@ Object.assign(DOM.prototype, {
      * @returns {array} The matching nodes.
      */
     findById(id, nodes = this._context) {
-        const result = this.findOneById(id, nodes);
+        nodes = this.parseNodes(nodes, { fragment: true, shadow: true, document: true });
 
-        if (result) {
-            return [result];
-        }
-
-        return [];
+        return this.constructor._findBySelector(`#${id}`, nodes);
     },
 
     /**
@@ -194,31 +190,13 @@ Object.assign(DOM.prototype, {
      * @returns {HTMLElement} The matching element.
      */
     findOneById(id, nodes = this._context) {
-        const result = DOMNode.findById(id, this._context);
-
-        if (!result) {
-            return null;
-        }
-
         if (Core.isDocument(nodes)) {
-            return result;
+            return DOMNode.findById(id, nodes);
         }
 
-        if (Core.isElement(nodes)) {
-            if (DOMNode.contains(nodes, result)) {
-                return result;
-            }
+        nodes = this.parseNodes(nodes, { fragment: true, shadow: true, document: true });
 
-            return null;
-        }
-
-        nodes = this.parseNodes(nodes);
-
-        if (nodes.some(node => DOMNode.contains(node, result))) {
-            return result;
-        }
-
-        return null;
+        return this.constructor._findOneBySelector(`#${id}`, nodes);
     },
 
     /**
