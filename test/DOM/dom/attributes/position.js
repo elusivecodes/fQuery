@@ -102,6 +102,17 @@ describe('DOM Attributes (Position)', function() {
             );
         });
 
+        it('returns undefined for empty nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    return dom.center(
+                        '#invalid'
+                    );
+                }),
+                undefined
+            );
+        });
+
     });
 
     describe('#constrain', function() {
@@ -321,6 +332,19 @@ describe('DOM Attributes (Position)', function() {
             );
         });
 
+        it('returns undefined for empty nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    return dom.distTo(
+                        '#invalid',
+                        580,
+                        128
+                    );
+                }),
+                undefined
+            );
+        });
+
     });
 
     describe('#distToNode', function() {
@@ -403,6 +427,30 @@ describe('DOM Attributes (Position)', function() {
                     );
                 }),
                 1250
+            );
+        });
+
+        it('returns undefined for an invalid from node', async function() {
+            assert.equal(
+                await exec(_ => {
+                    return dom.distToNode(
+                        '[data-toggle="from"]',
+                        '#invalid'
+                    );
+                }),
+                undefined
+            );
+        });
+
+        it('returns undefined for an invalid to node', async function() {
+            assert.equal(
+                await exec(_ => {
+                    return dom.distToNode(
+                        '#invalid',
+                        '[data-toggle="to"]'
+                    );
+                }),
+                undefined
             );
         });
 
@@ -507,6 +555,19 @@ describe('DOM Attributes (Position)', function() {
             );
         });
 
+        it('returns undefined for empty nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    return dom.nearestTo(
+                        '#invalid',
+                        1000,
+                        1000
+                    );
+                }),
+                undefined
+            );
+        });
+
     });
 
     describe('#nearestToNode', function() {
@@ -594,6 +655,30 @@ describe('DOM Attributes (Position)', function() {
                     return nearest.id;
                 }),
                 'test2'
+            );
+        });
+
+        it('returns undefined for an invalid from node', async function() {
+            assert.equal(
+                await exec(_ => {
+                    return dom.nearestToNode(
+                        '#invalid',
+                        '[data-toggle="to"]'
+                    );
+                }),
+                undefined
+            );
+        });
+
+        it('returns undefined for an invalid to node', async function() {
+            assert.equal(
+                await exec(_ => {
+                    return dom.nearestToNode(
+                        '[data-toggle="from"]',
+                        '#invalid'
+                    );
+                }),
+                undefined
             );
         });
 
@@ -707,6 +792,18 @@ describe('DOM Attributes (Position)', function() {
             );
         });
 
+        it('returns undefined for empty nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    return dom.percentX(
+                        '#invalid',
+                        700
+                    );
+                }),
+                undefined
+            );
+        });
+
     });
 
     describe('#percentY', function() {
@@ -817,6 +914,18 @@ describe('DOM Attributes (Position)', function() {
             );
         });
 
+        it('returns undefined for empty nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    return dom.percentY(
+                        '#invalid',
+                        150
+                    );
+                }),
+                undefined
+            );
+        });
+
     });
 
     describe('#position', function() {
@@ -916,6 +1025,17 @@ describe('DOM Attributes (Position)', function() {
                     x: 50,
                     y: 25
                 }
+            );
+        });
+
+        it('returns undefined for empty nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    return dom.position(
+                        '#invalid'
+                    );
+                }),
+                undefined
             );
         });
 
@@ -1053,6 +1173,17 @@ describe('DOM Attributes (Position)', function() {
                     bottom: 250,
                     left: 600
                 }
+            );
+        });
+
+        it('returns undefined for empty nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    return dom.rect(
+                        '#invalid'
+                    );
+                }),
+                undefined
             );
         });
 

@@ -1714,7 +1714,7 @@
          * @returns {HTMLElement} The nearest node.
          */
         nearestTo(nodes, x, y, offset) {
-            let closest = null,
+            let closest,
                 closestDistance = Number.MAX_VALUE;
 
             nodes = this.parseNodes(nodes);
@@ -3342,6 +3342,10 @@
 
                 nodes = this.parseNodes(nodes);
 
+                if (!nodes.length) {
+                    return;
+                }
+
                 return this.constructor._findOneByCustom(selectors, nodes);
             }
 
@@ -3351,6 +3355,10 @@
             }
 
             nodes = this.parseNodes(nodes, { fragment: true, shadow: true, document: true });
+
+            if (!nodes.length) {
+                return;
+            }
 
             return this.constructor._findOneBySelector(selector, nodes);
         },
@@ -3367,6 +3375,10 @@
             }
 
             nodes = this.parseNodes(nodes, { fragment: true, shadow: true, document: true });
+
+            if (!nodes.length) {
+                return;
+            }
 
             for (const node of nodes) {
                 const result = DOMNode.findByClass(className, node).item(0);
@@ -3391,6 +3403,10 @@
 
             nodes = this.parseNodes(nodes, { fragment: true, shadow: true, document: true });
 
+            if (!nodes.length) {
+                return;
+            }
+
             return this.constructor._findOneBySelector(`#${id}`, nodes);
         },
 
@@ -3406,6 +3422,10 @@
             }
 
             nodes = this.parseNodes(nodes, { fragment: true, shadow: true, document: true });
+
+            if (!nodes.length) {
+                return;
+            }
 
             for (const node of nodes) {
                 const result = DOMNode.findByTag(tagName, node).item(0);

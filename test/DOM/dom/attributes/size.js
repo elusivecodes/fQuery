@@ -118,6 +118,17 @@ describe('DOM Attributes (Size)', function() {
             );
         });
 
+        it('returns undefined for empty nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    return dom.height(
+                        '#invalid'
+                    );
+                }),
+                undefined
+            );
+        });
+
     });
 
     describe('#width', function() {
@@ -232,6 +243,17 @@ describe('DOM Attributes (Size)', function() {
                     );
                 }),
                 1250
+            );
+        });
+
+        it('returns undefined for empty nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    return dom.width(
+                        '#invalid'
+                    );
+                }),
+                undefined
             );
         });
 

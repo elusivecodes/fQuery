@@ -13,18 +13,6 @@ describe('DOM Attributes (Dataset)', function() {
             });
         });
 
-        it('returns a dataset value for the first node', async function() {
-            assert.equal(
-                await exec(_ => {
-                    return dom.getDataset(
-                        'div',
-                        'text'
-                    );
-                }),
-                'Test'
-            );
-        });
-
         it('returns an object with all dataset values for the first node', async function() {
             assert.deepEqual(
                 await exec(_ => {
@@ -41,6 +29,18 @@ describe('DOM Attributes (Dataset)', function() {
                     array: [1, 2, 3],
                     object: { a: 1 }
                 }
+            );
+        });
+
+        it('returns a dataset value for the first node', async function() {
+            assert.equal(
+                await exec(_ => {
+                    return dom.getDataset(
+                        'div',
+                        'text'
+                    );
+                }),
+                'Test'
             );
         });
 
@@ -164,6 +164,18 @@ describe('DOM Attributes (Dataset)', function() {
                     );
                 }),
                 'Test'
+            );
+        });
+
+        it('returns undefined for empty nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    return dom.getDataset(
+                        '#invalid',
+                        'text'
+                    );
+                }),
+                undefined
             );
         });
 

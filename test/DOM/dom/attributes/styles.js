@@ -143,6 +143,18 @@ describe('DOM Attributes (Styles)', function() {
         it('works with NodeList');
         it('works with array');
 
+        it('returns undefined for empty nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    return dom.css(
+                        '#invalid',
+                        'width'
+                    );
+                }),
+                undefined
+            );
+        });
+
     });
 
     describe('#getStyle', function() {
@@ -230,6 +242,30 @@ describe('DOM Attributes (Styles)', function() {
                     );
                 }),
                 'block'
+            );
+        });
+
+        it('returns undefined for empty nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    return dom.getStyle(
+                        '#invalid',
+                        'display'
+                    );
+                }),
+                undefined
+            );
+        });
+
+        it('returns an empty string for an undefined style', async function() {
+            assert.equal(
+                await exec(_ => {
+                    return dom.getStyle(
+                        'div',
+                        'visibility'
+                    );
+                }),
+                ''
             );
         });
 

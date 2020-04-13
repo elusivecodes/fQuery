@@ -87,6 +87,17 @@ describe('DOM Attributes (Scroll)', function() {
             );
         });
 
+        it('returns undefined for empty nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    return dom.getScrollX(
+                        '#invalid'
+                    );
+                }),
+                undefined
+            );
+        });
+
     });
 
     describe('#getScrollY', function() {
@@ -170,6 +181,17 @@ describe('DOM Attributes (Scroll)', function() {
                     );
                 }),
                 100
+            );
+        });
+
+        it('returns undefined for empty nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    return dom.getScrollY(
+                        '#invalid'
+                    );
+                }),
+                undefined
             );
         });
 

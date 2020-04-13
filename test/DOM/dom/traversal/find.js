@@ -316,6 +316,29 @@ describe('DOM Find', function() {
             )
         });
 
+        it('returns an empty array for non-matching selector', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    return dom.find(
+                        '#invalid'
+                    ).map(node => node.id);
+                }),
+                []
+            )
+        });
+
+        it('returns an empty array for empty nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    return dom.find(
+                        'span',
+                        '#invalid'
+                    ).map(node => node.id);
+                }),
+                []
+            )
+        });
+
     });
 
     describe('#findByClass', function() {
@@ -441,6 +464,29 @@ describe('DOM Find', function() {
             )
         });
 
+        it('returns an empty array for non-matching class', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    return dom.findByClass(
+                        'invalid'
+                    ).map(node => node.id);
+                }),
+                []
+            )
+        });
+
+        it('returns an empty array for empty nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    return dom.findByClass(
+                        'test',
+                        '#invalid'
+                    ).map(node => node.id);
+                }),
+                []
+            )
+        });
+
     });
 
     describe('#findById', function() {
@@ -563,6 +609,29 @@ describe('DOM Find', function() {
                     'span1',
                     'span3'
                 ]
+            )
+        });
+
+        it('returns an empty array for non-matching id', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    return dom.findById(
+                        'invalid'
+                    ).map(node => node.id);
+                }),
+                []
+            )
+        });
+
+        it('returns an empty array for empty nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    return dom.findById(
+                        'test',
+                        '#invalid'
+                    ).map(node => node.id);
+                }),
+                []
             )
         });
 
@@ -703,6 +772,29 @@ describe('DOM Find', function() {
                     'span4'
                 ]
             );
+        });
+
+        it('returns an empty array for non-matching tag', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    return dom.findByTag(
+                        'invalid'
+                    ).map(node => node.id);
+                }),
+                []
+            )
+        });
+
+        it('returns an empty array for empty nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    return dom.findByTag(
+                        'test',
+                        '#invalid'
+                    ).map(node => node.id);
+                }),
+                []
+            )
         });
 
     });
@@ -947,6 +1039,29 @@ describe('DOM Find', function() {
             )
         });
 
+        it('returns null for non-matching selector', async function() {
+            assert.equal(
+                await exec(_ => {
+                    return dom.findOne(
+                        '#invalid'
+                    );
+                }),
+                null
+            )
+        });
+
+        it('returns undefined for empty nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    return dom.findOne(
+                        'span',
+                        '#invalid'
+                    );
+                }),
+                undefined
+            )
+        });
+
     });
 
     describe('#findOneByClass', function() {
@@ -1049,6 +1164,29 @@ describe('DOM Find', function() {
                     ).id;
                 }),
                 'span5'
+            )
+        });
+
+        it('returns null for non-matching class', async function() {
+            assert.equal(
+                await exec(_ => {
+                    return dom.findOneByClass(
+                        'invalid'
+                    );
+                }),
+                null
+            )
+        });
+
+        it('returns undefined for empty nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    return dom.findOneByClass(
+                        'test',
+                        '#invalid'
+                    );
+                }),
+                undefined
             )
         });
 
@@ -1157,6 +1295,29 @@ describe('DOM Find', function() {
             )
         });
 
+        it('returns null for non-matching id', async function() {
+            assert.equal(
+                await exec(_ => {
+                    return dom.findOneById(
+                        'invalid'
+                    );
+                }),
+                null
+            )
+        });
+
+        it('returns undefined for empty nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    return dom.findOneById(
+                        'test',
+                        '#invalid'
+                    );
+                }),
+                undefined
+            )
+        });
+
     });
 
     describe('#findOneByTag', function() {
@@ -1260,6 +1421,29 @@ describe('DOM Find', function() {
                 }),
                 'span5'
             );
+        });
+
+        it('returns null for non-matching tag', async function() {
+            assert.equal(
+                await exec(_ => {
+                    return dom.findOneByTag(
+                        'invalid'
+                    );
+                }),
+                null
+            )
+        });
+
+        it('returns undefined for empty nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    return dom.findOneByTag(
+                        'span',
+                        '#invalid'
+                    );
+                }),
+                undefined
+            )
         });
 
     });

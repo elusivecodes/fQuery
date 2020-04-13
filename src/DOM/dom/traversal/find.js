@@ -147,6 +147,10 @@ Object.assign(DOM.prototype, {
 
             nodes = this.parseNodes(nodes);
 
+            if (!nodes.length) {
+                return;
+            }
+
             return this.constructor._findOneByCustom(selectors, nodes);
         }
 
@@ -156,6 +160,10 @@ Object.assign(DOM.prototype, {
         }
 
         nodes = this.parseNodes(nodes, { fragment: true, shadow: true, document: true });
+
+        if (!nodes.length) {
+            return;
+        }
 
         return this.constructor._findOneBySelector(selector, nodes);
     },
@@ -172,6 +180,10 @@ Object.assign(DOM.prototype, {
         }
 
         nodes = this.parseNodes(nodes, { fragment: true, shadow: true, document: true });
+
+        if (!nodes.length) {
+            return;
+        }
 
         for (const node of nodes) {
             const result = DOMNode.findByClass(className, node).item(0);
@@ -196,6 +208,10 @@ Object.assign(DOM.prototype, {
 
         nodes = this.parseNodes(nodes, { fragment: true, shadow: true, document: true });
 
+        if (!nodes.length) {
+            return;
+        }
+
         return this.constructor._findOneBySelector(`#${id}`, nodes);
     },
 
@@ -211,6 +227,10 @@ Object.assign(DOM.prototype, {
         }
 
         nodes = this.parseNodes(nodes, { fragment: true, shadow: true, document: true });
+
+        if (!nodes.length) {
+            return;
+        }
 
         for (const node of nodes) {
             const result = DOMNode.findByTag(tagName, node).item(0);

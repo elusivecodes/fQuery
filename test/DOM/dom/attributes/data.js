@@ -167,18 +167,6 @@ describe('DOM Attributes (Data)', function() {
             });
         });
 
-        it('returns data for the first node', async function() {
-            assert.equal(
-                await exec(_ => {
-                    return dom.getData(
-                        'div',
-                        'test'
-                    );
-                }),
-                'Test 1'
-            );
-        });
-
         it('returns an object with all data for the first node', async function() {
             assert.deepEqual(
                 await exec(_ => {
@@ -189,6 +177,18 @@ describe('DOM Attributes (Data)', function() {
                 {
                     test: 'Test 1'
                 }
+            );
+        });
+
+        it('returns data for the first node', async function() {
+            assert.equal(
+                await exec(_ => {
+                    return dom.getData(
+                        'div',
+                        'test'
+                    );
+                }),
+                'Test 1'
             );
         });
 
@@ -240,6 +240,30 @@ describe('DOM Attributes (Data)', function() {
                     );
                 }),
                 'Test 1'
+            );
+        });
+
+        it('returns undefined for empty nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    return dom.getData(
+                        '#invalid',
+                        'test'
+                    );
+                }),
+                undefined
+            );
+        });
+
+        it('returns undefined for an undefined key', async function() {
+            assert.equal(
+                await exec(_ => {
+                    return dom.getData(
+                        'div',
+                        'invalid'
+                    );
+                }),
+                undefined
             );
         });
 

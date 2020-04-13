@@ -94,7 +94,7 @@ Object.assign(DOM.prototype, {
      * @returns {HTMLElement} The nearest node.
      */
     nearestTo(nodes, x, y, offset) {
-        let closest = null,
+        let closest,
             closestDistance = Number.MAX_VALUE;
 
         nodes = this.parseNodes(nodes);

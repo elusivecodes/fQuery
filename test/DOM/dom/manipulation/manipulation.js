@@ -439,6 +439,17 @@ describe('DOM Manipulation', function() {
             );
         });
 
+        it('returns an empty array for empty nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    return dom.detach(
+                        '#invalid'
+                    );
+                }),
+                []
+            );
+        });
+
     });
 
     describe('#empty', function() {

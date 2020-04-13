@@ -1830,7 +1830,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
      * @returns {HTMLElement} The nearest node.
      */
     nearestTo: function nearestTo(nodes, x, y, offset) {
-      var closest = null,
+      var closest,
           closestDistance = Number.MAX_VALUE;
       nodes = this.parseNodes(nodes);
 
@@ -3890,6 +3890,11 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
         }
 
         nodes = this.parseNodes(nodes);
+
+        if (!nodes.length) {
+          return;
+        }
+
         return this.constructor._findOneByCustom(_selectors2, nodes);
       } // standard selector
 
@@ -3903,6 +3908,11 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
         shadow: true,
         document: true
       });
+
+      if (!nodes.length) {
+        return;
+      }
+
       return this.constructor._findOneBySelector(selector, nodes);
     },
 
@@ -3924,6 +3934,10 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
         shadow: true,
         document: true
       });
+
+      if (!nodes.length) {
+        return;
+      }
 
       var _iterator56 = _createForOfIteratorHelper(nodes),
           _step56;
@@ -3964,6 +3978,11 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
         shadow: true,
         document: true
       });
+
+      if (!nodes.length) {
+        return;
+      }
+
       return this.constructor._findOneBySelector("#".concat(id), nodes);
     },
 
@@ -3985,6 +4004,10 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
         shadow: true,
         document: true
       });
+
+      if (!nodes.length) {
+        return;
+      }
 
       var _iterator57 = _createForOfIteratorHelper(nodes),
           _step57;

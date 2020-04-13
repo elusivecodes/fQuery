@@ -149,6 +149,17 @@ describe('DOM Traversal', function() {
             );
         });
 
+        it('returns an empty array for empty nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    return dom.child(
+                        '#invalid'
+                    );
+                }),
+                []
+            );
+        });
+
     });
 
     describe('#children', function() {
@@ -314,6 +325,17 @@ describe('DOM Traversal', function() {
             );
         });
 
+        it('returns an empty array for empty nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    return dom.children(
+                        '#invalid'
+                    );
+                }),
+                []
+            );
+        });
+
     });
 
     describe('#closest', function() {
@@ -448,6 +470,17 @@ describe('DOM Traversal', function() {
 
         // limit
 
+        it('returns an empty array for empty nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    return dom.closest(
+                        '#invalid'
+                    );
+                }),
+                []
+            );
+        });
+
     });
 
     describe('#commonAncestor', function() {
@@ -523,6 +556,17 @@ describe('DOM Traversal', function() {
                     ).id;
                 }),
                 'child'
+            );
+        });
+
+        it('returns undefined for empty nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    return dom.commonAncestor(
+                        '#invalid'
+                    );
+                }),
+                undefined
             );
         });
 
@@ -636,6 +680,17 @@ describe('DOM Traversal', function() {
             );
         });
 
+        it('returns an empty array for empty nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    return dom.contents(
+                        '#invalid'
+                    );
+                }),
+                []
+            );
+        });
+
     });
 
     describe('#fragment', function() {
@@ -707,6 +762,17 @@ describe('DOM Traversal', function() {
                     ).textContent;
                 }),
                 'Test 1'
+            );
+        });
+
+        it('returns undefined for empty nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    return dom.fragment(
+                        '#invalid'
+                    );
+                }),
+                undefined
             );
         });
 
@@ -853,6 +919,17 @@ describe('DOM Traversal', function() {
                     'span3',
                     'span7'
                 ]
+            );
+        });
+
+        it('returns an empty array for empty nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    return dom.next(
+                        '#invalid'
+                    );
+                }),
+                []
             );
         });
 
@@ -1008,6 +1085,17 @@ describe('DOM Traversal', function() {
 
         // limit
 
+        it('returns an empty array for empty nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    return dom.nextAll(
+                        '#invalid'
+                    );
+                }),
+                []
+            );
+        });
+
     });
 
     describe('#offsetParent', function() {
@@ -1033,7 +1121,7 @@ describe('DOM Traversal', function() {
         });
 
         it('returns the offset parent of the first node', async function() {
-            assert.deepEqual(
+            assert.equal(
                 await exec(_ => {
                     return dom.offsetParent(
                         'a'
@@ -1044,7 +1132,7 @@ describe('DOM Traversal', function() {
         });
 
         it('works with HTMLElement', async function() {
-            assert.deepEqual(
+            assert.equal(
                 await exec(_ => {
                     return dom.offsetParent(
                         document.getElementById('a1')
@@ -1055,7 +1143,7 @@ describe('DOM Traversal', function() {
         });
 
         it('works with HTMLCollection', async function() {
-            assert.deepEqual(
+            assert.equal(
                 await exec(_ => {
                     return dom.offsetParent(
                         document.getElementById('span1').children
@@ -1066,7 +1154,7 @@ describe('DOM Traversal', function() {
         });
 
         it('works with HTMLCollection', async function() {
-            assert.deepEqual(
+            assert.equal(
                 await exec(_ => {
                     return dom.offsetParent(
                         document.querySelectorAll('a')
@@ -1077,7 +1165,7 @@ describe('DOM Traversal', function() {
         });
 
         it('works with array', async function() {
-            assert.deepEqual(
+            assert.equal(
                 await exec(_ => {
                     return dom.offsetParent(
                         [
@@ -1087,6 +1175,17 @@ describe('DOM Traversal', function() {
                     ).id;
                 }),
                 'child1'
+            );
+        });
+
+        it('returns undefined for empty nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    return dom.offsetParent(
+                        '#invalid'
+                    );
+                }),
+                undefined
             );
         });
 
@@ -1214,6 +1313,17 @@ describe('DOM Traversal', function() {
                 [
                     'span2'
                 ]
+            );
+        });
+
+        it('returns an empty array for empty nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    return dom.parent(
+                        '#invalid'
+                    );
+                }),
+                []
             );
         });
 
@@ -1367,6 +1477,17 @@ describe('DOM Traversal', function() {
 
         // limit
 
+        it('returns an empty array for empty nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    return dom.parents(
+                        '#invalid'
+                    );
+                }),
+                []
+            );
+        });
+
     });
 
     describe('#prev', function() {
@@ -1510,6 +1631,17 @@ describe('DOM Traversal', function() {
                     'span2',
                     'span6'
                 ]
+            );
+        });
+
+        it('returns an empty array for empty nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    return dom.prev(
+                        '#invalid'
+                    );
+                }),
+                []
             );
         });
 
@@ -1665,6 +1797,17 @@ describe('DOM Traversal', function() {
 
         // limit
 
+        it('returns an empty array for empty nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    return dom.prevAll(
+                        '#invalid'
+                    );
+                }),
+                []
+            );
+        });
+
     });
 
     describe('#shadow', function() {
@@ -1691,17 +1834,6 @@ describe('DOM Traversal', function() {
                     ).textContent;
                 }),
                 'Test 1'
-            );
-        });
-
-        it('returns null for closed shadow roots', async function() {
-            assert.equal(
-                await exec(_ => {
-                    return dom.shadow(
-                        '#div2'
-                    );
-                }),
-                null
             );
         });
 
@@ -1749,6 +1881,28 @@ describe('DOM Traversal', function() {
                     ).textContent;
                 }),
                 'Test 1'
+            );
+        });
+
+        it('returns null for closed shadow roots', async function() {
+            assert.equal(
+                await exec(_ => {
+                    return dom.shadow(
+                        '#div2'
+                    );
+                }),
+                null
+            );
+        });
+
+        it('returns undefined for empty nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    return dom.shadow(
+                        '#invalid'
+                    );
+                }),
+                undefined
             );
         });
 
@@ -1911,6 +2065,17 @@ describe('DOM Traversal', function() {
                     'span1',
                     'span10'
                 ]
+            );
+        });
+
+        it('returns an empty array for empty nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    return dom.siblings(
+                        '#invalid'
+                    );
+                }),
+                []
             );
         });
 

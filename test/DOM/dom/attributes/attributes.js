@@ -8,21 +8,9 @@ describe('DOM Attributes', function() {
         beforeEach(async function() {
             await exec(_ => {
                 document.body.innerHTML =
-                    '<input type="text" id="test1">' +
+                    '<input type="text" id="test1" required>' +
                     '<input type="number" id="test2">';
             });
-        });
-
-        it('returns an attribute value for the first node', async function() {
-            assert.equal(
-                await exec(_ => {
-                    return dom.getAttribute(
-                        'input',
-                        'type'
-                    );
-                }),
-                'text'
-            );
         });
 
         it('returns an object with all attributes for the first node', async function() {
@@ -34,8 +22,21 @@ describe('DOM Attributes', function() {
                 }),
                 {
                     type: 'text',
-                    id: 'test1'
+                    id: 'test1',
+                    required: ''
                 }
+            );
+        });
+
+        it('returns an attribute value for the first node', async function() {
+            assert.equal(
+                await exec(_ => {
+                    return dom.getAttribute(
+                        'input',
+                        'type'
+                    );
+                }),
+                'text'
             );
         });
 
@@ -89,6 +90,31 @@ describe('DOM Attributes', function() {
                 'text'
             );
         });
+
+        it('returns undefined for empty nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    return dom.getAttribute(
+                        '#invalid',
+                        'type'
+                    );
+                }),
+                undefined
+            );
+        });
+
+        it('returns null for an undefined property', async function() {
+            assert.equal(
+                await exec(_ => {
+                    return dom.getAttribute(
+                        'input',
+                        'disabled'
+                    );
+                }),
+                null
+            );
+        });
+
     });
 
     describe('#getHTML', function() {
@@ -158,6 +184,18 @@ describe('DOM Attributes', function() {
                 '<span>Test</span>'
             );
         });
+
+        it('returns undefined for empty nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    return dom.getHTML(
+                        '#invalid'
+                    );
+                }),
+                undefined
+            );
+        });
+
     });
 
     describe('#getProperty', function() {
@@ -234,6 +272,31 @@ describe('DOM Attributes', function() {
                 'Test 1'
             );
         });
+
+        it('returns undefined for empty nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    return dom.getProperty(
+                        '#invalid',
+                        'test'
+                    );
+                }),
+                undefined
+            );
+        });
+
+        it('returns undefined for an undefined property', async function() {
+            assert.equal(
+                await exec(_ => {
+                    return dom.getProperty(
+                        'input',
+                        'invalid'
+                    );
+                }),
+                undefined
+            );
+        });
+
     });
 
     describe('#getText', function() {
@@ -303,6 +366,18 @@ describe('DOM Attributes', function() {
                 'Test'
             );
         });
+
+        it('returns undefined for empty nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    return dom.getText(
+                        '#invalid'
+                    );
+                }),
+                undefined
+            );
+        });
+
     });
 
     describe('#getValue', function() {
@@ -397,6 +472,18 @@ describe('DOM Attributes', function() {
                 'Test 1'
             );
         });
+
+        it('returns undefined for empty nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    return dom.getValue(
+                        '#invalid'
+                    );
+                }),
+                undefined
+            );
+        });
+
     });
 
     describe('#removeAttribute', function() {
