@@ -150,7 +150,7 @@ Object.assign(DOM, {
                 continue;
             }
 
-            results.push(node);
+            results.unshift(node);
 
             if (first) {
                 break;
@@ -204,7 +204,7 @@ Object.assign(DOM, {
                 continue;
             }
 
-            results.push(node);
+            results.unshift(node);
 
             if (first) {
                 break;

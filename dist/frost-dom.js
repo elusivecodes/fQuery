@@ -3735,7 +3735,7 @@
                 )
             }
 
-            return nodes.length > 1 && results.length ?
+            return nodes.length > 1 && results.length > 1 ?
                 Core.unique(results) :
                 results;
         },
@@ -3782,7 +3782,9 @@
             }
 
             return nodes.length > 1 && results.length > 1 ?
-                Core.unique(results) :
+                this.sort(
+                    Core.unique(results)
+                ) :
                 results;
         }
 
@@ -6325,7 +6327,7 @@
                     continue;
                 }
 
-                results.push(node);
+                results.unshift(node);
 
                 if (first) {
                     break;
@@ -6379,7 +6381,7 @@
                     continue;
                 }
 
-                results.push(node);
+                results.unshift(node);
 
                 if (first) {
                     break;

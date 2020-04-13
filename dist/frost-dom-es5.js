@@ -4358,7 +4358,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
         _iterator64.f();
       }
 
-      return nodes.length > 1 && results.length ? Core.unique(results) : results;
+      return nodes.length > 1 && results.length > 1 ? Core.unique(results) : results;
     },
 
     /**
@@ -4411,7 +4411,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
         _iterator65.f();
       }
 
-      return nodes.length > 1 && results.length > 1 ? Core.unique(results) : results;
+      return nodes.length > 1 && results.length > 1 ? this.sort(Core.unique(results)) : results;
     }
   });
   /**
@@ -7139,7 +7139,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
           continue;
         }
 
-        results.push(node);
+        results.unshift(node);
 
         if (first) {
           break;
@@ -7192,7 +7192,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
           continue;
         }
 
-        results.push(node);
+        results.unshift(node);
 
         if (first) {
           break;

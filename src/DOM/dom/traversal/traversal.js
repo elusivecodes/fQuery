@@ -314,7 +314,7 @@ Object.assign(DOM.prototype, {
             )
         }
 
-        return nodes.length > 1 && results.length ?
+        return nodes.length > 1 && results.length > 1 ?
             Core.unique(results) :
             results;
     },
@@ -361,7 +361,9 @@ Object.assign(DOM.prototype, {
         }
 
         return nodes.length > 1 && results.length > 1 ?
-            Core.unique(results) :
+            this.sort(
+                Core.unique(results)
+            ) :
             results;
     }
 
