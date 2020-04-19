@@ -43,7 +43,18 @@ describe('DOM Attributes (Position)', function() {
             );
         });
 
-        it('works with HTMLElement', async function() {
+        it('returns undefined for empty nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    return dom.center(
+                        '#invalid'
+                    );
+                }),
+                undefined
+            );
+        });
+
+        it('works with HTMLElement nodes', async function() {
             assert.deepEqual(
                 await exec(_ => {
                     return dom.center(
@@ -57,7 +68,7 @@ describe('DOM Attributes (Position)', function() {
             );
         });
 
-        it('works with HTMLCollection', async function() {
+        it('works with HTMLCollection nodes', async function() {
             assert.deepEqual(
                 await exec(_ => {
                     return dom.center(
@@ -71,7 +82,7 @@ describe('DOM Attributes (Position)', function() {
             );
         });
 
-        it('works with NodeList', async function() {
+        it('works with NodeList nodes', async function() {
             assert.deepEqual(
                 await exec(_ => {
                     return dom.center(
@@ -85,7 +96,7 @@ describe('DOM Attributes (Position)', function() {
             );
         });
 
-        it('works with array', async function() {
+        it('works with array nodes', async function() {
             assert.deepEqual(
                 await exec(_ => {
                     return dom.center(
@@ -99,17 +110,6 @@ describe('DOM Attributes (Position)', function() {
                     x: 700,
                     y: 150
                 }
-            );
-        });
-
-        it('returns undefined for empty nodes', async function() {
-            assert.equal(
-                await exec(_ => {
-                    return dom.center(
-                        '#invalid'
-                    );
-                }),
-                undefined
             );
         });
 
@@ -151,12 +151,12 @@ describe('DOM Attributes (Position)', function() {
             )
         });
 
-        it('works with HTMLElement', async function() {
+        it('works with HTMLElement nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     dom.constrain(
                         document.getElementById('test1'),
-                        document.getElementById('test3')
+                        '[data-toggle="to"]'
                     );
                     return document.body.innerHTML;
                 }),
@@ -171,11 +171,94 @@ describe('DOM Attributes (Position)', function() {
             )
         });
 
-        it('works with HTMLCollection', async function() {
+        it('works with HTMLCollection nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     dom.constrain(
                         document.getElementById('fromParent').children,
+                        '[data-toggle="to"]'
+                    );
+                    return document.body.innerHTML;
+                }),
+                '<div id="fromParent">' +
+                '<div id="test1" data-toggle="from" style="display: block; width: 500px; height: 500px; left: 292px; top: 292px; position: relative;"></div>' +
+                '<div id="test2" data-toggle="from" style="display: block; width: 500px; height: 500px; left: 292px; top: -308px; position: relative;"></div>' +
+                '</div>' +
+                '<div id="toParent">' +
+                '<div id="test3" data-toggle="to" style="position: absolute; top: 300px; left: 300px; width: 500px; height: 500px;"></div>' +
+                '<div data-togle="to"></div>' +
+                '</div>'
+            )
+        });
+
+        it('works with NodeList nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    dom.constrain(
+                        document.querySelectorAll('[data-toggle="from"]'),
+                        '[data-toggle="to"]'
+                    );
+                    return document.body.innerHTML;
+                }),
+                '<div id="fromParent">' +
+                '<div id="test1" data-toggle="from" style="display: block; width: 500px; height: 500px; left: 292px; top: 292px; position: relative;"></div>' +
+                '<div id="test2" data-toggle="from" style="display: block; width: 500px; height: 500px; left: 292px; top: -308px; position: relative;"></div>' +
+                '</div>' +
+                '<div id="toParent">' +
+                '<div id="test3" data-toggle="to" style="position: absolute; top: 300px; left: 300px; width: 500px; height: 500px;"></div>' +
+                '<div data-togle="to"></div>' +
+                '</div>'
+            )
+        });
+
+        it('works with array nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    dom.constrain(
+                        [
+                            document.getElementById('test1'),
+                            document.getElementById('test2')
+                        ],
+                        '[data-toggle="to"]'
+                    );
+                    return document.body.innerHTML;
+                }),
+                '<div id="fromParent">' +
+                '<div id="test1" data-toggle="from" style="display: block; width: 500px; height: 500px; left: 292px; top: 292px; position: relative;"></div>' +
+                '<div id="test2" data-toggle="from" style="display: block; width: 500px; height: 500px; left: 292px; top: -308px; position: relative;"></div>' +
+                '</div>' +
+                '<div id="toParent">' +
+                '<div id="test3" data-toggle="to" style="position: absolute; top: 300px; left: 300px; width: 500px; height: 500px;"></div>' +
+                '<div data-togle="to"></div>' +
+                '</div>'
+            )
+        });
+
+        it('works with HTMLElement other nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    dom.constrain(
+                        '[data-toggle="from"]',
+                        document.getElementById('test3')
+                    );
+                    return document.body.innerHTML;
+                }),
+                '<div id="fromParent">' +
+                '<div id="test1" data-toggle="from" style="display: block; width: 500px; height: 500px; left: 292px; top: 292px; position: relative;"></div>' +
+                '<div id="test2" data-toggle="from" style="display: block; width: 500px; height: 500px; left: 292px; top: -308px; position: relative;"></div>' +
+                '</div>' +
+                '<div id="toParent">' +
+                '<div id="test3" data-toggle="to" style="position: absolute; top: 300px; left: 300px; width: 500px; height: 500px;"></div>' +
+                '<div data-togle="to"></div>' +
+                '</div>'
+            )
+        });
+
+        it('works with HTMLCollection other nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    dom.constrain(
+                        '[data-toggle="from"]',
                         document.getElementById('toParent').children
                     );
                     return document.body.innerHTML;
@@ -191,11 +274,11 @@ describe('DOM Attributes (Position)', function() {
             )
         });
 
-        it('works with NodeList', async function() {
+        it('works with NodeList other nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     dom.constrain(
-                        document.querySelectorAll('[data-toggle="from"]'),
+                        '[data-toggle="from"]',
                         document.querySelectorAll('[data-toggle="to"]')
                     );
                     return document.body.innerHTML;
@@ -211,14 +294,11 @@ describe('DOM Attributes (Position)', function() {
             )
         });
 
-        it('works with array', async function() {
+        it('works with array other nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     dom.constrain(
-                        [
-                            document.getElementById('test1'),
-                            document.getElementById('test2')
-                        ],
+                        '[data-toggle="from"]',
                         [
                             document.getElementById('test3'),
                             document.getElementById('test4')
@@ -277,7 +357,20 @@ describe('DOM Attributes (Position)', function() {
             );
         });
 
-        it('works with HTMLElement', async function() {
+        it('returns undefined for empty nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    return dom.distTo(
+                        '#invalid',
+                        580,
+                        128
+                    );
+                }),
+                undefined
+            );
+        });
+
+        it('works with HTMLElement nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     return dom.distTo(
@@ -290,7 +383,7 @@ describe('DOM Attributes (Position)', function() {
             );
         });
 
-        it('works with HTMLCollection', async function() {
+        it('works with HTMLCollection nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     return dom.distTo(
@@ -303,7 +396,7 @@ describe('DOM Attributes (Position)', function() {
             );
         });
 
-        it('works with NodeList', async function() {
+        it('works with NodeList nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     return dom.distTo(
@@ -316,7 +409,7 @@ describe('DOM Attributes (Position)', function() {
             );
         });
 
-        it('works with array', async function() {
+        it('works with array nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     return dom.distTo(
@@ -329,19 +422,6 @@ describe('DOM Attributes (Position)', function() {
                     )
                 }),
                 122
-            );
-        });
-
-        it('returns undefined for empty nodes', async function() {
-            assert.equal(
-                await exec(_ => {
-                    return dom.distTo(
-                        '#invalid',
-                        580,
-                        128
-                    );
-                }),
-                undefined
             );
         });
 
@@ -376,61 +456,7 @@ describe('DOM Attributes (Position)', function() {
             );
         });
 
-        it('works with HTMLElement', async function() {
-            assert.equal(
-                await exec(_ => {
-                    return dom.distToNode(
-                        document.getElementById('test1'),
-                        document.getElementById('test3')
-                    );
-                }),
-                1250
-            );
-        });
-
-        it('works with HTMLCollection', async function() {
-            assert.equal(
-                await exec(_ => {
-                    return dom.distToNode(
-                        document.getElementById('fromParent').children,
-                        document.getElementById('toParent').children
-                    );
-                }),
-                1250
-            );
-        });
-
-        it('works with NodeList', async function() {
-            assert.equal(
-                await exec(_ => {
-                    return dom.distToNode(
-                        document.querySelectorAll('[data-toggle="from"]'),
-                        document.querySelectorAll('[data-toggle="to"]')
-                    );
-                }),
-                1250
-            );
-        });
-
-        it('works with array', async function() {
-            assert.equal(
-                await exec(_ => {
-                    return dom.distToNode(
-                        [
-                            document.getElementById('test1'),
-                            document.getElementById('test2')
-                        ],
-                        [
-                            document.getElementById('test3'),
-                            document.getElementById('test4')
-                        ]
-                    );
-                }),
-                1250
-            );
-        });
-
-        it('returns undefined for an invalid from node', async function() {
+        it('returns undefined for empty nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     return dom.distToNode(
@@ -442,7 +468,7 @@ describe('DOM Attributes (Position)', function() {
             );
         });
 
-        it('returns undefined for an invalid to node', async function() {
+        it('returns undefined for empty other nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     return dom.distToNode(
@@ -451,6 +477,108 @@ describe('DOM Attributes (Position)', function() {
                     );
                 }),
                 undefined
+            );
+        });
+
+        it('works with HTMLElement nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    return dom.distToNode(
+                        document.getElementById('test1'),
+                        '[data-toggle="to"]'
+                    );
+                }),
+                1250
+            );
+        });
+
+        it('works with HTMLCollection nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    return dom.distToNode(
+                        document.getElementById('fromParent').children,
+                        '[data-toggle="to"]'
+                    );
+                }),
+                1250
+            );
+        });
+
+        it('works with NodeList nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    return dom.distToNode(
+                        document.querySelectorAll('[data-toggle="from"]'),
+                        '[data-toggle="to"]'
+                    );
+                }),
+                1250
+            );
+        });
+
+        it('works with array nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    return dom.distToNode(
+                        [
+                            document.getElementById('test1'),
+                            document.getElementById('test2')
+                        ],
+                        '[data-toggle="to"]'
+                    );
+                }),
+                1250
+            );
+        });
+
+        it('works with HTMLElement other nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    return dom.distToNode(
+                        '[data-toggle="from"]',
+                        document.getElementById('test3')
+                    );
+                }),
+                1250
+            );
+        });
+
+        it('works with HTMLCollection other nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    return dom.distToNode(
+                        '[data-toggle="from"]',
+                        document.getElementById('toParent').children
+                    );
+                }),
+                1250
+            );
+        });
+
+        it('works with NodeList other nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    return dom.distToNode(
+                        '[data-toggle="from"]',
+                        document.querySelectorAll('[data-toggle="to"]')
+                    );
+                }),
+                1250
+            );
+        });
+
+        it('works with array other nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    return dom.distToNode(
+                        '[data-toggle="from"]',
+                        [
+                            document.getElementById('test3'),
+                            document.getElementById('test4')
+                        ]
+                    );
+                }),
+                1250
             );
         });
 
@@ -496,7 +624,20 @@ describe('DOM Attributes (Position)', function() {
             );
         });
 
-        it('works with HTMLElement', async function() {
+        it('returns undefined for empty nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    return dom.nearestTo(
+                        '#invalid',
+                        1000,
+                        1000
+                    );
+                }),
+                undefined
+            );
+        });
+
+        it('works with HTMLElement nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     const nearest = dom.nearestTo(
@@ -510,7 +651,7 @@ describe('DOM Attributes (Position)', function() {
             );
         });
 
-        it('works with HTMLCollection', async function() {
+        it('works with HTMLCollection nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     const nearest = dom.nearestTo(
@@ -524,7 +665,7 @@ describe('DOM Attributes (Position)', function() {
             );
         });
 
-        it('works with NodeList', async function() {
+        it('works with NodeList nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     const nearest = dom.nearestTo(
@@ -538,7 +679,7 @@ describe('DOM Attributes (Position)', function() {
             );
         });
 
-        it('works with array', async function() {
+        it('works with array nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     const nearest = dom.nearestTo(
@@ -552,19 +693,6 @@ describe('DOM Attributes (Position)', function() {
                     return nearest.id;
                 }),
                 'test2'
-            );
-        });
-
-        it('returns undefined for empty nodes', async function() {
-            assert.equal(
-                await exec(_ => {
-                    return dom.nearestTo(
-                        '#invalid',
-                        1000,
-                        1000
-                    );
-                }),
-                undefined
             );
         });
 
@@ -600,65 +728,7 @@ describe('DOM Attributes (Position)', function() {
             );
         });
 
-        it('works with HTMLElement', async function() {
-            assert.equal(
-                await exec(_ => {
-                    const nearest = dom.nearestToNode(
-                        document.getElementById('test1'),
-                        document.getElementById('test3')
-                    );
-                    return nearest.id;
-                }),
-                'test1'
-            );
-        });
-
-        it('works with HTMLCollection', async function() {
-            assert.equal(
-                await exec(_ => {
-                    const nearest = dom.nearestToNode(
-                        document.getElementById('fromParent').children,
-                        document.getElementById('toParent').children
-                    );
-                    return nearest.id;
-                }),
-                'test2'
-            );
-        });
-
-        it('works with NodeList', async function() {
-            assert.equal(
-                await exec(_ => {
-                    const nearest = dom.nearestToNode(
-                        document.querySelectorAll('[data-toggle="from"]'),
-                        document.querySelectorAll('[data-toggle="to"]')
-                    );
-                    return nearest.id;
-                }),
-                'test2'
-            );
-        });
-
-        it('works with array', async function() {
-            assert.equal(
-                await exec(_ => {
-                    const nearest = dom.nearestToNode(
-                        [
-                            document.getElementById('test1'),
-                            document.getElementById('test2')
-                        ],
-                        [
-                            document.getElementById('test3'),
-                            document.getElementById('test4')
-                        ]
-                    );
-                    return nearest.id;
-                }),
-                'test2'
-            );
-        });
-
-        it('returns undefined for an invalid from node', async function() {
+        it('returns undefined for empty nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     return dom.nearestToNode(
@@ -670,7 +740,7 @@ describe('DOM Attributes (Position)', function() {
             );
         });
 
-        it('returns undefined for an invalid to node', async function() {
+        it('returns undefined for empty other nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     return dom.nearestToNode(
@@ -679,6 +749,116 @@ describe('DOM Attributes (Position)', function() {
                     );
                 }),
                 undefined
+            );
+        });
+
+        it('works with HTMLElement nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    const nearest = dom.nearestToNode(
+                        document.getElementById('test1'),
+                        '[data-toggle="to"]'
+                    );
+                    return nearest.id;
+                }),
+                'test1'
+            );
+        });
+
+        it('works with HTMLCollection nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    const nearest = dom.nearestToNode(
+                        document.getElementById('fromParent').children,
+                        '[data-toggle="to"]'
+                    );
+                    return nearest.id;
+                }),
+                'test2'
+            );
+        });
+
+        it('works with NodeList nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    const nearest = dom.nearestToNode(
+                        document.querySelectorAll('[data-toggle="from"]'),
+                        '[data-toggle="to"]'
+                    );
+                    return nearest.id;
+                }),
+                'test2'
+            );
+        });
+
+        it('works with array nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    const nearest = dom.nearestToNode(
+                        [
+                            document.getElementById('test1'),
+                            document.getElementById('test2')
+                        ],
+                        '[data-toggle="to"]'
+                    );
+                    return nearest.id;
+                }),
+                'test2'
+            );
+        });
+
+        it('works with HTMLElement other nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    const nearest = dom.nearestToNode(
+                        '[data-toggle="from"]',
+                        document.getElementById('test3')
+                    );
+                    return nearest.id;
+                }),
+                'test2'
+            );
+        });
+
+        it('works with HTMLCollection other nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    const nearest = dom.nearestToNode(
+                        '[data-toggle="from"]',
+                        document.getElementById('toParent').children
+                    );
+                    return nearest.id;
+                }),
+                'test2'
+            );
+        });
+
+        it('works with NodeList other nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    const nearest = dom.nearestToNode(
+                        '[data-toggle="from"]',
+                        document.querySelectorAll('[data-toggle="to"]')
+                    );
+                    return nearest.id;
+                }),
+                'test2'
+            );
+        });
+
+        it('works with array other nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    const nearest = dom.nearestToNode(
+                        '[data-toggle="from"]',
+                        [
+                            document.getElementById('test3'),
+                            document.getElementById('test4')
+                        ]
+                    );
+                    return nearest.id;
+                }),
+                'test2'
             );
         });
 
@@ -741,7 +921,19 @@ describe('DOM Attributes (Position)', function() {
             );
         });
 
-        it('works with HTMLElement', async function() {
+        it('returns undefined for empty nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    return dom.percentX(
+                        '#invalid',
+                        700
+                    );
+                }),
+                undefined
+            );
+        });
+
+        it('works with HTMLElement nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     return dom.percentX(
@@ -753,7 +945,7 @@ describe('DOM Attributes (Position)', function() {
             );
         });
 
-        it('works with HTMLCollection', async function() {
+        it('works with HTMLCollection nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     return dom.percentX(
@@ -765,7 +957,7 @@ describe('DOM Attributes (Position)', function() {
             );
         });
 
-        it('works with NodeList', async function() {
+        it('works with NodeList nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     return dom.percentX(
@@ -777,7 +969,7 @@ describe('DOM Attributes (Position)', function() {
             );
         });
 
-        it('works with array', async function() {
+        it('works with array nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     return dom.percentX(
@@ -789,18 +981,6 @@ describe('DOM Attributes (Position)', function() {
                     );
                 }),
                 50
-            );
-        });
-
-        it('returns undefined for empty nodes', async function() {
-            assert.equal(
-                await exec(_ => {
-                    return dom.percentX(
-                        '#invalid',
-                        700
-                    );
-                }),
-                undefined
             );
         });
 
@@ -863,7 +1043,19 @@ describe('DOM Attributes (Position)', function() {
             );
         });
 
-        it('works with HTMLElement', async function() {
+        it('returns undefined for empty nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    return dom.percentY(
+                        '#invalid',
+                        150
+                    );
+                }),
+                undefined
+            );
+        });
+
+        it('works with HTMLElement nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     return dom.percentY(
@@ -875,7 +1067,7 @@ describe('DOM Attributes (Position)', function() {
             );
         });
 
-        it('works with HTMLCollection', async function() {
+        it('works with HTMLCollection nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     return dom.percentY(
@@ -887,7 +1079,7 @@ describe('DOM Attributes (Position)', function() {
             );
         });
 
-        it('works with NodeList', async function() {
+        it('works with NodeList nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     return dom.percentY(
@@ -899,7 +1091,7 @@ describe('DOM Attributes (Position)', function() {
             );
         });
 
-        it('works with array', async function() {
+        it('works with array nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     return dom.percentY(
@@ -911,18 +1103,6 @@ describe('DOM Attributes (Position)', function() {
                     );
                 }),
                 50
-            );
-        });
-
-        it('returns undefined for empty nodes', async function() {
-            assert.equal(
-                await exec(_ => {
-                    return dom.percentY(
-                        '#invalid',
-                        150
-                    );
-                }),
-                undefined
             );
         });
 
@@ -969,7 +1149,18 @@ describe('DOM Attributes (Position)', function() {
             );
         });
 
-        it('works with HTMLElement', async function() {
+        it('returns undefined for empty nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    return dom.position(
+                        '#invalid'
+                    );
+                }),
+                undefined
+            );
+        });
+
+        it('works with HTMLElement nodes', async function() {
             assert.deepEqual(
                 await exec(_ => {
                     return dom.position(
@@ -983,7 +1174,7 @@ describe('DOM Attributes (Position)', function() {
             );
         });
 
-        it('works with HTMLCollection', async function() {
+        it('works with HTMLCollection nodes', async function() {
             assert.deepEqual(
                 await exec(_ => {
                     return dom.position(
@@ -997,7 +1188,7 @@ describe('DOM Attributes (Position)', function() {
             );
         });
 
-        it('works with NodeList', async function() {
+        it('works with NodeList nodes', async function() {
             assert.deepEqual(
                 await exec(_ => {
                     return dom.position(
@@ -1011,7 +1202,7 @@ describe('DOM Attributes (Position)', function() {
             );
         });
 
-        it('works with array', async function() {
+        it('works with array nodes', async function() {
             assert.deepEqual(
                 await exec(_ => {
                     return dom.position(
@@ -1025,17 +1216,6 @@ describe('DOM Attributes (Position)', function() {
                     x: 50,
                     y: 25
                 }
-            );
-        });
-
-        it('returns undefined for empty nodes', async function() {
-            assert.equal(
-                await exec(_ => {
-                    return dom.position(
-                        '#invalid'
-                    );
-                }),
-                undefined
             );
         });
 
@@ -1093,7 +1273,18 @@ describe('DOM Attributes (Position)', function() {
             );
         });
 
-        it('works with HTMLElement', async function() {
+        it('returns undefined for empty nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    return dom.rect(
+                        '#invalid'
+                    );
+                }),
+                undefined
+            );
+        });
+
+        it('works with HTMLElement nodes', async function() {
             assert.deepEqual(
                 await exec(_ => {
                     return dom.rect(
@@ -1113,7 +1304,7 @@ describe('DOM Attributes (Position)', function() {
             );
         });
 
-        it('works with HTMLCollection', async function() {
+        it('works with HTMLCollection nodes', async function() {
             assert.deepEqual(
                 await exec(_ => {
                     return dom.rect(
@@ -1133,7 +1324,7 @@ describe('DOM Attributes (Position)', function() {
             );
         });
 
-        it('works with NodeList', async function() {
+        it('works with NodeList nodes', async function() {
             assert.deepEqual(
                 await exec(_ => {
                     return dom.rect(
@@ -1153,7 +1344,7 @@ describe('DOM Attributes (Position)', function() {
             );
         });
 
-        it('works with array', async function() {
+        it('works with array nodes', async function() {
             assert.deepEqual(
                 await exec(_ => {
                     return dom.rect(
@@ -1173,17 +1364,6 @@ describe('DOM Attributes (Position)', function() {
                     bottom: 250,
                     left: 600
                 }
-            );
-        });
-
-        it('returns undefined for empty nodes', async function() {
-            assert.equal(
-                await exec(_ => {
-                    return dom.rect(
-                        '#invalid'
-                    );
-                }),
-                undefined
             );
         });
 

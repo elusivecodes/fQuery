@@ -116,7 +116,19 @@ describe('DOM Attributes (Dataset)', function() {
             );
         });
 
-        it('works with HTMLElement', async function() {
+        it('returns undefined for empty nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    return dom.getDataset(
+                        '#invalid',
+                        'text'
+                    );
+                }),
+                undefined
+            );
+        });
+
+        it('works with HTMLElement nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     return dom.getDataset(
@@ -128,7 +140,7 @@ describe('DOM Attributes (Dataset)', function() {
             );
         });
 
-        it('works with HTMLCollection', async function() {
+        it('works with HTMLCollection nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     return dom.getDataset(
@@ -140,7 +152,7 @@ describe('DOM Attributes (Dataset)', function() {
             );
         });
 
-        it('works with NodeList', async function() {
+        it('works with NodeList nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     return dom.getDataset(
@@ -152,7 +164,7 @@ describe('DOM Attributes (Dataset)', function() {
             );
         });
 
-        it('works with array', async function() {
+        it('works with array nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     return dom.getDataset(
@@ -164,18 +176,6 @@ describe('DOM Attributes (Dataset)', function() {
                     );
                 }),
                 'Test'
-            );
-        });
-
-        it('returns undefined for empty nodes', async function() {
-            assert.equal(
-                await exec(_ => {
-                    return dom.getDataset(
-                        '#invalid',
-                        'text'
-                    );
-                }),
-                undefined
             );
         });
 
@@ -205,7 +205,7 @@ describe('DOM Attributes (Dataset)', function() {
             );
         });
 
-        it('works with HTMLElement', async function() {
+        it('works with HTMLElement nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     dom.removeDataset(
@@ -219,7 +219,7 @@ describe('DOM Attributes (Dataset)', function() {
             );
         });
 
-        it('works with HTMLCollection', async function() {
+        it('works with HTMLCollection nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     dom.removeDataset(
@@ -233,7 +233,7 @@ describe('DOM Attributes (Dataset)', function() {
             );
         });
 
-        it('works with NodeList', async function() {
+        it('works with NodeList nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     dom.removeDataset(
@@ -247,7 +247,7 @@ describe('DOM Attributes (Dataset)', function() {
             );
         });
 
-        it('works with array', async function() {
+        it('works with array nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     dom.removeDataset(
@@ -276,21 +276,6 @@ describe('DOM Attributes (Dataset)', function() {
             });
         });
 
-        it('sets a dataset value for all nodes', async function() {
-            assert.equal(
-                await exec(_ => {
-                    dom.setDataset(
-                        'div',
-                        'text',
-                        'Test'
-                    );
-                    return document.body.innerHTML;
-                }),
-                '<div id="test1" data-text="Test"></div>' +
-                '<div id="test2" data-text="Test"></div>'
-            );
-        });
-
         it('sets a dataset object for all nodes', async function() {
             assert.equal(
                 await exec(_ => {
@@ -305,6 +290,21 @@ describe('DOM Attributes (Dataset)', function() {
                 }),
                 '<div id="test1" data-test-a="Test 1" data-test-b="Test 2"></div>' +
                 '<div id="test2" data-test-a="Test 1" data-test-b="Test 2"></div>'
+            );
+        });
+
+        it('sets a dataset value for all nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    dom.setDataset(
+                        'div',
+                        'text',
+                        'Test'
+                    );
+                    return document.body.innerHTML;
+                }),
+                '<div id="test1" data-text="Test"></div>' +
+                '<div id="test2" data-text="Test"></div>'
             );
         });
 
@@ -383,7 +383,7 @@ describe('DOM Attributes (Dataset)', function() {
             );
         });
 
-        it('works with HTMLElement', async function() {
+        it('works with HTMLElement nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     dom.setDataset(
@@ -398,7 +398,7 @@ describe('DOM Attributes (Dataset)', function() {
             );
         });
 
-        it('works with HTMLCollection', async function() {
+        it('works with HTMLCollection nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     dom.setDataset(
@@ -413,7 +413,7 @@ describe('DOM Attributes (Dataset)', function() {
             );
         });
 
-        it('works with NodeList', async function() {
+        it('works with NodeList nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     dom.setDataset(
@@ -428,7 +428,7 @@ describe('DOM Attributes (Dataset)', function() {
             );
         });
 
-        it('works with array', async function() {
+        it('works with array nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     dom.setDataset(

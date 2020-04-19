@@ -34,6 +34,101 @@ describe('DOM Wrap', function() {
             )
         });
 
+        it('unwraps each node with filter', async function() {
+            assert.equal(
+                await exec(_ => {
+                    dom.unwrap(
+                        'a',
+                        '#parent1'
+                    );
+                    return document.body.innerHTML;
+                }),
+                '<a href="#" id="test1">Test</a>' +
+                '<a href="#" id="test2">Test</a>' +
+                '<div id="parent2">' +
+                '<a href="#" id="test3">Test</a>' +
+                '<a href="#" id="test4">Test</a>' +
+                '</div>'
+            )
+        });
+
+        it('works with HTMLElement nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    dom.unwrap(
+                        document.getElementById('test1'),
+                        '#parent1'
+                    );
+                    return document.body.innerHTML;
+                }),
+                '<a href="#" id="test1">Test</a>' +
+                '<a href="#" id="test2">Test</a>' +
+                '<div id="parent2">' +
+                '<a href="#" id="test3">Test</a>' +
+                '<a href="#" id="test4">Test</a>' +
+                '</div>'
+            )
+        });
+
+        it('works with HTMLCollection nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    dom.unwrap(
+                        document.getElementById('parent1').children,
+                        '#parent1'
+                    );
+                    return document.body.innerHTML;
+                }),
+                '<a href="#" id="test1">Test</a>' +
+                '<a href="#" id="test2">Test</a>' +
+                '<div id="parent2">' +
+                '<a href="#" id="test3">Test</a>' +
+                '<a href="#" id="test4">Test</a>' +
+                '</div>'
+            )
+        });
+
+        it('works with NodeList nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    dom.unwrap(
+                        document.querySelectorAll('a'),
+                        '#parent1'
+                    );
+                    return document.body.innerHTML;
+                }),
+                '<a href="#" id="test1">Test</a>' +
+                '<a href="#" id="test2">Test</a>' +
+                '<div id="parent2">' +
+                '<a href="#" id="test3">Test</a>' +
+                '<a href="#" id="test4">Test</a>' +
+                '</div>'
+            )
+        });
+
+        it('works with array nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    dom.unwrap(
+                        [
+                            document.getElementById('test1'),
+                            document.getElementById('test2'),
+                            document.getElementById('test3'),
+                            document.getElementById('test4')
+                        ],
+                        '#parent1'
+                    );
+                    return document.body.innerHTML;
+                }),
+                '<a href="#" id="test1">Test</a>' +
+                '<a href="#" id="test2">Test</a>' +
+                '<div id="parent2">' +
+                '<a href="#" id="test3">Test</a>' +
+                '<a href="#" id="test4">Test</a>' +
+                '</div>'
+            )
+        });
+
         it('works with function filter', async function() {
             assert.equal(
                 await exec(_ => {
@@ -52,29 +147,11 @@ describe('DOM Wrap', function() {
             )
         });
 
-        it('works with query selector filter', async function() {
+        it('works with HTMLElement filter', async function() {
             assert.equal(
                 await exec(_ => {
                     dom.unwrap(
                         'a',
-                        '#parent1'
-                    );
-                    return document.body.innerHTML;
-                }),
-                '<a href="#" id="test1">Test</a>' +
-                '<a href="#" id="test2">Test</a>' +
-                '<div id="parent2">' +
-                '<a href="#" id="test3">Test</a>' +
-                '<a href="#" id="test4">Test</a>' +
-                '</div>'
-            )
-        });
-
-        it('works with HTMLElement', async function() {
-            assert.equal(
-                await exec(_ => {
-                    dom.unwrap(
-                        document.getElementById('test1'),
                         document.getElementById('parent1')
                     );
                     return document.body.innerHTML;
@@ -88,30 +165,28 @@ describe('DOM Wrap', function() {
             )
         });
 
-        it('works with HTMLCollection', async function() {
+        it('works with HTMLCollection filter', async function() {
             assert.equal(
                 await exec(_ => {
                     dom.unwrap(
-                        document.getElementById('parent1').children,
+                        'a',
                         document.body.children
                     );
                     return document.body.innerHTML;
                 }),
                 '<a href="#" id="test1">Test</a>' +
                 '<a href="#" id="test2">Test</a>' +
-                '<div id="parent2">' +
                 '<a href="#" id="test3">Test</a>' +
-                '<a href="#" id="test4">Test</a>' +
-                '</div>'
+                '<a href="#" id="test4">Test</a>'
             )
         });
 
-        it('works with NodeList', async function() {
+        it('works with NodeList filter', async function() {
             assert.equal(
                 await exec(_ => {
                     dom.unwrap(
-                        document.querySelectorAll('#parent1 > a'),
-                        document.querySelectorAll('div')
+                        'a',
+                        document.querySelectorAll('#parent1')
                     );
                     return document.body.innerHTML;
                 }),
@@ -124,17 +199,13 @@ describe('DOM Wrap', function() {
             )
         });
 
-        it('works with array', async function() {
+        it('works with array filter', async function() {
             assert.equal(
                 await exec(_ => {
                     dom.unwrap(
+                        'a',
                         [
-                            document.getElementById('test1'),
-                            document.getElementById('test2')
-                        ],
-                        [
-                            document.getElementById('parent1'),
-                            document.getElementById('parent2')
+                            document.getElementById('parent1')
                         ]
                     );
                     return document.body.innerHTML;
@@ -216,12 +287,12 @@ describe('DOM Wrap', function() {
             )
         });
 
-        it('works with HTMLElement', async function() {
+        it('works with HTMLElement nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     dom.wrap(
                         document.getElementById('test1'),
-                        document.querySelector('.outer')
+                        '.outer'
                     );
                     return document.body.innerHTML;
                 }),
@@ -247,11 +318,180 @@ describe('DOM Wrap', function() {
             )
         });
 
-        it('works with HTMLCollection', async function() {
+        it('works with HTMLCollection nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     dom.wrap(
                         document.getElementById('parent1').children,
+                        '.outer'
+                    );
+                    return document.body.innerHTML;
+                }),
+                '<div id="wrap">' +
+                '<div id="parent1">' +
+                '<div class="outer">' +
+                '<div class="inner">' +
+                '<a href="#" id="test1">Test</a>' +
+                '</div>' +
+                '</div>' +
+                '<div class="outer">' +
+                '<div class="inner">' +
+                '<a href="#" id="test2">Test</a>' +
+                '</div>' +
+                '</div>' +
+                '</div>' +
+                '<div id="parent2">' +
+                '<a href="#" id="test3">Test</a>' +
+                '<a href="#" id="test4">Test</a>' +
+                '</div>' +
+                '</div>' +
+                '<div id="wrapper">' +
+                '<div class="outer">' +
+                '<div class="inner"></div>' +
+                '</div>' +
+                '</div>'
+            )
+        });
+
+        it('works with NodeList nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    dom.wrap(
+                        document.querySelectorAll('a'),
+                        '.outer'
+                    );
+                    return document.body.innerHTML;
+                }),
+                '<div id="wrap">' +
+                '<div id="parent1">' +
+                '<div class="outer">' +
+                '<div class="inner">' +
+                '<a href="#" id="test1">Test</a>' +
+                '</div>' +
+                '</div>' +
+                '<div class="outer">' +
+                '<div class="inner">' +
+                '<a href="#" id="test2">Test</a>' +
+                '</div>' +
+                '</div>' +
+                '</div>' +
+                '<div id="parent2">' +
+                '<div class="outer">' +
+                '<div class="inner">' +
+                '<a href="#" id="test3">Test</a>' +
+                '</div>' +
+                '</div>' +
+                '<div class="outer">' +
+                '<div class="inner">' +
+                '<a href="#" id="test4">Test</a>' +
+                '</div>' +
+                '</div>' +
+                '</div>' +
+                '</div>' +
+                '<div id="wrapper">' +
+                '<div class="outer">' +
+                '<div class="inner"></div>' +
+                '</div>' +
+                '</div>'
+            )
+        });
+
+        it('works with array nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    dom.wrap(
+                        [
+                            document.getElementById('test1'),
+                            document.getElementById('test2'),
+                            document.getElementById('test3'),
+                            document.getElementById('test4')
+                        ],
+                        '.outer'
+                    );
+                    return document.body.innerHTML;
+                }),
+                '<div id="wrap">' +
+                '<div id="parent1">' +
+                '<div class="outer">' +
+                '<div class="inner">' +
+                '<a href="#" id="test1">Test</a>' +
+                '</div>' +
+                '</div>' +
+                '<div class="outer">' +
+                '<div class="inner">' +
+                '<a href="#" id="test2">Test</a>' +
+                '</div>' +
+                '</div>' +
+                '</div>' +
+                '<div id="parent2">' +
+                '<div class="outer">' +
+                '<div class="inner">' +
+                '<a href="#" id="test3">Test</a>' +
+                '</div>' +
+                '</div>' +
+                '<div class="outer">' +
+                '<div class="inner">' +
+                '<a href="#" id="test4">Test</a>' +
+                '</div>' +
+                '</div>' +
+                '</div>' +
+                '</div>' +
+                '<div id="wrapper">' +
+                '<div class="outer">' +
+                '<div class="inner"></div>' +
+                '</div>' +
+                '</div>'
+            )
+        });
+
+        it('works with HTMLElement other nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    dom.wrap(
+                        'a',
+                        document.querySelector('.outer')
+                    );
+                    return document.body.innerHTML;
+                }),
+                '<div id="wrap">' +
+                '<div id="parent1">' +
+                '<div class="outer">' +
+                '<div class="inner">' +
+                '<a href="#" id="test1">Test</a>' +
+                '</div>' +
+                '</div>' +
+                '<div class="outer">' +
+                '<div class="inner">' +
+                '<a href="#" id="test2">Test</a>' +
+                '</div>' +
+                '</div>' +
+                '</div>' +
+                '<div id="parent2">' +
+                '<div class="outer">' +
+                '<div class="inner">' +
+                '<a href="#" id="test3">Test</a>' +
+                '</div>' +
+                '</div>' +
+                '<div class="outer">' +
+                '<div class="inner">' +
+                '<a href="#" id="test4">Test</a>' +
+                '</div>' +
+                '</div>' +
+                '</div>' +
+                '</div>' +
+                '<div id="wrapper">' +
+                '<div class="outer">' +
+                '<div class="inner"></div>' +
+                '</div>' +
+                '</div>'
+            )
+        });
+
+        it('works with HTMLCollection other nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    dom.wrap(
+                        'a',
                         document.getElementById('wrapper').children
                     );
                     return document.body.innerHTML;
@@ -270,8 +510,16 @@ describe('DOM Wrap', function() {
                 '</div>' +
                 '</div>' +
                 '<div id="parent2">' +
+                '<div class="outer">' +
+                '<div class="inner">' +
                 '<a href="#" id="test3">Test</a>' +
+                '</div>' +
+                '</div>' +
+                '<div class="outer">' +
+                '<div class="inner">' +
                 '<a href="#" id="test4">Test</a>' +
+                '</div>' +
+                '</div>' +
                 '</div>' +
                 '</div>' +
                 '<div id="wrapper">' +
@@ -282,11 +530,11 @@ describe('DOM Wrap', function() {
             )
         });
 
-        it('works with NodeList', async function() {
+        it('works with NodeList other nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     dom.wrap(
-                        document.querySelectorAll('a'),
+                        'a',
                         document.querySelectorAll('.outer')
                     );
                     return document.body.innerHTML;
@@ -325,16 +573,11 @@ describe('DOM Wrap', function() {
             )
         });
 
-        it('works with array', async function() {
+        it('works with array other nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     dom.wrap(
-                        [
-                            document.getElementById('test1'),
-                            document.getElementById('test2'),
-                            document.getElementById('test3'),
-                            document.getElementById('test4')
-                        ],
+                        'a',
                         [
                             document.querySelector('.outer')
                         ]
@@ -375,7 +618,7 @@ describe('DOM Wrap', function() {
             )
         });
 
-        it('works with HTML', async function() {
+        it('works with HTML other nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     dom.wrap(
@@ -474,12 +717,12 @@ describe('DOM Wrap', function() {
             )
         });
 
-        it('works with HTMLElement', async function() {
+        it('works with HTMLElement nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     dom.wrapAll(
                         document.getElementById('test1'),
-                        document.querySelector('.outer')
+                        '.outer'
                     );
                     return document.body.innerHTML;
                 }),
@@ -505,11 +748,140 @@ describe('DOM Wrap', function() {
             )
         });
 
-        it('works with HTMLCollection', async function() {
+        it('works with HTMLCollection nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     dom.wrapAll(
                         document.getElementById('parent1').children,
+                        '.outer'
+                    );
+                    return document.body.innerHTML;
+                }),
+                '<div id="wrap">' +
+                '<div id="parent1">' +
+                '<div class="outer">' +
+                '<div class="inner">' +
+                '<a href="#" id="test1">Test</a>' +
+                '<a href="#" id="test2">Test</a>' +
+                '</div>' +
+                '</div>' +
+                '</div>' +
+                '<div id="parent2">' +
+                '<a href="#" id="test3">Test</a>' +
+                '<a href="#" id="test4">Test</a>' +
+                '</div>' +
+                '</div>' +
+                '<div id="wrapper">' +
+                '<div class="outer">' +
+                '<div class="inner"></div>' +
+                '</div>' +
+                '</div>'
+            )
+        });
+
+        it('works with NodeList nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    dom.wrapAll(
+                        document.querySelectorAll('a'),
+                        '.outer'
+                    );
+                    return document.body.innerHTML;
+                }),
+                '<div id="wrap">' +
+                '<div id="parent1">' +
+                '<div class="outer">' +
+                '<div class="inner">' +
+                '<a href="#" id="test1">Test</a>' +
+                '<a href="#" id="test2">Test</a>' +
+                '<a href="#" id="test3">Test</a>' +
+                '<a href="#" id="test4">Test</a>' +
+                '</div>' +
+                '</div>' +
+                '</div>' +
+                '<div id="parent2">' +
+                '</div>' +
+                '</div>' +
+                '<div id="wrapper">' +
+                '<div class="outer">' +
+                '<div class="inner"></div>' +
+                '</div>' +
+                '</div>'
+            )
+        });
+
+        it('works with array nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    dom.wrapAll(
+                        [
+                            document.getElementById('test1'),
+                            document.getElementById('test2'),
+                            document.getElementById('test3'),
+                            document.getElementById('test4')
+                        ],
+                        '.outer'
+                    );
+                    return document.body.innerHTML;
+                }),
+                '<div id="wrap">' +
+                '<div id="parent1">' +
+                '<div class="outer">' +
+                '<div class="inner">' +
+                '<a href="#" id="test1">Test</a>' +
+                '<a href="#" id="test2">Test</a>' +
+                '<a href="#" id="test3">Test</a>' +
+                '<a href="#" id="test4">Test</a>' +
+                '</div>' +
+                '</div>' +
+                '</div>' +
+                '<div id="parent2">' +
+                '</div>' +
+                '</div>' +
+                '<div id="wrapper">' +
+                '<div class="outer">' +
+                '<div class="inner"></div>' +
+                '</div>' +
+                '</div>'
+            )
+        });
+
+        it('works with HTMLElement other nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    dom.wrapAll(
+                        'a',
+                        document.querySelector('.outer')
+                    );
+                    return document.body.innerHTML;
+                }),
+                '<div id="wrap">' +
+                '<div id="parent1">' +
+                '<div class="outer">' +
+                '<div class="inner">' +
+                '<a href="#" id="test1">Test</a>' +
+                '<a href="#" id="test2">Test</a>' +
+                '<a href="#" id="test3">Test</a>' +
+                '<a href="#" id="test4">Test</a>' +
+                '</div>' +
+                '</div>' +
+                '</div>' +
+                '<div id="parent2">' +
+                '</div>' +
+                '</div>' +
+                '<div id="wrapper">' +
+                '<div class="outer">' +
+                '<div class="inner"></div>' +
+                '</div>' +
+                '</div>'
+            )
+        });
+
+        it('works with HTMLCollection other nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    dom.wrapAll(
+                        'a',
                         document.getElementById('wrapper').children
                     );
                     return document.body.innerHTML;
@@ -520,12 +892,12 @@ describe('DOM Wrap', function() {
                 '<div class="inner">' +
                 '<a href="#" id="test1">Test</a>' +
                 '<a href="#" id="test2">Test</a>' +
+                '<a href="#" id="test3">Test</a>' +
+                '<a href="#" id="test4">Test</a>' +
                 '</div>' +
                 '</div>' +
                 '</div>' +
                 '<div id="parent2">' +
-                '<a href="#" id="test3">Test</a>' +
-                '<a href="#" id="test4">Test</a>' +
                 '</div>' +
                 '</div>' +
                 '<div id="wrapper">' +
@@ -536,11 +908,11 @@ describe('DOM Wrap', function() {
             )
         });
 
-        it('works with NodeList', async function() {
+        it('works with NodeList other nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     dom.wrapAll(
-                        document.querySelectorAll('a'),
+                        'a',
                         document.querySelectorAll('.outer')
                     );
                     return document.body.innerHTML;
@@ -567,16 +939,11 @@ describe('DOM Wrap', function() {
             )
         });
 
-        it('works with array', async function() {
+        it('works with array other nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     dom.wrapAll(
-                        [
-                            document.getElementById('test1'),
-                            document.getElementById('test2'),
-                            document.getElementById('test3'),
-                            document.getElementById('test4')
-                        ],
+                        'a',
                         [
                             document.querySelector('.outer')
                         ]
@@ -605,7 +972,7 @@ describe('DOM Wrap', function() {
             )
         });
 
-        it('works with HTML', async function() {
+        it('works with HTML other nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     dom.wrapAll(
@@ -697,12 +1064,12 @@ describe('DOM Wrap', function() {
             )
         });
 
-        it('works with HTMLElement', async function() {
+        it('works with HTMLElement nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     dom.wrapInner(
                         document.getElementById('parent1'),
-                        document.querySelector('.outer')
+                        '.outer'
                     );
                     return document.body.innerHTML;
                 }),
@@ -729,11 +1096,158 @@ describe('DOM Wrap', function() {
             )
         });
 
-        it('works with HTMLCollection', async function() {
+        it('works with HTMLCollection nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     dom.wrapInner(
                         document.getElementById('wrap').children,
+                        '.outer'
+                    );
+                    return document.body.innerHTML;
+                }),
+                '<div id="wrap">' +
+                '<div id="parent1">' +
+                '<div class="outer">' +
+                '<div class="inner">' +
+                '<a href="#" id="test1">Test</a>' +
+                '<a href="#" id="test2">Test</a>' +
+                '</div>' +
+                '</div>' +
+                '</div>' +
+                '<div id="parent2">' +
+                '<div class="outer">' +
+                '<div class="inner">' +
+                '<a href="#" id="test3">Test</a>' +
+                '<a href="#" id="test4">Test</a>' +
+                '</div>' +
+                '</div>' +
+                '</div>' +
+                '</div>' +
+                '<div id="wrapper">' +
+                '<div class="outer">' +
+                '<div class="inner">' +
+                '</div>' +
+                '</div>' +
+                '</div>'
+            )
+        });
+
+        it('works with NodeList nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    dom.wrapInner(
+                        document.querySelectorAll('#wrap > div'),
+                        '.outer'
+                    );
+                    return document.body.innerHTML;
+                }),
+                '<div id="wrap">' +
+                '<div id="parent1">' +
+                '<div class="outer">' +
+                '<div class="inner">' +
+                '<a href="#" id="test1">Test</a>' +
+                '<a href="#" id="test2">Test</a>' +
+                '</div>' +
+                '</div>' +
+                '</div>' +
+                '<div id="parent2">' +
+                '<div class="outer">' +
+                '<div class="inner">' +
+                '<a href="#" id="test3">Test</a>' +
+                '<a href="#" id="test4">Test</a>' +
+                '</div>' +
+                '</div>' +
+                '</div>' +
+                '</div>' +
+                '<div id="wrapper">' +
+                '<div class="outer">' +
+                '<div class="inner">' +
+                '</div>' +
+                '</div>' +
+                '</div>'
+            )
+        });
+
+        it('works with array nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    dom.wrapInner(
+                        [
+                            document.getElementById('parent1'),
+                            document.getElementById('parent2')
+                        ],
+                        '.outer'
+                    );
+                    return document.body.innerHTML;
+                }),
+                '<div id="wrap">' +
+                '<div id="parent1">' +
+                '<div class="outer">' +
+                '<div class="inner">' +
+                '<a href="#" id="test1">Test</a>' +
+                '<a href="#" id="test2">Test</a>' +
+                '</div>' +
+                '</div>' +
+                '</div>' +
+                '<div id="parent2">' +
+                '<div class="outer">' +
+                '<div class="inner">' +
+                '<a href="#" id="test3">Test</a>' +
+                '<a href="#" id="test4">Test</a>' +
+                '</div>' +
+                '</div>' +
+                '</div>' +
+                '</div>' +
+                '<div id="wrapper">' +
+                '<div class="outer">' +
+                '<div class="inner">' +
+                '</div>' +
+                '</div>' +
+                '</div>'
+            )
+        });
+
+        it('works with HTMLElement other nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    dom.wrapInner(
+                        '#wrap > div',
+                        document.querySelector('.outer')
+                    );
+                    return document.body.innerHTML;
+                }),
+                '<div id="wrap">' +
+                '<div id="parent1">' +
+                '<div class="outer">' +
+                '<div class="inner">' +
+                '<a href="#" id="test1">Test</a>' +
+                '<a href="#" id="test2">Test</a>' +
+                '</div>' +
+                '</div>' +
+                '</div>' +
+                '<div id="parent2">' +
+                '<div class="outer">' +
+                '<div class="inner">' +
+                '<a href="#" id="test3">Test</a>' +
+                '<a href="#" id="test4">Test</a>' +
+                '</div>' +
+                '</div>' +
+                '</div>' +
+                '</div>' +
+                '<div id="wrapper">' +
+                '<div class="outer">' +
+                '<div class="inner">' +
+                '</div>' +
+                '</div>' +
+                '</div>'
+            )
+        });
+
+        it('works with HTMLCollection other nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    dom.wrapInner(
+                        '#wrap > div',
                         document.getElementById('wrapper').children
                     );
                     return document.body.innerHTML;
@@ -765,11 +1279,11 @@ describe('DOM Wrap', function() {
             )
         });
 
-        it('works with NodeList', async function() {
+        it('works with NodeList other nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     dom.wrapInner(
-                        document.querySelectorAll('#wrap > div'),
+                        '#wrap > div',
                         document.querySelectorAll('.outer')
                     );
                     return document.body.innerHTML;
@@ -801,14 +1315,11 @@ describe('DOM Wrap', function() {
             )
         });
 
-        it('works with array', async function() {
+        it('works with array other nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     dom.wrapInner(
-                        [
-                            document.getElementById('parent1'),
-                            document.getElementById('parent2')
-                        ],
+                        '#wrap > div',
                         [
                             document.querySelector('.outer')
                         ]
@@ -842,7 +1353,7 @@ describe('DOM Wrap', function() {
             )
         });
 
-        it('works with HTML', async function() {
+        it('works with HTML other nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     dom.wrapInner(

@@ -54,26 +54,128 @@ describe('DOM Attributes (Data)', function() {
             );
         });
 
-        it('works with HTMLElement', async function() {
+        it('works with HTMLElement nodes', async function() {
             assert.deepEqual(
                 await exec(_ => {
                     dom.cloneData(
                         document.getElementById('test1'),
+                        '[data-toggle="noData"]'
+                    );
+                    return [
+                        dom.getData('#test3'),
+                        dom.getData('#test4')
+                    ];
+                }),
+                [
+                    {
+                        test1: 'Test 1'
+                    },
+                    {
+                        test1: 'Test 1'
+                    }
+                ]
+            );
+        });
+
+        it('works with HTMLCollection nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    dom.cloneData(
+                        document.getElementById('dataParent').children,
+                        '[data-toggle="noData"]'
+                    );
+                    return [
+                        dom.getData('#test3'),
+                        dom.getData('#test4')
+                    ];
+                }),
+                [
+                    {
+                        test1: 'Test 1',
+                        test2: 'Test 2'
+                    },
+                    {
+                        test1: 'Test 1',
+                        test2: 'Test 2'
+                    }
+                ]
+            );
+        });
+
+        it('works with NodeList nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    dom.cloneData(
+                        document.querySelectorAll('[data-toggle="data"]'),
+                        '[data-toggle="noData"]'
+                    );
+                    return [
+                        dom.getData('#test3'),
+                        dom.getData('#test4')
+                    ];
+                }),
+                [
+                    {
+                        test1: 'Test 1',
+                        test2: 'Test 2'
+                    },
+                    {
+                        test1: 'Test 1',
+                        test2: 'Test 2'
+                    }
+                ]
+            );
+        });
+
+        it('works with array nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    dom.cloneData(
+                        [
+                            document.getElementById('test1'),
+                            document.getElementById('test2')
+                        ],
+                        '[data-toggle="noData"]'
+                    );
+                    return [
+                        dom.getData('#test3'),
+                        dom.getData('#test4')
+                    ];
+                }),
+                [
+                    {
+                        test1: 'Test 1',
+                        test2: 'Test 2'
+                    },
+                    {
+                        test1: 'Test 1',
+                        test2: 'Test 2'
+                    }
+                ]
+            );
+        });
+
+        it('works with HTMLElement other nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    dom.cloneData(
+                        '[data-toggle="data"]',
                         document.getElementById('test3')
                     );
                     return dom.getData('#test3');
                 }),
                 {
-                    test1: 'Test 1'
+                    test1: 'Test 1',
+                    test2: 'Test 2'
                 }
             );
         });
 
-        it('works with HTMLCollection', async function() {
+        it('works with HTMLCollection other nodes', async function() {
             assert.deepEqual(
                 await exec(_ => {
                     dom.cloneData(
-                        document.getElementById('dataParent').children,
+                        '[data-toggle="data"]',
                         document.getElementById('noDataParent').children
                     );
                     return [
@@ -94,11 +196,11 @@ describe('DOM Attributes (Data)', function() {
             );
         });
 
-        it('works with NodeList', async function() {
+        it('works with NodeList other nodes', async function() {
             assert.deepEqual(
                 await exec(_ => {
                     dom.cloneData(
-                        document.querySelectorAll('[data-toggle="data"]'),
+                        '[data-toggle="data"]',
                         document.querySelectorAll('[data-toggle="noData"]')
                     );
                     return [
@@ -119,14 +221,11 @@ describe('DOM Attributes (Data)', function() {
             );
         });
 
-        it('works with array', async function() {
+        it('works with array other nodes', async function() {
             assert.deepEqual(
                 await exec(_ => {
                     dom.cloneData(
-                        [
-                            document.getElementById('test1'),
-                            document.getElementById('test2')
-                        ],
+                        '[data-toggle="data"]',
                         [
                             document.getElementById('test3'),
                             document.getElementById('test4')
@@ -192,54 +291,15 @@ describe('DOM Attributes (Data)', function() {
             );
         });
 
-        it('works with HTMLElement', async function() {
+        it('returns undefined for an undefined key', async function() {
             assert.equal(
                 await exec(_ => {
                     return dom.getData(
-                        document.getElementById('test1'),
-                        'test'
+                        'div',
+                        'invalid'
                     );
                 }),
-                'Test 1'
-            );
-        });
-
-        it('works with HTMLCollection', async function() {
-            assert.equal(
-                await exec(_ => {
-                    return dom.getData(
-                        document.body.children,
-                        'test'
-                    );
-                }),
-                'Test 1'
-            );
-        });
-
-        it('works with NodeList', async function() {
-            assert.equal(
-                await exec(_ => {
-                    return dom.getData(
-                        document.querySelectorAll('div'),
-                        'test'
-                    );
-                }),
-                'Test 1'
-            );
-        });
-
-        it('works with array', async function() {
-            assert.equal(
-                await exec(_ => {
-                    return dom.getData(
-                        [
-                            document.getElementById('test1'),
-                            document.getElementById('test2')
-                        ],
-                        'test'
-                    );
-                }),
-                'Test 1'
+                undefined
             );
         });
 
@@ -255,15 +315,54 @@ describe('DOM Attributes (Data)', function() {
             );
         });
 
-        it('returns undefined for an undefined key', async function() {
+        it('works with HTMLElement nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     return dom.getData(
-                        'div',
-                        'invalid'
+                        document.getElementById('test1'),
+                        'test'
                     );
                 }),
-                undefined
+                'Test 1'
+            );
+        });
+
+        it('works with HTMLCollection nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    return dom.getData(
+                        document.body.children,
+                        'test'
+                    );
+                }),
+                'Test 1'
+            );
+        });
+
+        it('works with NodeList nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    return dom.getData(
+                        document.querySelectorAll('div'),
+                        'test'
+                    );
+                }),
+                'Test 1'
+            );
+        });
+
+        it('works with array nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    return dom.getData(
+                        [
+                            document.getElementById('test1'),
+                            document.getElementById('test2')
+                        ],
+                        'test'
+                    );
+                }),
+                'Test 1'
             );
         });
 
@@ -284,6 +383,24 @@ describe('DOM Attributes (Data)', function() {
                     }
                 );
             });
+        });
+
+        it('removes all data for all nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    dom.removeData(
+                        'div'
+                    );
+                    return [
+                        dom.getData('#test1'),
+                        dom.getData('#test2')
+                    ];
+                }),
+                [
+                    null,
+                    null
+                ]
+            );
         });
 
         it('removes data for all nodes', async function() {
@@ -309,25 +426,7 @@ describe('DOM Attributes (Data)', function() {
             );
         });
 
-        it('removes all data for all nodes', async function() {
-            assert.deepEqual(
-                await exec(_ => {
-                    dom.removeData(
-                        'div'
-                    );
-                    return [
-                        dom.getData('#test1'),
-                        dom.getData('#test2')
-                    ];
-                }),
-                [
-                    null,
-                    null
-                ]
-            );
-        });
-
-        it('works with HTMLElement', async function() {
+        it('works with HTMLElement nodes', async function() {
             assert.deepEqual(
                 await exec(_ => {
                     dom.removeData(
@@ -342,7 +441,7 @@ describe('DOM Attributes (Data)', function() {
             );
         });
 
-        it('works with HTMLCollection', async function() {
+        it('works with HTMLCollection nodes', async function() {
             assert.deepEqual(
                 await exec(_ => {
                     dom.removeData(
@@ -365,7 +464,7 @@ describe('DOM Attributes (Data)', function() {
             );
         });
 
-        it('works with NodeList', async function() {
+        it('works with NodeList nodes', async function() {
             assert.deepEqual(
                 await exec(_ => {
                     dom.removeData(
@@ -388,7 +487,7 @@ describe('DOM Attributes (Data)', function() {
             );
         });
 
-        it('works with array', async function() {
+        it('works with array nodes', async function() {
             assert.deepEqual(
                 await exec(_ => {
                     dom.removeData(
@@ -426,30 +525,6 @@ describe('DOM Attributes (Data)', function() {
             });
         });
 
-        it('sets data for all nodes', async function() {
-            assert.deepEqual(
-                await exec(_ => {
-                    dom.setData(
-                        'div',
-                        'test',
-                        'Test 1'
-                    );
-                    return [
-                        dom.getData('#test1'),
-                        dom.getData('#test2')
-                    ];
-                }),
-                [
-                    {
-                        test: 'Test 1'
-                    },
-                    {
-                        test: 'Test 1'
-                    }
-                ]
-            );
-        });
-
         it('sets a data object for all nodes', async function() {
             assert.deepEqual(
                 await exec(_ => {
@@ -478,7 +553,31 @@ describe('DOM Attributes (Data)', function() {
             );
         });
 
-        it('works with HTMLElement', async function() {
+        it('sets data for all nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    dom.setData(
+                        'div',
+                        'test',
+                        'Test 1'
+                    );
+                    return [
+                        dom.getData('#test1'),
+                        dom.getData('#test2')
+                    ];
+                }),
+                [
+                    {
+                        test: 'Test 1'
+                    },
+                    {
+                        test: 'Test 1'
+                    }
+                ]
+            );
+        });
+
+        it('works with HTMLElement nodes', async function() {
             assert.deepEqual(
                 await exec(_ => {
                     dom.setData(
@@ -494,7 +593,7 @@ describe('DOM Attributes (Data)', function() {
             );
         });
 
-        it('works with HTMLCollection', async function() {
+        it('works with HTMLCollection nodes', async function() {
             assert.deepEqual(
                 await exec(_ => {
                     dom.setData(
@@ -518,7 +617,7 @@ describe('DOM Attributes (Data)', function() {
             );
         });
 
-        it('works with NodeList', async function() {
+        it('works with NodeList nodes', async function() {
             assert.deepEqual(
                 await exec(_ => {
                     dom.setData(
@@ -542,7 +641,7 @@ describe('DOM Attributes (Data)', function() {
             );
         });
 
-        it('works with array', async function() {
+        it('works with array nodes', async function() {
             assert.deepEqual(
                 await exec(_ => {
                     dom.setData(

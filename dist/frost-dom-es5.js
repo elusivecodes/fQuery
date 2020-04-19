@@ -3528,7 +3528,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
      * Return the first node not matching a filter.
      * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
      * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
-     * @returns {array} The filtered nodes.
+     * @returns {Node|HTMLElement|DocumentFragment|ShadowRoot} The filtered node.
      */
     notOne: function notOne(nodes, filter) {
       filter = this.parseFilter(filter);
@@ -3538,7 +3538,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
         shadow: true
       }).find(function (node, index) {
         return filter && !filter(node, index);
-      });
+      }) || null;
     },
 
     /**
@@ -3745,14 +3745,14 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
 
 
       if (selector.match(this.constructor._complexRegExp)) {
-        var _selectors = this.constructor._prefixSelectors(selector, "#".concat(this.constructor._tempId, " "));
+        var selectors = this.constructor._prefixSelectors(selector, "#".concat(this.constructor._tempId, " "));
 
         if (Core.isElement(nodes)) {
-          return this.constructor.__findByCustom(_selectors, nodes);
+          return this.constructor.__findByCustom(selectors, nodes);
         }
 
         nodes = this.parseNodes(nodes);
-        return this.constructor._findByCustom(_selectors, nodes);
+        return this.constructor._findByCustom(selectors, nodes);
       } // standard selector
 
 
@@ -3883,10 +3883,10 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
 
 
       if (selector.match(this.constructor._complexRegExp)) {
-        var _selectors2 = this.constructor._prefixSelectors(selector, "#".concat(this.constructor._tempId, " "));
+        var selectors = this.constructor._prefixSelectors(selector, "#".concat(this.constructor._tempId, " "));
 
         if (Core.isElement(nodes)) {
-          return this.constructor.__findOneByCustom(_selectors2, nodes);
+          return this.constructor.__findOneByCustom(selectors, nodes);
         }
 
         nodes = this.parseNodes(nodes);
@@ -3895,7 +3895,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
           return;
         }
 
-        return this.constructor._findOneByCustom(_selectors2, nodes);
+        return this.constructor._findOneByCustom(selectors, nodes);
       } // standard selector
 
 
@@ -6093,7 +6093,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
     _getDelegateContainsFactory: function _getDelegateContainsFactory(node, selector) {
       var _this36 = this;
 
-      selector = DOM._prefixSelectors(selectors, "#".concat(DOM._tempId));
+      selector = DOM._prefixSelectors(selector, "#".concat(DOM._tempId));
       return function (target) {
         var matches = _this36.__findByCustom(selector, node);
 
@@ -8047,7 +8047,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
      * @returns {Node} The new comment node.
      */
     createComment: function createComment(context, comment) {
-      return context.createCommentNode(comment);
+      return context.createComment(comment);
     },
 
     /**

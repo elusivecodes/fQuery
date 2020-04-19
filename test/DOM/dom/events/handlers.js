@@ -35,7 +35,7 @@ describe('DOM Event Handlers', function() {
             );
         });
 
-        it('works with HTMLElement', async function() {
+        it('works with HTMLElement nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     const event = new Event('click');
@@ -57,7 +57,7 @@ describe('DOM Event Handlers', function() {
             );
         });
 
-        it('works with HTMLCollection', async function() {
+        it('works with HTMLCollection nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     const event = new Event('click');
@@ -79,7 +79,7 @@ describe('DOM Event Handlers', function() {
             );
         });
 
-        it('works with NodeList', async function() {
+        it('works with NodeList nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     const event = new Event('click');
@@ -101,7 +101,7 @@ describe('DOM Event Handlers', function() {
             );
         });
 
-        it('works with array', async function() {
+        it('works with array nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     const event = new Event('click');
@@ -135,11 +135,15 @@ describe('DOM Event Handlers', function() {
                 document.body.innerHTML =
                     '<div id="parent1">' +
                     '<a href="#" id="test1">Test</a>' +
+                    '<span>' +
                     '<a href="#" id="test2">Test</a>' +
+                    '</span>' +
                     '</div>' +
                     '<div id="parent2">' +
                     '<a href="#" id="test3">Test</a>' +
+                    '<span>' +
                     '<a href="#" id="test4">Test</a>' +
+                    '</span>' +
                     '</div>';
             });
         });
@@ -175,7 +179,38 @@ describe('DOM Event Handlers', function() {
             );
         });
 
-        it('works with HTMLElement', async function() {
+        it('adds a delegated event to each node with custom child selector', async function() {
+            assert.equal(
+                await exec(_ => {
+                    const event = new Event('click', {
+                        bubbles: true
+                    });
+                    const element1 = document.getElementById('test1');
+                    const element2 = document.getElementById('test2');
+                    const element3 = document.getElementById('test3');
+                    const element4 = document.getElementById('test4');
+                    let result = 0;
+                    dom.addEventDelegate(
+                        'div',
+                        'click',
+                        '> a',
+                        _ => { result++; }
+                    );
+                    element1.dispatchEvent(event);
+                    element1.dispatchEvent(event);
+                    element2.dispatchEvent(event);
+                    element2.dispatchEvent(event);
+                    element3.dispatchEvent(event);
+                    element3.dispatchEvent(event);
+                    element4.dispatchEvent(event);
+                    element4.dispatchEvent(event);
+                    return result;
+                }),
+                4
+            );
+        });
+
+        it('works with HTMLElement nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     const event = new Event('click', {
@@ -206,7 +241,7 @@ describe('DOM Event Handlers', function() {
             );
         });
 
-        it('works with HTMLCollection', async function() {
+        it('works with HTMLCollection nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     const event = new Event('click', {
@@ -237,7 +272,7 @@ describe('DOM Event Handlers', function() {
             );
         });
 
-        it('works with NodeList', async function() {
+        it('works with NodeList nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     const event = new Event('click', {
@@ -268,7 +303,7 @@ describe('DOM Event Handlers', function() {
             );
         });
 
-        it('works with array', async function() {
+        it('works with array nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     const event = new Event('click', {
@@ -311,11 +346,15 @@ describe('DOM Event Handlers', function() {
                 document.body.innerHTML =
                     '<div id="parent1">' +
                     '<a href="#" id="test1">Test</a>' +
+                    '<span>' +
                     '<a href="#" id="test2">Test</a>' +
+                    '</span>' +
                     '</div>' +
                     '<div id="parent2">' +
                     '<a href="#" id="test3">Test</a>' +
+                    '<span>' +
                     '<a href="#" id="test4">Test</a>' +
+                    '</span>' +
                     '</div>';
             });
         });
@@ -351,7 +390,32 @@ describe('DOM Event Handlers', function() {
             );
         });
 
-        it('works with HTMLElement', async function() {
+        it('adds a self-destructing delegated event to each node with custom child selector', async function() {
+            assert.equal(
+                await exec(_ => {
+                    const event = new Event('click', {
+                        bubbles: true
+                    });
+                    const element1 = document.getElementById('test1');
+                    const element4 = document.getElementById('test4');
+                    let result = 0;
+                    dom.addEventDelegateOnce(
+                        'div',
+                        'click',
+                        '> a',
+                        _ => { result++; }
+                    );
+                    element1.dispatchEvent(event);
+                    element1.dispatchEvent(event);
+                    element4.dispatchEvent(event);
+                    element4.dispatchEvent(event);
+                    return result;
+                }),
+                1
+            );
+        });
+
+        it('works with HTMLElement nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     const event = new Event('click', {
@@ -382,7 +446,7 @@ describe('DOM Event Handlers', function() {
             );
         });
 
-        it('works with HTMLCollection', async function() {
+        it('works with HTMLCollection nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     const event = new Event('click', {
@@ -413,7 +477,7 @@ describe('DOM Event Handlers', function() {
             );
         });
 
-        it('works with NodeList', async function() {
+        it('works with NodeList nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     const event = new Event('click', {
@@ -444,7 +508,7 @@ describe('DOM Event Handlers', function() {
             );
         });
 
-        it('works with array', async function() {
+        it('works with array nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     const event = new Event('click', {
@@ -512,7 +576,7 @@ describe('DOM Event Handlers', function() {
             );
         });
 
-        it('works with HTMLElement', async function() {
+        it('works with HTMLElement nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     const event = new Event('click');
@@ -534,7 +598,7 @@ describe('DOM Event Handlers', function() {
             );
         });
 
-        it('works with HTMLCollection', async function() {
+        it('works with HTMLCollection nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     const event = new Event('click');
@@ -556,7 +620,7 @@ describe('DOM Event Handlers', function() {
             );
         });
 
-        it('works with NodeList', async function() {
+        it('works with NodeList nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     const event = new Event('click');
@@ -578,7 +642,7 @@ describe('DOM Event Handlers', function() {
             );
         });
 
-        it('works with array', async function() {
+        it('works with array nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     const event = new Event('click');
@@ -606,7 +670,17 @@ describe('DOM Event Handlers', function() {
     });
 
     describe('#cloneEvents', function() {
-        // clones all events from all elements to all other elements
+
+        it('clones all events from all elements to all other elements');
+        it('works with HTMLElement nodes');
+        it('works with HTMLCollection nodes');
+        it('works with NodeList nodes');
+        it('works with array nodes');
+        it('works with HTMLElement other nodes');
+        it('works with HTMLCollection other nodes');
+        it('works with NodeList other nodes');
+        it('works with array other nodes');
+
     });
 
     describe('#removeEvent', function() {
@@ -619,10 +693,11 @@ describe('DOM Event Handlers', function() {
             });
         });
 
-        it('removes an event from each node', async function() {
+        it('removes all events from each node', async function() {
             assert.equal(
                 await exec(_ => {
-                    const event = new Event('click');
+                    const event1 = new Event('click');
+                    const event2 = new Event('hover');
                     const element1 = document.getElementById('test1');
                     const element2 = document.getElementById('test2');
                     let result = 0;
@@ -638,16 +713,14 @@ describe('DOM Event Handlers', function() {
                         'click',
                         callback2
                     );
-                    dom.removeEvent(
-                        'a',
-                        'click',
-                        callback1
-                    );
-                    element1.dispatchEvent(event);
-                    element2.dispatchEvent(event);
+                    dom.removeEvent('a');
+                    element1.dispatchEvent(event1);
+                    element1.dispatchEvent(event2);
+                    element2.dispatchEvent(event1);
+                    element2.dispatchEvent(event2);
                     return result;
                 }),
-                2
+                0
             );
         });
 
@@ -690,11 +763,10 @@ describe('DOM Event Handlers', function() {
             );
         });
 
-        it('removes all events from each node', async function() {
+        it('removes an event from each node', async function() {
             assert.equal(
                 await exec(_ => {
-                    const event1 = new Event('click');
-                    const event2 = new Event('hover');
+                    const event = new Event('click');
                     const element1 = document.getElementById('test1');
                     const element2 = document.getElementById('test2');
                     let result = 0;
@@ -710,18 +782,20 @@ describe('DOM Event Handlers', function() {
                         'click',
                         callback2
                     );
-                    dom.removeEvent('a');
-                    element1.dispatchEvent(event1);
-                    element1.dispatchEvent(event2);
-                    element2.dispatchEvent(event1);
-                    element2.dispatchEvent(event2);
+                    dom.removeEvent(
+                        'a',
+                        'click',
+                        callback1
+                    );
+                    element1.dispatchEvent(event);
+                    element2.dispatchEvent(event);
                     return result;
                 }),
-                0
+                2
             );
         });
 
-        it('works with HTMLElement', async function() {
+        it('works with HTMLElement nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     const event = new Event('click');
@@ -753,7 +827,7 @@ describe('DOM Event Handlers', function() {
             );
         });
 
-        it('works with HTMLCollection', async function() {
+        it('works with HTMLCollection nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     const event = new Event('click');
@@ -785,7 +859,7 @@ describe('DOM Event Handlers', function() {
             );
         });
 
-        it('works with NodeList', async function() {
+        it('works with NodeList nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     const event = new Event('click');
@@ -817,7 +891,7 @@ describe('DOM Event Handlers', function() {
             );
         });
 
-        it('works with array', async function() {
+        it('works with array nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     const event = new Event('click');
@@ -870,10 +944,13 @@ describe('DOM Event Handlers', function() {
             });
         });
 
-        it('removes a delegated event from each node', async function() {
+        it('removes all delegated events from each node', async function() {
             assert.equal(
                 await exec(_ => {
-                    const event = new Event('click', {
+                    const event1 = new Event('click', {
+                        bubbles: true
+                    });
+                    const event2 = new Event('hover', {
                         bubbles: true
                     });
                     const element1 = document.getElementById('test1');
@@ -895,19 +972,28 @@ describe('DOM Event Handlers', function() {
                         'a',
                         callback2
                     );
-                    dom.removeEventDelegate(
+                    dom.addEventDelegate(
                         'div',
-                        'click',
+                        'hover',
                         'a',
                         callback1
                     );
-                    element1.dispatchEvent(event);
-                    element2.dispatchEvent(event);
-                    element3.dispatchEvent(event);
-                    element4.dispatchEvent(event);
+                    dom.removeEventDelegate(
+                        'div',
+                        null,
+                        'a'
+                    );
+                    element1.dispatchEvent(event1);
+                    element1.dispatchEvent(event2);
+                    element2.dispatchEvent(event1);
+                    element2.dispatchEvent(event2);
+                    element3.dispatchEvent(event1);
+                    element3.dispatchEvent(event2);
+                    element4.dispatchEvent(event1);
+                    element4.dispatchEvent(event2);
                     return result;
                 }),
-                4
+                0
             );
         });
 
@@ -964,13 +1050,10 @@ describe('DOM Event Handlers', function() {
             );
         });
 
-        it('removes all delegated events from each node', async function() {
+        it('removes a delegated event from each node', async function() {
             assert.equal(
                 await exec(_ => {
-                    const event1 = new Event('click', {
-                        bubbles: true
-                    });
-                    const event2 = new Event('hover', {
+                    const event = new Event('click', {
                         bubbles: true
                     });
                     const element1 = document.getElementById('test1');
@@ -992,32 +1075,23 @@ describe('DOM Event Handlers', function() {
                         'a',
                         callback2
                     );
-                    dom.addEventDelegate(
+                    dom.removeEventDelegate(
                         'div',
-                        'hover',
+                        'click',
                         'a',
                         callback1
                     );
-                    dom.removeEventDelegate(
-                        'div',
-                        null,
-                        'a'
-                    );
-                    element1.dispatchEvent(event1);
-                    element1.dispatchEvent(event2);
-                    element2.dispatchEvent(event1);
-                    element2.dispatchEvent(event2);
-                    element3.dispatchEvent(event1);
-                    element3.dispatchEvent(event2);
-                    element4.dispatchEvent(event1);
-                    element4.dispatchEvent(event2);
+                    element1.dispatchEvent(event);
+                    element2.dispatchEvent(event);
+                    element3.dispatchEvent(event);
+                    element4.dispatchEvent(event);
                     return result;
                 }),
-                0
+                4
             );
         });
 
-        it('works with HTMLElement', async function() {
+        it('works with HTMLElement nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     const event = new Event('click', {
@@ -1058,7 +1132,7 @@ describe('DOM Event Handlers', function() {
             );
         });
 
-        it('works with HTMLCollection', async function() {
+        it('works with HTMLCollection nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     const event = new Event('click', {
@@ -1099,7 +1173,7 @@ describe('DOM Event Handlers', function() {
             );
         });
 
-        it('works with NodeList', async function() {
+        it('works with NodeList nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     const event = new Event('click', {
@@ -1140,7 +1214,7 @@ describe('DOM Event Handlers', function() {
             );
         });
 
-        it('works with array', async function() {
+        it('works with array nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     const event = new Event('click', {
@@ -1215,7 +1289,7 @@ describe('DOM Event Handlers', function() {
             );
         });
 
-        it('works with custom data', async function() {
+        it('triggers an event for each node with custom data', async function() {
             assert.equal(
                 await exec(_ => {
                     let result = 0;
@@ -1243,7 +1317,7 @@ describe('DOM Event Handlers', function() {
             );
         });
 
-        it('works with HTMLElement', async function() {
+        it('works with HTMLElement nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     let result = 0;
@@ -1262,7 +1336,7 @@ describe('DOM Event Handlers', function() {
             );
         });
 
-        it('works with HTMLCollection', async function() {
+        it('works with HTMLCollection nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     let result = 0;
@@ -1281,7 +1355,7 @@ describe('DOM Event Handlers', function() {
             );
         });
 
-        it('works with NodeList', async function() {
+        it('works with NodeList nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     let result = 0;
@@ -1300,7 +1374,7 @@ describe('DOM Event Handlers', function() {
             );
         });
 
-        it('works with array', async function() {
+        it('works with array nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     let result = 0;

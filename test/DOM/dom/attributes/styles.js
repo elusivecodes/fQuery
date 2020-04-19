@@ -73,7 +73,7 @@ describe('DOM Attributes (Styles)', function() {
             );
         });
 
-        it('works with HTMLElement', async function() {
+        it('works with HTMLElement nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     dom.addClass(
@@ -87,7 +87,7 @@ describe('DOM Attributes (Styles)', function() {
             );
         });
 
-        it('works with HTMLCollection', async function() {
+        it('works with HTMLCollection nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     dom.addClass(
@@ -101,7 +101,7 @@ describe('DOM Attributes (Styles)', function() {
             );
         });
 
-        it('works with NodeList', async function() {
+        it('works with NodeList nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     dom.addClass(
@@ -115,7 +115,7 @@ describe('DOM Attributes (Styles)', function() {
             );
         });
 
-        it('works with array', async function() {
+        it('works with array nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     dom.addClass(
@@ -136,12 +136,48 @@ describe('DOM Attributes (Styles)', function() {
 
     describe('#css', function() {
 
-        it('returns a computed style for the first node');
-        it('returns an object with all computed styles for the first node');
-        it('works with HTMLElement');
-        it('works with HTMLCollection');
-        it('works with NodeList');
-        it('works with array');
+        beforeEach(async function() {
+            await exec(_ => {
+                document.body.innerHTML =
+                    '<style>' +
+                    '.test { display: block; width: 50vw; }' +
+                    '</style>' +
+                    '<div id="parent">' +
+                    '<div id="test1" class="test"></div>' +
+                    '<div id="test2" class="test"></div>' +
+                    '</div>';
+            });
+        });
+
+        it('returns an object with all computed styles for the first node', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    const css = dom.css(
+                        '.test'
+                    );
+                    return {
+                        display: css.display,
+                        width: css.width
+                    }
+                }),
+                {
+                    display: 'block',
+                    width: '400px'
+                }
+            );
+        });
+
+        it('returns a computed style for the first node', async function() {
+            assert.equal(
+                await exec(_ => {
+                    return dom.css(
+                        '.test',
+                        'width'
+                    );
+                }),
+                '400px'
+            );
+        });
 
         it('returns undefined for empty nodes', async function() {
             assert.equal(
@@ -155,6 +191,57 @@ describe('DOM Attributes (Styles)', function() {
             );
         });
 
+        it('works with HTMLElement nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    return dom.css(
+                        document.getElementById('test1'),
+                        'width'
+                    );
+                }),
+                '400px'
+            );
+        });
+
+        it('works with HTMLCollection nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    return dom.css(
+                        document.getElementById('parent').children,
+                        'width'
+                    );
+                }),
+                '400px'
+            );
+        });
+
+        it('works with NodeList nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    return dom.css(
+                        document.querySelectorAll('.test'),
+                        'width'
+                    );
+                }),
+                '400px'
+            );
+        });
+
+        it('works with array nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    return dom.css(
+                        [
+                            document.getElementById('test1'),
+                            document.getElementById('test2')
+                        ],
+                        'width'
+                    );
+                }),
+                '400px'
+            );
+        });
+
     });
 
     describe('#getStyle', function() {
@@ -165,18 +252,6 @@ describe('DOM Attributes (Styles)', function() {
                     '<div id="test1" style="display: block; width: 100px; height: 100px;"></div>' +
                     '<div id="test2"></div>';
             });
-        });
-
-        it('returns a style value for the first node', async function() {
-            assert.equal(
-                await exec(_ => {
-                    return dom.getStyle(
-                        'div',
-                        'display'
-                    );
-                }),
-                'block'
-            );
         });
 
         it('returns an object with all style values for the first node', async function() {
@@ -194,11 +269,11 @@ describe('DOM Attributes (Styles)', function() {
             );
         });
 
-        it('works with HTMLElement', async function() {
+        it('returns a style value for the first node', async function() {
             assert.equal(
                 await exec(_ => {
                     return dom.getStyle(
-                        document.getElementById('test1'),
+                        'div',
                         'display'
                     );
                 }),
@@ -206,42 +281,15 @@ describe('DOM Attributes (Styles)', function() {
             );
         });
 
-        it('works with HTMLCollection', async function() {
+        it('returns an empty string for an undefined style', async function() {
             assert.equal(
                 await exec(_ => {
                     return dom.getStyle(
-                        document.body.children,
-                        'display'
+                        'div',
+                        'visibility'
                     );
                 }),
-                'block'
-            );
-        });
-
-        it('works with NodeList', async function() {
-            assert.equal(
-                await exec(_ => {
-                    return dom.getStyle(
-                        document.querySelectorAll('div'),
-                        'display'
-                    );
-                }),
-                'block'
-            );
-        });
-
-        it('works with array', async function() {
-            assert.equal(
-                await exec(_ => {
-                    return dom.getStyle(
-                        [
-                            document.getElementById('test1'),
-                            document.getElementById('test2')
-                        ],
-                        'display'
-                    );
-                }),
-                'block'
+                ''
             );
         });
 
@@ -257,15 +305,54 @@ describe('DOM Attributes (Styles)', function() {
             );
         });
 
-        it('returns an empty string for an undefined style', async function() {
+        it('works with HTMLElement nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     return dom.getStyle(
-                        'div',
-                        'visibility'
+                        document.getElementById('test1'),
+                        'display'
                     );
                 }),
-                ''
+                'block'
+            );
+        });
+
+        it('works with HTMLCollection nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    return dom.getStyle(
+                        document.body.children,
+                        'display'
+                    );
+                }),
+                'block'
+            );
+        });
+
+        it('works with NodeList nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    return dom.getStyle(
+                        document.querySelectorAll('div'),
+                        'display'
+                    );
+                }),
+                'block'
+            );
+        });
+
+        it('works with array nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    return dom.getStyle(
+                        [
+                            document.getElementById('test1'),
+                            document.getElementById('test2')
+                        ],
+                        'display'
+                    );
+                }),
+                'block'
             );
         });
 
@@ -294,7 +381,7 @@ describe('DOM Attributes (Styles)', function() {
             );
         });
 
-        it('works with HTMLElement', async function() {
+        it('works with HTMLElement nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     dom.hide(
@@ -307,7 +394,7 @@ describe('DOM Attributes (Styles)', function() {
             );
         });
 
-        it('works with HTMLCollection', async function() {
+        it('works with HTMLCollection nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     dom.hide(
@@ -320,7 +407,7 @@ describe('DOM Attributes (Styles)', function() {
             );
         });
 
-        it('works with NodeList', async function() {
+        it('works with NodeList nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     dom.hide(
@@ -333,7 +420,7 @@ describe('DOM Attributes (Styles)', function() {
             );
         });
 
-        it('works with array', async function() {
+        it('works with array nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     dom.hide(
@@ -421,7 +508,7 @@ describe('DOM Attributes (Styles)', function() {
             );
         });
 
-        it('works with HTMLElement', async function() {
+        it('works with HTMLElement nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     dom.removeClass(
@@ -435,7 +522,7 @@ describe('DOM Attributes (Styles)', function() {
             );
         });
 
-        it('works with HTMLCollection', async function() {
+        it('works with HTMLCollection nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     dom.removeClass(
@@ -449,7 +536,7 @@ describe('DOM Attributes (Styles)', function() {
             );
         });
 
-        it('works with NodeList', async function() {
+        it('works with NodeList nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     dom.removeClass(
@@ -463,7 +550,7 @@ describe('DOM Attributes (Styles)', function() {
             );
         });
 
-        it('works with array', async function() {
+        it('works with array nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     dom.removeClass(
@@ -490,6 +577,25 @@ describe('DOM Attributes (Styles)', function() {
                     '<div id="test1"></div>' +
                     '<div id="test2"></div>';
             });
+        });
+
+        it('sets a styles object for all nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    dom.setStyle(
+                        'div',
+                        {
+                            display: 'block',
+                            width: '100%',
+                            height: '100',
+                            opacity: 0.5
+                        }
+                    );
+                    return document.body.innerHTML;
+                }),
+                '<div id="test1" style="display: block; width: 100%; height: 100px; opacity: 0.5;"></div>' +
+                '<div id="test2" style="display: block; width: 100%; height: 100px; opacity: 0.5;"></div>'
+            );
         });
 
         it('sets a style value for all nodes', async function() {
@@ -537,25 +643,6 @@ describe('DOM Attributes (Styles)', function() {
             );
         });
 
-        it('sets a styles object for all nodes', async function() {
-            assert.equal(
-                await exec(_ => {
-                    dom.setStyle(
-                        'div',
-                        {
-                            display: 'block',
-                            width: '100%',
-                            height: '100',
-                            opacity: 0.5
-                        }
-                    );
-                    return document.body.innerHTML;
-                }),
-                '<div id="test1" style="display: block; width: 100%; height: 100px; opacity: 0.5;"></div>' +
-                '<div id="test2" style="display: block; width: 100%; height: 100px; opacity: 0.5;"></div>'
-            );
-        });
-
         it('sets a style value for all nodes with important', async function() {
             assert.equal(
                 await exec(_ => {
@@ -572,7 +659,7 @@ describe('DOM Attributes (Styles)', function() {
             );
         });
 
-        it('works with HTMLElement', async function() {
+        it('works with HTMLElement nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     dom.setStyle(
@@ -587,7 +674,7 @@ describe('DOM Attributes (Styles)', function() {
             );
         });
 
-        it('works with HTMLCollection', async function() {
+        it('works with HTMLCollection nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     dom.setStyle(
@@ -602,7 +689,7 @@ describe('DOM Attributes (Styles)', function() {
             );
         });
 
-        it('works with NodeList', async function() {
+        it('works with NodeList nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     dom.setStyle(
@@ -617,7 +704,7 @@ describe('DOM Attributes (Styles)', function() {
             );
         });
 
-        it('works with array', async function() {
+        it('works with array nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     dom.setStyle(
@@ -660,7 +747,7 @@ describe('DOM Attributes (Styles)', function() {
             );
         });
 
-        it('works with HTMLElement', async function() {
+        it('works with HTMLElement nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     dom.show(
@@ -673,7 +760,7 @@ describe('DOM Attributes (Styles)', function() {
             );
         });
 
-        it('works with HTMLCollection', async function() {
+        it('works with HTMLCollection nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     dom.show(
@@ -686,7 +773,7 @@ describe('DOM Attributes (Styles)', function() {
             );
         });
 
-        it('works with NodeList', async function() {
+        it('works with NodeList nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     dom.show(
@@ -699,7 +786,7 @@ describe('DOM Attributes (Styles)', function() {
             );
         });
 
-        it('works with array', async function() {
+        it('works with array nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     dom.show(
@@ -740,7 +827,7 @@ describe('DOM Attributes (Styles)', function() {
             );
         });
 
-        it('works with HTMLElement', async function() {
+        it('works with HTMLElement nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     dom.toggle(
@@ -753,7 +840,7 @@ describe('DOM Attributes (Styles)', function() {
             );
         });
 
-        it('works with HTMLCollection', async function() {
+        it('works with HTMLCollection nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     dom.toggle(
@@ -766,7 +853,7 @@ describe('DOM Attributes (Styles)', function() {
             );
         });
 
-        it('works with NodeList', async function() {
+        it('works with NodeList nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     dom.toggle(
@@ -779,7 +866,7 @@ describe('DOM Attributes (Styles)', function() {
             );
         });
 
-        it('works with array', async function() {
+        it('works with array nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     dom.toggle(
@@ -867,7 +954,7 @@ describe('DOM Attributes (Styles)', function() {
             );
         });
 
-        it('works with HTMLElement', async function() {
+        it('works with HTMLElement nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     dom.toggleClass(
@@ -881,7 +968,7 @@ describe('DOM Attributes (Styles)', function() {
             );
         });
 
-        it('works with HTMLCollection', async function() {
+        it('works with HTMLCollection nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     dom.toggleClass(
@@ -895,7 +982,7 @@ describe('DOM Attributes (Styles)', function() {
             );
         });
 
-        it('works with NodeList', async function() {
+        it('works with NodeList nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     dom.toggleClass(
@@ -909,7 +996,7 @@ describe('DOM Attributes (Styles)', function() {
             );
         });
 
-        it('works with array', async function() {
+        it('works with array nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     dom.toggleClass(

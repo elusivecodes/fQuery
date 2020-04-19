@@ -53,93 +53,12 @@ describe('DOM Traversal', function() {
             );
         });
 
-        it('works with function filter', async function() {
-            assert.deepEqual(
-                await exec(_ => {
-                    return dom.child(
-                        '.parent',
-                        node => node.tagName === 'SPAN'
-                    ).map(node => node.id);
-                }),
-                [
-                    'child3',
-                    'child7'
-                ]
-            );
-        });
-
-        it('works with query selector filter', async function() {
+        it('returns the first child of each node matching a filter', async function() {
             assert.deepEqual(
                 await exec(_ => {
                     return dom.child(
                         '.parent',
                         'span'
-                    ).map(node => node.id);
-                }),
-                [
-                    'child3',
-                    'child7'
-                ]
-            );
-        });
-
-        it('works with HTMLElement', async function() {
-            assert.deepEqual(
-                await exec(_ => {
-                    return dom.child(
-                        document.getElementById('parent1'),
-                        document.getElementById('child3')
-                    ).map(node => node.id);
-                }),
-                [
-                    'child3'
-                ]
-            );
-        });
-
-        it('works with HTMLCollection', async function() {
-            assert.deepEqual(
-                await exec(_ => {
-                    return dom.child(
-                        document.body.children,
-                        document.getElementById('parent1').children
-                    ).map(node => node.id);
-                }),
-                [
-                    'child1'
-                ]
-            );
-        });
-
-        it('works with NodeList', async function() {
-            assert.deepEqual(
-                await exec(_ => {
-                    return dom.child(
-                        document.querySelectorAll('.parent'),
-                        document.querySelectorAll('span')
-                    ).map(node => node.id);
-                }),
-                [
-                    'child3',
-                    'child7'
-                ]
-            );
-        });
-
-        it('works with array', async function() {
-            assert.deepEqual(
-                await exec(_ => {
-                    return dom.child(
-                        [
-                            document.getElementById('parent1'),
-                            document.getElementById('parent2')
-                        ],
-                        [
-                            document.getElementById('child3'),
-                            document.getElementById('child4'),
-                            document.getElementById('child7'),
-                            document.getElementById('child8')
-                        ]
                     ).map(node => node.id);
                 }),
                 [
@@ -157,6 +76,146 @@ describe('DOM Traversal', function() {
                     );
                 }),
                 []
+            );
+        });
+
+        it('works with HTMLElement nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    return dom.child(
+                        document.getElementById('parent1'),
+                        'span'
+                    ).map(node => node.id);
+                }),
+                [
+                    'child3'
+                ]
+            );
+        });
+
+        it('works with HTMLCollection nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    return dom.child(
+                        document.body.children,
+                        'span'
+                    ).map(node => node.id);
+                }),
+                [
+                    'child3',
+                    'child7'
+                ]
+            );
+        });
+
+        it('works with NodeList nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    return dom.child(
+                        document.querySelectorAll('.parent'),
+                        'span'
+                    ).map(node => node.id);
+                }),
+                [
+                    'child3',
+                    'child7'
+                ]
+            );
+        });
+
+        it('works with array nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    return dom.child(
+                        [
+                            document.getElementById('parent1'),
+                            document.getElementById('parent2')
+                        ],
+                        'span'
+                    ).map(node => node.id);
+                }),
+                [
+                    'child3',
+                    'child7'
+                ]
+            );
+        });
+
+        it('works with function filter', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    return dom.child(
+                        '.parent',
+                        node => node.tagName === 'SPAN'
+                    ).map(node => node.id);
+                }),
+                [
+                    'child3',
+                    'child7'
+                ]
+            );
+        });
+
+        it('works with HTMLElement filter', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    return dom.child(
+                        '.parent',
+                        document.getElementById('child3')
+                    ).map(node => node.id);
+                }),
+                [
+                    'child3'
+                ]
+            );
+        });
+
+        it('works with HTMLCollection filter', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    return dom.child(
+                        '.parent',
+                        document.getElementById('parent1').children
+                    ).map(node => node.id);
+                }),
+                [
+                    'child1'
+                ]
+            );
+        });
+
+        it('works with NodeList filter', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    return dom.child(
+                        '.parent',
+                        document.querySelectorAll('span')
+                    ).map(node => node.id);
+                }),
+                [
+                    'child3',
+                    'child7'
+                ]
+            );
+        });
+
+        it('works with array filter', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    return dom.child(
+                        '.parent',
+                        [
+                            document.getElementById('child3'),
+                            document.getElementById('child4'),
+                            document.getElementById('child7'),
+                            document.getElementById('child8')
+                        ]
+                    ).map(node => node.id);
+                }),
+                [
+                    'child3',
+                    'child7'
+                ]
             );
         });
 
@@ -198,7 +257,7 @@ describe('DOM Traversal', function() {
             });
         });
 
-        it('returns the all children of each node', async function() {
+        it('returns all children of each node', async function() {
             assert.deepEqual(
                 await exec(_ => {
                     return dom.children(
@@ -212,6 +271,103 @@ describe('DOM Traversal', function() {
                     'child4',
                     'child5',
                     'child6',
+                    'child7',
+                    'child8'
+                ]
+            );
+        });
+
+        it('returns all children of each node matching a filter', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    return dom.children(
+                        '.parent',
+                        'span'
+                    ).map(node => node.id);
+                }),
+                [
+                    'child3',
+                    'child4',
+                    'child7',
+                    'child8'
+                ]
+            );
+        });
+
+        it('returns an empty array for empty nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    return dom.children(
+                        '#invalid'
+                    );
+                }),
+                []
+            );
+        });
+
+        it('works with HTMLElement nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    return dom.children(
+                        document.getElementById('parent1'),
+                        'span'
+                    ).map(node => node.id);
+                }),
+                [
+                    'child3',
+                    'child4'
+                ]
+            );
+        });
+
+        it('works with HTMLCollection nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    return dom.children(
+                        document.body.children,
+                        'span'
+                    ).map(node => node.id);
+                }),
+                [
+                    'child3',
+                    'child4',
+                    'child7',
+                    'child8'
+                ]
+            );
+        });
+
+        it('works with NodeList nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    return dom.children(
+                        document.querySelectorAll('.parent'),
+                        'span'
+                    ).map(node => node.id);
+                }),
+                [
+                    'child3',
+                    'child4',
+                    'child7',
+                    'child8'
+                ]
+            );
+        });
+
+        it('works with array nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    return dom.children(
+                        [
+                            document.getElementById('parent1'),
+                            document.getElementById('parent2')
+                        ],
+                        'span'
+                    ).map(node => node.id);
+                }),
+                [
+                    'child3',
+                    'child4',
                     'child7',
                     'child8'
                 ]
@@ -235,28 +391,11 @@ describe('DOM Traversal', function() {
             );
         });
 
-        it('works with query selector filter', async function() {
+        it('works with HTMLElement filter', async function() {
             assert.deepEqual(
                 await exec(_ => {
                     return dom.children(
                         '.parent',
-                        'span'
-                    ).map(node => node.id);
-                }),
-                [
-                    'child3',
-                    'child4',
-                    'child7',
-                    'child8'
-                ]
-            );
-        });
-
-        it('works with HTMLElement', async function() {
-            assert.deepEqual(
-                await exec(_ => {
-                    return dom.children(
-                        document.getElementById('parent1'),
                         document.getElementById('child3')
                     ).map(node => node.id);
                 }),
@@ -266,11 +405,11 @@ describe('DOM Traversal', function() {
             );
         });
 
-        it('works with HTMLCollection', async function() {
+        it('works with HTMLCollection filter', async function() {
             assert.deepEqual(
                 await exec(_ => {
                     return dom.children(
-                        document.body.children,
+                        '.parent',
                         document.getElementById('parent1').children
                     ).map(node => node.id);
                 }),
@@ -283,11 +422,11 @@ describe('DOM Traversal', function() {
             );
         });
 
-        it('works with NodeList', async function() {
+        it('works with NodeList filter', async function() {
             assert.deepEqual(
                 await exec(_ => {
                     return dom.children(
-                        document.querySelectorAll('.parent'),
+                        '.parent',
                         document.querySelectorAll('span')
                     ).map(node => node.id);
                 }),
@@ -300,14 +439,11 @@ describe('DOM Traversal', function() {
             );
         });
 
-        it('works with array', async function() {
+        it('works with array filter', async function() {
             assert.deepEqual(
                 await exec(_ => {
                     return dom.children(
-                        [
-                            document.getElementById('parent1'),
-                            document.getElementById('parent2')
-                        ],
+                        '.parent',
                         [
                             document.getElementById('child3'),
                             document.getElementById('child4'),
@@ -322,17 +458,6 @@ describe('DOM Traversal', function() {
                     'child7',
                     'child8'
                 ]
-            );
-        });
-
-        it('returns an empty array for empty nodes', async function() {
-            assert.deepEqual(
-                await exec(_ => {
-                    return dom.children(
-                        '#invalid'
-                    );
-                }),
-                []
             );
         });
 
@@ -374,6 +499,93 @@ describe('DOM Traversal', function() {
             );
         });
 
+        it('returns the closest ancestor of each node matching a filter', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    return dom.closest(
+                        'a',
+                        'div'
+                    ).map(node => node.id);
+                }),
+                [
+                    'child1',
+                    'child2'
+                ]
+            );
+        });
+
+        it('returns an empty array for empty nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    return dom.closest(
+                        '#invalid'
+                    );
+                }),
+                []
+            );
+        });
+
+        it('works with HTMLElement nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    return dom.closest(
+                        document.getElementById('a1'),
+                        'div'
+                    ).map(node => node.id);
+                }),
+                [
+                    'child1'
+                ]
+            );
+        });
+
+        it('works with HTMLCollection nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    return dom.closest(
+                        document.getElementById('child1').children,
+                        'div'
+                    ).map(node => node.id);
+                }),
+                [
+                    'child1'
+                ]
+            );
+        });
+
+        it('works with NodeList nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    return dom.closest(
+                        document.querySelectorAll('a'),
+                        'div'
+                    ).map(node => node.id);
+                }),
+                [
+                    'child1',
+                    'child2'
+                ]
+            );
+        });
+
+        it('works with array nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    return dom.closest(
+                        [
+                            document.getElementById('a1'),
+                            document.getElementById('a2')
+                        ],
+                        'div'
+                    ).map(node => node.id);
+                }),
+                [
+                    'child1',
+                    'child2'
+                ]
+            );
+        });
+
         it('works with function filter', async function() {
             assert.deepEqual(
                 await exec(_ => {
@@ -389,26 +601,11 @@ describe('DOM Traversal', function() {
             );
         });
 
-        it('works with query selector filter', async function() {
+        it('works with HTMLElement filter', async function() {
             assert.deepEqual(
                 await exec(_ => {
                     return dom.closest(
                         'a',
-                        'div'
-                    ).map(node => node.id);
-                }),
-                [
-                    'child1',
-                    'child2'
-                ]
-            );
-        });
-
-        it('works with HTMLElement', async function() {
-            assert.deepEqual(
-                await exec(_ => {
-                    return dom.closest(
-                        document.getElementById('a1'),
                         document.getElementById('child1')
                     ).map(node => node.id);
                 }),
@@ -418,25 +615,26 @@ describe('DOM Traversal', function() {
             );
         });
 
-        it('works with HTMLCollection', async function() {
+        it('works with HTMLCollection filter', async function() {
             assert.deepEqual(
                 await exec(_ => {
                     return dom.closest(
-                        document.getElementById('child1').children,
+                        'a',
                         document.body.children
                     ).map(node => node.id);
                 }),
                 [
-                    'parent1'
+                    'parent1',
+                    'parent2'
                 ]
             );
         });
 
-        it('works with NodeList', async function() {
+        it('works with NodeList filter', async function() {
             assert.deepEqual(
                 await exec(_ => {
                     return dom.closest(
-                        document.querySelectorAll('a'),
+                        'a',
                         document.querySelectorAll('div')
                     ).map(node => node.id);
                 }),
@@ -447,14 +645,11 @@ describe('DOM Traversal', function() {
             );
         });
 
-        it('works with array', async function() {
+        it('works with array filter', async function() {
             assert.deepEqual(
                 await exec(_ => {
                     return dom.closest(
-                        [
-                            document.getElementById('a1'),
-                            document.getElementById('a2')
-                        ],
+                        'a',
                         [
                             document.getElementById('child1'),
                             document.getElementById('child2')
@@ -468,18 +663,11 @@ describe('DOM Traversal', function() {
             );
         });
 
-        // limit
-
-        it('returns an empty array for empty nodes', async function() {
-            assert.deepEqual(
-                await exec(_ => {
-                    return dom.closest(
-                        '#invalid'
-                    );
-                }),
-                []
-            );
-        });
+        it('works with function limit');
+        it('works with HTMLElement limit');
+        it('works with HTMLCollection limit');
+        it('works with NodeList limit');
+        it('works with array limit');
 
     });
 
@@ -512,7 +700,18 @@ describe('DOM Traversal', function() {
             );
         });
 
-        it('works with HTMLElement', async function() {
+        it('returns undefined for empty nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    return dom.commonAncestor(
+                        '#invalid'
+                    );
+                }),
+                undefined
+            );
+        });
+
+        it('works with HTMLElement nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     return dom.commonAncestor(
@@ -523,7 +722,7 @@ describe('DOM Traversal', function() {
             );
         });
 
-        it('works with HTMLCollection', async function() {
+        it('works with HTMLCollection nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     return dom.commonAncestor(
@@ -534,7 +733,7 @@ describe('DOM Traversal', function() {
             );
         });
 
-        it('works with NodeList', async function() {
+        it('works with NodeList nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     return dom.commonAncestor(
@@ -545,7 +744,7 @@ describe('DOM Traversal', function() {
             );
         });
 
-        it('works with array', async function() {
+        it('works with array nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     return dom.commonAncestor(
@@ -556,17 +755,6 @@ describe('DOM Traversal', function() {
                     ).id;
                 }),
                 'child'
-            );
-        });
-
-        it('returns undefined for empty nodes', async function() {
-            assert.equal(
-                await exec(_ => {
-                    return dom.commonAncestor(
-                        '#invalid'
-                    );
-                }),
-                undefined
             );
         });
 
@@ -608,7 +796,18 @@ describe('DOM Traversal', function() {
             );
         });
 
-        it('works with HTMLElement', async function() {
+        it('returns an empty array for empty nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    return dom.contents(
+                        '#invalid'
+                    );
+                }),
+                []
+            );
+        });
+
+        it('works with HTMLElement nodes', async function() {
             assert.deepEqual(
                 await exec(_ => {
                     return dom.contents(
@@ -623,7 +822,7 @@ describe('DOM Traversal', function() {
             );
         });
 
-        it('works with HTMLCollection', async function() {
+        it('works with HTMLCollection nodes', async function() {
             assert.deepEqual(
                 await exec(_ => {
                     return dom.contents(
@@ -641,7 +840,7 @@ describe('DOM Traversal', function() {
             );
         });
 
-        it('works with NodeList', async function() {
+        it('works with NodeList nodes', async function() {
             assert.deepEqual(
                 await exec(_ => {
                     return dom.contents(
@@ -659,7 +858,7 @@ describe('DOM Traversal', function() {
             );
         });
 
-        it('works with array', async function() {
+        it('works with array nodes', async function() {
             assert.deepEqual(
                 await exec(_ => {
                     return dom.contents(
@@ -680,17 +879,6 @@ describe('DOM Traversal', function() {
             );
         });
 
-        it('returns an empty array for empty nodes', async function() {
-            assert.deepEqual(
-                await exec(_ => {
-                    return dom.contents(
-                        '#invalid'
-                    );
-                }),
-                []
-            );
-        });
-
     });
 
     describe('#fragment', function() {
@@ -703,7 +891,8 @@ describe('DOM Traversal', function() {
                     '</template>' +
                     '<template id="template2">' +
                     'Test 2' +
-                    '</template>';
+                    '</template>' +
+                    '<div id="div1"></div>';
             });
         });
 
@@ -718,50 +907,14 @@ describe('DOM Traversal', function() {
             );
         });
 
-        it('works with HTMLElement', async function() {
+        it('returns undefined for nodes without a fragment', async function() {
             assert.equal(
                 await exec(_ => {
                     return dom.fragment(
-                        document.getElementById('template2')
-                    ).textContent;
+                        '#div1'
+                    );
                 }),
-                'Test 2'
-            );
-        });
-
-        it('works with HTMLCollection', async function() {
-            assert.equal(
-                await exec(_ => {
-                    return dom.fragment(
-                        document.body.children
-                    ).textContent;
-                }),
-                'Test 1'
-            );
-        });
-
-        it('works with NodeList', async function() {
-            assert.equal(
-                await exec(_ => {
-                    return dom.fragment(
-                        document.querySelectorAll('template')
-                    ).textContent;
-                }),
-                'Test 1'
-            );
-        });
-
-        it('works with array', async function() {
-            assert.equal(
-                await exec(_ => {
-                    return dom.fragment(
-                        [
-                            document.getElementById('template1'),
-                            document.getElementById('template2')
-                        ]
-                    ).textContent;
-                }),
-                'Test 1'
+                undefined
             );
         });
 
@@ -773,6 +926,53 @@ describe('DOM Traversal', function() {
                     );
                 }),
                 undefined
+            );
+        });
+
+        it('works with HTMLElement nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    return dom.fragment(
+                        document.getElementById('template2')
+                    ).textContent;
+                }),
+                'Test 2'
+            );
+        });
+
+        it('works with HTMLCollection nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    return dom.fragment(
+                        document.body.children
+                    ).textContent;
+                }),
+                'Test 1'
+            );
+        });
+
+        it('works with NodeList nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    return dom.fragment(
+                        document.querySelectorAll('template')
+                    ).textContent;
+                }),
+                'Test 1'
+            );
+        });
+
+        it('works with array nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    return dom.fragment(
+                        [
+                            document.getElementById('template1'),
+                            document.getElementById('template2')
+                        ]
+                    ).textContent;
+                }),
+                'Test 1'
             );
         });
 
@@ -828,6 +1028,90 @@ describe('DOM Traversal', function() {
             );
         });
 
+        it('returns the next sibling of each node matching a filter', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    return dom.next(
+                        '.span',
+                        '#span7'
+                    ).map(node => node.id);
+                }),
+                [
+                    'span7'
+                ]
+            );
+        });
+
+        it('returns an empty array for empty nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    return dom.next(
+                        '#invalid'
+                    );
+                }),
+                []
+            );
+        });
+
+        it('works with HTMLElement nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    return dom.next(
+                        document.getElementById('span6'),
+                        '#span7'
+                    ).map(node => node.id);
+                }),
+                [
+                    'span7'
+                ]
+            );
+        });
+
+        it('works with HTMLCollection nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    return dom.next(
+                        document.getElementById('parent2').children,
+                        '#span7'
+                    ).map(node => node.id);
+                }),
+                [
+                    'span7'
+                ]
+            );
+        });
+
+        it('works with NodeList nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    return dom.next(
+                        document.querySelectorAll('.span'),
+                        '#span7'
+                    ).map(node => node.id);
+                }),
+                [
+                    'span7'
+                ]
+            );
+        });
+
+        it('works with array nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    return dom.next(
+                        [
+                            document.getElementById('span2'),
+                            document.getElementById('span6')
+                        ],
+                        '#span7'
+                    ).map(node => node.id);
+                }),
+                [
+                    'span7'
+                ]
+            );
+        });
+
         it('works with function filter', async function() {
             assert.deepEqual(
                 await exec(_ => {
@@ -842,25 +1126,11 @@ describe('DOM Traversal', function() {
             );
         });
 
-        it('works with query selector filter', async function() {
+        it('works with HTMLElement filter', async function() {
             assert.deepEqual(
                 await exec(_ => {
                     return dom.next(
                         '.span',
-                        '#span7'
-                    ).map(node => node.id);
-                }),
-                [
-                    'span7'
-                ]
-            );
-        });
-
-        it('works with HTMLElement', async function() {
-            assert.deepEqual(
-                await exec(_ => {
-                    return dom.next(
-                        document.getElementById('span6'),
                         document.getElementById('span7')
                     ).map(node => node.id);
                 }),
@@ -870,28 +1140,25 @@ describe('DOM Traversal', function() {
             );
         });
 
-        it('works with HTMLCollection', async function() {
+        it('works with HTMLCollection filter', async function() {
             assert.deepEqual(
                 await exec(_ => {
-                    const children = document.getElementById('parent2').children;
                     return dom.next(
-                        children,
-                        children
+                        '.span',
+                        document.getElementById('parent2').children
                     ).map(node => node.id);
                 }),
                 [
-                    'span6',
-                    'span7',
-                    'span8'
+                    'span7'
                 ]
             );
         });
 
-        it('works with NodeList', async function() {
+        it('works with NodeList filter', async function() {
             assert.deepEqual(
                 await exec(_ => {
                     return dom.next(
-                        document.querySelectorAll('.span'),
+                        '.span',
                         document.querySelectorAll('#span7')
                     ).map(node => node.id);
                 }),
@@ -901,14 +1168,11 @@ describe('DOM Traversal', function() {
             );
         });
 
-        it('works with array', async function() {
+        it('works with array filter', async function() {
             assert.deepEqual(
                 await exec(_ => {
                     return dom.next(
-                        [
-                            document.getElementById('span2'),
-                            document.getElementById('span6')
-                        ],
+                        '.span',
                         [
                             document.getElementById('span3'),
                             document.getElementById('span7')
@@ -919,17 +1183,6 @@ describe('DOM Traversal', function() {
                     'span3',
                     'span7'
                 ]
-            );
-        });
-
-        it('returns an empty array for empty nodes', async function() {
-            assert.deepEqual(
-                await exec(_ => {
-                    return dom.next(
-                        '#invalid'
-                    );
-                }),
-                []
             );
         });
 
@@ -987,21 +1240,7 @@ describe('DOM Traversal', function() {
             );
         });
 
-        it('works with function filter', async function() {
-            assert.deepEqual(
-                await exec(_ => {
-                    return dom.nextAll(
-                        '.span',
-                        node => node.id === 'span8'
-                    ).map(node => node.id);
-                }),
-                [
-                    'span8'
-                ]
-            );
-        });
-
-        it('works with query selector filter', async function() {
+        it('returns all next siblings of each node matching a filter', async function() {
             assert.deepEqual(
                 await exec(_ => {
                     return dom.nextAll(
@@ -1016,11 +1255,97 @@ describe('DOM Traversal', function() {
             );
         });
 
-        it('works with HTMLElement', async function() {
+        it('returns an empty array for empty nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    return dom.nextAll(
+                        '#invalid'
+                    );
+                }),
+                []
+            );
+        });
+
+        it('works with HTMLElement nodes', async function() {
             assert.deepEqual(
                 await exec(_ => {
                     return dom.nextAll(
                         document.getElementById('span2'),
+                        '#span4, #span8'
+                    ).map(node => node.id);
+                }),
+                [
+                    'span4'
+                ]
+            );
+        });
+
+        it('works with HTMLCollection nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    return dom.nextAll(
+                        document.getElementById('parent2').children,
+                        '#span4, #span8'
+                    ).map(node => node.id);
+                }),
+                [
+                    'span8'
+                ]
+            );
+        });
+
+        it('works with NodeList nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    return dom.nextAll(
+                        document.querySelectorAll('.span'),
+                        '#span4, #span8'
+                    ).map(node => node.id);
+                }),
+                [
+                    'span4',
+                    'span8'
+                ]
+            );
+        });
+
+        it('works with array nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    return dom.nextAll(
+                        [
+                            document.getElementById('span2'),
+                            document.getElementById('span6')
+                        ],
+                        '#span4, #span8'
+                    ).map(node => node.id);
+                }),
+                [
+                    'span4',
+                    'span8'
+                ]
+            );
+        });
+
+        it('works with function filter', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    return dom.nextAll(
+                        '.span',
+                        node => node.id === 'span8'
+                    ).map(node => node.id);
+                }),
+                [
+                    'span8'
+                ]
+            );
+        });
+
+        it('works with HTMLElement filter', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    return dom.nextAll(
+                        '.span',
                         document.getElementById('span4')
                     ).map(node => node.id);
                 }),
@@ -1030,28 +1355,26 @@ describe('DOM Traversal', function() {
             );
         });
 
-        it('works with HTMLCollection', async function() {
+        it('works with HTMLCollection filter', async function() {
             assert.deepEqual(
                 await exec(_ => {
-                    const children = document.getElementById('parent2').children;
                     return dom.nextAll(
-                        children,
-                        children
+                        '.span',
+                        document.getElementById('parent2').children
                     ).map(node => node.id);
                 }),
                 [
-                    'span6',
                     'span7',
                     'span8'
                 ]
             );
         });
 
-        it('works with NodeList', async function() {
+        it('works with NodeList filter', async function() {
             assert.deepEqual(
                 await exec(_ => {
                     return dom.nextAll(
-                        document.querySelectorAll('.span'),
+                        '.span',
                         document.querySelectorAll('#span4, #span8')
                     ).map(node => node.id);
                 }),
@@ -1062,14 +1385,11 @@ describe('DOM Traversal', function() {
             );
         });
 
-        it('works with array', async function() {
+        it('works with array filter', async function() {
             assert.deepEqual(
                 await exec(_ => {
                     return dom.nextAll(
-                        [
-                            document.getElementById('span2'),
-                            document.getElementById('span6')
-                        ],
+                        '.span',
                         [
                             document.getElementById('span4'),
                             document.getElementById('span8')
@@ -1083,18 +1403,11 @@ describe('DOM Traversal', function() {
             );
         });
 
-        // limit
-
-        it('returns an empty array for empty nodes', async function() {
-            assert.deepEqual(
-                await exec(_ => {
-                    return dom.nextAll(
-                        '#invalid'
-                    );
-                }),
-                []
-            );
-        });
+        it('works with function limit');
+        it('works with HTMLElement limit');
+        it('works with HTMLCollection limit');
+        it('works with NodeList limit');
+        it('works with array limit');
 
     });
 
@@ -1131,7 +1444,18 @@ describe('DOM Traversal', function() {
             );
         });
 
-        it('works with HTMLElement', async function() {
+        it('returns undefined for empty nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    return dom.offsetParent(
+                        '#invalid'
+                    );
+                }),
+                undefined
+            );
+        });
+
+        it('works with HTMLElement nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     return dom.offsetParent(
@@ -1142,7 +1466,7 @@ describe('DOM Traversal', function() {
             );
         });
 
-        it('works with HTMLCollection', async function() {
+        it('works with HTMLCollection nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     return dom.offsetParent(
@@ -1153,7 +1477,7 @@ describe('DOM Traversal', function() {
             );
         });
 
-        it('works with HTMLCollection', async function() {
+        it('works with HTMLCollection nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     return dom.offsetParent(
@@ -1164,7 +1488,7 @@ describe('DOM Traversal', function() {
             );
         });
 
-        it('works with array', async function() {
+        it('works with array nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     return dom.offsetParent(
@@ -1175,17 +1499,6 @@ describe('DOM Traversal', function() {
                     ).id;
                 }),
                 'child1'
-            );
-        });
-
-        it('returns undefined for empty nodes', async function() {
-            assert.equal(
-                await exec(_ => {
-                    return dom.offsetParent(
-                        '#invalid'
-                    );
-                }),
-                undefined
             );
         });
 
@@ -1227,87 +1540,12 @@ describe('DOM Traversal', function() {
             );
         });
 
-        it('works with function filter', async function() {
-            assert.deepEqual(
-                await exec(_ => {
-                    return dom.parent(
-                        'a',
-                        node => node.id === 'span2'
-                    ).map(node => node.id);
-                }),
-                [
-                    'span2'
-                ]
-            );
-        });
-
-        it('works with query selector filter', async function() {
+        it('returns the parents of each node matching a filter', async function() {
             assert.deepEqual(
                 await exec(_ => {
                     return dom.parent(
                         'a',
                         '#span2'
-                    ).map(node => node.id);
-                }),
-                [
-                    'span2'
-                ]
-            );
-        });
-
-        it('works with HTMLElement', async function() {
-            assert.deepEqual(
-                await exec(_ => {
-                    return dom.parent(
-                        document.getElementById('a2'),
-                        document.getElementById('span2')
-                    ).map(node => node.id);
-                }),
-                [
-                    'span2'
-                ]
-            );
-        });
-
-        it('works with HTMLCollection', async function() {
-            assert.deepEqual(
-                await exec(_ => {
-                    return dom.parent(
-                        document.getElementById('span2').children,
-                        document.getElementById('child2').children
-                    ).map(node => node.id);
-                }),
-                [
-                    'span2'
-                ]
-            );
-        });
-
-        it('works with NodeList', async function() {
-            assert.deepEqual(
-                await exec(_ => {
-                    return dom.parent(
-                        document.querySelectorAll('a'),
-                        document.querySelectorAll('#span2')
-                    ).map(node => node.id);
-                }),
-                [
-                    'span2'
-                ]
-            );
-        });
-
-        it('works with array', async function() {
-            assert.deepEqual(
-                await exec(_ => {
-                    return dom.parent(
-                        [
-                            document.getElementById('a1'),
-                            document.getElementById('a2')
-                        ],
-                        [
-                            document.getElementById('span2')
-                        ]
                     ).map(node => node.id);
                 }),
                 [
@@ -1324,6 +1562,137 @@ describe('DOM Traversal', function() {
                     );
                 }),
                 []
+            );
+        });
+
+        it('works with HTMLElement nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    return dom.parent(
+                        document.getElementById('a2'),
+                        '#span2'
+                    ).map(node => node.id);
+                }),
+                [
+                    'span2'
+                ]
+            );
+        });
+
+        it('works with HTMLCollection nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    return dom.parent(
+                        document.getElementById('span2').children,
+                        '#span2'
+                    ).map(node => node.id);
+                }),
+                [
+                    'span2'
+                ]
+            );
+        });
+
+        it('works with NodeList nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    return dom.parent(
+                        document.querySelectorAll('a'),
+                        '#span2'
+                    ).map(node => node.id);
+                }),
+                [
+                    'span2'
+                ]
+            );
+        });
+
+        it('works with array nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    return dom.parent(
+                        [
+                            document.getElementById('a1'),
+                            document.getElementById('a2')
+                        ],
+                        '#span2'
+                    ).map(node => node.id);
+                }),
+                [
+                    'span2'
+                ]
+            );
+        });
+
+        it('works with function filter', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    return dom.parent(
+                        'a',
+                        node => node.id === 'span2'
+                    ).map(node => node.id);
+                }),
+                [
+                    'span2'
+                ]
+            );
+        });
+
+        it('works with HTMLElement', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    return dom.parent(
+                        'a',
+                        document.getElementById('span2')
+                    ).map(node => node.id);
+                }),
+                [
+                    'span2'
+                ]
+            );
+        });
+
+        it('works with HTMLCollection', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    return dom.parent(
+                        'a',
+                        document.getElementById('child2').children
+                    ).map(node => node.id);
+                }),
+                [
+                    'span2'
+                ]
+            );
+        });
+
+        it('works with NodeList', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    return dom.parent(
+                        'a',
+                        document.querySelectorAll('#span2')
+                    ).map(node => node.id);
+                }),
+                [
+                    'span2'
+                ]
+            );
+        });
+
+        it('works with array', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    return dom.parent(
+                        'a',
+                        [
+                            document.getElementById('span2')
+                        ]
+                    ).map(node => node.id);
+                }),
+                [
+                    'span2'
+                ]
             );
         });
 
@@ -1371,6 +1740,101 @@ describe('DOM Traversal', function() {
             );
         });
 
+        it('returns the parents of each node matching a filter', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    return dom.parents(
+                        'a',
+                        'div'
+                    ).map(node => node.id);
+                }),
+                [
+                    'parent1',
+                    'child1',
+                    'parent2',
+                    'child2'
+                ]
+            );
+        });
+
+        it('returns an empty array for empty nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    return dom.parents(
+                        '#invalid'
+                    );
+                }),
+                []
+            );
+        });
+
+        it('works with HTMLElement nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    return dom.parents(
+                        document.getElementById('a1'),
+                        'div'
+                    ).map(node => node.id);
+                }),
+                [
+                    'parent1',
+                    'child1'
+                ]
+            );
+        });
+
+        it('works with HTMLCollection nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    return dom.parents(
+                        document.getElementById('child1').children,
+                        'div'
+                    ).map(node => node.id);
+                }),
+                [
+                    'parent1',
+                    'child1'
+                ]
+            );
+        });
+
+        it('works with NodeList nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    return dom.parents(
+                        document.querySelectorAll('a'),
+                        'div'
+                    ).map(node => node.id);
+                }),
+                [
+                    'parent1',
+                    'child1',
+                    'parent2',
+                    'child2'
+                ]
+            );
+        });
+
+        it('works with array nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    return dom.parents(
+                        [
+                            document.getElementById('a1'),
+                            document.getElementById('a2')
+                        ],
+                        'div'
+                    ).map(node => node.id);
+                }),
+                [
+                    'parent1',
+                    'child1',
+                    'parent2',
+                    'child2'
+                ]
+            );
+        });
+
         it('works with function filter', async function() {
             assert.deepEqual(
                 await exec(_ => {
@@ -1388,28 +1852,11 @@ describe('DOM Traversal', function() {
             );
         });
 
-        it('works with query selector filter', async function() {
+        it('works with HTMLElement filter', async function() {
             assert.deepEqual(
                 await exec(_ => {
                     return dom.parents(
                         'a',
-                        'div'
-                    ).map(node => node.id);
-                }),
-                [
-                    'parent1',
-                    'child1',
-                    'parent2',
-                    'child2'
-                ]
-            );
-        });
-
-        it('works with HTMLElement', async function() {
-            assert.deepEqual(
-                await exec(_ => {
-                    return dom.parents(
-                        document.getElementById('a1'),
                         document.getElementById('child1')
                     ).map(node => node.id);
                 }),
@@ -1419,25 +1866,26 @@ describe('DOM Traversal', function() {
             );
         });
 
-        it('works with HTMLCollection', async function() {
+        it('works with HTMLCollection filter', async function() {
             assert.deepEqual(
                 await exec(_ => {
                     return dom.parents(
-                        document.getElementById('child1').children,
+                        'a',
                         document.body.children
                     ).map(node => node.id);
                 }),
                 [
-                    'parent1'
+                    'parent1',
+                    'parent2'
                 ]
             );
         });
 
-        it('works with NodeList', async function() {
+        it('works with NodeList filter', async function() {
             assert.deepEqual(
                 await exec(_ => {
                     return dom.parents(
-                        document.querySelectorAll('a'),
+                        'a',
                         document.querySelectorAll('div')
                     ).map(node => node.id);
                 }),
@@ -1450,14 +1898,11 @@ describe('DOM Traversal', function() {
             );
         });
 
-        it('works with array', async function() {
+        it('works with array filter', async function() {
             assert.deepEqual(
                 await exec(_ => {
                     return dom.parents(
-                        [
-                            document.getElementById('a1'),
-                            document.getElementById('a2')
-                        ],
+                        'a',
                         [
                             document.getElementById('parent1'),
                             document.getElementById('child1'),
@@ -1475,18 +1920,11 @@ describe('DOM Traversal', function() {
             );
         });
 
-        // limit
-
-        it('returns an empty array for empty nodes', async function() {
-            assert.deepEqual(
-                await exec(_ => {
-                    return dom.parents(
-                        '#invalid'
-                    );
-                }),
-                []
-            );
-        });
+        it('works with function limit');
+        it('works with HTMLElement limit');
+        it('works with HTMLCollection limit');
+        it('works with NodeList limit');
+        it('works with array limit');
 
     });
 
@@ -1540,6 +1978,90 @@ describe('DOM Traversal', function() {
             );
         });
 
+        it('returns the previous sibling of each node matching a filter', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    return dom.prev(
+                        '.span',
+                        '#span6'
+                    ).map(node => node.id);
+                }),
+                [
+                    'span6'
+                ]
+            );
+        });
+
+        it('returns an empty array for empty nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    return dom.prev(
+                        '#invalid'
+                    );
+                }),
+                []
+            );
+        });
+
+        it('works with HTMLElement nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    return dom.prev(
+                        document.getElementById('span7'),
+                        '#span6'
+                    ).map(node => node.id);
+                }),
+                [
+                    'span6'
+                ]
+            );
+        });
+
+        it('works with HTMLCollection nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    return dom.prev(
+                        document.getElementById('parent2').children,
+                        '#span6'
+                    ).map(node => node.id);
+                }),
+                [
+                    'span6'
+                ]
+            );
+        });
+
+        it('works with NodeList nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    return dom.prev(
+                        document.querySelectorAll('.span'),
+                        '#span6'
+                    ).map(node => node.id);
+                }),
+                [
+                    'span6'
+                ]
+            );
+        });
+
+        it('works with array nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    return dom.prev(
+                        [
+                            document.getElementById('span3'),
+                            document.getElementById('span7')
+                        ],
+                        '#span6'
+                    ).map(node => node.id);
+                }),
+                [
+                    'span6'
+                ]
+            );
+        });
+
         it('works with function filter', async function() {
             assert.deepEqual(
                 await exec(_ => {
@@ -1554,25 +2076,11 @@ describe('DOM Traversal', function() {
             );
         });
 
-        it('works with query selector filter', async function() {
+        it('works with HTMLElement filter', async function() {
             assert.deepEqual(
                 await exec(_ => {
                     return dom.prev(
                         '.span',
-                        '#span6'
-                    ).map(node => node.id);
-                }),
-                [
-                    'span6'
-                ]
-            );
-        });
-
-        it('works with HTMLElement', async function() {
-            assert.deepEqual(
-                await exec(_ => {
-                    return dom.prev(
-                        document.getElementById('span7'),
                         document.getElementById('span6')
                     ).map(node => node.id);
                 }),
@@ -1582,28 +2090,25 @@ describe('DOM Traversal', function() {
             );
         });
 
-        it('works with HTMLCollection', async function() {
+        it('works with HTMLCollection filter', async function() {
             assert.deepEqual(
                 await exec(_ => {
-                    const children = document.getElementById('parent2').children;
                     return dom.prev(
-                        children,
-                        children
+                        '.span',
+                        document.getElementById('parent2').children
                     ).map(node => node.id);
                 }),
                 [
-                    'span5',
-                    'span6',
-                    'span7'
+                    'span6'
                 ]
             );
         });
 
-        it('works with NodeList', async function() {
+        it('works with NodeList filter', async function() {
             assert.deepEqual(
                 await exec(_ => {
                     return dom.prev(
-                        document.querySelectorAll('.span'),
+                        '.span',
                         document.querySelectorAll('#span6')
                     ).map(node => node.id);
                 }),
@@ -1613,14 +2118,11 @@ describe('DOM Traversal', function() {
             );
         });
 
-        it('works with array', async function() {
+        it('works with array filter', async function() {
             assert.deepEqual(
                 await exec(_ => {
                     return dom.prev(
-                        [
-                            document.getElementById('span3'),
-                            document.getElementById('span7')
-                        ],
+                        '.span',
                         [
                             document.getElementById('span2'),
                             document.getElementById('span6')
@@ -1631,17 +2133,6 @@ describe('DOM Traversal', function() {
                     'span2',
                     'span6'
                 ]
-            );
-        });
-
-        it('returns an empty array for empty nodes', async function() {
-            assert.deepEqual(
-                await exec(_ => {
-                    return dom.prev(
-                        '#invalid'
-                    );
-                }),
-                []
             );
         });
 
@@ -1699,21 +2190,7 @@ describe('DOM Traversal', function() {
             );
         });
 
-        it('works with function filter', async function() {
-            assert.deepEqual(
-                await exec(_ => {
-                    return dom.prevAll(
-                        '.span',
-                        node => node.id === 'span5'
-                    ).map(node => node.id);
-                }),
-                [
-                    'span5'
-                ]
-            );
-        });
-
-        it('works with query selector filter', async function() {
+        it('returns all previous siblings of each node matching a filter', async function() {
             assert.deepEqual(
                 await exec(_ => {
                     return dom.prevAll(
@@ -1728,11 +2205,97 @@ describe('DOM Traversal', function() {
             );
         });
 
-        it('works with HTMLElement', async function() {
+        it('returns an empty array for empty nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    return dom.prevAll(
+                        '#invalid'
+                    );
+                }),
+                []
+            );
+        });
+
+        it('works with HTMLElement nodes', async function() {
             assert.deepEqual(
                 await exec(_ => {
                     return dom.prevAll(
                         document.getElementById('span3'),
+                        '#span1, #span5'
+                    ).map(node => node.id);
+                }),
+                [
+                    'span1'
+                ]
+            );
+        });
+
+        it('works with HTMLCollection nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    return dom.prevAll(
+                        document.getElementById('parent2').children,
+                        '#span1, #span5'
+                    ).map(node => node.id);
+                }),
+                [
+                    'span5'
+                ]
+            );
+        });
+
+        it('works with NodeList nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    return dom.prevAll(
+                        document.querySelectorAll('.span'),
+                        '#span1, #span5'
+                    ).map(node => node.id);
+                }),
+                [
+                    'span1',
+                    'span5'
+                ]
+            );
+        });
+
+        it('works with array nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    return dom.prevAll(
+                        [
+                            document.getElementById('span3'),
+                            document.getElementById('span7')
+                        ],
+                        '#span1, #span5'
+                    ).map(node => node.id);
+                }),
+                [
+                    'span1',
+                    'span5'
+                ]
+            );
+        });
+
+        it('works with function filter', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    return dom.prevAll(
+                        '.span',
+                        node => node.id === 'span5'
+                    ).map(node => node.id);
+                }),
+                [
+                    'span5'
+                ]
+            );
+        });
+
+        it('works with HTMLElement filter', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    return dom.prevAll(
+                        '.span',
                         document.getElementById('span1')
                     ).map(node => node.id);
                 }),
@@ -1742,28 +2305,26 @@ describe('DOM Traversal', function() {
             );
         });
 
-        it('works with HTMLCollection', async function() {
+        it('works with HTMLCollection filter', async function() {
             assert.deepEqual(
                 await exec(_ => {
-                    const children = document.getElementById('parent2').children;
                     return dom.prevAll(
-                        children,
-                        children
+                        '.span',
+                        document.getElementById('parent2').children
                     ).map(node => node.id);
                 }),
                 [
                     'span5',
-                    'span6',
-                    'span7'
+                    'span6'
                 ]
             );
         });
 
-        it('works with NodeList', async function() {
+        it('works with NodeList filter', async function() {
             assert.deepEqual(
                 await exec(_ => {
                     return dom.prevAll(
-                        document.querySelectorAll('.span'),
+                        '.span',
                         document.querySelectorAll('#span1, #span5')
                     ).map(node => node.id);
                 }),
@@ -1774,14 +2335,11 @@ describe('DOM Traversal', function() {
             );
         });
 
-        it('works with array', async function() {
+        it('works with array filter', async function() {
             assert.deepEqual(
                 await exec(_ => {
                     return dom.prevAll(
-                        [
-                            document.getElementById('span3'),
-                            document.getElementById('span7')
-                        ],
+                        '.span',
                         [
                             document.getElementById('span1'),
                             document.getElementById('span5')
@@ -1795,18 +2353,11 @@ describe('DOM Traversal', function() {
             );
         });
 
-        // limit
-
-        it('returns an empty array for empty nodes', async function() {
-            assert.deepEqual(
-                await exec(_ => {
-                    return dom.prevAll(
-                        '#invalid'
-                    );
-                }),
-                []
-            );
-        });
+        it('works with function limit');
+        it('works with HTMLElement limit');
+        it('works with HTMLCollection limit');
+        it('works with NodeList limit');
+        it('works with array limit');
 
     });
 
@@ -1816,7 +2367,8 @@ describe('DOM Traversal', function() {
             await exec(_ => {
                 document.body.innerHTML =
                     '<div id="div1"></div>' +
-                    '<div id="div2"></div>';
+                    '<div id="div2"></div>' +
+                    '<div id="div3"></div>';
                 const shadow1 = document.getElementById('div1').attachShadow({ mode: 'open' });
                 const shadow2 = document.getElementById('div2').attachShadow({ mode: 'closed' });
                 const text1 = document.createTextNode('Test 1');
@@ -1837,53 +2389,6 @@ describe('DOM Traversal', function() {
             );
         });
 
-        it('works with HTMLElement', async function() {
-            assert.equal(
-                await exec(_ => {
-                    return dom.shadow(
-                        document.getElementById('div1')
-                    ).textContent;
-                }),
-                'Test 1'
-            );
-        });
-
-        it('works with HTMLCollection', async function() {
-            assert.equal(
-                await exec(_ => {
-                    return dom.shadow(
-                        document.body.children
-                    ).textContent;
-                }),
-                'Test 1'
-            );
-        });
-
-        it('works with NodeList', async function() {
-            assert.equal(
-                await exec(_ => {
-                    return dom.shadow(
-                        document.querySelectorAll('div')
-                    ).textContent;
-                }),
-                'Test 1'
-            );
-        });
-
-        it('works with array', async function() {
-            assert.equal(
-                await exec(_ => {
-                    return dom.shadow(
-                        [
-                            document.getElementById('div1'),
-                            document.getElementById('div2')
-                        ]
-                    ).textContent;
-                }),
-                'Test 1'
-            );
-        });
-
         it('returns null for closed shadow roots', async function() {
             assert.equal(
                 await exec(_ => {
@@ -1895,6 +2400,17 @@ describe('DOM Traversal', function() {
             );
         });
 
+        it('returns undefined for nodes without a shadow root', async function() {
+            assert.equal(
+                await exec(_ => {
+                    return dom.fragment(
+                        '#div3'
+                    );
+                }),
+                undefined
+            );
+        });
+
         it('returns undefined for empty nodes', async function() {
             assert.equal(
                 await exec(_ => {
@@ -1903,6 +2419,53 @@ describe('DOM Traversal', function() {
                     );
                 }),
                 undefined
+            );
+        });
+
+        it('works with HTMLElement nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    return dom.shadow(
+                        document.getElementById('div1')
+                    ).textContent;
+                }),
+                'Test 1'
+            );
+        });
+
+        it('works with HTMLCollection nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    return dom.shadow(
+                        document.body.children
+                    ).textContent;
+                }),
+                'Test 1'
+            );
+        });
+
+        it('works with NodeList nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    return dom.shadow(
+                        document.querySelectorAll('div')
+                    ).textContent;
+                }),
+                'Test 1'
+            );
+        });
+
+        it('works with array nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    return dom.shadow(
+                        [
+                            document.getElementById('div1'),
+                            document.getElementById('div2')
+                        ]
+                    ).textContent;
+                }),
+                'Test 1'
             );
         });
 
@@ -1970,95 +2533,12 @@ describe('DOM Traversal', function() {
             );
         });
 
-        it('works with function filter', async function() {
-            assert.deepEqual(
-                await exec(_ => {
-                    return dom.siblings(
-                        '.span',
-                        node => node.id === 'span5'
-                    ).map(node => node.id);
-                }),
-                [
-                    'span5'
-                ]
-            );
-        });
-
-        it('works with query selector filter', async function() {
+        it('returns all siblings of each node matching a filter', async function() {
             assert.deepEqual(
                 await exec(_ => {
                     return dom.siblings(
                         '.span',
                         '#span1, #span10'
-                    ).map(node => node.id);
-                }),
-                [
-                    'span1',
-                    'span10'
-                ]
-            );
-        });
-
-        it('works with HTMLElement', async function() {
-            assert.deepEqual(
-                await exec(_ => {
-                    return dom.siblings(
-                        document.getElementById('span3'),
-                        document.getElementById('span1')
-                    ).map(node => node.id);
-                }),
-                [
-                    'span1'
-                ]
-            );
-        });
-
-        it('works with HTMLCollection', async function() {
-            assert.deepEqual(
-                await exec(_ => {
-                    const children = document.getElementById('parent2').children;
-                    return dom.siblings(
-                        children,
-                        children
-                    ).map(node => node.id);
-                }),
-                [
-                    'span6',
-                    'span7',
-                    'span8',
-                    'span9',
-                    'span10'
-                ]
-            );
-        });
-
-        it('works with NodeList', async function() {
-            assert.deepEqual(
-                await exec(_ => {
-                    return dom.siblings(
-                        document.querySelectorAll('.span'),
-                        document.querySelectorAll('#span1, #span10')
-                    ).map(node => node.id);
-                }),
-                [
-                    'span1',
-                    'span10'
-                ]
-            );
-        });
-
-        it('works with array', async function() {
-            assert.deepEqual(
-                await exec(_ => {
-                    return dom.siblings(
-                        [
-                            document.getElementById('span3'),
-                            document.getElementById('span8')
-                        ],
-                        [
-                            document.getElementById('span1'),
-                            document.getElementById('span10')
-                        ]
                     ).map(node => node.id);
                 }),
                 [
@@ -2076,6 +2556,145 @@ describe('DOM Traversal', function() {
                     );
                 }),
                 []
+            );
+        });
+
+        it('works with HTMLElement nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    return dom.siblings(
+                        document.getElementById('span3'),
+                        '#span1, #span10'
+                    ).map(node => node.id);
+                }),
+                [
+                    'span1'
+                ]
+            );
+        });
+
+        it('works with HTMLCollection nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    return dom.siblings(
+                        document.getElementById('parent2').children,
+                        '#span1, #span10'
+                    ).map(node => node.id);
+                }),
+                [
+                    'span10'
+                ]
+            );
+        });
+
+        it('works with NodeList nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    return dom.siblings(
+                        document.querySelectorAll('.span'),
+                        '#span1, #span10'
+                    ).map(node => node.id);
+                }),
+                [
+                    'span1',
+                    'span10'
+                ]
+            );
+        });
+
+        it('works with array nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    return dom.siblings(
+                        [
+                            document.getElementById('span3'),
+                            document.getElementById('span8')
+                        ],
+                        '#span1, #span10'
+                    ).map(node => node.id);
+                }),
+                [
+                    'span1',
+                    'span10'
+                ]
+            );
+        });
+
+        it('works with function filter', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    return dom.siblings(
+                        '.span',
+                        node => node.id === 'span5'
+                    ).map(node => node.id);
+                }),
+                [
+                    'span5'
+                ]
+            );
+        });
+
+        it('works with HTMLElement filter', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    return dom.siblings(
+                        '.span',
+                        document.getElementById('span1')
+                    ).map(node => node.id);
+                }),
+                [
+                    'span1'
+                ]
+            );
+        });
+
+        it('works with HTMLCollection filter', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    return dom.siblings(
+                        '.span',
+                        document.getElementById('parent2').children
+                    ).map(node => node.id);
+                }),
+                [
+                    'span6',
+                    'span7',
+                    'span9',
+                    'span10'
+                ]
+            );
+        });
+
+        it('works with NodeList filter', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    return dom.siblings(
+                        '.span',
+                        document.querySelectorAll('#span1, #span10')
+                    ).map(node => node.id);
+                }),
+                [
+                    'span1',
+                    'span10'
+                ]
+            );
+        });
+
+        it('works with array filter', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    return dom.siblings(
+                        '.span',
+                        [
+                            document.getElementById('span1'),
+                            document.getElementById('span10')
+                        ]
+                    ).map(node => node.id);
+                }),
+                [
+                    'span1',
+                    'span10'
+                ]
             );
         });
 

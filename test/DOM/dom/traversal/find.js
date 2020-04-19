@@ -225,97 +225,6 @@ describe('DOM Find', function() {
             )
         });
 
-        it('works with query selector', async function() {
-            assert.deepEqual(
-                await exec(_ => {
-                    return dom.find(
-                        'span',
-                        '#parent1 > #child1'
-                    ).map(node => node.id);
-                }),
-                [
-                    'span1',
-                    'span2'
-                ]
-            )
-        });
-
-        it('works with HTMLElement', async function() {
-            assert.deepEqual(
-                await exec(_ => {
-                    return dom.find(
-                        'span',
-                        document.getElementById('child1')
-                    ).map(node => node.id);
-                }),
-                [
-                    'span1',
-                    'span2'
-                ]
-            )
-        });
-
-        it('works with HTMLCollection', async function() {
-            assert.deepEqual(
-                await exec(_ => {
-                    return dom.find(
-                        'span',
-                        document.getElementById('parent1').children
-                    ).map(node => node.id);
-                }),
-                [
-                    'span1',
-                    'span2',
-                    'span3',
-                    'span4',
-                    'span5',
-                    'span6'
-                ]
-            )
-        });
-
-        it('works with NodeList', async function() {
-            assert.deepEqual(
-                await exec(_ => {
-                    return dom.find(
-                        'span',
-                        document.querySelectorAll('#parent1 > div')
-                    ).map(node => node.id);
-                }),
-                [
-                    'span1',
-                    'span2',
-                    'span3',
-                    'span4',
-                    'span5',
-                    'span6'
-                ]
-            )
-        });
-
-        it('works with array', async function() {
-            assert.deepEqual(
-                await exec(_ => {
-                    return dom.find(
-                        'span',
-                        [
-                            document.getElementById('child1'),
-                            document.getElementById('child2'),
-                            document.getElementById('child3')
-                        ]
-                    ).map(node => node.id);
-                }),
-                [
-                    'span1',
-                    'span2',
-                    'span3',
-                    'span4',
-                    'span5',
-                    'span6'
-                ]
-            )
-        });
-
         it('returns an empty array for non-matching selector', async function() {
             assert.deepEqual(
                 await exec(_ => {
@@ -336,6 +245,97 @@ describe('DOM Find', function() {
                     ).map(node => node.id);
                 }),
                 []
+            )
+        });
+
+        it('works with query selector nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    return dom.find(
+                        'span',
+                        '#parent1 > #child1'
+                    ).map(node => node.id);
+                }),
+                [
+                    'span1',
+                    'span2'
+                ]
+            )
+        });
+
+        it('works with HTMLElement nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    return dom.find(
+                        'span',
+                        document.getElementById('child1')
+                    ).map(node => node.id);
+                }),
+                [
+                    'span1',
+                    'span2'
+                ]
+            )
+        });
+
+        it('works with HTMLCollection nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    return dom.find(
+                        'span',
+                        document.getElementById('parent1').children
+                    ).map(node => node.id);
+                }),
+                [
+                    'span1',
+                    'span2',
+                    'span3',
+                    'span4',
+                    'span5',
+                    'span6'
+                ]
+            )
+        });
+
+        it('works with NodeList nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    return dom.find(
+                        'span',
+                        document.querySelectorAll('#parent1 > div')
+                    ).map(node => node.id);
+                }),
+                [
+                    'span1',
+                    'span2',
+                    'span3',
+                    'span4',
+                    'span5',
+                    'span6'
+                ]
+            )
+        });
+
+        it('works with array nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    return dom.find(
+                        'span',
+                        [
+                            document.getElementById('child1'),
+                            document.getElementById('child2'),
+                            document.getElementById('child3')
+                        ]
+                    ).map(node => node.id);
+                }),
+                [
+                    'span1',
+                    'span2',
+                    'span3',
+                    'span4',
+                    'span5',
+                    'span6'
+                ]
             )
         });
 
@@ -534,84 +534,6 @@ describe('DOM Find', function() {
             )
         });
 
-        it('works with query selector', async function() {
-            assert.deepEqual(
-                await exec(_ => {
-                    return dom.findById(
-                        'test',
-                        '#parent1'
-                    ).map(node => node.dataset.id);
-                }),
-                [
-                    'span1',
-                    'span3'
-                ]
-            )
-        });
-
-        it('works with HTMLElement', async function() {
-            assert.deepEqual(
-                await exec(_ => {
-                    return dom.findById(
-                        'test',
-                        document.getElementById('parent1')
-                    ).map(node => node.dataset.id);
-                }),
-                [
-                    'span1',
-                    'span3'
-                ]
-            )
-        });
-
-        it('works with HTMLCollection', async function() {
-            assert.deepEqual(
-                await exec(_ => {
-                    return dom.findById(
-                        'test',
-                        document.getElementById('parent1').children
-                    ).map(node => node.dataset.id);
-                }),
-                [
-                    'span1',
-                    'span3'
-                ]
-            )
-        });
-
-        it('works with NodeList', async function() {
-            assert.deepEqual(
-                await exec(_ => {
-                    return dom.findById(
-                        'test',
-                        document.querySelectorAll('#parent1')
-                    ).map(node => node.dataset.id);
-                }),
-                [
-                    'span1',
-                    'span3'
-                ]
-            )
-        });
-
-        it('works with array', async function() {
-            assert.deepEqual(
-                await exec(_ => {
-                    return dom.findById(
-                        'test',
-                        [
-                            document.getElementById('child1'),
-                            document.getElementById('child2')
-                        ]
-                    ).map(node => node.dataset.id);
-                }),
-                [
-                    'span1',
-                    'span3'
-                ]
-            )
-        });
-
         it('returns an empty array for non-matching id', async function() {
             assert.deepEqual(
                 await exec(_ => {
@@ -632,6 +554,84 @@ describe('DOM Find', function() {
                     ).map(node => node.id);
                 }),
                 []
+            )
+        });
+
+        it('works with query selector nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    return dom.findById(
+                        'test',
+                        '#parent1'
+                    ).map(node => node.dataset.id);
+                }),
+                [
+                    'span1',
+                    'span3'
+                ]
+            )
+        });
+
+        it('works with HTMLElement nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    return dom.findById(
+                        'test',
+                        document.getElementById('parent1')
+                    ).map(node => node.dataset.id);
+                }),
+                [
+                    'span1',
+                    'span3'
+                ]
+            )
+        });
+
+        it('works with HTMLCollection nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    return dom.findById(
+                        'test',
+                        document.getElementById('parent1').children
+                    ).map(node => node.dataset.id);
+                }),
+                [
+                    'span1',
+                    'span3'
+                ]
+            )
+        });
+
+        it('works with NodeList nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    return dom.findById(
+                        'test',
+                        document.querySelectorAll('#parent1')
+                    ).map(node => node.dataset.id);
+                }),
+                [
+                    'span1',
+                    'span3'
+                ]
+            )
+        });
+
+        it('works with array nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    return dom.findById(
+                        'test',
+                        [
+                            document.getElementById('child1'),
+                            document.getElementById('child2')
+                        ]
+                    ).map(node => node.dataset.id);
+                }),
+                [
+                    'span1',
+                    'span3'
+                ]
             )
         });
 
@@ -686,94 +686,6 @@ describe('DOM Find', function() {
             );
         });
 
-        it('works with query selector', async function() {
-            assert.deepEqual(
-                await exec(_ => {
-                    return dom.findByTag(
-                        'span',
-                        '#parent1'
-                    ).map(node => node.id);
-                }),
-                [
-                    'span1',
-                    'span2',
-                    'span3',
-                    'span4'
-                ]
-            );
-        });
-
-        it('works with HTMLElement', async function() {
-            assert.deepEqual(
-                await exec(_ => {
-                    return dom.findByTag(
-                        'span',
-                        document.getElementById('parent1')
-                    ).map(node => node.id);
-                }),
-                [
-                    'span1',
-                    'span2',
-                    'span3',
-                    'span4'
-                ]
-            );
-        });
-
-        it('works with HTMLElement', async function() {
-            assert.deepEqual(
-                await exec(_ => {
-                    return dom.findByTag(
-                        'span',
-                        document.getElementById('parent1').children
-                    ).map(node => node.id);
-                }),
-                [
-                    'span1',
-                    'span2',
-                    'span3',
-                    'span4'
-                ]
-            );
-        });
-
-        it('works with NodeList', async function() {
-            assert.deepEqual(
-                await exec(_ => {
-                    return dom.findByTag(
-                        'span',
-                        document.querySelectorAll('#parent1')
-                    ).map(node => node.id);
-                }),
-                [
-                    'span1',
-                    'span2',
-                    'span3',
-                    'span4'
-                ]
-            );
-        });
-
-        it('works with array', async function() {
-            assert.deepEqual(
-                await exec(_ => {
-                    return dom.findByTag(
-                        'span',
-                        [
-                            document.getElementById('child1'),
-                            document.getElementById('child2')
-                        ]
-                    ).map(node => node.id);
-                }),
-                [
-                    'span1',
-                    'span2',
-                    'span3',
-                    'span4'
-                ]
-            );
-        });
-
         it('returns an empty array for non-matching tag', async function() {
             assert.deepEqual(
                 await exec(_ => {
@@ -795,6 +707,94 @@ describe('DOM Find', function() {
                 }),
                 []
             )
+        });
+
+        it('works with query selector nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    return dom.findByTag(
+                        'span',
+                        '#parent1'
+                    ).map(node => node.id);
+                }),
+                [
+                    'span1',
+                    'span2',
+                    'span3',
+                    'span4'
+                ]
+            );
+        });
+
+        it('works with HTMLElement nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    return dom.findByTag(
+                        'span',
+                        document.getElementById('parent1')
+                    ).map(node => node.id);
+                }),
+                [
+                    'span1',
+                    'span2',
+                    'span3',
+                    'span4'
+                ]
+            );
+        });
+
+        it('works with HTMLElement nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    return dom.findByTag(
+                        'span',
+                        document.getElementById('parent1').children
+                    ).map(node => node.id);
+                }),
+                [
+                    'span1',
+                    'span2',
+                    'span3',
+                    'span4'
+                ]
+            );
+        });
+
+        it('works with NodeList nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    return dom.findByTag(
+                        'span',
+                        document.querySelectorAll('#parent1')
+                    ).map(node => node.id);
+                }),
+                [
+                    'span1',
+                    'span2',
+                    'span3',
+                    'span4'
+                ]
+            );
+        });
+
+        it('works with array nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    return dom.findByTag(
+                        'span',
+                        [
+                            document.getElementById('child1'),
+                            document.getElementById('child2')
+                        ]
+                    ).map(node => node.id);
+                }),
+                [
+                    'span1',
+                    'span2',
+                    'span3',
+                    'span4'
+                ]
+            );
         });
 
     });
@@ -975,70 +975,6 @@ describe('DOM Find', function() {
             )
         });
 
-        it('works with query selector', async function() {
-            assert.equal(
-                await exec(_ => {
-                    return dom.findOne(
-                        'span',
-                        '#parent1 > #child2'
-                    ).id;
-                }),
-                'span3'
-            )
-        });
-
-        it('works with HTMLElement', async function() {
-            assert.equal(
-                await exec(_ => {
-                    return dom.findOne(
-                        'span',
-                        document.getElementById('child2')
-                    ).id;
-                }),
-                'span3'
-            )
-        });
-
-        it('works with HTMLCollection', async function() {
-            assert.equal(
-                await exec(_ => {
-                    return dom.findOne(
-                        'span',
-                        document.getElementById('parent2').children
-                    ).id;
-                }),
-                'span7'
-            )
-        });
-
-        it('works with NodeList', async function() {
-            assert.equal(
-                await exec(_ => {
-                    return dom.findOne(
-                        'span',
-                        document.querySelectorAll('#parent2 > div')
-                    ).id;
-                }),
-                'span7'
-            )
-        });
-
-        it('works with array', async function() {
-            assert.equal(
-                await exec(_ => {
-                    return dom.findOne(
-                        'span',
-                        [
-                            document.getElementById('child4'),
-                            document.getElementById('child5'),
-                            document.getElementById('child6')
-                        ]
-                    ).id;
-                }),
-                'span7'
-            )
-        });
-
         it('returns null for non-matching selector', async function() {
             assert.equal(
                 await exec(_ => {
@@ -1059,6 +995,70 @@ describe('DOM Find', function() {
                     );
                 }),
                 undefined
+            )
+        });
+
+        it('works with query selector nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    return dom.findOne(
+                        'span',
+                        '#parent1 > #child2'
+                    ).id;
+                }),
+                'span3'
+            )
+        });
+
+        it('works with HTMLElement nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    return dom.findOne(
+                        'span',
+                        document.getElementById('child2')
+                    ).id;
+                }),
+                'span3'
+            )
+        });
+
+        it('works with HTMLCollection nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    return dom.findOne(
+                        'span',
+                        document.getElementById('parent2').children
+                    ).id;
+                }),
+                'span7'
+            )
+        });
+
+        it('works with NodeList nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    return dom.findOne(
+                        'span',
+                        document.querySelectorAll('#parent2 > div')
+                    ).id;
+                }),
+                'span7'
+            )
+        });
+
+        it('works with array nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    return dom.findOne(
+                        'span',
+                        [
+                            document.getElementById('child4'),
+                            document.getElementById('child5'),
+                            document.getElementById('child6')
+                        ]
+                    ).id;
+                }),
+                'span7'
             )
         });
 
@@ -1104,69 +1104,6 @@ describe('DOM Find', function() {
             )
         });
 
-        it('works with query selector', async function() {
-            assert.equal(
-                await exec(_ => {
-                    return dom.findOneByClass(
-                        'test',
-                        '#parent2'
-                    ).id;
-                }),
-                'span5'
-            )
-        });
-
-        it('works with HTMLElement', async function() {
-            assert.equal(
-                await exec(_ => {
-                    return dom.findOneByClass(
-                        'test',
-                        document.getElementById('parent2')
-                    ).id;
-                }),
-                'span5'
-            )
-        });
-
-        it('works with HTMLCollection', async function() {
-            assert.equal(
-                await exec(_ => {
-                    return dom.findOneByClass(
-                        'test',
-                        document.getElementById('parent2').children
-                    ).id;
-                }),
-                'span5'
-            )
-        });
-
-        it('works with NodeList', async function() {
-            assert.equal(
-                await exec(_ => {
-                    return dom.findOneByClass(
-                        'test',
-                        document.querySelectorAll('#parent2')
-                    ).id;
-                }),
-                'span5'
-            )
-        });
-
-        it('works with array', async function() {
-            assert.equal(
-                await exec(_ => {
-                    return dom.findOneByClass(
-                        'test',
-                        [
-                            document.getElementById('child3'),
-                            document.getElementById('child4')
-                        ]
-                    ).id;
-                }),
-                'span5'
-            )
-        });
-
         it('returns null for non-matching class', async function() {
             assert.equal(
                 await exec(_ => {
@@ -1187,6 +1124,69 @@ describe('DOM Find', function() {
                     );
                 }),
                 undefined
+            )
+        });
+
+        it('works with query selector nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    return dom.findOneByClass(
+                        'test',
+                        '#parent2'
+                    ).id;
+                }),
+                'span5'
+            )
+        });
+
+        it('works with HTMLElement nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    return dom.findOneByClass(
+                        'test',
+                        document.getElementById('parent2')
+                    ).id;
+                }),
+                'span5'
+            )
+        });
+
+        it('works with HTMLCollection nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    return dom.findOneByClass(
+                        'test',
+                        document.getElementById('parent2').children
+                    ).id;
+                }),
+                'span5'
+            )
+        });
+
+        it('works with NodeList nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    return dom.findOneByClass(
+                        'test',
+                        document.querySelectorAll('#parent2')
+                    ).id;
+                }),
+                'span5'
+            )
+        });
+
+        it('works with array nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    return dom.findOneByClass(
+                        'test',
+                        [
+                            document.getElementById('child3'),
+                            document.getElementById('child4')
+                        ]
+                    ).id;
+                }),
+                'span5'
             )
         });
 
@@ -1232,69 +1232,6 @@ describe('DOM Find', function() {
             )
         });
 
-        it('works with query selector', async function() {
-            assert.equal(
-                await exec(_ => {
-                    return dom.findOneById(
-                        'test',
-                        '#parent2'
-                    ).dataset.id;
-                }),
-                'span5'
-            )
-        });
-
-        it('works with HTMLElement', async function() {
-            assert.equal(
-                await exec(_ => {
-                    return dom.findOneById(
-                        'test',
-                        document.getElementById('parent2')
-                    ).dataset.id;
-                }),
-                'span5'
-            )
-        });
-
-        it('works with HTMLCollection', async function() {
-            assert.equal(
-                await exec(_ => {
-                    return dom.findOneById(
-                        'test',
-                        document.getElementById('parent2').children
-                    ).dataset.id;
-                }),
-                'span5'
-            )
-        });
-
-        it('works with NodeList', async function() {
-            assert.equal(
-                await exec(_ => {
-                    return dom.findOneById(
-                        'test',
-                        document.querySelectorAll('#parent2')
-                    ).dataset.id;
-                }),
-                'span5'
-            )
-        });
-
-        it('works with array', async function() {
-            assert.equal(
-                await exec(_ => {
-                    return dom.findOneById(
-                        'test',
-                        [
-                            document.getElementById('child3'),
-                            document.getElementById('child4')
-                        ]
-                    ).dataset.id;
-                }),
-                'span5'
-            )
-        });
-
         it('returns null for non-matching id', async function() {
             assert.equal(
                 await exec(_ => {
@@ -1315,6 +1252,69 @@ describe('DOM Find', function() {
                     );
                 }),
                 undefined
+            )
+        });
+
+        it('works with query selector nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    return dom.findOneById(
+                        'test',
+                        '#parent2'
+                    ).dataset.id;
+                }),
+                'span5'
+            )
+        });
+
+        it('works with HTMLElement nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    return dom.findOneById(
+                        'test',
+                        document.getElementById('parent2')
+                    ).dataset.id;
+                }),
+                'span5'
+            )
+        });
+
+        it('works with HTMLCollection nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    return dom.findOneById(
+                        'test',
+                        document.getElementById('parent2').children
+                    ).dataset.id;
+                }),
+                'span5'
+            )
+        });
+
+        it('works with NodeList nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    return dom.findOneById(
+                        'test',
+                        document.querySelectorAll('#parent2')
+                    ).dataset.id;
+                }),
+                'span5'
+            )
+        });
+
+        it('works with array nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    return dom.findOneById(
+                        'test',
+                        [
+                            document.getElementById('child3'),
+                            document.getElementById('child4')
+                        ]
+                    ).dataset.id;
+                }),
+                'span5'
             )
         });
 
@@ -1360,69 +1360,6 @@ describe('DOM Find', function() {
             );
         });
 
-        it('works with query selector', async function() {
-            assert.equal(
-                await exec(_ => {
-                    return dom.findOneByTag(
-                        'span',
-                        '#parent2'
-                    ).id;
-                }),
-                'span5'
-            );
-        });
-
-        it('works with HTMLElement', async function() {
-            assert.equal(
-                await exec(_ => {
-                    return dom.findOneByTag(
-                        'span',
-                        document.getElementById('parent2')
-                    ).id;
-                }),
-                'span5'
-            );
-        });
-
-        it('works with HTMLElement', async function() {
-            assert.equal(
-                await exec(_ => {
-                    return dom.findOneByTag(
-                        'span',
-                        document.getElementById('parent2').children
-                    ).id;
-                }),
-                'span5'
-            );
-        });
-
-        it('works with NodeList', async function() {
-            assert.equal(
-                await exec(_ => {
-                    return dom.findOneByTag(
-                        'span',
-                        document.querySelectorAll('#parent2')
-                    ).id;
-                }),
-                'span5'
-            );
-        });
-
-        it('works with array', async function() {
-            assert.equal(
-                await exec(_ => {
-                    return dom.findOneByTag(
-                        'span',
-                        [
-                            document.getElementById('child3'),
-                            document.getElementById('child4')
-                        ]
-                    ).id;
-                }),
-                'span5'
-            );
-        });
-
         it('returns null for non-matching tag', async function() {
             assert.equal(
                 await exec(_ => {
@@ -1444,6 +1381,69 @@ describe('DOM Find', function() {
                 }),
                 undefined
             )
+        });
+
+        it('works with query selector nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    return dom.findOneByTag(
+                        'span',
+                        '#parent2'
+                    ).id;
+                }),
+                'span5'
+            );
+        });
+
+        it('works with HTMLElement nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    return dom.findOneByTag(
+                        'span',
+                        document.getElementById('parent2')
+                    ).id;
+                }),
+                'span5'
+            );
+        });
+
+        it('works with HTMLElement nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    return dom.findOneByTag(
+                        'span',
+                        document.getElementById('parent2').children
+                    ).id;
+                }),
+                'span5'
+            );
+        });
+
+        it('works with NodeList nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    return dom.findOneByTag(
+                        'span',
+                        document.querySelectorAll('#parent2')
+                    ).id;
+                }),
+                'span5'
+            );
+        });
+
+        it('works with array nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    return dom.findOneByTag(
+                        'span',
+                        [
+                            document.getElementById('child3'),
+                            document.getElementById('child4')
+                        ]
+                    ).id;
+                }),
+                'span5'
+            );
         });
 
     });

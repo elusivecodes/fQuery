@@ -49,19 +49,6 @@ describe('DOM Manipulation', function() {
             );
         });
 
-        it('returns an array', async function() {
-            assert.equal(
-                await exec(_ => {
-                    return Core.isArray(
-                        dom.clone(
-                            'div'
-                        )
-                    );
-                }),
-                true
-            );
-        });
-
         it('shallow clones all nodes', async function() {
             assert.equal(
                 await exec(_ => {
@@ -148,7 +135,7 @@ describe('DOM Manipulation', function() {
             );
         });
 
-        it('works with HTMLElement', async function() {
+        it('works with HTMLElement nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     const clones = dom.clone(
@@ -174,7 +161,7 @@ describe('DOM Manipulation', function() {
             );
         });
 
-        it('works with HTMLCollection', async function() {
+        it('works with HTMLCollection nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     const clones = dom.clone(
@@ -199,7 +186,7 @@ describe('DOM Manipulation', function() {
             );
         });
 
-        it('works with NodeList', async function() {
+        it('works with NodeList nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     const clones = dom.clone(
@@ -229,7 +216,7 @@ describe('DOM Manipulation', function() {
             );
         });
 
-        it('works with array', async function() {
+        it('works with array nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     const clones = dom.clone(
@@ -290,19 +277,6 @@ describe('DOM Manipulation', function() {
                 }),
                 '<div id="parent1"></div>' +
                 '<div id="parent2"></div>'
-            );
-        });
-
-        it('returns an array', async function() {
-            assert.equal(
-                await exec(_ => {
-                    return Core.isArray(
-                        dom.detach(
-                            'a'
-                        )
-                    );
-                }),
-                true
             );
         });
 
@@ -378,7 +352,7 @@ describe('DOM Manipulation', function() {
             );
         });
 
-        it('works with HTMLElement', async function() {
+        it('works with HTMLElement nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     dom.detach(
@@ -396,7 +370,7 @@ describe('DOM Manipulation', function() {
             );
         });
 
-        it('works with HTMLCollection', async function() {
+        it('works with HTMLCollection nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     dom.detach(
@@ -408,7 +382,7 @@ describe('DOM Manipulation', function() {
             );
         });
 
-        it('works with NodeList', async function() {
+        it('works with NodeList nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     dom.detach(
@@ -421,7 +395,7 @@ describe('DOM Manipulation', function() {
             );
         });
 
-        it('works with array', async function() {
+        it('works with array nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     dom.detach(
@@ -436,17 +410,6 @@ describe('DOM Manipulation', function() {
                 }),
                 '<div id="parent1"></div>' +
                 '<div id="parent2"></div>'
-            );
-        });
-
-        it('returns an empty array for empty nodes', async function() {
-            assert.deepEqual(
-                await exec(_ => {
-                    return dom.detach(
-                        '#invalid'
-                    );
-                }),
-                []
             );
         });
 
@@ -553,7 +516,7 @@ describe('DOM Manipulation', function() {
             );
         });
 
-        it('works with HTMLElement', async function() {
+        it('works with HTMLElement nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     dom.empty(
@@ -571,7 +534,7 @@ describe('DOM Manipulation', function() {
             );
         });
 
-        it('works with HTMLCollection', async function() {
+        it('works with HTMLCollection nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     dom.empty(
@@ -584,7 +547,7 @@ describe('DOM Manipulation', function() {
             );
         });
 
-        it('works with NodeList', async function() {
+        it('works with NodeList nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     dom.empty(
@@ -597,7 +560,7 @@ describe('DOM Manipulation', function() {
             );
         });
 
-        it('works with array', async function() {
+        it('works with array nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     dom.empty(
@@ -790,7 +753,7 @@ describe('DOM Manipulation', function() {
             );
         });
 
-        it('works with HTMLElement', async function() {
+        it('works with HTMLElement nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     dom.remove(
@@ -809,7 +772,7 @@ describe('DOM Manipulation', function() {
             );
         });
 
-        it('works with HTMLCollection', async function() {
+        it('works with HTMLCollection nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     dom.remove(
@@ -821,7 +784,7 @@ describe('DOM Manipulation', function() {
             );
         });
 
-        it('works with NodeList', async function() {
+        it('works with NodeList nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     dom.remove(
@@ -840,7 +803,7 @@ describe('DOM Manipulation', function() {
             );
         });
 
-        it('works with array', async function() {
+        it('works with array nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     dom.remove(
@@ -906,107 +869,89 @@ describe('DOM Manipulation', function() {
             );
         });
 
-        it('works with HTMLElement', async function() {
+        it('works with HTMLElement nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     dom.replaceAll(
                         document.querySelector('.inner1'),
-                        document.querySelector('.inner2')
+                        'div'
                     );
                     return document.body.innerHTML;
                 }),
-                '<div class="outer1">' +
                 '<div class="inner1">' +
                 '<a href="#">Test</a>' +
                 '<a href="#">Test</a>' +
                 '</div>' +
-                '</div>' +
-                '<div class="outer2">' +
                 '<div class="inner1">' +
                 '<a href="#">Test</a>' +
                 '<a href="#">Test</a>' +
-                '</div>' +
                 '</div>'
             );
         });
 
-        it('works with HTMLCollection', async function() {
+        it('works with HTMLCollection nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     dom.replaceAll(
                         document.querySelector('.outer1').children,
-                        document.querySelector('.outer2').children
+                        'div'
                     );
                     return document.body.innerHTML;
                 }),
-                '<div class="outer1">' +
                 '<div class="inner1">' +
                 '<a href="#">Test</a>' +
                 '<a href="#">Test</a>' +
                 '</div>' +
-                '</div>' +
-                '<div class="outer2">' +
                 '<div class="inner1">' +
                 '<a href="#">Test</a>' +
                 '<a href="#">Test</a>' +
-                '</div>' +
                 '</div>'
             );
         });
 
-        it('works with NodeList', async function() {
+        it('works with NodeList nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     dom.replaceAll(
-                        document.querySelectorAll('.outer1 > div'),
-                        document.querySelectorAll('.outer2 > div'),
+                        document.querySelectorAll('.inner1'),
+                        'div'
                     );
                     return document.body.innerHTML;
                 }),
-                '<div class="outer1">' +
                 '<div class="inner1">' +
                 '<a href="#">Test</a>' +
                 '<a href="#">Test</a>' +
                 '</div>' +
-                '</div>' +
-                '<div class="outer2">' +
                 '<div class="inner1">' +
                 '<a href="#">Test</a>' +
                 '<a href="#">Test</a>' +
-                '</div>' +
                 '</div>'
             );
         });
 
-        it('works with array', async function() {
+        it('works with array nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     dom.replaceAll(
                         [
                             document.querySelector('.inner1')
                         ],
-                        [
-                            document.querySelector('.inner2')
-                        ]
+                        'div'
                     );
                     return document.body.innerHTML;
                 }),
-                '<div class="outer1">' +
                 '<div class="inner1">' +
                 '<a href="#">Test</a>' +
                 '<a href="#">Test</a>' +
                 '</div>' +
-                '</div>' +
-                '<div class="outer2">' +
                 '<div class="inner1">' +
                 '<a href="#">Test</a>' +
                 '<a href="#">Test</a>' +
-                '</div>' +
                 '</div>'
             );
         });
 
-        it('works with HTML', async function() {
+        it('works with HTML nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     dom.replaceAll(
@@ -1026,6 +971,104 @@ describe('DOM Manipulation', function() {
                 '<div><span class="test">Test</span></div>' +
                 '<div><span class="test">Test</span></div>' +
                 '</div>' +
+                '</div>'
+            );
+        });
+
+        it('works with HTMLElement other nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    dom.replaceAll(
+                        'a',
+                        document.querySelector('.inner2')
+                    );
+                    return document.body.innerHTML;
+                }),
+                '<div class="outer1">' +
+                '<div class="inner1">' +
+                '<a href="#">Test</a>' +
+                '<a href="#">Test</a>' +
+                '</div>' +
+                '</div>' +
+                '<div class="outer2">' +
+                '<a href="#">Test</a>' +
+                '<a href="#">Test</a>' +
+                '<a href="#">Test</a>' +
+                '<a href="#">Test</a>' +
+                '</div>'
+            );
+        });
+
+        it('works with HTMLCollection other nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    dom.replaceAll(
+                        'a',
+                        document.querySelector('.outer2').children
+                    );
+                    return document.body.innerHTML;
+                }),
+                '<div class="outer1">' +
+                '<div class="inner1">' +
+                '<a href="#">Test</a>' +
+                '<a href="#">Test</a>' +
+                '</div>' +
+                '</div>' +
+                '<div class="outer2">' +
+                '<a href="#">Test</a>' +
+                '<a href="#">Test</a>' +
+                '<a href="#">Test</a>' +
+                '<a href="#">Test</a>' +
+                '</div>'
+            );
+        });
+
+        it('works with NodeList other nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    dom.replaceAll(
+                        'a',
+                        document.querySelectorAll('.inner2'),
+                    );
+                    return document.body.innerHTML;
+                }),
+                '<div class="outer1">' +
+                '<div class="inner1">' +
+                '<a href="#">Test</a>' +
+                '<a href="#">Test</a>' +
+                '</div>' +
+                '</div>' +
+                '<div class="outer2">' +
+                '<a href="#">Test</a>' +
+                '<a href="#">Test</a>' +
+                '<a href="#">Test</a>' +
+                '<a href="#">Test</a>' +
+                '</div>'
+            );
+        });
+
+        it('works with array other nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    dom.replaceAll(
+                        'a',
+                        [
+                            document.querySelector('.inner2')
+                        ]
+                    );
+                    return document.body.innerHTML;
+                }),
+                '<div class="outer1">' +
+                '<div class="inner1">' +
+                '<a href="#">Test</a>' +
+                '<a href="#">Test</a>' +
+                '</div>' +
+                '</div>' +
+                '<div class="outer2">' +
+                '<a href="#">Test</a>' +
+                '<a href="#">Test</a>' +
+                '<a href="#">Test</a>' +
+                '<a href="#">Test</a>' +
                 '</div>'
             );
         });
@@ -1072,12 +1115,12 @@ describe('DOM Manipulation', function() {
             );
         });
 
-        it('works with HTMLElement', async function() {
+        it('works with HTMLElement nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     dom.replaceWith(
                         document.querySelector('.inner2'),
-                        document.querySelector('.inner1')
+                        'a'
                     );
                     return document.body.innerHTML;
                 }),
@@ -1088,20 +1131,20 @@ describe('DOM Manipulation', function() {
                 '</div>' +
                 '</div>' +
                 '<div class="outer2">' +
-                '<div class="inner1">' +
                 '<a href="#">Test</a>' +
                 '<a href="#">Test</a>' +
-                '</div>' +
+                '<a href="#">Test</a>' +
+                '<a href="#">Test</a>' +
                 '</div>'
             );
         });
 
-        it('works with HTMLCollection', async function() {
+        it('works with HTMLCollection nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     dom.replaceWith(
                         document.querySelector('.outer2').children,
-                        document.querySelector('.outer1').children
+                        'a'
                     );
                     return document.body.innerHTML;
                 }),
@@ -1112,20 +1155,20 @@ describe('DOM Manipulation', function() {
                 '</div>' +
                 '</div>' +
                 '<div class="outer2">' +
-                '<div class="inner1">' +
                 '<a href="#">Test</a>' +
                 '<a href="#">Test</a>' +
-                '</div>' +
+                '<a href="#">Test</a>' +
+                '<a href="#">Test</a>' +
                 '</div>'
             );
         });
 
-        it('works with NodeList', async function() {
+        it('works with NodeList nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     dom.replaceWith(
-                        document.querySelectorAll('.outer2 > div'),
-                        document.querySelectorAll('.outer1 > div'),
+                        document.querySelectorAll('.inner2'),
+                        'a'
                     );
                     return document.body.innerHTML;
                 }),
@@ -1136,24 +1179,22 @@ describe('DOM Manipulation', function() {
                 '</div>' +
                 '</div>' +
                 '<div class="outer2">' +
-                '<div class="inner1">' +
                 '<a href="#">Test</a>' +
                 '<a href="#">Test</a>' +
-                '</div>' +
+                '<a href="#">Test</a>' +
+                '<a href="#">Test</a>' +
                 '</div>'
             );
         });
 
-        it('works with array', async function() {
+        it('works with array nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     dom.replaceWith(
                         [
                             document.querySelector('.inner2')
                         ],
-                        [
-                            document.querySelector('.inner1')
-                        ]
+                        'a'
                     );
                     return document.body.innerHTML;
                 }),
@@ -1164,15 +1205,97 @@ describe('DOM Manipulation', function() {
                 '</div>' +
                 '</div>' +
                 '<div class="outer2">' +
-                '<div class="inner1">' +
                 '<a href="#">Test</a>' +
                 '<a href="#">Test</a>' +
-                '</div>' +
+                '<a href="#">Test</a>' +
+                '<a href="#">Test</a>' +
                 '</div>'
             );
         });
 
-        it('works with HTML', async function() {
+        it('works with HTMLElement other nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    dom.replaceWith(
+                        'div',
+                        document.querySelector('.inner1')
+                    );
+                    return document.body.innerHTML;
+                }),
+                '<div class="inner1">' +
+                '<a href="#">Test</a>' +
+                '<a href="#">Test</a>' +
+                '</div>' +
+                '<div class="inner1">' +
+                '<a href="#">Test</a>' +
+                '<a href="#">Test</a>' +
+                '</div>'
+            );
+        });
+
+        it('works with HTMLCollection other nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    dom.replaceWith(
+                        'div',
+                        document.querySelector('.outer1').children
+                    );
+                    return document.body.innerHTML;
+                }),
+                '<div class="inner1">' +
+                '<a href="#">Test</a>' +
+                '<a href="#">Test</a>' +
+                '</div>' +
+                '<div class="inner1">' +
+                '<a href="#">Test</a>' +
+                '<a href="#">Test</a>' +
+                '</div>'
+            );
+        });
+
+        it('works with NodeList other nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    dom.replaceWith(
+                        'div',
+                        document.querySelectorAll('.inner1'),
+                    );
+                    return document.body.innerHTML;
+                }),
+                '<div class="inner1">' +
+                '<a href="#">Test</a>' +
+                '<a href="#">Test</a>' +
+                '</div>' +
+                '<div class="inner1">' +
+                '<a href="#">Test</a>' +
+                '<a href="#">Test</a>' +
+                '</div>'
+            );
+        });
+
+        it('works with array other nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    dom.replaceWith(
+                        'div',
+                        [
+                            document.querySelector('.inner1')
+                        ]
+                    );
+                    return document.body.innerHTML;
+                }),
+                '<div class="inner1">' +
+                '<a href="#">Test</a>' +
+                '<a href="#">Test</a>' +
+                '</div>' +
+                '<div class="inner1">' +
+                '<a href="#">Test</a>' +
+                '<a href="#">Test</a>' +
+                '</div>'
+            );
+        });
+
+        it('works with HTML other nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     dom.replaceWith(

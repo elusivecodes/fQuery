@@ -35,7 +35,7 @@ Object.assign(DOMNode, {
      * @returns {Node} The new comment node.
      */
     createComment(context, comment) {
-        return context.createCommentNode(comment);
+        return context.createComment(comment);
     },
 
     /**

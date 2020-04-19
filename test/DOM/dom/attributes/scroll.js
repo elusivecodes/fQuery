@@ -27,7 +27,18 @@ describe('DOM Attributes (Scroll)', function() {
             );
         });
 
-        it('works with Window', async function() {
+        it('returns undefined for empty nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    return dom.getScrollX(
+                        '#invalid'
+                    );
+                }),
+                undefined
+            );
+        });
+
+        it('works with Window nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     document.body.innerHTML = '<div style="block; width: 1000px; height: 1000px;"></div>';
@@ -40,7 +51,7 @@ describe('DOM Attributes (Scroll)', function() {
             );
         });
 
-        it('works with HTMLElement', async function() {
+        it('works with HTMLElement nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     return dom.getScrollX(
@@ -51,7 +62,7 @@ describe('DOM Attributes (Scroll)', function() {
             );
         });
 
-        it('works with HTMLCollection', async function() {
+        it('works with HTMLCollection nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     return dom.getScrollX(
@@ -62,7 +73,7 @@ describe('DOM Attributes (Scroll)', function() {
             );
         });
 
-        it('works with NodeList', async function() {
+        it('works with NodeList nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     return dom.getScrollX(
@@ -73,7 +84,7 @@ describe('DOM Attributes (Scroll)', function() {
             );
         });
 
-        it('works with array', async function() {
+        it('works with array nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     return dom.getScrollX(
@@ -84,17 +95,6 @@ describe('DOM Attributes (Scroll)', function() {
                     );
                 }),
                 100
-            );
-        });
-
-        it('returns undefined for empty nodes', async function() {
-            assert.equal(
-                await exec(_ => {
-                    return dom.getScrollX(
-                        '#invalid'
-                    );
-                }),
-                undefined
             );
         });
 
@@ -124,7 +124,18 @@ describe('DOM Attributes (Scroll)', function() {
             );
         });
 
-        it('works with Window', async function() {
+        it('returns undefined for empty nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    return dom.getScrollY(
+                        '#invalid'
+                    );
+                }),
+                undefined
+            );
+        });
+
+        it('works with Window nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     document.body.innerHTML = '<div style="block; width: 1000px; height: 1000px;"></div>';
@@ -137,7 +148,7 @@ describe('DOM Attributes (Scroll)', function() {
             );
         });
 
-        it('works with HTMLElement', async function() {
+        it('works with HTMLElement nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     return dom.getScrollY(
@@ -148,7 +159,7 @@ describe('DOM Attributes (Scroll)', function() {
             );
         });
 
-        it('works with HTMLCollection', async function() {
+        it('works with HTMLCollection nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     return dom.getScrollY(
@@ -159,7 +170,7 @@ describe('DOM Attributes (Scroll)', function() {
             );
         });
 
-        it('works with NodeList', async function() {
+        it('works with NodeList nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     return dom.getScrollY(
@@ -170,7 +181,7 @@ describe('DOM Attributes (Scroll)', function() {
             );
         });
 
-        it('works with array', async function() {
+        it('works with array nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     return dom.getScrollY(
@@ -181,17 +192,6 @@ describe('DOM Attributes (Scroll)', function() {
                     );
                 }),
                 100
-            );
-        });
-
-        it('returns undefined for empty nodes', async function() {
-            assert.equal(
-                await exec(_ => {
-                    return dom.getScrollY(
-                        '#invalid'
-                    );
-                }),
-                undefined
             );
         });
 
@@ -219,7 +219,7 @@ describe('DOM Attributes (Scroll)', function() {
                     dom.setScroll(
                         'div',
                         100,
-                        100
+                        50
                     );
                     return [
                         [
@@ -233,33 +233,49 @@ describe('DOM Attributes (Scroll)', function() {
                     ];
                 }),
                 [
-                    [100, 100],
-                    [100, 100]
+                    [100, 50],
+                    [100, 50]
                 ]
             );
         });
 
-        it('works with Window');
+        it('works with Window nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    document.body.innerHTML = '<div style="display: block; width: 1000px; height: 1000px;"></div>';
+                    dom.setScroll(
+                        window,
+                        100,
+                        50
+                    );
+                    return [
+                        window.scrollX,
+                        window.scrollY
+                    ];
+                }),
+                [100, 50]
+            );
+        });
 
-        it('works with HTMLElement', async function() {
+        it('works with HTMLElement nodes', async function() {
             assert.deepEqual(
                 await exec(_ => {
                     const element = document.getElementById('test1');
                     dom.setScroll(
                         element,
                         100,
-                        100
+                        50
                     );
                     return [
                         element.scrollLeft,
                         element.scrollTop
                     ];
                 }),
-                [100, 100]
+                [100, 50]
             );
         });
 
-        it('works with HTMLCollection', async function() {
+        it('works with HTMLCollection nodes', async function() {
             assert.deepEqual(
                 await exec(_ => {
                     const element1 = document.getElementById('test1');
@@ -267,7 +283,7 @@ describe('DOM Attributes (Scroll)', function() {
                     dom.setScroll(
                         document.body.children,
                         100,
-                        100
+                        50
                     );
                     return [
                         [
@@ -281,13 +297,13 @@ describe('DOM Attributes (Scroll)', function() {
                     ];
                 }),
                 [
-                    [100, 100],
-                    [100, 100]
+                    [100, 50],
+                    [100, 50]
                 ]
             );
         });
 
-        it('works with NodeList', async function() {
+        it('works with NodeList nodes', async function() {
             assert.deepEqual(
                 await exec(_ => {
                     const element1 = document.getElementById('test1');
@@ -295,7 +311,7 @@ describe('DOM Attributes (Scroll)', function() {
                     dom.setScroll(
                         document.querySelectorAll('div'),
                         100,
-                        100
+                        50
                     );
                     return [
                         [
@@ -309,13 +325,13 @@ describe('DOM Attributes (Scroll)', function() {
                     ];
                 }),
                 [
-                    [100, 100],
-                    [100, 100]
+                    [100, 50],
+                    [100, 50]
                 ]
             );
         });
 
-        it('works with array', async function() {
+        it('works with array nodes', async function() {
             assert.deepEqual(
                 await exec(_ => {
                     const element1 = document.getElementById('test1');
@@ -326,7 +342,7 @@ describe('DOM Attributes (Scroll)', function() {
                             element2
                         ],
                         100,
-                        100
+                        50
                     );
                     return [
                         [
@@ -340,8 +356,8 @@ describe('DOM Attributes (Scroll)', function() {
                     ];
                 }),
                 [
-                    [100, 100],
-                    [100, 100]
+                    [100, 50],
+                    [100, 50]
                 ]
             );
         });
@@ -381,9 +397,21 @@ describe('DOM Attributes (Scroll)', function() {
             );
         });
 
-        it('works with Window');
+        it('works with Window nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    document.body.innerHTML = '<div style="display: block; width: 1000px; height: 1000px;"></div>';
+                    dom.setScrollX(
+                        window,
+                        100
+                    );
+                    return window.scrollX;
+                }),
+                100
+            );
+        });
 
-        it('works with HTMLElement', async function() {
+        it('works with HTMLElement nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     const element = document.getElementById('test1');
@@ -397,7 +425,7 @@ describe('DOM Attributes (Scroll)', function() {
             );
         });
 
-        it('works with HTMLCollection', async function() {
+        it('works with HTMLCollection nodes', async function() {
             assert.deepEqual(
                 await exec(_ => {
                     dom.setScrollX(
@@ -416,7 +444,7 @@ describe('DOM Attributes (Scroll)', function() {
             );
         });
 
-        it('works with NodeList', async function() {
+        it('works with NodeList nodes', async function() {
             assert.deepEqual(
                 await exec(_ => {
                     dom.setScrollX(
@@ -435,7 +463,7 @@ describe('DOM Attributes (Scroll)', function() {
             );
         });
 
-        it('works with array', async function() {
+        it('works with array nodes', async function() {
             assert.deepEqual(
                 await exec(_ => {
                     const element1 = document.getElementById('test1');
@@ -494,9 +522,21 @@ describe('DOM Attributes (Scroll)', function() {
             );
         });
 
-        it('works with Window');
+        it('works with Window nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    document.body.innerHTML = '<div style="display: block; width: 1000px; height: 1000px;"></div>';
+                    dom.setScrollY(
+                        window,
+                        100
+                    );
+                    return window.scrollY;
+                }),
+                100
+            );
+        });
 
-        it('works with HTMLElement', async function() {
+        it('works with HTMLElement nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     const element = document.getElementById('test1');
@@ -510,7 +550,7 @@ describe('DOM Attributes (Scroll)', function() {
             );
         });
 
-        it('works with HTMLCollection', async function() {
+        it('works with HTMLCollection nodes', async function() {
             assert.deepEqual(
                 await exec(_ => {
                     dom.setScrollY(
@@ -529,7 +569,7 @@ describe('DOM Attributes (Scroll)', function() {
             );
         });
 
-        it('works with NodeList', async function() {
+        it('works with NodeList nodes', async function() {
             assert.deepEqual(
                 await exec(_ => {
                     dom.setScrollY(
@@ -548,7 +588,7 @@ describe('DOM Attributes (Scroll)', function() {
             );
         });
 
-        it('works with array', async function() {
+        it('works with array nodes', async function() {
             assert.deepEqual(
                 await exec(_ => {
                     const element1 = document.getElementById('test1');

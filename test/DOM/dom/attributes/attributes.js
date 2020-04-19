@@ -40,54 +40,15 @@ describe('DOM Attributes', function() {
             );
         });
 
-        it('works with HTMLElement', async function() {
+        it('returns null for an undefined property', async function() {
             assert.equal(
                 await exec(_ => {
                     return dom.getAttribute(
-                        document.getElementById('test1'),
-                        'type'
+                        'input',
+                        'disabled'
                     );
                 }),
-                'text'
-            );
-        });
-
-        it('works with HTMLCollection', async function() {
-            assert.equal(
-                await exec(_ => {
-                    return dom.getAttribute(
-                        document.body.children,
-                        'type'
-                    );
-                }),
-                'text'
-            );
-        });
-
-        it('works with NodeList', async function() {
-            assert.equal(
-                await exec(_ => {
-                    return dom.getAttribute(
-                        document.querySelectorAll('input'),
-                        'type'
-                    );
-                }),
-                'text'
-            );
-        });
-
-        it('works with array', async function() {
-            assert.equal(
-                await exec(_ => {
-                    return dom.getAttribute(
-                        [
-                            document.getElementById('test1'),
-                            document.getElementById('test2')
-                        ],
-                        'type'
-                    );
-                }),
-                'text'
+                null
             );
         });
 
@@ -103,15 +64,54 @@ describe('DOM Attributes', function() {
             );
         });
 
-        it('returns null for an undefined property', async function() {
+        it('works with HTMLElement nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     return dom.getAttribute(
-                        'input',
-                        'disabled'
+                        document.getElementById('test1'),
+                        'type'
                     );
                 }),
-                null
+                'text'
+            );
+        });
+
+        it('works with HTMLCollection nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    return dom.getAttribute(
+                        document.body.children,
+                        'type'
+                    );
+                }),
+                'text'
+            );
+        });
+
+        it('works with NodeList nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    return dom.getAttribute(
+                        document.querySelectorAll('input'),
+                        'type'
+                    );
+                }),
+                'text'
+            );
+        });
+
+        it('works with array nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    return dom.getAttribute(
+                        [
+                            document.getElementById('test1'),
+                            document.getElementById('test2')
+                        ],
+                        'type'
+                    );
+                }),
+                'text'
             );
         });
 
@@ -138,7 +138,18 @@ describe('DOM Attributes', function() {
             );
         });
 
-        it('works with HTMLElement', async function() {
+        it('returns undefined for empty nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    return dom.getHTML(
+                        '#invalid'
+                    );
+                }),
+                undefined
+            );
+        });
+
+        it('works with HTMLElement nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     return dom.getHTML(
@@ -149,7 +160,7 @@ describe('DOM Attributes', function() {
             );
         });
 
-        it('works with HTMLCollection', async function() {
+        it('works with HTMLCollection nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     return dom.getHTML(
@@ -160,7 +171,7 @@ describe('DOM Attributes', function() {
             );
         });
 
-        it('works with NodeList', async function() {
+        it('works with NodeList nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     return dom.getHTML(
@@ -171,7 +182,7 @@ describe('DOM Attributes', function() {
             );
         });
 
-        it('works with array', async function() {
+        it('works with array nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     return dom.getHTML(
@@ -182,17 +193,6 @@ describe('DOM Attributes', function() {
                     );
                 }),
                 '<span>Test</span>'
-            );
-        });
-
-        it('returns undefined for empty nodes', async function() {
-            assert.equal(
-                await exec(_ => {
-                    return dom.getHTML(
-                        '#invalid'
-                    );
-                }),
-                undefined
             );
         });
 
@@ -222,54 +222,15 @@ describe('DOM Attributes', function() {
             );
         });
 
-        it('works with HTMLElement', async function() {
+        it('returns undefined for an undefined property', async function() {
             assert.equal(
                 await exec(_ => {
                     return dom.getProperty(
-                        document.getElementById('test1'),
-                        'test'
+                        'input',
+                        'invalid'
                     );
                 }),
-                'Test 1'
-            );
-        });
-
-        it('works with HTMLCollection', async function() {
-            assert.equal(
-                await exec(_ => {
-                    return dom.getProperty(
-                        document.body.children,
-                        'test'
-                    );
-                }),
-                'Test 1'
-            );
-        });
-
-        it('works with NodeList', async function() {
-            assert.equal(
-                await exec(_ => {
-                    return dom.getProperty(
-                        document.querySelectorAll('input'),
-                        'test'
-                    );
-                }),
-                'Test 1'
-            );
-        });
-
-        it('works with array', async function() {
-            assert.equal(
-                await exec(_ => {
-                    return dom.getProperty(
-                        [
-                            document.getElementById('test1'),
-                            document.getElementById('test2')
-                        ],
-                        'test'
-                    );
-                }),
-                'Test 1'
+                undefined
             );
         });
 
@@ -285,15 +246,54 @@ describe('DOM Attributes', function() {
             );
         });
 
-        it('returns undefined for an undefined property', async function() {
+        it('works with HTMLElement nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     return dom.getProperty(
-                        'input',
-                        'invalid'
+                        document.getElementById('test1'),
+                        'test'
                     );
                 }),
-                undefined
+                'Test 1'
+            );
+        });
+
+        it('works with HTMLCollection nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    return dom.getProperty(
+                        document.body.children,
+                        'test'
+                    );
+                }),
+                'Test 1'
+            );
+        });
+
+        it('works with NodeList nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    return dom.getProperty(
+                        document.querySelectorAll('input'),
+                        'test'
+                    );
+                }),
+                'Test 1'
+            );
+        });
+
+        it('works with array nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    return dom.getProperty(
+                        [
+                            document.getElementById('test1'),
+                            document.getElementById('test2')
+                        ],
+                        'test'
+                    );
+                }),
+                'Test 1'
             );
         });
 
@@ -320,7 +320,18 @@ describe('DOM Attributes', function() {
             );
         });
 
-        it('works with HTMLElement', async function() {
+        it('returns undefined for empty nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    return dom.getText(
+                        '#invalid'
+                    );
+                }),
+                undefined
+            );
+        });
+
+        it('works with HTMLElement nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     return dom.getText(
@@ -331,7 +342,7 @@ describe('DOM Attributes', function() {
             );
         });
 
-        it('works with HTMLCollection', async function() {
+        it('works with HTMLCollection nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     return dom.getText(
@@ -342,7 +353,7 @@ describe('DOM Attributes', function() {
             );
         });
 
-        it('works with NodeList', async function() {
+        it('works with NodeList nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     return dom.getText(
@@ -353,7 +364,7 @@ describe('DOM Attributes', function() {
             );
         });
 
-        it('works with array', async function() {
+        it('works with array nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     return dom.getText(
@@ -364,17 +375,6 @@ describe('DOM Attributes', function() {
                     );
                 }),
                 'Test'
-            );
-        });
-
-        it('returns undefined for empty nodes', async function() {
-            assert.equal(
-                await exec(_ => {
-                    return dom.getText(
-                        '#invalid'
-                    );
-                }),
-                undefined
             );
         });
 
@@ -404,7 +404,18 @@ describe('DOM Attributes', function() {
             );
         });
 
-        it('works with textarea inputs', async function() {
+        it('returns undefined for empty nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    return dom.getValue(
+                        '#invalid'
+                    );
+                }),
+                undefined
+            );
+        });
+
+        it('works with textarea input nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     return dom.getValue(
@@ -415,7 +426,7 @@ describe('DOM Attributes', function() {
             );
         });
 
-        it('works with select inputs', async function() {
+        it('works with select input nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     return dom.getValue(
@@ -426,7 +437,7 @@ describe('DOM Attributes', function() {
             );
         });
 
-        it('works with HTMLElement', async function() {
+        it('works with HTMLElement nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     return dom.getValue(
@@ -437,7 +448,7 @@ describe('DOM Attributes', function() {
             );
         });
 
-        it('works with HTMLCollection', async function() {
+        it('works with HTMLCollection nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     return dom.getValue(
@@ -448,7 +459,7 @@ describe('DOM Attributes', function() {
             );
         });
 
-        it('works with NodeList', async function() {
+        it('works with NodeList nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     return dom.getValue(
@@ -459,7 +470,7 @@ describe('DOM Attributes', function() {
             );
         });
 
-        it('works with array', async function() {
+        it('works with array nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     return dom.getValue(
@@ -470,17 +481,6 @@ describe('DOM Attributes', function() {
                     );
                 }),
                 'Test 1'
-            );
-        });
-
-        it('returns undefined for empty nodes', async function() {
-            assert.equal(
-                await exec(_ => {
-                    return dom.getValue(
-                        '#invalid'
-                    );
-                }),
-                undefined
             );
         });
 
@@ -510,7 +510,7 @@ describe('DOM Attributes', function() {
             );
         });
 
-        it('works with HTMLElement', async function() {
+        it('works with HTMLElement nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     dom.removeAttribute(
@@ -524,7 +524,7 @@ describe('DOM Attributes', function() {
             );
         });
 
-        it('works with HTMLCollection', async function() {
+        it('works with HTMLCollection nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     dom.removeAttribute(
@@ -538,7 +538,7 @@ describe('DOM Attributes', function() {
             );
         });
 
-        it('works with NodeList', async function() {
+        it('works with NodeList nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     dom.removeAttribute(
@@ -552,7 +552,7 @@ describe('DOM Attributes', function() {
             );
         });
 
-        it('works with array', async function() {
+        it('works with array nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     dom.removeAttribute(
@@ -604,7 +604,7 @@ describe('DOM Attributes', function() {
             );
         });
 
-        it('works with HTMLElement', async function() {
+        it('works with HTMLElement nodes', async function() {
             const result = await exec(_ => {
                 const element = document.getElementById('test1');
                 dom.removeProperty(
@@ -626,7 +626,7 @@ describe('DOM Attributes', function() {
             );
         });
 
-        it('works with HTMLCollection', async function() {
+        it('works with HTMLCollection nodes', async function() {
             const result = await exec(_ => {
                 dom.removeProperty(
                     document.body.children,
@@ -647,7 +647,7 @@ describe('DOM Attributes', function() {
             );
         });
 
-        it('works with NodeList', async function() {
+        it('works with NodeList nodes', async function() {
             const result = await exec(_ => {
                 dom.removeProperty(
                     document.querySelectorAll('input'),
@@ -668,7 +668,7 @@ describe('DOM Attributes', function() {
             );
         });
 
-        it('works with array', async function() {
+        it('works with array nodes', async function() {
             const result = await exec(_ => {
                 const element1 = document.getElementById('test1');
                 const element2 = document.getElementById('test2');
@@ -706,21 +706,6 @@ describe('DOM Attributes', function() {
             });
         });
 
-        it('sets an attribute for all nodes', async function() {
-            assert.equal(
-                await exec(_ => {
-                    dom.setAttribute(
-                        'input',
-                        'placeholder',
-                        '123'
-                    );
-                    return document.body.innerHTML;
-                }),
-                '<input type="number" id="test1" placeholder="123">' +
-                '<input type="number" id="test2" placeholder="123">'
-            );
-        });
-
         it('sets an attributes object for all nodes', async function() {
             assert.equal(
                 await exec(_ => {
@@ -738,7 +723,22 @@ describe('DOM Attributes', function() {
             );
         });
 
-        it('works with HTMLElement', async function() {
+        it('sets an attribute for all nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    dom.setAttribute(
+                        'input',
+                        'placeholder',
+                        '123'
+                    );
+                    return document.body.innerHTML;
+                }),
+                '<input type="number" id="test1" placeholder="123">' +
+                '<input type="number" id="test2" placeholder="123">'
+            );
+        });
+
+        it('works with HTMLElement nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     dom.setAttribute(
@@ -753,7 +753,7 @@ describe('DOM Attributes', function() {
             );
         });
 
-        it('works with HTMLCollection', async function() {
+        it('works with HTMLCollection nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     dom.setAttribute(
@@ -768,7 +768,7 @@ describe('DOM Attributes', function() {
             );
         });
 
-        it('works with NodeList', async function() {
+        it('works with NodeList nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     dom.setAttribute(
@@ -783,7 +783,7 @@ describe('DOM Attributes', function() {
             );
         });
 
-        it('works with array', async function() {
+        it('works with array nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     dom.setAttribute(
@@ -829,7 +829,52 @@ describe('DOM Attributes', function() {
             );
         });
 
-        it('works with HTMLElement', async function() {
+        it('removes data for all previous descendents', async function() {
+            assert.equal(
+                await exec(_ => {
+                    const element = document.getElementById('inner');
+                    dom.setData(
+                        element,
+                        'test',
+                        'Test 1'
+                    );
+                    dom.setHTML(
+                        'div',
+                        '<span>Test 2</span>'
+                    );
+                    return dom.getData(
+                        element,
+                        'test'
+                    );
+                }),
+                undefined
+            );
+        });
+
+        it('removes events for all previous descendents', async function() {
+            assert.equal(
+                await exec(_ => {
+                    const event = new Event('click');
+                    const element = document.getElementById('inner');
+                    let result = 0;
+                    dom.addEvent(
+                        element,
+                        'click',
+                        _ => { result++; }
+                    );
+                    dom.setHTML(
+                        'div',
+                        '<span>Test 2</span>'
+                    );
+                    document.body.appendChild(element);
+                    element.dispatchEvent(event);
+                    return result;
+                }),
+                0
+            );
+        });
+
+        it('works with HTMLElement nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     dom.setHTML(
@@ -843,7 +888,7 @@ describe('DOM Attributes', function() {
             );
         });
 
-        it('works with HTMLCollection', async function() {
+        it('works with HTMLCollection nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     dom.setHTML(
@@ -857,7 +902,7 @@ describe('DOM Attributes', function() {
             );
         });
 
-        it('works with NodeList', async function() {
+        it('works with NodeList nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     dom.setHTML(
@@ -871,7 +916,7 @@ describe('DOM Attributes', function() {
             );
         });
 
-        it('works with array', async function() {
+        it('works with array nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     dom.setHTML(
@@ -888,8 +933,6 @@ describe('DOM Attributes', function() {
             );
         });
 
-        it('removes data for all previous descendents');
-
     });
 
     describe('#setProperty', function() {
@@ -900,26 +943,6 @@ describe('DOM Attributes', function() {
                     '<input type="text" id="test1">' +
                     '<input type="number" id="test2">';
             });
-        });
-
-        it('sets a property for all nodes', async function() {
-            assert.deepEqual(
-                await exec(_ => {
-                    dom.setProperty(
-                        'input',
-                        'test',
-                        'Test'
-                    );
-                    return [
-                        document.getElementById('test1').test,
-                        document.getElementById('test2').test
-                    ];
-                }),
-                [
-                    'Test',
-                    'Test'
-                ]
-            );
         });
 
         it('sets a properties object for all nodes', async function() {
@@ -950,7 +973,27 @@ describe('DOM Attributes', function() {
             );
         });
 
-        it('works with HTMLElement', async function() {
+        it('sets a property for all nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    dom.setProperty(
+                        'input',
+                        'test',
+                        'Test'
+                    );
+                    return [
+                        document.getElementById('test1').test,
+                        document.getElementById('test2').test
+                    ];
+                }),
+                [
+                    'Test',
+                    'Test'
+                ]
+            );
+        });
+
+        it('works with HTMLElement nodes', async function() {
             assert.deepEqual(
                 await exec(_ => {
                     const element = document.getElementById('test1');
@@ -971,7 +1014,7 @@ describe('DOM Attributes', function() {
             );
         });
 
-        it('works with HTMLCollection', async function() {
+        it('works with HTMLCollection nodes', async function() {
             assert.deepEqual(
                 await exec(_ => {
                     dom.setProperty(
@@ -991,7 +1034,7 @@ describe('DOM Attributes', function() {
             );
         });
 
-        it('works with NodeList', async function() {
+        it('works with NodeList nodes', async function() {
             assert.deepEqual(
                 await exec(_ => {
                     dom.setProperty(
@@ -1011,7 +1054,7 @@ describe('DOM Attributes', function() {
             );
         });
 
-        it('works with array', async function() {
+        it('works with array nodes', async function() {
             assert.deepEqual(
                 await exec(_ => {
                     const element1 = document.getElementById('test1');
@@ -1064,7 +1107,66 @@ describe('DOM Attributes', function() {
             );
         });
 
-        it('works with HTMLElement', async function() {
+        it('escapes HTML strings', async function() {
+            assert.equal(
+                await exec(_ => {
+                    dom.setText(
+                        document.getElementById('test1'),
+                        '<span>Test 2</span>'
+                    );
+                    return document.body.innerHTML;
+                }),
+                '<div id="test1">&lt;span&gt;Test 2&lt;/span&gt;</div>' +
+                '<div id="test2"></div>'
+            );
+        });
+
+        it('removes data for all previous descendents', async function() {
+            assert.equal(
+                await exec(_ => {
+                    const element = document.getElementById('inner');
+                    dom.setData(
+                        element,
+                        'test',
+                        'Test 1'
+                    );
+                    dom.setText(
+                        'div',
+                        'Test 2'
+                    );
+                    return dom.getData(
+                        element,
+                        'test'
+                    );
+                }),
+                undefined
+            );
+        });
+
+        it('removes events for all previous descendents', async function() {
+            assert.equal(
+                await exec(_ => {
+                    const event = new Event('click');
+                    const element = document.getElementById('inner');
+                    let result = 0;
+                    dom.addEvent(
+                        element,
+                        'click',
+                        _ => { result++; }
+                    );
+                    dom.setText(
+                        'div',
+                        'Test 2'
+                    );
+                    document.body.appendChild(element);
+                    element.dispatchEvent(event);
+                    return result;
+                }),
+                0
+            );
+        });
+
+        it('works with HTMLElement nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     dom.setText(
@@ -1078,7 +1180,7 @@ describe('DOM Attributes', function() {
             );
         });
 
-        it('works with HTMLCollection', async function() {
+        it('works with HTMLCollection nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     dom.setText(
@@ -1092,7 +1194,7 @@ describe('DOM Attributes', function() {
             );
         });
 
-        it('works with NodeList', async function() {
+        it('works with NodeList nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     dom.setText(
@@ -1106,7 +1208,7 @@ describe('DOM Attributes', function() {
             );
         });
 
-        it('works with array', async function() {
+        it('works with array nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     dom.setText(
@@ -1122,22 +1224,6 @@ describe('DOM Attributes', function() {
                 '<div id="test2">Test 2</div>'
             );
         });
-
-        it('escapes HTML strings', async function() {
-            assert.equal(
-                await exec(_ => {
-                    dom.setText(
-                        document.getElementById('test1'),
-                        '<span>Test 2</span>'
-                    );
-                    return document.body.innerHTML;
-                }),
-                '<div id="test1">&lt;span&gt;Test 2&lt;/span&gt;</div>' +
-                '<div id="test2"></div>'
-            );
-        });
-
-        it('removes data for all previous descendents');
 
     });
 
@@ -1172,7 +1258,7 @@ describe('DOM Attributes', function() {
             );
         });
 
-        it('works with textarea inputs', async function() {
+        it('works with textarea input nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     dom.setValue(
@@ -1185,7 +1271,7 @@ describe('DOM Attributes', function() {
             );
         });
 
-        it('works with select inputs', async function() {
+        it('works with select input nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     dom.setValue(
@@ -1198,7 +1284,7 @@ describe('DOM Attributes', function() {
             );
         });
 
-        it('works with HTMLElement', async function() {
+        it('works with HTMLElement nodes', async function() {
             assert.deepEqual(
                 await exec(_ => {
                     const element = document.getElementById('test1');
@@ -1218,7 +1304,7 @@ describe('DOM Attributes', function() {
             );
         });
 
-        it('works with HTMLCollection', async function() {
+        it('works with HTMLCollection nodes', async function() {
             assert.deepEqual(
                 await exec(_ => {
                     dom.setValue(
@@ -1237,7 +1323,7 @@ describe('DOM Attributes', function() {
             );
         });
 
-        it('works with NodeList', async function() {
+        it('works with NodeList nodes', async function() {
             assert.deepEqual(
                 await exec(_ => {
                     dom.setValue(
@@ -1256,7 +1342,7 @@ describe('DOM Attributes', function() {
             );
         });
 
-        it('works with array', async function() {
+        it('works with array nodes', async function() {
             assert.deepEqual(
                 await exec(_ => {
                     const element1 = document.getElementById('test1');

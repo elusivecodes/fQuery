@@ -37,6 +37,8 @@ beforeEach(async function() {
 });
 
 after(async function() {
+    this.timeout(30000);
+
     await page.close();
     await browser.close();
 });

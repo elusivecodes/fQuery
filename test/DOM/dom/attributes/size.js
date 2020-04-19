@@ -60,7 +60,18 @@ describe('DOM Attributes (Size)', function() {
             );
         });
 
-        it('works with Window', async function() {
+        it('returns undefined for empty nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    return dom.height(
+                        '#invalid'
+                    );
+                }),
+                undefined
+            );
+        });
+
+        it('works with Window nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     return dom.height(
@@ -71,7 +82,7 @@ describe('DOM Attributes (Size)', function() {
             );
         });
 
-        it('works with HTMLElement', async function() {
+        it('works with HTMLElement nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     return dom.height(
@@ -82,7 +93,7 @@ describe('DOM Attributes (Size)', function() {
             );
         });
 
-        it('works with HTMLCollection', async function() {
+        it('works with HTMLCollection nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     return dom.height(
@@ -93,7 +104,7 @@ describe('DOM Attributes (Size)', function() {
             );
         });
 
-        it('works with NodeList', async function() {
+        it('works with NodeList nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     return dom.height(
@@ -104,7 +115,7 @@ describe('DOM Attributes (Size)', function() {
             );
         });
 
-        it('works with array', async function() {
+        it('works with array nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     return dom.height(
@@ -115,17 +126,6 @@ describe('DOM Attributes (Size)', function() {
                     );
                 }),
                 1050
-            );
-        });
-
-        it('returns undefined for empty nodes', async function() {
-            assert.equal(
-                await exec(_ => {
-                    return dom.height(
-                        '#invalid'
-                    );
-                }),
-                undefined
             );
         });
 
@@ -188,7 +188,18 @@ describe('DOM Attributes (Size)', function() {
             );
         });
 
-        it('works with Window', async function() {
+        it('returns undefined for empty nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    return dom.width(
+                        '#invalid'
+                    );
+                }),
+                undefined
+            );
+        });
+
+        it('works with Window nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     return dom.width(
@@ -199,7 +210,7 @@ describe('DOM Attributes (Size)', function() {
             );
         });
 
-        it('works with HTMLElement', async function() {
+        it('works with HTMLElement nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     return dom.width(
@@ -210,7 +221,7 @@ describe('DOM Attributes (Size)', function() {
             );
         });
 
-        it('works with HTMLCollection', async function() {
+        it('works with HTMLCollection nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     return dom.width(
@@ -221,7 +232,7 @@ describe('DOM Attributes (Size)', function() {
             );
         });
 
-        it('works with NodeList', async function() {
+        it('works with NodeList nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     return dom.width(
@@ -232,7 +243,7 @@ describe('DOM Attributes (Size)', function() {
             );
         });
 
-        it('works with array', async function() {
+        it('works with array nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     return dom.width(
@@ -243,17 +254,6 @@ describe('DOM Attributes (Size)', function() {
                     );
                 }),
                 1250
-            );
-        });
-
-        it('returns undefined for empty nodes', async function() {
-            assert.equal(
-                await exec(_ => {
-                    return dom.width(
-                        '#invalid'
-                    );
-                }),
-                undefined
             );
         });
 

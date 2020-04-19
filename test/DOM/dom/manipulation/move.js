@@ -62,11 +62,114 @@ describe('DOM Move', function() {
             );
         });
 
-        it('works with HTMLElement', async function() {
+        it('works with HTMLElement nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     dom.after(
                         document.getElementById('parent1'),
+                        'a'
+                    );
+                    return document.body.innerHTML;
+                }),
+                '<div id="parent1">' +
+                '<span></span>' +
+                '</div>' +
+                '<a href="#" class="test1">Test</a>' +
+                '<a href="#" class="test2">Test</a>' +
+                '<a href="#" class="test3">Test</a>' +
+                '<a href="#" class="test4">Test</a>' +
+                '<div id="parent2">' +
+                '<span></span>' +
+                '</div>'
+            );
+        });
+
+        it('works with HTMLCollection nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    dom.after(
+                        document.body.children,
+                        'a'
+                    );
+                    return document.body.innerHTML;
+                }),
+                '<div id="parent1">' +
+                '<span></span>' +
+                '</div>' +
+                '<a href="#" class="test1">Test</a>' +
+                '<a href="#" class="test2">Test</a>' +
+                '<a href="#" class="test3">Test</a>' +
+                '<a href="#" class="test4">Test</a>' +
+                '<div id="parent2">' +
+                '<span></span>' +
+                '</div>' +
+                '<a href="#" class="test1">Test</a>' +
+                '<a href="#" class="test2">Test</a>' +
+                '<a href="#" class="test3">Test</a>' +
+                '<a href="#" class="test4">Test</a>'
+            );
+        });
+
+        it('works with NodeList nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    dom.after(
+                        document.querySelectorAll('div'),
+                        'a'
+                    );
+                    return document.body.innerHTML;
+                }),
+                '<div id="parent1">' +
+                '<span></span>' +
+                '</div>' +
+                '<a href="#" class="test1">Test</a>' +
+                '<a href="#" class="test2">Test</a>' +
+                '<a href="#" class="test3">Test</a>' +
+                '<a href="#" class="test4">Test</a>' +
+                '<div id="parent2">' +
+                '<span></span>' +
+                '</div>' +
+                '<a href="#" class="test1">Test</a>' +
+                '<a href="#" class="test2">Test</a>' +
+                '<a href="#" class="test3">Test</a>' +
+                '<a href="#" class="test4">Test</a>'
+            );
+        });
+
+        it('works with array nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    dom.after(
+                        [
+                            document.getElementById('parent1'),
+                            document.getElementById('parent2')
+                        ],
+                        'a'
+                    );
+                    return document.body.innerHTML;
+                }),
+                '<div id="parent1">' +
+                '<span></span>' +
+                '</div>' +
+                '<a href="#" class="test1">Test</a>' +
+                '<a href="#" class="test2">Test</a>' +
+                '<a href="#" class="test3">Test</a>' +
+                '<a href="#" class="test4">Test</a>' +
+                '<div id="parent2">' +
+                '<span></span>' +
+                '</div>' +
+                '<a href="#" class="test1">Test</a>' +
+                '<a href="#" class="test2">Test</a>' +
+                '<a href="#" class="test3">Test</a>' +
+                '<a href="#" class="test4">Test</a>'
+            );
+        });
+
+        it('works with HTMLElement other nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    dom.after(
+                        'div',
                         document.querySelector('.test1')
                     );
                     return document.body.innerHTML;
@@ -80,15 +183,16 @@ describe('DOM Move', function() {
                 '<span></span>' +
                 '<a href="#" class="test3">Test</a>' +
                 '<a href="#" class="test4">Test</a>' +
-                '</div>'
+                '</div>' +
+                '<a href="#" class="test1">Test</a>'
             );
         });
 
-        it('works with HTMLCollection', async function() {
+        it('works with HTMLCollection other nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     dom.after(
-                        document.body.children,
+                        'div',
                         document.getElementById('parent1').children
                     );
                     return document.body.innerHTML;
@@ -109,11 +213,11 @@ describe('DOM Move', function() {
             );
         });
 
-        it('works with NodeList', async function() {
+        it('works with NodeList other nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     dom.after(
-                        document.querySelectorAll('div'),
+                        'div',
                         document.querySelectorAll('a')
                     );
                     return document.body.innerHTML;
@@ -135,14 +239,11 @@ describe('DOM Move', function() {
             );
         });
 
-        it('works with array', async function() {
+        it('works with array other nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     dom.after(
-                        [
-                            document.getElementById('parent1'),
-                            document.getElementById('parent2')
-                        ],
+                        'div',
                         [
                             document.querySelector('.test1'),
                             document.querySelector('.test2'),
@@ -169,7 +270,7 @@ describe('DOM Move', function() {
             );
         });
 
-        it('works with HTML', async function() {
+        it('works with HTML other nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     dom.after(
@@ -254,11 +355,114 @@ describe('DOM Move', function() {
             );
         });
 
-        it('works with HTMLElement', async function() {
+        it('works with HTMLElement nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     dom.append(
                         document.getElementById('parent1'),
+                        'a'
+                    );
+                    return document.body.innerHTML;
+                }),
+                '<div id="parent1">' +
+                '<span></span>' +
+                '<a href="#" class="test1">Test</a>' +
+                '<a href="#" class="test2">Test</a>' +
+                '<a href="#" class="test3">Test</a>' +
+                '<a href="#" class="test4">Test</a>' +
+                '</div>' +
+                '<div id="parent2">' +
+                '<span></span>' +
+                '</div>'
+            );
+        });
+
+        it('works with HTMLCollection nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    dom.append(
+                        document.body.children,
+                        'a'
+                    );
+                    return document.body.innerHTML;
+                }),
+                '<div id="parent1">' +
+                '<span></span>' +
+                '<a href="#" class="test1">Test</a>' +
+                '<a href="#" class="test2">Test</a>' +
+                '<a href="#" class="test3">Test</a>' +
+                '<a href="#" class="test4">Test</a>' +
+                '</div>' +
+                '<div id="parent2">' +
+                '<span></span>' +
+                '<a href="#" class="test1">Test</a>' +
+                '<a href="#" class="test2">Test</a>' +
+                '<a href="#" class="test3">Test</a>' +
+                '<a href="#" class="test4">Test</a>' +
+                '</div>'
+            );
+        });
+
+        it('works with NodeList nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    dom.append(
+                        document.querySelectorAll('div'),
+                        'a'
+                    );
+                    return document.body.innerHTML;
+                }),
+                '<div id="parent1">' +
+                '<span></span>' +
+                '<a href="#" class="test1">Test</a>' +
+                '<a href="#" class="test2">Test</a>' +
+                '<a href="#" class="test3">Test</a>' +
+                '<a href="#" class="test4">Test</a>' +
+                '</div>' +
+                '<div id="parent2">' +
+                '<span></span>' +
+                '<a href="#" class="test1">Test</a>' +
+                '<a href="#" class="test2">Test</a>' +
+                '<a href="#" class="test3">Test</a>' +
+                '<a href="#" class="test4">Test</a>' +
+                '</div>'
+            );
+        });
+
+        it('works with array nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    dom.append(
+                        [
+                            document.getElementById('parent1'),
+                            document.getElementById('parent2')
+                        ],
+                        'a'
+                    );
+                    return document.body.innerHTML;
+                }),
+                '<div id="parent1">' +
+                '<span></span>' +
+                '<a href="#" class="test1">Test</a>' +
+                '<a href="#" class="test2">Test</a>' +
+                '<a href="#" class="test3">Test</a>' +
+                '<a href="#" class="test4">Test</a>' +
+                '</div>' +
+                '<div id="parent2">' +
+                '<span></span>' +
+                '<a href="#" class="test1">Test</a>' +
+                '<a href="#" class="test2">Test</a>' +
+                '<a href="#" class="test3">Test</a>' +
+                '<a href="#" class="test4">Test</a>' +
+                '</div>'
+            );
+        });
+
+        it('works with HTMLElement other nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    dom.append(
+                        'div',
                         document.querySelector('.test1')
                     );
                     return document.body.innerHTML;
@@ -272,15 +476,16 @@ describe('DOM Move', function() {
                 '<a href="#" class="test3">Test</a>' +
                 '<a href="#" class="test4">Test</a>' +
                 '<span></span>' +
+                '<a href="#" class="test1">Test</a>' +
                 '</div>'
             );
         });
 
-        it('works with HTMLCollection', async function() {
+        it('works with HTMLCollection other nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     dom.append(
-                        document.body.children,
+                        'div',
                         document.getElementById('parent1').children
                     );
                     return document.body.innerHTML;
@@ -301,11 +506,11 @@ describe('DOM Move', function() {
             );
         });
 
-        it('works with NodeList', async function() {
+        it('works with NodeList other nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     dom.append(
-                        document.querySelectorAll('div'),
+                        'div',
                         document.querySelectorAll('a')
                     );
                     return document.body.innerHTML;
@@ -327,14 +532,11 @@ describe('DOM Move', function() {
             );
         });
 
-        it('works with array', async function() {
+        it('works with array other nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     dom.append(
-                        [
-                            document.getElementById('parent1'),
-                            document.getElementById('parent2')
-                        ],
+                        'div',
                         [
                             document.querySelector('.test1'),
                             document.querySelector('.test2'),
@@ -361,7 +563,7 @@ describe('DOM Move', function() {
             );
         });
 
-        it('works with HTML', async function() {
+        it('works with HTML other nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     dom.append(
@@ -446,58 +648,164 @@ describe('DOM Move', function() {
             );
         });
 
-        it('works with HTMLElement', async function() {
+        it('works with HTMLElement nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     dom.appendTo(
                         document.querySelector('.test1'),
+                        'div'
+                    );
+                    return document.body.innerHTML;
+                }),
+                '<div id="parent1">' +
+                '<a href="#" class="test2">Test</a>' +
+                '<span></span>' +
+                '<a href="#" class="test1">Test</a>' +
+                '</div>' +
+                '<div id="parent2">' +
+                '<a href="#" class="test3">Test</a>' +
+                '<a href="#" class="test4">Test</a>' +
+                '<span></span>' +
+                '<a href="#" class="test1">Test</a>' +
+                '</div>'
+            );
+        });
+
+        it('works with HTMLCollection nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    dom.appendTo(
+                        document.getElementById('parent1').children,
+                        'div'
+                    );
+                    return document.body.innerHTML;
+                }),
+                '<div id="parent1">' +
+                '<a href="#" class="test1">Test</a>' +
+                '<a href="#" class="test2">Test</a>' +
+                '<span></span>' +
+                '</div>' +
+                '<div id="parent2">' +
+                '<a href="#" class="test3">Test</a>' +
+                '<a href="#" class="test4">Test</a>' +
+                '<span></span>' +
+                '<a href="#" class="test1">Test</a>' +
+                '<a href="#" class="test2">Test</a>' +
+                '<span></span>' +
+                '</div>'
+            );
+        });
+
+        it('works with NodeList nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    dom.appendTo(
+                        document.querySelectorAll('a'),
+                        'div'
+                    );
+                    return document.body.innerHTML;
+                }),
+                '<div id="parent1">' +
+                '<span></span>' +
+                '<a href="#" class="test1">Test</a>' +
+                '<a href="#" class="test2">Test</a>' +
+                '<a href="#" class="test3">Test</a>' +
+                '<a href="#" class="test4">Test</a>' +
+                '</div>' +
+                '<div id="parent2">' +
+                '<span></span>' +
+                '<a href="#" class="test1">Test</a>' +
+                '<a href="#" class="test2">Test</a>' +
+                '<a href="#" class="test3">Test</a>' +
+                '<a href="#" class="test4">Test</a>' +
+                '</div>'
+            );
+        });
+
+        it('works with array nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    dom.appendTo(
+                        [
+                            document.querySelector('.test1'),
+                            document.querySelector('.test2'),
+                            document.querySelector('.test3'),
+                            document.querySelector('.test4')
+                        ],
+                        'div'
+                    );
+                    return document.body.innerHTML;
+                }),
+                '<div id="parent1">' +
+                '<span></span>' +
+                '<a href="#" class="test1">Test</a>' +
+                '<a href="#" class="test2">Test</a>' +
+                '<a href="#" class="test3">Test</a>' +
+                '<a href="#" class="test4">Test</a>' +
+                '</div>' +
+                '<div id="parent2">' +
+                '<span></span>' +
+                '<a href="#" class="test1">Test</a>' +
+                '<a href="#" class="test2">Test</a>' +
+                '<a href="#" class="test3">Test</a>' +
+                '<a href="#" class="test4">Test</a>' +
+                '</div>'
+            );
+        });
+
+        it('works with HTMLElement other nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    dom.appendTo(
+                        'a',
                         document.getElementById('parent1')
                     );
                     return document.body.innerHTML;
                 }),
                 '<div id="parent1">' +
-                '<a href="#" class="test2">Test</a>' +
                 '<span></span>' +
                 '<a href="#" class="test1">Test</a>' +
-                '</div>' +
-                '<div id="parent2">' +
+                '<a href="#" class="test2">Test</a>' +
                 '<a href="#" class="test3">Test</a>' +
                 '<a href="#" class="test4">Test</a>' +
+                '</div>' +
+                '<div id="parent2">' +
                 '<span></span>' +
                 '</div>'
             );
         });
 
-        it('works with HTMLCollection', async function() {
+        it('works with HTMLCollection other nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     dom.appendTo(
-                        document.getElementById('parent1').children,
+                        'a',
                         document.body.children
                     );
                     return document.body.innerHTML;
                 }),
                 '<div id="parent1">' +
+                '<span></span>' +
                 '<a href="#" class="test1">Test</a>' +
                 '<a href="#" class="test2">Test</a>' +
-                '<span></span>' +
-                '</div>' +
-                '<div id="parent2">' +
                 '<a href="#" class="test3">Test</a>' +
                 '<a href="#" class="test4">Test</a>' +
+                '</div>' +
+                '<div id="parent2">' +
                 '<span></span>' +
                 '<a href="#" class="test1">Test</a>' +
                 '<a href="#" class="test2">Test</a>' +
-                '<span></span>' +
+                '<a href="#" class="test3">Test</a>' +
+                '<a href="#" class="test4">Test</a>' +
                 '</div>'
             );
         });
 
-        it('works with NodeList', async function() {
+        it('works with NodeList other nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     dom.appendTo(
-                        document.querySelectorAll('a'),
+                        'a',
                         document.querySelectorAll('div')
                     );
                     return document.body.innerHTML;
@@ -519,16 +827,11 @@ describe('DOM Move', function() {
             );
         });
 
-        it('works with array', async function() {
+        it('works with array other nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     dom.appendTo(
-                        [
-                            document.querySelector('.test1'),
-                            document.querySelector('.test2'),
-                            document.querySelector('.test3'),
-                            document.querySelector('.test4')
-                        ],
+                        'a',
                         [
                             document.getElementById('parent1'),
                             document.getElementById('parent2')
@@ -553,7 +856,7 @@ describe('DOM Move', function() {
             );
         });
 
-        it('works with HTML', async function() {
+        it('works with HTML other nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     dom.appendTo(
@@ -638,11 +941,114 @@ describe('DOM Move', function() {
             );
         });
 
-        it('works with HTMLElement', async function() {
+        it('works with HTMLElement nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     dom.before(
                         document.getElementById('parent1'),
+                        'a'
+                    );
+                    return document.body.innerHTML;
+                }),
+                '<a href="#" class="test1">Test</a>' +
+                '<a href="#" class="test2">Test</a>' +
+                '<a href="#" class="test3">Test</a>' +
+                '<a href="#" class="test4">Test</a>' +
+                '<div id="parent1">' +
+                '<span></span>' +
+                '</div>' +
+                '<div id="parent2">' +
+                '<span></span>' +
+                '</div>'
+            );
+        });
+
+        it('works with HTMLCollection nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    dom.before(
+                        document.body.children,
+                        'a'
+                    );
+                    return document.body.innerHTML;
+                }),
+                '<a href="#" class="test1">Test</a>' +
+                '<a href="#" class="test2">Test</a>' +
+                '<a href="#" class="test3">Test</a>' +
+                '<a href="#" class="test4">Test</a>' +
+                '<div id="parent1">' +
+                '<span></span>' +
+                '</div>' +
+                '<a href="#" class="test1">Test</a>' +
+                '<a href="#" class="test2">Test</a>' +
+                '<a href="#" class="test3">Test</a>' +
+                '<a href="#" class="test4">Test</a>' +
+                '<div id="parent2">' +
+                '<span></span>' +
+                '</div>'
+            );
+        });
+
+        it('works with NodeList nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    dom.before(
+                        document.querySelectorAll('div'),
+                        'a'
+                    );
+                    return document.body.innerHTML;
+                }),
+                '<a href="#" class="test1">Test</a>' +
+                '<a href="#" class="test2">Test</a>' +
+                '<a href="#" class="test3">Test</a>' +
+                '<a href="#" class="test4">Test</a>' +
+                '<div id="parent1">' +
+                '<span></span>' +
+                '</div>' +
+                '<a href="#" class="test1">Test</a>' +
+                '<a href="#" class="test2">Test</a>' +
+                '<a href="#" class="test3">Test</a>' +
+                '<a href="#" class="test4">Test</a>' +
+                '<div id="parent2">' +
+                '<span></span>' +
+                '</div>'
+            );
+        });
+
+        it('works with array nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    dom.before(
+                        [
+                            document.getElementById('parent1'),
+                            document.getElementById('parent2')
+                        ],
+                        'a'
+                    );
+                    return document.body.innerHTML;
+                }),
+                '<a href="#" class="test1">Test</a>' +
+                '<a href="#" class="test2">Test</a>' +
+                '<a href="#" class="test3">Test</a>' +
+                '<a href="#" class="test4">Test</a>' +
+                '<div id="parent1">' +
+                '<span></span>' +
+                '</div>' +
+                '<a href="#" class="test1">Test</a>' +
+                '<a href="#" class="test2">Test</a>' +
+                '<a href="#" class="test3">Test</a>' +
+                '<a href="#" class="test4">Test</a>' +
+                '<div id="parent2">' +
+                '<span></span>' +
+                '</div>'
+            );
+        });
+
+        it('works with HTMLElement other nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    dom.before(
+                        'div',
                         document.querySelector('.test1')
                     );
                     return document.body.innerHTML;
@@ -652,6 +1058,7 @@ describe('DOM Move', function() {
                 '<span></span>' +
                 '<a href="#" class="test2">Test</a>' +
                 '</div>' +
+                '<a href="#" class="test1">Test</a>' +
                 '<div id="parent2">' +
                 '<span></span>' +
                 '<a href="#" class="test3">Test</a>' +
@@ -660,11 +1067,11 @@ describe('DOM Move', function() {
             );
         });
 
-        it('works with HTMLCollection', async function() {
+        it('works with HTMLCollection other nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     dom.before(
-                        document.body.children,
+                        'div',
                         document.getElementById('parent1').children
                     );
                     return document.body.innerHTML;
@@ -685,11 +1092,11 @@ describe('DOM Move', function() {
             );
         });
 
-        it('works with NodeList', async function() {
+        it('works with NodeList other nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     dom.before(
-                        document.querySelectorAll('div'),
+                        'div',
                         document.querySelectorAll('a')
                     );
                     return document.body.innerHTML;
@@ -711,14 +1118,11 @@ describe('DOM Move', function() {
             );
         });
 
-        it('works with array', async function() {
+        it('works with array other nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     dom.before(
-                        [
-                            document.getElementById('parent1'),
-                            document.getElementById('parent2')
-                        ],
+                        'div',
                         [
                             document.querySelector('.test1'),
                             document.querySelector('.test2'),
@@ -745,7 +1149,7 @@ describe('DOM Move', function() {
             );
         });
 
-        it('works with HTML', async function() {
+        it('works with HTML other nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     dom.before(
@@ -830,12 +1234,12 @@ describe('DOM Move', function() {
             );
         });
 
-        it('works with HTMLElement', async function() {
+        it('works with HTMLElement nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     dom.insertAfter(
                         document.querySelector('.test1'),
-                        document.getElementById('parent1')
+                        'div'
                     );
                     return document.body.innerHTML;
                 }),
@@ -848,16 +1252,17 @@ describe('DOM Move', function() {
                 '<span></span>' +
                 '<a href="#" class="test3">Test</a>' +
                 '<a href="#" class="test4">Test</a>' +
-                '</div>'
+                '</div>' +
+                '<a href="#" class="test1">Test</a>'
             );
         });
 
-        it('works with HTMLCollection', async function() {
+        it('works with HTMLCollection nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     dom.insertAfter(
                         document.getElementById('parent1').children,
-                        document.body.children
+                        'div'
                     );
                     return document.body.innerHTML;
                 }),
@@ -877,11 +1282,140 @@ describe('DOM Move', function() {
             );
         });
 
-        it('works with NodeList', async function() {
+        it('works with NodeList nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     dom.insertAfter(
                         document.querySelectorAll('a'),
+                        'div'
+                    );
+                    return document.body.innerHTML;
+                }),
+                '<div id="parent1">' +
+                '<span></span>' +
+                '</div>' +
+                '<a href="#" class="test1">Test</a>' +
+                '<a href="#" class="test2">Test</a>' +
+                '<a href="#" class="test3">Test</a>' +
+                '<a href="#" class="test4">Test</a>' +
+                '<div id="parent2">' +
+                '<span></span>' +
+                '</div>' +
+                '<a href="#" class="test1">Test</a>' +
+                '<a href="#" class="test2">Test</a>' +
+                '<a href="#" class="test3">Test</a>' +
+                '<a href="#" class="test4">Test</a>'
+            );
+        });
+
+        it('works with array nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    dom.insertAfter(
+                        [
+                            document.querySelector('.test1'),
+                            document.querySelector('.test2'),
+                            document.querySelector('.test3'),
+                            document.querySelector('.test4')
+                        ],
+                        'div'
+                    );
+                    return document.body.innerHTML;
+                }),
+                '<div id="parent1">' +
+                '<span></span>' +
+                '</div>' +
+                '<a href="#" class="test1">Test</a>' +
+                '<a href="#" class="test2">Test</a>' +
+                '<a href="#" class="test3">Test</a>' +
+                '<a href="#" class="test4">Test</a>' +
+                '<div id="parent2">' +
+                '<span></span>' +
+                '</div>' +
+                '<a href="#" class="test1">Test</a>' +
+                '<a href="#" class="test2">Test</a>' +
+                '<a href="#" class="test3">Test</a>' +
+                '<a href="#" class="test4">Test</a>'
+            );
+        });
+
+        it('works with HTML nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    dom.insertAfter(
+                        '<div><span></span></div>',
+                        'div'
+                    );
+                    return document.body.innerHTML;
+                }),
+                '<div id="parent1">' +
+                '<span></span>' +
+                '<a href="#" class="test1">Test</a>' +
+                '<a href="#" class="test2">Test</a>' +
+                '</div>' +
+                '<div><span></span></div>' +
+                '<div id="parent2">' +
+                '<span></span>' +
+                '<a href="#" class="test3">Test</a>' +
+                '<a href="#" class="test4">Test</a>' +
+                '</div>' +
+                '<div><span></span></div>'
+            );
+        });
+
+        it('works with HTMLElement other nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    dom.insertAfter(
+                        'a',
+                        document.getElementById('parent1')
+                    );
+                    return document.body.innerHTML;
+                }),
+                '<div id="parent1">' +
+                '<span></span>' +
+                '</div>' +
+                '<a href="#" class="test1">Test</a>' +
+                '<a href="#" class="test2">Test</a>' +
+                '<a href="#" class="test3">Test</a>' +
+                '<a href="#" class="test4">Test</a>' +
+                '<div id="parent2">' +
+                '<span></span>' +
+                '</div>'
+            );
+        });
+
+        it('works with HTMLCollection other nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    dom.insertAfter(
+                        'a',
+                        document.body.children
+                    );
+                    return document.body.innerHTML;
+                }),
+                '<div id="parent1">' +
+                '<span></span>' +
+                '</div>' +
+                '<a href="#" class="test1">Test</a>' +
+                '<a href="#" class="test2">Test</a>' +
+                '<a href="#" class="test3">Test</a>' +
+                '<a href="#" class="test4">Test</a>' +
+                '<div id="parent2">' +
+                '<span></span>' +
+                '</div>' +
+                '<a href="#" class="test1">Test</a>' +
+                '<a href="#" class="test2">Test</a>' +
+                '<a href="#" class="test3">Test</a>' +
+                '<a href="#" class="test4">Test</a>'
+            );
+        });
+
+        it('works with NodeList other nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    dom.insertAfter(
+                        'a',
                         document.querySelectorAll('div')
                     );
                     return document.body.innerHTML;
@@ -903,16 +1437,11 @@ describe('DOM Move', function() {
             );
         });
 
-        it('works with array', async function() {
+        it('works with array other nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     dom.insertAfter(
-                        [
-                            document.querySelector('.test1'),
-                            document.querySelector('.test2'),
-                            document.querySelector('.test3'),
-                            document.querySelector('.test4')
-                        ],
+                        'a',
                         [
                             document.getElementById('parent1'),
                             document.getElementById('parent2')
@@ -934,30 +1463,6 @@ describe('DOM Move', function() {
                 '<a href="#" class="test2">Test</a>' +
                 '<a href="#" class="test3">Test</a>' +
                 '<a href="#" class="test4">Test</a>'
-            );
-        });
-
-        it('works with HTML', async function() {
-            assert.equal(
-                await exec(_ => {
-                    dom.insertAfter(
-                        '<div><span></span></div>',
-                        'div'
-                    );
-                    return document.body.innerHTML;
-                }),
-                '<div id="parent1">' +
-                '<span></span>' +
-                '<a href="#" class="test1">Test</a>' +
-                '<a href="#" class="test2">Test</a>' +
-                '</div>' +
-                '<div><span></span></div>' +
-                '<div id="parent2">' +
-                '<span></span>' +
-                '<a href="#" class="test3">Test</a>' +
-                '<a href="#" class="test4">Test</a>' +
-                '</div>' +
-                '<div><span></span></div>'
             );
         });
 
@@ -1022,58 +1527,188 @@ describe('DOM Move', function() {
             );
         });
 
-        it('works with HTMLElement', async function() {
+        it('works with HTMLElement nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     dom.insertBefore(
                         document.querySelector('.test1'),
+                        'div'
+                    );
+                    return document.body.innerHTML;
+                }),
+                '<a href="#" class="test1">Test</a>' +
+                '<div id="parent1">' +
+                '<span></span>' +
+                '<a href="#" class="test2">Test</a>' +
+                '</div>' +
+                '<a href="#" class="test1">Test</a>' +
+                '<div id="parent2">' +
+                '<span></span>' +
+                '<a href="#" class="test3">Test</a>' +
+                '<a href="#" class="test4">Test</a>' +
+                '</div>'
+            );
+        });
+
+        it('works with HTMLCollection nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    dom.insertBefore(
+                        document.getElementById('parent1').children,
+                        'div'
+                    );
+                    return document.body.innerHTML;
+                }),
+                '<span></span>' +
+                '<a href="#" class="test1">Test</a>' +
+                '<a href="#" class="test2">Test</a>' +
+                '<div id="parent1">' +
+                '</div>' +
+                '<span></span>' +
+                '<a href="#" class="test1">Test</a>' +
+                '<a href="#" class="test2">Test</a>' +
+                '<div id="parent2">' +
+                '<span></span>' +
+                '<a href="#" class="test3">Test</a>' +
+                '<a href="#" class="test4">Test</a>' +
+                '</div>'
+            );
+        });
+
+        it('works with NodeList nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    dom.insertBefore(
+                        document.querySelectorAll('a'),
+                        'div'
+                    );
+                    return document.body.innerHTML;
+                }),
+                '<a href="#" class="test1">Test</a>' +
+                '<a href="#" class="test2">Test</a>' +
+                '<a href="#" class="test3">Test</a>' +
+                '<a href="#" class="test4">Test</a>' +
+                '<div id="parent1">' +
+                '<span></span>' +
+                '</div>' +
+                '<a href="#" class="test1">Test</a>' +
+                '<a href="#" class="test2">Test</a>' +
+                '<a href="#" class="test3">Test</a>' +
+                '<a href="#" class="test4">Test</a>' +
+                '<div id="parent2">' +
+                '<span></span>' +
+                '</div>'
+            );
+        });
+
+        it('works with array nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    dom.insertBefore(
+                        [
+                            document.querySelector('.test1'),
+                            document.querySelector('.test2'),
+                            document.querySelector('.test3'),
+                            document.querySelector('.test4')
+                        ],
+                        'div'
+                    );
+                    return document.body.innerHTML;
+                }),
+                '<a href="#" class="test1">Test</a>' +
+                '<a href="#" class="test2">Test</a>' +
+                '<a href="#" class="test3">Test</a>' +
+                '<a href="#" class="test4">Test</a>' +
+                '<div id="parent1">' +
+                '<span></span>' +
+                '</div>' +
+                '<a href="#" class="test1">Test</a>' +
+                '<a href="#" class="test2">Test</a>' +
+                '<a href="#" class="test3">Test</a>' +
+                '<a href="#" class="test4">Test</a>' +
+                '<div id="parent2">' +
+                '<span></span>' +
+                '</div>'
+            );
+        });
+
+        it('works with HTML nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    dom.insertBefore(
+                        '<div><span></span></div>',
+                        'div'
+                    );
+                    return document.body.innerHTML;
+                }),
+                '<div><span></span></div>' +
+                '<div id="parent1">' +
+                '<span></span>' +
+                '<a href="#" class="test1">Test</a>' +
+                '<a href="#" class="test2">Test</a>' +
+                '</div>' +
+                '<div><span></span></div>' +
+                '<div id="parent2">' +
+                '<span></span>' +
+                '<a href="#" class="test3">Test</a>' +
+                '<a href="#" class="test4">Test</a>' +
+                '</div>'
+            );
+        });
+
+        it('works with HTMLElement other nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    dom.insertBefore(
+                        'a',
                         document.getElementById('parent1')
                     );
                     return document.body.innerHTML;
                 }),
                 '<a href="#" class="test1">Test</a>' +
+                '<a href="#" class="test2">Test</a>' +
+                '<a href="#" class="test3">Test</a>' +
+                '<a href="#" class="test4">Test</a>' +
                 '<div id="parent1">' +
                 '<span></span>' +
-                '<a href="#" class="test2">Test</a>' +
                 '</div>' +
                 '<div id="parent2">' +
                 '<span></span>' +
-                '<a href="#" class="test3">Test</a>' +
-                '<a href="#" class="test4">Test</a>' +
                 '</div>'
             );
         });
 
-        it('works with HTMLCollection', async function() {
+        it('works with HTMLCollection other nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     dom.insertBefore(
-                        document.getElementById('parent1').children,
+                        'a',
                         document.body.children
                     );
                     return document.body.innerHTML;
                 }),
-                '<span></span>' +
                 '<a href="#" class="test1">Test</a>' +
                 '<a href="#" class="test2">Test</a>' +
-                '<div id="parent1">' +
-                '</div>' +
-                '<span></span>' +
-                '<a href="#" class="test1">Test</a>' +
-                '<a href="#" class="test2">Test</a>' +
-                '<div id="parent2">' +
-                '<span></span>' +
                 '<a href="#" class="test3">Test</a>' +
                 '<a href="#" class="test4">Test</a>' +
+                '<div id="parent1">' +
+                '<span></span>' +
+                '</div>' +
+                '<a href="#" class="test1">Test</a>' +
+                '<a href="#" class="test2">Test</a>' +
+                '<a href="#" class="test3">Test</a>' +
+                '<a href="#" class="test4">Test</a>' +
+                '<div id="parent2">' +
+                '<span></span>' +
                 '</div>'
             );
         });
 
-        it('works with NodeList', async function() {
+        it('works with NodeList other nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     dom.insertBefore(
-                        document.querySelectorAll('a'),
+                        'a',
                         document.querySelectorAll('div')
                     );
                     return document.body.innerHTML;
@@ -1095,16 +1730,11 @@ describe('DOM Move', function() {
             );
         });
 
-        it('works with array', async function() {
+        it('works with array other nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     dom.insertBefore(
-                        [
-                            document.querySelector('.test1'),
-                            document.querySelector('.test2'),
-                            document.querySelector('.test3'),
-                            document.querySelector('.test4')
-                        ],
+                        'a',
                         [
                             document.getElementById('parent1'),
                             document.getElementById('parent2')
@@ -1125,30 +1755,6 @@ describe('DOM Move', function() {
                 '<a href="#" class="test4">Test</a>' +
                 '<div id="parent2">' +
                 '<span></span>' +
-                '</div>'
-            );
-        });
-
-        it('works with HTML', async function() {
-            assert.equal(
-                await exec(_ => {
-                    dom.insertBefore(
-                        '<div><span></span></div>',
-                        'div'
-                    );
-                    return document.body.innerHTML;
-                }),
-                '<div><span></span></div>' +
-                '<div id="parent1">' +
-                '<span></span>' +
-                '<a href="#" class="test1">Test</a>' +
-                '<a href="#" class="test2">Test</a>' +
-                '</div>' +
-                '<div><span></span></div>' +
-                '<div id="parent2">' +
-                '<span></span>' +
-                '<a href="#" class="test3">Test</a>' +
-                '<a href="#" class="test4">Test</a>' +
                 '</div>'
             );
         });
@@ -1214,11 +1820,114 @@ describe('DOM Move', function() {
             );
         });
 
-        it('works with HTMLElement', async function() {
+        it('works with HTMLElement nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     dom.prepend(
                         document.getElementById('parent1'),
+                        'a'
+                    );
+                    return document.body.innerHTML;
+                }),
+                '<div id="parent1">' +
+                '<a href="#" class="test1">Test</a>' +
+                '<a href="#" class="test2">Test</a>' +
+                '<a href="#" class="test3">Test</a>' +
+                '<a href="#" class="test4">Test</a>' +
+                '<span></span>' +
+                '</div>' +
+                '<div id="parent2">' +
+                '<span></span>' +
+                '</div>'
+            );
+        });
+
+        it('works with HTMLCollection nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    dom.prepend(
+                        document.body.children,
+                        'a'
+                    );
+                    return document.body.innerHTML;
+                }),
+                '<div id="parent1">' +
+                '<a href="#" class="test1">Test</a>' +
+                '<a href="#" class="test2">Test</a>' +
+                '<a href="#" class="test3">Test</a>' +
+                '<a href="#" class="test4">Test</a>' +
+                '<span></span>' +
+                '</div>' +
+                '<div id="parent2">' +
+                '<a href="#" class="test1">Test</a>' +
+                '<a href="#" class="test2">Test</a>' +
+                '<a href="#" class="test3">Test</a>' +
+                '<a href="#" class="test4">Test</a>' +
+                '<span></span>' +
+                '</div>'
+            );
+        });
+
+        it('works with NodeList nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    dom.prepend(
+                        document.querySelectorAll('div'),
+                        'a'
+                    );
+                    return document.body.innerHTML;
+                }),
+                '<div id="parent1">' +
+                '<a href="#" class="test1">Test</a>' +
+                '<a href="#" class="test2">Test</a>' +
+                '<a href="#" class="test3">Test</a>' +
+                '<a href="#" class="test4">Test</a>' +
+                '<span></span>' +
+                '</div>' +
+                '<div id="parent2">' +
+                '<a href="#" class="test1">Test</a>' +
+                '<a href="#" class="test2">Test</a>' +
+                '<a href="#" class="test3">Test</a>' +
+                '<a href="#" class="test4">Test</a>' +
+                '<span></span>' +
+                '</div>'
+            );
+        });
+
+        it('works with array nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    dom.prepend(
+                        [
+                            document.getElementById('parent1'),
+                            document.getElementById('parent2')
+                        ],
+                        'a'
+                    );
+                    return document.body.innerHTML;
+                }),
+                '<div id="parent1">' +
+                '<a href="#" class="test1">Test</a>' +
+                '<a href="#" class="test2">Test</a>' +
+                '<a href="#" class="test3">Test</a>' +
+                '<a href="#" class="test4">Test</a>' +
+                '<span></span>' +
+                '</div>' +
+                '<div id="parent2">' +
+                '<a href="#" class="test1">Test</a>' +
+                '<a href="#" class="test2">Test</a>' +
+                '<a href="#" class="test3">Test</a>' +
+                '<a href="#" class="test4">Test</a>' +
+                '<span></span>' +
+                '</div>'
+            );
+        });
+
+        it('works with HTMLElement other nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    dom.prepend(
+                        'div',
                         document.querySelector('.test1')
                     );
                     return document.body.innerHTML;
@@ -1229,6 +1938,7 @@ describe('DOM Move', function() {
                 '<a href="#" class="test2">Test</a>' +
                 '</div>' +
                 '<div id="parent2">' +
+                '<a href="#" class="test1">Test</a>' +
                 '<span></span>' +
                 '<a href="#" class="test3">Test</a>' +
                 '<a href="#" class="test4">Test</a>' +
@@ -1236,11 +1946,11 @@ describe('DOM Move', function() {
             );
         });
 
-        it('works with HTMLCollection', async function() {
+        it('works with HTMLCollection other nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     dom.prepend(
-                        document.body.children,
+                        'div',
                         document.getElementById('parent1').children
                     );
                     return document.body.innerHTML;
@@ -1261,11 +1971,11 @@ describe('DOM Move', function() {
             );
         });
 
-        it('works with NodeList', async function() {
+        it('works with NodeList other nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     dom.prepend(
-                        document.querySelectorAll('div'),
+                        'div',
                         document.querySelectorAll('a')
                     );
                     return document.body.innerHTML;
@@ -1287,14 +1997,11 @@ describe('DOM Move', function() {
             );
         });
 
-        it('works with array', async function() {
+        it('works with array other nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     dom.prepend(
-                        [
-                            document.getElementById('parent1'),
-                            document.getElementById('parent2')
-                        ],
+                        'div',
                         [
                             document.querySelector('.test1'),
                             document.querySelector('.test2'),
@@ -1321,7 +2028,7 @@ describe('DOM Move', function() {
             );
         });
 
-        it('works with HTML', async function() {
+        it('works with HTML other nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     dom.prepend(
@@ -1406,58 +2113,188 @@ describe('DOM Move', function() {
             );
         });
 
-        it('works with HTMLElement', async function() {
+        it('works with HTMLElement nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     dom.prependTo(
                         document.querySelector('.test1'),
+                        'div'
+                    );
+                    return document.body.innerHTML;
+                }),
+                '<div id="parent1">' +
+                '<a href="#" class="test1">Test</a>' +
+                '<span></span>' +
+                '<a href="#" class="test2">Test</a>' +
+                '</div>' +
+                '<div id="parent2">' +
+                '<a href="#" class="test1">Test</a>' +
+                '<span></span>' +
+                '<a href="#" class="test3">Test</a>' +
+                '<a href="#" class="test4">Test</a>' +
+                '</div>'
+            );
+        });
+
+        it('works with HTMLCollection nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    dom.prependTo(
+                        document.getElementById('parent1').children,
+                        'div'
+                    );
+                    return document.body.innerHTML;
+                }),
+                '<div id="parent1">' +
+                '<span></span>' +
+                '<a href="#" class="test1">Test</a>' +
+                '<a href="#" class="test2">Test</a>' +
+                '</div>' +
+                '<div id="parent2">' +
+                '<span></span>' +
+                '<a href="#" class="test1">Test</a>' +
+                '<a href="#" class="test2">Test</a>' +
+                '<span></span>' +
+                '<a href="#" class="test3">Test</a>' +
+                '<a href="#" class="test4">Test</a>' +
+                '</div>'
+            );
+        });
+
+        it('works with NodeList nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    dom.prependTo(
+                        document.querySelectorAll('a'),
+                        'div'
+                    );
+                    return document.body.innerHTML;
+                }),
+                '<div id="parent1">' +
+                '<a href="#" class="test1">Test</a>' +
+                '<a href="#" class="test2">Test</a>' +
+                '<a href="#" class="test3">Test</a>' +
+                '<a href="#" class="test4">Test</a>' +
+                '<span></span>' +
+                '</div>' +
+                '<div id="parent2">' +
+                '<a href="#" class="test1">Test</a>' +
+                '<a href="#" class="test2">Test</a>' +
+                '<a href="#" class="test3">Test</a>' +
+                '<a href="#" class="test4">Test</a>' +
+                '<span></span>' +
+                '</div>'
+            );
+        });
+
+        it('works with array nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    dom.prependTo(
+                        [
+                            document.querySelector('.test1'),
+                            document.querySelector('.test2'),
+                            document.querySelector('.test3'),
+                            document.querySelector('.test4')
+                        ],
+                        'div'
+                    );
+                    return document.body.innerHTML;
+                }),
+                '<div id="parent1">' +
+                '<a href="#" class="test1">Test</a>' +
+                '<a href="#" class="test2">Test</a>' +
+                '<a href="#" class="test3">Test</a>' +
+                '<a href="#" class="test4">Test</a>' +
+                '<span></span>' +
+                '</div>' +
+                '<div id="parent2">' +
+                '<a href="#" class="test1">Test</a>' +
+                '<a href="#" class="test2">Test</a>' +
+                '<a href="#" class="test3">Test</a>' +
+                '<a href="#" class="test4">Test</a>' +
+                '<span></span>' +
+                '</div>'
+            );
+        });
+
+        it('works with HTML nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    dom.prependTo(
+                        '<div><span></span></div>',
+                        'div'
+                    );
+                    return document.body.innerHTML;
+                }),
+                '<div id="parent1">' +
+                '<div><span></span></div>' +
+                '<span></span>' +
+                '<a href="#" class="test1">Test</a>' +
+                '<a href="#" class="test2">Test</a>' +
+                '</div>' +
+                '<div id="parent2">' +
+                '<div><span></span></div>' +
+                '<span></span>' +
+                '<a href="#" class="test3">Test</a>' +
+                '<a href="#" class="test4">Test</a>' +
+                '</div>'
+            );
+        });
+
+        it('works with HTMLElement other nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    dom.prependTo(
+                        'a',
                         document.getElementById('parent1')
                     );
                     return document.body.innerHTML;
                 }),
                 '<div id="parent1">' +
                 '<a href="#" class="test1">Test</a>' +
-                '<span></span>' +
                 '<a href="#" class="test2">Test</a>' +
+                '<a href="#" class="test3">Test</a>' +
+                '<a href="#" class="test4">Test</a>' +
+                '<span></span>' +
                 '</div>' +
                 '<div id="parent2">' +
                 '<span></span>' +
-                '<a href="#" class="test3">Test</a>' +
-                '<a href="#" class="test4">Test</a>' +
                 '</div>'
             );
         });
 
-        it('works with HTMLCollection', async function() {
+        it('works with HTMLCollection other nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     dom.prependTo(
-                        document.getElementById('parent1').children,
+                        'a',
                         document.body.children
                     );
                     return document.body.innerHTML;
                 }),
                 '<div id="parent1">' +
-                '<span></span>' +
                 '<a href="#" class="test1">Test</a>' +
                 '<a href="#" class="test2">Test</a>' +
-                '</div>' +
-                '<div id="parent2">' +
-                '<span></span>' +
-                '<a href="#" class="test1">Test</a>' +
-                '<a href="#" class="test2">Test</a>' +
-                '<span></span>' +
                 '<a href="#" class="test3">Test</a>' +
                 '<a href="#" class="test4">Test</a>' +
+                '<span></span>' +
+                '</div>' +
+                '<div id="parent2">' +
+                '<a href="#" class="test1">Test</a>' +
+                '<a href="#" class="test2">Test</a>' +
+                '<a href="#" class="test3">Test</a>' +
+                '<a href="#" class="test4">Test</a>' +
+                '<span></span>' +
                 '</div>'
             );
         });
 
-        it('works with NodeList', async function() {
+        it('works with NodeList other nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     dom.prependTo(
-                        document.querySelectorAll('a'),
+                        'a',
                         document.querySelectorAll('div')
                     );
                     return document.body.innerHTML;
@@ -1479,16 +2316,11 @@ describe('DOM Move', function() {
             );
         });
 
-        it('works with array', async function() {
+        it('works with array other nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     dom.prependTo(
-                        [
-                            document.querySelector('.test1'),
-                            document.querySelector('.test2'),
-                            document.querySelector('.test3'),
-                            document.querySelector('.test4')
-                        ],
+                        'a',
                         [
                             document.getElementById('parent1'),
                             document.getElementById('parent2')
@@ -1509,30 +2341,6 @@ describe('DOM Move', function() {
                 '<a href="#" class="test3">Test</a>' +
                 '<a href="#" class="test4">Test</a>' +
                 '<span></span>' +
-                '</div>'
-            );
-        });
-
-        it('works with HTML', async function() {
-            assert.equal(
-                await exec(_ => {
-                    dom.prependTo(
-                        '<div><span></span></div>',
-                        'div'
-                    );
-                    return document.body.innerHTML;
-                }),
-                '<div id="parent1">' +
-                '<div><span></span></div>' +
-                '<span></span>' +
-                '<a href="#" class="test1">Test</a>' +
-                '<a href="#" class="test2">Test</a>' +
-                '</div>' +
-                '<div id="parent2">' +
-                '<div><span></span></div>' +
-                '<span></span>' +
-                '<a href="#" class="test3">Test</a>' +
-                '<a href="#" class="test4">Test</a>' +
                 '</div>'
             );
         });
