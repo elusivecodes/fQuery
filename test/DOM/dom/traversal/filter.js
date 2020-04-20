@@ -574,12 +574,114 @@ describe('DOM Filter', function() {
 
     describe('#fixed', function() {
 
-        it('returns fixed nodes');
-        it('returns descendents of fixed nodes');
-        it('works with HTMLElement nodes');
-        it('works with HTMLCollection nodes');
-        it('works with NodeList nodes');
-        it('works with array nodes');
+        beforeEach(async function() {
+            await exec(_ => {
+                document.body.innerHTML =
+                    '<style>' +
+                    '.test { position: fixed; }' +
+                    '</style>' +
+                    '<div id="div1">' +
+                    '<span id="span1"></span>' +
+                    '</div>' +
+                    '<div id="div2" class="test">' +
+                    '<span id="span2"></span>' +
+                    '</div>' +
+                    '<div id="div3">' +
+                    '<span id="span3"></span>' +
+                    '</div>' +
+                    '<div id="div4" class="test">' +
+                    '<span id="span4"></span>' +
+                    '</div>';
+            });
+        });
+
+        it('returns fixed nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    return dom.fixed(
+                        'div'
+                    ).map(node => node.id);
+                }),
+                [
+                    'div2',
+                    'div4'
+                ]
+            );
+        });
+
+        it('returns descendents of fixed nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    return dom.fixed(
+                        'span'
+                    ).map(node => node.id);
+                }),
+                [
+                    'span2',
+                    'span4'
+                ]
+            );
+        });
+
+        it('works with HTMLElement nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    return dom.fixed(
+                        document.getElementById('div2')
+                    ).map(node => node.id);
+                }),
+                [
+                    'div2'
+                ]
+            );
+        });
+
+        it('works with HTMLCollection nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    return dom.fixed(
+                        document.body.children
+                    ).map(node => node.id);
+                }),
+                [
+                    'div2',
+                    'div4'
+                ]
+            );
+        });
+
+        it('works with NodeList nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    return dom.fixed(
+                        document.querySelectorAll('div')
+                    ).map(node => node.id);
+                }),
+                [
+                    'div2',
+                    'div4'
+                ]
+            );
+        });
+
+        it('works with array nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    return dom.fixed(
+                        [
+                            document.getElementById('div1'),
+                            document.getElementById('div2'),
+                            document.getElementById('div3'),
+                            document.getElementById('div4')
+                        ]
+                    ).map(node => node.id);
+                }),
+                [
+                    'div2',
+                    'div4'
+                ]
+            );
+        });
 
     });
 
@@ -591,10 +693,18 @@ describe('DOM Filter', function() {
                     '<style>' +
                     '.test { display: none; }' +
                     '</style>' +
-                    '<div id="div1"></div>' +
-                    '<div id="div2" class="test"></div>' +
-                    '<div id="div3"></div>' +
-                    '<div id="div4" class="test"></div>';
+                    '<div id="div1">' +
+                    '<span id="span1"></span>' +
+                    '</div>' +
+                    '<div id="div2" class="test">' +
+                    '<span id="span2"></span>' +
+                    '</div>' +
+                    '<div id="div3">' +
+                    '<span id="span3"></span>' +
+                    '</div>' +
+                    '<div id="div4" class="test">' +
+                    '<span id="span4"></span>' +
+                    '</div>';
             });
         });
 
@@ -612,7 +722,19 @@ describe('DOM Filter', function() {
             )
         });
 
-        it('returns descendents of hidden nodes');
+        it('returns descendents of hidden nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    return dom.hidden(
+                        'span'
+                    ).map(node => node.id);
+                }),
+                [
+                    'span2',
+                    'span4'
+                ]
+            )
+        });
 
         it('works with HTMLElement nodes', async function() {
             assert.deepEqual(
@@ -1152,10 +1274,18 @@ describe('DOM Filter', function() {
                     '<style>' +
                     '.test { display: none; }' +
                     '</style>' +
-                    '<div id="div1"></div>' +
-                    '<div id="div2" class="test"></div>' +
-                    '<div id="div3"></div>' +
-                    '<div id="div4" class="test"></div>';
+                    '<div id="div1">' +
+                    '<span id="span1"></span>' +
+                    '</div>' +
+                    '<div id="div2" class="test">' +
+                    '<span id="span2"></span>' +
+                    '</div>' +
+                    '<div id="div3">' +
+                    '<span id="span3"></span>' +
+                    '</div>' +
+                    '<div id="div4" class="test">' +
+                    '<span id="span4"></span>' +
+                    '</div>';
             });
         });
 
@@ -1169,6 +1299,20 @@ describe('DOM Filter', function() {
                 [
                     'div1',
                     'div3'
+                ]
+            )
+        });
+
+        it('returns descendents of visible nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    return dom.visible(
+                        'span'
+                    ).map(node => node.id);
+                }),
+                [
+                    'span1',
+                    'span3'
                 ]
             )
         });
@@ -1908,14 +2052,14 @@ describe('DOM Filter', function() {
             await exec(_ => {
                 document.body.innerHTML =
                     '<div id="div1">' +
-                    '<span>' +
-                    '<a></a>' +
+                    '<span id="span1">' +
+                    '<a id="a1"></a>' +
                     '</span>' +
                     '</div>' +
                     '<div id="div2"></div>' +
                     '<div id="div3">' +
-                    '<span>' +
-                    '<a></a>' +
+                    '<span id="span2">' +
+                    '<a id="a2"></a>' +
                     '</span>' +
                     '</div>' +
                     '<div id="div4"></div>';
@@ -2017,10 +2161,67 @@ describe('DOM Filter', function() {
         });
 
         it('works with function filter');
-        it('works with HTMLElement filter');
-        it('works with HTMLCollection filter');
-        it('works with NodeList filter');
-        it('works with array filter');
+
+        it('works with HTMLElement filter', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    return dom.withDescendent(
+                        'div',
+                        document.getElementById('a1')
+                    ).map(node => node.id);
+                }),
+                [
+                    'div1'
+                ]
+            )
+        });
+
+        it('works with HTMLCollection filter', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    return dom.withDescendent(
+                        'div',
+                        document.getElementById('span1').children
+                    ).map(node => node.id);
+                }),
+                [
+                    'div1'
+                ]
+            )
+        });
+
+        it('works with NodeList filter', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    return dom.withDescendent(
+                        'div',
+                        document.querySelectorAll('a')
+                    ).map(node => node.id);
+                }),
+                [
+                    'div1',
+                    'div3'
+                ]
+            )
+        });
+
+        it('works with array filter', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    return dom.withDescendent(
+                        'div',
+                        [
+                            document.getElementById('a1'),
+                            document.getElementById('a2')
+                        ]
+                    ).map(node => node.id);
+                }),
+                [
+                    'div1',
+                    'div3'
+                ]
+            )
+        });
 
     });
 

@@ -2795,11 +2795,15 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
       }
 
       if ('properties' in options) {
-        this.constructor._setProperty(node, options.properties);
+        for (var key in options.properties) {
+          DOMNode.setProperty(node, key, options.properties[key]);
+        }
       }
 
       if ('dataset' in options) {
-        this.constructor._setDataset(node, options.dataset);
+        var dataset = this.constructor._parseData(options.dataset, null, true);
+
+        this.constructor._setDataset(node, dataset);
       }
 
       return node;

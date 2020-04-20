@@ -887,10 +887,8 @@ describe('DOM Traversal', function() {
             await exec(_ => {
                 document.body.innerHTML =
                     '<template id="template1">' +
-                    'Test 1' +
                     '</template>' +
                     '<template id="template2">' +
-                    'Test 2' +
                     '</template>' +
                     '<div id="div1"></div>';
             });
@@ -899,11 +897,12 @@ describe('DOM Traversal', function() {
         it('returns the document fragment of the first node', async function() {
             assert.equal(
                 await exec(_ => {
-                    return dom.fragment(
+                    const fragment = dom.fragment(
                         'template'
-                    ).textContent;
+                    );
+                    return fragment instanceof DocumentFragment;
                 }),
-                'Test 1'
+                true
             );
         });
 
@@ -932,47 +931,51 @@ describe('DOM Traversal', function() {
         it('works with HTMLElement nodes', async function() {
             assert.equal(
                 await exec(_ => {
-                    return dom.fragment(
-                        document.getElementById('template2')
-                    ).textContent;
+                    const fragment = dom.fragment(
+                        document.getElementById('template1')
+                    );
+                    return fragment instanceof DocumentFragment;
                 }),
-                'Test 2'
+                true
             );
         });
 
         it('works with HTMLCollection nodes', async function() {
             assert.equal(
                 await exec(_ => {
-                    return dom.fragment(
+                    const fragment = dom.fragment(
                         document.body.children
-                    ).textContent;
+                    );
+                    return fragment instanceof DocumentFragment;
                 }),
-                'Test 1'
+                true
             );
         });
 
         it('works with NodeList nodes', async function() {
             assert.equal(
                 await exec(_ => {
-                    return dom.fragment(
+                    const fragment = dom.fragment(
                         document.querySelectorAll('template')
-                    ).textContent;
+                    );
+                    return fragment instanceof DocumentFragment;
                 }),
-                'Test 1'
+                true
             );
         });
 
         it('works with array nodes', async function() {
             assert.equal(
                 await exec(_ => {
-                    return dom.fragment(
+                    const fragment = dom.fragment(
                         [
                             document.getElementById('template1'),
                             document.getElementById('template2')
                         ]
-                    ).textContent;
+                    );
+                    return fragment instanceof DocumentFragment;
                 }),
-                'Test 1'
+                true
             );
         });
 
@@ -2369,23 +2372,20 @@ describe('DOM Traversal', function() {
                     '<div id="div1"></div>' +
                     '<div id="div2"></div>' +
                     '<div id="div3"></div>';
-                const shadow1 = document.getElementById('div1').attachShadow({ mode: 'open' });
-                const shadow2 = document.getElementById('div2').attachShadow({ mode: 'closed' });
-                const text1 = document.createTextNode('Test 1');
-                const text2 = document.createTextNode('Test 2');
-                shadow1.appendChild(text1);
-                shadow2.appendChild(text2);
+                document.getElementById('div1').attachShadow({ mode: 'open' });
+                document.getElementById('div2').attachShadow({ mode: 'closed' });
             });
         });
 
         it('returns the shadow root of the first node', async function() {
             assert.equal(
                 await exec(_ => {
-                    return dom.shadow(
+                    const shadow = dom.shadow(
                         'div'
-                    ).textContent;
+                    );
+                    return shadow instanceof ShadowRoot;
                 }),
-                'Test 1'
+                true
             );
         });
 
@@ -2400,14 +2400,14 @@ describe('DOM Traversal', function() {
             );
         });
 
-        it('returns undefined for nodes without a shadow root', async function() {
+        it('returns null for nodes without a shadow root', async function() {
             assert.equal(
                 await exec(_ => {
-                    return dom.fragment(
+                    return dom.shadow(
                         '#div3'
                     );
                 }),
-                undefined
+                null
             );
         });
 
@@ -2425,47 +2425,51 @@ describe('DOM Traversal', function() {
         it('works with HTMLElement nodes', async function() {
             assert.equal(
                 await exec(_ => {
-                    return dom.shadow(
+                    const shadow = dom.shadow(
                         document.getElementById('div1')
-                    ).textContent;
+                    );
+                    return shadow instanceof ShadowRoot;
                 }),
-                'Test 1'
+                true
             );
         });
 
         it('works with HTMLCollection nodes', async function() {
             assert.equal(
                 await exec(_ => {
-                    return dom.shadow(
+                    const shadow = dom.shadow(
                         document.body.children
-                    ).textContent;
+                    );
+                    return shadow instanceof ShadowRoot;
                 }),
-                'Test 1'
+                true
             );
         });
 
         it('works with NodeList nodes', async function() {
             assert.equal(
                 await exec(_ => {
-                    return dom.shadow(
+                    const shadow = dom.shadow(
                         document.querySelectorAll('div')
-                    ).textContent;
+                    );
+                    return shadow instanceof ShadowRoot;
                 }),
-                'Test 1'
+                true
             );
         });
 
         it('works with array nodes', async function() {
             assert.equal(
                 await exec(_ => {
-                    return dom.shadow(
+                    const shadow = dom.shadow(
                         [
                             document.getElementById('div1'),
                             document.getElementById('div2')
                         ]
-                    ).textContent;
+                    );
+                    return shadow instanceof ShadowRoot;
                 }),
-                'Test 1'
+                true
             );
         });
 

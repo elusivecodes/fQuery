@@ -5,7 +5,7 @@
     "main": "build.js",
     "scripts": {
         "start": "node build.js",
-        "test": "./node_modules/mocha/bin/mocha --recursive",
+        "test": "./node_modules/.bin/mocha --recursive",
         "preinstall": "npx npm-force-resolutions"
     },
     "author": "Elusive",

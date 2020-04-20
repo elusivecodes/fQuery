@@ -671,15 +671,270 @@ describe('DOM Event Handlers', function() {
 
     describe('#cloneEvents', function() {
 
-        it('clones all events from all elements to all other elements');
-        it('works with HTMLElement nodes');
-        it('works with HTMLCollection nodes');
-        it('works with NodeList nodes');
-        it('works with array nodes');
-        it('works with HTMLElement other nodes');
-        it('works with HTMLCollection other nodes');
-        it('works with NodeList other nodes');
-        it('works with array other nodes');
+        beforeEach(async function() {
+            await exec(_ => {
+                document.body.innerHTML =
+                    '<div id="eventParent">' +
+                    '<div id="test1" data-toggle="event"></div>' +
+                    '<div id="test2" data-toggle="event"></div>' +
+                    '</div>' +
+                    '<div id="noEventParent">' +
+                    '<div id="test3" data-toggle="noEvent"></div>' +
+                    '<div id="test4" data-toggle="noEvent"></div>' +
+                    '</div>';
+                dom.addEvent(
+                    '#test1',
+                    'click',
+                    e => {
+                        e.currentTarget.dataset.test1 = 'Test 1';
+                    }
+                );
+                dom.addEvent(
+                    '#test2',
+                    'click',
+                    e => {
+                        e.currentTarget.dataset.test2 = 'Test 2';
+                    }
+                );
+            });
+        });
+
+        it('clones all events from all elements to all other elements', async function() {
+            assert.equal(
+                await exec(_ => {
+                    dom.cloneEvents(
+                        '[data-toggle="event"]',
+                        '[data-toggle="noEvent"]'
+                    );
+                    const event = new Event('click');
+                    document.getElementById('test1').dispatchEvent(event);
+                    document.getElementById('test2').dispatchEvent(event);
+                    document.getElementById('test3').dispatchEvent(event);
+                    document.getElementById('test4').dispatchEvent(event);
+                    return document.body.innerHTML;
+                }),
+                '<div id="eventParent">' +
+                '<div id="test1" data-toggle="event" data-test1="Test 1"></div>' +
+                '<div id="test2" data-toggle="event" data-test2="Test 2"></div>' +
+                '</div>' +
+                '<div id="noEventParent">' +
+                '<div id="test3" data-toggle="noEvent" data-test1="Test 1" data-test2="Test 2"></div>' +
+                '<div id="test4" data-toggle="noEvent" data-test1="Test 1" data-test2="Test 2"></div>' +
+                '</div>'
+            );
+        });
+
+        it('works with HTMLElement nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    const element = document.getElementById('test1');
+                    dom.cloneEvents(
+                        element,
+                        '[data-toggle="noEvent"]'
+                    );
+                    const event = new Event('click');
+                    element.dispatchEvent(event);
+                    document.getElementById('test2').dispatchEvent(event);
+                    document.getElementById('test3').dispatchEvent(event);
+                    document.getElementById('test4').dispatchEvent(event);
+                    return document.body.innerHTML;
+                }),
+                '<div id="eventParent">' +
+                '<div id="test1" data-toggle="event" data-test1="Test 1"></div>' +
+                '<div id="test2" data-toggle="event" data-test2="Test 2"></div>' +
+                '</div>' +
+                '<div id="noEventParent">' +
+                '<div id="test3" data-toggle="noEvent" data-test1="Test 1"></div>' +
+                '<div id="test4" data-toggle="noEvent" data-test1="Test 1"></div>' +
+                '</div>'
+            );
+        });
+
+        it('works with HTMLCollection nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    dom.cloneEvents(
+                        document.getElementById('eventParent').children,
+                        '[data-toggle="noEvent"]'
+                    );
+                    const event = new Event('click');
+                    document.getElementById('test1').dispatchEvent(event);
+                    document.getElementById('test2').dispatchEvent(event);
+                    document.getElementById('test3').dispatchEvent(event);
+                    document.getElementById('test4').dispatchEvent(event);
+                    return document.body.innerHTML;
+                }),
+                '<div id="eventParent">' +
+                '<div id="test1" data-toggle="event" data-test1="Test 1"></div>' +
+                '<div id="test2" data-toggle="event" data-test2="Test 2"></div>' +
+                '</div>' +
+                '<div id="noEventParent">' +
+                '<div id="test3" data-toggle="noEvent" data-test1="Test 1" data-test2="Test 2"></div>' +
+                '<div id="test4" data-toggle="noEvent" data-test1="Test 1" data-test2="Test 2"></div>' +
+                '</div>'
+            );
+        });
+
+        it('works with NodeList nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    dom.cloneEvents(
+                        document.querySelectorAll('[data-toggle="event"]'),
+                        '[data-toggle="noEvent"]'
+                    );
+                    const event = new Event('click');
+                    document.getElementById('test1').dispatchEvent(event);
+                    document.getElementById('test2').dispatchEvent(event);
+                    document.getElementById('test3').dispatchEvent(event);
+                    document.getElementById('test4').dispatchEvent(event);
+                    return document.body.innerHTML;
+                }),
+                '<div id="eventParent">' +
+                '<div id="test1" data-toggle="event" data-test1="Test 1"></div>' +
+                '<div id="test2" data-toggle="event" data-test2="Test 2"></div>' +
+                '</div>' +
+                '<div id="noEventParent">' +
+                '<div id="test3" data-toggle="noEvent" data-test1="Test 1" data-test2="Test 2"></div>' +
+                '<div id="test4" data-toggle="noEvent" data-test1="Test 1" data-test2="Test 2"></div>' +
+                '</div>'
+            );
+        });
+
+        it('works with array nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    const element1 = document.getElementById('test1');
+                    const element2 = document.getElementById('test2');
+                    dom.cloneEvents(
+                        [
+                            element1,
+                            element2
+                        ],
+                        '[data-toggle="noEvent"]'
+                    );
+                    const event = new Event('click');
+                    element1.dispatchEvent(event);
+                    element2.dispatchEvent(event);
+                    document.getElementById('test3').dispatchEvent(event);
+                    document.getElementById('test4').dispatchEvent(event);
+                    return document.body.innerHTML;
+                }),
+                '<div id="eventParent">' +
+                '<div id="test1" data-toggle="event" data-test1="Test 1"></div>' +
+                '<div id="test2" data-toggle="event" data-test2="Test 2"></div>' +
+                '</div>' +
+                '<div id="noEventParent">' +
+                '<div id="test3" data-toggle="noEvent" data-test1="Test 1" data-test2="Test 2"></div>' +
+                '<div id="test4" data-toggle="noEvent" data-test1="Test 1" data-test2="Test 2"></div>' +
+                '</div>'
+            );
+        });
+
+        it('works with HTMLElement other nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    const element = document.getElementById('test3');
+                    dom.cloneEvents(
+                        '[data-toggle="event"]',
+                        element
+                    );
+                    const event = new Event('click');
+                    document.getElementById('test1').dispatchEvent(event);
+                    document.getElementById('test2').dispatchEvent(event);
+                    element.dispatchEvent(event);
+                    document.getElementById('test4').dispatchEvent(event);
+                    return document.body.innerHTML;
+                }),
+                '<div id="eventParent">' +
+                '<div id="test1" data-toggle="event" data-test1="Test 1"></div>' +
+                '<div id="test2" data-toggle="event" data-test2="Test 2"></div>' +
+                '</div>' +
+                '<div id="noEventParent">' +
+                '<div id="test3" data-toggle="noEvent" data-test1="Test 1" data-test2="Test 2"></div>' +
+                '<div id="test4" data-toggle="noEvent"></div>' +
+                '</div>'
+            );
+        });
+
+        it('works with HTMLCollection other nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    dom.cloneEvents(
+                        '[data-toggle="event"]',
+                        document.getElementById('noEventParent').children
+                    );
+                    const event = new Event('click');
+                    document.getElementById('test1').dispatchEvent(event);
+                    document.getElementById('test2').dispatchEvent(event);
+                    document.getElementById('test3').dispatchEvent(event);
+                    document.getElementById('test4').dispatchEvent(event);
+                    return document.body.innerHTML;
+                }),
+                '<div id="eventParent">' +
+                '<div id="test1" data-toggle="event" data-test1="Test 1"></div>' +
+                '<div id="test2" data-toggle="event" data-test2="Test 2"></div>' +
+                '</div>' +
+                '<div id="noEventParent">' +
+                '<div id="test3" data-toggle="noEvent" data-test1="Test 1" data-test2="Test 2"></div>' +
+                '<div id="test4" data-toggle="noEvent" data-test1="Test 1" data-test2="Test 2"></div>' +
+                '</div>'
+            );
+        });
+
+        it('works with NodeList other nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    dom.cloneEvents(
+                        '[data-toggle="event"]',
+                        document.querySelectorAll('[data-toggle="noEvent"]')
+                    );
+                    const event = new Event('click');
+                    document.getElementById('test1').dispatchEvent(event);
+                    document.getElementById('test2').dispatchEvent(event);
+                    document.getElementById('test3').dispatchEvent(event);
+                    document.getElementById('test4').dispatchEvent(event);
+                    return document.body.innerHTML;
+                }),
+                '<div id="eventParent">' +
+                '<div id="test1" data-toggle="event" data-test1="Test 1"></div>' +
+                '<div id="test2" data-toggle="event" data-test2="Test 2"></div>' +
+                '</div>' +
+                '<div id="noEventParent">' +
+                '<div id="test3" data-toggle="noEvent" data-test1="Test 1" data-test2="Test 2"></div>' +
+                '<div id="test4" data-toggle="noEvent" data-test1="Test 1" data-test2="Test 2"></div>' +
+                '</div>'
+            );
+        });
+
+        it('works with array other nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    const element1 = document.getElementById('test3');
+                    const element2 = document.getElementById('test4');
+                    dom.cloneEvents(
+                        '[data-toggle="event"]',
+                        [
+                            element1,
+                            element2
+                        ]
+                    );
+                    const event = new Event('click');
+                    document.getElementById('test1').dispatchEvent(event);
+                    document.getElementById('test2').dispatchEvent(event);
+                    element1.dispatchEvent(event);
+                    element2.dispatchEvent(event);
+                    return document.body.innerHTML;
+                }),
+                '<div id="eventParent">' +
+                '<div id="test1" data-toggle="event" data-test1="Test 1"></div>' +
+                '<div id="test2" data-toggle="event" data-test2="Test 2"></div>' +
+                '</div>' +
+                '<div id="noEventParent">' +
+                '<div id="test3" data-toggle="noEvent" data-test1="Test 1" data-test2="Test 2"></div>' +
+                '<div id="test4" data-toggle="noEvent" data-test1="Test 1" data-test2="Test 2"></div>' +
+                '</div>'
+            );
+        });
 
     });
 

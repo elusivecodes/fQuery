@@ -8,7 +8,7 @@ describe('DOM Attributes (Dataset)', function() {
         beforeEach(async function() {
             await exec(_ => {
                 document.body.innerHTML =
-                    '<div id="test1" data-text="Test" data-number="123.456" data-true="true" data-false="false" data-null="null" data-array="[1,2,3]" data-object="{&quot;a&quot;: 1}"></div>' +
+                    '<div id="test1" data-text="Test" data-number="123.456" data-true="true" data-false="false" data-null="null" data-array="[1,2,3]" data-object="{&quot;a&quot;:1}"></div>' +
                     '<div id="test2"></div>';
             });
         });

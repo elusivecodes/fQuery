@@ -69,11 +69,15 @@ Object.assign(DOM.prototype, {
         }
 
         if ('properties' in options) {
-            this.constructor._setProperty(node, options.properties);
+            for (const key in options.properties) {
+                DOMNode.setProperty(node, key, options.properties[key]);
+            }
         }
 
         if ('dataset' in options) {
-            this.constructor._setDataset(node, options.dataset);
+            const dataset = this.constructor._parseData(options.dataset, null, true);
+
+            this.constructor._setDataset(node, dataset);
         }
 
         return node;
