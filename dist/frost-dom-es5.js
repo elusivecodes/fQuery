@@ -4500,7 +4500,9 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
       }
 
       if (Core.isFunction(filter)) {
-        return filter;
+        return function (node) {
+          return Core.merge([], DOMNode.findBySelector('*', node)).some(filter);
+        };
       }
 
       if (Core.isString(filter)) {

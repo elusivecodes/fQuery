@@ -2160,7 +2160,19 @@ describe('DOM Filter', function() {
             )
         });
 
-        it('works with function filter');
+        it('works with function filter', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    return dom.withDescendent(
+                        'div',
+                        node => node.id === 'a1'
+                    ).map(node => node.id);
+                }),
+                [
+                    'div1'
+                ]
+            );
+        });
 
         it('works with HTMLElement filter', async function() {
             assert.deepEqual(

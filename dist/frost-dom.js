@@ -3862,7 +3862,11 @@
             }
 
             if (Core.isFunction(filter)) {
-                return filter;
+                return node =>
+                    Core.merge(
+                        [],
+                        DOMNode.findBySelector('*', node)
+                    ).some(filter);
             }
 
             if (Core.isString(filter)) {

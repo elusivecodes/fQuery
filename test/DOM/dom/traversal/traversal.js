@@ -663,11 +663,82 @@ describe('DOM Traversal', function() {
             );
         });
 
-        it('works with function limit');
-        it('works with HTMLElement limit');
-        it('works with HTMLCollection limit');
-        it('works with NodeList limit');
-        it('works with array limit');
+        it('works with function limit', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    return dom.closest(
+                        'a',
+                        'div',
+                        node => node.id === 'span2'
+                    ).map(node => node.id);
+                }),
+                [
+                    'child1'
+                ]
+            );
+        });
+
+        it('works with HTMLElement limit', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    return dom.closest(
+                        'a',
+                        'div',
+                        document.getElementById('span2')
+                    ).map(node => node.id);
+                }),
+                [
+                    'child1'
+                ]
+            );
+        });
+
+        it('works with HTMLCollection limit', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    return dom.closest(
+                        'a',
+                        'div',
+                        document.getElementById('child2').children
+                    ).map(node => node.id);
+                }),
+                [
+                    'child1'
+                ]
+            );
+        });
+
+        it('works with NodeList limit', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    return dom.closest(
+                        'a',
+                        'div',
+                        document.querySelectorAll('#span2')
+                    ).map(node => node.id);
+                }),
+                [
+                    'child1'
+                ]
+            );
+        });
+
+        it('works with array limit', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    return dom.closest(
+                        'a',
+                        'div',
+                        [
+                            document.getElementById('span2')
+                        ]
+                    ).map(node => node.id);
+                }),
+                [
+                    'child1'
+                ]
+            );
+        });
 
     });
 
@@ -1406,11 +1477,86 @@ describe('DOM Traversal', function() {
             );
         });
 
-        it('works with function limit');
-        it('works with HTMLElement limit');
-        it('works with HTMLCollection limit');
-        it('works with NodeList limit');
-        it('works with array limit');
+        it('works with function limit', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    return dom.nextAll(
+                        '.span',
+                        null,
+                        node => node.id === 'span7'
+                    ).map(node => node.id);
+                }),
+                [
+                    'span3',
+                    'span4'
+                ]
+            );
+        });
+
+        it('works with HTMLElement limit', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    return dom.nextAll(
+                        '.span',
+                        null,
+                        document.getElementById('span7')
+                    ).map(node => node.id);
+                }),
+                [
+                    'span3',
+                    'span4'
+                ]
+            );
+        });
+
+        it('works with HTMLCollection limit', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    return dom.nextAll(
+                        '.span',
+                        null,
+                        document.getElementById('parent2').children
+                    ).map(node => node.id);
+                }),
+                [
+                    'span3',
+                    'span4'
+                ]
+            );
+        });
+
+        it('works with NodeList limit', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    return dom.nextAll(
+                        '.span',
+                        null,
+                        document.querySelectorAll('#span4, #span7')
+                    ).map(node => node.id);
+                }),
+                [
+                    'span3'
+                ]
+            );
+        });
+
+        it('works with array limit', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    return dom.nextAll(
+                        '.span',
+                        null,
+                        [,
+                            document.getElementById('span4'),
+                            document.getElementById('span7')
+                        ]
+                    ).map(node => node.id);
+                }),
+                [
+                    'span3'
+                ]
+            );
+        });
 
     });
 
@@ -1923,11 +2069,100 @@ describe('DOM Traversal', function() {
             );
         });
 
-        it('works with function limit');
-        it('works with HTMLElement limit');
-        it('works with HTMLCollection limit');
-        it('works with NodeList limit');
-        it('works with array limit');
+        it('works with function limit', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    return dom.parents(
+                        'a',
+                        null,
+                        node => node.id === 'body'
+                    ).map(node => node.id);
+                }),
+                [
+                    'parent1',
+                    'child1',
+                    'span1',
+                    'parent2',
+                    'child2',
+                    'span2'
+                ]
+            );
+        });
+
+        it('works with HTMLElement limit', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    return dom.parents(
+                        'a',
+                        null,
+                        document.body
+                    ).map(node => node.id);
+                }),
+                [
+                    'parent1',
+                    'child1',
+                    'span1',
+                    'parent2',
+                    'child2',
+                    'span2'
+                ]
+            );
+        });
+
+        it('works with HTMLCollection limit', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    return dom.parents(
+                        'a',
+                        null,
+                        document.body.children
+                    ).map(node => node.id);
+                }),
+                [
+                    'child1',
+                    'span1',
+                    'child2',
+                    'span2'
+                ]
+            );
+        });
+
+        it('works with NodeList limit', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    return dom.parents(
+                        'a',
+                        null,
+                        document.querySelectorAll('div')
+                    ).map(node => node.id);
+                }),
+                [
+                    'span1',
+                    'span2'
+                ]
+            );
+        });
+
+        it('works with array limit', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    return dom.parents(
+                        'a',
+                        null,
+                        [
+                            document.getElementById('parent1'),
+                            document.getElementById('parent2')
+                        ]
+                    ).map(node => node.id);
+                }),
+                [
+                    'child1',
+                    'span1',
+                    'child2',
+                    'span2'
+                ]
+            );
+        });
 
     });
 
@@ -2356,11 +2591,86 @@ describe('DOM Traversal', function() {
             );
         });
 
-        it('works with function limit');
-        it('works with HTMLElement limit');
-        it('works with HTMLCollection limit');
-        it('works with NodeList limit');
-        it('works with array limit');
+        it('works with function limit', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    return dom.prevAll(
+                        '.span',
+                        null,
+                        node => node.id === 'span6'
+                    ).map(node => node.id);
+                }),
+                [
+                    'span1',
+                    'span2'
+                ]
+            );
+        });
+
+        it('works with HTMLElement limit', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    return dom.prevAll(
+                        '.span',
+                        null,
+                        document.getElementById('span6')
+                    ).map(node => node.id);
+                }),
+                [
+                    'span1',
+                    'span2'
+                ]
+            );
+        });
+
+        it('works with HTMLCollection limit', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    return dom.prevAll(
+                        '.span',
+                        null,
+                        document.getElementById('parent2').children
+                    ).map(node => node.id);
+                }),
+                [
+                    'span1',
+                    'span2'
+                ]
+            );
+        });
+
+        it('works with NodeList limit', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    return dom.prevAll(
+                        '.span',
+                        null,
+                        document.querySelectorAll('#span1, #span6')
+                    ).map(node => node.id);
+                }),
+                [
+                    'span2'
+                ]
+            );
+        });
+
+        it('works with array limit', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    return dom.prevAll(
+                        '.span',
+                        null,
+                        [,
+                            document.getElementById('span1'),
+                            document.getElementById('span6')
+                        ]
+                    ).map(node => node.id);
+                }),
+                [
+                    'span2'
+                ]
+            );
+        });
 
     });
 
