@@ -24,7 +24,7 @@ describe('DOM Filter', function() {
                     'div1',
                     'div2'
                 ]
-            )
+            );
         });
 
         it('filters out nodes not connected to the DOM', async function() {
@@ -35,7 +35,7 @@ describe('DOM Filter', function() {
                     ).map(node => node.id);
                 }),
                 []
-            )
+            );
         });
 
         it('works with HTMLElement nodes', async function() {
@@ -48,7 +48,7 @@ describe('DOM Filter', function() {
                 [
                     'div1'
                 ]
-            )
+            );
         });
 
         it('works with HTMLCollection nodes', async function() {
@@ -62,7 +62,7 @@ describe('DOM Filter', function() {
                     'div1',
                     'div2'
                 ]
-            )
+            );
         });
 
         it('works with NodeList nodes', async function() {
@@ -76,7 +76,7 @@ describe('DOM Filter', function() {
                     'div1',
                     'div2'
                 ]
-            )
+            );
         });
 
         it('works with array nodes', async function() {
@@ -93,7 +93,7 @@ describe('DOM Filter', function() {
                     'div1',
                     'div2'
                 ]
-            )
+            );
         });
 
     });
@@ -128,7 +128,7 @@ describe('DOM Filter', function() {
                     'span2',
                     'span3'
                 ]
-            )
+            );
         });
 
         it('works with HTMLElement nodes', async function() {
@@ -142,7 +142,7 @@ describe('DOM Filter', function() {
                 [
                     'span2'
                 ]
-            )
+            );
         });
 
         it('works with HTMLCollection nodes', async function() {
@@ -157,7 +157,7 @@ describe('DOM Filter', function() {
                     'span2',
                     'span3'
                 ]
-            )
+            );
         });
 
         it('works with NodeList nodes', async function() {
@@ -172,7 +172,7 @@ describe('DOM Filter', function() {
                     'span2',
                     'span3'
                 ]
-            )
+            );
         });
 
         it('works with array nodes', async function() {
@@ -191,7 +191,7 @@ describe('DOM Filter', function() {
                     'span2',
                     'span3'
                 ]
-            )
+            );
         });
 
         it('works with HTMLElement other nodes', async function() {
@@ -205,7 +205,7 @@ describe('DOM Filter', function() {
                 [
                     'span2'
                 ]
-            )
+            );
         });
 
         it('works with HTMLCollection other nodes', async function() {
@@ -220,7 +220,7 @@ describe('DOM Filter', function() {
                     'span2',
                     'span3'
                 ]
-            )
+            );
         });
 
         it('works with NodeList other nodes', async function() {
@@ -235,7 +235,7 @@ describe('DOM Filter', function() {
                     'span2',
                     'span3'
                 ]
-            )
+            );
         });
 
         it('works with array other nodes', async function() {
@@ -253,7 +253,7 @@ describe('DOM Filter', function() {
                     'span2',
                     'span3'
                 ]
-            )
+            );
         });
 
     });
@@ -282,7 +282,7 @@ describe('DOM Filter', function() {
                     'div2',
                     'div4'
                 ]
-            )
+            );
         });
 
         it('works with HTMLElement nodes', async function() {
@@ -296,7 +296,7 @@ describe('DOM Filter', function() {
                 [
                     'div2'
                 ]
-            )
+            );
         });
 
         it('works with HTMLCollection nodes', async function() {
@@ -311,7 +311,7 @@ describe('DOM Filter', function() {
                     'div2',
                     'div4'
                 ]
-            )
+            );
         });
 
         it('works with NodeList nodes', async function() {
@@ -326,7 +326,7 @@ describe('DOM Filter', function() {
                     'div2',
                     'div4'
                 ]
-            )
+            );
         });
 
         it('works with array nodes', async function() {
@@ -346,7 +346,7 @@ describe('DOM Filter', function() {
                     'div2',
                     'div4'
                 ]
-            )
+            );
         });
 
         it('works with function filter', async function() {
@@ -361,7 +361,7 @@ describe('DOM Filter', function() {
                     'div2',
                     'div4'
                 ]
-            )
+            );
         });
 
         it('works with HTMLElement filter', async function() {
@@ -375,7 +375,7 @@ describe('DOM Filter', function() {
                 [
                     'div2'
                 ]
-            )
+            );
         });
 
         it('works with HTMLCollection filter', async function() {
@@ -392,7 +392,7 @@ describe('DOM Filter', function() {
                     'div3',
                     'div4'
                 ]
-            )
+            );
         });
 
         it('works with NodeList filter', async function() {
@@ -407,7 +407,7 @@ describe('DOM Filter', function() {
                     'div2',
                     'div4'
                 ]
-            )
+            );
         });
 
         it('works with array filter', async function() {
@@ -425,7 +425,7 @@ describe('DOM Filter', function() {
                     'div2',
                     'div4'
                 ]
-            )
+            );
         });
 
     });
@@ -451,7 +451,7 @@ describe('DOM Filter', function() {
                     ).id;
                 }),
                 'div2'
-            )
+            );
         });
 
         it('works with HTMLElement nodes', async function() {
@@ -463,7 +463,7 @@ describe('DOM Filter', function() {
                     ).id;
                 }),
                 'div2'
-            )
+            );
         });
 
         it('works with HTMLCollection nodes', async function() {
@@ -475,7 +475,7 @@ describe('DOM Filter', function() {
                     ).id;
                 }),
                 'div2'
-            )
+            );
         });
 
         it('works with NodeList nodes', async function() {
@@ -487,7 +487,7 @@ describe('DOM Filter', function() {
                     ).id;
                 }),
                 'div2'
-            )
+            );
         });
 
         it('works with array nodes', async function() {
@@ -504,7 +504,7 @@ describe('DOM Filter', function() {
                     ).id;
                 }),
                 'div2'
-            )
+            );
         });
 
         it('works with function filter', async function() {
@@ -516,7 +516,7 @@ describe('DOM Filter', function() {
                     ).id;
                 }),
                 'div2'
-            )
+            );
         });
 
         it('works with HTMLElement filter', async function() {
@@ -528,7 +528,7 @@ describe('DOM Filter', function() {
                     ).id;
                 }),
                 'div2'
-            )
+            );
         });
 
         it('works with HTMLCollection filter', async function() {
@@ -540,7 +540,7 @@ describe('DOM Filter', function() {
                     ).id;
                 }),
                 'div1'
-            )
+            );
         });
 
         it('works with NodeList filter', async function() {
@@ -552,7 +552,7 @@ describe('DOM Filter', function() {
                     ).id;
                 }),
                 'div2'
-            )
+            );
         });
 
         it('works with array filter', async function() {
@@ -567,7 +567,7 @@ describe('DOM Filter', function() {
                     ).id;
                 }),
                 'div2'
-            )
+            );
         });
 
     });
@@ -719,7 +719,7 @@ describe('DOM Filter', function() {
                     'div2',
                     'div4'
                 ]
-            )
+            );
         });
 
         it('returns descendents of hidden nodes', async function() {
@@ -733,7 +733,7 @@ describe('DOM Filter', function() {
                     'span2',
                     'span4'
                 ]
-            )
+            );
         });
 
         it('works with HTMLElement nodes', async function() {
@@ -746,7 +746,7 @@ describe('DOM Filter', function() {
                 [
                     'div2'
                 ]
-            )
+            );
         });
 
         it('works with HTMLCollection nodes', async function() {
@@ -760,7 +760,7 @@ describe('DOM Filter', function() {
                     'div2',
                     'div4'
                 ]
-            )
+            );
         });
 
         it('works with NodeList nodes', async function() {
@@ -774,7 +774,7 @@ describe('DOM Filter', function() {
                     'div2',
                     'div4'
                 ]
-            )
+            );
         });
 
         it('works with array nodes', async function() {
@@ -793,7 +793,7 @@ describe('DOM Filter', function() {
                     'div2',
                     'div4'
                 ]
-            )
+            );
         });
 
     });
@@ -822,7 +822,7 @@ describe('DOM Filter', function() {
                     'div2',
                     'div4'
                 ]
-            )
+            );
         });
 
         it('works with HTMLElement nodes', async function() {
@@ -836,7 +836,7 @@ describe('DOM Filter', function() {
                 [
                     'div2'
                 ]
-            )
+            );
         });
 
         it('works with HTMLCollection nodes', async function() {
@@ -851,7 +851,7 @@ describe('DOM Filter', function() {
                     'div2',
                     'div4'
                 ]
-            )
+            );
         });
 
         it('works with NodeList nodes', async function() {
@@ -866,7 +866,7 @@ describe('DOM Filter', function() {
                     'div2',
                     'div4'
                 ]
-            )
+            );
         });
 
         it('works with array nodes', async function() {
@@ -886,7 +886,7 @@ describe('DOM Filter', function() {
                     'div2',
                     'div4'
                 ]
-            )
+            );
         });
 
         it('works with function filter', async function() {
@@ -901,7 +901,7 @@ describe('DOM Filter', function() {
                     'div2',
                     'div4'
                 ]
-            )
+            );
         });
 
         it('works with HTMLElement filter', async function() {
@@ -917,7 +917,7 @@ describe('DOM Filter', function() {
                     'div3',
                     'div4'
                 ]
-            )
+            );
         });
 
         it('works with HTMLCollection filter', async function() {
@@ -929,7 +929,7 @@ describe('DOM Filter', function() {
                     ).map(node => node.id);
                 }),
                 []
-            )
+            );
         });
 
         it('works with NodeList filter', async function() {
@@ -944,7 +944,7 @@ describe('DOM Filter', function() {
                     'div2',
                     'div4'
                 ]
-            )
+            );
         });
 
         it('works with array filter', async function() {
@@ -962,7 +962,7 @@ describe('DOM Filter', function() {
                     'div2',
                     'div4'
                 ]
-            )
+            );
         });
 
     });
@@ -988,7 +988,7 @@ describe('DOM Filter', function() {
                     ).id;
                 }),
                 'div2'
-            )
+            );
         });
 
         it('works with HTMLElement nodes', async function() {
@@ -1000,7 +1000,7 @@ describe('DOM Filter', function() {
                     ).id;
                 }),
                 'div2'
-            )
+            );
         });
 
         it('works with HTMLCollection nodes', async function() {
@@ -1012,7 +1012,7 @@ describe('DOM Filter', function() {
                     ).id;
                 }),
                 'div2'
-            )
+            );
         });
 
         it('works with NodeList nodes', async function() {
@@ -1024,7 +1024,7 @@ describe('DOM Filter', function() {
                     ).id;
                 }),
                 'div2'
-            )
+            );
         });
 
         it('works with array nodes', async function() {
@@ -1041,7 +1041,7 @@ describe('DOM Filter', function() {
                     ).id;
                 }),
                 'div2'
-            )
+            );
         });
 
         it('works with function filter', async function() {
@@ -1053,7 +1053,7 @@ describe('DOM Filter', function() {
                     ).id;
                 }),
                 'div2'
-            )
+            );
         });
 
         it('works with HTMLElement filter', async function() {
@@ -1065,7 +1065,7 @@ describe('DOM Filter', function() {
                     ).id;
                 }),
                 'div2'
-            )
+            );
         });
 
         it('works with HTMLCollection filter', async function() {
@@ -1077,7 +1077,7 @@ describe('DOM Filter', function() {
                     );
                 }),
                 null
-            )
+            );
         });
 
         it('works with NodeList filter', async function() {
@@ -1089,7 +1089,7 @@ describe('DOM Filter', function() {
                     ).id;
                 }),
                 'div2'
-            )
+            );
         });
 
         it('works with array filter', async function() {
@@ -1104,7 +1104,7 @@ describe('DOM Filter', function() {
                     ).id;
                 }),
                 'div2'
-            )
+            );
         });
 
     });
@@ -1133,7 +1133,7 @@ describe('DOM Filter', function() {
                     'div2',
                     'div4'
                 ]
-            )
+            );
         });
 
         it('works with HTMLElement nodes', async function() {
@@ -1147,7 +1147,7 @@ describe('DOM Filter', function() {
                 [
                     'div2'
                 ]
-            )
+            );
         });
 
         it('works with HTMLCollection nodes', async function() {
@@ -1162,7 +1162,7 @@ describe('DOM Filter', function() {
                     'div2',
                     'div4'
                 ]
-            )
+            );
         });
 
         it('works with NodeList nodes', async function() {
@@ -1177,7 +1177,7 @@ describe('DOM Filter', function() {
                     'div2',
                     'div4'
                 ]
-            )
+            );
         });
 
         it('works with array nodes', async function() {
@@ -1197,7 +1197,7 @@ describe('DOM Filter', function() {
                     'div2',
                     'div4'
                 ]
-            )
+            );
         });
 
         it('works with HTMLElement other nodes', async function() {
@@ -1211,7 +1211,7 @@ describe('DOM Filter', function() {
                 [
                     'div2'
                 ]
-            )
+            );
         });
 
         it('works with HTMLCollection other nodes', async function() {
@@ -1228,7 +1228,7 @@ describe('DOM Filter', function() {
                     'div3',
                     'div4'
                 ]
-            )
+            );
         });
 
         it('works with NodeList other nodes', async function() {
@@ -1243,7 +1243,7 @@ describe('DOM Filter', function() {
                     'div2',
                     'div4'
                 ]
-            )
+            );
         });
 
         it('works with array other nodes', async function() {
@@ -1261,7 +1261,7 @@ describe('DOM Filter', function() {
                     'div2',
                     'div4'
                 ]
-            )
+            );
         });
 
     });
@@ -1300,7 +1300,7 @@ describe('DOM Filter', function() {
                     'div1',
                     'div3'
                 ]
-            )
+            );
         });
 
         it('returns descendents of visible nodes', async function() {
@@ -1314,7 +1314,7 @@ describe('DOM Filter', function() {
                     'span1',
                     'span3'
                 ]
-            )
+            );
         });
 
         it('works with HTMLElement nodes', async function() {
@@ -1327,7 +1327,7 @@ describe('DOM Filter', function() {
                 [
                     'div1'
                 ]
-            )
+            );
         });
 
         it('works with HTMLCollection nodes', async function() {
@@ -1341,7 +1341,7 @@ describe('DOM Filter', function() {
                     'div1',
                     'div3'
                 ]
-            )
+            );
         });
 
         it('works with NodeList nodes', async function() {
@@ -1355,7 +1355,7 @@ describe('DOM Filter', function() {
                     'div1',
                     'div3'
                 ]
-            )
+            );
         });
 
         it('works with array nodes', async function() {
@@ -1374,7 +1374,7 @@ describe('DOM Filter', function() {
                     'div1',
                     'div3'
                 ]
-            )
+            );
         });
 
     });
@@ -1408,7 +1408,7 @@ describe('DOM Filter', function() {
                     'div1',
                     'div3'
                 ]
-            )
+            );
         });
 
         it('works with HTMLElement nodes', async function() {
@@ -1421,7 +1421,7 @@ describe('DOM Filter', function() {
                 [
                     'div1'
                 ]
-            )
+            );
         });
 
         it('works with HTMLCollection nodes', async function() {
@@ -1435,7 +1435,7 @@ describe('DOM Filter', function() {
                     'div1',
                     'div3'
                 ]
-            )
+            );
         });
 
         it('works with NodeList nodes', async function() {
@@ -1449,7 +1449,7 @@ describe('DOM Filter', function() {
                     'div1',
                     'div3'
                 ]
-            )
+            );
         });
 
         it('works with array nodes', async function() {
@@ -1468,7 +1468,7 @@ describe('DOM Filter', function() {
                     'div1',
                     'div3'
                 ]
-            )
+            );
         });
 
     });
@@ -1497,7 +1497,7 @@ describe('DOM Filter', function() {
                     'div1',
                     'div3'
                 ]
-            )
+            );
         });
 
         it('works with HTMLElement nodes', async function() {
@@ -1511,7 +1511,7 @@ describe('DOM Filter', function() {
                 [
                     'div1'
                 ]
-            )
+            );
         });
 
         it('works with HTMLCollection nodes', async function() {
@@ -1526,7 +1526,7 @@ describe('DOM Filter', function() {
                     'div1',
                     'div3'
                 ]
-            )
+            );
         });
 
         it('works with NodeList nodes', async function() {
@@ -1541,7 +1541,7 @@ describe('DOM Filter', function() {
                     'div1',
                     'div3'
                 ]
-            )
+            );
         });
 
         it('works with array nodes', async function() {
@@ -1561,7 +1561,7 @@ describe('DOM Filter', function() {
                     'div1',
                     'div3'
                 ]
-            )
+            );
         });
 
     });
@@ -1593,7 +1593,7 @@ describe('DOM Filter', function() {
                     'div1',
                     'div3'
                 ]
-            )
+            );
         });
 
         it('works with HTMLElement nodes', async function() {
@@ -1606,7 +1606,7 @@ describe('DOM Filter', function() {
                 [
                     'div1'
                 ]
-            )
+            );
         });
 
         it('works with HTMLCollection nodes', async function() {
@@ -1620,7 +1620,7 @@ describe('DOM Filter', function() {
                     'div1',
                     'div3'
                 ]
-            )
+            );
         });
 
         it('works with NodeList nodes', async function() {
@@ -1634,7 +1634,7 @@ describe('DOM Filter', function() {
                     'div1',
                     'div3'
                 ]
-            )
+            );
         });
 
         it('works with array nodes', async function() {
@@ -1653,7 +1653,7 @@ describe('DOM Filter', function() {
                     'div1',
                     'div3'
                 ]
-            )
+            );
         });
 
     });
@@ -1682,7 +1682,7 @@ describe('DOM Filter', function() {
                     'div1',
                     'div3'
                 ]
-            )
+            );
         });
 
         it('works with HTMLElement nodes', async function() {
@@ -1696,7 +1696,7 @@ describe('DOM Filter', function() {
                 [
                     'div1'
                 ]
-            )
+            );
         });
 
         it('works with HTMLCollection nodes', async function() {
@@ -1711,7 +1711,7 @@ describe('DOM Filter', function() {
                     'div1',
                     'div3'
                 ]
-            )
+            );
         });
 
         it('works with NodeList nodes', async function() {
@@ -1726,7 +1726,7 @@ describe('DOM Filter', function() {
                     'div1',
                     'div3'
                 ]
-            )
+            );
         });
 
         it('works with array nodes', async function() {
@@ -1746,7 +1746,7 @@ describe('DOM Filter', function() {
                     'div1',
                     'div3'
                 ]
-            )
+            );
         });
 
     });
@@ -1778,7 +1778,7 @@ describe('DOM Filter', function() {
                     'div1',
                     'div3'
                 ]
-            )
+            );
         });
 
         it('works with HTMLElement nodes', async function() {
@@ -1791,7 +1791,7 @@ describe('DOM Filter', function() {
                 [
                     'div1'
                 ]
-            )
+            );
         });
 
         it('works with HTMLCollection nodes', async function() {
@@ -1805,7 +1805,7 @@ describe('DOM Filter', function() {
                     'div1',
                     'div3'
                 ]
-            )
+            );
         });
 
         it('works with NodeList nodes', async function() {
@@ -1819,7 +1819,7 @@ describe('DOM Filter', function() {
                     'div1',
                     'div3'
                 ]
-            )
+            );
         });
 
         it('works with array nodes', async function() {
@@ -1838,7 +1838,7 @@ describe('DOM Filter', function() {
                     'div1',
                     'div3'
                 ]
-            )
+            );
         });
 
     });
@@ -1869,7 +1869,7 @@ describe('DOM Filter', function() {
                     'div1',
                     'div3'
                 ]
-            )
+            );
         });
 
         it('works with HTMLElement nodes', async function() {
@@ -1882,7 +1882,7 @@ describe('DOM Filter', function() {
                 [
                     'div1'
                 ]
-            )
+            );
         });
 
         it('works with HTMLCollection nodes', async function() {
@@ -1896,7 +1896,7 @@ describe('DOM Filter', function() {
                     'div1',
                     'div3'
                 ]
-            )
+            );
         });
 
         it('works with NodeList nodes', async function() {
@@ -1910,7 +1910,7 @@ describe('DOM Filter', function() {
                     'div1',
                     'div3'
                 ]
-            )
+            );
         });
 
         it('works with array nodes', async function() {
@@ -1929,7 +1929,7 @@ describe('DOM Filter', function() {
                     'div1',
                     'div3'
                 ]
-            )
+            );
         });
 
     });
@@ -1967,7 +1967,7 @@ describe('DOM Filter', function() {
                     'div1',
                     'div3'
                 ]
-            )
+            );
         });
 
         it('returns nodes with data for a key', async function() {
@@ -1981,7 +1981,7 @@ describe('DOM Filter', function() {
                 [
                     'div1'
                 ]
-            )
+            );
         });
 
         it('works with HTMLElement nodes', async function() {
@@ -1994,7 +1994,7 @@ describe('DOM Filter', function() {
                 [
                     'div1'
                 ]
-            )
+            );
         });
 
         it('works with HTMLCollection nodes', async function() {
@@ -2008,7 +2008,7 @@ describe('DOM Filter', function() {
                     'div1',
                     'div3'
                 ]
-            )
+            );
         });
 
         it('works with NodeList nodes', async function() {
@@ -2022,7 +2022,7 @@ describe('DOM Filter', function() {
                     'div1',
                     'div3'
                 ]
-            )
+            );
         });
 
         it('works with array nodes', async function() {
@@ -2041,7 +2041,7 @@ describe('DOM Filter', function() {
                     'div1',
                     'div3'
                 ]
-            )
+            );
         });
 
     });
@@ -2078,7 +2078,7 @@ describe('DOM Filter', function() {
                     'div1',
                     'div3'
                 ]
-            )
+            );
         });
 
         it('returns nodes with a descendent matching a custom selector filter', async function() {
@@ -2093,7 +2093,7 @@ describe('DOM Filter', function() {
                     'div1',
                     'div3'
                 ]
-            )
+            );
         });
 
         it('works with HTMLElement nodes', async function() {
@@ -2107,7 +2107,7 @@ describe('DOM Filter', function() {
                 [
                     'div1'
                 ]
-            )
+            );
         });
 
         it('works with HTMLCollection nodes', async function() {
@@ -2122,7 +2122,7 @@ describe('DOM Filter', function() {
                     'div1',
                     'div3'
                 ]
-            )
+            );
         });
 
         it('works with NodeList nodes', async function() {
@@ -2137,7 +2137,7 @@ describe('DOM Filter', function() {
                     'div1',
                     'div3'
                 ]
-            )
+            );
         });
 
         it('works with array nodes', async function() {
@@ -2157,7 +2157,7 @@ describe('DOM Filter', function() {
                     'div1',
                     'div3'
                 ]
-            )
+            );
         });
 
         it('works with function filter', async function() {
@@ -2185,7 +2185,7 @@ describe('DOM Filter', function() {
                 [
                     'div1'
                 ]
-            )
+            );
         });
 
         it('works with HTMLCollection filter', async function() {
@@ -2199,7 +2199,7 @@ describe('DOM Filter', function() {
                 [
                     'div1'
                 ]
-            )
+            );
         });
 
         it('works with NodeList filter', async function() {
@@ -2214,7 +2214,7 @@ describe('DOM Filter', function() {
                     'div1',
                     'div3'
                 ]
-            )
+            );
         });
 
         it('works with array filter', async function() {
@@ -2232,7 +2232,7 @@ describe('DOM Filter', function() {
                     'div1',
                     'div3'
                 ]
-            )
+            );
         });
 
     });
@@ -2263,7 +2263,7 @@ describe('DOM Filter', function() {
                     'div1',
                     'div3'
                 ]
-            )
+            );
         });
 
         it('works with HTMLElement nodes', async function() {
@@ -2277,7 +2277,7 @@ describe('DOM Filter', function() {
                 [
                     'div1'
                 ]
-            )
+            );
         });
 
         it('works with HTMLCollection nodes', async function() {
@@ -2292,7 +2292,7 @@ describe('DOM Filter', function() {
                     'div1',
                     'div3'
                 ]
-            )
+            );
         });
 
         it('works with NodeList nodes', async function() {
@@ -2307,7 +2307,7 @@ describe('DOM Filter', function() {
                     'div1',
                     'div3'
                 ]
-            )
+            );
         });
 
         it('works with array nodes', async function() {
@@ -2327,7 +2327,7 @@ describe('DOM Filter', function() {
                     'div1',
                     'div3'
                 ]
-            )
+            );
         });
 
     });

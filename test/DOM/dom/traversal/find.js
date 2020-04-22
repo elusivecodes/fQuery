@@ -112,7 +112,7 @@ describe('DOM Find', function() {
                     'span3',
                     'span4'
                 ]
-            )
+            );
         });
 
         it('finds elements by custom child selector', async function() {
@@ -137,7 +137,7 @@ describe('DOM Find', function() {
                     'a14',
                     'a15'
                 ]
-            )
+            );
         });
 
         it('finds elements by custom next selector', async function() {
@@ -152,7 +152,7 @@ describe('DOM Find', function() {
                     'strong2',
                     'strong11'
                 ]
-            )
+            );
         });
 
         it('finds elements by custom after selector', async function() {
@@ -167,7 +167,7 @@ describe('DOM Find', function() {
                     'strong3',
                     'strong12'
                 ]
-            )
+            );
         });
 
         it('finds elements by ID', async function() {
@@ -180,7 +180,7 @@ describe('DOM Find', function() {
                 [
                     'parent1'
                 ]
-            )
+            );
         });
 
         it('finds elements by class name', async function() {
@@ -198,7 +198,7 @@ describe('DOM Find', function() {
                     'span5',
                     'span6'
                 ]
-            )
+            );
         });
 
         it('finds elements by tag name', async function() {
@@ -222,7 +222,7 @@ describe('DOM Find', function() {
                     'span11',
                     'span12'
                 ]
-            )
+            );
         });
 
         it('returns an empty array for non-matching selector', async function() {
@@ -233,7 +233,7 @@ describe('DOM Find', function() {
                     ).map(node => node.id);
                 }),
                 []
-            )
+            );
         });
 
         it('returns an empty array for empty nodes', async function() {
@@ -245,7 +245,7 @@ describe('DOM Find', function() {
                     ).map(node => node.id);
                 }),
                 []
-            )
+            );
         });
 
         it('works with query selector nodes', async function() {
@@ -260,7 +260,7 @@ describe('DOM Find', function() {
                     'span1',
                     'span2'
                 ]
-            )
+            );
         });
 
         it('works with HTMLElement nodes', async function() {
@@ -275,7 +275,7 @@ describe('DOM Find', function() {
                     'span1',
                     'span2'
                 ]
-            )
+            );
         });
 
         it('works with HTMLCollection nodes', async function() {
@@ -294,7 +294,7 @@ describe('DOM Find', function() {
                     'span5',
                     'span6'
                 ]
-            )
+            );
         });
 
         it('works with NodeList nodes', async function() {
@@ -313,7 +313,7 @@ describe('DOM Find', function() {
                     'span5',
                     'span6'
                 ]
-            )
+            );
         });
 
         it('works with array nodes', async function() {
@@ -336,7 +336,7 @@ describe('DOM Find', function() {
                     'span5',
                     'span6'
                 ]
-            )
+            );
         });
 
     });
@@ -383,7 +383,7 @@ describe('DOM Find', function() {
                     'span5',
                     'span7'
                 ]
-            )
+            );
         });
 
         it('works with query selector', async function() {
@@ -398,7 +398,7 @@ describe('DOM Find', function() {
                     'span1',
                     'span3'
                 ]
-            )
+            );
         });
 
         it('works with HTMLElement', async function() {
@@ -413,7 +413,7 @@ describe('DOM Find', function() {
                     'span1',
                     'span3'
                 ]
-            )
+            );
         });
 
         it('works with HTMLCollection', async function() {
@@ -428,7 +428,7 @@ describe('DOM Find', function() {
                     'span1',
                     'span3'
                 ]
-            )
+            );
         });
 
         it('works with NodeList', async function() {
@@ -443,7 +443,7 @@ describe('DOM Find', function() {
                     'span1',
                     'span3'
                 ]
-            )
+            );
         });
 
         it('works with array', async function() {
@@ -461,7 +461,7 @@ describe('DOM Find', function() {
                     'span1',
                     'span3'
                 ]
-            )
+            );
         });
 
         it('returns an empty array for non-matching class', async function() {
@@ -472,7 +472,7 @@ describe('DOM Find', function() {
                     ).map(node => node.id);
                 }),
                 []
-            )
+            );
         });
 
         it('returns an empty array for empty nodes', async function() {
@@ -484,7 +484,7 @@ describe('DOM Find', function() {
                     ).map(node => node.id);
                 }),
                 []
-            )
+            );
         });
 
     });
@@ -531,7 +531,7 @@ describe('DOM Find', function() {
                     'span5',
                     'span7'
                 ]
-            )
+            );
         });
 
         it('returns an empty array for non-matching id', async function() {
@@ -542,7 +542,7 @@ describe('DOM Find', function() {
                     ).map(node => node.id);
                 }),
                 []
-            )
+            );
         });
 
         it('returns an empty array for empty nodes', async function() {
@@ -554,7 +554,7 @@ describe('DOM Find', function() {
                     ).map(node => node.id);
                 }),
                 []
-            )
+            );
         });
 
         it('works with query selector nodes', async function() {
@@ -569,7 +569,7 @@ describe('DOM Find', function() {
                     'span1',
                     'span3'
                 ]
-            )
+            );
         });
 
         it('works with HTMLElement nodes', async function() {
@@ -584,7 +584,7 @@ describe('DOM Find', function() {
                     'span1',
                     'span3'
                 ]
-            )
+            );
         });
 
         it('works with HTMLCollection nodes', async function() {
@@ -599,7 +599,7 @@ describe('DOM Find', function() {
                     'span1',
                     'span3'
                 ]
-            )
+            );
         });
 
         it('works with NodeList nodes', async function() {
@@ -614,7 +614,7 @@ describe('DOM Find', function() {
                     'span1',
                     'span3'
                 ]
-            )
+            );
         });
 
         it('works with array nodes', async function() {
@@ -632,7 +632,7 @@ describe('DOM Find', function() {
                     'span1',
                     'span3'
                 ]
-            )
+            );
         });
 
     });
@@ -694,7 +694,7 @@ describe('DOM Find', function() {
                     ).map(node => node.id);
                 }),
                 []
-            )
+            );
         });
 
         it('returns an empty array for empty nodes', async function() {
@@ -706,7 +706,7 @@ describe('DOM Find', function() {
                     ).map(node => node.id);
                 }),
                 []
-            )
+            );
         });
 
         it('works with query selector nodes', async function() {
@@ -903,7 +903,7 @@ describe('DOM Find', function() {
                     ).id;
                 }),
                 'span1'
-            )
+            );
         });
 
         it('finds elements by custom child selector', async function() {
@@ -915,7 +915,7 @@ describe('DOM Find', function() {
                     ).id;
                 }),
                 'a1'
-            )
+            );
         });
 
         it('finds elements by custom next selector', async function() {
@@ -927,7 +927,7 @@ describe('DOM Find', function() {
                     ).id;
                 }),
                 'strong2'
-            )
+            );
         });
 
         it('finds elements by custom after selector', async function() {
@@ -939,7 +939,7 @@ describe('DOM Find', function() {
                     ).id;
                 }),
                 'strong3'
-            )
+            );
         });
 
         it('finds elements by ID', async function() {
@@ -950,7 +950,7 @@ describe('DOM Find', function() {
                     ).id;
                 }),
                 'parent1'
-            )
+            );
         });
 
         it('finds elements by class name', async function() {
@@ -961,7 +961,7 @@ describe('DOM Find', function() {
                     ).id;
                 }),
                 'span1'
-            )
+            );
         });
 
         it('finds elements by tag name', async function() {
@@ -972,7 +972,7 @@ describe('DOM Find', function() {
                     ).id;
                 }),
                 'span1'
-            )
+            );
         });
 
         it('returns null for non-matching selector', async function() {
@@ -983,7 +983,7 @@ describe('DOM Find', function() {
                     );
                 }),
                 null
-            )
+            );
         });
 
         it('returns undefined for empty nodes', async function() {
@@ -995,7 +995,7 @@ describe('DOM Find', function() {
                     );
                 }),
                 undefined
-            )
+            );
         });
 
         it('works with query selector nodes', async function() {
@@ -1007,7 +1007,7 @@ describe('DOM Find', function() {
                     ).id;
                 }),
                 'span3'
-            )
+            );
         });
 
         it('works with HTMLElement nodes', async function() {
@@ -1019,7 +1019,7 @@ describe('DOM Find', function() {
                     ).id;
                 }),
                 'span3'
-            )
+            );
         });
 
         it('works with HTMLCollection nodes', async function() {
@@ -1031,7 +1031,7 @@ describe('DOM Find', function() {
                     ).id;
                 }),
                 'span7'
-            )
+            );
         });
 
         it('works with NodeList nodes', async function() {
@@ -1043,7 +1043,7 @@ describe('DOM Find', function() {
                     ).id;
                 }),
                 'span7'
-            )
+            );
         });
 
         it('works with array nodes', async function() {
@@ -1059,7 +1059,7 @@ describe('DOM Find', function() {
                     ).id;
                 }),
                 'span7'
-            )
+            );
         });
 
     });
@@ -1101,7 +1101,7 @@ describe('DOM Find', function() {
                     ).id;
                 }),
                 'span1'
-            )
+            );
         });
 
         it('returns null for non-matching class', async function() {
@@ -1112,7 +1112,7 @@ describe('DOM Find', function() {
                     );
                 }),
                 null
-            )
+            );
         });
 
         it('returns undefined for empty nodes', async function() {
@@ -1124,7 +1124,7 @@ describe('DOM Find', function() {
                     );
                 }),
                 undefined
-            )
+            );
         });
 
         it('works with query selector nodes', async function() {
@@ -1136,7 +1136,7 @@ describe('DOM Find', function() {
                     ).id;
                 }),
                 'span5'
-            )
+            );
         });
 
         it('works with HTMLElement nodes', async function() {
@@ -1148,7 +1148,7 @@ describe('DOM Find', function() {
                     ).id;
                 }),
                 'span5'
-            )
+            );
         });
 
         it('works with HTMLCollection nodes', async function() {
@@ -1160,7 +1160,7 @@ describe('DOM Find', function() {
                     ).id;
                 }),
                 'span5'
-            )
+            );
         });
 
         it('works with NodeList nodes', async function() {
@@ -1172,7 +1172,7 @@ describe('DOM Find', function() {
                     ).id;
                 }),
                 'span5'
-            )
+            );
         });
 
         it('works with array nodes', async function() {
@@ -1187,7 +1187,7 @@ describe('DOM Find', function() {
                     ).id;
                 }),
                 'span5'
-            )
+            );
         });
 
     });
@@ -1229,7 +1229,7 @@ describe('DOM Find', function() {
                     ).dataset.id;
                 }),
                 'span1'
-            )
+            );
         });
 
         it('returns null for non-matching id', async function() {
@@ -1240,7 +1240,7 @@ describe('DOM Find', function() {
                     );
                 }),
                 null
-            )
+            );
         });
 
         it('returns undefined for empty nodes', async function() {
@@ -1252,7 +1252,7 @@ describe('DOM Find', function() {
                     );
                 }),
                 undefined
-            )
+            );
         });
 
         it('works with query selector nodes', async function() {
@@ -1264,7 +1264,7 @@ describe('DOM Find', function() {
                     ).dataset.id;
                 }),
                 'span5'
-            )
+            );
         });
 
         it('works with HTMLElement nodes', async function() {
@@ -1276,7 +1276,7 @@ describe('DOM Find', function() {
                     ).dataset.id;
                 }),
                 'span5'
-            )
+            );
         });
 
         it('works with HTMLCollection nodes', async function() {
@@ -1288,7 +1288,7 @@ describe('DOM Find', function() {
                     ).dataset.id;
                 }),
                 'span5'
-            )
+            );
         });
 
         it('works with NodeList nodes', async function() {
@@ -1300,7 +1300,7 @@ describe('DOM Find', function() {
                     ).dataset.id;
                 }),
                 'span5'
-            )
+            );
         });
 
         it('works with array nodes', async function() {
@@ -1315,7 +1315,7 @@ describe('DOM Find', function() {
                     ).dataset.id;
                 }),
                 'span5'
-            )
+            );
         });
 
     });
@@ -1368,7 +1368,7 @@ describe('DOM Find', function() {
                     );
                 }),
                 null
-            )
+            );
         });
 
         it('returns undefined for empty nodes', async function() {
@@ -1380,7 +1380,7 @@ describe('DOM Find', function() {
                     );
                 }),
                 undefined
-            )
+            );
         });
 
         it('works with query selector nodes', async function() {
