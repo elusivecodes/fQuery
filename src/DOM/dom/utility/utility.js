@@ -136,14 +136,28 @@ Object.assign(DOM.prototype, {
                         return values;
                     }
 
-                    const value = DOMNode.getAttribute(node, 'value') || '';
+                    if (DOMNode.is(node, 'select[multiple]')) {
+                        const selected = Core.wrap(node.selectedOptions);
+                        for (const option of selected) {
+                            const value = DOMNode.getProperty(option, 'value') || '';
 
-                    values.push(
-                        {
-                            name,
-                            value
+                            values.push(
+                                {
+                                    name,
+                                    value
+                                }
+                            );
                         }
-                    );
+                    } else {
+                        const value = DOMNode.getProperty(node, 'value') || '';
+
+                        values.push(
+                            {
+                                name,
+                                value
+                            }
+                        );
+                    }
 
                     return values;
                 },

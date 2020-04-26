@@ -4077,10 +4077,23 @@
                     endContainer :
                     DOMNode.parent(endContainer));
 
-            return nodes.slice(
+            const selectedNodes = nodes.slice(
                 nodes.indexOf(start),
                 nodes.indexOf(end) + 1
             );
+            const results = [];
+
+            let lastNode;
+            for (const node of selectedNodes) {
+                if (lastNode && DOMNode.contains(lastNode, node)) {
+                    continue;
+                }
+
+                lastNode = node;
+                results.push(node);
+            }
+
+            return results;
         },
 
         /**
@@ -4171,7 +4184,6 @@
         }
 
     });
-
     /**
      * DOM Tests
      */
@@ -4561,14 +4573,28 @@
                             return values;
                         }
 
-                        const value = DOMNode.getAttribute(node, 'value') || '';
+                        if (DOMNode.is(node, 'select[multiple]')) {
+                            const selected = Core.wrap(node.selectedOptions);
+                            for (const option of selected) {
+                                const value = DOMNode.getProperty(option, 'value') || '';
 
-                        values.push(
-                            {
-                                name,
-                                value
+                                values.push(
+                                    {
+                                        name,
+                                        value
+                                    }
+                                );
                             }
-                        );
+                        } else {
+                            const value = DOMNode.getProperty(node, 'value') || '';
+
+                            values.push(
+                                {
+                                    name,
+                                    value
+                                }
+                            );
+                        }
 
                         return values;
                     },

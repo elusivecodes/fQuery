@@ -13,12 +13,15 @@ before(async function() {
 
     page = await browser.newPage();
 
+    const coreSrc = await fs.readFileSync('../FrostCore/dist/frost-core.js', 'utf8');
+    const domSrc = await fs.readFileSync('./dist/frost-dom.js', 'utf8');
+
     await page.evaluate(data => {
         eval(data.coreSrc);
         eval(data.domSrc);
     }, {
-        coreSrc: await fs.readFileSync('../FrostCore/dist/frost-core.js', 'utf8'),
-        domSrc: await fs.readFileSync('./dist/frost-dom.js', 'utf8')
+        coreSrc,
+        domSrc
     });
 });
 
@@ -39,7 +42,6 @@ beforeEach(async function() {
 after(async function() {
     this.timeout(30000);
 
-    await page.close();
     await browser.close();
 });
 

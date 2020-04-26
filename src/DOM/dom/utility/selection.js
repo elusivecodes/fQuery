@@ -106,10 +106,23 @@ Object.assign(DOM.prototype, {
                 endContainer :
                 DOMNode.parent(endContainer));
 
-        return nodes.slice(
+        const selectedNodes = nodes.slice(
             nodes.indexOf(start),
             nodes.indexOf(end) + 1
         );
+        const results = [];
+
+        let lastNode;
+        for (const node of selectedNodes) {
+            if (lastNode && DOMNode.contains(lastNode, node)) {
+                continue;
+            }
+
+            lastNode = node;
+            results.push(node);
+        }
+
+        return results;
     },
 
     /**
