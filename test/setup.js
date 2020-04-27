@@ -1,11 +1,53 @@
 const fs = require('fs');
+const http = require('http');
 const puppeteer = require('puppeteer');
+const port = 3000;
 
-let browser;
-let page;
+const server = http.createServer((request, response) => {
+    if (request.url === '/') {
+        const core = fs.readFileSync('../FrostCore/dist/frost-core.js');
+        const dom = fs.readFileSync('./dist/frost-dom.js');
+        response.writeHead(200, { 'Content-Type': 'text/html' });
+        response.end(
+            '<html id="html">' +
+            '<head>' +
+            '</head>' +
+            '<body id="body">' +
+            '<script>' +
+            core +
+            dom +
+            '</script>' +
+            '</body>' +
+            '</html>'
+        );
+        return;
+    }
+});
+
+const startServer = _ => {
+    return new Promise((resolve, reject) => {
+        server.listen(port, (err) => {
+            if (err) {
+                return reject(err);
+            }
+
+            resolve();
+        });
+    });
+};
+
+const closeServer = _ => {
+    return new Promise(resolve => {
+        server.close(resolve);
+    });
+};
+
+let browser, page;
 
 before(async function() {
     this.timeout(30000);
+
+    await startServer();
 
     browser = await puppeteer.launch({
         args: ['--no-sandbox']
@@ -13,36 +55,22 @@ before(async function() {
 
     page = await browser.newPage();
 
-    const coreSrc = await fs.readFileSync('../FrostCore/dist/frost-core.js', 'utf8');
-    const domSrc = await fs.readFileSync('./dist/frost-dom.js', 'utf8');
-
-    await page.evaluate(data => {
-        eval(data.coreSrc);
-        eval(data.domSrc);
-    }, {
-        coreSrc,
-        domSrc
+    await page.goto('http://localhost:3000', {
+        waitUntil: 'domcontentloaded'
     });
 });
 
 beforeEach(async function() {
-    await page.setContent(
-        '<html id="html">' +
-        '<head>' +
-        '<meta charset="UTF-8">' +
-        '<meta name="viewport" content="width=device-width, initial-scale=1.0">' +
-        '<meta http-equiv="X-UA-Compatible" content="ie=edge">' +
-        '</head>' +
-        '<body id="body">' +
-        '</body>' +
-        '</html>'
-    );
+    await page.evaluate(_ => {
+        document.body.innerHTML = '';
+    });
 });
 
 after(async function() {
     this.timeout(30000);
 
     await browser.close();
+    await closeServer();
 });
 
 module.exports = async (callback, data) =>

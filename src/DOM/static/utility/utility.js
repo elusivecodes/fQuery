@@ -66,10 +66,16 @@ Object.assign(DOM, {
         }
 
         // check node attributes
-        const allowedAttributes = [
-            ...allowedTags['*'],
-            ...allowedTags[name]
-        ];
+        const allowedAttributes = [];
+
+        if ('*' in allowedTags && allowedTags['*'].length) {
+            allowedAttributes.push(...allowedTags['*']);
+        }
+
+        if (allowedTags[name].length) {
+            allowedAttributes.push(...allowedTags[name]);
+        }
+
         const attributes = this._getAttribute(node);
         for (const attribute in attributes) {
             const valid = !!allowedAttributes.find(test => attribute.match(test));
@@ -80,7 +86,7 @@ Object.assign(DOM, {
         }
 
         // check children
-        const children = DOMNode.children(node);
+        const children = this._children(node, null, false, true);
         for (const child of children) {
             this._sanitize(child, node, allowedTags);
         }

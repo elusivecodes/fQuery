@@ -11,7 +11,7 @@ Object.assign(DOM.prototype, {
     afterSelection(nodes) {
 
         // ShadowRoot nodes can not be moved
-        nodes = this.parseNodes(nodes, { node: true, fragment: true, html: true });
+        nodes = this.parseNodes(nodes, { node: true, fragment: true, html: true }).reverse();
 
         const selection = DOMNode.getSelection();
 
@@ -36,7 +36,7 @@ Object.assign(DOM.prototype, {
     beforeSelection(nodes) {
 
         // ShadowRoot nodes can not be moved
-        nodes = this.parseNodes(nodes, { node: true, fragment: true, html: true });
+        nodes = this.parseNodes(nodes, { node: true, fragment: true, html: true }).reverse();
 
         const selection = DOMNode.getSelection();
 

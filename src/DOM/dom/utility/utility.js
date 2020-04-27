@@ -87,7 +87,7 @@ Object.assign(DOM.prototype, {
     sanitize(html, allowedTags = DOM.allowedTags) {
         const template = this.create('template', { html }),
             fragment = DOMNode.fragment(template),
-            children = DOMNode.children(fragment);
+            children = this.constructor._children(fragment, null, false, true);
 
         for (const child of children) {
             this.constructor._sanitize(child, fragment, allowedTags);
@@ -205,7 +205,7 @@ Object.assign(DOM.prototype, {
             return;
         }
 
-        return DOMNode.tagName(node);
+        return this.constructor._tagName(node);
     }
 
 });

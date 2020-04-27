@@ -4618,7 +4618,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
         node: true,
         fragment: true,
         html: true
-      });
+      }).reverse();
       var selection = DOMNode.getSelection();
 
       if (!DOMNode.rangeCount(selection)) {
@@ -4654,7 +4654,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
         node: true,
         fragment: true,
         html: true
-      });
+      }).reverse();
       var selection = DOMNode.getSelection();
 
       if (!DOMNode.rangeCount(selection)) {
@@ -5258,11 +5258,12 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
      */
     sanitize: function sanitize(html) {
       var allowedTags = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : DOM.allowedTags;
+
       var template = this.create('template', {
         html: html
       }),
           fragment = DOMNode.fragment(template),
-          children = DOMNode.children(fragment);
+          children = this.constructor._children(fragment, null, false, true);
 
       var _iterator72 = _createForOfIteratorHelper(children),
           _step72;
@@ -5391,7 +5392,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
         return;
       }
 
-      return DOMNode.tagName(node);
+      return this.constructor._tagName(node);
     }
   });
   /**
@@ -7501,7 +7502,15 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
       } // check node attributes
 
 
-      var allowedAttributes = [].concat(_toConsumableArray(allowedTags['*']), _toConsumableArray(allowedTags[name]));
+      var allowedAttributes = [];
+
+      if ('*' in allowedTags && allowedTags['*'].length) {
+        allowedAttributes.push.apply(allowedAttributes, _toConsumableArray(allowedTags['*']));
+      }
+
+      if (allowedTags[name].length) {
+        allowedAttributes.push.apply(allowedAttributes, _toConsumableArray(allowedTags[name]));
+      }
 
       var attributes = this._getAttribute(node);
 
@@ -7520,7 +7529,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
       } // check children
 
 
-      var children = DOMNode.children(node);
+      var children = this._children(node, null, false, true);
 
       var _iterator96 = _createForOfIteratorHelper(children),
           _step96;

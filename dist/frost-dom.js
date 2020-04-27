@@ -3982,7 +3982,7 @@
         afterSelection(nodes) {
 
             // ShadowRoot nodes can not be moved
-            nodes = this.parseNodes(nodes, { node: true, fragment: true, html: true });
+            nodes = this.parseNodes(nodes, { node: true, fragment: true, html: true }).reverse();
 
             const selection = DOMNode.getSelection();
 
@@ -4007,7 +4007,7 @@
         beforeSelection(nodes) {
 
             // ShadowRoot nodes can not be moved
-            nodes = this.parseNodes(nodes, { node: true, fragment: true, html: true });
+            nodes = this.parseNodes(nodes, { node: true, fragment: true, html: true }).reverse();
 
             const selection = DOMNode.getSelection();
 
@@ -4184,6 +4184,7 @@
         }
 
     });
+
     /**
      * DOM Tests
      */
@@ -4524,7 +4525,7 @@
         sanitize(html, allowedTags = DOM.allowedTags) {
             const template = this.create('template', { html }),
                 fragment = DOMNode.fragment(template),
-                children = DOMNode.children(fragment);
+                children = this.constructor._children(fragment, null, false, true);
 
             for (const child of children) {
                 this.constructor._sanitize(child, fragment, allowedTags);
@@ -4642,7 +4643,7 @@
                 return;
             }
 
-            return DOMNode.tagName(node);
+            return this.constructor._tagName(node);
         }
 
     });
@@ -6671,10 +6672,16 @@
             }
 
             // check node attributes
-            const allowedAttributes = [
-                ...allowedTags['*'],
-                ...allowedTags[name]
-            ];
+            const allowedAttributes = [];
+
+            if ('*' in allowedTags && allowedTags['*'].length) {
+                allowedAttributes.push(...allowedTags['*']);
+            }
+
+            if (allowedTags[name].length) {
+                allowedAttributes.push(...allowedTags[name]);
+            }
+
             const attributes = this._getAttribute(node);
             for (const attribute in attributes) {
                 const valid = !!allowedAttributes.find(test => attribute.match(test));
@@ -6685,7 +6692,7 @@
             }
 
             // check children
-            const children = DOMNode.children(node);
+            const children = this._children(node, null, false, true);
             for (const child of children) {
                 this._sanitize(child, node, allowedTags);
             }
