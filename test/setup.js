@@ -1,12 +1,15 @@
 const fs = require('fs');
 const http = require('http');
 const puppeteer = require('puppeteer');
-const port = 3000;
+const port = 3001;
+
+let browser, page;
+
+const core = fs.readFileSync('../FrostCore/dist/frost-core.js');
+const dom = fs.readFileSync('./dist/frost-dom.js');
 
 const server = http.createServer((request, response) => {
     if (request.url === '/') {
-        const core = fs.readFileSync('../FrostCore/dist/frost-core.js');
-        const dom = fs.readFileSync('./dist/frost-dom.js');
         response.writeHead(200, { 'Content-Type': 'text/html' });
         response.end(
             '<html id="html">' +
@@ -42,8 +45,6 @@ const closeServer = _ => {
     });
 };
 
-let browser, page;
-
 before(async function() {
     this.timeout(30000);
 
@@ -55,7 +56,7 @@ before(async function() {
 
     page = await browser.newPage();
 
-    await page.goto('http://localhost:3000', {
+    await page.goto('http://localhost:3001', {
         waitUntil: 'domcontentloaded'
     });
 });

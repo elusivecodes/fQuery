@@ -149,6 +149,62 @@
 
     }
 
+    class MockXMLHttpRequest {
+
+        constructor() {
+            this.data = {
+                headers: {}
+            };
+        }
+
+        open(method, url, async) {
+            this.data.method = method;
+            this.data.url = url;
+            this.data.async = async;
+        }
+
+        send(data) {
+            this.data.body = data;
+
+            if (this.responseType) {
+                this.data.responseType = this.responseType;
+            }
+
+            if (this.forceError) {
+                if (this.onerror) {
+                    const errorEvent = new Event('error');
+                    this.onerror(errorEvent);
+                }
+                return;
+            }
+
+            if (this.onprogress) {
+                setTimeout(_ => {
+                    const progressEvent = new Event('progress');
+                    progressEvent.loaded = 500;
+                    progressEvent.total = 1000;
+
+                    this.onprogress(progressEvent);
+                }, 5);
+            }
+
+            this.data.status = 200;
+            this.response = 'Test';
+
+            if (this.onload) {
+                setTimeout(_ => {
+                    const loadEvent = new Event('load');
+                    this.onload(loadEvent);
+                }, 10);
+            }
+        }
+
+        setRequestHeader(header, value) {
+            this.data.headers[header] = value;
+        }
+
+    }
+
     /**
      * AjaxRequest Helpers
      */
@@ -159,7 +215,9 @@
          * Build the XHR request object.
          */
         _build() {
-            this._xhr = new XMLHttpRequest;
+            this._xhr = this.constructor.useMock ?
+                new MockXMLHttpRequest :
+                new XMLHttpRequest;
 
             this._xhr.open(this._settings.method, this._settings.url, true);
 
@@ -238,6 +296,7 @@
         }
 
     });
+
 
     /**
      * AjaxRequest (Static) Helpers
@@ -370,7 +429,7 @@
             beforeSend: false,
             cache: true,
             contentType: 'application/x-www-form-urlencoded',
-            data: false,
+            data: null,
             headers: {},
             method: 'GET',
             onProgress: false,
@@ -704,47 +763,52 @@
         /**
          * Get a cookie value.
          * @param {string} name The cookie name.
-         * @param {Boolean} [json=false] Whether the cookie value is in JSON.
          * @returns {*} The cookie value.
          */
-        getCookie(name, json = false) {
-            const cookie = decodeURIComponent(this._context.cookie)
+        getCookie(name) {
+            const cookie = this._context.cookie
                 .split(';')
                 .find(cookie =>
                     cookie
                         .trimStart()
                         .substring(0, name.length) === name
-                );
+                )
+                .trimStart();
 
             if (!cookie) {
                 return null;
             }
 
-            const value = cookie.trimStart().
-                substring(name.length + 1);
-
-            return json ?
-                JSON.parse(value) :
-                value;
+            return decodeURIComponent(
+                cookie.substring(name.length + 1)
+            );
         },
 
         /**
          * Remove a cookie.
          * @param {string} name The cookie name.
          * @param {object} [options] The options to use for the cookie.
-         * @param {number} [options.expires=-1] The number of seconds until the cookie will expire.
          * @param {string} [options.path] The cookie path.
          * @param {Boolean} [options.secure] Whether the cookie is secure.
          */
         removeCookie(name, options) {
-            this.setCookie(
-                name,
-                '',
-                {
-                    expires: -1,
-                    ...options
+            if (!name) {
+                return;
+            }
+
+            let cookie = `${name}=;expires=Thu, 01 Jan 1970 00:00:00 UTC`;
+
+            if (options) {
+                if (options.path) {
+                    cookie += `;path=${options.path}`;
                 }
-            );
+
+                if (options.secure) {
+                    cookie += ';secure';
+                }
+            }
+
+            this._context.cookie = cookie;
         },
 
         /**
@@ -755,15 +819,10 @@
          * @param {number} [options.expires] The number of seconds until the cookie will expire.
          * @param {string} [options.path] The path to use for the cookie.
          * @param {Boolean} [options.secure] Whether the cookie is secure.
-         * @param {Boolean} [json=false] Whether to JSON encode the cookie value.
          */
-        setCookie(name, value, options, json = false) {
+        setCookie(name, value, options) {
             if (!name) {
                 return;
-            }
-
-            if (json) {
-                value = JSON.stringify(value);
             }
 
             let cookie = `${name}=${value}`;
@@ -3226,15 +3285,7 @@
 
             // custom selector
             if (selector.match(this.constructor._complexRegExp)) {
-                const selectors = this.constructor._prefixSelectors(selector, `#${this.constructor._tempId} `);
-
-                if (Core.isElement(nodes)) {
-                    return this.constructor.__findByCustom(selectors, nodes);
-                }
-
-                nodes = this.parseNodes(nodes);
-
-                return this.constructor._findByCustom(selectors, nodes);
+                selector = this.constructor._prefixSelectors(selector, ':scope ');
             }
 
             // standard selector
@@ -3338,19 +3389,7 @@
 
             // custom selector
             if (selector.match(this.constructor._complexRegExp)) {
-                const selectors = this.constructor._prefixSelectors(selector, `#${this.constructor._tempId} `);
-
-                if (Core.isElement(nodes)) {
-                    return this.constructor.__findOneByCustom(selectors, nodes);
-                }
-
-                nodes = this.parseNodes(nodes);
-
-                if (!nodes.length) {
-                    return;
-                }
-
-                return this.constructor._findOneByCustom(selectors, nodes);
+                selector = this.constructor._prefixSelectors(selector, ':scope ');
             }
 
             // standard selector
@@ -5427,10 +5466,12 @@
          * @returns {DOM~delegateCallback} The callback for finding the matching delegate.
          */
         _getDelegateContainsFactory(node, selector) {
-            selector = DOM._prefixSelectors(selector, `#${DOM._tempId}`);
+            selector = DOM._prefixSelectors(selector, ':scope ');
 
             return target => {
-                const matches = this.__findByCustom(selector, node);
+                const matches = Core.wrap(
+                    DOMNode.findBySelector(selector, node)
+                );
 
                 if (!matches.length) {
                     return false;
@@ -5792,7 +5833,8 @@
         _prefixSelectors(selectors, prefix) {
             return selectors.split(this._splitRegExp)
                 .filter(select => !!select)
-                .map(select => `${prefix} ${select}`);
+                .map(select => `${prefix} ${select}`)
+                .join(', ');
         }
 
     });
@@ -6083,28 +6125,6 @@
     Object.assign(DOM, {
 
         /**
-         * Return all nodes matching custom CSS selector(s).
-         * @param {array} selectors The custom query selector(s).
-         * @param {array} nodes The input nodes.
-         * @returns {array} The matching nodes.
-         */
-        _findByCustom(selectors, nodes = this._context) {
-
-            const results = [];
-
-            for (const node of nodes) {
-                Core.merge(
-                    results,
-                    this.__findByCustom(selectors, node)
-                );
-            }
-
-            return nodes.length > 1 && results.length > 1 ?
-                Core.unique(results) :
-                results;
-        },
-
-        /**
          * Return all nodes matching a standard CSS selector.
          * @param {string} selector The query selector.
          * @param {array} nodes The input nodes.
@@ -6126,24 +6146,6 @@
         },
 
         /**
-         * Return a single node matching custom CSS selector(s).
-         * @param {array} selectors The custom query selector(s).
-         * @param {array} nodes The input nodes.
-         * @returns {HTMLElement} The matching node.
-         */
-        _findOneByCustom(selectors, nodes) {
-            for (const node of nodes) {
-                const result = this.__findOneByCustom(selectors, node);
-
-                if (result) {
-                    return result;
-                }
-            }
-
-            return null;
-        },
-
-        /**
          * Return a single node matching a standard CSS selector.
          * @param {string} selector The query selector.
          * @param {array} nodes The input nodes.
@@ -6158,74 +6160,6 @@
             }
 
             return null;
-        },
-
-        /**
-         * Return all nodes matching a custom CSS selector.
-         * @param {string} selectors The custom query selector.
-         * @param {HTMLElement} node The input node.
-         * @returns {NodeList} The matching nodes.
-         */
-        __findByCustom(selectors, node) {
-            const nodeId = DOMNode.getAttribute(node, 'id');
-            DOMNode.setAttribute(node, 'id', this._tempId);
-
-            const parent = DOMNode.parent(node);
-
-            const results = [];
-
-            for (const selector of selectors) {
-                Core.merge(
-                    results,
-                    DOMNode.findBySelector(selector, parent)
-                );
-            }
-
-            if (nodeId) {
-                DOMNode.setAttribute(node, 'id', nodeId);
-            } else {
-                DOMNode.removeAttribute(node, 'id');
-            }
-
-            return selectors.length > 1 && results.length > 1 ?
-                Core.unique(results) :
-                results;
-        },
-
-
-        /**
-         * Return a single node matching a custom CSS selector.
-         * @param {string} selectors The custom query selector.
-         * @param {HTMLElement} node The input node.
-         * @returns {HTMLElement} The matching node.
-         */
-        __findOneByCustom(selectors, node) {
-            const nodeId = DOMNode.getAttribute(node, 'id');
-            DOMNode.setAttribute(node, 'id', this._tempId);
-
-            const parent = DOMNode.parent(node);
-
-            if (!parent) {
-                return null;
-            }
-
-            let result = null;
-
-            for (const selector of selectors) {
-                result = DOMNode.findOneBySelector(selector, parent);
-
-                if (result) {
-                    break;
-                }
-            }
-
-            if (nodeId) {
-                DOMNode.setAttribute(node, 'id', nodeId);
-            } else {
-                DOMNode.removeAttribute(node, 'id');
-            }
-
-            return result;
         }
 
     });
@@ -6812,10 +6746,7 @@
         _fastRegExp: /^([\#\.]?)([\w\-]+)$/,
 
         // Comma seperated selector RegExp
-        _splitRegExp: /\,(?=(?:(?:[^"]*"){2})*[^"]*$)\s*/,
-
-        // Temporary ID
-        _tempId: `frost${Date.now().toString(16)}`
+        _splitRegExp: /\,(?=(?:(?:[^"]*"){2})*[^"]*$)\s*/
 
     });
 

@@ -101,9 +101,6 @@ Object.assign(DOM, {
     _fastRegExp: /^([\#\.]?)([\w\-]+)$/,
 
     // Comma seperated selector RegExp
-    _splitRegExp: /\,(?=(?:(?:[^"]*"){2})*[^"]*$)\s*/,
-
-    // Temporary ID
-    _tempId: `frost${Date.now().toString(16)}`
+    _splitRegExp: /\,(?=(?:(?:[^"]*"){2})*[^"]*$)\s*/
 
 });

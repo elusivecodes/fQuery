@@ -27,15 +27,7 @@ Object.assign(DOM.prototype, {
 
         // custom selector
         if (selector.match(this.constructor._complexRegExp)) {
-            const selectors = this.constructor._prefixSelectors(selector, `#${this.constructor._tempId} `);
-
-            if (Core.isElement(nodes)) {
-                return this.constructor.__findByCustom(selectors, nodes);
-            }
-
-            nodes = this.parseNodes(nodes);
-
-            return this.constructor._findByCustom(selectors, nodes);
+            selector = this.constructor._prefixSelectors(selector, ':scope ');
         }
 
         // standard selector
@@ -139,19 +131,7 @@ Object.assign(DOM.prototype, {
 
         // custom selector
         if (selector.match(this.constructor._complexRegExp)) {
-            const selectors = this.constructor._prefixSelectors(selector, `#${this.constructor._tempId} `);
-
-            if (Core.isElement(nodes)) {
-                return this.constructor.__findOneByCustom(selectors, nodes);
-            }
-
-            nodes = this.parseNodes(nodes);
-
-            if (!nodes.length) {
-                return;
-            }
-
-            return this.constructor._findOneByCustom(selectors, nodes);
+            selector = this.constructor._prefixSelectors(selector, ':scope ');
         }
 
         // standard selector

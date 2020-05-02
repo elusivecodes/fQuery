@@ -8,7 +8,9 @@ Object.assign(AjaxRequest.prototype, {
      * Build the XHR request object.
      */
     _build() {
-        this._xhr = new XMLHttpRequest;
+        this._xhr = this.constructor.useMock ?
+            new MockXMLHttpRequest :
+            new XMLHttpRequest;
 
         this._xhr.open(this._settings.method, this._settings.url, true);
 
@@ -87,3 +89,4 @@ Object.assign(AjaxRequest.prototype, {
     }
 
 });
+

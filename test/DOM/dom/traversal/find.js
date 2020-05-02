@@ -140,36 +140,6 @@ describe('DOM Find', function() {
             );
         });
 
-        it('finds elements by custom next selector', async function() {
-            assert.deepEqual(
-                await exec(_ => {
-                    return dom.find(
-                        '+ .group1 > .group1, + .group2 > .group2',
-                        '#a1, #a10'
-                    ).map(node => node.id);
-                }),
-                [
-                    'strong2',
-                    'strong11'
-                ]
-            );
-        });
-
-        it('finds elements by custom after selector', async function() {
-            assert.deepEqual(
-                await exec(_ => {
-                    return dom.find(
-                        '~ .group1[data-toggle="test"] > .group1, ~ .group2[data-toggle="test"] > .group2',
-                        '#a1, #a10'
-                    ).map(node => node.id);
-                }),
-                [
-                    'strong3',
-                    'strong12'
-                ]
-            );
-        });
-
         it('finds elements by ID', async function() {
             assert.deepEqual(
                 await exec(_ => {
@@ -915,30 +885,6 @@ describe('DOM Find', function() {
                     ).id;
                 }),
                 'a1'
-            );
-        });
-
-        it('finds elements by custom next selector', async function() {
-            assert.equal(
-                await exec(_ => {
-                    return dom.findOne(
-                        '+ .group1 > .group1, + .group2 > .group2',
-                        '#a1, #a10'
-                    ).id;
-                }),
-                'strong2'
-            );
-        });
-
-        it('finds elements by custom after selector', async function() {
-            assert.equal(
-                await exec(_ => {
-                    return dom.findOne(
-                        '~ .group1[data-toggle="test"] > .group1, ~ .group2[data-toggle="test"] > .group2',
-                        '#a1, #a10'
-                    ).id;
-                }),
-                'strong3'
             );
         });
 

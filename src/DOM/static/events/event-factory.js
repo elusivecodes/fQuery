@@ -52,10 +52,12 @@ Object.assign(DOM, {
      * @returns {DOM~delegateCallback} The callback for finding the matching delegate.
      */
     _getDelegateContainsFactory(node, selector) {
-        selector = DOM._prefixSelectors(selector, `#${DOM._tempId}`);
+        selector = DOM._prefixSelectors(selector, ':scope ');
 
         return target => {
-            const matches = this.__findByCustom(selector, node);
+            const matches = Core.wrap(
+                DOMNode.findBySelector(selector, node)
+            );
 
             if (!matches.length) {
                 return false;

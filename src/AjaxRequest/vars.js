@@ -10,7 +10,7 @@ Object.assign(AjaxRequest, {
         beforeSend: false,
         cache: true,
         contentType: 'application/x-www-form-urlencoded',
-        data: false,
+        data: null,
         headers: {},
         method: 'GET',
         onProgress: false,
