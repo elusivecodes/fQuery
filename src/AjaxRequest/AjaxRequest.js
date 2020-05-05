@@ -30,13 +30,18 @@ class AjaxRequest {
         );
 
         if (!this._settings.url) {
-            this._settings.url = window.location;
+            this._settings.url = window.location.href;
         }
 
         if (!this._settings.cache) {
-            const url = new URL(this._settings.url);
+            const baseHref = (window.location.origin + window.location.pathname).replace(/\/$/, '');
+            const url = new URL(this._settings.url, baseHref);
             url.searchParams.append('_', Date.now());
             this._settings.url = url.toString();
+
+            if (this._settings.url.substring(0, baseHref.length) === baseHref) {
+                this._settings.url = this._settings.url.substring(baseHref.length);
+            }
         }
 
         if (!('Content-Type' in this._settings.headers) && this._settings.contentType) {

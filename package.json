@@ -11,13 +11,13 @@
     "author": "Elusive",
     "license": "MIT",
     "devDependencies": {
-        "@babel/core": "^7.9.0",
-        "@babel/preset-env": "^7.9.0",
+        "@babel/core": "^7.9.6",
+        "@babel/preset-env": "^7.9.6",
         "filepath": "^1.1.0",
         "minimist": "^1.2.5",
-        "mocha": "^7.1.1",
+        "mocha": "^7.1.2",
         "puppeteer": "^2.1.1",
-        "terser": "^4.6.7"
+        "terser": "^4.6.13"
     },
     "resolutions": {
         "minimist": "^1.2.5"

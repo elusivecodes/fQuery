@@ -71,7 +71,7 @@ Object.assign(AjaxRequest, {
 
         if (Core.isObject(value)) {
             const values = [];
-            for (const key in value) {
+            for (const subKey in value) {
                 values.push(
                     this._parseParam(
                         `${key}[${subKey}]`,

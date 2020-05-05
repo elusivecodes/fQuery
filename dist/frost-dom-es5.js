@@ -24,7 +24,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 function _createForOfIteratorHelper(o) { if (typeof Symbol === "undefined" || o[Symbol.iterator] == null) { if (Array.isArray(o) || (o = _unsupportedIterableToArray(o))) { var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e2) { throw _e2; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var it, normalCompletion = true, didErr = false, err; return { s: function s() { it = o[Symbol.iterator](); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e3) { didErr = true; err = _e3; }, f: function f() { try { if (!normalCompletion && it["return"] != null) it["return"](); } finally { if (didErr) throw err; } } }; }
 
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(n); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
 
 function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
 
@@ -93,13 +93,18 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
       this._settings = Core.extend({}, this.constructor.defaults, settings);
 
       if (!this._settings.url) {
-        this._settings.url = window.location;
+        this._settings.url = window.location.href;
       }
 
       if (!this._settings.cache) {
-        var url = new URL(this._settings.url);
+        var baseHref = (window.location.origin + window.location.pathname).replace(/\/$/, '');
+        var url = new URL(this._settings.url, baseHref);
         url.searchParams.append('_', Date.now());
         this._settings.url = url.toString();
+
+        if (this._settings.url.substring(0, baseHref.length) === baseHref) {
+          this._settings.url = this._settings.url.substring(baseHref.length);
+        }
       }
 
       if (!('Content-Type' in this._settings.headers) && this._settings.contentType) {
@@ -206,6 +211,8 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
       this.data = {
         headers: {}
       };
+      this.status = 200;
+      this.upload = {};
     }
 
     _createClass(MockXMLHttpRequest, [{
@@ -226,13 +233,14 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
           this.data.responseType = this.responseType;
         }
 
-        if (this.forceError) {
-          if (this.onerror) {
-            var errorEvent = new Event('error');
-            this.onerror(errorEvent);
-          }
+        if (this.upload && this.upload.onprogress) {
+          setTimeout(function (_) {
+            var progressEvent = new Event('progress');
+            progressEvent.loaded = 5000;
+            progressEvent.total = 10000;
 
-          return;
+            _this2.upload.onprogress(progressEvent);
+          }, 10);
         }
 
         if (this.onprogress) {
@@ -242,19 +250,29 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
             progressEvent.total = 1000;
 
             _this2.onprogress(progressEvent);
-          }, 5);
+          }, 10);
         }
 
-        this.data.status = 200;
-        this.response = 'Test';
+        setTimeout(function (_) {
+          if (_this2.forceError) {
+            if (_this2.onerror) {
+              var errorEvent = new Event('error');
 
-        if (this.onload) {
-          setTimeout(function (_) {
+              _this2.onerror(errorEvent);
+            }
+
+            return;
+          }
+
+          _this2.data.status = _this2.status;
+          _this2.response = 'Test';
+
+          if (_this2.onload) {
             var loadEvent = new Event('load');
 
             _this2.onload(loadEvent);
-          }, 10);
-        }
+          }
+        }, 20);
       }
     }, {
       key: "setRequestHeader",
@@ -464,8 +482,8 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
       if (Core.isObject(value)) {
         var _values = [];
 
-        for (var _key in value) {
-          _values.push(this._parseParam("".concat(_key, "[").concat(subKey, "]"), value[subKey]));
+        for (var subKey in value) {
+          _values.push(this._parseParam("".concat(key, "[").concat(subKey, "]"), value[subKey]));
         }
 
         return _values.flat();
@@ -946,7 +964,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
 
       nodes = this.parseNodes(nodes);
       var promises = nodes.map(function (node) {
-        return _this6.constructor._animate(node, callback, _objectSpread({}, _this6.constructor.animationDefaults, {}, options));
+        return _this6.constructor._animate(node, callback, _objectSpread(_objectSpread({}, _this6.constructor.animationDefaults), options));
       });
 
       this.constructor._start();
@@ -1213,7 +1231,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
       var _this9 = this;
 
       nodes = this.parseNodes(nodes);
-      options = _objectSpread({}, this.constructor.animationDefaults, {
+      options = _objectSpread(_objectSpread({}, this.constructor.animationDefaults), {}, {
         direction: 'bottom',
         useGpu: true
       }, options);
@@ -1291,7 +1309,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
       var _this10 = this;
 
       nodes = this.parseNodes(nodes);
-      options = _objectSpread({}, this.constructor.animationDefaults, {
+      options = _objectSpread(_objectSpread({}, this.constructor.animationDefaults), {}, {
         direction: 'bottom',
         useGpu: true
       }, options);
@@ -2249,8 +2267,8 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
      * @param {...string|string[]} classes The classes.
      */
     addClass: function addClass(nodes) {
-      for (var _len = arguments.length, classes = new Array(_len > 1 ? _len - 1 : 0), _key2 = 1; _key2 < _len; _key2++) {
-        classes[_key2 - 1] = arguments[_key2];
+      for (var _len = arguments.length, classes = new Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+        classes[_key - 1] = arguments[_key];
       }
 
       nodes = this.parseNodes(nodes);
@@ -2321,8 +2339,8 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
      * @param {...string|string[]} classes The classes.
      */
     removeClass: function removeClass(nodes) {
-      for (var _len2 = arguments.length, classes = new Array(_len2 > 1 ? _len2 - 1 : 0), _key3 = 1; _key3 < _len2; _key3++) {
-        classes[_key3 - 1] = arguments[_key3];
+      for (var _len2 = arguments.length, classes = new Array(_len2 > 1 ? _len2 - 1 : 0), _key2 = 1; _key2 < _len2; _key2++) {
+        classes[_key2 - 1] = arguments[_key2];
       }
 
       nodes = this.parseNodes(nodes);
@@ -2411,8 +2429,8 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
      * @param {...string|string[]} classes The classes.
      */
     toggleClass: function toggleClass(nodes) {
-      for (var _len3 = arguments.length, classes = new Array(_len3 > 1 ? _len3 - 1 : 0), _key4 = 1; _key4 < _len3; _key4++) {
-        classes[_key4 - 1] = arguments[_key4];
+      for (var _len3 = arguments.length, classes = new Array(_len3 > 1 ? _len3 - 1 : 0), _key3 = 1; _key3 < _len3; _key3++) {
+        classes[_key3 - 1] = arguments[_key3];
       }
 
       nodes = this.parseNodes(nodes);
@@ -3702,8 +3720,8 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
      * @returns {array} The filtered nodes.
      */
     withClass: function withClass(nodes) {
-      for (var _len4 = arguments.length, classes = new Array(_len4 > 1 ? _len4 - 1 : 0), _key5 = 1; _key5 < _len4; _key5++) {
-        classes[_key5 - 1] = arguments[_key5];
+      for (var _len4 = arguments.length, classes = new Array(_len4 > 1 ? _len4 - 1 : 0), _key4 = 1; _key4 < _len4; _key4++) {
+        classes[_key4 - 1] = arguments[_key4];
       }
 
       classes = this.constructor._parseClasses(classes);
@@ -4962,8 +4980,8 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
      * @returns {Boolean} TRUE if any of the nodes has any of the classes, otherwise FALSE.
      */
     hasClass: function hasClass(nodes) {
-      for (var _len5 = arguments.length, classes = new Array(_len5 > 1 ? _len5 - 1 : 0), _key6 = 1; _key6 < _len5; _key6++) {
-        classes[_key6 - 1] = arguments[_key6];
+      for (var _len5 = arguments.length, classes = new Array(_len5 > 1 ? _len5 - 1 : 0), _key5 = 1; _key5 < _len5; _key5++) {
+        classes[_key5 - 1] = arguments[_key5];
       }
 
       classes = this.constructor._parseClasses(classes);
@@ -7837,8 +7855,8 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
     addClass: function addClass(node) {
       var _node$classList;
 
-      for (var _len6 = arguments.length, classes = new Array(_len6 > 1 ? _len6 - 1 : 0), _key7 = 1; _key7 < _len6; _key7++) {
-        classes[_key7 - 1] = arguments[_key7];
+      for (var _len6 = arguments.length, classes = new Array(_len6 > 1 ? _len6 - 1 : 0), _key6 = 1; _key6 < _len6; _key6++) {
+        classes[_key6 - 1] = arguments[_key6];
       }
 
       (_node$classList = node.classList).add.apply(_node$classList, classes);
@@ -7871,8 +7889,8 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
     removeClass: function removeClass(node) {
       var _node$classList2;
 
-      for (var _len7 = arguments.length, classes = new Array(_len7 > 1 ? _len7 - 1 : 0), _key8 = 1; _key8 < _len7; _key8++) {
-        classes[_key8 - 1] = arguments[_key8];
+      for (var _len7 = arguments.length, classes = new Array(_len7 > 1 ? _len7 - 1 : 0), _key7 = 1; _key7 < _len7; _key7++) {
+        classes[_key7 - 1] = arguments[_key7];
       }
 
       (_node$classList2 = node.classList).remove.apply(_node$classList2, classes);
@@ -7905,8 +7923,8 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
     toggleClass: function toggleClass(node) {
       var _node$classList3;
 
-      for (var _len8 = arguments.length, classes = new Array(_len8 > 1 ? _len8 - 1 : 0), _key9 = 1; _key9 < _len8; _key9++) {
-        classes[_key9 - 1] = arguments[_key9];
+      for (var _len8 = arguments.length, classes = new Array(_len8 > 1 ? _len8 - 1 : 0), _key8 = 1; _key8 < _len8; _key8++) {
+        classes[_key8 - 1] = arguments[_key8];
       }
 
       (_node$classList3 = node.classList).toggle.apply(_node$classList3, classes);

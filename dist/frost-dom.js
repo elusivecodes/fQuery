@@ -57,13 +57,18 @@
             );
 
             if (!this._settings.url) {
-                this._settings.url = window.location;
+                this._settings.url = window.location.href;
             }
 
             if (!this._settings.cache) {
-                const url = new URL(this._settings.url);
+                const baseHref = (window.location.origin + window.location.pathname).replace(/\/$/, '');
+                const url = new URL(this._settings.url, baseHref);
                 url.searchParams.append('_', Date.now());
                 this._settings.url = url.toString();
+
+                if (this._settings.url.substring(0, baseHref.length) === baseHref) {
+                    this._settings.url = this._settings.url.substring(baseHref.length);
+                }
             }
 
             if (!('Content-Type' in this._settings.headers) && this._settings.contentType) {
@@ -155,6 +160,8 @@
             this.data = {
                 headers: {}
             };
+            this.status = 200;
+            this.upload = {};
         }
 
         open(method, url, async) {
@@ -170,12 +177,14 @@
                 this.data.responseType = this.responseType;
             }
 
-            if (this.forceError) {
-                if (this.onerror) {
-                    const errorEvent = new Event('error');
-                    this.onerror(errorEvent);
-                }
-                return;
+            if (this.upload && this.upload.onprogress) {
+                setTimeout(_ => {
+                    const progressEvent = new Event('progress');
+                    progressEvent.loaded = 5000;
+                    progressEvent.total = 10000;
+
+                    this.upload.onprogress(progressEvent);
+                }, 10);
             }
 
             if (this.onprogress) {
@@ -185,18 +194,26 @@
                     progressEvent.total = 1000;
 
                     this.onprogress(progressEvent);
-                }, 5);
-            }
-
-            this.data.status = 200;
-            this.response = 'Test';
-
-            if (this.onload) {
-                setTimeout(_ => {
-                    const loadEvent = new Event('load');
-                    this.onload(loadEvent);
                 }, 10);
             }
+
+            setTimeout(_ => {
+                if (this.forceError) {
+                    if (this.onerror) {
+                        const errorEvent = new Event('error');
+                        this.onerror(errorEvent);
+                    }
+                    return;
+                }
+
+                this.data.status = this.status;
+                this.response = 'Test';
+
+                if (this.onload) {
+                    const loadEvent = new Event('load');
+                    this.onload(loadEvent);
+                }
+            }, 20);
         }
 
         setRequestHeader(header, value) {
@@ -371,7 +388,7 @@
 
             if (Core.isObject(value)) {
                 const values = [];
-                for (const key in value) {
+                for (const subKey in value) {
                     values.push(
                         this._parseParam(
                             `${key}[${subKey}]`,

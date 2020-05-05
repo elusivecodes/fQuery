@@ -106,12 +106,11 @@ describe('DOM Cookie', function() {
                 return myDoc.cookie;
             });
 
-            assert.equal(
-                cookie.substring(0, 18),
-                'test=Test;expires='
-            );
+            const match = cookie.match(/test=Test;expires=(.*)/);
 
-            const dateString = cookie.substring(18);
+            assert.ok(match);
+
+            const dateString = match[1];
             const timestamp = new Date(dateString).getTime();
 
             const now = new Date().getTime();

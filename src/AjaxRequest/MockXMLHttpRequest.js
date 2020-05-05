@@ -4,6 +4,8 @@ class MockXMLHttpRequest {
         this.data = {
             headers: {}
         };
+        this.status = 200;
+        this.upload = {};
     }
 
     open(method, url, async) {
@@ -19,12 +21,14 @@ class MockXMLHttpRequest {
             this.data.responseType = this.responseType;
         }
 
-        if (this.forceError) {
-            if (this.onerror) {
-                const errorEvent = new Event('error');
-                this.onerror(errorEvent);
-            }
-            return;
+        if (this.upload && this.upload.onprogress) {
+            setTimeout(_ => {
+                const progressEvent = new Event('progress');
+                progressEvent.loaded = 5000;
+                progressEvent.total = 10000;
+
+                this.upload.onprogress(progressEvent);
+            }, 10);
         }
 
         if (this.onprogress) {
@@ -34,18 +38,26 @@ class MockXMLHttpRequest {
                 progressEvent.total = 1000;
 
                 this.onprogress(progressEvent);
-            }, 5);
-        }
-
-        this.data.status = 200;
-        this.response = 'Test';
-
-        if (this.onload) {
-            setTimeout(_ => {
-                const loadEvent = new Event('load');
-                this.onload(loadEvent);
             }, 10);
         }
+
+        setTimeout(_ => {
+            if (this.forceError) {
+                if (this.onerror) {
+                    const errorEvent = new Event('error');
+                    this.onerror(errorEvent);
+                }
+                return;
+            }
+
+            this.data.status = this.status;
+            this.response = 'Test';
+
+            if (this.onload) {
+                const loadEvent = new Event('load');
+                this.onload(loadEvent);
+            }
+        }, 20);
     }
 
     setRequestHeader(header, value) {
