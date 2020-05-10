@@ -216,6 +216,13 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
     }
 
     _createClass(MockXMLHttpRequest, [{
+      key: "abort",
+      value: function abort() {
+        clearTimeout(this._uploadTimer);
+        clearTimeout(this._progressTimer);
+        clearTimeout(this._completeTimer);
+      }
+    }, {
       key: "open",
       value: function open(method, url, async) {
         this.data.method = method;
@@ -234,7 +241,8 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
         }
 
         if (this.upload && this.upload.onprogress) {
-          setTimeout(function (_) {
+          this._uploadTimer = setTimeout(function (_) {
+            _this2._uploadTimer = null;
             var progressEvent = new Event('progress');
             progressEvent.loaded = 5000;
             progressEvent.total = 10000;
@@ -244,7 +252,8 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
         }
 
         if (this.onprogress) {
-          setTimeout(function (_) {
+          this._progressTimer = setTimeout(function (_) {
+            _this2._progressTimer = null;
             var progressEvent = new Event('progress');
             progressEvent.loaded = 500;
             progressEvent.total = 1000;
@@ -253,7 +262,9 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
           }, 10);
         }
 
-        setTimeout(function (_) {
+        this._completeTimer = setTimeout(function (_) {
+          _this2._completeTimer = null;
+
           if (_this2.forceError) {
             if (_this2.onerror) {
               var errorEvent = new Event('error');

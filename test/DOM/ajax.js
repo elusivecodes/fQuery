@@ -450,6 +450,36 @@ describe('DOM AJAX', function() {
             );
         });
 
+        it('can be cancelled', async function() {
+            assert.deepEqual(
+                await exec(async _ => {
+                    try {
+                        const ajax = dom.ajax();
+                        ajax.cancel();
+                        await ajax;
+                        return false;
+                    } catch (e) {
+                        e.xhr = e.xhr.data;
+                        return e;
+                    }
+                }),
+                {
+                    reason: 'Request was cancelled',
+                    status: 200,
+                    xhr: {
+                        async: true,
+                        body: null,
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded',
+                            'X-Requested-With': 'XMLHttpRequest'
+                        },
+                        method: 'GET',
+                        url: 'http://localhost:3001/'
+                    }
+                }
+            );
+        });
+
         it('throws on XHR error', async function() {
             assert.deepEqual(
                 await exec(async _ => {

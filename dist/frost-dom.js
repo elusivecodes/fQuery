@@ -164,6 +164,12 @@
             this.upload = {};
         }
 
+        abort() {
+            clearTimeout(this._uploadTimer);
+            clearTimeout(this._progressTimer);
+            clearTimeout(this._completeTimer);
+        }
+
         open(method, url, async) {
             this.data.method = method;
             this.data.url = url;
@@ -178,7 +184,9 @@
             }
 
             if (this.upload && this.upload.onprogress) {
-                setTimeout(_ => {
+                this._uploadTimer = setTimeout(_ => {
+                    this._uploadTimer = null;
+
                     const progressEvent = new Event('progress');
                     progressEvent.loaded = 5000;
                     progressEvent.total = 10000;
@@ -188,7 +196,9 @@
             }
 
             if (this.onprogress) {
-                setTimeout(_ => {
+                this._progressTimer = setTimeout(_ => {
+                    this._progressTimer = null;
+
                     const progressEvent = new Event('progress');
                     progressEvent.loaded = 500;
                     progressEvent.total = 1000;
@@ -197,7 +207,9 @@
                 }, 10);
             }
 
-            setTimeout(_ => {
+            this._completeTimer = setTimeout(_ => {
+                this._completeTimer = null;
+
                 if (this.forceError) {
                     if (this.onerror) {
                         const errorEvent = new Event('error');
