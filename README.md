@@ -2,7 +2,7 @@
 
 **FrostDOM** is a free, open-source DOM manipulation library for *JavaScript*.
 
-It is a lightweight (~11kb gzipped) and modern library, utilizing ES6 syntax and features including Promises, with a focus on functional style programming.
+It is a lightweight (~15kb gzipped) and modern library, utilizing ES6 syntax and features including Promises, with a focus on functional style programming.
 
 For an OOP implementation, also check out my [fQuery](https://github.com/elusivecodes/fQuery) library.
 
@@ -212,7 +212,7 @@ Slide each node into place to a direction.
 
 - `nodes` is a query selector string, a *HTMLElement*, *NodeList*, *HTMLCollection*, [*QuerySet*](https://github.com/elusivecodes/fQuery) or an array of nodes.
 - `options` is an object containing properties to define how the animation should be handled.
-    - `direction` is a string or function that returns either "*top*", "*right*", "*bottom*" or "*left*" indicating the direction to drop from, and will default to "*top*".
+    - `direction` is a string or function that returns either "*top*", "*right*", "*bottom*" or "*left*" indicating the direction to slide from, and will default to "*top*".
     - `duration` is the number of milliseconds that the animation should last, and will default to *1000*.
     - `type` is a string of either "*ease-in*", "*ease-out*", "*ease-in-out*" or "*linear*" indicating the type of animation to run, and will default to "*ease-in-out*".
     - `infinite` is a boolean indicating whether the animation should continue forever, and will default to *false*.
@@ -230,7 +230,7 @@ Slide each node out of place from a direction.
 
 - `nodes` is a query selector string, a *HTMLElement*, *NodeList*, *HTMLCollection*, [*QuerySet*](https://github.com/elusivecodes/fQuery) or an array of nodes.
 - `options` is an object containing properties to define how the animation should be handled.
-    - `direction` is a string or function that returns either "*top*", "*right*", "*bottom*" or "*left*" indicating the direction to drop from, and will default to "*top*".
+    - `direction` is a string or function that returns either "*top*", "*right*", "*bottom*" or "*left*" indicating the direction to slide from, and will default to "*top*".
     - `duration` is the number of milliseconds that the animation should last, and will default to *1000*.
     - `type` is a string of either "*ease-in*", "*ease-out*", "*ease-in-out*" or "*linear*" indicating the type of animation to run, and will default to "*ease-in-out*".
     - `infinite` is a boolean indicating whether the animation should continue forever, and will default to *false*.
@@ -248,7 +248,7 @@ Squeeze each node into place to a direction.
 
 - `nodes` is a query selector string, a *HTMLElement*, *NodeList*, *HTMLCollection*, [*QuerySet*](https://github.com/elusivecodes/fQuery) or an array of nodes.
 - `options` is an object containing properties to define how the animation should be handled.
-    - `direction` is a string or function that returns either "*top*", "*right*", "*bottom*" or "*left*" indicating the direction to drop from, and will default to "*top*".
+    - `direction` is a string or function that returns either "*top*", "*right*", "*bottom*" or "*left*" indicating the direction to squeeze from, and will default to "*top*".
     - `duration` is the number of milliseconds that the animation should last, and will default to *1000*.
     - `type` is a string of either "*ease-in*", "*ease-out*", "*ease-in-out*" or "*linear*" indicating the type of animation to run, and will default to "*ease-in-out*".
     - `infinite` is a boolean indicating whether the animation should continue forever, and will default to *false*.
@@ -266,7 +266,7 @@ Squeeze each node out of place from a direction.
 
 - `nodes` is a query selector string, a *HTMLElement*, *NodeList*, *HTMLCollection*, [*QuerySet*](https://github.com/elusivecodes/fQuery) or an array of nodes.
 - `options` is an object containing properties to define how the animation should be handled.
-    - `direction` is a string or function that returns either "*top*", "*right*", "*bottom*" or "*left*" indicating the direction to drop from, and will default to "*top*".
+    - `direction` is a string or function that returns either "*top*", "*right*", "*bottom*" or "*left*" indicating the direction to squeeze from, and will default to "*top*".
     - `duration` is the number of milliseconds that the animation should last, and will default to *1000*.
     - `type` is a string of either "*ease-in*", "*ease-out*", "*ease-in-out*" or "*linear*" indicating the type of animation to run, and will default to "*ease-in-out*".
     - `infinite` is a boolean indicating whether the animation should continue forever, and will default to *false*.
@@ -748,7 +748,7 @@ Get the computed height of the first node (and optionally padding, border or mar
 - `innerNumber` is a number indicating whether to include padding, border or margin sizes in the calculation. Allowed values are *0* (no padding), *1* (padding), *2* (padding and border) and *3* (padding, border and margin), and will default to *1*.
 
 ```javascript
-const height = dom.height(nodes, padding, border, margin);
+const height = dom.height(nodes, innerNumber);
 ```
 
 If the first node passed to this method is a *Window*, the second argument will instead determine whether to use the outer height, and will default to *0*.
@@ -766,7 +766,7 @@ Get the computed width of the first node (and optionally padding, border or marg
 - `innerNumber` is a number indicating whether to include padding, border or margin sizes in the calculation. Allowed values are *0* (no padding), *1* (padding), *2* (padding and border) and *3* (padding, border and margin), and will default to *1*.
 
 ```javascript
-const width = dom.width(nodes, padding, border, margin);
+const width = dom.width(nodes, innerNumber);
 ```
 
 If the first node passed to this method is a *Window*, the second argument will instead determine whether to use the outer width, and will default to *0*.
