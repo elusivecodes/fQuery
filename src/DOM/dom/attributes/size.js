@@ -30,13 +30,6 @@ Object.assign(DOM.prototype, {
             innerOuter = 1;
         }
 
-        if (Core.isDocument(node)) {
-            return this.constructor._height(
-                DOMNode.documentElement(node),
-                innerOuter
-            );
-        }
-
         return this.constructor._height(node, innerOuter);
     },
 
@@ -64,13 +57,6 @@ Object.assign(DOM.prototype, {
 
         if (Core.isUndefined(innerOuter)) {
             innerOuter = 1;
-        }
-
-        if (Core.isDocument(node)) {
-            return this.constructor._width(
-                DOMNode.documentElement(node),
-                innerOuter
-            );
         }
 
         return this.constructor._width(node, innerOuter);

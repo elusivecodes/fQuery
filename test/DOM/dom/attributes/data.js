@@ -155,6 +155,121 @@ describe('DOM Attributes (Data)', function() {
             );
         });
 
+        it('works with DocumentFragment nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    const fragment = document.createDocumentFragment();
+                    dom.setData(
+                        fragment,
+                        'test',
+                        'Test 1'
+                    );
+                    dom.cloneData(
+                        fragment,
+                        '[data-toggle="noData"]'
+                    );
+                    return [
+                        dom.getData('#test3'),
+                        dom.getData('#test4')
+                    ];
+                }),
+                [
+                    {
+                        test: 'Test 1'
+                    },
+                    {
+                        test: 'Test 1'
+                    }
+                ]
+            );
+        });
+
+        it('works with ShadowRoot nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    const div = document.createElement('div');
+                    const shadow = div.attachShadow({ mode: 'open' });
+                    dom.setData(
+                        shadow,
+                        'test',
+                        'Test 1'
+                    );
+                    dom.cloneData(
+                        shadow,
+                        '[data-toggle="noData"]'
+                    );
+                    return [
+                        dom.getData('#test3'),
+                        dom.getData('#test4')
+                    ];
+                }),
+                [
+                    {
+                        test: 'Test 1'
+                    },
+                    {
+                        test: 'Test 1'
+                    }
+                ]
+            );
+        });
+
+        it('works with Document nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    dom.setData(
+                        document,
+                        'test',
+                        'Test 1'
+                    );
+                    dom.cloneData(
+                        document,
+                        '[data-toggle="noData"]'
+                    );
+                    return [
+                        dom.getData('#test3'),
+                        dom.getData('#test4')
+                    ];
+                }),
+                [
+                    {
+                        test: 'Test 1'
+                    },
+                    {
+                        test: 'Test 1'
+                    }
+                ]
+            );
+        });
+
+        it('works with Window nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    dom.setData(
+                        window,
+                        'test',
+                        'Test 1'
+                    );
+                    dom.cloneData(
+                        window,
+                        '[data-toggle="noData"]'
+                    );
+                    return [
+                        dom.getData('#test3'),
+                        dom.getData('#test4')
+                    ];
+                }),
+                [
+                    {
+                        test: 'Test 1'
+                    },
+                    {
+                        test: 'Test 1'
+                    }
+                ]
+            );
+        });
+
         it('works with HTMLElement other nodes', async function() {
             assert.deepEqual(
                 await exec(_ => {
@@ -246,6 +361,73 @@ describe('DOM Attributes (Data)', function() {
                         test2: 'Test 2'
                     }
                 ]
+            );
+        });
+
+        it('works with DocumentFragment other nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    const fragment = document.createDocumentFragment();
+                    dom.cloneData(
+                        '[data-toggle="data"]',
+                        fragment
+                    );
+                    return dom.getData(fragment);
+                }),
+                {
+                    test1: 'Test 1',
+                    test2: 'Test 2'
+                }
+            );
+        });
+
+        it('works with ShadowRoot other nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    const div = document.createElement('div');
+                    const shadow = div.attachShadow({ mode: 'open' });
+                    dom.cloneData(
+                        '[data-toggle="data"]',
+                        shadow
+                    );
+                    return dom.getData(shadow);
+                }),
+                {
+                    test1: 'Test 1',
+                    test2: 'Test 2'
+                }
+            );
+        });
+
+        it('works with Document other nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    dom.cloneData(
+                        '[data-toggle="data"]',
+                        document
+                    );
+                    return dom.getData(document);
+                }),
+                {
+                    test1: 'Test 1',
+                    test2: 'Test 2'
+                }
+            );
+        });
+
+        it('works with Window other nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    dom.cloneData(
+                        '[data-toggle="data"]',
+                        window
+                    );
+                    return dom.getData(window);
+                }),
+                {
+                    test1: 'Test 1',
+                    test2: 'Test 2'
+                }
             );
         });
 
@@ -363,6 +545,77 @@ describe('DOM Attributes (Data)', function() {
                     );
                 }),
                 'Test 1'
+            );
+        });
+
+        it('works with DocumentFragment nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    const fragment = document.createDocumentFragment();
+                    dom.setData(
+                        fragment,
+                        'test',
+                        'Test 2'
+                    );
+                    return dom.getData(
+                        fragment,
+                        'test'
+                    );
+                }),
+                'Test 2'
+            );
+        });
+
+        it('works with ShadowRoot nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    const div = document.createElement('div');
+                    const shadow = div.attachShadow({ mode: 'open' });
+                    dom.setData(
+                        shadow,
+                        'test',
+                        'Test 2'
+                    );
+                    return dom.getData(
+                        shadow,
+                        'test'
+                    );
+                }),
+                'Test 2'
+            );
+        });
+
+        it('works with Document nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    dom.setData(
+                        document,
+                        'test',
+                        'Test 2'
+                    );
+                    return dom.getData(
+                        document,
+                        'test'
+                    );
+                }),
+                'Test 2'
+            );
+        });
+
+        it('works with Window nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    dom.setData(
+                        window,
+                        'test',
+                        'Test 2'
+                    );
+                    return dom.getData(
+                        window,
+                        'test'
+                    );
+                }),
+                'Test 2'
             );
         });
 
@@ -510,6 +763,97 @@ describe('DOM Attributes (Data)', function() {
                         testB: 'Test 2'
                     }
                 ]
+            );
+        });
+
+        it('works with DocumentFragment nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    const fragment = document.createDocumentFragment();
+                    dom.setData(
+                        fragment,
+                        {
+                            testA: 'Test 1',
+                            testB: 'Test 2'
+                        }
+                    );
+                    dom.removeData(
+                        fragment,
+                        'testA'
+                    );
+                    return dom.getData(fragment);
+                }),
+                {
+                    testB: 'Test 2'
+                }
+            );
+        });
+
+        it('works with ShadowRoot nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    const div = document.createElement('div');
+                    const shadow = div.attachShadow({ mode: 'open' });
+                    dom.setData(
+                        shadow,
+                        {
+                            testA: 'Test 1',
+                            testB: 'Test 2'
+                        }
+                    );
+                    dom.removeData(
+                        shadow,
+                        'testA'
+                    );
+                    return dom.getData(shadow);
+                }),
+                {
+                    testB: 'Test 2'
+                }
+            );
+        });
+
+        it('works with Document nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    dom.setData(
+                        document,
+                        {
+                            testA: 'Test 1',
+                            testB: 'Test 2'
+                        }
+                    );
+                    dom.removeData(
+                        document,
+                        'testA'
+                    );
+                    return dom.getData(document);
+                }),
+                {
+                    testB: 'Test 2'
+                }
+            );
+        });
+
+        it('works with Window nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    dom.setData(
+                        window,
+                        {
+                            testA: 'Test 1',
+                            testB: 'Test 2'
+                        }
+                    );
+                    dom.removeData(
+                        window,
+                        'testA'
+                    );
+                    return dom.getData(window);
+                }),
+                {
+                    testB: 'Test 2'
+                }
             );
         });
 
@@ -665,6 +1009,73 @@ describe('DOM Attributes (Data)', function() {
                         test: 'Test 1'
                     }
                 ]
+            );
+        });
+
+        it('works with DocumentFragment nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    const fragment = document.createDocumentFragment();
+                    dom.setData(
+                        fragment,
+                        'test',
+                        'Test 1'
+                    );
+                    return dom.getData(fragment);
+                }),
+                {
+                    test: 'Test 1'
+                }
+            );
+        });
+
+        it('works with ShadowRoot nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    const div = document.createElement('div');
+                    const shadow = div.attachShadow({ mode: 'open' });
+                    dom.setData(
+                        shadow,
+                        'test',
+                        'Test 1'
+                    );
+                    return dom.getData(shadow);
+                }),
+                {
+                    test: 'Test 1'
+                }
+            );
+        });
+
+        it('works with Document nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    dom.setData(
+                        document,
+                        'test',
+                        'Test 1'
+                    );
+                    return dom.getData(document);
+                }),
+                {
+                    test: 'Test 1'
+                }
+            );
+        });
+
+        it('works with Window nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    dom.setData(
+                        window,
+                        'test',
+                        'Test 1'
+                    );
+                    return dom.getData(window);
+                }),
+                {
+                    test: 'Test 1'
+                }
             );
         });
 

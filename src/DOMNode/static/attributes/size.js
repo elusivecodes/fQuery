@@ -14,6 +14,15 @@ Object.assign(DOMNode, {
     },
 
     /**
+     * Get the height of a Document.
+     * @param {Window} node The input node.
+     * @returns {number} The height.
+     */
+    heightDocument(node) {
+        return node.scrollHeight;
+    },
+
+    /**
      * Get the height of a Window.
      * @param {Window} node The input node.
      * @param {Boolean} [outer] Whether to use the outer height.
@@ -32,6 +41,15 @@ Object.assign(DOMNode, {
      */
     width(node) {
         return node.clientWidth;
+    },
+
+    /**
+     * Get the width of a Document.
+     * @param {Window} node The input node.
+     * @returns {number} The width.
+     */
+    widthDocument(node) {
+        return node.scrollWidth;
     },
 
     /**

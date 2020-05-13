@@ -38,19 +38,6 @@ describe('DOM Attributes (Scroll)', function() {
             );
         });
 
-        it('works with Window nodes', async function() {
-            assert.equal(
-                await exec(_ => {
-                    document.body.innerHTML = '<div style="block; width: 1000px; height: 1000px;"></div>';
-                    window.scrollTo(100, 0);
-                    return dom.getScrollX(
-                        window
-                    );
-                }),
-                100
-            );
-        });
-
         it('works with HTMLElement nodes', async function() {
             assert.equal(
                 await exec(_ => {
@@ -92,6 +79,32 @@ describe('DOM Attributes (Scroll)', function() {
                             document.getElementById('test1'),
                             document.getElementById('test2')
                         ]
+                    );
+                }),
+                100
+            );
+        });
+
+        it('works with Document nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    document.body.innerHTML = '<div style="block; width: 1000px; height: 1000px;"></div>';
+                    document.scrollingElement.scrollLeft = 100;
+                    return dom.getScrollX(
+                        document
+                    );
+                }),
+                100
+            );
+        });
+
+        it('works with Window nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    document.body.innerHTML = '<div style="block; width: 1000px; height: 1000px;"></div>';
+                    window.scrollTo(100, 0);
+                    return dom.getScrollX(
+                        window
                     );
                 }),
                 100
@@ -135,19 +148,6 @@ describe('DOM Attributes (Scroll)', function() {
             );
         });
 
-        it('works with Window nodes', async function() {
-            assert.equal(
-                await exec(_ => {
-                    document.body.innerHTML = '<div style="block; width: 1000px; height: 1000px;"></div>';
-                    window.scrollTo(0, 100);
-                    return dom.getScrollY(
-                        window
-                    );
-                }),
-                100
-            );
-        });
-
         it('works with HTMLElement nodes', async function() {
             assert.equal(
                 await exec(_ => {
@@ -189,6 +189,32 @@ describe('DOM Attributes (Scroll)', function() {
                             document.getElementById('test1'),
                             document.getElementById('test2')
                         ]
+                    );
+                }),
+                100
+            );
+        });
+
+        it('works with Document nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    document.body.innerHTML = '<div style="block; width: 1000px; height: 1000px;"></div>';
+                    document.scrollingElement.scrollTop = 100;
+                    return dom.getScrollY(
+                        document
+                    );
+                }),
+                100
+            );
+        });
+
+        it('works with Window nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    document.body.innerHTML = '<div style="block; width: 1000px; height: 1000px;"></div>';
+                    window.scrollTo(0, 100);
+                    return dom.getScrollY(
+                        window
                     );
                 }),
                 100
@@ -236,24 +262,6 @@ describe('DOM Attributes (Scroll)', function() {
                     [100, 50],
                     [100, 50]
                 ]
-            );
-        });
-
-        it('works with Window nodes', async function() {
-            assert.deepEqual(
-                await exec(_ => {
-                    document.body.innerHTML = '<div style="display: block; width: 1000px; height: 1000px;"></div>';
-                    dom.setScroll(
-                        window,
-                        100,
-                        50
-                    );
-                    return [
-                        window.scrollX,
-                        window.scrollY
-                    ];
-                }),
-                [100, 50]
             );
         });
 
@@ -362,6 +370,42 @@ describe('DOM Attributes (Scroll)', function() {
             );
         });
 
+        it('works with Document nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    document.body.innerHTML = '<div style="display: block; width: 1000px; height: 1000px;"></div>';
+                    dom.setScroll(
+                        document,
+                        100,
+                        50
+                    );
+                    return [
+                        document.scrollingElement.scrollLeft,
+                        document.scrollingElement.scrollTop
+                    ];
+                }),
+                [100, 50]
+            );
+        });
+
+        it('works with Window nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    document.body.innerHTML = '<div style="display: block; width: 1000px; height: 1000px;"></div>';
+                    dom.setScroll(
+                        window,
+                        100,
+                        50
+                    );
+                    return [
+                        window.scrollX,
+                        window.scrollY
+                    ];
+                }),
+                [100, 50]
+            );
+        });
+
     });
 
     describe('#setScrollX', function() {
@@ -394,20 +438,6 @@ describe('DOM Attributes (Scroll)', function() {
                     100,
                     100
                 ]
-            );
-        });
-
-        it('works with Window nodes', async function() {
-            assert.equal(
-                await exec(_ => {
-                    document.body.innerHTML = '<div style="display: block; width: 1000px; height: 1000px;"></div>';
-                    dom.setScrollX(
-                        window,
-                        100
-                    );
-                    return window.scrollX;
-                }),
-                100
             );
         });
 
@@ -487,6 +517,34 @@ describe('DOM Attributes (Scroll)', function() {
             );
         });
 
+        it('works with Document nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    document.body.innerHTML = '<div style="display: block; width: 1000px; height: 1000px;"></div>';
+                    dom.setScrollX(
+                        document,
+                        100
+                    );
+                    return document.scrollingElement.scrollLeft;
+                }),
+                100
+            );
+        });
+
+        it('works with Window nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    document.body.innerHTML = '<div style="display: block; width: 1000px; height: 1000px;"></div>';
+                    dom.setScrollX(
+                        window,
+                        100
+                    );
+                    return window.scrollX;
+                }),
+                100
+            );
+        });
+
     });
 
     describe('#setScrollY', function() {
@@ -519,20 +577,6 @@ describe('DOM Attributes (Scroll)', function() {
                     100,
                     100
                 ]
-            );
-        });
-
-        it('works with Window nodes', async function() {
-            assert.equal(
-                await exec(_ => {
-                    document.body.innerHTML = '<div style="display: block; width: 1000px; height: 1000px;"></div>';
-                    dom.setScrollY(
-                        window,
-                        100
-                    );
-                    return window.scrollY;
-                }),
-                100
             );
         });
 
@@ -609,6 +653,34 @@ describe('DOM Attributes (Scroll)', function() {
                     100,
                     100
                 ]
+            );
+        });
+
+        it('works with Document nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    document.body.innerHTML = '<div style="display: block; width: 1000px; height: 1000px;"></div>';
+                    dom.setScrollY(
+                        document,
+                        100
+                    );
+                    return document.scrollingElement.scrollTop;
+                }),
+                100
+            );
+        });
+
+        it('works with Window nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    document.body.innerHTML = '<div style="display: block; width: 1000px; height: 1000px;"></div>';
+                    dom.setScrollY(
+                        window,
+                        100
+                    );
+                    return window.scrollY;
+                }),
+                100
             );
         });
 

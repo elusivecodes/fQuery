@@ -14,7 +14,13 @@ Object.assign(DOM, {
         return this._forceShow(
             node,
             node => {
-                let result = DOMNode.height(node);
+                let result;
+                if (Core.isDocument(node)) {
+                    node = DOMNode.documentElement(node);
+                    result = DOMNode.heightDocument(node);
+                } else {
+                    result = DOMNode.height(node);
+                }
 
                 if (innerOuter === this.INNER) {
                     result -= parseInt(this._css(node, 'padding-top'))
@@ -46,7 +52,13 @@ Object.assign(DOM, {
         return this._forceShow(
             node,
             node => {
-                let result = DOMNode.width(node);
+                let result;
+                if (Core.isDocument(node)) {
+                    node = DOMNode.documentElement(node);
+                    result = DOMNode.widthDocument(node);
+                } else {
+                    result = DOMNode.width(node);
+                }
 
                 if (innerOuter === this.INNER) {
                     result -= parseInt(this._css(node, 'padding-left'))

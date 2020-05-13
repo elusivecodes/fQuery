@@ -2064,13 +2064,6 @@
                 innerOuter = 1;
             }
 
-            if (Core.isDocument(node)) {
-                return this.constructor._height(
-                    DOMNode.documentElement(node),
-                    innerOuter
-                );
-            }
-
             return this.constructor._height(node, innerOuter);
         },
 
@@ -2098,13 +2091,6 @@
 
             if (Core.isUndefined(innerOuter)) {
                 innerOuter = 1;
-            }
-
-            if (Core.isDocument(node)) {
-                return this.constructor._width(
-                    DOMNode.documentElement(node),
-                    innerOuter
-                );
             }
 
             return this.constructor._width(node, innerOuter);
@@ -5308,7 +5294,13 @@
             return this._forceShow(
                 node,
                 node => {
-                    let result = DOMNode.height(node);
+                    let result;
+                    if (Core.isDocument(node)) {
+                        node = DOMNode.documentElement(node);
+                        result = DOMNode.heightDocument(node);
+                    } else {
+                        result = DOMNode.height(node);
+                    }
 
                     if (innerOuter === this.INNER) {
                         result -= parseInt(this._css(node, 'padding-top'))
@@ -5340,7 +5332,13 @@
             return this._forceShow(
                 node,
                 node => {
-                    let result = DOMNode.width(node);
+                    let result;
+                    if (Core.isDocument(node)) {
+                        node = DOMNode.documentElement(node);
+                        result = DOMNode.widthDocument(node);
+                    } else {
+                        result = DOMNode.width(node);
+                    }
 
                     if (innerOuter === this.INNER) {
                         result -= parseInt(this._css(node, 'padding-left'))
@@ -7026,6 +7024,15 @@
         },
 
         /**
+         * Get the height of a Document.
+         * @param {Window} node The input node.
+         * @returns {number} The height.
+         */
+        heightDocument(node) {
+            return node.scrollHeight;
+        },
+
+        /**
          * Get the height of a Window.
          * @param {Window} node The input node.
          * @param {Boolean} [outer] Whether to use the outer height.
@@ -7044,6 +7051,15 @@
          */
         width(node) {
             return node.clientWidth;
+        },
+
+        /**
+         * Get the width of a Document.
+         * @param {Window} node The input node.
+         * @returns {number} The width.
+         */
+        widthDocument(node) {
+            return node.scrollWidth;
         },
 
         /**

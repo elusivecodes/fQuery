@@ -64,6 +64,7 @@ before(async function() {
 beforeEach(async function() {
     await page.evaluate(_ => {
         document.body.innerHTML = '';
+        DOM._data = new WeakMap();
     });
 });
 

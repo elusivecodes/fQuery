@@ -71,17 +71,6 @@ describe('DOM Attributes (Size)', function() {
             );
         });
 
-        it('works with Window nodes', async function() {
-            assert.equal(
-                await exec(_ => {
-                    return dom.height(
-                        window
-                    );
-                }),
-                600
-            );
-        });
-
         it('works with HTMLElement nodes', async function() {
             assert.equal(
                 await exec(_ => {
@@ -126,6 +115,28 @@ describe('DOM Attributes (Size)', function() {
                     );
                 }),
                 1050
+            );
+        });
+
+        it('works with Document nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    return dom.height(
+                        document
+                    );
+                }),
+                1152
+            );
+        });
+
+        it('works with Window nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    return dom.height(
+                        window
+                    );
+                }),
+                600
             );
         });
 
@@ -199,17 +210,6 @@ describe('DOM Attributes (Size)', function() {
             );
         });
 
-        it('works with Window nodes', async function() {
-            assert.equal(
-                await exec(_ => {
-                    return dom.width(
-                        window
-                    );
-                }),
-                800
-            );
-        });
-
         it('works with HTMLElement nodes', async function() {
             assert.equal(
                 await exec(_ => {
@@ -254,6 +254,28 @@ describe('DOM Attributes (Size)', function() {
                     );
                 }),
                 1250
+            );
+        });
+
+        it('works with Document nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    return dom.width(
+                        document
+                    );
+                }),
+                1310
+            );
+        });
+
+        it('works with Window nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    return dom.width(
+                        window
+                    );
+                }),
+                800
             );
         });
 

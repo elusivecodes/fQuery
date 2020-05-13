@@ -2229,10 +2229,6 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
         innerOuter = 1;
       }
 
-      if (Core.isDocument(node)) {
-        return this.constructor._height(DOMNode.documentElement(node), innerOuter);
-      }
-
       return this.constructor._height(node, innerOuter);
     },
 
@@ -2258,10 +2254,6 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
 
       if (Core.isUndefined(innerOuter)) {
         innerOuter = 1;
-      }
-
-      if (Core.isDocument(node)) {
-        return this.constructor._width(DOMNode.documentElement(node), innerOuter);
       }
 
       return this.constructor._width(node, innerOuter);
@@ -6052,7 +6044,14 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
 
       var innerOuter = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 1;
       return this._forceShow(node, function (node) {
-        var result = DOMNode.height(node);
+        var result;
+
+        if (Core.isDocument(node)) {
+          node = DOMNode.documentElement(node);
+          result = DOMNode.heightDocument(node);
+        } else {
+          result = DOMNode.height(node);
+        }
 
         if (innerOuter === _this35.INNER) {
           result -= parseInt(_this35._css(node, 'padding-top')) + parseInt(_this35._css(node, 'padding-bottom'));
@@ -6081,7 +6080,14 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
 
       var innerOuter = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 1;
       return this._forceShow(node, function (node) {
-        var result = DOMNode.width(node);
+        var result;
+
+        if (Core.isDocument(node)) {
+          node = DOMNode.documentElement(node);
+          result = DOMNode.widthDocument(node);
+        } else {
+          result = DOMNode.width(node);
+        }
 
         if (innerOuter === _this36.INNER) {
           result -= parseInt(_this36._css(node, 'padding-left')) + parseInt(_this36._css(node, 'padding-right'));
@@ -7825,6 +7831,15 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
     },
 
     /**
+     * Get the height of a Document.
+     * @param {Window} node The input node.
+     * @returns {number} The height.
+     */
+    heightDocument: function heightDocument(node) {
+      return node.scrollHeight;
+    },
+
+    /**
      * Get the height of a Window.
      * @param {Window} node The input node.
      * @param {Boolean} [outer] Whether to use the outer height.
@@ -7841,6 +7856,15 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
      */
     width: function width(node) {
       return node.clientWidth;
+    },
+
+    /**
+     * Get the width of a Document.
+     * @param {Window} node The input node.
+     * @returns {number} The width.
+     */
+    widthDocument: function widthDocument(node) {
+      return node.scrollWidth;
     },
 
     /**
