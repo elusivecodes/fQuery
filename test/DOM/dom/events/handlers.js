@@ -126,6 +126,62 @@ describe('DOM Event Handlers', function() {
             );
         });
 
+        it('works with ShadowRoot nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    const div = document.createElement('div');
+                    const shadow = div.attachShadow({ mode: 'open' });
+                    const event = new Event('click');
+                    let result = 0;
+                    dom.addEvent(
+                        shadow,
+                        'click',
+                        _ => { result++; }
+                    );
+                    shadow.dispatchEvent(event);
+                    shadow.dispatchEvent(event);
+                    return result;
+                }),
+                2
+            );
+        });
+
+        it('works with Document nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    const event = new Event('click');
+                    let result = 0;
+                    dom.addEvent(
+                        document,
+                        'click',
+                        _ => { result++; }
+                    );
+                    document.dispatchEvent(event);
+                    document.dispatchEvent(event);
+                    return result;
+                }),
+                2
+            );
+        });
+
+        it('works with Window nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    const event = new Event('click');
+                    let result = 0;
+                    dom.addEvent(
+                        window,
+                        'click',
+                        _ => { result++; }
+                    );
+                    window.dispatchEvent(event);
+                    window.dispatchEvent(event);
+                    return result;
+                }),
+                2
+            );
+        });
+
     });
 
     describe('#addEventDelegate', function() {
@@ -319,6 +375,62 @@ describe('DOM Event Handlers', function() {
                             document.getElementById('parent1'),
                             document.getElementById('parent2')
                         ],
+                        'click',
+                        'a',
+                        _ => { result++; }
+                    );
+                    element1.dispatchEvent(event);
+                    element1.dispatchEvent(event);
+                    element2.dispatchEvent(event);
+                    element2.dispatchEvent(event);
+                    element3.dispatchEvent(event);
+                    element3.dispatchEvent(event);
+                    element4.dispatchEvent(event);
+                    element4.dispatchEvent(event);
+                    return result;
+                }),
+                8
+            );
+        });
+
+        it('works with ShadowRoot nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    const div = document.createElement('div');
+                    const shadow = div.attachShadow({ mode: 'open' });
+                    const a = document.createElement('a');
+                    shadow.appendChild(a);
+                    const event = new Event('click', {
+                        bubbles: true
+                    });
+                    let result = 0;
+                    dom.addEventDelegate(
+                        shadow,
+                        'click',
+                        'a',
+                        _ => { result++; }
+                    );
+                    a.dispatchEvent(event);
+                    a.dispatchEvent(event);
+                    return result;
+                }),
+                2
+            );
+        });
+
+        it('works with Document nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    const event = new Event('click', {
+                        bubbles: true
+                    });
+                    const element1 = document.getElementById('test1');
+                    const element2 = document.getElementById('test2');
+                    const element3 = document.getElementById('test3');
+                    const element4 = document.getElementById('test4');
+                    let result = 0;
+                    dom.addEventDelegate(
+                        document,
                         'click',
                         'a',
                         _ => { result++; }
@@ -542,6 +654,62 @@ describe('DOM Event Handlers', function() {
             );
         });
 
+        it('works with ShadowRoot nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    const div = document.createElement('div');
+                    const shadow = div.attachShadow({ mode: 'open' });
+                    const a = document.createElement('a');
+                    shadow.appendChild(a);
+                    const event = new Event('click', {
+                        bubbles: true
+                    });
+                    let result = 0;
+                    dom.addEventDelegateOnce(
+                        shadow,
+                        'click',
+                        'a',
+                        _ => { result++; }
+                    );
+                    a.dispatchEvent(event);
+                    a.dispatchEvent(event);
+                    return result;
+                }),
+                1
+            );
+        });
+
+        it('works with Document nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    const event = new Event('click', {
+                        bubbles: true
+                    });
+                    const element1 = document.getElementById('test1');
+                    const element2 = document.getElementById('test2');
+                    const element3 = document.getElementById('test3');
+                    const element4 = document.getElementById('test4');
+                    let result = 0;
+                    dom.addEventDelegateOnce(
+                        document,
+                        'click',
+                        'a',
+                        _ => { result++; }
+                    );
+                    element1.dispatchEvent(event);
+                    element1.dispatchEvent(event);
+                    element2.dispatchEvent(event);
+                    element2.dispatchEvent(event);
+                    element3.dispatchEvent(event);
+                    element3.dispatchEvent(event);
+                    element4.dispatchEvent(event);
+                    element4.dispatchEvent(event);
+                    return result;
+                }),
+                1
+            );
+        });
+
     });
 
     describe('#addEventOnce', function() {
@@ -664,6 +832,62 @@ describe('DOM Event Handlers', function() {
                     return result;
                 }),
                 2
+            );
+        });
+
+        it('works with ShadowRoot nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    const div = document.createElement('div');
+                    const shadow = div.attachShadow({ mode: 'open' });
+                    const event = new Event('click');
+                    let result = 0;
+                    dom.addEventOnce(
+                        shadow,
+                        'click',
+                        _ => { result++; }
+                    );
+                    shadow.dispatchEvent(event);
+                    shadow.dispatchEvent(event);
+                    return result;
+                }),
+                1
+            );
+        });
+
+        it('works with Document nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    const event = new Event('click');
+                    let result = 0;
+                    dom.addEventOnce(
+                        document,
+                        'click',
+                        _ => { result++; }
+                    );
+                    document.dispatchEvent(event);
+                    document.dispatchEvent(event);
+                    return result;
+                }),
+                1
+            );
+        });
+
+        it('works with Window nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    const event = new Event('click');
+                    let result = 0;
+                    dom.addEventOnce(
+                        window,
+                        'click',
+                        _ => { result++; }
+                    );
+                    window.dispatchEvent(event);
+                    window.dispatchEvent(event);
+                    return result;
+                }),
+                1
             );
         });
 
@@ -830,6 +1054,77 @@ describe('DOM Event Handlers', function() {
             );
         });
 
+        it('works with ShadowRoot nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    const div = document.createElement('div');
+                    const shadow = div.attachShadow({ mode: 'open' });
+                    let result = 0;
+                    dom.addEvent(
+                        shadow,
+                        'click',
+                        _ => { result++; }
+                    );
+                    dom.cloneEvents(
+                        shadow,
+                        '[data-toggle="noEvent"]'
+                    );
+                    const event = new Event('click');
+                    shadow.dispatchEvent(event);
+                    document.getElementById('test3').dispatchEvent(event);
+                    document.getElementById('test4').dispatchEvent(event);
+                    return result;
+                }),
+                3
+            );
+        });
+
+        it('works with Document nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    let result = 0;
+                    dom.addEvent(
+                        document,
+                        'click',
+                        _ => { result++; }
+                    );
+                    dom.cloneEvents(
+                        document,
+                        '[data-toggle="noEvent"]'
+                    );
+                    const event = new Event('click');
+                    document.dispatchEvent(event);
+                    document.getElementById('test3').dispatchEvent(event);
+                    document.getElementById('test4').dispatchEvent(event);
+                    return result;
+                }),
+                3
+            );
+        });
+
+        it('works with Window nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    let result = 0;
+                    dom.addEvent(
+                        window,
+                        'click',
+                        _ => { result++; }
+                    );
+                    dom.cloneEvents(
+                        window,
+                        '[data-toggle="noEvent"]'
+                    );
+                    const event = new Event('click');
+                    window.dispatchEvent(event);
+                    document.getElementById('test3').dispatchEvent(event);
+                    document.getElementById('test4').dispatchEvent(event);
+                    return result;
+                }),
+                3
+            );
+        });
+
         it('works with HTMLElement other nodes', async function() {
             assert.equal(
                 await exec(_ => {
@@ -933,6 +1228,77 @@ describe('DOM Event Handlers', function() {
                 '<div id="test3" data-toggle="noEvent" data-test1="Test 1" data-test2="Test 2"></div>' +
                 '<div id="test4" data-toggle="noEvent" data-test1="Test 1" data-test2="Test 2"></div>' +
                 '</div>'
+            );
+        });
+
+        it('works with ShadowRoot nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    const a = document.createElement('a');
+                    const div = document.createElement('div');
+                    const shadow = div.attachShadow({ mode: 'open' });
+                    let result = 0;
+                    dom.addEvent(
+                        a,
+                        'click',
+                        _ => { result++; }
+                    );
+                    dom.cloneEvents(
+                        a,
+                        shadow
+                    );
+                    const event = new Event('click');
+                    a.dispatchEvent(event);
+                    shadow.dispatchEvent(event);
+                    return result;
+                }),
+                2
+            );
+        });
+
+        it('works with Document nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    const a = document.createElement('a');
+                    let result = 0;
+                    dom.addEvent(
+                        a,
+                        'click',
+                        _ => { result++; }
+                    );
+                    dom.cloneEvents(
+                        a,
+                        document
+                    );
+                    const event = new Event('click');
+                    a.dispatchEvent(event);
+                    document.dispatchEvent(event);
+                    return result;
+                }),
+                2
+            );
+        });
+
+        it('works with Window nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    const a = document.createElement('a');
+                    let result = 0;
+                    dom.addEvent(
+                        a,
+                        'click',
+                        _ => { result++; }
+                    );
+                    dom.cloneEvents(
+                        a,
+                        window
+                    );
+                    const event = new Event('click');
+                    a.dispatchEvent(event);
+                    window.dispatchEvent(event);
+                    return result;
+                }),
+                2
             );
         });
 
@@ -1178,6 +1544,95 @@ describe('DOM Event Handlers', function() {
                     return result;
                 }),
                 2
+            );
+        });
+
+        it('works with ShadowRoot nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    const div = document.createElement('div');
+                    const shadow = div.attachShadow({ mode: 'open' });
+                    const event = new Event('click');
+                    let result = 0;
+                    const callback1 = _ => { result++; };
+                    const callback2 = _ => { result++; };
+                    dom.addEvent(
+                        shadow,
+                        'click',
+                        callback1
+                    );
+                    dom.addEvent(
+                        shadow,
+                        'click',
+                        callback2
+                    );
+                    dom.removeEvent(
+                        shadow,
+                        'click',
+                        callback1
+                    );
+                    shadow.dispatchEvent(event);
+                    return result;
+                }),
+                1
+            );
+        });
+
+        it('works with Document nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    const event = new Event('click');
+                    let result = 0;
+                    const callback1 = _ => { result++; };
+                    const callback2 = _ => { result++; };
+                    dom.addEvent(
+                        document,
+                        'click',
+                        callback1
+                    );
+                    dom.addEvent(
+                        document,
+                        'click',
+                        callback2
+                    );
+                    dom.removeEvent(
+                        document,
+                        'click',
+                        callback1
+                    );
+                    document.dispatchEvent(event);
+                    return result;
+                }),
+                1
+            );
+        });
+
+        it('works with Window nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    const event = new Event('click');
+                    let result = 0;
+                    const callback1 = _ => { result++; };
+                    const callback2 = _ => { result++; };
+                    dom.addEvent(
+                        window,
+                        'click',
+                        callback1
+                    );
+                    dom.addEvent(
+                        window,
+                        'click',
+                        callback2
+                    );
+                    dom.removeEvent(
+                        window,
+                        'click',
+                        callback1
+                    );
+                    window.dispatchEvent(event);
+                    return result;
+                }),
+                1
             );
         });
 
@@ -1513,6 +1968,85 @@ describe('DOM Event Handlers', function() {
             );
         });
 
+        it('works with ShadowRoot nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    const div = document.createElement('div');
+                    const shadow = div.attachShadow({ mode: 'open' });
+                    const a = document.createElement('a');
+                    shadow.appendChild(a);
+                    const event = new Event('click', {
+                        bubbles: true
+                    });
+                    let result = 0;
+                    const callback1 = _ => { result++; };
+                    const callback2 = _ => { result++; };
+                    dom.addEventDelegate(
+                        shadow,
+                        'click',
+                        'a',
+                        callback1
+                    );
+                    dom.addEventDelegate(
+                        shadow,
+                        'click',
+                        'a',
+                        callback2
+                    );
+                    dom.removeEventDelegate(
+                        shadow,
+                        'click',
+                        'a',
+                        callback1
+                    );
+                    a.dispatchEvent(event);
+                    return result;
+                }),
+                1
+            );
+        });
+
+        it('works with Document nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    const event = new Event('click', {
+                        bubbles: true
+                    });
+                    const element1 = document.getElementById('test1');
+                    const element2 = document.getElementById('test2');
+                    const element3 = document.getElementById('test3');
+                    const element4 = document.getElementById('test4');
+                    let result = 0;
+                    const callback1 = _ => { result++; };
+                    const callback2 = _ => { result++; };
+                    dom.addEventDelegate(
+                        document,
+                        'click',
+                        'a',
+                        callback1
+                    );
+                    dom.addEventDelegate(
+                        document,
+                        'click',
+                        'a',
+                        callback2
+                    );
+                    dom.removeEventDelegate(
+                        document,
+                        'click',
+                        'a',
+                        callback1
+                    );
+                    element1.dispatchEvent(event);
+                    element2.dispatchEvent(event);
+                    element3.dispatchEvent(event);
+                    element4.dispatchEvent(event);
+                    return result;
+                }),
+                4
+            );
+        });
+
     });
 
     describe('#triggerEvent', function() {
@@ -1648,6 +2182,65 @@ describe('DOM Event Handlers', function() {
                     return result;
                 }),
                 2
+            );
+        });
+
+        it('works with ShadowRoot nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    const div = document.createElement('div');
+                    const shadow = div.attachShadow({ mode: 'open' });
+                    let result = 0;
+                    dom.addEvent(
+                        shadow,
+                        'click',
+                        _ => { result++; }
+                    );
+                    dom.triggerEvent(
+                        shadow,
+                        'click'
+                    );
+                    return result;
+                }),
+                1
+            );
+        });
+
+        it('works with Document nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    let result = 0;
+                    dom.addEvent(
+                        document,
+                        'click',
+                        _ => { result++; }
+                    );
+                    dom.triggerEvent(
+                        document,
+                        'click'
+                    );
+                    return result;
+                }),
+                1
+            );
+        });
+
+        it('works with Window nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    let result = 0;
+                    dom.addEvent(
+                        window,
+                        'click',
+                        _ => { result++; }
+                    );
+                    dom.triggerEvent(
+                        window,
+                        'click'
+                    );
+                    return result;
+                }),
+                1
             );
         });
 

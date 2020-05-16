@@ -13,7 +13,7 @@ Object.assign(DOM.prototype, {
      * @param {Boolean} [selfDestruct] Whether to remove the event after triggering.
      */
     addEvent(nodes, events, callback, delegate, selfDestruct) {
-        nodes = this.parseNodes(nodes, { shadow: true, document: true, window: true });
+        nodes = this.parseNodes(nodes, { shadow: true, document: true, window: !delegate });
 
         for (const node of nodes) {
             for (const event of this.constructor._parseEvents(events)) {
@@ -24,7 +24,7 @@ Object.assign(DOM.prototype, {
 
     /**
      * Add delegated events to each node.
-     * @param {string|array|HTMLElement|ShadowRoot|Document|Window|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|ShadowRoot|Document|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
      * @param {string} events The event names.
      * @param {string} delegate The delegate selector.
      * @param {DOM~eventCallback} callback The callback to execute.
@@ -35,7 +35,7 @@ Object.assign(DOM.prototype, {
 
     /**
      * Add self-destructing delegated events to each node.
-     * @param {string|array|HTMLElement|ShadowRoot|Document|Window|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|ShadowRoot|Document|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
      * @param {string} events The event names.
      * @param {string} delegate The delegate selector.
      * @param {DOM~eventCallback} callback The callback to execute.
@@ -78,7 +78,7 @@ Object.assign(DOM.prototype, {
      * @param {string} [delegate] The delegate selector.
      */
     removeEvent(nodes, events, callback, delegate) {
-        nodes = this.parseNodes(nodes, { shadow: true, document: true, window: true });
+        nodes = this.parseNodes(nodes, { shadow: true, document: true, window: !delegate });
 
         events = events ?
             this.constructor._parseEvents(events) :
@@ -102,7 +102,7 @@ Object.assign(DOM.prototype, {
 
     /**
      * Remove delegated events from each node.
-     * @param {string|array|HTMLElement|ShadowRoot|Document|Window|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
+     * @param {string|array|HTMLElement|ShadowRoot|Document|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
      * @param {string} [events] The event names.
      * @param {string} [delegate] The delegate selector.
      * @param {DOM~eventCallback} [callback] The callback to remove.
