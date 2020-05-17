@@ -2068,6 +2068,36 @@
         },
 
         /**
+         * Get the scroll height of the first node.
+         * @param {string|array|HTMLElement|Document|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
+         * @returns {number} The scroll height.
+         */
+        scrollHeight(nodes) {
+            const node = this.parseNode(nodes, { document: true });
+
+            if (!node) {
+                return;
+            }
+
+            return this.constructor._scrollHeight(node);
+        },
+
+        /**
+         * Get the scroll width of the first node.
+         * @param {string|array|HTMLElement|Document|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
+         * @returns {number} The scroll width.
+         */
+        scrollWidth(nodes) {
+            const node = this.parseNode(nodes, { document: true });
+
+            if (!node) {
+                return;
+            }
+
+            return this.constructor._scrollWidth(node);
+        },
+
+        /**
          * Get the computed width of the first node.
          * @param {string|array|HTMLElement|Document|Window|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
          * @param {number} [innerOuter] Whether to include padding, border and margin widths.
@@ -3322,7 +3352,7 @@
          * @returns {array} The matching nodes.
          */
         findByClass(className, nodes = this._context) {
-            if (Core.isDocument(nodes) || Core.isElement(nodes) || Core.isFragment(nodes) || Core.isShadow(nodes)) {
+            if (Core.isDocument(nodes) || Core.isElement(nodes)) {
                 return Core.wrap(DOMNode.findByClass(className, nodes));
             }
 
@@ -3333,7 +3363,9 @@
             for (const node of nodes) {
                 Core.merge(
                     results,
-                    DOMNode.findByClass(className, node)
+                    Core.isFragment(nodes) || Core.isShadow(nodes) ?
+                        DOMNode.findBySelector(`.${className}`, node) :
+                        DOMNode.findByClass(className, node)
                 )
             }
 
@@ -3361,7 +3393,7 @@
          * @returns {array} The matching nodes.
          */
         findByTag(tagName, nodes = this._context) {
-            if (Core.isDocument(nodes) || Core.isElement(nodes) || Core.isFragment(nodes) || Core.isShadow(nodes)) {
+            if (Core.isDocument(nodes) || Core.isElement(nodes)) {
                 return Core.wrap(DOMNode.findByTag(tagName, nodes));
             }
 
@@ -3372,7 +3404,9 @@
             for (const node of nodes) {
                 Core.merge(
                     results,
-                    DOMNode.findByTag(tagName, node)
+                    Core.isFragment(nodes) || Core.isShadow(nodes) ?
+                        DOMNode.findBySelector(tagName, node) :
+                        DOMNode.findByTag(tagName, node)
                 )
             }
 
@@ -3428,7 +3462,7 @@
          * @returns {HTMLElement} The matching node.
          */
         findOneByClass(className, nodes = this._context) {
-            if (Core.isDocument(nodes) || Core.isElement(nodes) || Core.isFragment(nodes) || Core.isShadow(nodes)) {
+            if (Core.isDocument(nodes) || Core.isElement(nodes)) {
                 return DOMNode.findByClass(className, nodes).item(0);
             }
 
@@ -3439,7 +3473,9 @@
             }
 
             for (const node of nodes) {
-                const result = DOMNode.findByClass(className, node).item(0);
+                const result = Core.isFragment(node) || Core.isShadow(node) ?
+                    DOMNode.findOneBySelector(`${className}`, node) :
+                    DOMNode.findByClass(className, node).item(0);
                 if (result) {
                     return result;
                 }
@@ -3475,7 +3511,7 @@
          * @returns {HTMLElement} The matching node.
          */
         findOneByTag(tagName, nodes = this._context) {
-            if (Core.isDocument(nodes) || Core.isElement(nodes) || Core.isFragment(nodes) || Core.isShadow(nodes)) {
+            if (Core.isDocument(nodes) || Core.isElement(nodes)) {
                 return DOMNode.findByTag(tagName, nodes).item(0);
             }
 
@@ -3486,7 +3522,9 @@
             }
 
             for (const node of nodes) {
-                const result = DOMNode.findByTag(tagName, node).item(0);
+                const result = Core.isFragment(node) || Core.isShadow(node) ?
+                    DOMNode.findOneBySelector(tagName, node) :
+                    DOMNode.findByTag(tagName, node).item(0);
                 if (result) {
                     return result;
                 }
@@ -5294,13 +5332,11 @@
             return this._forceShow(
                 node,
                 node => {
-                    let result;
                     if (Core.isDocument(node)) {
                         node = DOMNode.documentElement(node);
-                        result = DOMNode.heightDocument(node);
-                    } else {
-                        result = DOMNode.height(node);
                     }
+
+                    let result = DOMNode.height(node);
 
                     if (innerOuter === this.INNER) {
                         result -= parseInt(this._css(node, 'padding-top'))
@@ -5323,6 +5359,42 @@
         },
 
         /**
+         * Get the scroll height of a single node.
+         * @param {HTMLElement} node The input node.
+         * @returns {number} The scroll height.
+         */
+        _scrollHeight(node) {
+            return this._forceShow(
+                node,
+                node => {
+                    if (Core.isDocument(node)) {
+                        node = DOMNode.documentElement(node);
+                    }
+
+                    return DOMNode.scrollHeight(node);
+                }
+            );
+        },
+
+        /**
+         * Get the scroll width of a single node.
+         * @param {HTMLElement} node The input node.
+         * @returns {number} The scroll width.
+         */
+        _scrollWidth(node) {
+            return this._forceShow(
+                node,
+                node => {
+                    if (Core.isDocument(node)) {
+                        node = DOMNode.documentElement(node);
+                    }
+
+                    return DOMNode.scrollWidth(node);
+                }
+            );
+        },
+
+        /**
          * Get the computed width of a single node.
          * @param {HTMLElement} node The input node.
          * @param {number} [innerOuter] Whether to include padding, border and margin widths.
@@ -5332,13 +5404,11 @@
             return this._forceShow(
                 node,
                 node => {
-                    let result;
                     if (Core.isDocument(node)) {
                         node = DOMNode.documentElement(node);
-                        result = DOMNode.widthDocument(node);
-                    } else {
-                        result = DOMNode.width(node);
                     }
+
+                    let result = DOMNode.width(node);
 
                     if (innerOuter === this.INNER) {
                         result -= parseInt(this._css(node, 'padding-left'))
@@ -6054,11 +6124,17 @@
                 this._clone(other, true)
             );
 
+            const firstClone = clones.slice().shift();
+
+            const deepest = this._deepest(
+                Core.isFragment(firstClone) ?
+                    DOMNode.firstChild(firstClone) :
+                    firstClone
+            );
+
             for (const clone of clones) {
                 DOMNode.insertBefore(parent, clone, node);
             }
-
-            const deepest = this._deepest(clones.shift());
 
             DOMNode.insertBefore(deepest, node);
         },
@@ -6081,11 +6157,17 @@
                 return;
             }
 
+            const firstOther = others.slice().shift();
+
+            const deepest = this._deepest(
+                Core.isFragment(firstOther) ?
+                    DOMNode.firstChild(firstOther) :
+                    firstOther
+            );
+
             for (const other of others) {
                 DOMNode.insertBefore(parent, other, firstNode);
             }
-
-            const deepest = DOM._deepest(others.shift());
 
             for (const node of nodes) {
                 DOMNode.insertBefore(deepest, node);
@@ -6104,11 +6186,17 @@
                 this._clone(other, true)
             );
 
+            const firstClone = clones.slice().shift();
+
+            const deepest = this._deepest(
+                Core.isFragment(firstClone) ?
+                    DOMNode.firstChild(firstClone) :
+                    firstClone
+            );
+
             for (const clone of clones) {
                 DOMNode.insertBefore(node, clone);
             }
-
-            const deepest = this._deepest(clones.shift());
 
             for (const child of children) {
                 DOMNode.insertBefore(deepest, child);
@@ -6551,7 +6639,7 @@
          */
         _isVisible(node) {
             if (Core.isWindow(node)) {
-                return DOMNode._isVisibleDocument(
+                return DOMNode.isVisibleDocument(
                     DOMNode.document(node)
                 );
             }
@@ -7024,15 +7112,6 @@
         },
 
         /**
-         * Get the height of a Document.
-         * @param {Window} node The input node.
-         * @returns {number} The height.
-         */
-        heightDocument(node) {
-            return node.scrollHeight;
-        },
-
-        /**
          * Get the height of a Window.
          * @param {Window} node The input node.
          * @param {Boolean} [outer] Whether to use the outer height.
@@ -7045,21 +7124,30 @@
         },
 
         /**
+         * Get the scroll height of a single node.
+         * @param {HTMLElement} node The input node.
+         * @returns {number} The scroll height.
+         */
+        scrollHeight(node) {
+            return node.scrollHeight;
+        },
+
+        /**
+         * Get the scroll width of a single node.
+         * @param {HTMLElement} node The input node.
+         * @returns {number} The scroll width.
+         */
+        scrollWidth(node) {
+            return node.scrollWidth;
+        },
+
+        /**
          * Get the client width of a single node.
          * @param {HTMLElement} node The input node.
          * @returns {number} The width.
          */
         width(node) {
             return node.clientWidth;
-        },
-
-        /**
-         * Get the width of a Document.
-         * @param {Window} node The input node.
-         * @returns {number} The width.
-         */
-        widthDocument(node) {
-            return node.scrollWidth;
         },
 
         /**

@@ -249,6 +249,36 @@ describe('DOM Manipulation', function() {
             );
         });
 
+        it('works with DocumentFragment nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    const fragment = document.createDocumentFragment();
+                    const div = document.createElement('div');
+                    const span = document.createElement('span');
+                    div.appendChild(span);
+                    fragment.appendChild(div);
+                    const clones = dom.clone(
+                        fragment
+                    );
+                    document.body.appendChild(fragment);
+                    for (const clone of clones) {
+                        document.body.appendChild(clone);
+                    }
+                    return document.body.innerHTML;
+                }),
+                '<div class="parent1">' +
+                '<a href="#" class="test1">Test</a>' +
+                '<a href="#" class="test2">Test</a>' +
+                '</div>' +
+                '<div class="parent2">' +
+                '<a href="#" class="test3">Test</a>' +
+                '<a href="#" class="test4">Test</a>' +
+                '</div>' +
+                '<div><span></span></div>' +
+                '<div><span></span></div>'
+            );
+        });
+
     });
 
     describe('#detach', function() {
@@ -451,13 +481,13 @@ describe('DOM Manipulation', function() {
         it('removes all events recursively', async function() {
             assert.equal(
                 await exec(_ => {
+                    let result = 0;
                     const nodes = [
                         document.getElementById('test1'),
                         document.getElementById('test2'),
                         document.getElementById('test3'),
                         document.getElementById('test4')
                     ];
-                    let result = 0;
                     dom.addEvent(
                         'a',
                         'click',
@@ -576,6 +606,54 @@ describe('DOM Manipulation', function() {
             );
         });
 
+        it('works with DocumentFragment nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    const fragment = document.createDocumentFragment();
+                    const div = document.createElement('div');
+                    const span = document.createElement('span');
+                    div.appendChild(span);
+                    fragment.appendChild(div);
+                    dom.empty(
+                        fragment
+                    );
+                    document.body.innerHTML = '';
+                    document.body.appendChild(fragment);
+                    return document.body.innerHTML;
+                }),
+                ''
+            );
+        });
+
+        it('works with ShadowRoot nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    const div = document.createElement('div');
+                    const shadow = div.attachShadow({ mode: 'open' });
+                    const span = document.createElement('span');
+                    shadow.appendChild(span);
+                    dom.empty(shadow);
+                    return shadow.innerHTML;
+                }),
+                ''
+            );
+        });
+
+        it('works with Document nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    const parser = new DOMParser();
+                    const myDoc = parser.parseFromString(
+                        '<html></html>',
+                        'text/html'
+                    );
+                    dom.empty(myDoc);
+                    return myDoc.childNodes.length
+                }),
+                0
+            );
+        });
+
     });
 
     describe('#remove', function() {
@@ -620,13 +698,13 @@ describe('DOM Manipulation', function() {
         it('removes all events', async function() {
             assert.equal(
                 await exec(_ => {
+                    let result = 0;
                     const nodes = [
                         document.getElementById('test1'),
                         document.getElementById('test2'),
                         document.getElementById('test3'),
                         document.getElementById('test4')
                     ];
-                    let result = 0;
                     dom.addEvent(
                         'a',
                         'click',
@@ -651,13 +729,13 @@ describe('DOM Manipulation', function() {
         it('removes all events recursively', async function() {
             assert.equal(
                 await exec(_ => {
+                    let result = 0;
                     const nodes = [
                         document.getElementById('test1'),
                         document.getElementById('test2'),
                         document.getElementById('test3'),
                         document.getElementById('test4')
                     ];
-                    let result = 0;
                     dom.addEvent(
                         'a',
                         'click',
@@ -947,6 +1025,35 @@ describe('DOM Manipulation', function() {
                 '<div class="inner1">' +
                 '<a href="#">Test</a>' +
                 '<a href="#">Test</a>' +
+                '</div>'
+            );
+        });
+
+        it('works with DocumentFragment nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    const fragment = document.createDocumentFragment();
+                    const div = document.createElement('div');
+                    const span = document.createElement('span');
+                    div.appendChild(span);
+                    fragment.appendChild(div);
+                    dom.replaceAll(
+                        fragment,
+                        'a'
+                    );
+                    return document.body.innerHTML;
+                }),
+                '<div class="outer1">' +
+                '<div class="inner1">' +
+                '<div><span></span></div>' +
+                '<div><span></span></div>' +
+                '</div>' +
+                '</div>' +
+                '<div class="outer2">' +
+                '<div class="inner2">' +
+                '<div><span></span></div>' +
+                '<div><span></span></div>' +
+                '</div>' +
                 '</div>'
             );
         });
@@ -1291,6 +1398,35 @@ describe('DOM Manipulation', function() {
                 '<div class="inner1">' +
                 '<a href="#">Test</a>' +
                 '<a href="#">Test</a>' +
+                '</div>'
+            );
+        });
+
+        it('works with DocumentFragment other nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    const fragment = document.createDocumentFragment();
+                    const div = document.createElement('div');
+                    const span = document.createElement('span');
+                    div.appendChild(span);
+                    fragment.appendChild(div);
+                    dom.replaceWith(
+                        'a',
+                        fragment
+                    );
+                    return document.body.innerHTML;
+                }),
+                '<div class="outer1">' +
+                '<div class="inner1">' +
+                '<div><span></span></div>' +
+                '<div><span></span></div>' +
+                '</div>' +
+                '</div>' +
+                '<div class="outer2">' +
+                '<div class="inner2">' +
+                '<div><span></span></div>' +
+                '<div><span></span></div>' +
+                '</div>' +
                 '</div>'
             );
         });

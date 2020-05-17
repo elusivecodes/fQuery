@@ -14,13 +14,11 @@ Object.assign(DOM, {
         return this._forceShow(
             node,
             node => {
-                let result;
                 if (Core.isDocument(node)) {
                     node = DOMNode.documentElement(node);
-                    result = DOMNode.heightDocument(node);
-                } else {
-                    result = DOMNode.height(node);
                 }
+
+                let result = DOMNode.height(node);
 
                 if (innerOuter === this.INNER) {
                     result -= parseInt(this._css(node, 'padding-top'))
@@ -43,6 +41,42 @@ Object.assign(DOM, {
     },
 
     /**
+     * Get the scroll height of a single node.
+     * @param {HTMLElement} node The input node.
+     * @returns {number} The scroll height.
+     */
+    _scrollHeight(node) {
+        return this._forceShow(
+            node,
+            node => {
+                if (Core.isDocument(node)) {
+                    node = DOMNode.documentElement(node);
+                }
+
+                return DOMNode.scrollHeight(node);
+            }
+        );
+    },
+
+    /**
+     * Get the scroll width of a single node.
+     * @param {HTMLElement} node The input node.
+     * @returns {number} The scroll width.
+     */
+    _scrollWidth(node) {
+        return this._forceShow(
+            node,
+            node => {
+                if (Core.isDocument(node)) {
+                    node = DOMNode.documentElement(node);
+                }
+
+                return DOMNode.scrollWidth(node);
+            }
+        );
+    },
+
+    /**
      * Get the computed width of a single node.
      * @param {HTMLElement} node The input node.
      * @param {number} [innerOuter] Whether to include padding, border and margin widths.
@@ -52,13 +86,11 @@ Object.assign(DOM, {
         return this._forceShow(
             node,
             node => {
-                let result;
                 if (Core.isDocument(node)) {
                     node = DOMNode.documentElement(node);
-                    result = DOMNode.widthDocument(node);
-                } else {
-                    result = DOMNode.width(node);
                 }
+
+                let result = DOMNode.width(node);
 
                 if (innerOuter === this.INNER) {
                     result -= parseInt(this._css(node, 'padding-left'))

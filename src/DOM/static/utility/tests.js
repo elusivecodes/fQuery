@@ -75,7 +75,7 @@ Object.assign(DOM, {
      */
     _isVisible(node) {
         if (Core.isWindow(node)) {
-            return DOMNode._isVisibleDocument(
+            return DOMNode.isVisibleDocument(
                 DOMNode.document(node)
             );
         }

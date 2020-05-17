@@ -18,9 +18,7 @@ describe('DOM Events', function() {
                 await exec(_ => {
                     let result;
                     const element = document.getElementById('test1');
-                    element.addEventListener('blur', _ => {
-                        result = true;
-                    });
+                    element.addEventListener('blur', _ => { result = true; });
                     element.focus();
                     dom.blur(
                         'input'
@@ -36,9 +34,7 @@ describe('DOM Events', function() {
                 await exec(_ => {
                     let result;
                     const element = document.getElementById('test1');
-                    element.addEventListener('blur', _ => {
-                        result = true;
-                    });
+                    element.addEventListener('blur', _ => { result = true; });
                     element.focus();
                     dom.blur(
                         document.getElementById('test1')
@@ -54,9 +50,7 @@ describe('DOM Events', function() {
                 await exec(_ => {
                     let result;
                     const element = document.getElementById('test1');
-                    element.addEventListener('blur', _ => {
-                        result = true;
-                    });
+                    element.addEventListener('blur', _ => { result = true; });
                     element.focus();
                     dom.blur(
                         document.body.children
@@ -72,9 +66,7 @@ describe('DOM Events', function() {
                 await exec(_ => {
                     let result;
                     const element = document.getElementById('test1');
-                    element.addEventListener('blur', _ => {
-                        result = true;
-                    });
+                    element.addEventListener('blur', _ => { result = true; });
                     element.focus();
                     dom.blur(
                         document.querySelectorAll('input')
@@ -90,9 +82,7 @@ describe('DOM Events', function() {
                 await exec(_ => {
                     let result;
                     const element = document.getElementById('test1');
-                    element.addEventListener('blur', _ => {
-                        result = true;
-                    });
+                    element.addEventListener('blur', _ => { result = true; });
                     element.focus();
                     dom.blur(
                         [
@@ -123,9 +113,7 @@ describe('DOM Events', function() {
                 await exec(_ => {
                     let result;
                     const element = document.getElementById('test1');
-                    element.addEventListener('click', _ => {
-                        result = true;
-                    });
+                    element.addEventListener('click', _ => { result = true; });
                     dom.click(
                         'a'
                     );
@@ -140,9 +128,7 @@ describe('DOM Events', function() {
                 await exec(_ => {
                     let result;
                     const element = document.getElementById('test1');
-                    element.addEventListener('click', _ => {
-                        result = true;
-                    });
+                    element.addEventListener('click', _ => { result = true; });
                     dom.click(
                         document.getElementById('test1')
                     );
@@ -157,9 +143,7 @@ describe('DOM Events', function() {
                 await exec(_ => {
                     let result;
                     const element = document.getElementById('test1');
-                    element.addEventListener('click', _ => {
-                        result = true;
-                    });
+                    element.addEventListener('click', _ => { result = true; });
                     dom.click(
                         document.body.children
                     );
@@ -174,9 +158,7 @@ describe('DOM Events', function() {
                 await exec(_ => {
                     let result;
                     const element = document.getElementById('test1');
-                    element.addEventListener('click', _ => {
-                        result = true;
-                    });
+                    element.addEventListener('click', _ => { result = true; });
                     dom.click(
                         document.querySelectorAll('a')
                     );
@@ -191,9 +173,7 @@ describe('DOM Events', function() {
                 await exec(_ => {
                     let result;
                     const element = document.getElementById('test1');
-                    element.addEventListener('click', _ => {
-                        result = true;
-                    });
+                    element.addEventListener('click', _ => { result = true; });
                     dom.click(
                         [
                             document.getElementById('test1'),
@@ -223,9 +203,7 @@ describe('DOM Events', function() {
                 await exec(_ => {
                     let result;
                     const element = document.getElementById('test1');
-                    element.addEventListener('focus', _ => {
-                        result = true;
-                    });
+                    element.addEventListener('focus', _ => { result = true; });
                     dom.focus('input');
                     return result;
                 }),
@@ -238,9 +216,7 @@ describe('DOM Events', function() {
                 await exec(_ => {
                     let result;
                     const element = document.getElementById('test1');
-                    element.addEventListener('focus', _ => {
-                        result = true;
-                    });
+                    element.addEventListener('focus', _ => { result = true; });
                     dom.focus(
                         document.getElementById('test1')
                     );
@@ -255,9 +231,7 @@ describe('DOM Events', function() {
                 await exec(_ => {
                     let result;
                     const element = document.getElementById('test1');
-                    element.addEventListener('focus', _ => {
-                        result = true;
-                    });
+                    element.addEventListener('focus', _ => { result = true; });
                     dom.focus(
                         document.body.children
                     );
@@ -272,9 +246,7 @@ describe('DOM Events', function() {
                 await exec(_ => {
                     let result;
                     const element = document.getElementById('test1');
-                    element.addEventListener('focus', _ => {
-                        result = true;
-                    });
+                    element.addEventListener('focus', _ => { result = true; });
                     dom.focus(
                         document.querySelectorAll('input')
                     );
@@ -289,9 +261,7 @@ describe('DOM Events', function() {
                 await exec(_ => {
                     let result;
                     const element = document.getElementById('test1');
-                    element.addEventListener('focus', _ => {
-                        result = true;
-                    });
+                    element.addEventListener('focus', _ => { result = true; });
                     dom.focus(
                         [
                             document.getElementById('test1'),
@@ -312,9 +282,7 @@ describe('DOM Events', function() {
             assert.equal(
                 await exec(_ => {
                     let result;
-                    dom.ready(_ => {
-                        result = true;
-                    });
+                    dom.ready(_ => { result = true; });
                     return result;
                 }),
                 true

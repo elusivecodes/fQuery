@@ -2233,6 +2233,40 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
     },
 
     /**
+     * Get the scroll height of the first node.
+     * @param {string|array|HTMLElement|Document|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
+     * @returns {number} The scroll height.
+     */
+    scrollHeight: function scrollHeight(nodes) {
+      var node = this.parseNode(nodes, {
+        document: true
+      });
+
+      if (!node) {
+        return;
+      }
+
+      return this.constructor._scrollHeight(node);
+    },
+
+    /**
+     * Get the scroll width of the first node.
+     * @param {string|array|HTMLElement|Document|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
+     * @returns {number} The scroll width.
+     */
+    scrollWidth: function scrollWidth(nodes) {
+      var node = this.parseNode(nodes, {
+        document: true
+      });
+
+      if (!node) {
+        return;
+      }
+
+      return this.constructor._scrollWidth(node);
+    },
+
+    /**
      * Get the computed width of the first node.
      * @param {string|array|HTMLElement|Document|Window|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
      * @param {number} [innerOuter] Whether to include padding, border and margin widths.
@@ -3865,7 +3899,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
     findByClass: function findByClass(className) {
       var nodes = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : this._context;
 
-      if (Core.isDocument(nodes) || Core.isElement(nodes) || Core.isFragment(nodes) || Core.isShadow(nodes)) {
+      if (Core.isDocument(nodes) || Core.isElement(nodes)) {
         return Core.wrap(DOMNode.findByClass(className, nodes));
       }
 
@@ -3882,7 +3916,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
       try {
         for (_iterator54.s(); !(_step54 = _iterator54.n()).done;) {
           var node = _step54.value;
-          Core.merge(results, DOMNode.findByClass(className, node));
+          Core.merge(results, Core.isFragment(nodes) || Core.isShadow(nodes) ? DOMNode.findBySelector(".".concat(className), node) : DOMNode.findByClass(className, node));
         }
       } catch (err) {
         _iterator54.e(err);
@@ -3918,7 +3952,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
     findByTag: function findByTag(tagName) {
       var nodes = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : this._context;
 
-      if (Core.isDocument(nodes) || Core.isElement(nodes) || Core.isFragment(nodes) || Core.isShadow(nodes)) {
+      if (Core.isDocument(nodes) || Core.isElement(nodes)) {
         return Core.wrap(DOMNode.findByTag(tagName, nodes));
       }
 
@@ -3935,7 +3969,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
       try {
         for (_iterator55.s(); !(_step55 = _iterator55.n()).done;) {
           var node = _step55.value;
-          Core.merge(results, DOMNode.findByTag(tagName, node));
+          Core.merge(results, Core.isFragment(nodes) || Core.isShadow(nodes) ? DOMNode.findBySelector(tagName, node) : DOMNode.findByTag(tagName, node));
         }
       } catch (err) {
         _iterator55.e(err);
@@ -4001,7 +4035,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
     findOneByClass: function findOneByClass(className) {
       var nodes = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : this._context;
 
-      if (Core.isDocument(nodes) || Core.isElement(nodes) || Core.isFragment(nodes) || Core.isShadow(nodes)) {
+      if (Core.isDocument(nodes) || Core.isElement(nodes)) {
         return DOMNode.findByClass(className, nodes).item(0);
       }
 
@@ -4021,7 +4055,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
       try {
         for (_iterator56.s(); !(_step56 = _iterator56.n()).done;) {
           var node = _step56.value;
-          var result = DOMNode.findByClass(className, node).item(0);
+          var result = Core.isFragment(node) || Core.isShadow(node) ? DOMNode.findOneBySelector("".concat(className), node) : DOMNode.findByClass(className, node).item(0);
 
           if (result) {
             return result;
@@ -4071,7 +4105,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
     findOneByTag: function findOneByTag(tagName) {
       var nodes = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : this._context;
 
-      if (Core.isDocument(nodes) || Core.isElement(nodes) || Core.isFragment(nodes) || Core.isShadow(nodes)) {
+      if (Core.isDocument(nodes) || Core.isElement(nodes)) {
         return DOMNode.findByTag(tagName, nodes).item(0);
       }
 
@@ -4091,7 +4125,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
       try {
         for (_iterator57.s(); !(_step57 = _iterator57.n()).done;) {
           var node = _step57.value;
-          var result = DOMNode.findByTag(tagName, node).item(0);
+          var result = Core.isFragment(node) || Core.isShadow(node) ? DOMNode.findOneBySelector(tagName, node) : DOMNode.findByTag(tagName, node).item(0);
 
           if (result) {
             return result;
@@ -6044,14 +6078,11 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
 
       var innerOuter = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 1;
       return this._forceShow(node, function (node) {
-        var result;
-
         if (Core.isDocument(node)) {
           node = DOMNode.documentElement(node);
-          result = DOMNode.heightDocument(node);
-        } else {
-          result = DOMNode.height(node);
         }
+
+        var result = DOMNode.height(node);
 
         if (innerOuter === _this35.INNER) {
           result -= parseInt(_this35._css(node, 'padding-top')) + parseInt(_this35._css(node, 'padding-bottom'));
@@ -6070,6 +6101,36 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
     },
 
     /**
+     * Get the scroll height of a single node.
+     * @param {HTMLElement} node The input node.
+     * @returns {number} The scroll height.
+     */
+    _scrollHeight: function _scrollHeight(node) {
+      return this._forceShow(node, function (node) {
+        if (Core.isDocument(node)) {
+          node = DOMNode.documentElement(node);
+        }
+
+        return DOMNode.scrollHeight(node);
+      });
+    },
+
+    /**
+     * Get the scroll width of a single node.
+     * @param {HTMLElement} node The input node.
+     * @returns {number} The scroll width.
+     */
+    _scrollWidth: function _scrollWidth(node) {
+      return this._forceShow(node, function (node) {
+        if (Core.isDocument(node)) {
+          node = DOMNode.documentElement(node);
+        }
+
+        return DOMNode.scrollWidth(node);
+      });
+    },
+
+    /**
      * Get the computed width of a single node.
      * @param {HTMLElement} node The input node.
      * @param {number} [innerOuter] Whether to include padding, border and margin widths.
@@ -6080,14 +6141,11 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
 
       var innerOuter = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 1;
       return this._forceShow(node, function (node) {
-        var result;
-
         if (Core.isDocument(node)) {
           node = DOMNode.documentElement(node);
-          result = DOMNode.widthDocument(node);
-        } else {
-          result = DOMNode.width(node);
         }
+
+        var result = DOMNode.width(node);
 
         if (innerOuter === _this36.INNER) {
           result -= parseInt(_this36._css(node, 'padding-left')) + parseInt(_this36._css(node, 'padding-right'));
@@ -6816,6 +6874,9 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
       var clones = others.map(function (other) {
         return _this40._clone(other, true);
       });
+      var firstClone = clones.slice().shift();
+
+      var deepest = this._deepest(Core.isFragment(firstClone) ? DOMNode.firstChild(firstClone) : firstClone);
 
       var _iterator82 = _createForOfIteratorHelper(clones),
           _step82;
@@ -6830,8 +6891,6 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
       } finally {
         _iterator82.f();
       }
-
-      var deepest = this._deepest(clones.shift());
 
       DOMNode.insertBefore(deepest, node);
     },
@@ -6854,6 +6913,10 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
         return;
       }
 
+      var firstOther = others.slice().shift();
+
+      var deepest = this._deepest(Core.isFragment(firstOther) ? DOMNode.firstChild(firstOther) : firstOther);
+
       var _iterator83 = _createForOfIteratorHelper(others),
           _step83;
 
@@ -6867,8 +6930,6 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
       } finally {
         _iterator83.f();
       }
-
-      var deepest = DOM._deepest(others.shift());
 
       var _iterator84 = _createForOfIteratorHelper(nodes),
           _step84;
@@ -6897,6 +6958,9 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
       var clones = others.map(function (other) {
         return _this41._clone(other, true);
       });
+      var firstClone = clones.slice().shift();
+
+      var deepest = this._deepest(Core.isFragment(firstClone) ? DOMNode.firstChild(firstClone) : firstClone);
 
       var _iterator85 = _createForOfIteratorHelper(clones),
           _step85;
@@ -6911,8 +6975,6 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
       } finally {
         _iterator85.f();
       }
-
-      var deepest = this._deepest(clones.shift());
 
       var _iterator86 = _createForOfIteratorHelper(children),
           _step86;
@@ -7364,7 +7426,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
      */
     _isVisible: function _isVisible(node) {
       if (Core.isWindow(node)) {
-        return DOMNode._isVisibleDocument(DOMNode.document(node));
+        return DOMNode.isVisibleDocument(DOMNode.document(node));
       }
 
       if (Core.isDocument(node)) {
@@ -7831,15 +7893,6 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
     },
 
     /**
-     * Get the height of a Document.
-     * @param {Window} node The input node.
-     * @returns {number} The height.
-     */
-    heightDocument: function heightDocument(node) {
-      return node.scrollHeight;
-    },
-
-    /**
      * Get the height of a Window.
      * @param {Window} node The input node.
      * @param {Boolean} [outer] Whether to use the outer height.
@@ -7850,21 +7903,30 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
     },
 
     /**
+     * Get the scroll height of a single node.
+     * @param {HTMLElement} node The input node.
+     * @returns {number} The scroll height.
+     */
+    scrollHeight: function scrollHeight(node) {
+      return node.scrollHeight;
+    },
+
+    /**
+     * Get the scroll width of a single node.
+     * @param {HTMLElement} node The input node.
+     * @returns {number} The scroll width.
+     */
+    scrollWidth: function scrollWidth(node) {
+      return node.scrollWidth;
+    },
+
+    /**
      * Get the client width of a single node.
      * @param {HTMLElement} node The input node.
      * @returns {number} The width.
      */
     width: function width(node) {
       return node.clientWidth;
-    },
-
-    /**
-     * Get the width of a Document.
-     * @param {Window} node The input node.
-     * @returns {number} The width.
-     */
-    widthDocument: function widthDocument(node) {
-      return node.scrollWidth;
     },
 
     /**

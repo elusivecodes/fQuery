@@ -59,6 +59,10 @@ before(async function() {
     await page.goto('http://localhost:3001', {
         waitUntil: 'domcontentloaded'
     });
+    await page.evaluate(_ => {
+        window.id = 'window';
+        document.id = 'document';
+    });
 });
 
 beforeEach(async function() {

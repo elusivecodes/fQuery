@@ -41,11 +41,17 @@ Object.assign(DOM, {
             this._clone(other, true)
         );
 
+        const firstClone = clones.slice().shift();
+
+        const deepest = this._deepest(
+            Core.isFragment(firstClone) ?
+                DOMNode.firstChild(firstClone) :
+                firstClone
+        );
+
         for (const clone of clones) {
             DOMNode.insertBefore(parent, clone, node);
         }
-
-        const deepest = this._deepest(clones.shift());
 
         DOMNode.insertBefore(deepest, node);
     },
@@ -68,11 +74,17 @@ Object.assign(DOM, {
             return;
         }
 
+        const firstOther = others.slice().shift();
+
+        const deepest = this._deepest(
+            Core.isFragment(firstOther) ?
+                DOMNode.firstChild(firstOther) :
+                firstOther
+        );
+
         for (const other of others) {
             DOMNode.insertBefore(parent, other, firstNode);
         }
-
-        const deepest = DOM._deepest(others.shift());
 
         for (const node of nodes) {
             DOMNode.insertBefore(deepest, node);
@@ -91,11 +103,17 @@ Object.assign(DOM, {
             this._clone(other, true)
         );
 
+        const firstClone = clones.slice().shift();
+
+        const deepest = this._deepest(
+            Core.isFragment(firstClone) ?
+                DOMNode.firstChild(firstClone) :
+                firstClone
+        );
+
         for (const clone of clones) {
             DOMNode.insertBefore(node, clone);
         }
-
-        const deepest = this._deepest(clones.shift());
 
         for (const child of children) {
             DOMNode.insertBefore(deepest, child);

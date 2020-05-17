@@ -96,6 +96,33 @@ describe('DOM Filter', function() {
             );
         });
 
+        it('works with DocumentFragment nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    const fragment = document.createDocumentFragment();
+                    return dom.connected(
+                        fragment
+                    );
+                }),
+                []
+            );
+        });
+
+        it('works with ShadowRoot nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    const shadow = document.getElementById('div1').attachShadow({ mode: 'open' });
+                    shadow.id = 'shadow';
+                    return dom.connected(
+                        shadow
+                    ).map(node => node.id);
+                }),
+                [
+                    'shadow'
+                ]
+            );
+        });
+
     });
 
     describe('#equal', function() {
@@ -194,6 +221,42 @@ describe('DOM Filter', function() {
             );
         });
 
+        it('works with DocumentFragment nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    const fragment1 = document.createDocumentFragment();
+                    const fragment2 = document.createDocumentFragment();
+                    fragment1.id = 'fragment';
+                    return dom.equal(
+                        fragment1,
+                        fragment2
+                    ).map(node => node.id);
+                }),
+                [
+                    'fragment'
+                ]
+            );
+        });
+
+        it('works with ShadowRoot nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    const div1 = document.createElement('div');
+                    const div2 = document.createElement('div');
+                    const shadow1 = div1.attachShadow({ mode: 'open' });
+                    const shadow2 = div2.attachShadow({ mode: 'closed' });
+                    shadow1.id = 'shadow';
+                    return dom.equal(
+                        shadow1,
+                        shadow2
+                    ).map(node => node.id);
+                }),
+                [
+                    'shadow'
+                ]
+            );
+        });
+
         it('works with HTMLElement other nodes', async function() {
             assert.deepEqual(
                 await exec(_ => {
@@ -252,6 +315,48 @@ describe('DOM Filter', function() {
                 [
                     'span2',
                     'span3'
+                ]
+            );
+        });
+
+        it('works with DocumentFragment other nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    const fragment1 = document.createDocumentFragment();
+                    const fragment2 = document.createDocumentFragment();
+                    fragment1.id = 'fragment';
+                    return dom.equal(
+                        [
+                            document.querySelector('#parent1 [data-id="span2"]'),
+                            fragment1,
+                        ],
+                        fragment2
+                    ).map(node => node.id);
+                }),
+                [
+                    'fragment'
+                ]
+            );
+        });
+
+        it('works with ShadowRoot other nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    const div1 = document.createElement('div');
+                    const div2 = document.createElement('div');
+                    const shadow1 = div1.attachShadow({ mode: 'open' });
+                    const shadow2 = div2.attachShadow({ mode: 'closed' });
+                    shadow1.id = 'shadow';
+                    return dom.equal(
+                        [
+                            document.querySelector('#parent1 [data-id="span2"]'),
+                            shadow1,
+                        ],
+                        shadow2
+                    ).map(node => node.id);
+                }),
+                [
+                    'shadow'
                 ]
             );
         });
@@ -349,6 +454,37 @@ describe('DOM Filter', function() {
             );
         });
 
+        it('works with DocumentFragment nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    const fragment = document.createDocumentFragment();
+                    fragment.id = 'fragment';
+                    return dom.filter(
+                        fragment
+                    ).map(node => node.id);
+                }),
+                [
+                    'fragment'
+                ]
+            );
+        });
+
+        it('works with ShadowRoot nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    const div = document.createElement('div');
+                    const shadow = div.attachShadow({ mode: 'open' });
+                    shadow.id = 'shadow';
+                    return dom.filter(
+                        shadow
+                    ).map(node => node.id);
+                }),
+                [
+                    'shadow'
+                ]
+            );
+        });
+
         it('works with function filter', async function() {
             assert.deepEqual(
                 await exec(_ => {
@@ -424,6 +560,45 @@ describe('DOM Filter', function() {
                 [
                     'div2',
                     'div4'
+                ]
+            );
+        });
+
+        it('works with DocumentFragment other nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    const fragment = document.createDocumentFragment();
+                    fragment.id = 'fragment';
+                    return dom.filter(
+                        [
+                            document.getElementById('div1'),
+                            fragment
+                        ],
+                        fragment,
+                    ).map(node => node.id);
+                }),
+                [
+                    'fragment'
+                ]
+            );
+        });
+
+        it('works with ShadowRoot other nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    const div = document.createElement('div');
+                    const shadow = div.attachShadow({ mode: 'open' });
+                    shadow.id = 'shadow';
+                    return dom.filter(
+                        [
+                            document.getElementById('div1'),
+                            shadow
+                        ],
+                        shadow
+                    ).map(node => node.id);
+                }),
+                [
+                    'shadow'
                 ]
             );
         });
@@ -507,6 +682,33 @@ describe('DOM Filter', function() {
             );
         });
 
+        it('works with DocumentFragment nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    const fragment = document.createDocumentFragment();
+                    fragment.id = 'fragment';
+                    return dom.filterOne(
+                        fragment,
+                    ).id;
+                }),
+                'fragment'
+            );
+        });
+
+        it('works with ShadowRoot nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    const div = document.createElement('div');
+                    const shadow = div.attachShadow({ mode: 'open' });
+                    shadow.id = 'shadow';
+                    return dom.filterOne(
+                        shadow
+                    ).id;
+                }),
+                'shadow'
+            );
+        });
+
         it('works with function filter', async function() {
             assert.equal(
                 await exec(_ => {
@@ -567,6 +769,41 @@ describe('DOM Filter', function() {
                     ).id;
                 }),
                 'div2'
+            );
+        });
+
+        it('works with DocumentFragment other nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    const fragment = document.createDocumentFragment();
+                    fragment.id = 'fragment';
+                    return dom.filterOne(
+                        [
+                            document.getElementById('div1'),
+                            fragment
+                        ],
+                        fragment,
+                    ).id;
+                }),
+                'fragment'
+            );
+        });
+
+        it('works with ShadowRoot other nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    const div = document.createElement('div');
+                    const shadow = div.attachShadow({ mode: 'open' });
+                    shadow.id = 'shadow';
+                    return dom.filterOne(
+                        [
+                            document.getElementById('div1'),
+                            shadow
+                        ],
+                        shadow
+                    ).id;
+                }),
+                'shadow'
             );
         });
 
@@ -796,6 +1033,23 @@ describe('DOM Filter', function() {
             );
         });
 
+        it('works with Document nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    const myDoc = new Document();
+                    myDoc.id = 'document';
+                    return dom.hidden(
+                        myDoc
+                    ).map(node => node.id);
+                }),
+                [
+                    'document'
+                ]
+            );
+        });
+
+        it('works with Window nodes');
+
     });
 
     describe('#not', function() {
@@ -889,6 +1143,39 @@ describe('DOM Filter', function() {
             );
         });
 
+        it('works with DocumentFragment nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    const fragment = document.createDocumentFragment();
+                    fragment.id = 'fragment';
+                    return dom.not(
+                        fragment,
+                        '[data-filter="test"]'
+                    ).map(node => node.id);
+                }),
+                [
+                    'fragment'
+                ]
+            );
+        });
+
+        it('works with ShadowRoot nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    const div = document.createElement('div');
+                    const shadow = div.attachShadow({ mode: 'open' });
+                    shadow.id = 'shadow';
+                    return dom.not(
+                        shadow,
+                        '[data-filter="test"]'
+                    ).map(node => node.id);
+                }),
+                [
+                    'shadow'
+                ]
+            );
+        });
+
         it('works with function filter', async function() {
             assert.deepEqual(
                 await exec(_ => {
@@ -961,6 +1248,45 @@ describe('DOM Filter', function() {
                 [
                     'div2',
                     'div4'
+                ]
+            );
+        });
+
+        it('works with DocumentFragment other nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    const fragment = document.createDocumentFragment();
+                    fragment.id = 'fragment';
+                    return dom.not(
+                        [
+                            document.getElementById('div1'),
+                            fragment
+                        ],
+                        fragment,
+                    ).map(node => node.id);
+                }),
+                [
+                    'div1'
+                ]
+            );
+        });
+
+        it('works with ShadowRoot other nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    const div = document.createElement('div');
+                    const shadow = div.attachShadow({ mode: 'open' });
+                    shadow.id = 'shadow';
+                    return dom.not(
+                        [
+                            document.getElementById('div1'),
+                            shadow
+                        ],
+                        shadow
+                    ).map(node => node.id);
+                }),
+                [
+                    'div1'
                 ]
             );
         });
@@ -1044,6 +1370,35 @@ describe('DOM Filter', function() {
             );
         });
 
+        it('works with DocumentFragment nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    const fragment = document.createDocumentFragment();
+                    fragment.id = 'fragment';
+                    return dom.notOne(
+                        fragment,
+                        '[data-filter="test"]'
+                    ).id;
+                }),
+                'fragment'
+            );
+        });
+
+        it('works with ShadowRoot nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    const div = document.createElement('div');
+                    const shadow = div.attachShadow({ mode: 'open' });
+                    shadow.id = 'shadow';
+                    return dom.notOne(
+                        shadow,
+                        '[data-filter="test"]'
+                    ).id;
+                }),
+                'shadow'
+            );
+        });
+
         it('works with function filter', async function() {
             assert.equal(
                 await exec(_ => {
@@ -1104,6 +1459,41 @@ describe('DOM Filter', function() {
                     ).id;
                 }),
                 'div2'
+            );
+        });
+
+        it('works with DocumentFragment other nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    const fragment = document.createDocumentFragment();
+                    fragment.id = 'fragment';
+                    return dom.notOne(
+                        [
+                            document.getElementById('div1'),
+                            fragment
+                        ],
+                        fragment,
+                    ).id;
+                }),
+                'div1'
+            );
+        });
+
+        it('works with ShadowRoot other nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    const div = document.createElement('div');
+                    const shadow = div.attachShadow({ mode: 'open' });
+                    shadow.id = 'shadow';
+                    return dom.notOne(
+                        [
+                            document.getElementById('div1'),
+                            shadow
+                        ],
+                        shadow
+                    ).id;
+                }),
+                'div1'
             );
         });
 
@@ -1200,6 +1590,39 @@ describe('DOM Filter', function() {
             );
         });
 
+        it('works with DocumentFragment nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    const fragment = document.createDocumentFragment();
+                    fragment.id = 'fragment';
+                    return dom.equal(
+                        fragment,
+                        fragment
+                    ).map(node => node.id);
+                }),
+                [
+                    'fragment'
+                ]
+            );
+        });
+
+        it('works with ShadowRoot nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    const div = document.createElement('div');
+                    const shadow = div.attachShadow({ mode: 'open' });
+                    shadow.id = 'shadow';
+                    return dom.equal(
+                        shadow,
+                        shadow
+                    ).map(node => node.id);
+                }),
+                [
+                    'shadow'
+                ]
+            );
+        });
+
         it('works with HTMLElement other nodes', async function() {
             assert.deepEqual(
                 await exec(_ => {
@@ -1260,6 +1683,45 @@ describe('DOM Filter', function() {
                 [
                     'div2',
                     'div4'
+                ]
+            );
+        });
+
+        it('works with DocumentFragment other nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    const fragment = document.createDocumentFragment();
+                    fragment.id = 'fragment';
+                    return dom.equal(
+                        [
+                            document.querySelector('#div1'),
+                            fragment,
+                        ],
+                        fragment
+                    ).map(node => node.id);
+                }),
+                [
+                    'fragment'
+                ]
+            );
+        });
+
+        it('works with ShadowRoot other nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    const div = document.createElement('div');
+                    const shadow = div.attachShadow({ mode: 'open' });
+                    shadow.id = 'shadow';
+                    return dom.equal(
+                        [
+                            document.querySelector('#div1'),
+                            shadow,
+                        ],
+                        shadow
+                    ).map(node => node.id);
+                }),
+                [
+                    'shadow'
                 ]
             );
         });
@@ -1373,6 +1835,32 @@ describe('DOM Filter', function() {
                 [
                     'div1',
                     'div3'
+                ]
+            );
+        });
+
+        it('works with Document nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    return dom.visible(
+                        document
+                    ).map(node => node.id);
+                }),
+                [
+                    'document'
+                ]
+            );
+        });
+
+        it('works with Window nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    return dom.visible(
+                        window
+                    ).map(node => node.id);
+                }),
+                [
+                    'window'
                 ]
             );
         });
@@ -1652,6 +2140,54 @@ describe('DOM Filter', function() {
                 [
                     'div1',
                     'div3'
+                ]
+            );
+        });
+
+        it('works with DocumentFragment nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    const fragment = document.createDocumentFragment();
+                    const div = document.createElement('div');
+                    fragment.appendChild(div);
+                    fragment.id = 'fragment';
+                    return dom.withChildren(
+                        fragment
+                    ).map(node => node.id);
+                }),
+                [
+                    'fragment'
+                ]
+            );
+        });
+
+        it('works with ShadowRoot nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    const div = document.createElement('div');
+                    const shadow = div.attachShadow({ mode: 'open' });
+                    const span = document.createElement('span');
+                    shadow.appendChild(span);
+                    shadow.id = 'shadow';
+                    return dom.withChildren(
+                        shadow
+                    ).map(node => node.id);
+                }),
+                [
+                    'shadow'
+                ]
+            );
+        });
+
+        it('works with Document nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    return dom.withChildren(
+                        document
+                    ).map(node => node.id);
+                }),
+                [
+                    'document'
                 ]
             );
         });
@@ -2044,6 +2580,83 @@ describe('DOM Filter', function() {
             );
         });
 
+        it('works with DocumentFragment nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    const fragment = document.createDocumentFragment();
+                    dom.setData(
+                        fragment,
+                        'test',
+                        'Test'
+                    );
+                    fragment.id = 'fragment';
+                    return dom.withData(
+                        fragment
+                    ).map(node => node.id);
+                }),
+                [
+                    'fragment'
+                ]
+            );
+        });
+
+        it('works with ShadowRoot nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    const div = document.createElement('div');
+                    const shadow = div.attachShadow({ mode: 'open' });
+                    dom.setData(
+                        shadow,
+                        'test',
+                        'Test'
+                    );
+                    shadow.id = 'shadow';
+                    return dom.withData(
+                        shadow
+                    ).map(node => node.id);
+                }),
+                [
+                    'shadow'
+                ]
+            );
+        });
+
+        it('works with Document nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    dom.setData(
+                        document,
+                        'test',
+                        'Test'
+                    );
+                    return dom.withData(
+                        document
+                    ).map(node => node.id);
+                }),
+                [
+                    'document'
+                ]
+            );
+        });
+
+        it('works with Window nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    dom.setData(
+                        window,
+                        'test',
+                        'Test'
+                    );
+                    return dom.withData(
+                        window
+                    ).map(node => node.id);
+                }),
+                [
+                    'window'
+                ]
+            );
+        });
+
     });
 
     describe('#withDescendent', function() {
@@ -2156,6 +2769,57 @@ describe('DOM Filter', function() {
                 [
                     'div1',
                     'div3'
+                ]
+            );
+        });
+
+        it('works with DocumentFragment nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    const fragment = document.createDocumentFragment();
+                    const div = document.createElement('div');
+                    fragment.appendChild(div);
+                    fragment.id = 'fragment';
+                    return dom.withDescendent(
+                        fragment,
+                        'div'
+                    ).map(node => node.id);
+                }),
+                [
+                    'fragment'
+                ]
+            );
+        });
+
+        it('works with ShadowRoot nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    const div = document.createElement('div');
+                    const shadow = div.attachShadow({ mode: 'open' });
+                    const span = document.createElement('span');
+                    shadow.appendChild(span);
+                    shadow.id = 'shadow';
+                    return dom.withDescendent(
+                        shadow,
+                        'span'
+                    ).map(node => node.id);
+                }),
+                [
+                    'shadow'
+                ]
+            );
+        });
+
+        it('works with Document nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    return dom.withDescendent(
+                        document,
+                        'div'
+                    ).map(node => node.id);
+                }),
+                [
+                    'document'
                 ]
             );
         });

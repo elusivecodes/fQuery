@@ -50,13 +50,13 @@ describe('DOM Move', function() {
         it('clones all copies except last', async function() {
             assert.equal(
                 await exec(_ => {
-                    const element = document.querySelector('#parent1 > .test1');
+                    const element1 = document.querySelector('#parent1 > .test1');
                     dom.after(
                         'div',
                         'a'
                     );
-                    const clone = document.querySelector('#parent2 ~ .test1');
-                    return element.isSameNode(clone);
+                    const element2 = document.querySelector('#parent2 ~ .test1');
+                    return element1.isSameNode(element2);
                 }),
                 true
             );
@@ -270,6 +270,35 @@ describe('DOM Move', function() {
             );
         });
 
+        it('works with DocumentFragment other nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    const fragment = document.createDocumentFragment();
+                    const div = document.createElement('div');
+                    const span = document.createElement('span');
+                    div.appendChild(span);
+                    fragment.appendChild(div);
+                    dom.after(
+                        'div',
+                        fragment
+                    );
+                    return document.body.innerHTML;
+                }),
+                '<div id="parent1">' +
+                '<span></span>' +
+                '<a href="#" class="test1">Test</a>' +
+                '<a href="#" class="test2">Test</a>' +
+                '</div>' +
+                '<div><span></span></div>' +
+                '<div id="parent2">' +
+                '<span></span>' +
+                '<a href="#" class="test3">Test</a>' +
+                '<a href="#" class="test4">Test</a>' +
+                '</div>' +
+                '<div><span></span></div>'
+            );
+        });
+
         it('works with HTML other nodes', async function() {
             assert.equal(
                 await exec(_ => {
@@ -343,13 +372,13 @@ describe('DOM Move', function() {
         it('clones all copies except last', async function() {
             assert.equal(
                 await exec(_ => {
-                    const element = document.querySelector('#parent1 > .test1');
+                    const element1 = document.querySelector('#parent1 > .test1');
                     dom.append(
                         'div',
                         'a'
                     );
-                    const clone = document.querySelector('#parent2 > .test1');
-                    return element.isSameNode(clone);
+                    const element2 = document.querySelector('#parent2 > .test1');
+                    return element1.isSameNode(element2);
                 }),
                 true
             );
@@ -458,6 +487,68 @@ describe('DOM Move', function() {
             );
         });
 
+        it('works with DocumentFragment nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    const fragment = document.createDocumentFragment();
+                    const span = document.createElement('span');
+                    fragment.appendChild(span);
+                    dom.append(
+                        fragment,
+                        'a'
+                    );
+                    document.body.appendChild(fragment);
+                    return document.body.innerHTML;
+                }),
+                '<div id="parent1">' +
+                '<span></span>' +
+                '</div>' +
+                '<div id="parent2">' +
+                '<span></span>' +
+                '</div>' +
+                '<span></span>' +
+                '<a href="#" class="test1">Test</a>' +
+                '<a href="#" class="test2">Test</a>' +
+                '<a href="#" class="test3">Test</a>' +
+                '<a href="#" class="test4">Test</a>'
+            );
+        });
+
+        it('works with ShadowRoot nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    const div = document.createElement('div');
+                    const shadow = div.attachShadow({ mode: 'open' });
+                    const span = document.createElement('span');
+                    shadow.appendChild(span);
+                    dom.append(
+                        shadow,
+                        'a'
+                    );
+                    return shadow.innerHTML;
+                }),
+                '<span></span>' +
+                '<a href="#" class="test1">Test</a>' +
+                '<a href="#" class="test2">Test</a>' +
+                '<a href="#" class="test3">Test</a>' +
+                '<a href="#" class="test4">Test</a>'
+            );
+        });
+
+        it('works with Document nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    const myDoc = new Document();
+                    dom.append(
+                        myDoc,
+                        myDoc.createElement('html')
+                    );
+                    return myDoc.childNodes.length;
+                }),
+                1
+            );
+        });
+
         it('works with HTMLElement other nodes', async function() {
             assert.equal(
                 await exec(_ => {
@@ -563,6 +654,35 @@ describe('DOM Move', function() {
             );
         });
 
+        it('works with DocumentFragment other nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    const fragment = document.createDocumentFragment();
+                    const div = document.createElement('div');
+                    const span = document.createElement('span');
+                    div.appendChild(span);
+                    fragment.appendChild(div);
+                    dom.append(
+                        'div',
+                        fragment
+                    );
+                    return document.body.innerHTML;
+                }),
+                '<div id="parent1">' +
+                '<a href="#" class="test1">Test</a>' +
+                '<a href="#" class="test2">Test</a>' +
+                '<span></span>' +
+                '<div><span></span></div>' +
+                '</div>' +
+                '<div id="parent2">' +
+                '<a href="#" class="test3">Test</a>' +
+                '<a href="#" class="test4">Test</a>' +
+                '<span></span>' +
+                '<div><span></span></div>' +
+                '</div>'
+            );
+        });
+
         it('works with HTML other nodes', async function() {
             assert.equal(
                 await exec(_ => {
@@ -636,13 +756,13 @@ describe('DOM Move', function() {
         it('clones all copies except last', async function() {
             assert.equal(
                 await exec(_ => {
-                    const element = document.querySelector('#parent1 > .test1');
+                    const element1 = document.querySelector('#parent1 > .test1');
                     dom.appendTo(
                         'a',
                         'div'
                     );
-                    const clone = document.querySelector('#parent2 > .test1');
-                    return element.isSameNode(clone);
+                    const element2 = document.querySelector('#parent2 > .test1');
+                    return element1.isSameNode(element2);
                 }),
                 true
             );
@@ -750,6 +870,68 @@ describe('DOM Move', function() {
                 '<a href="#" class="test3">Test</a>' +
                 '<a href="#" class="test4">Test</a>' +
                 '</div>'
+            );
+        });
+
+        it('works with DocumentFragment nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    const fragment = document.createDocumentFragment();
+                    const span = document.createElement('span');
+                    fragment.appendChild(span);
+                    dom.appendTo(
+                        'a',
+                        fragment
+                    );
+                    document.body.appendChild(fragment);
+                    return document.body.innerHTML;
+                }),
+                '<div id="parent1">' +
+                '<span></span>' +
+                '</div>' +
+                '<div id="parent2">' +
+                '<span></span>' +
+                '</div>' +
+                '<span></span>' +
+                '<a href="#" class="test1">Test</a>' +
+                '<a href="#" class="test2">Test</a>' +
+                '<a href="#" class="test3">Test</a>' +
+                '<a href="#" class="test4">Test</a>'
+            );
+        });
+
+        it('works with ShadowRoot nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    const div = document.createElement('div');
+                    const shadow = div.attachShadow({ mode: 'open' });
+                    const span = document.createElement('span');
+                    shadow.appendChild(span);
+                    dom.appendTo(
+                        'a',
+                        shadow
+                    );
+                    return shadow.innerHTML;
+                }),
+                '<span></span>' +
+                '<a href="#" class="test1">Test</a>' +
+                '<a href="#" class="test2">Test</a>' +
+                '<a href="#" class="test3">Test</a>' +
+                '<a href="#" class="test4">Test</a>'
+            );
+        });
+
+        it('works with Document nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    const myDoc = new Document();
+                    dom.appendTo(
+                        myDoc.createElement('html'),
+                        myDoc
+                    );
+                    return myDoc.childNodes.length;
+                }),
+                1
             );
         });
 
@@ -856,6 +1038,35 @@ describe('DOM Move', function() {
             );
         });
 
+        it('works with DocumentFragment other nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    const fragment = document.createDocumentFragment();
+                    const div = document.createElement('div');
+                    const span = document.createElement('span');
+                    div.appendChild(span);
+                    fragment.appendChild(div);
+                    dom.appendTo(
+                        fragment,
+                        'div'
+                    );
+                    return document.body.innerHTML;
+                }),
+                '<div id="parent1">' +
+                '<a href="#" class="test1">Test</a>' +
+                '<a href="#" class="test2">Test</a>' +
+                '<span></span>' +
+                '<div><span></span></div>' +
+                '</div>' +
+                '<div id="parent2">' +
+                '<a href="#" class="test3">Test</a>' +
+                '<a href="#" class="test4">Test</a>' +
+                '<span></span>' +
+                '<div><span></span></div>' +
+                '</div>'
+            );
+        });
+
         it('works with HTML other nodes', async function() {
             assert.equal(
                 await exec(_ => {
@@ -929,13 +1140,13 @@ describe('DOM Move', function() {
         it('clones all copies except last', async function() {
             assert.equal(
                 await exec(_ => {
-                    const element = document.querySelector('#parent1 > .test1');
+                    const element1 = document.querySelector('#parent1 > .test1');
                     dom.before(
                         'div',
                         'a'
                     );
-                    const clone = document.querySelector('#parent1 ~ .test1');
-                    return element.isSameNode(clone);
+                    const element2 = document.querySelector('#parent1 ~ .test1');
+                    return element1.isSameNode(element2);
                 }),
                 true
             );
@@ -1149,6 +1360,35 @@ describe('DOM Move', function() {
             );
         });
 
+        it('works with DocumentFragment other nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    const fragment = document.createDocumentFragment();
+                    const div = document.createElement('div');
+                    const span = document.createElement('span');
+                    div.appendChild(span);
+                    fragment.appendChild(div);
+                    dom.before(
+                        'div',
+                        fragment
+                    );
+                    return document.body.innerHTML;
+                }),
+                '<div><span></span></div>' +
+                '<div id="parent1">' +
+                '<span></span>' +
+                '<a href="#" class="test1">Test</a>' +
+                '<a href="#" class="test2">Test</a>' +
+                '</div>' +
+                '<div><span></span></div>' +
+                '<div id="parent2">' +
+                '<span></span>' +
+                '<a href="#" class="test3">Test</a>' +
+                '<a href="#" class="test4">Test</a>' +
+                '</div>'
+            );
+        });
+
         it('works with HTML other nodes', async function() {
             assert.equal(
                 await exec(_ => {
@@ -1222,13 +1462,13 @@ describe('DOM Move', function() {
         it('clones all copies except last', async function() {
             assert.equal(
                 await exec(_ => {
-                    const element = document.querySelector('#parent1 > .test1');
+                    const element1 = document.querySelector('#parent1 > .test1');
                     dom.insertAfter(
                         'a',
                         'div'
                     );
-                    const clone = document.querySelector('#parent2 ~ .test1');
-                    return element.isSameNode(clone);
+                    const element2 = document.querySelector('#parent2 ~ .test1');
+                    return element1.isSameNode(element2);
                 }),
                 true
             );
@@ -1336,6 +1576,35 @@ describe('DOM Move', function() {
                 '<a href="#" class="test2">Test</a>' +
                 '<a href="#" class="test3">Test</a>' +
                 '<a href="#" class="test4">Test</a>'
+            );
+        });
+
+        it('works with DocumentFragment nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    const fragment = document.createDocumentFragment();
+                    const div = document.createElement('div');
+                    const span = document.createElement('span');
+                    div.appendChild(span);
+                    fragment.appendChild(div);
+                    dom.insertAfter(
+                        fragment,
+                        'div'
+                    );
+                    return document.body.innerHTML;
+                }),
+                '<div id="parent1">' +
+                '<span></span>' +
+                '<a href="#" class="test1">Test</a>' +
+                '<a href="#" class="test2">Test</a>' +
+                '</div>' +
+                '<div><span></span></div>' +
+                '<div id="parent2">' +
+                '<span></span>' +
+                '<a href="#" class="test3">Test</a>' +
+                '<a href="#" class="test4">Test</a>' +
+                '</div>' +
+                '<div><span></span></div>'
             );
         });
 
@@ -1515,13 +1784,13 @@ describe('DOM Move', function() {
         it('clones all copies except last', async function() {
             assert.equal(
                 await exec(_ => {
-                    const element = document.querySelector('#parent1 > .test1');
+                    const element1 = document.querySelector('#parent1 > .test1');
                     dom.insertBefore(
                         'a',
                         'div'
                     );
-                    const clone = document.querySelector('#parent1 ~ .test1');
-                    return element.isSameNode(clone);
+                    const element2 = document.querySelector('#parent1 ~ .test1');
+                    return element1.isSameNode(element2);
                 }),
                 true
             );
@@ -1628,6 +1897,35 @@ describe('DOM Move', function() {
                 '<a href="#" class="test4">Test</a>' +
                 '<div id="parent2">' +
                 '<span></span>' +
+                '</div>'
+            );
+        });
+
+        it('works with DocumentFragment nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    const fragment = document.createDocumentFragment();
+                    const div = document.createElement('div');
+                    const span = document.createElement('span');
+                    div.appendChild(span);
+                    fragment.appendChild(div);
+                    dom.insertBefore(
+                        fragment,
+                        'div'
+                    );
+                    return document.body.innerHTML;
+                }),
+                '<div><span></span></div>' +
+                '<div id="parent1">' +
+                '<span></span>' +
+                '<a href="#" class="test1">Test</a>' +
+                '<a href="#" class="test2">Test</a>' +
+                '</div>' +
+                '<div><span></span></div>' +
+                '<div id="parent2">' +
+                '<span></span>' +
+                '<a href="#" class="test3">Test</a>' +
+                '<a href="#" class="test4">Test</a>' +
                 '</div>'
             );
         });
@@ -1808,13 +2106,13 @@ describe('DOM Move', function() {
         it('clones all copies except last', async function() {
             assert.equal(
                 await exec(_ => {
-                    const element = document.querySelector('#parent1 > .test1');
+                    const element1 = document.querySelector('#parent1 > .test1');
                     dom.prepend(
                         'div',
                         'a'
                     );
-                    const clone = document.querySelector('#parent2 > .test1');
-                    return element.isSameNode(clone);
+                    const element2 = document.querySelector('#parent2 > .test1');
+                    return element1.isSameNode(element2);
                 }),
                 true
             );
@@ -1923,6 +2221,68 @@ describe('DOM Move', function() {
             );
         });
 
+        it('works with DocumentFragment nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    const fragment = document.createDocumentFragment();
+                    const span = document.createElement('span');
+                    fragment.appendChild(span);
+                    dom.prepend(
+                        fragment,
+                        'a'
+                    );
+                    document.body.appendChild(fragment);
+                    return document.body.innerHTML;
+                }),
+                '<div id="parent1">' +
+                '<span></span>' +
+                '</div>' +
+                '<div id="parent2">' +
+                '<span></span>' +
+                '</div>' +
+                '<a href="#" class="test1">Test</a>' +
+                '<a href="#" class="test2">Test</a>' +
+                '<a href="#" class="test3">Test</a>' +
+                '<a href="#" class="test4">Test</a>' +
+                '<span></span>'
+            );
+        });
+
+        it('works with ShadowRoot nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    const div = document.createElement('div');
+                    const shadow = div.attachShadow({ mode: 'open' });
+                    const span = document.createElement('span');
+                    shadow.appendChild(span);
+                    dom.prepend(
+                        shadow,
+                        'a'
+                    );
+                    return shadow.innerHTML;
+                }),
+                '<a href="#" class="test1">Test</a>' +
+                '<a href="#" class="test2">Test</a>' +
+                '<a href="#" class="test3">Test</a>' +
+                '<a href="#" class="test4">Test</a>' +
+                '<span></span>'
+            );
+        });
+
+        it('works with Document nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    const myDoc = new Document();
+                    dom.prepend(
+                        myDoc,
+                        myDoc.createElement('html')
+                    );
+                    return myDoc.childNodes.length;
+                }),
+                1
+            );
+        });
+
         it('works with HTMLElement other nodes', async function() {
             assert.equal(
                 await exec(_ => {
@@ -2028,6 +2388,35 @@ describe('DOM Move', function() {
             );
         });
 
+        it('works with DocumentFragment other nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    const fragment = document.createDocumentFragment();
+                    const div = document.createElement('div');
+                    const span = document.createElement('span');
+                    div.appendChild(span);
+                    fragment.appendChild(div);
+                    dom.prepend(
+                        'div',
+                        fragment
+                    );
+                    return document.body.innerHTML;
+                }),
+                '<div id="parent1">' +
+                '<div><span></span></div>' +
+                '<span></span>' +
+                '<a href="#" class="test1">Test</a>' +
+                '<a href="#" class="test2">Test</a>' +
+                '</div>' +
+                '<div id="parent2">' +
+                '<div><span></span></div>' +
+                '<span></span>' +
+                '<a href="#" class="test3">Test</a>' +
+                '<a href="#" class="test4">Test</a>' +
+                '</div>'
+            );
+        });
+
         it('works with HTML other nodes', async function() {
             assert.equal(
                 await exec(_ => {
@@ -2101,13 +2490,13 @@ describe('DOM Move', function() {
         it('clones all copies except last', async function() {
             assert.equal(
                 await exec(_ => {
-                    const element = document.querySelector('#parent1 > .test1');
+                    const element1 = document.querySelector('#parent1 > .test1');
                     dom.prependTo(
                         'a',
                         'div'
                     );
-                    const clone = document.querySelector('#parent2 > .test1');
-                    return element.isSameNode(clone);
+                    const element2 = document.querySelector('#parent2 > .test1');
+                    return element1.isSameNode(element2);
                 }),
                 true
             );
@@ -2214,6 +2603,35 @@ describe('DOM Move', function() {
                 '<a href="#" class="test3">Test</a>' +
                 '<a href="#" class="test4">Test</a>' +
                 '<span></span>' +
+                '</div>'
+            );
+        });
+
+        it('works with DocumentFragment nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    const fragment = document.createDocumentFragment();
+                    const div = document.createElement('div');
+                    const span = document.createElement('span');
+                    div.appendChild(span);
+                    fragment.appendChild(div);
+                    dom.prependTo(
+                        fragment,
+                        'div'
+                    );
+                    return document.body.innerHTML;
+                }),
+                '<div id="parent1">' +
+                '<div><span></span></div>' +
+                '<span></span>' +
+                '<a href="#" class="test1">Test</a>' +
+                '<a href="#" class="test2">Test</a>' +
+                '</div>' +
+                '<div id="parent2">' +
+                '<div><span></span></div>' +
+                '<span></span>' +
+                '<a href="#" class="test3">Test</a>' +
+                '<a href="#" class="test4">Test</a>' +
                 '</div>'
             );
         });
@@ -2342,6 +2760,68 @@ describe('DOM Move', function() {
                 '<a href="#" class="test4">Test</a>' +
                 '<span></span>' +
                 '</div>'
+            );
+        });
+
+        it('works with DocumentFragment other nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    const fragment = document.createDocumentFragment();
+                    const span = document.createElement('span');
+                    fragment.appendChild(span);
+                    dom.prependTo(
+                        'a',
+                        fragment
+                    );
+                    document.body.appendChild(fragment);
+                    return document.body.innerHTML;
+                }),
+                '<div id="parent1">' +
+                '<span></span>' +
+                '</div>' +
+                '<div id="parent2">' +
+                '<span></span>' +
+                '</div>' +
+                '<a href="#" class="test1">Test</a>' +
+                '<a href="#" class="test2">Test</a>' +
+                '<a href="#" class="test3">Test</a>' +
+                '<a href="#" class="test4">Test</a>' +
+                '<span></span>'
+            );
+        });
+
+        it('works with ShadowRoot other nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    const div = document.createElement('div');
+                    const shadow = div.attachShadow({ mode: 'open' });
+                    const span = document.createElement('span');
+                    shadow.appendChild(span);
+                    dom.prependTo(
+                        'a',
+                        shadow
+                    );
+                    return shadow.innerHTML;
+                }),
+                '<a href="#" class="test1">Test</a>' +
+                '<a href="#" class="test2">Test</a>' +
+                '<a href="#" class="test3">Test</a>' +
+                '<a href="#" class="test4">Test</a>' +
+                '<span></span>'
+            );
+        });
+
+        it('works with Document other nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    const myDoc = new Document();
+                    dom.prependTo(
+                        myDoc.createElement('html'),
+                        myDoc
+                    );
+                    return myDoc.childNodes.length;
+                }),
+                1
             );
         });
 

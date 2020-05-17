@@ -34,6 +34,36 @@ Object.assign(DOM.prototype, {
     },
 
     /**
+     * Get the scroll height of the first node.
+     * @param {string|array|HTMLElement|Document|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
+     * @returns {number} The scroll height.
+     */
+    scrollHeight(nodes) {
+        const node = this.parseNode(nodes, { document: true });
+
+        if (!node) {
+            return;
+        }
+
+        return this.constructor._scrollHeight(node);
+    },
+
+    /**
+     * Get the scroll width of the first node.
+     * @param {string|array|HTMLElement|Document|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
+     * @returns {number} The scroll width.
+     */
+    scrollWidth(nodes) {
+        const node = this.parseNode(nodes, { document: true });
+
+        if (!node) {
+            return;
+        }
+
+        return this.constructor._scrollWidth(node);
+    },
+
+    /**
      * Get the computed width of the first node.
      * @param {string|array|HTMLElement|Document|Window|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
      * @param {number} [innerOuter] Whether to include padding, border and margin widths.

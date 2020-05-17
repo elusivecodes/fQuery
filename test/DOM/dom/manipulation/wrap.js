@@ -31,7 +31,7 @@ describe('DOM Wrap', function() {
                 '<a href="#" id="test2">Test</a>' +
                 '<a href="#" id="test3">Test</a>' +
                 '<a href="#" id="test4">Test</a>'
-            )
+            );
         });
 
         it('unwraps each node with filter', async function() {
@@ -49,7 +49,7 @@ describe('DOM Wrap', function() {
                 '<a href="#" id="test3">Test</a>' +
                 '<a href="#" id="test4">Test</a>' +
                 '</div>'
-            )
+            );
         });
 
         it('works with HTMLElement nodes', async function() {
@@ -67,7 +67,7 @@ describe('DOM Wrap', function() {
                 '<a href="#" id="test3">Test</a>' +
                 '<a href="#" id="test4">Test</a>' +
                 '</div>'
-            )
+            );
         });
 
         it('works with HTMLCollection nodes', async function() {
@@ -85,7 +85,7 @@ describe('DOM Wrap', function() {
                 '<a href="#" id="test3">Test</a>' +
                 '<a href="#" id="test4">Test</a>' +
                 '</div>'
-            )
+            );
         });
 
         it('works with NodeList nodes', async function() {
@@ -103,7 +103,7 @@ describe('DOM Wrap', function() {
                 '<a href="#" id="test3">Test</a>' +
                 '<a href="#" id="test4">Test</a>' +
                 '</div>'
-            )
+            );
         });
 
         it('works with array nodes', async function() {
@@ -126,7 +126,7 @@ describe('DOM Wrap', function() {
                 '<a href="#" id="test3">Test</a>' +
                 '<a href="#" id="test4">Test</a>' +
                 '</div>'
-            )
+            );
         });
 
         it('works with function filter', async function() {
@@ -144,7 +144,7 @@ describe('DOM Wrap', function() {
                 '<a href="#" id="test3">Test</a>' +
                 '<a href="#" id="test4">Test</a>' +
                 '</div>'
-            )
+            );
         });
 
         it('works with HTMLElement filter', async function() {
@@ -162,7 +162,7 @@ describe('DOM Wrap', function() {
                 '<a href="#" id="test3">Test</a>' +
                 '<a href="#" id="test4">Test</a>' +
                 '</div>'
-            )
+            );
         });
 
         it('works with HTMLCollection filter', async function() {
@@ -178,7 +178,7 @@ describe('DOM Wrap', function() {
                 '<a href="#" id="test2">Test</a>' +
                 '<a href="#" id="test3">Test</a>' +
                 '<a href="#" id="test4">Test</a>'
-            )
+            );
         });
 
         it('works with NodeList filter', async function() {
@@ -196,7 +196,7 @@ describe('DOM Wrap', function() {
                 '<a href="#" id="test3">Test</a>' +
                 '<a href="#" id="test4">Test</a>' +
                 '</div>'
-            )
+            );
         });
 
         it('works with array filter', async function() {
@@ -216,7 +216,7 @@ describe('DOM Wrap', function() {
                 '<a href="#" id="test3">Test</a>' +
                 '<a href="#" id="test4">Test</a>' +
                 '</div>'
-            )
+            );
         });
 
     });
@@ -284,7 +284,7 @@ describe('DOM Wrap', function() {
                 '<div class="inner"></div>' +
                 '</div>' +
                 '</div>'
-            )
+            );
         });
 
         it('works with HTMLElement nodes', async function() {
@@ -315,7 +315,7 @@ describe('DOM Wrap', function() {
                 '<div class="inner"></div>' +
                 '</div>' +
                 '</div>'
-            )
+            );
         });
 
         it('works with HTMLCollection nodes', async function() {
@@ -350,7 +350,7 @@ describe('DOM Wrap', function() {
                 '<div class="inner"></div>' +
                 '</div>' +
                 '</div>'
-            )
+            );
         });
 
         it('works with NodeList nodes', async function() {
@@ -393,7 +393,7 @@ describe('DOM Wrap', function() {
                 '<div class="inner"></div>' +
                 '</div>' +
                 '</div>'
-            )
+            );
         });
 
         it('works with array nodes', async function() {
@@ -441,7 +441,7 @@ describe('DOM Wrap', function() {
                 '<div class="inner"></div>' +
                 '</div>' +
                 '</div>'
-            )
+            );
         });
 
         it('works with HTMLElement other nodes', async function() {
@@ -484,7 +484,7 @@ describe('DOM Wrap', function() {
                 '<div class="inner"></div>' +
                 '</div>' +
                 '</div>'
-            )
+            );
         });
 
         it('works with HTMLCollection other nodes', async function() {
@@ -527,7 +527,7 @@ describe('DOM Wrap', function() {
                 '<div class="inner"></div>' +
                 '</div>' +
                 '</div>'
-            )
+            );
         });
 
         it('works with NodeList other nodes', async function() {
@@ -570,7 +570,7 @@ describe('DOM Wrap', function() {
                 '<div class="inner"></div>' +
                 '</div>' +
                 '</div>'
-            )
+            );
         });
 
         it('works with array other nodes', async function() {
@@ -615,7 +615,55 @@ describe('DOM Wrap', function() {
                 '<div class="inner"></div>' +
                 '</div>' +
                 '</div>'
-            )
+            );
+        });
+
+        it('works with DocumentFragment other nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    const fragment = document.createDocumentFragment();
+                    const div = document.createElement('div');
+                    const span = document.createElement('span');
+                    div.appendChild(span);
+                    fragment.appendChild(div);
+                    dom.wrap(
+                        'a',
+                        fragment
+                    );
+                    return document.body.innerHTML;
+                }),
+                '<div id="wrap">' +
+                '<div id="parent1">' +
+                '<div>' +
+                '<span>' +
+                '<a href="#" id="test1">Test</a>' +
+                '</span>' +
+                '</div>' +
+                '<div>' +
+                '<span>' +
+                '<a href="#" id="test2">Test</a>' +
+                '</span>' +
+                '</div>' +
+                '</div>' +
+                '<div id="parent2">' +
+                '<div>' +
+                '<span>' +
+                '<a href="#" id="test3">Test</a>' +
+                '</span>' +
+                '</div>' +
+                '<div>' +
+                '<span>' +
+                '<a href="#" id="test4">Test</a>' +
+                '</span>' +
+                '</div>' +
+                '</div>' +
+                '</div>' +
+                '<div id="wrapper">' +
+                '<div class="outer">' +
+                '<div class="inner"></div>' +
+                '</div>' +
+                '</div>'
+            );
         });
 
         it('works with HTML other nodes', async function() {
@@ -658,7 +706,7 @@ describe('DOM Wrap', function() {
                 '<div class="inner"></div>' +
                 '</div>' +
                 '</div>'
-            )
+            );
         });
 
     });
@@ -714,7 +762,7 @@ describe('DOM Wrap', function() {
                 '<div class="inner"></div>' +
                 '</div>' +
                 '</div>'
-            )
+            );
         });
 
         it('works with HTMLElement nodes', async function() {
@@ -745,7 +793,7 @@ describe('DOM Wrap', function() {
                 '<div class="inner"></div>' +
                 '</div>' +
                 '</div>'
-            )
+            );
         });
 
         it('works with HTMLCollection nodes', async function() {
@@ -776,7 +824,7 @@ describe('DOM Wrap', function() {
                 '<div class="inner"></div>' +
                 '</div>' +
                 '</div>'
-            )
+            );
         });
 
         it('works with NodeList nodes', async function() {
@@ -807,7 +855,7 @@ describe('DOM Wrap', function() {
                 '<div class="inner"></div>' +
                 '</div>' +
                 '</div>'
-            )
+            );
         });
 
         it('works with array nodes', async function() {
@@ -843,7 +891,7 @@ describe('DOM Wrap', function() {
                 '<div class="inner"></div>' +
                 '</div>' +
                 '</div>'
-            )
+            );
         });
 
         it('works with HTMLElement other nodes', async function() {
@@ -874,7 +922,7 @@ describe('DOM Wrap', function() {
                 '<div class="inner"></div>' +
                 '</div>' +
                 '</div>'
-            )
+            );
         });
 
         it('works with HTMLCollection other nodes', async function() {
@@ -905,7 +953,7 @@ describe('DOM Wrap', function() {
                 '<div class="inner"></div>' +
                 '</div>' +
                 '</div>'
-            )
+            );
         });
 
         it('works with NodeList other nodes', async function() {
@@ -936,7 +984,7 @@ describe('DOM Wrap', function() {
                 '<div class="inner"></div>' +
                 '</div>' +
                 '</div>'
-            )
+            );
         });
 
         it('works with array other nodes', async function() {
@@ -969,7 +1017,43 @@ describe('DOM Wrap', function() {
                 '<div class="inner"></div>' +
                 '</div>' +
                 '</div>'
-            )
+            );
+        });
+
+        it('works with DocumentFragment other nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    const fragment = document.createDocumentFragment();
+                    const div = document.createElement('div');
+                    const span = document.createElement('span');
+                    div.appendChild(span);
+                    fragment.appendChild(div);
+                    dom.wrapAll(
+                        'a',
+                        fragment
+                    );
+                    return document.body.innerHTML;
+                }),
+                '<div id="wrap">' +
+                '<div id="parent1">' +
+                '<div>' +
+                '<span>' +
+                '<a href="#" id="test1">Test</a>' +
+                '<a href="#" id="test2">Test</a>' +
+                '<a href="#" id="test3">Test</a>' +
+                '<a href="#" id="test4">Test</a>' +
+                '</span>' +
+                '</div>' +
+                '</div>' +
+                '<div id="parent2">' +
+                '</div>' +
+                '</div>' +
+                '<div id="wrapper">' +
+                '<div class="outer">' +
+                '<div class="inner"></div>' +
+                '</div>' +
+                '</div>'
+            );
         });
 
         it('works with HTML other nodes', async function() {
@@ -1000,7 +1084,7 @@ describe('DOM Wrap', function() {
                 '<div class="inner"></div>' +
                 '</div>' +
                 '</div>'
-            )
+            );
         });
 
     });
@@ -1061,7 +1145,7 @@ describe('DOM Wrap', function() {
                 '</div>' +
                 '</div>' +
                 '</div>'
-            )
+            );
         });
 
         it('works with HTMLElement nodes', async function() {
@@ -1093,7 +1177,7 @@ describe('DOM Wrap', function() {
                 '</div>' +
                 '</div>' +
                 '</div>'
-            )
+            );
         });
 
         it('works with HTMLCollection nodes', async function() {
@@ -1129,7 +1213,7 @@ describe('DOM Wrap', function() {
                 '</div>' +
                 '</div>' +
                 '</div>'
-            )
+            );
         });
 
         it('works with NodeList nodes', async function() {
@@ -1165,7 +1249,7 @@ describe('DOM Wrap', function() {
                 '</div>' +
                 '</div>' +
                 '</div>'
-            )
+            );
         });
 
         it('works with array nodes', async function() {
@@ -1204,7 +1288,79 @@ describe('DOM Wrap', function() {
                 '</div>' +
                 '</div>' +
                 '</div>'
-            )
+            );
+        });
+
+        it('works with DocumentFragment nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    const fragment = document.createDocumentFragment();
+                    const div1 = document.createElement('div');
+                    const div2 = document.createElement('div');
+                    const span1 = document.createElement('span');
+                    const span2 = document.createElement('span');
+                    div1.appendChild(span1);
+                    div2.appendChild(span2);
+                    fragment.appendChild(div1);
+                    fragment.appendChild(div2);
+                    dom.wrapInner(
+                        fragment,
+                        '.outer'
+                    );
+                    document.body.appendChild(fragment);
+                    return document.body.innerHTML;
+                }),
+                '<div id="wrap">' +
+                '<div id="parent1">' +
+                '<a href="#" id="test1">Test</a>' +
+                '<a href="#" id="test2">Test</a>' +
+                '</div>' +
+                '<div id="parent2">' +
+                '<a href="#" id="test3">Test</a>' +
+                '<a href="#" id="test4">Test</a>' +
+                '</div>' +
+                '</div>' +
+                '<div id="wrapper">' +
+                '<div class="outer">' +
+                '<div class="inner">' +
+                '</div>' +
+                '</div>' +
+                '</div>' +
+                '<div class="outer">' +
+                '<div class="inner">' +
+                '<div><span></span></div>' +
+                '<div><span></span></div>' +
+                '</div>' +
+                '</div>'
+            );
+        });
+
+        it('works with ShadowRoot nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    const div = document.createElement('div');
+                    const shadow = div.attachShadow({ mode: 'open' });
+                    const div1 = document.createElement('div');
+                    const div2 = document.createElement('div');
+                    const span1 = document.createElement('span');
+                    const span2 = document.createElement('span');
+                    div1.appendChild(span1);
+                    div2.appendChild(span2);
+                    shadow.appendChild(div1);
+                    shadow.appendChild(div2);
+                    dom.wrapInner(
+                        shadow,
+                        '.outer'
+                    );
+                    return shadow.innerHTML;
+                }),
+                '<div class="outer">' +
+                '<div class="inner">' +
+                '<div><span></span></div>' +
+                '<div><span></span></div>' +
+                '</div>' +
+                '</div>'
+            );
         });
 
         it('works with HTMLElement other nodes', async function() {
@@ -1240,7 +1396,7 @@ describe('DOM Wrap', function() {
                 '</div>' +
                 '</div>' +
                 '</div>'
-            )
+            );
         });
 
         it('works with HTMLCollection other nodes', async function() {
@@ -1276,7 +1432,7 @@ describe('DOM Wrap', function() {
                 '</div>' +
                 '</div>' +
                 '</div>'
-            )
+            );
         });
 
         it('works with NodeList other nodes', async function() {
@@ -1312,7 +1468,7 @@ describe('DOM Wrap', function() {
                 '</div>' +
                 '</div>' +
                 '</div>'
-            )
+            );
         });
 
         it('works with array other nodes', async function() {
@@ -1350,7 +1506,48 @@ describe('DOM Wrap', function() {
                 '</div>' +
                 '</div>' +
                 '</div>'
-            )
+            );
+        });
+
+        it('works with DocumentFragment other nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    const fragment = document.createDocumentFragment();
+                    const div = document.createElement('div');
+                    const span = document.createElement('span');
+                    div.appendChild(span);
+                    fragment.appendChild(div);
+                    dom.wrapInner(
+                        '#wrap > div',
+                        fragment
+                    );
+                    return document.body.innerHTML;
+                }),
+                '<div id="wrap">' +
+                '<div id="parent1">' +
+                '<div>' +
+                '<span>' +
+                '<a href="#" id="test1">Test</a>' +
+                '<a href="#" id="test2">Test</a>' +
+                '</span>' +
+                '</div>' +
+                '</div>' +
+                '<div id="parent2">' +
+                '<div>' +
+                '<span>' +
+                '<a href="#" id="test3">Test</a>' +
+                '<a href="#" id="test4">Test</a>' +
+                '</span>' +
+                '</div>' +
+                '</div>' +
+                '</div>' +
+                '<div id="wrapper">' +
+                '<div class="outer">' +
+                '<div class="inner">' +
+                '</div>' +
+                '</div>' +
+                '</div>'
+            );
         });
 
         it('works with HTML other nodes', async function() {
@@ -1386,7 +1583,7 @@ describe('DOM Wrap', function() {
                 '</div>' +
                 '</div>' +
                 '</div>'
-            )
+            );
         });
 
     });

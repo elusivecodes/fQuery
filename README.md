@@ -758,6 +758,26 @@ The following constants can also be used as the second argument for brevity.
 - `DOM.OUTER` *2*
 - `DOM.OUTER_MARGIN` *3*
 
+**Scroll Height**
+
+Get the scroll height of the first node.
+
+- `nodes` is a query selector string, a *HTMLElement*, *Document*, *NodeList*, *HTMLCollection*, [*QuerySet*](https://github.com/elusivecodes/fQuery) or an array of nodes.
+
+```javascript
+const scrollHeight = dom.scrollHeight(nodes);
+```
+
+**Scroll Width**
+
+Get the scroll width of the first node.
+
+- `nodes` is a query selector string, a *HTMLElement*, *Document*, *NodeList*, *HTMLCollection*, [*QuerySet*](https://github.com/elusivecodes/fQuery) or an array of nodes.
+
+```javascript
+const scrollWidth = dom.scrollWidth(nodes);
+```
+
 **Width**
 
 Get the computed width of the first node (and optionally padding, border or margin).
@@ -1328,7 +1348,7 @@ dom.unwrap(nodes, filter);
 
 **Wrap**
 
-Wrap each nodes with other nodes.
+Wrap each node with other nodes.
 
 - `nodes` is a query selector string, a *Node*, *HTMLElement*, *NodeList*, *HTMLCollection*, [*QuerySet*](https://github.com/elusivecodes/fQuery) or an array of nodes.
 - `others` is a query selector string, a HTML string, a *HTMLElement*, *DocumentFragment*, *NodeList*, *HTMLCollection*, [*QuerySet*](https://github.com/elusivecodes/fQuery) or an array of nodes.
@@ -2447,13 +2467,12 @@ dom.loadStyles(stylesheets);
 
 **Get Cookie**
 
-Get a cookie value (optionally json encoded).
+Get a cookie value.
 
 - `name` is a string containing the name of the cookie value to retrieve.
-- `json` is a boolean indicating whether the cookie contains a JSON value, and will default to *false*.
 
 ```javascript
-const value = dom.getCookie(name, json);
+const value = dom.getCookie(name);
 ```
 
 **Remove Cookie**
@@ -2472,7 +2491,7 @@ dom.removeCookie(name, options);
 
 **Set Cookie**
 
-Set a cookie (optionally json encoded).
+Set a cookie value.
 
 - `name` is a string containing the name of the cookie value to set.
 - `value` is the value you wish to set the cookie to.
@@ -2480,10 +2499,9 @@ Set a cookie (optionally json encoded).
     - `expires` is a number indicating the number of seconds until the cookie will expire.
     - `path` is a string indicating the path to use for the cookie.
     - `secure` is a boolean indicating whether only set the cookie for secure requests, and will default to *false*.
-- `json` is a boolean indicating whether to JSON encode the cookie value, and will default to *false*.
 
 ```javascript
-dom.setCookie(name, value, options, json);
+dom.setCookie(name, value, options);
 ```
 
 

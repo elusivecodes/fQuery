@@ -16,10 +16,10 @@ describe('DOM Event Handlers', function() {
         it('adds an event to each node', async function() {
             assert.equal(
                 await exec(_ => {
+                    let result = 0;
                     const event = new Event('click');
                     const element1 = document.getElementById('test1');
                     const element2 = document.getElementById('test2');
-                    let result = 0;
                     dom.addEvent(
                         'a',
                         'click',
@@ -38,10 +38,10 @@ describe('DOM Event Handlers', function() {
         it('works with HTMLElement nodes', async function() {
             assert.equal(
                 await exec(_ => {
+                    let result = 0;
                     const event = new Event('click');
                     const element1 = document.getElementById('test1');
                     const element2 = document.getElementById('test2');
-                    let result = 0;
                     dom.addEvent(
                         element1,
                         'click',
@@ -60,10 +60,10 @@ describe('DOM Event Handlers', function() {
         it('works with HTMLCollection nodes', async function() {
             assert.equal(
                 await exec(_ => {
+                    let result = 0;
                     const event = new Event('click');
                     const element1 = document.getElementById('test1');
                     const element2 = document.getElementById('test2');
-                    let result = 0;
                     dom.addEvent(
                         document.body.children,
                         'click',
@@ -82,10 +82,10 @@ describe('DOM Event Handlers', function() {
         it('works with NodeList nodes', async function() {
             assert.equal(
                 await exec(_ => {
+                    let result = 0;
                     const event = new Event('click');
                     const element1 = document.getElementById('test1');
                     const element2 = document.getElementById('test2');
-                    let result = 0;
                     dom.addEvent(
                         document.querySelectorAll('a'),
                         'click',
@@ -104,10 +104,10 @@ describe('DOM Event Handlers', function() {
         it('works with array nodes', async function() {
             assert.equal(
                 await exec(_ => {
+                    let result = 0;
                     const event = new Event('click');
                     const element1 = document.getElementById('test1');
                     const element2 = document.getElementById('test2');
-                    let result = 0;
                     dom.addEvent(
                         [
                             element1,
@@ -129,10 +129,10 @@ describe('DOM Event Handlers', function() {
         it('works with ShadowRoot nodes', async function() {
             assert.equal(
                 await exec(_ => {
+                    let result = 0;
                     const div = document.createElement('div');
                     const shadow = div.attachShadow({ mode: 'open' });
                     const event = new Event('click');
-                    let result = 0;
                     dom.addEvent(
                         shadow,
                         'click',
@@ -149,8 +149,8 @@ describe('DOM Event Handlers', function() {
         it('works with Document nodes', async function() {
             assert.equal(
                 await exec(_ => {
-                    const event = new Event('click');
                     let result = 0;
+                    const event = new Event('click');
                     dom.addEvent(
                         document,
                         'click',
@@ -167,8 +167,8 @@ describe('DOM Event Handlers', function() {
         it('works with Window nodes', async function() {
             assert.equal(
                 await exec(_ => {
-                    const event = new Event('click');
                     let result = 0;
+                    const event = new Event('click');
                     dom.addEvent(
                         window,
                         'click',
@@ -207,6 +207,7 @@ describe('DOM Event Handlers', function() {
         it('adds a delegated event to each node', async function() {
             assert.equal(
                 await exec(_ => {
+                    let result = 0;
                     const event = new Event('click', {
                         bubbles: true
                     });
@@ -214,7 +215,6 @@ describe('DOM Event Handlers', function() {
                     const element2 = document.getElementById('test2');
                     const element3 = document.getElementById('test3');
                     const element4 = document.getElementById('test4');
-                    let result = 0;
                     dom.addEventDelegate(
                         'div',
                         'click',
@@ -238,6 +238,7 @@ describe('DOM Event Handlers', function() {
         it('adds a delegated event to each node with custom child selector', async function() {
             assert.equal(
                 await exec(_ => {
+                    let result = 0;
                     const event = new Event('click', {
                         bubbles: true
                     });
@@ -245,7 +246,6 @@ describe('DOM Event Handlers', function() {
                     const element2 = document.getElementById('test2');
                     const element3 = document.getElementById('test3');
                     const element4 = document.getElementById('test4');
-                    let result = 0;
                     dom.addEventDelegate(
                         'div',
                         'click',
@@ -269,6 +269,7 @@ describe('DOM Event Handlers', function() {
         it('works with HTMLElement nodes', async function() {
             assert.equal(
                 await exec(_ => {
+                    let result = 0;
                     const event = new Event('click', {
                         bubbles: true
                     });
@@ -276,7 +277,6 @@ describe('DOM Event Handlers', function() {
                     const element2 = document.getElementById('test2');
                     const element3 = document.getElementById('test3');
                     const element4 = document.getElementById('test4');
-                    let result = 0;
                     dom.addEventDelegate(
                         document.getElementById('parent1'),
                         'click',
@@ -300,6 +300,7 @@ describe('DOM Event Handlers', function() {
         it('works with HTMLCollection nodes', async function() {
             assert.equal(
                 await exec(_ => {
+                    let result = 0;
                     const event = new Event('click', {
                         bubbles: true
                     });
@@ -307,7 +308,6 @@ describe('DOM Event Handlers', function() {
                     const element2 = document.getElementById('test2');
                     const element3 = document.getElementById('test3');
                     const element4 = document.getElementById('test4');
-                    let result = 0;
                     dom.addEventDelegate(
                         document.body.children,
                         'click',
@@ -331,6 +331,7 @@ describe('DOM Event Handlers', function() {
         it('works with NodeList nodes', async function() {
             assert.equal(
                 await exec(_ => {
+                    let result = 0;
                     const event = new Event('click', {
                         bubbles: true
                     });
@@ -338,7 +339,6 @@ describe('DOM Event Handlers', function() {
                     const element2 = document.getElementById('test2');
                     const element3 = document.getElementById('test3');
                     const element4 = document.getElementById('test4');
-                    let result = 0;
                     dom.addEventDelegate(
                         document.querySelectorAll('div'),
                         'click',
@@ -362,6 +362,7 @@ describe('DOM Event Handlers', function() {
         it('works with array nodes', async function() {
             assert.equal(
                 await exec(_ => {
+                    let result = 0;
                     const event = new Event('click', {
                         bubbles: true
                     });
@@ -369,7 +370,6 @@ describe('DOM Event Handlers', function() {
                     const element2 = document.getElementById('test2');
                     const element3 = document.getElementById('test3');
                     const element4 = document.getElementById('test4');
-                    let result = 0;
                     dom.addEventDelegate(
                         [
                             document.getElementById('parent1'),
@@ -396,14 +396,14 @@ describe('DOM Event Handlers', function() {
         it('works with ShadowRoot nodes', async function() {
             assert.equal(
                 await exec(_ => {
+                    let result = 0;
+                    const event = new Event('click', {
+                        bubbles: true
+                    });
                     const div = document.createElement('div');
                     const shadow = div.attachShadow({ mode: 'open' });
                     const a = document.createElement('a');
                     shadow.appendChild(a);
-                    const event = new Event('click', {
-                        bubbles: true
-                    });
-                    let result = 0;
                     dom.addEventDelegate(
                         shadow,
                         'click',
@@ -421,6 +421,7 @@ describe('DOM Event Handlers', function() {
         it('works with Document nodes', async function() {
             assert.equal(
                 await exec(_ => {
+                    let result = 0;
                     const event = new Event('click', {
                         bubbles: true
                     });
@@ -428,7 +429,6 @@ describe('DOM Event Handlers', function() {
                     const element2 = document.getElementById('test2');
                     const element3 = document.getElementById('test3');
                     const element4 = document.getElementById('test4');
-                    let result = 0;
                     dom.addEventDelegate(
                         document,
                         'click',
@@ -474,6 +474,7 @@ describe('DOM Event Handlers', function() {
         it('adds a self-destructing delegated event to each node', async function() {
             assert.equal(
                 await exec(_ => {
+                    let result = 0;
                     const event = new Event('click', {
                         bubbles: true
                     });
@@ -481,7 +482,6 @@ describe('DOM Event Handlers', function() {
                     const element2 = document.getElementById('test2');
                     const element3 = document.getElementById('test3');
                     const element4 = document.getElementById('test4');
-                    let result = 0;
                     dom.addEventDelegateOnce(
                         'div',
                         'click',
@@ -505,12 +505,12 @@ describe('DOM Event Handlers', function() {
         it('adds a self-destructing delegated event to each node with custom child selector', async function() {
             assert.equal(
                 await exec(_ => {
+                    let result = 0;
                     const event = new Event('click', {
                         bubbles: true
                     });
                     const element1 = document.getElementById('test1');
                     const element4 = document.getElementById('test4');
-                    let result = 0;
                     dom.addEventDelegateOnce(
                         'div',
                         'click',
@@ -530,6 +530,7 @@ describe('DOM Event Handlers', function() {
         it('works with HTMLElement nodes', async function() {
             assert.equal(
                 await exec(_ => {
+                    let result = 0;
                     const event = new Event('click', {
                         bubbles: true
                     });
@@ -537,7 +538,6 @@ describe('DOM Event Handlers', function() {
                     const element2 = document.getElementById('test2');
                     const element3 = document.getElementById('test3');
                     const element4 = document.getElementById('test4');
-                    let result = 0;
                     dom.addEventDelegateOnce(
                         document.getElementById('parent1'),
                         'click',
@@ -561,6 +561,7 @@ describe('DOM Event Handlers', function() {
         it('works with HTMLCollection nodes', async function() {
             assert.equal(
                 await exec(_ => {
+                    let result = 0;
                     const event = new Event('click', {
                         bubbles: true
                     });
@@ -568,7 +569,6 @@ describe('DOM Event Handlers', function() {
                     const element2 = document.getElementById('test2');
                     const element3 = document.getElementById('test3');
                     const element4 = document.getElementById('test4');
-                    let result = 0;
                     dom.addEventDelegateOnce(
                         document.body.children,
                         'click',
@@ -592,6 +592,7 @@ describe('DOM Event Handlers', function() {
         it('works with NodeList nodes', async function() {
             assert.equal(
                 await exec(_ => {
+                    let result = 0;
                     const event = new Event('click', {
                         bubbles: true
                     });
@@ -599,7 +600,6 @@ describe('DOM Event Handlers', function() {
                     const element2 = document.getElementById('test2');
                     const element3 = document.getElementById('test3');
                     const element4 = document.getElementById('test4');
-                    let result = 0;
                     dom.addEventDelegateOnce(
                         document.querySelectorAll('div'),
                         'click',
@@ -623,6 +623,7 @@ describe('DOM Event Handlers', function() {
         it('works with array nodes', async function() {
             assert.equal(
                 await exec(_ => {
+                    let result = 0;
                     const event = new Event('click', {
                         bubbles: true
                     });
@@ -630,7 +631,6 @@ describe('DOM Event Handlers', function() {
                     const element2 = document.getElementById('test2');
                     const element3 = document.getElementById('test3');
                     const element4 = document.getElementById('test4');
-                    let result = 0;
                     dom.addEventDelegateOnce(
                         [
                             document.getElementById('parent1'),
@@ -657,14 +657,14 @@ describe('DOM Event Handlers', function() {
         it('works with ShadowRoot nodes', async function() {
             assert.equal(
                 await exec(_ => {
+                    let result = 0;
+                    const event = new Event('click', {
+                        bubbles: true
+                    });
                     const div = document.createElement('div');
                     const shadow = div.attachShadow({ mode: 'open' });
                     const a = document.createElement('a');
                     shadow.appendChild(a);
-                    const event = new Event('click', {
-                        bubbles: true
-                    });
-                    let result = 0;
                     dom.addEventDelegateOnce(
                         shadow,
                         'click',
@@ -682,6 +682,7 @@ describe('DOM Event Handlers', function() {
         it('works with Document nodes', async function() {
             assert.equal(
                 await exec(_ => {
+                    let result = 0;
                     const event = new Event('click', {
                         bubbles: true
                     });
@@ -689,7 +690,6 @@ describe('DOM Event Handlers', function() {
                     const element2 = document.getElementById('test2');
                     const element3 = document.getElementById('test3');
                     const element4 = document.getElementById('test4');
-                    let result = 0;
                     dom.addEventDelegateOnce(
                         document,
                         'click',
@@ -725,10 +725,10 @@ describe('DOM Event Handlers', function() {
         it('adds a self-destrucing event to each node', async function() {
             assert.equal(
                 await exec(_ => {
+                    let result = 0;
                     const event = new Event('click');
                     const element1 = document.getElementById('test1');
                     const element2 = document.getElementById('test2');
-                    let result = 0;
                     dom.addEventOnce(
                         'a',
                         'click',
@@ -747,10 +747,10 @@ describe('DOM Event Handlers', function() {
         it('works with HTMLElement nodes', async function() {
             assert.equal(
                 await exec(_ => {
+                    let result = 0;
                     const event = new Event('click');
                     const element1 = document.getElementById('test1');
                     const element2 = document.getElementById('test2');
-                    let result = 0;
                     dom.addEventOnce(
                         element1,
                         'click',
@@ -769,10 +769,10 @@ describe('DOM Event Handlers', function() {
         it('works with HTMLCollection nodes', async function() {
             assert.equal(
                 await exec(_ => {
+                    let result = 0;
                     const event = new Event('click');
                     const element1 = document.getElementById('test1');
                     const element2 = document.getElementById('test2');
-                    let result = 0;
                     dom.addEventOnce(
                         document.body.children,
                         'click',
@@ -791,10 +791,10 @@ describe('DOM Event Handlers', function() {
         it('works with NodeList nodes', async function() {
             assert.equal(
                 await exec(_ => {
+                    let result = 0;
                     const event = new Event('click');
                     const element1 = document.getElementById('test1');
                     const element2 = document.getElementById('test2');
-                    let result = 0;
                     dom.addEventOnce(
                         document.querySelectorAll('a'),
                         'click',
@@ -813,10 +813,10 @@ describe('DOM Event Handlers', function() {
         it('works with array nodes', async function() {
             assert.equal(
                 await exec(_ => {
+                    let result = 0;
                     const event = new Event('click');
                     const element1 = document.getElementById('test1');
                     const element2 = document.getElementById('test2');
-                    let result = 0;
                     dom.addEventOnce(
                         [
                             element1,
@@ -838,10 +838,10 @@ describe('DOM Event Handlers', function() {
         it('works with ShadowRoot nodes', async function() {
             assert.equal(
                 await exec(_ => {
+                    let result = 0;
+                    const event = new Event('click');
                     const div = document.createElement('div');
                     const shadow = div.attachShadow({ mode: 'open' });
-                    const event = new Event('click');
-                    let result = 0;
                     dom.addEventOnce(
                         shadow,
                         'click',
@@ -858,8 +858,8 @@ describe('DOM Event Handlers', function() {
         it('works with Document nodes', async function() {
             assert.equal(
                 await exec(_ => {
-                    const event = new Event('click');
                     let result = 0;
+                    const event = new Event('click');
                     dom.addEventOnce(
                         document,
                         'click',
@@ -876,8 +876,8 @@ describe('DOM Event Handlers', function() {
         it('works with Window nodes', async function() {
             assert.equal(
                 await exec(_ => {
-                    const event = new Event('click');
                     let result = 0;
+                    const event = new Event('click');
                     dom.addEventOnce(
                         window,
                         'click',
@@ -926,11 +926,11 @@ describe('DOM Event Handlers', function() {
         it('clones all events from all elements to all other elements', async function() {
             assert.equal(
                 await exec(_ => {
+                    const event = new Event('click');
                     dom.cloneEvents(
                         '[data-toggle="event"]',
                         '[data-toggle="noEvent"]'
                     );
-                    const event = new Event('click');
                     document.getElementById('test1').dispatchEvent(event);
                     document.getElementById('test2').dispatchEvent(event);
                     document.getElementById('test3').dispatchEvent(event);
@@ -951,12 +951,12 @@ describe('DOM Event Handlers', function() {
         it('works with HTMLElement nodes', async function() {
             assert.equal(
                 await exec(_ => {
+                    const event = new Event('click');
                     const element = document.getElementById('test1');
                     dom.cloneEvents(
                         element,
                         '[data-toggle="noEvent"]'
                     );
-                    const event = new Event('click');
                     element.dispatchEvent(event);
                     document.getElementById('test2').dispatchEvent(event);
                     document.getElementById('test3').dispatchEvent(event);
@@ -977,11 +977,11 @@ describe('DOM Event Handlers', function() {
         it('works with HTMLCollection nodes', async function() {
             assert.equal(
                 await exec(_ => {
+                    const event = new Event('click');
                     dom.cloneEvents(
                         document.getElementById('eventParent').children,
                         '[data-toggle="noEvent"]'
                     );
-                    const event = new Event('click');
                     document.getElementById('test1').dispatchEvent(event);
                     document.getElementById('test2').dispatchEvent(event);
                     document.getElementById('test3').dispatchEvent(event);
@@ -1002,11 +1002,11 @@ describe('DOM Event Handlers', function() {
         it('works with NodeList nodes', async function() {
             assert.equal(
                 await exec(_ => {
+                    const event = new Event('click');
                     dom.cloneEvents(
                         document.querySelectorAll('[data-toggle="event"]'),
                         '[data-toggle="noEvent"]'
                     );
-                    const event = new Event('click');
                     document.getElementById('test1').dispatchEvent(event);
                     document.getElementById('test2').dispatchEvent(event);
                     document.getElementById('test3').dispatchEvent(event);
@@ -1027,6 +1027,7 @@ describe('DOM Event Handlers', function() {
         it('works with array nodes', async function() {
             assert.equal(
                 await exec(_ => {
+                    const event = new Event('click');
                     const element1 = document.getElementById('test1');
                     const element2 = document.getElementById('test2');
                     dom.cloneEvents(
@@ -1036,7 +1037,6 @@ describe('DOM Event Handlers', function() {
                         ],
                         '[data-toggle="noEvent"]'
                     );
-                    const event = new Event('click');
                     element1.dispatchEvent(event);
                     element2.dispatchEvent(event);
                     document.getElementById('test3').dispatchEvent(event);
@@ -1057,9 +1057,10 @@ describe('DOM Event Handlers', function() {
         it('works with ShadowRoot nodes', async function() {
             assert.equal(
                 await exec(_ => {
+                    let result = 0;
+                    const event = new Event('click');
                     const div = document.createElement('div');
                     const shadow = div.attachShadow({ mode: 'open' });
-                    let result = 0;
                     dom.addEvent(
                         shadow,
                         'click',
@@ -1069,7 +1070,6 @@ describe('DOM Event Handlers', function() {
                         shadow,
                         '[data-toggle="noEvent"]'
                     );
-                    const event = new Event('click');
                     shadow.dispatchEvent(event);
                     document.getElementById('test3').dispatchEvent(event);
                     document.getElementById('test4').dispatchEvent(event);
@@ -1083,6 +1083,7 @@ describe('DOM Event Handlers', function() {
             assert.equal(
                 await exec(_ => {
                     let result = 0;
+                    const event = new Event('click');
                     dom.addEvent(
                         document,
                         'click',
@@ -1092,7 +1093,6 @@ describe('DOM Event Handlers', function() {
                         document,
                         '[data-toggle="noEvent"]'
                     );
-                    const event = new Event('click');
                     document.dispatchEvent(event);
                     document.getElementById('test3').dispatchEvent(event);
                     document.getElementById('test4').dispatchEvent(event);
@@ -1106,6 +1106,7 @@ describe('DOM Event Handlers', function() {
             assert.equal(
                 await exec(_ => {
                     let result = 0;
+                    const event = new Event('click');
                     dom.addEvent(
                         window,
                         'click',
@@ -1115,7 +1116,6 @@ describe('DOM Event Handlers', function() {
                         window,
                         '[data-toggle="noEvent"]'
                     );
-                    const event = new Event('click');
                     window.dispatchEvent(event);
                     document.getElementById('test3').dispatchEvent(event);
                     document.getElementById('test4').dispatchEvent(event);
@@ -1128,12 +1128,12 @@ describe('DOM Event Handlers', function() {
         it('works with HTMLElement other nodes', async function() {
             assert.equal(
                 await exec(_ => {
+                    const event = new Event('click');
                     const element = document.getElementById('test3');
                     dom.cloneEvents(
                         '[data-toggle="event"]',
                         element
                     );
-                    const event = new Event('click');
                     document.getElementById('test1').dispatchEvent(event);
                     document.getElementById('test2').dispatchEvent(event);
                     element.dispatchEvent(event);
@@ -1154,11 +1154,11 @@ describe('DOM Event Handlers', function() {
         it('works with HTMLCollection other nodes', async function() {
             assert.equal(
                 await exec(_ => {
+                    const event = new Event('click');
                     dom.cloneEvents(
                         '[data-toggle="event"]',
                         document.getElementById('noEventParent').children
                     );
-                    const event = new Event('click');
                     document.getElementById('test1').dispatchEvent(event);
                     document.getElementById('test2').dispatchEvent(event);
                     document.getElementById('test3').dispatchEvent(event);
@@ -1179,11 +1179,11 @@ describe('DOM Event Handlers', function() {
         it('works with NodeList other nodes', async function() {
             assert.equal(
                 await exec(_ => {
+                    const event = new Event('click');
                     dom.cloneEvents(
                         '[data-toggle="event"]',
                         document.querySelectorAll('[data-toggle="noEvent"]')
                     );
-                    const event = new Event('click');
                     document.getElementById('test1').dispatchEvent(event);
                     document.getElementById('test2').dispatchEvent(event);
                     document.getElementById('test3').dispatchEvent(event);
@@ -1204,6 +1204,7 @@ describe('DOM Event Handlers', function() {
         it('works with array other nodes', async function() {
             assert.equal(
                 await exec(_ => {
+                    const event = new Event('click');
                     const element1 = document.getElementById('test3');
                     const element2 = document.getElementById('test4');
                     dom.cloneEvents(
@@ -1213,7 +1214,6 @@ describe('DOM Event Handlers', function() {
                             element2
                         ]
                     );
-                    const event = new Event('click');
                     document.getElementById('test1').dispatchEvent(event);
                     document.getElementById('test2').dispatchEvent(event);
                     element1.dispatchEvent(event);
@@ -1234,10 +1234,11 @@ describe('DOM Event Handlers', function() {
         it('works with ShadowRoot nodes', async function() {
             assert.equal(
                 await exec(_ => {
+                    let result = 0;
+                    const event = new Event('click');
                     const a = document.createElement('a');
                     const div = document.createElement('div');
                     const shadow = div.attachShadow({ mode: 'open' });
-                    let result = 0;
                     dom.addEvent(
                         a,
                         'click',
@@ -1247,7 +1248,6 @@ describe('DOM Event Handlers', function() {
                         a,
                         shadow
                     );
-                    const event = new Event('click');
                     a.dispatchEvent(event);
                     shadow.dispatchEvent(event);
                     return result;
@@ -1259,8 +1259,9 @@ describe('DOM Event Handlers', function() {
         it('works with Document nodes', async function() {
             assert.equal(
                 await exec(_ => {
-                    const a = document.createElement('a');
                     let result = 0;
+                    const event = new Event('click');
+                    const a = document.createElement('a');
                     dom.addEvent(
                         a,
                         'click',
@@ -1270,7 +1271,6 @@ describe('DOM Event Handlers', function() {
                         a,
                         document
                     );
-                    const event = new Event('click');
                     a.dispatchEvent(event);
                     document.dispatchEvent(event);
                     return result;
@@ -1282,8 +1282,9 @@ describe('DOM Event Handlers', function() {
         it('works with Window nodes', async function() {
             assert.equal(
                 await exec(_ => {
-                    const a = document.createElement('a');
                     let result = 0;
+                    const event = new Event('click');
+                    const a = document.createElement('a');
                     dom.addEvent(
                         a,
                         'click',
@@ -1293,7 +1294,6 @@ describe('DOM Event Handlers', function() {
                         a,
                         window
                     );
-                    const event = new Event('click');
                     a.dispatchEvent(event);
                     window.dispatchEvent(event);
                     return result;
@@ -1317,13 +1317,13 @@ describe('DOM Event Handlers', function() {
         it('removes all events from each node', async function() {
             assert.equal(
                 await exec(_ => {
+                    let result = 0;
+                    const callback1 = _ => { result++; };
+                    const callback2 = _ => { result++; };
                     const event1 = new Event('click');
                     const event2 = new Event('hover');
                     const element1 = document.getElementById('test1');
                     const element2 = document.getElementById('test2');
-                    let result = 0;
-                    const callback1 = _ => { result++; };
-                    const callback2 = _ => { result++; };
                     dom.addEvent(
                         'a',
                         'click',
@@ -1348,13 +1348,13 @@ describe('DOM Event Handlers', function() {
         it('removes all events of a type from each node', async function() {
             assert.equal(
                 await exec(_ => {
+                    let result = 0;
+                    const callback1 = _ => { result++; };
+                    const callback2 = _ => { result++; };
                     const event1 = new Event('click');
                     const event2 = new Event('hover');
                     const element1 = document.getElementById('test1');
                     const element2 = document.getElementById('test2');
-                    let result = 0;
-                    const callback1 = _ => { result++; };
-                    const callback2 = _ => { result++; };
                     dom.addEvent(
                         'a',
                         'click',
@@ -1387,12 +1387,12 @@ describe('DOM Event Handlers', function() {
         it('removes an event from each node', async function() {
             assert.equal(
                 await exec(_ => {
-                    const event = new Event('click');
-                    const element1 = document.getElementById('test1');
-                    const element2 = document.getElementById('test2');
                     let result = 0;
                     const callback1 = _ => { result++; };
                     const callback2 = _ => { result++; };
+                    const event = new Event('click');
+                    const element1 = document.getElementById('test1');
+                    const element2 = document.getElementById('test2');
                     dom.addEvent(
                         'a',
                         'click',
@@ -1419,12 +1419,12 @@ describe('DOM Event Handlers', function() {
         it('works with HTMLElement nodes', async function() {
             assert.equal(
                 await exec(_ => {
-                    const event = new Event('click');
-                    const element1 = document.getElementById('test1');
-                    const element2 = document.getElementById('test2');
                     let result = 0;
                     const callback1 = _ => { result++; };
                     const callback2 = _ => { result++; };
+                    const event = new Event('click');
+                    const element1 = document.getElementById('test1');
+                    const element2 = document.getElementById('test2');
                     dom.addEvent(
                         'a',
                         'click',
@@ -1451,12 +1451,12 @@ describe('DOM Event Handlers', function() {
         it('works with HTMLCollection nodes', async function() {
             assert.equal(
                 await exec(_ => {
-                    const event = new Event('click');
-                    const element1 = document.getElementById('test1');
-                    const element2 = document.getElementById('test2');
                     let result = 0;
                     const callback1 = _ => { result++; };
                     const callback2 = _ => { result++; };
+                    const event = new Event('click');
+                    const element1 = document.getElementById('test1');
+                    const element2 = document.getElementById('test2');
                     dom.addEvent(
                         'a',
                         'click',
@@ -1483,12 +1483,12 @@ describe('DOM Event Handlers', function() {
         it('works with NodeList nodes', async function() {
             assert.equal(
                 await exec(_ => {
-                    const event = new Event('click');
-                    const element1 = document.getElementById('test1');
-                    const element2 = document.getElementById('test2');
                     let result = 0;
                     const callback1 = _ => { result++; };
                     const callback2 = _ => { result++; };
+                    const event = new Event('click');
+                    const element1 = document.getElementById('test1');
+                    const element2 = document.getElementById('test2');
                     dom.addEvent(
                         'a',
                         'click',
@@ -1515,12 +1515,12 @@ describe('DOM Event Handlers', function() {
         it('works with array nodes', async function() {
             assert.equal(
                 await exec(_ => {
-                    const event = new Event('click');
-                    const element1 = document.getElementById('test1');
-                    const element2 = document.getElementById('test2');
                     let result = 0;
                     const callback1 = _ => { result++; };
                     const callback2 = _ => { result++; };
+                    const event = new Event('click');
+                    const element1 = document.getElementById('test1');
+                    const element2 = document.getElementById('test2');
                     dom.addEvent(
                         'a',
                         'click',
@@ -1550,12 +1550,12 @@ describe('DOM Event Handlers', function() {
         it('works with ShadowRoot nodes', async function() {
             assert.equal(
                 await exec(_ => {
-                    const div = document.createElement('div');
-                    const shadow = div.attachShadow({ mode: 'open' });
-                    const event = new Event('click');
                     let result = 0;
                     const callback1 = _ => { result++; };
                     const callback2 = _ => { result++; };
+                    const event = new Event('click');
+                    const div = document.createElement('div');
+                    const shadow = div.attachShadow({ mode: 'open' });
                     dom.addEvent(
                         shadow,
                         'click',
@@ -1581,10 +1581,10 @@ describe('DOM Event Handlers', function() {
         it('works with Document nodes', async function() {
             assert.equal(
                 await exec(_ => {
-                    const event = new Event('click');
                     let result = 0;
                     const callback1 = _ => { result++; };
                     const callback2 = _ => { result++; };
+                    const event = new Event('click');
                     dom.addEvent(
                         document,
                         'click',
@@ -1610,10 +1610,10 @@ describe('DOM Event Handlers', function() {
         it('works with Window nodes', async function() {
             assert.equal(
                 await exec(_ => {
-                    const event = new Event('click');
                     let result = 0;
                     const callback1 = _ => { result++; };
                     const callback2 = _ => { result++; };
+                    const event = new Event('click');
                     dom.addEvent(
                         window,
                         'click',
@@ -1657,6 +1657,9 @@ describe('DOM Event Handlers', function() {
         it('removes all delegated events from each node', async function() {
             assert.equal(
                 await exec(_ => {
+                    let result = 0;
+                    const callback1 = _ => { result++; };
+                    const callback2 = _ => { result++; };
                     const event1 = new Event('click', {
                         bubbles: true
                     });
@@ -1667,9 +1670,6 @@ describe('DOM Event Handlers', function() {
                     const element2 = document.getElementById('test2');
                     const element3 = document.getElementById('test3');
                     const element4 = document.getElementById('test4');
-                    let result = 0;
-                    const callback1 = _ => { result++; };
-                    const callback2 = _ => { result++; };
                     dom.addEventDelegate(
                         'div',
                         'click',
@@ -1710,6 +1710,9 @@ describe('DOM Event Handlers', function() {
         it('removes all delegated events of a type from each node', async function() {
             assert.equal(
                 await exec(_ => {
+                    let result = 0;
+                    const callback1 = _ => { result++; };
+                    const callback2 = _ => { result++; };
                     const event1 = new Event('click', {
                         bubbles: true
                     });
@@ -1720,9 +1723,6 @@ describe('DOM Event Handlers', function() {
                     const element2 = document.getElementById('test2');
                     const element3 = document.getElementById('test3');
                     const element4 = document.getElementById('test4');
-                    let result = 0;
-                    const callback1 = _ => { result++; };
-                    const callback2 = _ => { result++; };
                     dom.addEventDelegate(
                         'div',
                         'click',
@@ -1763,6 +1763,9 @@ describe('DOM Event Handlers', function() {
         it('removes a delegated event from each node', async function() {
             assert.equal(
                 await exec(_ => {
+                    let result = 0;
+                    const callback1 = _ => { result++; };
+                    const callback2 = _ => { result++; };
                     const event = new Event('click', {
                         bubbles: true
                     });
@@ -1770,9 +1773,6 @@ describe('DOM Event Handlers', function() {
                     const element2 = document.getElementById('test2');
                     const element3 = document.getElementById('test3');
                     const element4 = document.getElementById('test4');
-                    let result = 0;
-                    const callback1 = _ => { result++; };
-                    const callback2 = _ => { result++; };
                     dom.addEventDelegate(
                         'div',
                         'click',
@@ -1804,6 +1804,9 @@ describe('DOM Event Handlers', function() {
         it('works with HTMLElement nodes', async function() {
             assert.equal(
                 await exec(_ => {
+                    let result = 0;
+                    const callback1 = _ => { result++; };
+                    const callback2 = _ => { result++; };
                     const event = new Event('click', {
                         bubbles: true
                     });
@@ -1811,9 +1814,6 @@ describe('DOM Event Handlers', function() {
                     const element2 = document.getElementById('test2');
                     const element3 = document.getElementById('test3');
                     const element4 = document.getElementById('test4');
-                    let result = 0;
-                    const callback1 = _ => { result++; };
-                    const callback2 = _ => { result++; };
                     dom.addEventDelegate(
                         'div',
                         'click',
@@ -1845,6 +1845,9 @@ describe('DOM Event Handlers', function() {
         it('works with HTMLCollection nodes', async function() {
             assert.equal(
                 await exec(_ => {
+                    let result = 0;
+                    const callback1 = _ => { result++; };
+                    const callback2 = _ => { result++; };
                     const event = new Event('click', {
                         bubbles: true
                     });
@@ -1852,9 +1855,6 @@ describe('DOM Event Handlers', function() {
                     const element2 = document.getElementById('test2');
                     const element3 = document.getElementById('test3');
                     const element4 = document.getElementById('test4');
-                    let result = 0;
-                    const callback1 = _ => { result++; };
-                    const callback2 = _ => { result++; };
                     dom.addEventDelegate(
                         'div',
                         'click',
@@ -1886,6 +1886,9 @@ describe('DOM Event Handlers', function() {
         it('works with NodeList nodes', async function() {
             assert.equal(
                 await exec(_ => {
+                    let result = 0;
+                    const callback1 = _ => { result++; };
+                    const callback2 = _ => { result++; };
                     const event = new Event('click', {
                         bubbles: true
                     });
@@ -1893,9 +1896,6 @@ describe('DOM Event Handlers', function() {
                     const element2 = document.getElementById('test2');
                     const element3 = document.getElementById('test3');
                     const element4 = document.getElementById('test4');
-                    let result = 0;
-                    const callback1 = _ => { result++; };
-                    const callback2 = _ => { result++; };
                     dom.addEventDelegate(
                         'div',
                         'click',
@@ -1927,6 +1927,9 @@ describe('DOM Event Handlers', function() {
         it('works with array nodes', async function() {
             assert.equal(
                 await exec(_ => {
+                    let result = 0;
+                    const callback1 = _ => { result++; };
+                    const callback2 = _ => { result++; };
                     const event = new Event('click', {
                         bubbles: true
                     });
@@ -1934,9 +1937,6 @@ describe('DOM Event Handlers', function() {
                     const element2 = document.getElementById('test2');
                     const element3 = document.getElementById('test3');
                     const element4 = document.getElementById('test4');
-                    let result = 0;
-                    const callback1 = _ => { result++; };
-                    const callback2 = _ => { result++; };
                     dom.addEventDelegate(
                         'div',
                         'click',
@@ -1971,16 +1971,16 @@ describe('DOM Event Handlers', function() {
         it('works with ShadowRoot nodes', async function() {
             assert.equal(
                 await exec(_ => {
+                    let result = 0;
+                    const callback1 = _ => { result++; };
+                    const callback2 = _ => { result++; };
+                    const event = new Event('click', {
+                        bubbles: true
+                    });
                     const div = document.createElement('div');
                     const shadow = div.attachShadow({ mode: 'open' });
                     const a = document.createElement('a');
                     shadow.appendChild(a);
-                    const event = new Event('click', {
-                        bubbles: true
-                    });
-                    let result = 0;
-                    const callback1 = _ => { result++; };
-                    const callback2 = _ => { result++; };
                     dom.addEventDelegate(
                         shadow,
                         'click',
@@ -2009,6 +2009,9 @@ describe('DOM Event Handlers', function() {
         it('works with Document nodes', async function() {
             assert.equal(
                 await exec(_ => {
+                    let result = 0;
+                    const callback1 = _ => { result++; };
+                    const callback2 = _ => { result++; };
                     const event = new Event('click', {
                         bubbles: true
                     });
@@ -2016,9 +2019,6 @@ describe('DOM Event Handlers', function() {
                     const element2 = document.getElementById('test2');
                     const element3 = document.getElementById('test3');
                     const element4 = document.getElementById('test4');
-                    let result = 0;
-                    const callback1 = _ => { result++; };
-                    const callback2 = _ => { result++; };
                     dom.addEventDelegate(
                         document,
                         'click',
@@ -2188,9 +2188,9 @@ describe('DOM Event Handlers', function() {
         it('works with ShadowRoot nodes', async function() {
             assert.equal(
                 await exec(_ => {
+                    let result = 0;
                     const div = document.createElement('div');
                     const shadow = div.attachShadow({ mode: 'open' });
-                    let result = 0;
                     dom.addEvent(
                         shadow,
                         'click',

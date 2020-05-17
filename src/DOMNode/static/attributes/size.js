@@ -14,15 +14,6 @@ Object.assign(DOMNode, {
     },
 
     /**
-     * Get the height of a Document.
-     * @param {Window} node The input node.
-     * @returns {number} The height.
-     */
-    heightDocument(node) {
-        return node.scrollHeight;
-    },
-
-    /**
      * Get the height of a Window.
      * @param {Window} node The input node.
      * @param {Boolean} [outer] Whether to use the outer height.
@@ -35,21 +26,30 @@ Object.assign(DOMNode, {
     },
 
     /**
+     * Get the scroll height of a single node.
+     * @param {HTMLElement} node The input node.
+     * @returns {number} The scroll height.
+     */
+    scrollHeight(node) {
+        return node.scrollHeight;
+    },
+
+    /**
+     * Get the scroll width of a single node.
+     * @param {HTMLElement} node The input node.
+     * @returns {number} The scroll width.
+     */
+    scrollWidth(node) {
+        return node.scrollWidth;
+    },
+
+    /**
      * Get the client width of a single node.
      * @param {HTMLElement} node The input node.
      * @returns {number} The width.
      */
     width(node) {
         return node.clientWidth;
-    },
-
-    /**
-     * Get the width of a Document.
-     * @param {Window} node The input node.
-     * @returns {number} The width.
-     */
-    widthDocument(node) {
-        return node.scrollWidth;
     },
 
     /**
