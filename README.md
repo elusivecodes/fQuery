@@ -1426,7 +1426,7 @@ const closest = dom.closest(nodes, filter, limit);
 
 Find the common ancestor of all nodes.
 
-- `nodes` is a query selector string, a *Node*, *HTMLElement*, *DocumentFragment*, *ShadowRoot*, *NodeList*, *HTMLCollection*, [*QuerySet*](https://github.com/elusivecodes/fQuery) or an array of nodes.
+- `nodes` is a query selector string, a *Node*, *HTMLElement*, *NodeList*, *HTMLCollection*, [*QuerySet*](https://github.com/elusivecodes/fQuery) or an array of nodes.
 
 ```javascript
 const commonAncestor = dom.commonAncestor(nodes);

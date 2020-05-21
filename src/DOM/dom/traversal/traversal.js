@@ -77,6 +77,11 @@ Object.assign(DOM.prototype, {
             return;
         }
 
+        // Make sure all nodes have a parent
+        if (nodes.some(node => !DOMNode.parent(node))) {
+            return;
+        }
+
         const range = this.createRange();
 
         if (nodes.length === 1) {

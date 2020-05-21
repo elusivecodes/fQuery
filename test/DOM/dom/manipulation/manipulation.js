@@ -252,11 +252,10 @@ describe('DOM Manipulation', function() {
         it('works with DocumentFragment nodes', async function() {
             assert.equal(
                 await exec(_ => {
-                    const fragment = document.createDocumentFragment();
-                    const div = document.createElement('div');
-                    const span = document.createElement('span');
-                    div.appendChild(span);
-                    fragment.appendChild(div);
+                    const range = document.createRange();
+                    const fragment = range.createContextualFragment(
+                        '<div><span></span></div>'
+                    );
                     const clones = dom.clone(
                         fragment
                     );
@@ -609,11 +608,10 @@ describe('DOM Manipulation', function() {
         it('works with DocumentFragment nodes', async function() {
             assert.equal(
                 await exec(_ => {
-                    const fragment = document.createDocumentFragment();
-                    const div = document.createElement('div');
-                    const span = document.createElement('span');
-                    div.appendChild(span);
-                    fragment.appendChild(div);
+                    const range = document.createRange();
+                    const fragment = range.createContextualFragment(
+                        '<div><span></span></div>'
+                    );
                     dom.empty(
                         fragment
                     );
@@ -630,8 +628,11 @@ describe('DOM Manipulation', function() {
                 await exec(_ => {
                     const div = document.createElement('div');
                     const shadow = div.attachShadow({ mode: 'open' });
-                    const span = document.createElement('span');
-                    shadow.appendChild(span);
+                    const range = document.createRange();
+                    const fragment = range.createContextualFragment(
+                        '<div><span></span></div>'
+                    );
+                    shadow.appendChild(fragment);
                     dom.empty(shadow);
                     return shadow.innerHTML;
                 }),
@@ -1032,11 +1033,10 @@ describe('DOM Manipulation', function() {
         it('works with DocumentFragment nodes', async function() {
             assert.equal(
                 await exec(_ => {
-                    const fragment = document.createDocumentFragment();
-                    const div = document.createElement('div');
-                    const span = document.createElement('span');
-                    div.appendChild(span);
-                    fragment.appendChild(div);
+                    const range = document.createRange();
+                    const fragment = range.createContextualFragment(
+                        '<div><span></span></div>'
+                    );
                     dom.replaceAll(
                         fragment,
                         'a'
@@ -1405,11 +1405,10 @@ describe('DOM Manipulation', function() {
         it('works with DocumentFragment other nodes', async function() {
             assert.equal(
                 await exec(_ => {
-                    const fragment = document.createDocumentFragment();
-                    const div = document.createElement('div');
-                    const span = document.createElement('span');
-                    div.appendChild(span);
-                    fragment.appendChild(div);
+                    const range = document.createRange();
+                    const fragment = range.createContextualFragment(
+                        '<div><span></span></div>'
+                    );
                     dom.replaceWith(
                         'a',
                         fragment

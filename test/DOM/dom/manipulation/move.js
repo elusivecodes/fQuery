@@ -273,11 +273,10 @@ describe('DOM Move', function() {
         it('works with DocumentFragment other nodes', async function() {
             assert.equal(
                 await exec(_ => {
-                    const fragment = document.createDocumentFragment();
-                    const div = document.createElement('div');
-                    const span = document.createElement('span');
-                    div.appendChild(span);
-                    fragment.appendChild(div);
+                    const range = document.createRange();
+                    const fragment = range.createContextualFragment(
+                        '<div><span></span></div>'
+                    );
                     dom.after(
                         'div',
                         fragment
@@ -490,9 +489,10 @@ describe('DOM Move', function() {
         it('works with DocumentFragment nodes', async function() {
             assert.equal(
                 await exec(_ => {
-                    const fragment = document.createDocumentFragment();
-                    const span = document.createElement('span');
-                    fragment.appendChild(span);
+                    const range = document.createRange();
+                    const fragment = range.createContextualFragment(
+                        '<span></span>'
+                    );
                     dom.append(
                         fragment,
                         'a'
@@ -657,11 +657,10 @@ describe('DOM Move', function() {
         it('works with DocumentFragment other nodes', async function() {
             assert.equal(
                 await exec(_ => {
-                    const fragment = document.createDocumentFragment();
-                    const div = document.createElement('div');
-                    const span = document.createElement('span');
-                    div.appendChild(span);
-                    fragment.appendChild(div);
+                    const range = document.createRange();
+                    const fragment = range.createContextualFragment(
+                        '<div><span></span></div>'
+                    );
                     dom.append(
                         'div',
                         fragment
@@ -876,9 +875,10 @@ describe('DOM Move', function() {
         it('works with DocumentFragment nodes', async function() {
             assert.equal(
                 await exec(_ => {
-                    const fragment = document.createDocumentFragment();
-                    const span = document.createElement('span');
-                    fragment.appendChild(span);
+                    const range = document.createRange();
+                    const fragment = range.createContextualFragment(
+                        '<span></span>'
+                    );
                     dom.appendTo(
                         'a',
                         fragment
@@ -1041,11 +1041,10 @@ describe('DOM Move', function() {
         it('works with DocumentFragment other nodes', async function() {
             assert.equal(
                 await exec(_ => {
-                    const fragment = document.createDocumentFragment();
-                    const div = document.createElement('div');
-                    const span = document.createElement('span');
-                    div.appendChild(span);
-                    fragment.appendChild(div);
+                    const range = document.createRange();
+                    const fragment = range.createContextualFragment(
+                        '<div><span></span></div>'
+                    );
                     dom.appendTo(
                         fragment,
                         'div'
@@ -1363,11 +1362,10 @@ describe('DOM Move', function() {
         it('works with DocumentFragment other nodes', async function() {
             assert.equal(
                 await exec(_ => {
-                    const fragment = document.createDocumentFragment();
-                    const div = document.createElement('div');
-                    const span = document.createElement('span');
-                    div.appendChild(span);
-                    fragment.appendChild(div);
+                    const range = document.createRange();
+                    const fragment = range.createContextualFragment(
+                        '<div><span></span></div>'
+                    );
                     dom.before(
                         'div',
                         fragment
@@ -1582,11 +1580,10 @@ describe('DOM Move', function() {
         it('works with DocumentFragment nodes', async function() {
             assert.equal(
                 await exec(_ => {
-                    const fragment = document.createDocumentFragment();
-                    const div = document.createElement('div');
-                    const span = document.createElement('span');
-                    div.appendChild(span);
-                    fragment.appendChild(div);
+                    const range = document.createRange();
+                    const fragment = range.createContextualFragment(
+                        '<div><span></span></div>'
+                    );
                     dom.insertAfter(
                         fragment,
                         'div'
@@ -1904,11 +1901,10 @@ describe('DOM Move', function() {
         it('works with DocumentFragment nodes', async function() {
             assert.equal(
                 await exec(_ => {
-                    const fragment = document.createDocumentFragment();
-                    const div = document.createElement('div');
-                    const span = document.createElement('span');
-                    div.appendChild(span);
-                    fragment.appendChild(div);
+                    const range = document.createRange();
+                    const fragment = range.createContextualFragment(
+                        '<div><span></span></div>'
+                    );
                     dom.insertBefore(
                         fragment,
                         'div'
@@ -2224,9 +2220,10 @@ describe('DOM Move', function() {
         it('works with DocumentFragment nodes', async function() {
             assert.equal(
                 await exec(_ => {
-                    const fragment = document.createDocumentFragment();
-                    const span = document.createElement('span');
-                    fragment.appendChild(span);
+                    const range = document.createRange();
+                    const fragment = range.createContextualFragment(
+                        '<span></span>'
+                    );
                     dom.prepend(
                         fragment,
                         'a'
@@ -2391,11 +2388,10 @@ describe('DOM Move', function() {
         it('works with DocumentFragment other nodes', async function() {
             assert.equal(
                 await exec(_ => {
-                    const fragment = document.createDocumentFragment();
-                    const div = document.createElement('div');
-                    const span = document.createElement('span');
-                    div.appendChild(span);
-                    fragment.appendChild(div);
+                    const range = document.createRange();
+                    const fragment = range.createContextualFragment(
+                        '<div><span></span></div>'
+                    );
                     dom.prepend(
                         'div',
                         fragment
@@ -2610,11 +2606,10 @@ describe('DOM Move', function() {
         it('works with DocumentFragment nodes', async function() {
             assert.equal(
                 await exec(_ => {
-                    const fragment = document.createDocumentFragment();
-                    const div = document.createElement('div');
-                    const span = document.createElement('span');
-                    div.appendChild(span);
-                    fragment.appendChild(div);
+                    const range = document.createRange();
+                    const fragment = range.createContextualFragment(
+                        '<div><span></span></div>'
+                    );
                     dom.prependTo(
                         fragment,
                         'div'
@@ -2766,9 +2761,10 @@ describe('DOM Move', function() {
         it('works with DocumentFragment other nodes', async function() {
             assert.equal(
                 await exec(_ => {
-                    const fragment = document.createDocumentFragment();
-                    const span = document.createElement('span');
-                    fragment.appendChild(span);
+                    const range = document.createRange();
+                    const fragment = range.createContextualFragment(
+                        '<span></span>'
+                    );
                     dom.prependTo(
                         'a',
                         fragment

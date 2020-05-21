@@ -111,7 +111,8 @@ describe('DOM Filter', function() {
         it('works with ShadowRoot nodes', async function() {
             assert.deepEqual(
                 await exec(_ => {
-                    const shadow = document.getElementById('div1').attachShadow({ mode: 'open' });
+                    const div = document.getElementById('div1');
+                    const shadow = div.attachShadow({ mode: 'open' });
                     shadow.id = 'shadow';
                     return dom.connected(
                         shadow
@@ -2147,9 +2148,10 @@ describe('DOM Filter', function() {
         it('works with DocumentFragment nodes', async function() {
             assert.deepEqual(
                 await exec(_ => {
-                    const fragment = document.createDocumentFragment();
-                    const div = document.createElement('div');
-                    fragment.appendChild(div);
+                    const range = document.createRange();
+                    const fragment = range.createContextualFragment(
+                        '<div></div>'
+                    );
                     fragment.id = 'fragment';
                     return dom.withChildren(
                         fragment
@@ -2166,8 +2168,11 @@ describe('DOM Filter', function() {
                 await exec(_ => {
                     const div = document.createElement('div');
                     const shadow = div.attachShadow({ mode: 'open' });
-                    const span = document.createElement('span');
-                    shadow.appendChild(span);
+                    const range = document.createRange();
+                    const fragment = range.createContextualFragment(
+                        '<div></div>'
+                    );
+                    shadow.appendChild(fragment);
                     shadow.id = 'shadow';
                     return dom.withChildren(
                         shadow
@@ -2776,9 +2781,10 @@ describe('DOM Filter', function() {
         it('works with DocumentFragment nodes', async function() {
             assert.deepEqual(
                 await exec(_ => {
-                    const fragment = document.createDocumentFragment();
-                    const div = document.createElement('div');
-                    fragment.appendChild(div);
+                    const range = document.createRange();
+                    const fragment = range.createContextualFragment(
+                        '<div></div>'
+                    );
                     fragment.id = 'fragment';
                     return dom.withDescendent(
                         fragment,
@@ -2796,12 +2802,15 @@ describe('DOM Filter', function() {
                 await exec(_ => {
                     const div = document.createElement('div');
                     const shadow = div.attachShadow({ mode: 'open' });
-                    const span = document.createElement('span');
-                    shadow.appendChild(span);
+                    const range = document.createRange();
+                    const fragment = range.createContextualFragment(
+                        '<div></div>'
+                    );
+                    shadow.appendChild(fragment);
                     shadow.id = 'shadow';
                     return dom.withDescendent(
                         shadow,
-                        'span'
+                        'div'
                     ).map(node => node.id);
                 }),
                 [

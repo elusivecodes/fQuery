@@ -309,6 +309,76 @@ describe('DOM Find', function() {
             );
         });
 
+        it('works with DocumentFragment nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    const range = document.createRange();
+                    const fragment = range.createContextualFragment(
+                        '<div id="div1"></div>' +
+                        '<div id="div2"></div>'
+                    );
+                    return dom.find(
+                        'div',
+                        fragment
+                    ).map(node => node.id);
+                }),
+                [
+                    'div1',
+                    'div2'
+                ]
+            );
+        });
+
+        it('works with ShadowRoot nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    const div = document.createElement('div');
+                    const shadow = div.attachShadow({ mode: 'open' });
+                    const range = document.createRange();
+                    const fragment = range.createContextualFragment(
+                        '<div id="div1"></div>' +
+                        '<div id="div2"></div>'
+                    );
+                    shadow.appendChild(fragment);
+                    return dom.find(
+                        'div',
+                        shadow
+                    ).map(node => node.id);
+                }),
+                [
+                    'div1',
+                    'div2'
+                ]
+            );
+        });
+
+        it('works with Document nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    const parser = new DOMParser();
+                    const myDoc = parser.parseFromString(
+                        '<html>' +
+                        '<head>' +
+                        '</head>' +
+                        '<body>' +
+                        '<div id="div1"></div>' +
+                        '<div id="div2"></div>' +
+                        '</body>' +
+                        '</html>',
+                        'text/html'
+                    );
+                    return dom.find(
+                        'div',
+                        myDoc
+                    ).map(node => node.id);
+                }),
+                [
+                    'div1',
+                    'div2'
+                ]
+            );
+        });
+
     });
 
     describe('#findByClass', function() {
@@ -356,84 +426,6 @@ describe('DOM Find', function() {
             );
         });
 
-        it('works with query selector', async function() {
-            assert.deepEqual(
-                await exec(_ => {
-                    return dom.findByClass(
-                        'test',
-                        '#parent1'
-                    ).map(node => node.id);
-                }),
-                [
-                    'span1',
-                    'span3'
-                ]
-            );
-        });
-
-        it('works with HTMLElement', async function() {
-            assert.deepEqual(
-                await exec(_ => {
-                    return dom.findByClass(
-                        'test',
-                        document.getElementById('parent1')
-                    ).map(node => node.id);
-                }),
-                [
-                    'span1',
-                    'span3'
-                ]
-            );
-        });
-
-        it('works with HTMLCollection', async function() {
-            assert.deepEqual(
-                await exec(_ => {
-                    return dom.findByClass(
-                        'test',
-                        document.getElementById('parent1').children
-                    ).map(node => node.id);
-                }),
-                [
-                    'span1',
-                    'span3'
-                ]
-            );
-        });
-
-        it('works with NodeList', async function() {
-            assert.deepEqual(
-                await exec(_ => {
-                    return dom.findByClass(
-                        'test',
-                        document.querySelectorAll('#parent1')
-                    ).map(node => node.id);
-                }),
-                [
-                    'span1',
-                    'span3'
-                ]
-            );
-        });
-
-        it('works with array', async function() {
-            assert.deepEqual(
-                await exec(_ => {
-                    return dom.findByClass(
-                        'test',
-                        [
-                            document.getElementById('child1'),
-                            document.getElementById('child2')
-                        ]
-                    ).map(node => node.id);
-                }),
-                [
-                    'span1',
-                    'span3'
-                ]
-            );
-        });
-
         it('returns an empty array for non-matching class', async function() {
             assert.deepEqual(
                 await exec(_ => {
@@ -454,6 +446,160 @@ describe('DOM Find', function() {
                     ).map(node => node.id);
                 }),
                 []
+            );
+        });
+
+        it('works with query selector nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    return dom.findByClass(
+                        'test',
+                        '#parent1'
+                    ).map(node => node.id);
+                }),
+                [
+                    'span1',
+                    'span3'
+                ]
+            );
+        });
+
+        it('works with HTMLElement nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    return dom.findByClass(
+                        'test',
+                        document.getElementById('parent1')
+                    ).map(node => node.id);
+                }),
+                [
+                    'span1',
+                    'span3'
+                ]
+            );
+        });
+
+        it('works with HTMLCollection nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    return dom.findByClass(
+                        'test',
+                        document.getElementById('parent1').children
+                    ).map(node => node.id);
+                }),
+                [
+                    'span1',
+                    'span3'
+                ]
+            );
+        });
+
+        it('works with NodeList nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    return dom.findByClass(
+                        'test',
+                        document.querySelectorAll('#parent1')
+                    ).map(node => node.id);
+                }),
+                [
+                    'span1',
+                    'span3'
+                ]
+            );
+        });
+
+        it('works with array nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    return dom.findByClass(
+                        'test',
+                        [
+                            document.getElementById('child1'),
+                            document.getElementById('child2')
+                        ]
+                    ).map(node => node.id);
+                }),
+                [
+                    'span1',
+                    'span3'
+                ]
+            );
+        });
+
+        it('works with DocumentFragment nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    const range = document.createRange();
+                    const fragment = range.createContextualFragment(
+                        '<div id="div1" class="test"></div>' +
+                        '<div id="div2"></div>' +
+                        '<div id="div3" class="test"></div>' +
+                        '<div id="div4"></div>'
+                    );
+                    return dom.findByClass(
+                        'test',
+                        fragment
+                    ).map(node => node.id);
+                }),
+                [
+                    'div1',
+                    'div3'
+                ]
+            );
+        });
+
+        it('works with ShadowRoot nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    const div = document.createElement('div');
+                    const shadow = div.attachShadow({ mode: 'open' });
+                    const range = document.createRange();
+                    const fragment = range.createContextualFragment(
+                        '<div id="div1" class="test"></div>' +
+                        '<div id="div2"></div>' +
+                        '<div id="div3" class="test"></div>' +
+                        '<div id="div4"></div>'
+                    );
+                    shadow.appendChild(fragment);
+                    return dom.findByClass(
+                        'test',
+                        shadow
+                    ).map(node => node.id);
+                }),
+                [
+                    'div1',
+                    'div3'
+                ]
+            );
+        });
+
+        it('works with Document nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    const parser = new DOMParser();
+                    const myDoc = parser.parseFromString(
+                        '<html>' +
+                        '<head>' +
+                        '</head>' +
+                        '<body>' +
+                        '<div id="div1" class="test"></div>' +
+                        '<div id="div2"></div>' +
+                        '<div id="div3" class="test"></div>' +
+                        '<div id="div4"></div>' +
+                        '</body>' +
+                        '</html>',
+                        'text/html'
+                    );
+                    return dom.findByClass(
+                        'test',
+                        myDoc
+                    ).map(node => node.id);
+                }),
+                [
+                    'div1',
+                    'div3'
+                ]
             );
         });
 
@@ -601,6 +747,82 @@ describe('DOM Find', function() {
                 [
                     'span1',
                     'span3'
+                ]
+            );
+        });
+
+        it('works with DocumentFragment nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    const range = document.createRange();
+                    const fragment = range.createContextualFragment(
+                        '<div id="test" data-id="div1"></div>' +
+                        '<div data-id="div2"></div>' +
+                        '<div id="test" data-id="div3"></div>' +
+                        '<div data-id="div4"></div>'
+                    );
+                    return dom.findById(
+                        'test',
+                        fragment
+                    ).map(node => node.dataset.id);
+                }),
+                [
+                    'div1',
+                    'div3'
+                ]
+            );
+        });
+
+        it('works with ShadowRoot nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    const div = document.createElement('div');
+                    const shadow = div.attachShadow({ mode: 'open' });
+                    const range = document.createRange();
+                    const fragment = range.createContextualFragment(
+                        '<div id="test" data-id="div1"></div>' +
+                        '<div data-id="div2"></div>' +
+                        '<div id="test" data-id="div3"></div>' +
+                        '<div data-id="div4"></div>'
+                    );
+                    shadow.appendChild(fragment);
+                    return dom.findById(
+                        'test',
+                        shadow
+                    ).map(node => node.dataset.id);
+                }),
+                [
+                    'div1',
+                    'div3'
+                ]
+            );
+        });
+
+        it('works with Document nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    const parser = new DOMParser();
+                    const myDoc = parser.parseFromString(
+                        '<html>' +
+                        '<head>' +
+                        '</head>' +
+                        '<body>' +
+                        '<div id="test" data-id="div1"></div>' +
+                        '<div data-id="div2"></div>' +
+                        '<div id="test" data-id="div3"></div>' +
+                        '<div data-id="div4"></div>' +
+                        '</body>' +
+                        '</html>',
+                        'text/html'
+                    );
+                    return dom.findById(
+                        'test',
+                        myDoc
+                    ).map(node => node.dataset.id);
+                }),
+                [
+                    'div1',
+                    'div3'
                 ]
             );
         });
@@ -763,6 +985,82 @@ describe('DOM Find', function() {
                     'span2',
                     'span3',
                     'span4'
+                ]
+            );
+        });
+
+        it('works with DocumentFragment nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    const range = document.createRange();
+                    const fragment = range.createContextualFragment(
+                        '<div id="div1"></div>' +
+                        '<div id="div2"></div>' +
+                        '<span id="span1"></span>' +
+                        '<span id="span2"></span>'
+                    );
+                    return dom.findByTag(
+                        'span',
+                        fragment
+                    ).map(node => node.id);
+                }),
+                [
+                    'span1',
+                    'span2'
+                ]
+            );
+        });
+
+        it('works with ShadowRoot nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    const div = document.createElement('div');
+                    const shadow = div.attachShadow({ mode: 'open' });
+                    const range = document.createRange();
+                    const fragment = range.createContextualFragment(
+                        '<div id="div1"></div>' +
+                        '<div id="div2"></div>' +
+                        '<span id="span1"></span>' +
+                        '<span id="span2"></span>'
+                    );
+                    shadow.appendChild(fragment);
+                    return dom.findByTag(
+                        'span',
+                        shadow
+                    ).map(node => node.id);
+                }),
+                [
+                    'span1',
+                    'span2'
+                ]
+            );
+        });
+
+        it('works with Document nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    const parser = new DOMParser();
+                    const myDoc = parser.parseFromString(
+                        '<html>' +
+                        '<head>' +
+                        '</head>' +
+                        '<body>' +
+                        '<div id="div1"></div>' +
+                        '<div id="div2"></div>' +
+                        '<span id="span1"></span>' +
+                        '<span id="span2"></span>' +
+                        '</body>' +
+                        '</html>',
+                        'text/html'
+                    );
+                    return dom.findByTag(
+                        'span',
+                        myDoc
+                    ).map(node => node.id);
+                }),
+                [
+                    'span1',
+                    'span2'
                 ]
             );
         });
@@ -1008,6 +1306,67 @@ describe('DOM Find', function() {
             );
         });
 
+        it('works with DocumentFragment nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    const range = document.createRange();
+                    const fragment = range.createContextualFragment(
+                        '<div id="div1"></div>' +
+                        '<div id="div2"></div>'
+                    );
+                    return dom.findOne(
+                        'div',
+                        fragment
+                    ).id;
+                }),
+                'div1'
+            );
+        });
+
+        it('works with ShadowRoot nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    const div = document.createElement('div');
+                    const shadow = div.attachShadow({ mode: 'open' });
+                    const range = document.createRange();
+                    const fragment = range.createContextualFragment(
+                        '<div id="div1"></div>' +
+                        '<div id="div2"></div>'
+                    );
+                    shadow.appendChild(fragment);
+                    return dom.findOne(
+                        'div',
+                        shadow
+                    ).id;
+                }),
+                'div1'
+            );
+        });
+
+        it('works with Document nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    const parser = new DOMParser();
+                    const myDoc = parser.parseFromString(
+                        '<html>' +
+                        '<head>' +
+                        '</head>' +
+                        '<body>' +
+                        '<div id="div1"></div>' +
+                        '<div id="div2"></div>' +
+                        '</body>' +
+                        '</html>',
+                        'text/html'
+                    );
+                    return dom.findOne(
+                        'div',
+                        myDoc
+                    ).id;
+                }),
+                'div1'
+            );
+        });
+
     });
 
     describe('#findOneByClass', function() {
@@ -1133,6 +1492,73 @@ describe('DOM Find', function() {
                     ).id;
                 }),
                 'span5'
+            );
+        });
+
+        it('works with DocumentFragment nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    const range = document.createRange();
+                    const fragment = range.createContextualFragment(
+                        '<div id="div1" class="test"></div>' +
+                        '<div id="div2"></div>' +
+                        '<div id="div3" class="test"></div>' +
+                        '<div id="div4"></div>'
+                    );
+                    return dom.findOneByClass(
+                        'test',
+                        fragment
+                    ).id;
+                }),
+                'div1'
+            );
+        });
+
+        it('works with ShadowRoot nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    const div = document.createElement('div');
+                    const shadow = div.attachShadow({ mode: 'open' });
+                    const range = document.createRange();
+                    const fragment = range.createContextualFragment(
+                        '<div id="div1" class="test"></div>' +
+                        '<div id="div2"></div>' +
+                        '<div id="div3" class="test"></div>' +
+                        '<div id="div4"></div>'
+                    );
+                    shadow.appendChild(fragment);
+                    return dom.findOneByClass(
+                        'test',
+                        shadow
+                    ).id;
+                }),
+                'div1'
+            );
+        });
+
+        it('works with Document nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    const parser = new DOMParser();
+                    const myDoc = parser.parseFromString(
+                        '<html>' +
+                        '<head>' +
+                        '</head>' +
+                        '<body>' +
+                        '<div id="div1" class="test"></div>' +
+                        '<div id="div2"></div>' +
+                        '<div id="div3" class="test"></div>' +
+                        '<div id="div4"></div>' +
+                        '</body>' +
+                        '</html>',
+                        'text/html'
+                    );
+                    return dom.findOneByClass(
+                        'test',
+                        myDoc
+                    ).id;
+                }),
+                'div1'
             );
         });
 
@@ -1264,6 +1690,73 @@ describe('DOM Find', function() {
             );
         });
 
+        it('works with DocumentFragment nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    const range = document.createRange();
+                    const fragment = range.createContextualFragment(
+                        '<div id="test" data-id="div1"></div>' +
+                        '<div data-id="div2"></div>' +
+                        '<div id="test" data-id="div3"></div>' +
+                        '<div data-id="div4"></div>'
+                    );
+                    return dom.findOneById(
+                        'test',
+                        fragment
+                    ).dataset.id;
+                }),
+                'div1'
+            );
+        });
+
+        it('works with ShadowRoot nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    const div = document.createElement('div');
+                    const shadow = div.attachShadow({ mode: 'open' });
+                    const range = document.createRange();
+                    const fragment = range.createContextualFragment(
+                        '<div id="test" data-id="div1"></div>' +
+                        '<div data-id="div2"></div>' +
+                        '<div id="test" data-id="div3"></div>' +
+                        '<div data-id="div4"></div>'
+                    );
+                    shadow.appendChild(fragment);
+                    return dom.findOneById(
+                        'test',
+                        shadow
+                    ).dataset.id;
+                }),
+                'div1'
+            );
+        });
+
+        it('works with Document nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    const parser = new DOMParser();
+                    const myDoc = parser.parseFromString(
+                        '<html>' +
+                        '<head>' +
+                        '</head>' +
+                        '<body>' +
+                        '<div id="test" data-id="div1"></div>' +
+                        '<div data-id="div2"></div>' +
+                        '<div id="test" data-id="div3"></div>' +
+                        '<div data-id="div4"></div>' +
+                        '</body>' +
+                        '</html>',
+                        'text/html'
+                    );
+                    return dom.findOneById(
+                        'test',
+                        myDoc
+                    ).dataset.id;
+                }),
+                'div1'
+            );
+        });
+
     });
 
     describe('#findOneByTag', function() {
@@ -1389,6 +1882,73 @@ describe('DOM Find', function() {
                     ).id;
                 }),
                 'span5'
+            );
+        });
+
+        it('works with DocumentFragment nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    const range = document.createRange();
+                    const fragment = range.createContextualFragment(
+                        '<div id="div1"></div>' +
+                        '<div id="div2"></div>' +
+                        '<span id="span1"></span>' +
+                        '<span id="span2"></span>'
+                    );
+                    return dom.findOneByTag(
+                        'span',
+                        fragment
+                    ).id;
+                }),
+                'span1'
+            );
+        });
+
+        it('works with ShadowRoot nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    const div = document.createElement('div');
+                    const shadow = div.attachShadow({ mode: 'open' });
+                    const range = document.createRange();
+                    const fragment = range.createContextualFragment(
+                        '<div id="div1"></div>' +
+                        '<div id="div2"></div>' +
+                        '<span id="span1"></span>' +
+                        '<span id="span2"></span>'
+                    );
+                    shadow.appendChild(fragment);
+                    return dom.findOneByTag(
+                        'span',
+                        shadow
+                    ).id;
+                }),
+                'span1'
+            );
+        });
+
+        it('works with Document nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    const parser = new DOMParser();
+                    const myDoc = parser.parseFromString(
+                        '<html>' +
+                        '<head>' +
+                        '</head>' +
+                        '<body>' +
+                        '<div id="div1"></div>' +
+                        '<div id="div2"></div>' +
+                        '<span id="span1"></span>' +
+                        '<span id="span2"></span>' +
+                        '</body>' +
+                        '</html>',
+                        'text/html'
+                    );
+                    return dom.findOneByTag(
+                        'span',
+                        myDoc
+                    ).id;
+                }),
+                'span1'
             );
         });
 

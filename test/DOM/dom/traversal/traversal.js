@@ -141,6 +141,61 @@ describe('DOM Traversal', function() {
             );
         });
 
+        it('works with DocumentFragment nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    const range = document.createRange();
+                    const fragment = range.createContextualFragment(
+                        '<div id="div1"></div>' +
+                        '<div id="div2"></div>'
+                    );
+                    return dom.child(
+                        fragment,
+                        'div'
+                    ).map(node => node.id);
+                }),
+                [
+                    'div1'
+                ]
+            );
+        });
+
+        it('works with ShadowRoot nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    const div = document.createElement('div');
+                    const shadow = div.attachShadow({ mode: 'open' });
+                    const range = document.createRange();
+                    const fragment = range.createContextualFragment(
+                        '<div id="div1"></div>' +
+                        '<div id="div2"></div>'
+                    );
+                    shadow.appendChild(fragment);
+                    return dom.child(
+                        shadow,
+                        'div'
+                    ).map(node => node.id);
+                }),
+                [
+                    'div1'
+                ]
+            );
+        });
+
+        it('works with Document nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    return dom.child(
+                        document,
+                        'html'
+                    ).map(node => node.id);
+                }),
+                [
+                    'html'
+                ]
+            );
+        });
+
         it('works with function filter', async function() {
             assert.deepEqual(
                 await exec(_ => {
@@ -370,6 +425,63 @@ describe('DOM Traversal', function() {
                     'child4',
                     'child7',
                     'child8'
+                ]
+            );
+        });
+
+        it('works with DocumentFragment nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    const range = document.createRange();
+                    const fragment = range.createContextualFragment(
+                        '<div id="div1"></div>' +
+                        '<div id="div2"></div>'
+                    );
+                    return dom.children(
+                        fragment,
+                        'div'
+                    ).map(node => node.id);
+                }),
+                [
+                    'div1',
+                    'div2'
+                ]
+            );
+        });
+
+        it('works with ShadowRoot nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    const div = document.createElement('div');
+                    const shadow = div.attachShadow({ mode: 'open' });
+                    const range = document.createRange();
+                    const fragment = range.createContextualFragment(
+                        '<div id="div1"></div>' +
+                        '<div id="div2"></div>'
+                    );
+                    shadow.appendChild(fragment);
+                    return dom.children(
+                        shadow,
+                        'div'
+                    ).map(node => node.id);
+                }),
+                [
+                    'div1',
+                    'div2'
+                ]
+            );
+        });
+
+        it('works with Document nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    return dom.children(
+                        document,
+                        'html'
+                    ).map(node => node.id);
+                }),
+                [
+                    'html'
                 ]
             );
         });
@@ -946,6 +1058,64 @@ describe('DOM Traversal', function() {
                     'Test 3',
                     '',
                     'Test 4'
+                ]
+            );
+        });
+
+        it('works with DocumentFragment nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    const range = document.createRange();
+                    const fragment = range.createContextualFragment(
+                        'Test 1' +
+                        '<div id="child1"></div>' +
+                        'Test 2'
+                    );
+                    return dom.contents(
+                        fragment
+                    ).map(node => node.textContent);
+                }),
+                [
+                    'Test 1',
+                    '',
+                    'Test 2'
+                ]
+            );
+        });
+
+        it('works with ShadowRoot nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    const div = document.createElement('div');
+                    const shadow = div.attachShadow({ mode: 'open' });
+                    const range = document.createRange();
+                    const fragment = range.createContextualFragment(
+                        'Test 1' +
+                        '<div id="child1"></div>' +
+                        'Test 2'
+                    );
+                    shadow.appendChild(fragment);
+                    return dom.contents(
+                        shadow
+                    ).map(node => node.textContent);
+                }),
+                [
+                    'Test 1',
+                    '',
+                    'Test 2'
+                ]
+            );
+        });
+
+        it('works with Document nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    return dom.contents(
+                        document
+                    ).map(node => node.id);
+                }),
+                [
+                    'html'
                 ]
             );
         });

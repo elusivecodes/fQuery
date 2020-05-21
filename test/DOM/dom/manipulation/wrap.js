@@ -621,11 +621,10 @@ describe('DOM Wrap', function() {
         it('works with DocumentFragment other nodes', async function() {
             assert.equal(
                 await exec(_ => {
-                    const fragment = document.createDocumentFragment();
-                    const div = document.createElement('div');
-                    const span = document.createElement('span');
-                    div.appendChild(span);
-                    fragment.appendChild(div);
+                    const range = document.createRange();
+                    const fragment = range.createContextualFragment(
+                        '<div><span></span></div>'
+                    );
                     dom.wrap(
                         'a',
                         fragment
@@ -1023,11 +1022,10 @@ describe('DOM Wrap', function() {
         it('works with DocumentFragment other nodes', async function() {
             assert.equal(
                 await exec(_ => {
-                    const fragment = document.createDocumentFragment();
-                    const div = document.createElement('div');
-                    const span = document.createElement('span');
-                    div.appendChild(span);
-                    fragment.appendChild(div);
+                    const range = document.createRange();
+                    const fragment = range.createContextualFragment(
+                        '<div><span></span></div>'
+                    );
                     dom.wrapAll(
                         'a',
                         fragment
@@ -1294,15 +1292,11 @@ describe('DOM Wrap', function() {
         it('works with DocumentFragment nodes', async function() {
             assert.equal(
                 await exec(_ => {
-                    const fragment = document.createDocumentFragment();
-                    const div1 = document.createElement('div');
-                    const div2 = document.createElement('div');
-                    const span1 = document.createElement('span');
-                    const span2 = document.createElement('span');
-                    div1.appendChild(span1);
-                    div2.appendChild(span2);
-                    fragment.appendChild(div1);
-                    fragment.appendChild(div2);
+                    const range = document.createRange();
+                    const fragment = range.createContextualFragment(
+                        '<div><span></span></div>' +
+                        '<div><span></span></div>'
+                    );
                     dom.wrapInner(
                         fragment,
                         '.outer'
@@ -1340,14 +1334,12 @@ describe('DOM Wrap', function() {
                 await exec(_ => {
                     const div = document.createElement('div');
                     const shadow = div.attachShadow({ mode: 'open' });
-                    const div1 = document.createElement('div');
-                    const div2 = document.createElement('div');
-                    const span1 = document.createElement('span');
-                    const span2 = document.createElement('span');
-                    div1.appendChild(span1);
-                    div2.appendChild(span2);
-                    shadow.appendChild(div1);
-                    shadow.appendChild(div2);
+                    const range = document.createRange();
+                    const fragment = range.createContextualFragment(
+                        '<div><span></span></div>' +
+                        '<div><span></span></div>'
+                    );
+                    shadow.appendChild(fragment);
                     dom.wrapInner(
                         shadow,
                         '.outer'
@@ -1512,11 +1504,10 @@ describe('DOM Wrap', function() {
         it('works with DocumentFragment other nodes', async function() {
             assert.equal(
                 await exec(_ => {
-                    const fragment = document.createDocumentFragment();
-                    const div = document.createElement('div');
-                    const span = document.createElement('span');
-                    div.appendChild(span);
-                    fragment.appendChild(div);
+                    const range = document.createRange();
+                    const fragment = range.createContextualFragment(
+                        '<div><span></span></div>'
+                    );
                     dom.wrapInner(
                         '#wrap > div',
                         fragment

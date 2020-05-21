@@ -3903,6 +3903,10 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
         return Core.wrap(DOMNode.findByClass(className, nodes));
       }
 
+      if (Core.isFragment(nodes) || Core.isShadow(nodes)) {
+        return Core.wrap(DOMNode.findBySelector(".".concat(className), nodes));
+      }
+
       nodes = this.parseNodes(nodes, {
         fragment: true,
         shadow: true,
@@ -3916,7 +3920,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
       try {
         for (_iterator54.s(); !(_step54 = _iterator54.n()).done;) {
           var node = _step54.value;
-          Core.merge(results, Core.isFragment(nodes) || Core.isShadow(nodes) ? DOMNode.findBySelector(".".concat(className), node) : DOMNode.findByClass(className, node));
+          Core.merge(results, Core.isFragment(node) || Core.isShadow(node) ? DOMNode.findBySelector(".".concat(className), node) : DOMNode.findByClass(className, node));
         }
       } catch (err) {
         _iterator54.e(err);
@@ -3956,6 +3960,10 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
         return Core.wrap(DOMNode.findByTag(tagName, nodes));
       }
 
+      if (Core.isFragment(nodes) || Core.isShadow(nodes)) {
+        return Core.wrap(DOMNode.findBySelector(tagName, nodes));
+      }
+
       nodes = this.parseNodes(nodes, {
         fragment: true,
         shadow: true,
@@ -3969,7 +3977,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
       try {
         for (_iterator55.s(); !(_step55 = _iterator55.n()).done;) {
           var node = _step55.value;
-          Core.merge(results, Core.isFragment(nodes) || Core.isShadow(nodes) ? DOMNode.findBySelector(tagName, node) : DOMNode.findByTag(tagName, node));
+          Core.merge(results, Core.isFragment(node) || Core.isShadow(node) ? DOMNode.findBySelector(tagName, node) : DOMNode.findByTag(tagName, node));
         }
       } catch (err) {
         _iterator55.e(err);
@@ -4039,6 +4047,10 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
         return DOMNode.findByClass(className, nodes).item(0);
       }
 
+      if (Core.isFragment(nodes) || Core.isShadow(nodes)) {
+        return DOMNode.findOneBySelector(".".concat(className), nodes);
+      }
+
       nodes = this.parseNodes(nodes, {
         fragment: true,
         shadow: true,
@@ -4055,7 +4067,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
       try {
         for (_iterator56.s(); !(_step56 = _iterator56.n()).done;) {
           var node = _step56.value;
-          var result = Core.isFragment(node) || Core.isShadow(node) ? DOMNode.findOneBySelector("".concat(className), node) : DOMNode.findByClass(className, node).item(0);
+          var result = Core.isFragment(node) || Core.isShadow(node) ? DOMNode.findOneBySelector(".".concat(className), node) : DOMNode.findByClass(className, node).item(0);
 
           if (result) {
             return result;
@@ -4107,6 +4119,10 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
 
       if (Core.isDocument(nodes) || Core.isElement(nodes)) {
         return DOMNode.findByTag(tagName, nodes).item(0);
+      }
+
+      if (Core.isFragment(nodes) || Core.isShadow(nodes)) {
+        return DOMNode.findOneBySelector(tagName, nodes);
       }
 
       nodes = this.parseNodes(nodes, {
@@ -4216,6 +4232,13 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
       nodes = this.sort(nodes);
 
       if (!nodes.length) {
+        return;
+      } // Make sure all nodes have a parent
+
+
+      if (nodes.some(function (node) {
+        return !DOMNode.parent(node);
+      })) {
         return;
       }
 

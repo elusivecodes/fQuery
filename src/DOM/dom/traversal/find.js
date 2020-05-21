@@ -53,6 +53,10 @@ Object.assign(DOM.prototype, {
             return Core.wrap(DOMNode.findByClass(className, nodes));
         }
 
+        if (Core.isFragment(nodes) || Core.isShadow(nodes)) {
+            return Core.wrap(DOMNode.findBySelector(`.${className}`, nodes));
+        }
+
         nodes = this.parseNodes(nodes, { fragment: true, shadow: true, document: true });
 
         const results = [];
@@ -60,7 +64,7 @@ Object.assign(DOM.prototype, {
         for (const node of nodes) {
             Core.merge(
                 results,
-                Core.isFragment(nodes) || Core.isShadow(nodes) ?
+                Core.isFragment(node) || Core.isShadow(node) ?
                     DOMNode.findBySelector(`.${className}`, node) :
                     DOMNode.findByClass(className, node)
             )
@@ -94,6 +98,10 @@ Object.assign(DOM.prototype, {
             return Core.wrap(DOMNode.findByTag(tagName, nodes));
         }
 
+        if (Core.isFragment(nodes) || Core.isShadow(nodes)) {
+            return Core.wrap(DOMNode.findBySelector(tagName, nodes));
+        }
+
         nodes = this.parseNodes(nodes, { fragment: true, shadow: true, document: true });
 
         const results = [];
@@ -101,7 +109,7 @@ Object.assign(DOM.prototype, {
         for (const node of nodes) {
             Core.merge(
                 results,
-                Core.isFragment(nodes) || Core.isShadow(nodes) ?
+                Core.isFragment(node) || Core.isShadow(node) ?
                     DOMNode.findBySelector(tagName, node) :
                     DOMNode.findByTag(tagName, node)
             )
@@ -163,6 +171,10 @@ Object.assign(DOM.prototype, {
             return DOMNode.findByClass(className, nodes).item(0);
         }
 
+        if (Core.isFragment(nodes) || Core.isShadow(nodes)) {
+            return DOMNode.findOneBySelector(`.${className}`, nodes);
+        }
+
         nodes = this.parseNodes(nodes, { fragment: true, shadow: true, document: true });
 
         if (!nodes.length) {
@@ -171,7 +183,7 @@ Object.assign(DOM.prototype, {
 
         for (const node of nodes) {
             const result = Core.isFragment(node) || Core.isShadow(node) ?
-                DOMNode.findOneBySelector(`${className}`, node) :
+                DOMNode.findOneBySelector(`.${className}`, node) :
                 DOMNode.findByClass(className, node).item(0);
             if (result) {
                 return result;
@@ -210,6 +222,10 @@ Object.assign(DOM.prototype, {
     findOneByTag(tagName, nodes = this._context) {
         if (Core.isDocument(nodes) || Core.isElement(nodes)) {
             return DOMNode.findByTag(tagName, nodes).item(0);
+        }
+
+        if (Core.isFragment(nodes) || Core.isShadow(nodes)) {
+            return DOMNode.findOneBySelector(tagName, nodes);
         }
 
         nodes = this.parseNodes(nodes, { fragment: true, shadow: true, document: true });
