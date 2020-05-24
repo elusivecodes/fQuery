@@ -44,6 +44,8 @@ Object.assign(DOM, {
             if (style) {
                 DOMNode.setAttribute(element, 'style', style);
             } else {
+                // force DOM to update
+                DOMNode.getAttribute(element, 'style');
                 DOMNode.removeAttribute(element, 'style');
             }
         }

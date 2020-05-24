@@ -7508,6 +7508,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
           if (style) {
             DOMNode.setAttribute(_element, 'style', style);
           } else {
+            DOMNode.getAttribute(_element, 'style');
             DOMNode.removeAttribute(_element, 'style');
           }
         }

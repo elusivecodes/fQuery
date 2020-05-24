@@ -15,14 +15,16 @@ describe('DOM Selection', function() {
                     '<style>' +
                     '.test { display: none; }' +
                     '</style>' +
-                    '<div id="div1"></div>' +
-                    '<div id="div2" class="test"></div>' +
-                    '<div id="div3"></div>' +
-                    '<div id="div4" class="test"></div>';
+                    '<div id="outer">' +
+                    '<div id="div1" class="test"></div>' +
+                    '<div id="div2"></div>' +
+                    '<div id="div3" class="test"></div>' +
+                    '<div id="div4"></div>' +
+                    '</div>';
             });
         });
 
-        it('temporarily forces the first node to be visible', async function() {
+        it('forces the first node to be visible', async function() {
             assert.equal(
                 await exec(_ => {
                     return dom.forceShow(
@@ -35,10 +37,233 @@ describe('DOM Selection', function() {
                 '<style>' +
                 '.test { display: none; }' +
                 '</style>' +
-                '<div id="div1"></div>' +
-                '<div id="div2" class="test" style="display: initial !important;"></div>' +
-                '<div id="div3"></div>' +
-                '<div id="div4" class="test"></div>'
+                '<div id="outer">' +
+                '<div id="div1" class="test" style="display: initial !important;"></div>' +
+                '<div id="div2"></div>' +
+                '<div id="div3" class="test"></div>' +
+                '<div id="div4"></div>' +
+                '</div>'
+            );
+        });
+
+        it('forces hidden parent nodes to be visible', async function() {
+            assert.equal(
+                await exec(_ => {
+                    document.getElementById('outer').style.setProperty('display', 'none');
+                    return dom.forceShow(
+                        '.test',
+                        _ => {
+                            return document.body.innerHTML;
+                        }
+                    );
+                }),
+                '<style>' +
+                '.test { display: none; }' +
+                '</style>' +
+                '<div id="outer" style="display: initial !important;">' +
+                '<div id="div1" class="test" style="display: initial !important;"></div>' +
+                '<div id="div2"></div>' +
+                '<div id="div3" class="test"></div>' +
+                '<div id="div4"></div>' +
+                '</div>'
+            );
+        });
+
+        it('restores the original markup', async function() {
+            assert.equal(
+                await exec(_ => {
+                    dom.forceShow(
+                        '.test',
+                        _ => { }
+                    );
+                    return document.body.innerHTML;
+                }),
+                '<style>' +
+                '.test { display: none; }' +
+                '</style>' +
+                '<div id="outer">' +
+                '<div id="div1" class="test"></div>' +
+                '<div id="div2"></div>' +
+                '<div id="div3" class="test"></div>' +
+                '<div id="div4"></div>' +
+                '</div>'
+            );
+        });
+
+        it('restores the original markup with hidden parent', async function() {
+            assert.equal(
+                await exec(_ => {
+                    document.getElementById('outer').style.setProperty('display', 'none');
+                    dom.forceShow(
+                        '.test',
+                        _ => { }
+                    );
+                    return document.body.innerHTML;
+                }),
+                '<style>' +
+                '.test { display: none; }' +
+                '</style>' +
+                '<div id="outer" style="display: none;">' +
+                '<div id="div1" class="test"></div>' +
+                '<div id="div2"></div>' +
+                '<div id="div3" class="test"></div>' +
+                '<div id="div4"></div>' +
+                '</div>'
+            );
+        });
+
+        it('executes the callback for visible nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    return dom.forceShow(
+                        '#div2',
+                        _ => {
+                            return document.body.innerHTML;
+                        }
+                    );
+                }),
+                '<style>' +
+                '.test { display: none; }' +
+                '</style>' +
+                '<div id="outer">' +
+                '<div id="div1" class="test"></div>' +
+                '<div id="div2"></div>' +
+                '<div id="div3" class="test"></div>' +
+                '<div id="div4"></div>' +
+                '</div>'
+            );
+        });
+
+        it('sends the node as an argument', async function() {
+            assert.equal(
+                await exec(_ => {
+                    return dom.forceShow(
+                        '.test',
+                        node => {
+                            return node.id;
+                        }
+                    );
+                }),
+                'div1'
+            );
+        });
+
+        it('works with HTMLElement nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    return dom.forceShow(
+                        document.getElementById('div1'),
+                        _ => {
+                            return document.body.innerHTML;
+                        }
+                    );
+                }),
+                '<style>' +
+                '.test { display: none; }' +
+                '</style>' +
+                '<div id="outer">' +
+                '<div id="div1" class="test" style="display: initial !important;"></div>' +
+                '<div id="div2"></div>' +
+                '<div id="div3" class="test"></div>' +
+                '<div id="div4"></div>' +
+                '</div>'
+            );
+        });
+
+        it('works with HTMLCollection nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    return dom.forceShow(
+                        document.getElementById('outer').children,
+                        _ => {
+                            return document.body.innerHTML;
+                        }
+                    );
+                }),
+                '<style>' +
+                '.test { display: none; }' +
+                '</style>' +
+                '<div id="outer">' +
+                '<div id="div1" class="test" style="display: initial !important;"></div>' +
+                '<div id="div2"></div>' +
+                '<div id="div3" class="test"></div>' +
+                '<div id="div4"></div>' +
+                '</div>'
+            );
+        });
+
+        it('works with NodeList nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    return dom.forceShow(
+                        document.querySelectorAll('.test'),
+                        _ => {
+                            return document.body.innerHTML;
+                        }
+                    );
+                }),
+                '<style>' +
+                '.test { display: none; }' +
+                '</style>' +
+                '<div id="outer">' +
+                '<div id="div1" class="test" style="display: initial !important;"></div>' +
+                '<div id="div2"></div>' +
+                '<div id="div3" class="test"></div>' +
+                '<div id="div4"></div>' +
+                '</div>'
+            );
+        });
+
+        it('works with array nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    return dom.forceShow(
+                        [
+                            document.getElementById('div1'),
+                            document.getElementById('div3')
+                        ],
+                        _ => {
+                            return document.body.innerHTML;
+                        }
+                    );
+                }),
+                '<style>' +
+                '.test { display: none; }' +
+                '</style>' +
+                '<div id="outer">' +
+                '<div id="div1" class="test" style="display: initial !important;"></div>' +
+                '<div id="div2"></div>' +
+                '<div id="div3" class="test"></div>' +
+                '<div id="div4"></div>' +
+                '</div>'
+            );
+        });
+
+        it('works with Document nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    return dom.forceShow(
+                        document,
+                        node => {
+                            return node instanceof Document;
+                        }
+                    );
+                }),
+                true
+            );
+        });
+
+        it('works with Window nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    return dom.forceShow(
+                        window,
+                        node => {
+                            return node instanceof Window;
+                        }
+                    );
+                }),
+                true
             );
         });
 
@@ -140,6 +365,17 @@ describe('DOM Selection', function() {
             );
         });
 
+        it('returns the index of the first node without a filter', async function() {
+            assert.equal(
+                await exec(_ => {
+                    return dom.indexOf(
+                        'div'
+                    );
+                }),
+                0
+            );
+        });
+
         it('works with HTMLElement nodes', async function() {
             assert.equal(
                 await exec(_ => {
@@ -176,7 +412,7 @@ describe('DOM Selection', function() {
             );
         });
 
-        it('works with HTMLCollection nodes', async function() {
+        it('works with array nodes', async function() {
             assert.equal(
                 await exec(_ => {
                     return dom.indexOf(
@@ -190,6 +426,31 @@ describe('DOM Selection', function() {
                     );
                 }),
                 1
+            );
+        });
+
+        it('works with DocumentFragment nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    const fragment = document.createDocumentFragment();
+                    return dom.indexOf(
+                        fragment
+                    );
+                }),
+                0
+            );
+        });
+
+        it('works with ShadowRoot nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    const div = document.createElement('div');
+                    const shadow = div.attachShadow({ mode: 'open' });
+                    return dom.indexOf(
+                        shadow
+                    );
+                }),
+                0
             );
         });
 
@@ -253,6 +514,41 @@ describe('DOM Selection', function() {
                     );
                 }),
                 1
+            );
+        });
+
+        it('works with DocumentFragment filter', async function() {
+            assert.equal(
+                await exec(_ => {
+                    const fragment = document.createDocumentFragment();
+                    return dom.indexOf(
+                        [
+                            document.getElementById('div2'),
+                            document.getElementById('div4'),
+                            fragment
+                        ],
+                        fragment
+                    );
+                }),
+                2
+            );
+        });
+
+        it('works with ShadowRoot filter', async function() {
+            assert.equal(
+                await exec(_ => {
+                    const div = document.createElement('div');
+                    const shadow = div.attachShadow({ mode: 'open' });
+                    return dom.indexOf(
+                        [
+                            document.getElementById('div2'),
+                            document.getElementById('div4'),
+                            shadow
+                        ],
+                        shadow
+                    );
+                }),
+                2
             );
         });
 

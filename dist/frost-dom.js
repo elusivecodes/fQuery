@@ -6720,6 +6720,7 @@
                 if (style) {
                     DOMNode.setAttribute(element, 'style', style);
                 } else {
+                    DOMNode.getAttribute(element, 'style');
                     DOMNode.removeAttribute(element, 'style');
                 }
             }
