@@ -167,7 +167,7 @@ Object.assign(DOM.prototype, {
 
     /**
      * Sort nodes by their position in the document.
-     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
      * @returns {array} The sorted array of nodes.
      */
     sort(nodes) {

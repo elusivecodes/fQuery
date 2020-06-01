@@ -269,6 +269,50 @@ describe('DOM Tests', function() {
             );
         });
 
+        it('works with DocumentFragment nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    const range = document.createRange();
+                    const fragment = range.createContextualFragment(
+                        '<div></div>'
+                    );
+                    return dom.hasChildren(
+                        fragment
+                    );
+                }),
+                true
+            );
+        });
+
+        it('works with ShadowRoot nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    const div = document.createElement('div');
+                    const shadow = div.attachShadow({ mode: 'open' });
+                    const range = document.createRange();
+                    const fragment = range.createContextualFragment(
+                        '<div></div>'
+                    );
+                    shadow.appendChild(fragment);
+                    return dom.hasChildren(
+                        shadow
+                    );
+                }),
+                true
+            );
+        });
+
+        it('works with Document nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    return dom.hasChildren(
+                        document
+                    );
+                }),
+                true
+            );
+        });
+
     });
 
     describe('#hasClass', function() {
@@ -656,6 +700,73 @@ describe('DOM Tests', function() {
             );
         });
 
+        it('works with DocumentFragment nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    const fragment = document.createDocumentFragment();
+                    dom.setData(
+                        fragment,
+                        'test',
+                        'Test'
+                    );
+                    return dom.hasData(
+                        fragment
+                    );
+                }),
+                true
+            );
+        });
+
+        it('works with ShadowRoot nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    const div = document.createElement('div');
+                    const shadow = div.attachShadow({ mode: 'open' });
+                    dom.setData(
+                        shadow,
+                        'test',
+                        'Test'
+                    );
+                    return dom.hasData(
+                        shadow
+                    );
+                }),
+                true
+            );
+        });
+
+        it('works with Document nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    dom.setData(
+                        document,
+                        'test',
+                        'Test'
+                    );
+                    return dom.hasData(
+                        document
+                    );
+                }),
+                true
+            );
+        });
+
+        it('works with Window nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    dom.setData(
+                        window,
+                        'test',
+                        'Test'
+                    );
+                    return dom.hasData(
+                        window
+                    );
+                }),
+                true
+            );
+        });
+
     });
 
     describe('#hasDescendent', function() {
@@ -749,6 +860,53 @@ describe('DOM Tests', function() {
                             document.getElementById('div4')
                         ],
                         'a'
+                    );
+                }),
+                true
+            );
+        });
+
+        it('works with DocumentFragment nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    const range = document.createRange();
+                    const fragment = range.createContextualFragment(
+                        '<div></div>'
+                    );
+                    return dom.hasDescendent(
+                        fragment,
+                        'div'
+                    );
+                }),
+                true
+            );
+        });
+
+        it('works with ShadowRoot nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    const div = document.createElement('div');
+                    const shadow = div.attachShadow({ mode: 'open' });
+                    const range = document.createRange();
+                    const fragment = range.createContextualFragment(
+                        '<div></div>'
+                    );
+                    shadow.appendChild(fragment);
+                    return dom.hasDescendent(
+                        shadow,
+                        'div'
+                    );
+                }),
+                true
+            );
+        });
+
+        it('works with Document nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    return dom.hasDescendent(
+                        document,
+                        'div'
                     );
                 }),
                 true
@@ -1189,6 +1347,31 @@ describe('DOM Tests', function() {
             );
         });
 
+        it('works with DocumentFragment nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    const fragment = document.createDocumentFragment();
+                    return dom.is(
+                        fragment
+                    );
+                }),
+                true
+            );
+        });
+
+        it('works with ShadowRoot nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    const div = document.createElement('div');
+                    const shadow = div.attachShadow({ mode: 'open' });
+                    return dom.is(
+                        shadow
+                    );
+                }),
+                true
+            );
+        });
+
         it('works with function filter', async function() {
             assert.equal(
                 await exec(_ => {
@@ -1201,7 +1384,7 @@ describe('DOM Tests', function() {
             );
         });
 
-        it('works with HTMLElement nodes', async function() {
+        it('works with HTMLElement filter', async function() {
             assert.equal(
                 await exec(_ => {
                     return dom.is(
@@ -1213,7 +1396,7 @@ describe('DOM Tests', function() {
             );
         });
 
-        it('works with HTMLCollection nodes', async function() {
+        it('works with HTMLCollection filter', async function() {
             assert.equal(
                 await exec(_ => {
                     return dom.is(
@@ -1225,7 +1408,7 @@ describe('DOM Tests', function() {
             );
         });
 
-        it('works with NodeList nodes', async function() {
+        it('works with NodeList filter', async function() {
             assert.equal(
                 await exec(_ => {
                     return dom.is(
@@ -1237,7 +1420,7 @@ describe('DOM Tests', function() {
             );
         });
 
-        it('works with array nodes', async function() {
+        it('works with array filter', async function() {
             assert.equal(
                 await exec(_ => {
                     return dom.is(
@@ -1248,6 +1431,39 @@ describe('DOM Tests', function() {
                             document.getElementById('div3'),
                             document.getElementById('div4')
                         ]
+                    );
+                }),
+                true
+            );
+        });
+
+        it('works with DocumentFragment filter', async function() {
+            assert.equal(
+                await exec(_ => {
+                    const fragment = document.createDocumentFragment();
+                    return dom.is(
+                        [
+                            document.getElementById('div1'),
+                            fragment
+                        ],
+                        fragment,
+                    );
+                }),
+                true
+            );
+        });
+
+        it('works with ShadowRoot filter', async function() {
+            assert.equal(
+                await exec(_ => {
+                    const div = document.createElement('div');
+                    const shadow = div.attachShadow({ mode: 'open' });
+                    return dom.is(
+                        [
+                            document.getElementById('div1'),
+                            shadow
+                        ],
+                        shadow
                     );
                 }),
                 true
@@ -1333,6 +1549,31 @@ describe('DOM Tests', function() {
                             document.getElementById('div3'),
                             document.getElementById('div4')
                         ]
+                    );
+                }),
+                true
+            );
+        });
+
+        it('works with DocumentFragment nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    const fragment = document.createDocumentFragment();
+                    return dom.isConnected(
+                        fragment
+                    );
+                }),
+                false
+            );
+        });
+
+        it('works with ShadowRoot nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    const div = document.getElementById('div1');
+                    const shadow = div.attachShadow({ mode: 'open' });
+                    return dom.isConnected(
+                        shadow
                     );
                 }),
                 true
@@ -1440,6 +1681,36 @@ describe('DOM Tests', function() {
             );
         });
 
+        it('works with DocumentFragment nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    const fragment1 = document.createDocumentFragment();
+                    const fragment2 = document.createDocumentFragment();
+                    return dom.isEqual(
+                        fragment1,
+                        fragment2
+                    );
+                }),
+                true
+            );
+        });
+
+        it('works with ShadowRoot nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    const div1 = document.createElement('div');
+                    const div2 = document.createElement('div');
+                    const shadow1 = div1.attachShadow({ mode: 'open' });
+                    const shadow2 = div2.attachShadow({ mode: 'closed' });
+                    return dom.isEqual(
+                        shadow1,
+                        shadow2
+                    );
+                }),
+                true
+            );
+        });
+
         it('works with HTMLElement other nodes', async function() {
             assert.equal(
                 await exec(_ => {
@@ -1485,6 +1756,42 @@ describe('DOM Tests', function() {
                             document.querySelector('#parent2 > [data-id="span2"]'),
                             document.querySelector('#parent2 > [data-id="span3"]')
                         ]
+                    );
+                }),
+                true
+            );
+        });
+
+        it('works with DocumentFragment other nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    const fragment1 = document.createDocumentFragment();
+                    const fragment2 = document.createDocumentFragment();
+                    return dom.isEqual(
+                        [
+                            document.querySelector('#parent1 [data-id="span2"]'),
+                            fragment1,
+                        ],
+                        fragment2
+                    );
+                }),
+                true
+            );
+        });
+
+        it('works with ShadowRoot other nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    const div1 = document.createElement('div');
+                    const div2 = document.createElement('div');
+                    const shadow1 = div1.attachShadow({ mode: 'open' });
+                    const shadow2 = div2.attachShadow({ mode: 'closed' });
+                    return dom.isEqual(
+                        [
+                            document.querySelector('#parent1 [data-id="span2"]'),
+                            shadow1,
+                        ],
+                        shadow2
                     );
                 }),
                 true
@@ -1686,6 +1993,20 @@ describe('DOM Tests', function() {
             );
         });
 
+        it('works with Document nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    const myDoc = new Document();
+                    return dom.isHidden(
+                        myDoc
+                    );
+                }),
+                true
+            );
+        });
+
+        it('works with Window nodes');
+
     });
 
     describe('#isSame', function() {
@@ -1777,6 +2098,33 @@ describe('DOM Tests', function() {
             );
         });
 
+        it('works with DocumentFragment nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    const fragment = document.createDocumentFragment();
+                    return dom.isSame(
+                        fragment,
+                        fragment
+                    );
+                }),
+                true
+            );
+        });
+
+        it('works with ShadowRoot nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    const div = document.createElement('div');
+                    const shadow = div.attachShadow({ mode: 'open' });
+                    return dom.isSame(
+                        shadow,
+                        shadow
+                    );
+                }),
+                true
+            );
+        });
+
         it('works with HTMLElement other nodes', async function() {
             assert.equal(
                 await exec(_ => {
@@ -1822,6 +2170,39 @@ describe('DOM Tests', function() {
                             document.querySelector('#div2'),
                             document.querySelector('#div4')
                         ]
+                    );
+                }),
+                true
+            );
+        });
+
+        it('works with DocumentFragment other nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    const fragment = document.createDocumentFragment();
+                    return dom.isSame(
+                        [
+                            document.querySelector('#div1'),
+                            fragment,
+                        ],
+                        fragment
+                    );
+                }),
+                true
+            );
+        });
+
+        it('works with ShadowRoot other nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    const div = document.createElement('div');
+                    const shadow = div.attachShadow({ mode: 'open' });
+                    return dom.isSame(
+                        [
+                            document.querySelector('#div1'),
+                            shadow,
+                        ],
+                        shadow
                     );
                 }),
                 true
@@ -1910,6 +2291,28 @@ describe('DOM Tests', function() {
                             document.getElementById('div3'),
                             document.getElementById('div4')
                         ]
+                    );
+                }),
+                true
+            );
+        });
+
+        it('works with Document nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    return dom.isVisible(
+                        document
+                    );
+                }),
+                true
+            );
+        });
+
+        it('works with Window nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    return dom.isVisible(
+                        window
                     );
                 }),
                 true

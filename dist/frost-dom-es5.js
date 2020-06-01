@@ -4880,13 +4880,11 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
 
     /**
      * Create a selection on the first node.
-     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
      */
     select: function select(nodes) {
       var node = this.parseNode(nodes, {
-        node: true,
-        fragment: true,
-        shadow: true
+        node: true
       });
 
       if (node && 'select' in node) {
@@ -4910,7 +4908,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
 
     /**
      * Create a selection containing all of the nodes.
-     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
      */
     selectAll: function selectAll(nodes) {
       nodes = this.sort(nodes);
@@ -5482,7 +5480,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
 
     /**
      * Sort nodes by their position in the document.
-     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
      * @returns {array} The sorted array of nodes.
      */
     sort: function sort(nodes) {
@@ -7508,6 +7506,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
           if (style) {
             DOMNode.setAttribute(_element, 'style', style);
           } else {
+            // force DOM to update
             DOMNode.getAttribute(_element, 'style');
             DOMNode.removeAttribute(_element, 'style');
           }

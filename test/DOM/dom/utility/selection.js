@@ -152,6 +152,35 @@ describe('DOM Selection', function() {
             );
         });
 
+        it('works with DocumentFragment other nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    const range = document.createRange();
+                    const fragment = range.createContextualFragment(
+                        '<div><span></span></div>'
+                    );
+                    dom.afterSelection(
+                        fragment
+                    );
+                    return document.body.innerHTML;
+                }),
+                '<div id="select">' +
+                '<div id="div1">' +
+                '<span id="span1">Test 1</span>' +
+                '</div>' +
+                '<div id="div2">' +
+                '<span id="span2">Tes' +
+                '<div><span></span></div>' +
+                't 2</span>' +
+                '</div>' +
+                '</div>' +
+                '<div id="parent">' +
+                '<a href="#" id="a1">Test</a>' +
+                '<a href="#" id="a2">Test</a>' +
+                '</div>'
+            );
+        });
+
         it('works with HTML nodes', async function() {
             assert.equal(
                 await exec(_ => {
@@ -325,6 +354,35 @@ describe('DOM Selection', function() {
                 '</div>' +
                 '</div>' +
                 '<div id="parent"></div>'
+            );
+        });
+
+        it('works with DocumentFragment other nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    const range = document.createRange();
+                    const fragment = range.createContextualFragment(
+                        '<div><span></span></div>'
+                    );
+                    dom.beforeSelection(
+                        fragment
+                    );
+                    return document.body.innerHTML;
+                }),
+                '<div id="select">' +
+                '<div id="div1">' +
+                '<span id="span1">Tes' +
+                '<div><span></span></div>' +
+                't 1</span>' +
+                '</div>' +
+                '<div id="div2">' +
+                '<span id="span2">Test 2</span>' +
+                '</div>' +
+                '</div>' +
+                '<div id="parent">' +
+                '<a href="#" id="a1">Test</a>' +
+                '<a href="#" id="a2">Test</a>' +
+                '</div>'
             );
         });
 
@@ -872,6 +930,45 @@ describe('DOM Selection', function() {
                 '</div>' +
                 '</div>' +
                 '<div id="wrapper">' +
+                '</div>'
+            )
+        });
+
+        it('works with HTML nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    const range = document.createRange();
+                    const fragment = range.createContextualFragment(
+                        '<div class="div-outer"><div class="div-inner"></div></div>'
+                    );
+                    dom.wrapSelection(
+                        fragment
+                    );
+                    return document.body.innerHTML;
+                }),
+                '<div id="select">' +
+                '<div id="div1">' +
+                '<span id="span1">Tes</span>' +
+                '</div>' +
+                '<div class="div-outer">' +
+                '<div class="div-inner">' +
+                '<div id="div1">' +
+                '<span id="span1">t 1</span>' +
+                '</div>' +
+                '<div id="div2">' +
+                '<span id="span2">Tes</span>' +
+                '</div>' +
+                '</div>' +
+                '</div>' +
+                '<div id="div2">' +
+                '<span id="span2">t 2</span>' +
+                '</div>' +
+                '</div>' +
+                '<div id="wrapper">' +
+                '<div class="outer">' +
+                '<div class="inner">' +
+                '</div>' +
+                '</div>' +
                 '</div>'
             )
         });

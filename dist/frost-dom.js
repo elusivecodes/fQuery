@@ -4211,10 +4211,10 @@
 
         /**
          * Create a selection on the first node.
-         * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
+         * @param {string|array|Node|HTMLElement|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
          */
         select(nodes) {
-            const node = this.parseNode(nodes, { node: true, fragment: true, shadow: true });
+            const node = this.parseNode(nodes, { node: true });
 
             if (node && 'select' in node) {
                 return node.select();
@@ -4237,7 +4237,7 @@
 
         /**
          * Create a selection containing all of the nodes.
-         * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
+         * @param {string|array|Node|HTMLElement|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
          */
         selectAll(nodes) {
             nodes = this.sort(nodes);
@@ -4718,7 +4718,7 @@
 
         /**
          * Sort nodes by their position in the document.
-         * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
+         * @param {string|array|Node|HTMLElement|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
          * @returns {array} The sorted array of nodes.
          */
         sort(nodes) {
@@ -6720,6 +6720,7 @@
                 if (style) {
                     DOMNode.setAttribute(element, 'style', style);
                 } else {
+                    // force DOM to update
                     DOMNode.getAttribute(element, 'style');
                     DOMNode.removeAttribute(element, 'style');
                 }

@@ -127,10 +127,10 @@ Object.assign(DOM.prototype, {
 
     /**
      * Create a selection on the first node.
-     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
      */
     select(nodes) {
-        const node = this.parseNode(nodes, { node: true, fragment: true, shadow: true });
+        const node = this.parseNode(nodes, { node: true });
 
         if (node && 'select' in node) {
             return node.select();
@@ -153,7 +153,7 @@ Object.assign(DOM.prototype, {
 
     /**
      * Create a selection containing all of the nodes.
-     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
      */
     selectAll(nodes) {
         nodes = this.sort(nodes);

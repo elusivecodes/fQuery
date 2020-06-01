@@ -1596,7 +1596,7 @@ describe('DOM Filter', function() {
                 await exec(_ => {
                     const fragment = document.createDocumentFragment();
                     fragment.id = 'fragment';
-                    return dom.equal(
+                    return dom.same(
                         fragment,
                         fragment
                     ).map(node => node.id);
@@ -1613,7 +1613,7 @@ describe('DOM Filter', function() {
                     const div = document.createElement('div');
                     const shadow = div.attachShadow({ mode: 'open' });
                     shadow.id = 'shadow';
-                    return dom.equal(
+                    return dom.same(
                         shadow,
                         shadow
                     ).map(node => node.id);
@@ -1693,7 +1693,7 @@ describe('DOM Filter', function() {
                 await exec(_ => {
                     const fragment = document.createDocumentFragment();
                     fragment.id = 'fragment';
-                    return dom.equal(
+                    return dom.same(
                         [
                             document.querySelector('#div1'),
                             fragment,
@@ -1713,7 +1713,7 @@ describe('DOM Filter', function() {
                     const div = document.createElement('div');
                     const shadow = div.attachShadow({ mode: 'open' });
                     shadow.id = 'shadow';
-                    return dom.equal(
+                    return dom.same(
                         [
                             document.querySelector('#div1'),
                             shadow,
