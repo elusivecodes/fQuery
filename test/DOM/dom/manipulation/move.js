@@ -1,5 +1,5 @@
 const assert = require('assert').strict;
-const exec = require('../../../setup');
+const { exec } = require('../../../setup');
 
 describe('DOM Move', function() {
 
@@ -239,6 +239,34 @@ describe('DOM Move', function() {
             );
         });
 
+        it('works with DocumentFragment other nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    const range = document.createRange();
+                    const fragment = range.createContextualFragment(
+                        '<div><span></span></div>'
+                    );
+                    dom.after(
+                        'div',
+                        fragment
+                    );
+                    return document.body.innerHTML;
+                }),
+                '<div id="parent1">' +
+                '<span></span>' +
+                '<a href="#" class="test1">Test</a>' +
+                '<a href="#" class="test2">Test</a>' +
+                '</div>' +
+                '<div><span></span></div>' +
+                '<div id="parent2">' +
+                '<span></span>' +
+                '<a href="#" class="test3">Test</a>' +
+                '<a href="#" class="test4">Test</a>' +
+                '</div>' +
+                '<div><span></span></div>'
+            );
+        });
+
         it('works with array other nodes', async function() {
             assert.equal(
                 await exec(_ => {
@@ -267,34 +295,6 @@ describe('DOM Move', function() {
                 '<a href="#" class="test2">Test</a>' +
                 '<a href="#" class="test3">Test</a>' +
                 '<a href="#" class="test4">Test</a>'
-            );
-        });
-
-        it('works with DocumentFragment other nodes', async function() {
-            assert.equal(
-                await exec(_ => {
-                    const range = document.createRange();
-                    const fragment = range.createContextualFragment(
-                        '<div><span></span></div>'
-                    );
-                    dom.after(
-                        'div',
-                        fragment
-                    );
-                    return document.body.innerHTML;
-                }),
-                '<div id="parent1">' +
-                '<span></span>' +
-                '<a href="#" class="test1">Test</a>' +
-                '<a href="#" class="test2">Test</a>' +
-                '</div>' +
-                '<div><span></span></div>' +
-                '<div id="parent2">' +
-                '<span></span>' +
-                '<a href="#" class="test3">Test</a>' +
-                '<a href="#" class="test4">Test</a>' +
-                '</div>' +
-                '<div><span></span></div>'
             );
         });
 
@@ -457,35 +457,6 @@ describe('DOM Move', function() {
             );
         });
 
-        it('works with array nodes', async function() {
-            assert.equal(
-                await exec(_ => {
-                    dom.append(
-                        [
-                            document.getElementById('parent1'),
-                            document.getElementById('parent2')
-                        ],
-                        'a'
-                    );
-                    return document.body.innerHTML;
-                }),
-                '<div id="parent1">' +
-                '<span></span>' +
-                '<a href="#" class="test1">Test</a>' +
-                '<a href="#" class="test2">Test</a>' +
-                '<a href="#" class="test3">Test</a>' +
-                '<a href="#" class="test4">Test</a>' +
-                '</div>' +
-                '<div id="parent2">' +
-                '<span></span>' +
-                '<a href="#" class="test1">Test</a>' +
-                '<a href="#" class="test2">Test</a>' +
-                '<a href="#" class="test3">Test</a>' +
-                '<a href="#" class="test4">Test</a>' +
-                '</div>'
-            );
-        });
-
         it('works with DocumentFragment nodes', async function() {
             assert.equal(
                 await exec(_ => {
@@ -546,6 +517,35 @@ describe('DOM Move', function() {
                     return myDoc.childNodes.length;
                 }),
                 1
+            );
+        });
+
+        it('works with array nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    dom.append(
+                        [
+                            document.getElementById('parent1'),
+                            document.getElementById('parent2')
+                        ],
+                        'a'
+                    );
+                    return document.body.innerHTML;
+                }),
+                '<div id="parent1">' +
+                '<span></span>' +
+                '<a href="#" class="test1">Test</a>' +
+                '<a href="#" class="test2">Test</a>' +
+                '<a href="#" class="test3">Test</a>' +
+                '<a href="#" class="test4">Test</a>' +
+                '</div>' +
+                '<div id="parent2">' +
+                '<span></span>' +
+                '<a href="#" class="test1">Test</a>' +
+                '<a href="#" class="test2">Test</a>' +
+                '<a href="#" class="test3">Test</a>' +
+                '<a href="#" class="test4">Test</a>' +
+                '</div>'
             );
         });
 
@@ -623,6 +623,34 @@ describe('DOM Move', function() {
             );
         });
 
+        it('works with DocumentFragment other nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    const range = document.createRange();
+                    const fragment = range.createContextualFragment(
+                        '<div><span></span></div>'
+                    );
+                    dom.append(
+                        'div',
+                        fragment
+                    );
+                    return document.body.innerHTML;
+                }),
+                '<div id="parent1">' +
+                '<a href="#" class="test1">Test</a>' +
+                '<a href="#" class="test2">Test</a>' +
+                '<span></span>' +
+                '<div><span></span></div>' +
+                '</div>' +
+                '<div id="parent2">' +
+                '<a href="#" class="test3">Test</a>' +
+                '<a href="#" class="test4">Test</a>' +
+                '<span></span>' +
+                '<div><span></span></div>' +
+                '</div>'
+            );
+        });
+
         it('works with array other nodes', async function() {
             assert.equal(
                 await exec(_ => {
@@ -650,34 +678,6 @@ describe('DOM Move', function() {
                 '<a href="#" class="test2">Test</a>' +
                 '<a href="#" class="test3">Test</a>' +
                 '<a href="#" class="test4">Test</a>' +
-                '</div>'
-            );
-        });
-
-        it('works with DocumentFragment other nodes', async function() {
-            assert.equal(
-                await exec(_ => {
-                    const range = document.createRange();
-                    const fragment = range.createContextualFragment(
-                        '<div><span></span></div>'
-                    );
-                    dom.append(
-                        'div',
-                        fragment
-                    );
-                    return document.body.innerHTML;
-                }),
-                '<div id="parent1">' +
-                '<a href="#" class="test1">Test</a>' +
-                '<a href="#" class="test2">Test</a>' +
-                '<span></span>' +
-                '<div><span></span></div>' +
-                '</div>' +
-                '<div id="parent2">' +
-                '<a href="#" class="test3">Test</a>' +
-                '<a href="#" class="test4">Test</a>' +
-                '<span></span>' +
-                '<div><span></span></div>' +
                 '</div>'
             );
         });
@@ -841,37 +841,6 @@ describe('DOM Move', function() {
             );
         });
 
-        it('works with array nodes', async function() {
-            assert.equal(
-                await exec(_ => {
-                    dom.appendTo(
-                        [
-                            document.querySelector('.test1'),
-                            document.querySelector('.test2'),
-                            document.querySelector('.test3'),
-                            document.querySelector('.test4')
-                        ],
-                        'div'
-                    );
-                    return document.body.innerHTML;
-                }),
-                '<div id="parent1">' +
-                '<span></span>' +
-                '<a href="#" class="test1">Test</a>' +
-                '<a href="#" class="test2">Test</a>' +
-                '<a href="#" class="test3">Test</a>' +
-                '<a href="#" class="test4">Test</a>' +
-                '</div>' +
-                '<div id="parent2">' +
-                '<span></span>' +
-                '<a href="#" class="test1">Test</a>' +
-                '<a href="#" class="test2">Test</a>' +
-                '<a href="#" class="test3">Test</a>' +
-                '<a href="#" class="test4">Test</a>' +
-                '</div>'
-            );
-        });
-
         it('works with DocumentFragment nodes', async function() {
             assert.equal(
                 await exec(_ => {
@@ -932,6 +901,37 @@ describe('DOM Move', function() {
                     return myDoc.childNodes.length;
                 }),
                 1
+            );
+        });
+
+        it('works with array nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    dom.appendTo(
+                        [
+                            document.querySelector('.test1'),
+                            document.querySelector('.test2'),
+                            document.querySelector('.test3'),
+                            document.querySelector('.test4')
+                        ],
+                        'div'
+                    );
+                    return document.body.innerHTML;
+                }),
+                '<div id="parent1">' +
+                '<span></span>' +
+                '<a href="#" class="test1">Test</a>' +
+                '<a href="#" class="test2">Test</a>' +
+                '<a href="#" class="test3">Test</a>' +
+                '<a href="#" class="test4">Test</a>' +
+                '</div>' +
+                '<div id="parent2">' +
+                '<span></span>' +
+                '<a href="#" class="test1">Test</a>' +
+                '<a href="#" class="test2">Test</a>' +
+                '<a href="#" class="test3">Test</a>' +
+                '<a href="#" class="test4">Test</a>' +
+                '</div>'
             );
         });
 
@@ -1009,6 +1009,34 @@ describe('DOM Move', function() {
             );
         });
 
+        it('works with DocumentFragment other nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    const range = document.createRange();
+                    const fragment = range.createContextualFragment(
+                        '<div><span></span></div>'
+                    );
+                    dom.appendTo(
+                        fragment,
+                        'div'
+                    );
+                    return document.body.innerHTML;
+                }),
+                '<div id="parent1">' +
+                '<a href="#" class="test1">Test</a>' +
+                '<a href="#" class="test2">Test</a>' +
+                '<span></span>' +
+                '<div><span></span></div>' +
+                '</div>' +
+                '<div id="parent2">' +
+                '<a href="#" class="test3">Test</a>' +
+                '<a href="#" class="test4">Test</a>' +
+                '<span></span>' +
+                '<div><span></span></div>' +
+                '</div>'
+            );
+        });
+
         it('works with array other nodes', async function() {
             assert.equal(
                 await exec(_ => {
@@ -1034,34 +1062,6 @@ describe('DOM Move', function() {
                 '<a href="#" class="test2">Test</a>' +
                 '<a href="#" class="test3">Test</a>' +
                 '<a href="#" class="test4">Test</a>' +
-                '</div>'
-            );
-        });
-
-        it('works with DocumentFragment other nodes', async function() {
-            assert.equal(
-                await exec(_ => {
-                    const range = document.createRange();
-                    const fragment = range.createContextualFragment(
-                        '<div><span></span></div>'
-                    );
-                    dom.appendTo(
-                        fragment,
-                        'div'
-                    );
-                    return document.body.innerHTML;
-                }),
-                '<div id="parent1">' +
-                '<a href="#" class="test1">Test</a>' +
-                '<a href="#" class="test2">Test</a>' +
-                '<span></span>' +
-                '<div><span></span></div>' +
-                '</div>' +
-                '<div id="parent2">' +
-                '<a href="#" class="test3">Test</a>' +
-                '<a href="#" class="test4">Test</a>' +
-                '<span></span>' +
-                '<div><span></span></div>' +
                 '</div>'
             );
         });
@@ -1328,6 +1328,34 @@ describe('DOM Move', function() {
             );
         });
 
+        it('works with DocumentFragment other nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    const range = document.createRange();
+                    const fragment = range.createContextualFragment(
+                        '<div><span></span></div>'
+                    );
+                    dom.before(
+                        'div',
+                        fragment
+                    );
+                    return document.body.innerHTML;
+                }),
+                '<div><span></span></div>' +
+                '<div id="parent1">' +
+                '<span></span>' +
+                '<a href="#" class="test1">Test</a>' +
+                '<a href="#" class="test2">Test</a>' +
+                '</div>' +
+                '<div><span></span></div>' +
+                '<div id="parent2">' +
+                '<span></span>' +
+                '<a href="#" class="test3">Test</a>' +
+                '<a href="#" class="test4">Test</a>' +
+                '</div>'
+            );
+        });
+
         it('works with array other nodes', async function() {
             assert.equal(
                 await exec(_ => {
@@ -1355,34 +1383,6 @@ describe('DOM Move', function() {
                 '<a href="#" class="test4">Test</a>' +
                 '<div id="parent2">' +
                 '<span></span>' +
-                '</div>'
-            );
-        });
-
-        it('works with DocumentFragment other nodes', async function() {
-            assert.equal(
-                await exec(_ => {
-                    const range = document.createRange();
-                    const fragment = range.createContextualFragment(
-                        '<div><span></span></div>'
-                    );
-                    dom.before(
-                        'div',
-                        fragment
-                    );
-                    return document.body.innerHTML;
-                }),
-                '<div><span></span></div>' +
-                '<div id="parent1">' +
-                '<span></span>' +
-                '<a href="#" class="test1">Test</a>' +
-                '<a href="#" class="test2">Test</a>' +
-                '</div>' +
-                '<div><span></span></div>' +
-                '<div id="parent2">' +
-                '<span></span>' +
-                '<a href="#" class="test3">Test</a>' +
-                '<a href="#" class="test4">Test</a>' +
                 '</div>'
             );
         });
@@ -1546,6 +1546,34 @@ describe('DOM Move', function() {
             );
         });
 
+        it('works with DocumentFragment nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    const range = document.createRange();
+                    const fragment = range.createContextualFragment(
+                        '<div><span></span></div>'
+                    );
+                    dom.insertAfter(
+                        fragment,
+                        'div'
+                    );
+                    return document.body.innerHTML;
+                }),
+                '<div id="parent1">' +
+                '<span></span>' +
+                '<a href="#" class="test1">Test</a>' +
+                '<a href="#" class="test2">Test</a>' +
+                '</div>' +
+                '<div><span></span></div>' +
+                '<div id="parent2">' +
+                '<span></span>' +
+                '<a href="#" class="test3">Test</a>' +
+                '<a href="#" class="test4">Test</a>' +
+                '</div>' +
+                '<div><span></span></div>'
+            );
+        });
+
         it('works with array nodes', async function() {
             assert.equal(
                 await exec(_ => {
@@ -1574,34 +1602,6 @@ describe('DOM Move', function() {
                 '<a href="#" class="test2">Test</a>' +
                 '<a href="#" class="test3">Test</a>' +
                 '<a href="#" class="test4">Test</a>'
-            );
-        });
-
-        it('works with DocumentFragment nodes', async function() {
-            assert.equal(
-                await exec(_ => {
-                    const range = document.createRange();
-                    const fragment = range.createContextualFragment(
-                        '<div><span></span></div>'
-                    );
-                    dom.insertAfter(
-                        fragment,
-                        'div'
-                    );
-                    return document.body.innerHTML;
-                }),
-                '<div id="parent1">' +
-                '<span></span>' +
-                '<a href="#" class="test1">Test</a>' +
-                '<a href="#" class="test2">Test</a>' +
-                '</div>' +
-                '<div><span></span></div>' +
-                '<div id="parent2">' +
-                '<span></span>' +
-                '<a href="#" class="test3">Test</a>' +
-                '<a href="#" class="test4">Test</a>' +
-                '</div>' +
-                '<div><span></span></div>'
             );
         });
 
@@ -1867,6 +1867,34 @@ describe('DOM Move', function() {
             );
         });
 
+        it('works with DocumentFragment nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    const range = document.createRange();
+                    const fragment = range.createContextualFragment(
+                        '<div><span></span></div>'
+                    );
+                    dom.insertBefore(
+                        fragment,
+                        'div'
+                    );
+                    return document.body.innerHTML;
+                }),
+                '<div><span></span></div>' +
+                '<div id="parent1">' +
+                '<span></span>' +
+                '<a href="#" class="test1">Test</a>' +
+                '<a href="#" class="test2">Test</a>' +
+                '</div>' +
+                '<div><span></span></div>' +
+                '<div id="parent2">' +
+                '<span></span>' +
+                '<a href="#" class="test3">Test</a>' +
+                '<a href="#" class="test4">Test</a>' +
+                '</div>'
+            );
+        });
+
         it('works with array nodes', async function() {
             assert.equal(
                 await exec(_ => {
@@ -1894,34 +1922,6 @@ describe('DOM Move', function() {
                 '<a href="#" class="test4">Test</a>' +
                 '<div id="parent2">' +
                 '<span></span>' +
-                '</div>'
-            );
-        });
-
-        it('works with DocumentFragment nodes', async function() {
-            assert.equal(
-                await exec(_ => {
-                    const range = document.createRange();
-                    const fragment = range.createContextualFragment(
-                        '<div><span></span></div>'
-                    );
-                    dom.insertBefore(
-                        fragment,
-                        'div'
-                    );
-                    return document.body.innerHTML;
-                }),
-                '<div><span></span></div>' +
-                '<div id="parent1">' +
-                '<span></span>' +
-                '<a href="#" class="test1">Test</a>' +
-                '<a href="#" class="test2">Test</a>' +
-                '</div>' +
-                '<div><span></span></div>' +
-                '<div id="parent2">' +
-                '<span></span>' +
-                '<a href="#" class="test3">Test</a>' +
-                '<a href="#" class="test4">Test</a>' +
                 '</div>'
             );
         });
@@ -2188,35 +2188,6 @@ describe('DOM Move', function() {
             );
         });
 
-        it('works with array nodes', async function() {
-            assert.equal(
-                await exec(_ => {
-                    dom.prepend(
-                        [
-                            document.getElementById('parent1'),
-                            document.getElementById('parent2')
-                        ],
-                        'a'
-                    );
-                    return document.body.innerHTML;
-                }),
-                '<div id="parent1">' +
-                '<a href="#" class="test1">Test</a>' +
-                '<a href="#" class="test2">Test</a>' +
-                '<a href="#" class="test3">Test</a>' +
-                '<a href="#" class="test4">Test</a>' +
-                '<span></span>' +
-                '</div>' +
-                '<div id="parent2">' +
-                '<a href="#" class="test1">Test</a>' +
-                '<a href="#" class="test2">Test</a>' +
-                '<a href="#" class="test3">Test</a>' +
-                '<a href="#" class="test4">Test</a>' +
-                '<span></span>' +
-                '</div>'
-            );
-        });
-
         it('works with DocumentFragment nodes', async function() {
             assert.equal(
                 await exec(_ => {
@@ -2277,6 +2248,35 @@ describe('DOM Move', function() {
                     return myDoc.childNodes.length;
                 }),
                 1
+            );
+        });
+
+        it('works with array nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    dom.prepend(
+                        [
+                            document.getElementById('parent1'),
+                            document.getElementById('parent2')
+                        ],
+                        'a'
+                    );
+                    return document.body.innerHTML;
+                }),
+                '<div id="parent1">' +
+                '<a href="#" class="test1">Test</a>' +
+                '<a href="#" class="test2">Test</a>' +
+                '<a href="#" class="test3">Test</a>' +
+                '<a href="#" class="test4">Test</a>' +
+                '<span></span>' +
+                '</div>' +
+                '<div id="parent2">' +
+                '<a href="#" class="test1">Test</a>' +
+                '<a href="#" class="test2">Test</a>' +
+                '<a href="#" class="test3">Test</a>' +
+                '<a href="#" class="test4">Test</a>' +
+                '<span></span>' +
+                '</div>'
             );
         });
 
@@ -2354,6 +2354,34 @@ describe('DOM Move', function() {
             );
         });
 
+        it('works with DocumentFragment other nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    const range = document.createRange();
+                    const fragment = range.createContextualFragment(
+                        '<div><span></span></div>'
+                    );
+                    dom.prepend(
+                        'div',
+                        fragment
+                    );
+                    return document.body.innerHTML;
+                }),
+                '<div id="parent1">' +
+                '<div><span></span></div>' +
+                '<span></span>' +
+                '<a href="#" class="test1">Test</a>' +
+                '<a href="#" class="test2">Test</a>' +
+                '</div>' +
+                '<div id="parent2">' +
+                '<div><span></span></div>' +
+                '<span></span>' +
+                '<a href="#" class="test3">Test</a>' +
+                '<a href="#" class="test4">Test</a>' +
+                '</div>'
+            );
+        });
+
         it('works with array other nodes', async function() {
             assert.equal(
                 await exec(_ => {
@@ -2381,34 +2409,6 @@ describe('DOM Move', function() {
                 '<a href="#" class="test3">Test</a>' +
                 '<a href="#" class="test4">Test</a>' +
                 '<span></span>' +
-                '</div>'
-            );
-        });
-
-        it('works with DocumentFragment other nodes', async function() {
-            assert.equal(
-                await exec(_ => {
-                    const range = document.createRange();
-                    const fragment = range.createContextualFragment(
-                        '<div><span></span></div>'
-                    );
-                    dom.prepend(
-                        'div',
-                        fragment
-                    );
-                    return document.body.innerHTML;
-                }),
-                '<div id="parent1">' +
-                '<div><span></span></div>' +
-                '<span></span>' +
-                '<a href="#" class="test1">Test</a>' +
-                '<a href="#" class="test2">Test</a>' +
-                '</div>' +
-                '<div id="parent2">' +
-                '<div><span></span></div>' +
-                '<span></span>' +
-                '<a href="#" class="test3">Test</a>' +
-                '<a href="#" class="test4">Test</a>' +
                 '</div>'
             );
         });
@@ -2572,6 +2572,34 @@ describe('DOM Move', function() {
             );
         });
 
+        it('works with DocumentFragment nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    const range = document.createRange();
+                    const fragment = range.createContextualFragment(
+                        '<div><span></span></div>'
+                    );
+                    dom.prependTo(
+                        fragment,
+                        'div'
+                    );
+                    return document.body.innerHTML;
+                }),
+                '<div id="parent1">' +
+                '<div><span></span></div>' +
+                '<span></span>' +
+                '<a href="#" class="test1">Test</a>' +
+                '<a href="#" class="test2">Test</a>' +
+                '</div>' +
+                '<div id="parent2">' +
+                '<div><span></span></div>' +
+                '<span></span>' +
+                '<a href="#" class="test3">Test</a>' +
+                '<a href="#" class="test4">Test</a>' +
+                '</div>'
+            );
+        });
+
         it('works with array nodes', async function() {
             assert.equal(
                 await exec(_ => {
@@ -2599,34 +2627,6 @@ describe('DOM Move', function() {
                 '<a href="#" class="test3">Test</a>' +
                 '<a href="#" class="test4">Test</a>' +
                 '<span></span>' +
-                '</div>'
-            );
-        });
-
-        it('works with DocumentFragment nodes', async function() {
-            assert.equal(
-                await exec(_ => {
-                    const range = document.createRange();
-                    const fragment = range.createContextualFragment(
-                        '<div><span></span></div>'
-                    );
-                    dom.prependTo(
-                        fragment,
-                        'div'
-                    );
-                    return document.body.innerHTML;
-                }),
-                '<div id="parent1">' +
-                '<div><span></span></div>' +
-                '<span></span>' +
-                '<a href="#" class="test1">Test</a>' +
-                '<a href="#" class="test2">Test</a>' +
-                '</div>' +
-                '<div id="parent2">' +
-                '<div><span></span></div>' +
-                '<span></span>' +
-                '<a href="#" class="test3">Test</a>' +
-                '<a href="#" class="test4">Test</a>' +
                 '</div>'
             );
         });
@@ -2729,35 +2729,6 @@ describe('DOM Move', function() {
             );
         });
 
-        it('works with array other nodes', async function() {
-            assert.equal(
-                await exec(_ => {
-                    dom.prependTo(
-                        'a',
-                        [
-                            document.getElementById('parent1'),
-                            document.getElementById('parent2')
-                        ]
-                    );
-                    return document.body.innerHTML;
-                }),
-                '<div id="parent1">' +
-                '<a href="#" class="test1">Test</a>' +
-                '<a href="#" class="test2">Test</a>' +
-                '<a href="#" class="test3">Test</a>' +
-                '<a href="#" class="test4">Test</a>' +
-                '<span></span>' +
-                '</div>' +
-                '<div id="parent2">' +
-                '<a href="#" class="test1">Test</a>' +
-                '<a href="#" class="test2">Test</a>' +
-                '<a href="#" class="test3">Test</a>' +
-                '<a href="#" class="test4">Test</a>' +
-                '<span></span>' +
-                '</div>'
-            );
-        });
-
         it('works with DocumentFragment other nodes', async function() {
             assert.equal(
                 await exec(_ => {
@@ -2818,6 +2789,35 @@ describe('DOM Move', function() {
                     return myDoc.childNodes.length;
                 }),
                 1
+            );
+        });
+
+        it('works with array other nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    dom.prependTo(
+                        'a',
+                        [
+                            document.getElementById('parent1'),
+                            document.getElementById('parent2')
+                        ]
+                    );
+                    return document.body.innerHTML;
+                }),
+                '<div id="parent1">' +
+                '<a href="#" class="test1">Test</a>' +
+                '<a href="#" class="test2">Test</a>' +
+                '<a href="#" class="test3">Test</a>' +
+                '<a href="#" class="test4">Test</a>' +
+                '<span></span>' +
+                '</div>' +
+                '<div id="parent2">' +
+                '<a href="#" class="test1">Test</a>' +
+                '<a href="#" class="test2">Test</a>' +
+                '<a href="#" class="test3">Test</a>' +
+                '<a href="#" class="test4">Test</a>' +
+                '<span></span>' +
+                '</div>'
             );
         });
 

@@ -1,11 +1,7 @@
 const assert = require('assert').strict;
-const exec = require('../../../setup');
+const { exec } = require('../../../setup');
 
 describe('DOM Selection', function() {
-
-    describe('#execute', function() {
-
-    });
 
     describe('#forceShow', function() {
 
@@ -239,34 +235,6 @@ describe('DOM Selection', function() {
             );
         });
 
-        it('works with Document nodes', async function() {
-            assert.equal(
-                await exec(_ => {
-                    return dom.forceShow(
-                        document,
-                        node => {
-                            return node instanceof Document;
-                        }
-                    );
-                }),
-                true
-            );
-        });
-
-        it('works with Window nodes', async function() {
-            assert.equal(
-                await exec(_ => {
-                    return dom.forceShow(
-                        window,
-                        node => {
-                            return node instanceof Window;
-                        }
-                    );
-                }),
-                true
-            );
-        });
-
     });
 
     describe('#index', function() {
@@ -412,23 +380,6 @@ describe('DOM Selection', function() {
             );
         });
 
-        it('works with array nodes', async function() {
-            assert.equal(
-                await exec(_ => {
-                    return dom.indexOf(
-                        [
-                            document.getElementById('div1'),
-                            document.getElementById('div2'),
-                            document.getElementById('div3'),
-                            document.getElementById('div4')
-                        ],
-                        '.test'
-                    );
-                }),
-                1
-            );
-        });
-
         it('works with DocumentFragment nodes', async function() {
             assert.equal(
                 await exec(_ => {
@@ -451,6 +402,23 @@ describe('DOM Selection', function() {
                     );
                 }),
                 0
+            );
+        });
+
+        it('works with array nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    return dom.indexOf(
+                        [
+                            document.getElementById('div1'),
+                            document.getElementById('div2'),
+                            document.getElementById('div3'),
+                            document.getElementById('div4')
+                        ],
+                        '.test'
+                    );
+                }),
+                1
             );
         });
 
@@ -502,21 +470,6 @@ describe('DOM Selection', function() {
             );
         });
 
-        it('works with array filter', async function() {
-            assert.equal(
-                await exec(_ => {
-                    return dom.indexOf(
-                        'div',
-                        [
-                            document.getElementById('div2'),
-                            document.getElementById('div4')
-                        ]
-                    );
-                }),
-                1
-            );
-        });
-
         it('works with DocumentFragment filter', async function() {
             assert.equal(
                 await exec(_ => {
@@ -549,6 +502,21 @@ describe('DOM Selection', function() {
                     );
                 }),
                 2
+            );
+        });
+
+        it('works with array filter', async function() {
+            assert.equal(
+                await exec(_ => {
+                    return dom.indexOf(
+                        'div',
+                        [
+                            document.getElementById('div2'),
+                            document.getElementById('div4')
+                        ]
+                    );
+                }),
+                1
             );
         });
 
@@ -665,6 +633,55 @@ describe('DOM Selection', function() {
                     3
                 ]
             );
+        });
+
+        it('works with DocumentFragment nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    const fragment = document.createDocumentFragment();
+                    const text1 = document.createTextNode('Test 1');
+                    const text2 = document.createTextNode('Test 2');
+                    const text3 = document.createTextNode('Test 3');
+                    const text4 = document.createTextNode('Test 4');
+                    const span1 = document.createElement('span');
+
+                    fragment.appendChild(text1);
+                    fragment.appendChild(text2);
+                    fragment.appendChild(span1);
+                    fragment.appendChild(text3);
+                    fragment.appendChild(text4);
+
+                    dom.normalize(fragment);
+
+                    return fragment.childNodes.length
+                }),
+                3
+            )
+        });
+
+        it('works with ShadowRoot nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    const div = document.createElement('div');
+                    const shadow = div.attachShadow({ mode: 'open' });
+                    const text1 = document.createTextNode('Test 1');
+                    const text2 = document.createTextNode('Test 2');
+                    const text3 = document.createTextNode('Test 3');
+                    const text4 = document.createTextNode('Test 4');
+                    const span1 = document.createElement('span');
+
+                    shadow.appendChild(text1);
+                    shadow.appendChild(text2);
+                    shadow.appendChild(span1);
+                    shadow.appendChild(text3);
+                    shadow.appendChild(text4);
+
+                    dom.normalize(shadow);
+
+                    return shadow.childNodes.length
+                }),
+                3
+            )
         });
 
         it('works with array nodes', async function() {
@@ -847,6 +864,39 @@ describe('DOM Selection', function() {
                 await exec(_ => {
                     return dom.serialize(
                         document.querySelectorAll('input, textarea, select')
+                    );
+                }),
+                'test1=Test%201&test2=2&test3=Test%203&test4=42&test5%5B%5D=51&test5%5B%5D=52&test6=Test%206&test8=Test%208b&test9%5B%5D=Test%209a&test9%5B%5D=Test%209b'
+            );
+        });
+
+        it('works with DocumentFragment', async function() {
+            assert.equal(
+                await exec(_ => {
+                    const range = document.createRange();
+                    const fragment = range.createContextualFragment(
+                        document.body.innerHTML
+                    );
+                    return dom.serialize(
+                        fragment
+                    );
+                }),
+                'test1=Test%201&test2=2&test3=Test%203&test4=42&test5%5B%5D=51&test5%5B%5D=52&test6=Test%206&test8=Test%208b&test9%5B%5D=Test%209a&test9%5B%5D=Test%209b'
+            );
+        });
+
+        it('works with ShadowRoot', async function() {
+            assert.equal(
+                await exec(_ => {
+                    const div = document.createElement('div');
+                    const shadow = div.attachShadow({ mode: 'open' });
+                    const range = document.createRange();
+                    const fragment = range.createContextualFragment(
+                        document.body.innerHTML
+                    );
+                    shadow.appendChild(fragment);
+                    return dom.serialize(
+                        shadow
                     );
                 }),
                 'test1=Test%201&test2=2&test3=Test%203&test4=42&test5%5B%5D=51&test5%5B%5D=52&test6=Test%206&test8=Test%208b&test9%5B%5D=Test%209a&test9%5B%5D=Test%209b'
@@ -1125,6 +1175,121 @@ describe('DOM Selection', function() {
             );
         });
 
+        it('works with DocumentFragment', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    const range = document.createRange();
+                    const fragment = range.createContextualFragment(
+                        document.body.innerHTML
+                    );
+                    return dom.serializeArray(
+                        fragment
+                    );
+                }),
+                [
+                    {
+                        name: 'test1',
+                        value: 'Test 1'
+                    },
+                    {
+                        name: 'test2',
+                        value: '2'
+                    },
+                    {
+                        name: 'test3',
+                        value: 'Test 3'
+                    },
+                    {
+                        name: 'test4',
+                        value: '42'
+                    },
+                    {
+                        name: 'test5[]',
+                        value: '51'
+                    },
+                    {
+                        name: 'test5[]',
+                        value: '52'
+                    },
+                    {
+                        name: 'test6',
+                        value: 'Test 6'
+                    },
+                    {
+                        name: 'test8',
+                        value: 'Test 8b'
+                    },
+                    {
+                        name: 'test9[]',
+                        value: 'Test 9a'
+                    },
+                    {
+                        name: 'test9[]',
+                        value: 'Test 9b'
+                    }
+                ]
+            );
+        });
+
+        it('works with ShadowRoot', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    const div = document.createElement('div');
+                    const shadow = div.attachShadow({ mode: 'open' });
+                    const range = document.createRange();
+                    const fragment = range.createContextualFragment(
+                        document.body.innerHTML
+                    );
+                    shadow.appendChild(fragment);
+                    return dom.serializeArray(
+                        shadow
+                    );
+                }),
+                [
+                    {
+                        name: 'test1',
+                        value: 'Test 1'
+                    },
+                    {
+                        name: 'test2',
+                        value: '2'
+                    },
+                    {
+                        name: 'test3',
+                        value: 'Test 3'
+                    },
+                    {
+                        name: 'test4',
+                        value: '42'
+                    },
+                    {
+                        name: 'test5[]',
+                        value: '51'
+                    },
+                    {
+                        name: 'test5[]',
+                        value: '52'
+                    },
+                    {
+                        name: 'test6',
+                        value: 'Test 6'
+                    },
+                    {
+                        name: 'test8',
+                        value: 'Test 8b'
+                    },
+                    {
+                        name: 'test9[]',
+                        value: 'Test 9a'
+                    },
+                    {
+                        name: 'test9[]',
+                        value: 'Test 9b'
+                    }
+                ]
+            );
+        });
+
         it('works with array', async function() {
             assert.deepEqual(
                 await exec(_ => {
@@ -1284,6 +1449,9 @@ describe('DOM Selection', function() {
                 ]
             );
         });
+
+        it('works with DocumentFragment');
+        it('works with ShadowRoot');
 
     });
 

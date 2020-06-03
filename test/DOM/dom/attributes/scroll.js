@@ -1,5 +1,5 @@
 const assert = require('assert').strict;
-const exec = require('../../../setup');
+const { exec } = require('../../../setup');
 
 describe('DOM Attributes (Scroll)', function() {
 
@@ -71,20 +71,6 @@ describe('DOM Attributes (Scroll)', function() {
             );
         });
 
-        it('works with array nodes', async function() {
-            assert.equal(
-                await exec(_ => {
-                    return dom.getScrollX(
-                        [
-                            document.getElementById('test1'),
-                            document.getElementById('test2')
-                        ]
-                    );
-                }),
-                100
-            );
-        });
-
         it('works with Document nodes', async function() {
             assert.equal(
                 await exec(_ => {
@@ -105,6 +91,20 @@ describe('DOM Attributes (Scroll)', function() {
                     window.scrollTo(100, 0);
                     return dom.getScrollX(
                         window
+                    );
+                }),
+                100
+            );
+        });
+
+        it('works with array nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    return dom.getScrollX(
+                        [
+                            document.getElementById('test1'),
+                            document.getElementById('test2')
+                        ]
                     );
                 }),
                 100
@@ -181,20 +181,6 @@ describe('DOM Attributes (Scroll)', function() {
             );
         });
 
-        it('works with array nodes', async function() {
-            assert.equal(
-                await exec(_ => {
-                    return dom.getScrollY(
-                        [
-                            document.getElementById('test1'),
-                            document.getElementById('test2')
-                        ]
-                    );
-                }),
-                100
-            );
-        });
-
         it('works with Document nodes', async function() {
             assert.equal(
                 await exec(_ => {
@@ -215,6 +201,20 @@ describe('DOM Attributes (Scroll)', function() {
                     window.scrollTo(0, 100);
                     return dom.getScrollY(
                         window
+                    );
+                }),
+                100
+            );
+        });
+
+        it('works with array nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    return dom.getScrollY(
+                        [
+                            document.getElementById('test1'),
+                            document.getElementById('test2')
+                        ]
                     );
                 }),
                 100
@@ -339,37 +339,6 @@ describe('DOM Attributes (Scroll)', function() {
             );
         });
 
-        it('works with array nodes', async function() {
-            assert.deepEqual(
-                await exec(_ => {
-                    const element1 = document.getElementById('test1');
-                    const element2 = document.getElementById('test2');
-                    dom.setScroll(
-                        [
-                            element1,
-                            element2
-                        ],
-                        100,
-                        50
-                    );
-                    return [
-                        [
-                            element1.scrollLeft,
-                            element1.scrollTop
-                        ],
-                        [
-                            element2.scrollLeft,
-                            element2.scrollTop
-                        ]
-                    ];
-                }),
-                [
-                    [100, 50],
-                    [100, 50]
-                ]
-            );
-        });
-
         it('works with Document nodes', async function() {
             assert.deepEqual(
                 await exec(_ => {
@@ -403,6 +372,37 @@ describe('DOM Attributes (Scroll)', function() {
                     ];
                 }),
                 [100, 50]
+            );
+        });
+
+        it('works with array nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    const element1 = document.getElementById('test1');
+                    const element2 = document.getElementById('test2');
+                    dom.setScroll(
+                        [
+                            element1,
+                            element2
+                        ],
+                        100,
+                        50
+                    );
+                    return [
+                        [
+                            element1.scrollLeft,
+                            element1.scrollTop
+                        ],
+                        [
+                            element2.scrollLeft,
+                            element2.scrollTop
+                        ]
+                    ];
+                }),
+                [
+                    [100, 50],
+                    [100, 50]
+                ]
             );
         });
 
@@ -493,30 +493,6 @@ describe('DOM Attributes (Scroll)', function() {
             );
         });
 
-        it('works with array nodes', async function() {
-            assert.deepEqual(
-                await exec(_ => {
-                    const element1 = document.getElementById('test1');
-                    const element2 = document.getElementById('test2');
-                    dom.setScrollX(
-                        [
-                            element1,
-                            element2
-                        ],
-                        100
-                    );
-                    return [
-                        element1.scrollLeft,
-                        element2.scrollLeft
-                    ];
-                }),
-                [
-                    100,
-                    100
-                ]
-            );
-        });
-
         it('works with Document nodes', async function() {
             assert.equal(
                 await exec(_ => {
@@ -542,6 +518,30 @@ describe('DOM Attributes (Scroll)', function() {
                     return window.scrollX;
                 }),
                 100
+            );
+        });
+
+        it('works with array nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    const element1 = document.getElementById('test1');
+                    const element2 = document.getElementById('test2');
+                    dom.setScrollX(
+                        [
+                            element1,
+                            element2
+                        ],
+                        100
+                    );
+                    return [
+                        element1.scrollLeft,
+                        element2.scrollLeft
+                    ];
+                }),
+                [
+                    100,
+                    100
+                ]
             );
         });
 
@@ -632,30 +632,6 @@ describe('DOM Attributes (Scroll)', function() {
             );
         });
 
-        it('works with array nodes', async function() {
-            assert.deepEqual(
-                await exec(_ => {
-                    const element1 = document.getElementById('test1');
-                    const element2 = document.getElementById('test2');
-                    dom.setScrollY(
-                        [
-                            element1,
-                            element2
-                        ],
-                        100
-                    );
-                    return [
-                        element1.scrollTop,
-                        element2.scrollTop
-                    ];
-                }),
-                [
-                    100,
-                    100
-                ]
-            );
-        });
-
         it('works with Document nodes', async function() {
             assert.equal(
                 await exec(_ => {
@@ -681,6 +657,30 @@ describe('DOM Attributes (Scroll)', function() {
                     return window.scrollY;
                 }),
                 100
+            );
+        });
+
+        it('works with array nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    const element1 = document.getElementById('test1');
+                    const element2 = document.getElementById('test2');
+                    dom.setScrollY(
+                        [
+                            element1,
+                            element2
+                        ],
+                        100
+                    );
+                    return [
+                        element1.scrollTop,
+                        element2.scrollTop
+                    ];
+                }),
+                [
+                    100,
+                    100
+                ]
             );
         });
 

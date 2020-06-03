@@ -1873,7 +1873,7 @@ dom.exec(command, value);
 
 Force a node to be temporarily shown, and then execute a callback.
 
-- `nodes` is a query selector string, a *Node*, *HTMLElement*, *Document*, *Window*, *NodeList*, *HTMLCollection*, [*QuerySet*](https://github.com/elusivecodes/fQuery) or an array of nodes.
+- `nodes` is a query selector string, a *Node*, *HTMLElement*, *NodeList*, *HTMLCollection*, [*QuerySet*](https://github.com/elusivecodes/fQuery) or an array of nodes.
 - `callback` is a function that accepts a `node` as a parameter.
 
 ```javascript

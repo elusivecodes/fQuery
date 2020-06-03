@@ -1,5 +1,5 @@
 const assert = require('assert').strict;
-const exec = require('../../../setup');
+const { exec } = require('../../../setup');
 
 describe('DOM Traversal', function() {
 
@@ -123,24 +123,6 @@ describe('DOM Traversal', function() {
             );
         });
 
-        it('works with array nodes', async function() {
-            assert.deepEqual(
-                await exec(_ => {
-                    return dom.child(
-                        [
-                            document.getElementById('parent1'),
-                            document.getElementById('parent2')
-                        ],
-                        'span'
-                    ).map(node => node.id);
-                }),
-                [
-                    'child3',
-                    'child7'
-                ]
-            );
-        });
-
         it('works with DocumentFragment nodes', async function() {
             assert.deepEqual(
                 await exec(_ => {
@@ -192,6 +174,24 @@ describe('DOM Traversal', function() {
                 }),
                 [
                     'html'
+                ]
+            );
+        });
+
+        it('works with array nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    return dom.child(
+                        [
+                            document.getElementById('parent1'),
+                            document.getElementById('parent2')
+                        ],
+                        'span'
+                    ).map(node => node.id);
+                }),
+                [
+                    'child3',
+                    'child7'
                 ]
             );
         });
@@ -409,26 +409,6 @@ describe('DOM Traversal', function() {
             );
         });
 
-        it('works with array nodes', async function() {
-            assert.deepEqual(
-                await exec(_ => {
-                    return dom.children(
-                        [
-                            document.getElementById('parent1'),
-                            document.getElementById('parent2')
-                        ],
-                        'span'
-                    ).map(node => node.id);
-                }),
-                [
-                    'child3',
-                    'child4',
-                    'child7',
-                    'child8'
-                ]
-            );
-        });
-
         it('works with DocumentFragment nodes', async function() {
             assert.deepEqual(
                 await exec(_ => {
@@ -482,6 +462,26 @@ describe('DOM Traversal', function() {
                 }),
                 [
                     'html'
+                ]
+            );
+        });
+
+        it('works with array nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    return dom.children(
+                        [
+                            document.getElementById('parent1'),
+                            document.getElementById('parent2')
+                        ],
+                        'span'
+                    ).map(node => node.id);
+                }),
+                [
+                    'child3',
+                    'child4',
+                    'child7',
+                    'child8'
                 ]
             );
         });
@@ -1041,27 +1041,6 @@ describe('DOM Traversal', function() {
             );
         });
 
-        it('works with array nodes', async function() {
-            assert.deepEqual(
-                await exec(_ => {
-                    return dom.contents(
-                        [
-                            document.getElementById('parent1'),
-                            document.getElementById('parent2')
-                        ]
-                    ).map(node => node.textContent);
-                }),
-                [
-                    'Test 1',
-                    '',
-                    'Test 2',
-                    'Test 3',
-                    '',
-                    'Test 4'
-                ]
-            );
-        });
-
         it('works with DocumentFragment nodes', async function() {
             assert.deepEqual(
                 await exec(_ => {
@@ -1116,6 +1095,27 @@ describe('DOM Traversal', function() {
                 }),
                 [
                     'html'
+                ]
+            );
+        });
+
+        it('works with array nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    return dom.contents(
+                        [
+                            document.getElementById('parent1'),
+                            document.getElementById('parent2')
+                        ]
+                    ).map(node => node.textContent);
+                }),
+                [
+                    'Test 1',
+                    '',
+                    'Test 2',
+                    'Test 3',
+                    '',
+                    'Test 4'
                 ]
             );
         });
@@ -1957,7 +1957,7 @@ describe('DOM Traversal', function() {
             );
         });
 
-        it('works with HTMLElement', async function() {
+        it('works with HTMLElement filter', async function() {
             assert.deepEqual(
                 await exec(_ => {
                     return dom.parent(
@@ -1971,7 +1971,7 @@ describe('DOM Traversal', function() {
             );
         });
 
-        it('works with HTMLCollection', async function() {
+        it('works with HTMLCollection filter', async function() {
             assert.deepEqual(
                 await exec(_ => {
                     return dom.parent(
@@ -1985,7 +1985,7 @@ describe('DOM Traversal', function() {
             );
         });
 
-        it('works with NodeList', async function() {
+        it('works with NodeList filter', async function() {
             assert.deepEqual(
                 await exec(_ => {
                     return dom.parent(
@@ -1999,7 +1999,7 @@ describe('DOM Traversal', function() {
             );
         });
 
-        it('works with array', async function() {
+        it('works with array filter', async function() {
             assert.deepEqual(
                 await exec(_ => {
                     return dom.parent(

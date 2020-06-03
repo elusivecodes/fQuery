@@ -1,5 +1,5 @@
 const assert = require('assert').strict;
-const exec = require('../../../setup');
+const { exec } = require('../../../setup');
 
 describe('DOM Attributes (Size)', function() {
 
@@ -104,20 +104,6 @@ describe('DOM Attributes (Size)', function() {
             );
         });
 
-        it('works with array nodes', async function() {
-            assert.equal(
-                await exec(_ => {
-                    return dom.height(
-                        [
-                            document.getElementById('test1'),
-                            document.getElementById('test2')
-                        ]
-                    );
-                }),
-                1050
-            );
-        });
-
         it('works with Document nodes', async function() {
             assert.equal(
                 await exec(_ => {
@@ -137,6 +123,20 @@ describe('DOM Attributes (Size)', function() {
                     );
                 }),
                 600
+            );
+        });
+
+        it('works with array nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    return dom.height(
+                        [
+                            document.getElementById('test1'),
+                            document.getElementById('test2')
+                        ]
+                    );
+                }),
+                1050
             );
         });
 
@@ -198,6 +198,18 @@ describe('DOM Attributes (Size)', function() {
             );
         });
 
+        it('works with Document nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    document.body.innerHTML = '<div style="block; width: 1000px; height: 1000px;"></div>';
+                    return dom.scrollHeight(
+                        document
+                    );
+                }),
+                1016
+            );
+        });
+
         it('works with array nodes', async function() {
             assert.equal(
                 await exec(_ => {
@@ -209,18 +221,6 @@ describe('DOM Attributes (Size)', function() {
                     );
                 }),
                 1000
-            );
-        });
-
-        it('works with Document nodes', async function() {
-            assert.equal(
-                await exec(_ => {
-                    document.body.innerHTML = '<div style="block; width: 1000px; height: 1000px;"></div>';
-                    return dom.scrollHeight(
-                        document
-                    );
-                }),
-                1016
             );
         });
 
@@ -282,6 +282,18 @@ describe('DOM Attributes (Size)', function() {
             );
         });
 
+        it('works with Document nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    document.body.innerHTML = '<div style="block; width: 1000px; height: 1000px;"></div>';
+                    return dom.scrollWidth(
+                        document
+                    );
+                }),
+                1008
+            );
+        });
+
         it('works with array nodes', async function() {
             assert.equal(
                 await exec(_ => {
@@ -293,18 +305,6 @@ describe('DOM Attributes (Size)', function() {
                     );
                 }),
                 1000
-            );
-        });
-
-        it('works with Document nodes', async function() {
-            assert.equal(
-                await exec(_ => {
-                    document.body.innerHTML = '<div style="block; width: 1000px; height: 1000px;"></div>';
-                    return dom.scrollWidth(
-                        document
-                    );
-                }),
-                1008
             );
         });
 
@@ -411,20 +411,6 @@ describe('DOM Attributes (Size)', function() {
             );
         });
 
-        it('works with array nodes', async function() {
-            assert.equal(
-                await exec(_ => {
-                    return dom.width(
-                        [
-                            document.getElementById('test1'),
-                            document.getElementById('test2')
-                        ]
-                    );
-                }),
-                1250
-            );
-        });
-
         it('works with Document nodes', async function() {
             assert.equal(
                 await exec(_ => {
@@ -444,6 +430,20 @@ describe('DOM Attributes (Size)', function() {
                     );
                 }),
                 800
+            );
+        });
+
+        it('works with array nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    return dom.width(
+                        [
+                            document.getElementById('test1'),
+                            document.getElementById('test2')
+                        ]
+                    );
+                }),
+                1250
             );
         });
 

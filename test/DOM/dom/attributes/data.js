@@ -1,5 +1,5 @@
 const assert = require('assert').strict;
-const exec = require('../../../setup');
+const { exec } = require('../../../setup');
 
 describe('DOM Attributes (Data)', function() {
 
@@ -127,34 +127,6 @@ describe('DOM Attributes (Data)', function() {
             );
         });
 
-        it('works with array nodes', async function() {
-            assert.deepEqual(
-                await exec(_ => {
-                    dom.cloneData(
-                        [
-                            document.getElementById('test1'),
-                            document.getElementById('test2')
-                        ],
-                        '[data-toggle="noData"]'
-                    );
-                    return [
-                        dom.getData('#test3'),
-                        dom.getData('#test4')
-                    ];
-                }),
-                [
-                    {
-                        test1: 'Test 1',
-                        test2: 'Test 2'
-                    },
-                    {
-                        test1: 'Test 1',
-                        test2: 'Test 2'
-                    }
-                ]
-            );
-        });
-
         it('works with DocumentFragment nodes', async function() {
             assert.deepEqual(
                 await exec(_ => {
@@ -270,6 +242,34 @@ describe('DOM Attributes (Data)', function() {
             );
         });
 
+        it('works with array nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    dom.cloneData(
+                        [
+                            document.getElementById('test1'),
+                            document.getElementById('test2')
+                        ],
+                        '[data-toggle="noData"]'
+                    );
+                    return [
+                        dom.getData('#test3'),
+                        dom.getData('#test4')
+                    ];
+                }),
+                [
+                    {
+                        test1: 'Test 1',
+                        test2: 'Test 2'
+                    },
+                    {
+                        test1: 'Test 1',
+                        test2: 'Test 2'
+                    }
+                ]
+            );
+        });
+
         it('works with HTMLElement other nodes', async function() {
             assert.deepEqual(
                 await exec(_ => {
@@ -317,34 +317,6 @@ describe('DOM Attributes (Data)', function() {
                     dom.cloneData(
                         '[data-toggle="data"]',
                         document.querySelectorAll('[data-toggle="noData"]')
-                    );
-                    return [
-                        dom.getData('#test3'),
-                        dom.getData('#test4')
-                    ];
-                }),
-                [
-                    {
-                        test1: 'Test 1',
-                        test2: 'Test 2'
-                    },
-                    {
-                        test1: 'Test 1',
-                        test2: 'Test 2'
-                    }
-                ]
-            );
-        });
-
-        it('works with array other nodes', async function() {
-            assert.deepEqual(
-                await exec(_ => {
-                    dom.cloneData(
-                        '[data-toggle="data"]',
-                        [
-                            document.getElementById('test3'),
-                            document.getElementById('test4')
-                        ]
                     );
                     return [
                         dom.getData('#test3'),
@@ -428,6 +400,34 @@ describe('DOM Attributes (Data)', function() {
                     test1: 'Test 1',
                     test2: 'Test 2'
                 }
+            );
+        });
+
+        it('works with array other nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    dom.cloneData(
+                        '[data-toggle="data"]',
+                        [
+                            document.getElementById('test3'),
+                            document.getElementById('test4')
+                        ]
+                    );
+                    return [
+                        dom.getData('#test3'),
+                        dom.getData('#test4')
+                    ];
+                }),
+                [
+                    {
+                        test1: 'Test 1',
+                        test2: 'Test 2'
+                    },
+                    {
+                        test1: 'Test 1',
+                        test2: 'Test 2'
+                    }
+                ]
             );
         });
 
@@ -533,21 +533,6 @@ describe('DOM Attributes (Data)', function() {
             );
         });
 
-        it('works with array nodes', async function() {
-            assert.equal(
-                await exec(_ => {
-                    return dom.getData(
-                        [
-                            document.getElementById('test1'),
-                            document.getElementById('test2')
-                        ],
-                        'test'
-                    );
-                }),
-                'Test 1'
-            );
-        });
-
         it('works with DocumentFragment nodes', async function() {
             assert.equal(
                 await exec(_ => {
@@ -616,6 +601,21 @@ describe('DOM Attributes (Data)', function() {
                     );
                 }),
                 'Test 2'
+            );
+        });
+
+        it('works with array nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    return dom.getData(
+                        [
+                            document.getElementById('test1'),
+                            document.getElementById('test2')
+                        ],
+                        'test'
+                    );
+                }),
+                'Test 1'
             );
         });
 
@@ -740,32 +740,6 @@ describe('DOM Attributes (Data)', function() {
             );
         });
 
-        it('works with array nodes', async function() {
-            assert.deepEqual(
-                await exec(_ => {
-                    dom.removeData(
-                        [
-                            document.getElementById('test1'),
-                            document.getElementById('test2')
-                        ],
-                        'testA'
-                    );
-                    return [
-                        dom.getData('#test1'),
-                        dom.getData('#test2')
-                    ];
-                }),
-                [
-                    {
-                        testB: 'Test 2'
-                    },
-                    {
-                        testB: 'Test 2'
-                    }
-                ]
-            );
-        });
-
         it('works with DocumentFragment nodes', async function() {
             assert.deepEqual(
                 await exec(_ => {
@@ -854,6 +828,32 @@ describe('DOM Attributes (Data)', function() {
                 {
                     testB: 'Test 2'
                 }
+            );
+        });
+
+        it('works with array nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    dom.removeData(
+                        [
+                            document.getElementById('test1'),
+                            document.getElementById('test2')
+                        ],
+                        'testA'
+                    );
+                    return [
+                        dom.getData('#test1'),
+                        dom.getData('#test2')
+                    ];
+                }),
+                [
+                    {
+                        testB: 'Test 2'
+                    },
+                    {
+                        testB: 'Test 2'
+                    }
+                ]
             );
         });
 
@@ -985,33 +985,6 @@ describe('DOM Attributes (Data)', function() {
             );
         });
 
-        it('works with array nodes', async function() {
-            assert.deepEqual(
-                await exec(_ => {
-                    dom.setData(
-                        [
-                            document.getElementById('test1'),
-                            document.getElementById('test2')
-                        ],
-                        'test',
-                        'Test 1'
-                    );
-                    return [
-                        dom.getData('#test1'),
-                        dom.getData('#test2')
-                    ];
-                }),
-                [
-                    {
-                        test: 'Test 1'
-                    },
-                    {
-                        test: 'Test 1'
-                    }
-                ]
-            );
-        });
-
         it('works with DocumentFragment nodes', async function() {
             assert.deepEqual(
                 await exec(_ => {
@@ -1076,6 +1049,33 @@ describe('DOM Attributes (Data)', function() {
                 {
                     test: 'Test 1'
                 }
+            );
+        });
+
+        it('works with array nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    dom.setData(
+                        [
+                            document.getElementById('test1'),
+                            document.getElementById('test2')
+                        ],
+                        'test',
+                        'Test 1'
+                    );
+                    return [
+                        dom.getData('#test1'),
+                        dom.getData('#test2')
+                    ];
+                }),
+                [
+                    {
+                        test: 'Test 1'
+                    },
+                    {
+                        test: 'Test 1'
+                    }
+                ]
             );
         });
 

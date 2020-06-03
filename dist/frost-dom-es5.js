@@ -5297,16 +5297,14 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
 
     /**
      * Force a node to be shown, and then execute a callback.
-     * @param {string|array|Node|HTMLElement|Document|Window|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
      * @param {DOM~nodeCallback} callback The callback to execute.
      * @returns {*} The result of the callback.
      */
     forceShow: function forceShow(nodes, callback) {
       // DocumentFragment and ShadowRoot nodes have no parent
       var node = this.parseNode(nodes, {
-        node: true,
-        document: true,
-        window: true
+        node: true
       });
 
       if (!node) {
@@ -5485,9 +5483,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
      */
     sort: function sort(nodes) {
       return this.parseNodes(nodes, {
-        node: true,
-        fragment: true,
-        shadow: true
+        node: true
       }).sort(function (node, other) {
         if (DOMNode.isSame(node, other)) {
           return 0;
@@ -7464,14 +7460,14 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
   Object.assign(DOM, {
     /**
      * Force a single node to be shown, and then execute a callback.
-     * @param {Node|HTMLElement|Document|Window} node The input node.
+     * @param {Node|HTMLElement} node The input node.
      * @param {DOM~nodeCallback} callback The callback to execute.
      * @returns {*} The result of the callback.
      */
     _forceShow: function _forceShow(node, callback) {
       var _this42 = this;
 
-      if (Core.isDocument(node) || Core.isWindow(node) || this._isVisible(node)) {
+      if (this._isVisible(node)) {
         return callback(node);
       }
 

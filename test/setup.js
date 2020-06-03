@@ -59,18 +59,20 @@ before(async function() {
     await page.goto('http://localhost:3001', {
         waitUntil: 'domcontentloaded'
     });
-    await page.evaluate(_ => {
-        window.id = 'window';
-        document.id = 'document';
-    });
 });
 
 beforeEach(async function() {
     await page.evaluate(_ => {
-        document.body.innerHTML = '';
-        DOM._data = new WeakMap();
-        dom.removeEvent(document);
+        dom.removeData(window);
+        dom.removeData(document);
+
         dom.removeEvent(window);
+        dom.removeEvent(document);
+
+        window.data = {};
+        window.id = 'window';
+        document.id = 'document';
+        document.body.innerHTML = '';
     });
 });
 
@@ -81,5 +83,16 @@ after(async function() {
     await closeServer();
 });
 
-module.exports = async (callback, data) =>
+module.exports.exec = async (callback, data) =>
     await page.evaluate(callback, data);
+
+module.exports.waitFor = ms => {
+    return _ => new Promise(resolve => {
+        setTimeout(
+            _ => {
+                exec(_ => document.body.innerHTML).then(resolve);
+            },
+            ms
+        );
+    });
+};

@@ -1,5 +1,5 @@
 const assert = require('assert').strict;
-const exec = require('../../../setup');
+const { exec, minimize } = require('../../../setup');
 
 describe('DOM Filter', function() {
 
@@ -79,23 +79,6 @@ describe('DOM Filter', function() {
             );
         });
 
-        it('works with array nodes', async function() {
-            assert.deepEqual(
-                await exec(_ => {
-                    return dom.connected(
-                        [
-                            document.getElementById('div1'),
-                            document.getElementById('div2')
-                        ]
-                    ).map(node => node.id);
-                }),
-                [
-                    'div1',
-                    'div2'
-                ]
-            );
-        });
-
         it('works with DocumentFragment nodes', async function() {
             assert.deepEqual(
                 await exec(_ => {
@@ -120,6 +103,23 @@ describe('DOM Filter', function() {
                 }),
                 [
                     'shadow'
+                ]
+            );
+        });
+
+        it('works with array nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    return dom.connected(
+                        [
+                            document.getElementById('div1'),
+                            document.getElementById('div2')
+                        ]
+                    ).map(node => node.id);
+                }),
+                [
+                    'div1',
+                    'div2'
                 ]
             );
         });
@@ -203,25 +203,6 @@ describe('DOM Filter', function() {
             );
         });
 
-        it('works with array nodes', async function() {
-            assert.deepEqual(
-                await exec(_ => {
-                    return dom.equal(
-                        [
-                            document.querySelector('#parent1 > [data-id="span1"]'),
-                            document.querySelector('#parent1 > [data-id="span2"]'),
-                            document.querySelector('#parent1 > [data-id="span3"]')
-                        ],
-                        '#parent2 span'
-                    ).map(node => node.dataset.id);
-                }),
-                [
-                    'span2',
-                    'span3'
-                ]
-            );
-        });
-
         it('works with DocumentFragment nodes', async function() {
             assert.deepEqual(
                 await exec(_ => {
@@ -254,6 +235,25 @@ describe('DOM Filter', function() {
                 }),
                 [
                     'shadow'
+                ]
+            );
+        });
+
+        it('works with array nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    return dom.equal(
+                        [
+                            document.querySelector('#parent1 > [data-id="span1"]'),
+                            document.querySelector('#parent1 > [data-id="span2"]'),
+                            document.querySelector('#parent1 > [data-id="span3"]')
+                        ],
+                        '#parent2 span'
+                    ).map(node => node.dataset.id);
+                }),
+                [
+                    'span2',
+                    'span3'
                 ]
             );
         });
@@ -302,24 +302,6 @@ describe('DOM Filter', function() {
             );
         });
 
-        it('works with array other nodes', async function() {
-            assert.deepEqual(
-                await exec(_ => {
-                    return dom.equal(
-                        '#parent1 span',
-                        [
-                            document.querySelector('#parent2 > [data-id="span2"]'),
-                            document.querySelector('#parent2 > [data-id="span3"]')
-                        ]
-                    ).map(node => node.dataset.id);
-                }),
-                [
-                    'span2',
-                    'span3'
-                ]
-            );
-        });
-
         it('works with DocumentFragment other nodes', async function() {
             assert.deepEqual(
                 await exec(_ => {
@@ -358,6 +340,24 @@ describe('DOM Filter', function() {
                 }),
                 [
                     'shadow'
+                ]
+            );
+        });
+
+        it('works with array other nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    return dom.equal(
+                        '#parent1 span',
+                        [
+                            document.querySelector('#parent2 > [data-id="span2"]'),
+                            document.querySelector('#parent2 > [data-id="span3"]')
+                        ]
+                    ).map(node => node.dataset.id);
+                }),
+                [
+                    'span2',
+                    'span3'
                 ]
             );
         });
@@ -435,26 +435,6 @@ describe('DOM Filter', function() {
             );
         });
 
-        it('works with array nodes', async function() {
-            assert.deepEqual(
-                await exec(_ => {
-                    return dom.filter(
-                        [
-                            document.getElementById('div1'),
-                            document.getElementById('div2'),
-                            document.getElementById('div3'),
-                            document.getElementById('div4')
-                        ],
-                        '[data-filter="test"]'
-                    ).map(node => node.id);
-                }),
-                [
-                    'div2',
-                    'div4'
-                ]
-            );
-        });
-
         it('works with DocumentFragment nodes', async function() {
             assert.deepEqual(
                 await exec(_ => {
@@ -482,6 +462,26 @@ describe('DOM Filter', function() {
                 }),
                 [
                     'shadow'
+                ]
+            );
+        });
+
+        it('works with array nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    return dom.filter(
+                        [
+                            document.getElementById('div1'),
+                            document.getElementById('div2'),
+                            document.getElementById('div3'),
+                            document.getElementById('div4')
+                        ],
+                        '[data-filter="test"]'
+                    ).map(node => node.id);
+                }),
+                [
+                    'div2',
+                    'div4'
                 ]
             );
         });
@@ -547,25 +547,7 @@ describe('DOM Filter', function() {
             );
         });
 
-        it('works with array filter', async function() {
-            assert.deepEqual(
-                await exec(_ => {
-                    return dom.filter(
-                        'div',
-                        [
-                            document.getElementById('div2'),
-                            document.getElementById('div4')
-                        ]
-                    ).map(node => node.id);
-                }),
-                [
-                    'div2',
-                    'div4'
-                ]
-            );
-        });
-
-        it('works with DocumentFragment other nodes', async function() {
+        it('works with DocumentFragment filter', async function() {
             assert.deepEqual(
                 await exec(_ => {
                     const fragment = document.createDocumentFragment();
@@ -584,7 +566,7 @@ describe('DOM Filter', function() {
             );
         });
 
-        it('works with ShadowRoot other nodes', async function() {
+        it('works with ShadowRoot filter', async function() {
             assert.deepEqual(
                 await exec(_ => {
                     const div = document.createElement('div');
@@ -600,6 +582,24 @@ describe('DOM Filter', function() {
                 }),
                 [
                     'shadow'
+                ]
+            );
+        });
+
+        it('works with array filter', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    return dom.filter(
+                        'div',
+                        [
+                            document.getElementById('div2'),
+                            document.getElementById('div4')
+                        ]
+                    ).map(node => node.id);
+                }),
+                [
+                    'div2',
+                    'div4'
                 ]
             );
         });
@@ -666,23 +666,6 @@ describe('DOM Filter', function() {
             );
         });
 
-        it('works with array nodes', async function() {
-            assert.equal(
-                await exec(_ => {
-                    return dom.filterOne(
-                        [
-                            document.getElementById('div1'),
-                            document.getElementById('div2'),
-                            document.getElementById('div3'),
-                            document.getElementById('div4')
-                        ],
-                        '[data-filter="test"]'
-                    ).id;
-                }),
-                'div2'
-            );
-        });
-
         it('works with DocumentFragment nodes', async function() {
             assert.equal(
                 await exec(_ => {
@@ -707,6 +690,23 @@ describe('DOM Filter', function() {
                     ).id;
                 }),
                 'shadow'
+            );
+        });
+
+        it('works with array nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    return dom.filterOne(
+                        [
+                            document.getElementById('div1'),
+                            document.getElementById('div2'),
+                            document.getElementById('div3'),
+                            document.getElementById('div4')
+                        ],
+                        '[data-filter="test"]'
+                    ).id;
+                }),
+                'div2'
             );
         });
 
@@ -758,22 +758,7 @@ describe('DOM Filter', function() {
             );
         });
 
-        it('works with array filter', async function() {
-            assert.equal(
-                await exec(_ => {
-                    return dom.filterOne(
-                        'div',
-                        [
-                            document.getElementById('div2'),
-                            document.getElementById('div4')
-                        ]
-                    ).id;
-                }),
-                'div2'
-            );
-        });
-
-        it('works with DocumentFragment other nodes', async function() {
+        it('works with DocumentFragment filter', async function() {
             assert.equal(
                 await exec(_ => {
                     const fragment = document.createDocumentFragment();
@@ -790,7 +775,7 @@ describe('DOM Filter', function() {
             );
         });
 
-        it('works with ShadowRoot other nodes', async function() {
+        it('works with ShadowRoot filter', async function() {
             assert.equal(
                 await exec(_ => {
                     const div = document.createElement('div');
@@ -805,6 +790,21 @@ describe('DOM Filter', function() {
                     ).id;
                 }),
                 'shadow'
+            );
+        });
+
+        it('works with array filter', async function() {
+            assert.equal(
+                await exec(_ => {
+                    return dom.filterOne(
+                        'div',
+                        [
+                            document.getElementById('div2'),
+                            document.getElementById('div4')
+                        ]
+                    ).id;
+                }),
+                'div2'
             );
         });
 
@@ -1015,6 +1015,39 @@ describe('DOM Filter', function() {
             );
         });
 
+        it('works with Document nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    const myDoc = new Document();
+                    myDoc.id = 'document';
+                    return dom.hidden(
+                        myDoc
+                    ).map(node => node.id);
+                }),
+                [
+                    'document'
+                ]
+            );
+        });
+
+        it('works with Window nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    const myWindow = {
+                        document: {},
+                        id: 'window'
+                    };
+                    myWindow.document.defaultView = myWindow;
+                    return dom.hidden(
+                        myWindow
+                    ).map(node => node.id);
+                }),
+                [
+                    'window'
+                ]
+            );
+        });
+
         it('works with array nodes', async function() {
             assert.deepEqual(
                 await exec(_ => {
@@ -1033,23 +1066,6 @@ describe('DOM Filter', function() {
                 ]
             );
         });
-
-        it('works with Document nodes', async function() {
-            assert.deepEqual(
-                await exec(_ => {
-                    const myDoc = new Document();
-                    myDoc.id = 'document';
-                    return dom.hidden(
-                        myDoc
-                    ).map(node => node.id);
-                }),
-                [
-                    'document'
-                ]
-            );
-        });
-
-        it('works with Window nodes');
 
     });
 
@@ -1124,26 +1140,6 @@ describe('DOM Filter', function() {
             );
         });
 
-        it('works with array nodes', async function() {
-            assert.deepEqual(
-                await exec(_ => {
-                    return dom.not(
-                        [
-                            document.getElementById('div1'),
-                            document.getElementById('div2'),
-                            document.getElementById('div3'),
-                            document.getElementById('div4')
-                        ],
-                        '[data-filter="test"]'
-                    ).map(node => node.id);
-                }),
-                [
-                    'div2',
-                    'div4'
-                ]
-            );
-        });
-
         it('works with DocumentFragment nodes', async function() {
             assert.deepEqual(
                 await exec(_ => {
@@ -1173,6 +1169,26 @@ describe('DOM Filter', function() {
                 }),
                 [
                     'shadow'
+                ]
+            );
+        });
+
+        it('works with array nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    return dom.not(
+                        [
+                            document.getElementById('div1'),
+                            document.getElementById('div2'),
+                            document.getElementById('div3'),
+                            document.getElementById('div4')
+                        ],
+                        '[data-filter="test"]'
+                    ).map(node => node.id);
+                }),
+                [
+                    'div2',
+                    'div4'
                 ]
             );
         });
@@ -1235,25 +1251,7 @@ describe('DOM Filter', function() {
             );
         });
 
-        it('works with array filter', async function() {
-            assert.deepEqual(
-                await exec(_ => {
-                    return dom.not(
-                        'div',
-                        [
-                            document.getElementById('div1'),
-                            document.getElementById('div3')
-                        ]
-                    ).map(node => node.id);
-                }),
-                [
-                    'div2',
-                    'div4'
-                ]
-            );
-        });
-
-        it('works with DocumentFragment other nodes', async function() {
+        it('works with DocumentFragment filter', async function() {
             assert.deepEqual(
                 await exec(_ => {
                     const fragment = document.createDocumentFragment();
@@ -1272,7 +1270,7 @@ describe('DOM Filter', function() {
             );
         });
 
-        it('works with ShadowRoot other nodes', async function() {
+        it('works with ShadowRoot filter', async function() {
             assert.deepEqual(
                 await exec(_ => {
                     const div = document.createElement('div');
@@ -1288,6 +1286,24 @@ describe('DOM Filter', function() {
                 }),
                 [
                     'div1'
+                ]
+            );
+        });
+
+        it('works with array filter', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    return dom.not(
+                        'div',
+                        [
+                            document.getElementById('div1'),
+                            document.getElementById('div3')
+                        ]
+                    ).map(node => node.id);
+                }),
+                [
+                    'div2',
+                    'div4'
                 ]
             );
         });
@@ -1354,23 +1370,6 @@ describe('DOM Filter', function() {
             );
         });
 
-        it('works with array nodes', async function() {
-            assert.equal(
-                await exec(_ => {
-                    return dom.notOne(
-                        [
-                            document.getElementById('div1'),
-                            document.getElementById('div2'),
-                            document.getElementById('div3'),
-                            document.getElementById('div4')
-                        ],
-                        '[data-filter="test"]'
-                    ).id;
-                }),
-                'div2'
-            );
-        });
-
         it('works with DocumentFragment nodes', async function() {
             assert.equal(
                 await exec(_ => {
@@ -1397,6 +1396,23 @@ describe('DOM Filter', function() {
                     ).id;
                 }),
                 'shadow'
+            );
+        });
+
+        it('works with array nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    return dom.notOne(
+                        [
+                            document.getElementById('div1'),
+                            document.getElementById('div2'),
+                            document.getElementById('div3'),
+                            document.getElementById('div4')
+                        ],
+                        '[data-filter="test"]'
+                    ).id;
+                }),
+                'div2'
             );
         });
 
@@ -1448,22 +1464,7 @@ describe('DOM Filter', function() {
             );
         });
 
-        it('works with array filter', async function() {
-            assert.equal(
-                await exec(_ => {
-                    return dom.notOne(
-                        'div',
-                        [
-                            document.getElementById('div1'),
-                            document.getElementById('div3')
-                        ]
-                    ).id;
-                }),
-                'div2'
-            );
-        });
-
-        it('works with DocumentFragment other nodes', async function() {
+        it('works with DocumentFragment filter', async function() {
             assert.equal(
                 await exec(_ => {
                     const fragment = document.createDocumentFragment();
@@ -1480,7 +1481,7 @@ describe('DOM Filter', function() {
             );
         });
 
-        it('works with ShadowRoot other nodes', async function() {
+        it('works with ShadowRoot filter', async function() {
             assert.equal(
                 await exec(_ => {
                     const div = document.createElement('div');
@@ -1495,6 +1496,21 @@ describe('DOM Filter', function() {
                     ).id;
                 }),
                 'div1'
+            );
+        });
+
+        it('works with array filter', async function() {
+            assert.equal(
+                await exec(_ => {
+                    return dom.notOne(
+                        'div',
+                        [
+                            document.getElementById('div1'),
+                            document.getElementById('div3')
+                        ]
+                    ).id;
+                }),
+                'div2'
             );
         });
 
@@ -1571,26 +1587,6 @@ describe('DOM Filter', function() {
             );
         });
 
-        it('works with array nodes', async function() {
-            assert.deepEqual(
-                await exec(_ => {
-                    return dom.same(
-                        [
-                            document.getElementById('div1'),
-                            document.getElementById('div2'),
-                            document.getElementById('div3'),
-                            document.getElementById('div4')
-                        ],
-                        '#div2, #div4'
-                    ).map(node => node.id);
-                }),
-                [
-                    'div2',
-                    'div4'
-                ]
-            );
-        });
-
         it('works with DocumentFragment nodes', async function() {
             assert.deepEqual(
                 await exec(_ => {
@@ -1620,6 +1616,26 @@ describe('DOM Filter', function() {
                 }),
                 [
                     'shadow'
+                ]
+            );
+        });
+
+        it('works with array nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    return dom.same(
+                        [
+                            document.getElementById('div1'),
+                            document.getElementById('div2'),
+                            document.getElementById('div3'),
+                            document.getElementById('div4')
+                        ],
+                        '#div2, #div4'
+                    ).map(node => node.id);
+                }),
+                [
+                    'div2',
+                    'div4'
                 ]
             );
         });
@@ -1670,24 +1686,6 @@ describe('DOM Filter', function() {
             );
         });
 
-        it('works with array other nodes', async function() {
-            assert.deepEqual(
-                await exec(_ => {
-                    return dom.same(
-                        'div',
-                        [
-                            document.querySelector('#div2'),
-                            document.querySelector('#div4')
-                        ]
-                    ).map(node => node.id);
-                }),
-                [
-                    'div2',
-                    'div4'
-                ]
-            );
-        });
-
         it('works with DocumentFragment other nodes', async function() {
             assert.deepEqual(
                 await exec(_ => {
@@ -1723,6 +1721,24 @@ describe('DOM Filter', function() {
                 }),
                 [
                     'shadow'
+                ]
+            );
+        });
+
+        it('works with array other nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    return dom.same(
+                        'div',
+                        [
+                            document.querySelector('#div2'),
+                            document.querySelector('#div4')
+                        ]
+                    ).map(node => node.id);
+                }),
+                [
+                    'div2',
+                    'div4'
                 ]
             );
         });
@@ -1821,25 +1837,6 @@ describe('DOM Filter', function() {
             );
         });
 
-        it('works with array nodes', async function() {
-            assert.deepEqual(
-                await exec(_ => {
-                    return dom.visible(
-                        [
-                            document.getElementById('div1'),
-                            document.getElementById('div2'),
-                            document.getElementById('div3'),
-                            document.getElementById('div4')
-                        ]
-                    ).map(node => node.id);
-                }),
-                [
-                    'div1',
-                    'div3'
-                ]
-            );
-        });
-
         it('works with Document nodes', async function() {
             assert.deepEqual(
                 await exec(_ => {
@@ -1862,6 +1859,25 @@ describe('DOM Filter', function() {
                 }),
                 [
                     'window'
+                ]
+            );
+        });
+
+        it('works with array nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    return dom.visible(
+                        [
+                            document.getElementById('div1'),
+                            document.getElementById('div2'),
+                            document.getElementById('div3'),
+                            document.getElementById('div4')
+                        ]
+                    ).map(node => node.id);
+                }),
+                [
+                    'div1',
+                    'div3'
                 ]
             );
         });
@@ -2126,25 +2142,6 @@ describe('DOM Filter', function() {
             );
         });
 
-        it('works with array nodes', async function() {
-            assert.deepEqual(
-                await exec(_ => {
-                    return dom.withChildren(
-                        [
-                            document.getElementById('div1'),
-                            document.getElementById('div2'),
-                            document.getElementById('div3'),
-                            document.getElementById('div4')
-                        ]
-                    ).map(node => node.id);
-                }),
-                [
-                    'div1',
-                    'div3'
-                ]
-            );
-        });
-
         it('works with DocumentFragment nodes', async function() {
             assert.deepEqual(
                 await exec(_ => {
@@ -2193,6 +2190,25 @@ describe('DOM Filter', function() {
                 }),
                 [
                     'document'
+                ]
+            );
+        });
+
+        it('works with array nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    return dom.withChildren(
+                        [
+                            document.getElementById('div1'),
+                            document.getElementById('div2'),
+                            document.getElementById('div3'),
+                            document.getElementById('div4')
+                        ]
+                    ).map(node => node.id);
+                }),
+                [
+                    'div1',
+                    'div3'
                 ]
             );
         });
@@ -2566,25 +2582,6 @@ describe('DOM Filter', function() {
             );
         });
 
-        it('works with array nodes', async function() {
-            assert.deepEqual(
-                await exec(_ => {
-                    return dom.withData(
-                        [
-                            document.getElementById('div1'),
-                            document.getElementById('div2'),
-                            document.getElementById('div3'),
-                            document.getElementById('div4')
-                        ]
-                    ).map(node => node.id);
-                }),
-                [
-                    'div1',
-                    'div3'
-                ]
-            );
-        });
-
         it('works with DocumentFragment nodes', async function() {
             assert.deepEqual(
                 await exec(_ => {
@@ -2658,6 +2655,25 @@ describe('DOM Filter', function() {
                 }),
                 [
                     'window'
+                ]
+            );
+        });
+
+        it('works with array nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    return dom.withData(
+                        [
+                            document.getElementById('div1'),
+                            document.getElementById('div2'),
+                            document.getElementById('div3'),
+                            document.getElementById('div4')
+                        ]
+                    ).map(node => node.id);
+                }),
+                [
+                    'div1',
+                    'div3'
                 ]
             );
         });
@@ -2758,26 +2774,6 @@ describe('DOM Filter', function() {
             );
         });
 
-        it('works with array nodes', async function() {
-            assert.deepEqual(
-                await exec(_ => {
-                    return dom.withDescendent(
-                        [
-                            document.getElementById('div1'),
-                            document.getElementById('div2'),
-                            document.getElementById('div3'),
-                            document.getElementById('div4')
-                        ],
-                        'a'
-                    ).map(node => node.id);
-                }),
-                [
-                    'div1',
-                    'div3'
-                ]
-            );
-        });
-
         it('works with DocumentFragment nodes', async function() {
             assert.deepEqual(
                 await exec(_ => {
@@ -2829,6 +2825,26 @@ describe('DOM Filter', function() {
                 }),
                 [
                     'document'
+                ]
+            );
+        });
+
+        it('works with array nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    return dom.withDescendent(
+                        [
+                            document.getElementById('div1'),
+                            document.getElementById('div2'),
+                            document.getElementById('div3'),
+                            document.getElementById('div4')
+                        ],
+                        'a'
+                    ).map(node => node.id);
+                }),
+                [
+                    'div1',
+                    'div3'
                 ]
             );
         });

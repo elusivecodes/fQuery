@@ -4567,14 +4567,14 @@
 
         /**
          * Force a node to be shown, and then execute a callback.
-         * @param {string|array|Node|HTMLElement|Document|Window|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
+         * @param {string|array|Node|HTMLElement|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
          * @param {DOM~nodeCallback} callback The callback to execute.
          * @returns {*} The result of the callback.
          */
         forceShow(nodes, callback) {
 
             // DocumentFragment and ShadowRoot nodes have no parent
-            const node = this.parseNode(nodes, { node: true, document: true, window: true });
+            const node = this.parseNode(nodes, { node: true });
 
             if (!node) {
                 return;
@@ -4722,7 +4722,7 @@
          * @returns {array} The sorted array of nodes.
          */
         sort(nodes) {
-            return this.parseNodes(nodes, { node: true, fragment: true, shadow: true })
+            return this.parseNodes(nodes, { node: true })
                 .sort((node, other) => {
                     if (DOMNode.isSame(node, other)) {
                         return 0;
@@ -6682,12 +6682,12 @@
 
         /**
          * Force a single node to be shown, and then execute a callback.
-         * @param {Node|HTMLElement|Document|Window} node The input node.
+         * @param {Node|HTMLElement} node The input node.
          * @param {DOM~nodeCallback} callback The callback to execute.
          * @returns {*} The result of the callback.
          */
         _forceShow(node, callback) {
-            if (Core.isDocument(node) || Core.isWindow(node) || this._isVisible(node)) {
+            if (this._isVisible(node)) {
                 return callback(node);
             }
 

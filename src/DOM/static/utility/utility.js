@@ -6,12 +6,12 @@ Object.assign(DOM, {
 
     /**
      * Force a single node to be shown, and then execute a callback.
-     * @param {Node|HTMLElement|Document|Window} node The input node.
+     * @param {Node|HTMLElement} node The input node.
      * @param {DOM~nodeCallback} callback The callback to execute.
      * @returns {*} The result of the callback.
      */
     _forceShow(node, callback) {
-        if (Core.isDocument(node) || Core.isWindow(node) || this._isVisible(node)) {
+        if (this._isVisible(node)) {
             return callback(node);
         }
 

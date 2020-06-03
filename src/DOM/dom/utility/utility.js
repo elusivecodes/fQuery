@@ -16,14 +16,14 @@ Object.assign(DOM.prototype, {
 
     /**
      * Force a node to be shown, and then execute a callback.
-     * @param {string|array|Node|HTMLElement|Document|Window|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
      * @param {DOM~nodeCallback} callback The callback to execute.
      * @returns {*} The result of the callback.
      */
     forceShow(nodes, callback) {
 
         // DocumentFragment and ShadowRoot nodes have no parent
-        const node = this.parseNode(nodes, { node: true, document: true, window: true });
+        const node = this.parseNode(nodes, { node: true });
 
         if (!node) {
             return;
@@ -171,7 +171,7 @@ Object.assign(DOM.prototype, {
      * @returns {array} The sorted array of nodes.
      */
     sort(nodes) {
-        return this.parseNodes(nodes, { node: true, fragment: true, shadow: true })
+        return this.parseNodes(nodes, { node: true })
             .sort((node, other) => {
                 if (DOMNode.isSame(node, other)) {
                     return 0;

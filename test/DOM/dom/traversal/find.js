@@ -1,5 +1,5 @@
 const assert = require('assert').strict;
-const exec = require('../../../setup');
+const { exec } = require('../../../setup');
 
 describe('DOM Find', function() {
 
@@ -286,29 +286,6 @@ describe('DOM Find', function() {
             );
         });
 
-        it('works with array nodes', async function() {
-            assert.deepEqual(
-                await exec(_ => {
-                    return dom.find(
-                        'span',
-                        [
-                            document.getElementById('child1'),
-                            document.getElementById('child2'),
-                            document.getElementById('child3')
-                        ]
-                    ).map(node => node.id);
-                }),
-                [
-                    'span1',
-                    'span2',
-                    'span3',
-                    'span4',
-                    'span5',
-                    'span6'
-                ]
-            );
-        });
-
         it('works with DocumentFragment nodes', async function() {
             assert.deepEqual(
                 await exec(_ => {
@@ -375,6 +352,29 @@ describe('DOM Find', function() {
                 [
                     'div1',
                     'div2'
+                ]
+            );
+        });
+
+        it('works with array nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    return dom.find(
+                        'span',
+                        [
+                            document.getElementById('child1'),
+                            document.getElementById('child2'),
+                            document.getElementById('child3')
+                        ]
+                    ).map(node => node.id);
+                }),
+                [
+                    'span1',
+                    'span2',
+                    'span3',
+                    'span4',
+                    'span5',
+                    'span6'
                 ]
             );
         });
@@ -509,24 +509,6 @@ describe('DOM Find', function() {
             );
         });
 
-        it('works with array nodes', async function() {
-            assert.deepEqual(
-                await exec(_ => {
-                    return dom.findByClass(
-                        'test',
-                        [
-                            document.getElementById('child1'),
-                            document.getElementById('child2')
-                        ]
-                    ).map(node => node.id);
-                }),
-                [
-                    'span1',
-                    'span3'
-                ]
-            );
-        });
-
         it('works with DocumentFragment nodes', async function() {
             assert.deepEqual(
                 await exec(_ => {
@@ -599,6 +581,24 @@ describe('DOM Find', function() {
                 [
                     'div1',
                     'div3'
+                ]
+            );
+        });
+
+        it('works with array nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    return dom.findByClass(
+                        'test',
+                        [
+                            document.getElementById('child1'),
+                            document.getElementById('child2')
+                        ]
+                    ).map(node => node.id);
+                }),
+                [
+                    'span1',
+                    'span3'
                 ]
             );
         });
@@ -733,24 +733,6 @@ describe('DOM Find', function() {
             );
         });
 
-        it('works with array nodes', async function() {
-            assert.deepEqual(
-                await exec(_ => {
-                    return dom.findById(
-                        'test',
-                        [
-                            document.getElementById('child1'),
-                            document.getElementById('child2')
-                        ]
-                    ).map(node => node.dataset.id);
-                }),
-                [
-                    'span1',
-                    'span3'
-                ]
-            );
-        });
-
         it('works with DocumentFragment nodes', async function() {
             assert.deepEqual(
                 await exec(_ => {
@@ -823,6 +805,24 @@ describe('DOM Find', function() {
                 [
                     'div1',
                     'div3'
+                ]
+            );
+        });
+
+        it('works with array nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    return dom.findById(
+                        'test',
+                        [
+                            document.getElementById('child1'),
+                            document.getElementById('child2')
+                        ]
+                    ).map(node => node.dataset.id);
+                }),
+                [
+                    'span1',
+                    'span3'
                 ]
             );
         });
@@ -969,26 +969,6 @@ describe('DOM Find', function() {
             );
         });
 
-        it('works with array nodes', async function() {
-            assert.deepEqual(
-                await exec(_ => {
-                    return dom.findByTag(
-                        'span',
-                        [
-                            document.getElementById('child1'),
-                            document.getElementById('child2')
-                        ]
-                    ).map(node => node.id);
-                }),
-                [
-                    'span1',
-                    'span2',
-                    'span3',
-                    'span4'
-                ]
-            );
-        });
-
         it('works with DocumentFragment nodes', async function() {
             assert.deepEqual(
                 await exec(_ => {
@@ -1061,6 +1041,26 @@ describe('DOM Find', function() {
                 [
                     'span1',
                     'span2'
+                ]
+            );
+        });
+
+        it('works with array nodes', async function() {
+            assert.deepEqual(
+                await exec(_ => {
+                    return dom.findByTag(
+                        'span',
+                        [
+                            document.getElementById('child1'),
+                            document.getElementById('child2')
+                        ]
+                    ).map(node => node.id);
+                }),
+                [
+                    'span1',
+                    'span2',
+                    'span3',
+                    'span4'
                 ]
             );
         });
@@ -1290,22 +1290,6 @@ describe('DOM Find', function() {
             );
         });
 
-        it('works with array nodes', async function() {
-            assert.equal(
-                await exec(_ => {
-                    return dom.findOne(
-                        'span',
-                        [
-                            document.getElementById('child4'),
-                            document.getElementById('child5'),
-                            document.getElementById('child6')
-                        ]
-                    ).id;
-                }),
-                'span7'
-            );
-        });
-
         it('works with DocumentFragment nodes', async function() {
             assert.equal(
                 await exec(_ => {
@@ -1364,6 +1348,22 @@ describe('DOM Find', function() {
                     ).id;
                 }),
                 'div1'
+            );
+        });
+
+        it('works with array nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    return dom.findOne(
+                        'span',
+                        [
+                            document.getElementById('child4'),
+                            document.getElementById('child5'),
+                            document.getElementById('child6')
+                        ]
+                    ).id;
+                }),
+                'span7'
             );
         });
 
@@ -1480,21 +1480,6 @@ describe('DOM Find', function() {
             );
         });
 
-        it('works with array nodes', async function() {
-            assert.equal(
-                await exec(_ => {
-                    return dom.findOneByClass(
-                        'test',
-                        [
-                            document.getElementById('child3'),
-                            document.getElementById('child4')
-                        ]
-                    ).id;
-                }),
-                'span5'
-            );
-        });
-
         it('works with DocumentFragment nodes', async function() {
             assert.equal(
                 await exec(_ => {
@@ -1559,6 +1544,21 @@ describe('DOM Find', function() {
                     ).id;
                 }),
                 'div1'
+            );
+        });
+
+        it('works with array nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    return dom.findOneByClass(
+                        'test',
+                        [
+                            document.getElementById('child3'),
+                            document.getElementById('child4')
+                        ]
+                    ).id;
+                }),
+                'span5'
             );
         });
 
@@ -1675,21 +1675,6 @@ describe('DOM Find', function() {
             );
         });
 
-        it('works with array nodes', async function() {
-            assert.equal(
-                await exec(_ => {
-                    return dom.findOneById(
-                        'test',
-                        [
-                            document.getElementById('child3'),
-                            document.getElementById('child4')
-                        ]
-                    ).dataset.id;
-                }),
-                'span5'
-            );
-        });
-
         it('works with DocumentFragment nodes', async function() {
             assert.equal(
                 await exec(_ => {
@@ -1754,6 +1739,21 @@ describe('DOM Find', function() {
                     ).dataset.id;
                 }),
                 'div1'
+            );
+        });
+
+        it('works with array nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    return dom.findOneById(
+                        'test',
+                        [
+                            document.getElementById('child3'),
+                            document.getElementById('child4')
+                        ]
+                    ).dataset.id;
+                }),
+                'span5'
             );
         });
 
@@ -1870,21 +1870,6 @@ describe('DOM Find', function() {
             );
         });
 
-        it('works with array nodes', async function() {
-            assert.equal(
-                await exec(_ => {
-                    return dom.findOneByTag(
-                        'span',
-                        [
-                            document.getElementById('child3'),
-                            document.getElementById('child4')
-                        ]
-                    ).id;
-                }),
-                'span5'
-            );
-        });
-
         it('works with DocumentFragment nodes', async function() {
             assert.equal(
                 await exec(_ => {
@@ -1949,6 +1934,21 @@ describe('DOM Find', function() {
                     ).id;
                 }),
                 'span1'
+            );
+        });
+
+        it('works with array nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    return dom.findOneByTag(
+                        'span',
+                        [
+                            document.getElementById('child3'),
+                            document.getElementById('child4')
+                        ]
+                    ).id;
+                }),
+                'span5'
             );
         });
 

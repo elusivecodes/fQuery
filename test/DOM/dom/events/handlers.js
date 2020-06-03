@@ -1,5 +1,5 @@
 const assert = require('assert').strict;
-const exec = require('../../../setup');
+const { exec } = require('../../../setup');
 
 describe('DOM Event Handlers', function() {
 
@@ -101,31 +101,6 @@ describe('DOM Event Handlers', function() {
             );
         });
 
-        it('works with array nodes', async function() {
-            assert.equal(
-                await exec(_ => {
-                    let result = 0;
-                    const event = new Event('click');
-                    const element1 = document.getElementById('test1');
-                    const element2 = document.getElementById('test2');
-                    dom.addEvent(
-                        [
-                            element1,
-                            element2
-                        ],
-                        'click',
-                        _ => { result++; }
-                    );
-                    element1.dispatchEvent(event);
-                    element1.dispatchEvent(event);
-                    element2.dispatchEvent(event);
-                    element2.dispatchEvent(event);
-                    return result;
-                }),
-                4
-            );
-        });
-
         it('works with ShadowRoot nodes', async function() {
             assert.equal(
                 await exec(_ => {
@@ -179,6 +154,31 @@ describe('DOM Event Handlers', function() {
                     return result;
                 }),
                 2
+            );
+        });
+
+        it('works with array nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    let result = 0;
+                    const event = new Event('click');
+                    const element1 = document.getElementById('test1');
+                    const element2 = document.getElementById('test2');
+                    dom.addEvent(
+                        [
+                            element1,
+                            element2
+                        ],
+                        'click',
+                        _ => { result++; }
+                    );
+                    element1.dispatchEvent(event);
+                    element1.dispatchEvent(event);
+                    element2.dispatchEvent(event);
+                    element2.dispatchEvent(event);
+                    return result;
+                }),
+                4
             );
         });
 
@@ -359,40 +359,6 @@ describe('DOM Event Handlers', function() {
             );
         });
 
-        it('works with array nodes', async function() {
-            assert.equal(
-                await exec(_ => {
-                    let result = 0;
-                    const event = new Event('click', {
-                        bubbles: true
-                    });
-                    const element1 = document.getElementById('test1');
-                    const element2 = document.getElementById('test2');
-                    const element3 = document.getElementById('test3');
-                    const element4 = document.getElementById('test4');
-                    dom.addEventDelegate(
-                        [
-                            document.getElementById('parent1'),
-                            document.getElementById('parent2')
-                        ],
-                        'click',
-                        'a',
-                        _ => { result++; }
-                    );
-                    element1.dispatchEvent(event);
-                    element1.dispatchEvent(event);
-                    element2.dispatchEvent(event);
-                    element2.dispatchEvent(event);
-                    element3.dispatchEvent(event);
-                    element3.dispatchEvent(event);
-                    element4.dispatchEvent(event);
-                    element4.dispatchEvent(event);
-                    return result;
-                }),
-                8
-            );
-        });
-
         it('works with ShadowRoot nodes', async function() {
             assert.equal(
                 await exec(_ => {
@@ -431,6 +397,40 @@ describe('DOM Event Handlers', function() {
                     const element4 = document.getElementById('test4');
                     dom.addEventDelegate(
                         document,
+                        'click',
+                        'a',
+                        _ => { result++; }
+                    );
+                    element1.dispatchEvent(event);
+                    element1.dispatchEvent(event);
+                    element2.dispatchEvent(event);
+                    element2.dispatchEvent(event);
+                    element3.dispatchEvent(event);
+                    element3.dispatchEvent(event);
+                    element4.dispatchEvent(event);
+                    element4.dispatchEvent(event);
+                    return result;
+                }),
+                8
+            );
+        });
+
+        it('works with array nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    let result = 0;
+                    const event = new Event('click', {
+                        bubbles: true
+                    });
+                    const element1 = document.getElementById('test1');
+                    const element2 = document.getElementById('test2');
+                    const element3 = document.getElementById('test3');
+                    const element4 = document.getElementById('test4');
+                    dom.addEventDelegate(
+                        [
+                            document.getElementById('parent1'),
+                            document.getElementById('parent2')
+                        ],
                         'click',
                         'a',
                         _ => { result++; }
@@ -620,40 +620,6 @@ describe('DOM Event Handlers', function() {
             );
         });
 
-        it('works with array nodes', async function() {
-            assert.equal(
-                await exec(_ => {
-                    let result = 0;
-                    const event = new Event('click', {
-                        bubbles: true
-                    });
-                    const element1 = document.getElementById('test1');
-                    const element2 = document.getElementById('test2');
-                    const element3 = document.getElementById('test3');
-                    const element4 = document.getElementById('test4');
-                    dom.addEventDelegateOnce(
-                        [
-                            document.getElementById('parent1'),
-                            document.getElementById('parent2')
-                        ],
-                        'click',
-                        'a',
-                        _ => { result++; }
-                    );
-                    element1.dispatchEvent(event);
-                    element1.dispatchEvent(event);
-                    element2.dispatchEvent(event);
-                    element2.dispatchEvent(event);
-                    element3.dispatchEvent(event);
-                    element3.dispatchEvent(event);
-                    element4.dispatchEvent(event);
-                    element4.dispatchEvent(event);
-                    return result;
-                }),
-                2
-            );
-        });
-
         it('works with ShadowRoot nodes', async function() {
             assert.equal(
                 await exec(_ => {
@@ -707,6 +673,40 @@ describe('DOM Event Handlers', function() {
                     return result;
                 }),
                 1
+            );
+        });
+
+        it('works with array nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    let result = 0;
+                    const event = new Event('click', {
+                        bubbles: true
+                    });
+                    const element1 = document.getElementById('test1');
+                    const element2 = document.getElementById('test2');
+                    const element3 = document.getElementById('test3');
+                    const element4 = document.getElementById('test4');
+                    dom.addEventDelegateOnce(
+                        [
+                            document.getElementById('parent1'),
+                            document.getElementById('parent2')
+                        ],
+                        'click',
+                        'a',
+                        _ => { result++; }
+                    );
+                    element1.dispatchEvent(event);
+                    element1.dispatchEvent(event);
+                    element2.dispatchEvent(event);
+                    element2.dispatchEvent(event);
+                    element3.dispatchEvent(event);
+                    element3.dispatchEvent(event);
+                    element4.dispatchEvent(event);
+                    element4.dispatchEvent(event);
+                    return result;
+                }),
+                2
             );
         });
 
@@ -810,31 +810,6 @@ describe('DOM Event Handlers', function() {
             );
         });
 
-        it('works with array nodes', async function() {
-            assert.equal(
-                await exec(_ => {
-                    let result = 0;
-                    const event = new Event('click');
-                    const element1 = document.getElementById('test1');
-                    const element2 = document.getElementById('test2');
-                    dom.addEventOnce(
-                        [
-                            element1,
-                            element2
-                        ],
-                        'click',
-                        _ => { result++; }
-                    );
-                    element1.dispatchEvent(event);
-                    element1.dispatchEvent(event);
-                    element2.dispatchEvent(event);
-                    element2.dispatchEvent(event);
-                    return result;
-                }),
-                2
-            );
-        });
-
         it('works with ShadowRoot nodes', async function() {
             assert.equal(
                 await exec(_ => {
@@ -888,6 +863,31 @@ describe('DOM Event Handlers', function() {
                     return result;
                 }),
                 1
+            );
+        });
+
+        it('works with array nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    let result = 0;
+                    const event = new Event('click');
+                    const element1 = document.getElementById('test1');
+                    const element2 = document.getElementById('test2');
+                    dom.addEventOnce(
+                        [
+                            element1,
+                            element2
+                        ],
+                        'click',
+                        _ => { result++; }
+                    );
+                    element1.dispatchEvent(event);
+                    element1.dispatchEvent(event);
+                    element2.dispatchEvent(event);
+                    element2.dispatchEvent(event);
+                    return result;
+                }),
+                2
             );
         });
 
@@ -1024,36 +1024,6 @@ describe('DOM Event Handlers', function() {
             );
         });
 
-        it('works with array nodes', async function() {
-            assert.equal(
-                await exec(_ => {
-                    const event = new Event('click');
-                    const element1 = document.getElementById('test1');
-                    const element2 = document.getElementById('test2');
-                    dom.cloneEvents(
-                        [
-                            element1,
-                            element2
-                        ],
-                        '[data-toggle="noEvent"]'
-                    );
-                    element1.dispatchEvent(event);
-                    element2.dispatchEvent(event);
-                    document.getElementById('test3').dispatchEvent(event);
-                    document.getElementById('test4').dispatchEvent(event);
-                    return document.body.innerHTML;
-                }),
-                '<div id="eventParent">' +
-                '<div id="test1" data-toggle="event" data-test1="Test 1"></div>' +
-                '<div id="test2" data-toggle="event" data-test2="Test 2"></div>' +
-                '</div>' +
-                '<div id="noEventParent">' +
-                '<div id="test3" data-toggle="noEvent" data-test1="Test 1" data-test2="Test 2"></div>' +
-                '<div id="test4" data-toggle="noEvent" data-test1="Test 1" data-test2="Test 2"></div>' +
-                '</div>'
-            );
-        });
-
         it('works with ShadowRoot nodes', async function() {
             assert.equal(
                 await exec(_ => {
@@ -1125,6 +1095,36 @@ describe('DOM Event Handlers', function() {
             );
         });
 
+        it('works with array nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    const event = new Event('click');
+                    const element1 = document.getElementById('test1');
+                    const element2 = document.getElementById('test2');
+                    dom.cloneEvents(
+                        [
+                            element1,
+                            element2
+                        ],
+                        '[data-toggle="noEvent"]'
+                    );
+                    element1.dispatchEvent(event);
+                    element2.dispatchEvent(event);
+                    document.getElementById('test3').dispatchEvent(event);
+                    document.getElementById('test4').dispatchEvent(event);
+                    return document.body.innerHTML;
+                }),
+                '<div id="eventParent">' +
+                '<div id="test1" data-toggle="event" data-test1="Test 1"></div>' +
+                '<div id="test2" data-toggle="event" data-test2="Test 2"></div>' +
+                '</div>' +
+                '<div id="noEventParent">' +
+                '<div id="test3" data-toggle="noEvent" data-test1="Test 1" data-test2="Test 2"></div>' +
+                '<div id="test4" data-toggle="noEvent" data-test1="Test 1" data-test2="Test 2"></div>' +
+                '</div>'
+            );
+        });
+
         it('works with HTMLElement other nodes', async function() {
             assert.equal(
                 await exec(_ => {
@@ -1188,36 +1188,6 @@ describe('DOM Event Handlers', function() {
                     document.getElementById('test2').dispatchEvent(event);
                     document.getElementById('test3').dispatchEvent(event);
                     document.getElementById('test4').dispatchEvent(event);
-                    return document.body.innerHTML;
-                }),
-                '<div id="eventParent">' +
-                '<div id="test1" data-toggle="event" data-test1="Test 1"></div>' +
-                '<div id="test2" data-toggle="event" data-test2="Test 2"></div>' +
-                '</div>' +
-                '<div id="noEventParent">' +
-                '<div id="test3" data-toggle="noEvent" data-test1="Test 1" data-test2="Test 2"></div>' +
-                '<div id="test4" data-toggle="noEvent" data-test1="Test 1" data-test2="Test 2"></div>' +
-                '</div>'
-            );
-        });
-
-        it('works with array other nodes', async function() {
-            assert.equal(
-                await exec(_ => {
-                    const event = new Event('click');
-                    const element1 = document.getElementById('test3');
-                    const element2 = document.getElementById('test4');
-                    dom.cloneEvents(
-                        '[data-toggle="event"]',
-                        [
-                            element1,
-                            element2
-                        ]
-                    );
-                    document.getElementById('test1').dispatchEvent(event);
-                    document.getElementById('test2').dispatchEvent(event);
-                    element1.dispatchEvent(event);
-                    element2.dispatchEvent(event);
                     return document.body.innerHTML;
                 }),
                 '<div id="eventParent">' +
@@ -1299,6 +1269,36 @@ describe('DOM Event Handlers', function() {
                     return result;
                 }),
                 2
+            );
+        });
+
+        it('works with array other nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    const event = new Event('click');
+                    const element1 = document.getElementById('test3');
+                    const element2 = document.getElementById('test4');
+                    dom.cloneEvents(
+                        '[data-toggle="event"]',
+                        [
+                            element1,
+                            element2
+                        ]
+                    );
+                    document.getElementById('test1').dispatchEvent(event);
+                    document.getElementById('test2').dispatchEvent(event);
+                    element1.dispatchEvent(event);
+                    element2.dispatchEvent(event);
+                    return document.body.innerHTML;
+                }),
+                '<div id="eventParent">' +
+                '<div id="test1" data-toggle="event" data-test1="Test 1"></div>' +
+                '<div id="test2" data-toggle="event" data-test2="Test 2"></div>' +
+                '</div>' +
+                '<div id="noEventParent">' +
+                '<div id="test3" data-toggle="noEvent" data-test1="Test 1" data-test2="Test 2"></div>' +
+                '<div id="test4" data-toggle="noEvent" data-test1="Test 1" data-test2="Test 2"></div>' +
+                '</div>'
             );
         });
 
@@ -1512,41 +1512,6 @@ describe('DOM Event Handlers', function() {
             );
         });
 
-        it('works with array nodes', async function() {
-            assert.equal(
-                await exec(_ => {
-                    let result = 0;
-                    const callback1 = _ => { result++; };
-                    const callback2 = _ => { result++; };
-                    const event = new Event('click');
-                    const element1 = document.getElementById('test1');
-                    const element2 = document.getElementById('test2');
-                    dom.addEvent(
-                        'a',
-                        'click',
-                        callback1
-                    );
-                    dom.addEvent(
-                        'a',
-                        'click',
-                        callback2
-                    );
-                    dom.removeEvent(
-                        [
-                            element1,
-                            element2
-                        ],
-                        'click',
-                        callback1
-                    );
-                    element1.dispatchEvent(event);
-                    element2.dispatchEvent(event);
-                    return result;
-                }),
-                2
-            );
-        });
-
         it('works with ShadowRoot nodes', async function() {
             assert.equal(
                 await exec(_ => {
@@ -1633,6 +1598,41 @@ describe('DOM Event Handlers', function() {
                     return result;
                 }),
                 1
+            );
+        });
+
+        it('works with array nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    let result = 0;
+                    const callback1 = _ => { result++; };
+                    const callback2 = _ => { result++; };
+                    const event = new Event('click');
+                    const element1 = document.getElementById('test1');
+                    const element2 = document.getElementById('test2');
+                    dom.addEvent(
+                        'a',
+                        'click',
+                        callback1
+                    );
+                    dom.addEvent(
+                        'a',
+                        'click',
+                        callback2
+                    );
+                    dom.removeEvent(
+                        [
+                            element1,
+                            element2
+                        ],
+                        'click',
+                        callback1
+                    );
+                    element1.dispatchEvent(event);
+                    element2.dispatchEvent(event);
+                    return result;
+                }),
+                2
             );
         });
 
@@ -1924,50 +1924,6 @@ describe('DOM Event Handlers', function() {
             );
         });
 
-        it('works with array nodes', async function() {
-            assert.equal(
-                await exec(_ => {
-                    let result = 0;
-                    const callback1 = _ => { result++; };
-                    const callback2 = _ => { result++; };
-                    const event = new Event('click', {
-                        bubbles: true
-                    });
-                    const element1 = document.getElementById('test1');
-                    const element2 = document.getElementById('test2');
-                    const element3 = document.getElementById('test3');
-                    const element4 = document.getElementById('test4');
-                    dom.addEventDelegate(
-                        'div',
-                        'click',
-                        'a',
-                        callback1
-                    );
-                    dom.addEventDelegate(
-                        'div',
-                        'click',
-                        'a',
-                        callback2
-                    );
-                    dom.removeEventDelegate(
-                        [
-                            document.getElementById('parent1'),
-                            document.getElementById('parent2')
-                        ],
-                        'click',
-                        'a',
-                        callback1
-                    );
-                    element1.dispatchEvent(event);
-                    element2.dispatchEvent(event);
-                    element3.dispatchEvent(event);
-                    element4.dispatchEvent(event);
-                    return result;
-                }),
-                4
-            );
-        });
-
         it('works with ShadowRoot nodes', async function() {
             assert.equal(
                 await exec(_ => {
@@ -2033,6 +1989,50 @@ describe('DOM Event Handlers', function() {
                     );
                     dom.removeEventDelegate(
                         document,
+                        'click',
+                        'a',
+                        callback1
+                    );
+                    element1.dispatchEvent(event);
+                    element2.dispatchEvent(event);
+                    element3.dispatchEvent(event);
+                    element4.dispatchEvent(event);
+                    return result;
+                }),
+                4
+            );
+        });
+
+        it('works with array nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    let result = 0;
+                    const callback1 = _ => { result++; };
+                    const callback2 = _ => { result++; };
+                    const event = new Event('click', {
+                        bubbles: true
+                    });
+                    const element1 = document.getElementById('test1');
+                    const element2 = document.getElementById('test2');
+                    const element3 = document.getElementById('test3');
+                    const element4 = document.getElementById('test4');
+                    dom.addEventDelegate(
+                        'div',
+                        'click',
+                        'a',
+                        callback1
+                    );
+                    dom.addEventDelegate(
+                        'div',
+                        'click',
+                        'a',
+                        callback2
+                    );
+                    dom.removeEventDelegate(
+                        [
+                            document.getElementById('parent1'),
+                            document.getElementById('parent2')
+                        ],
                         'click',
                         'a',
                         callback1
@@ -2163,28 +2163,6 @@ describe('DOM Event Handlers', function() {
             );
         });
 
-        it('works with array nodes', async function() {
-            assert.equal(
-                await exec(_ => {
-                    let result = 0;
-                    dom.addEvent(
-                        'a',
-                        'click',
-                        _ => { result++; }
-                    );
-                    dom.triggerEvent(
-                        [
-                            document.getElementById('test1'),
-                            document.getElementById('test2')
-                        ],
-                        'click'
-                    );
-                    return result;
-                }),
-                2
-            );
-        });
-
         it('works with ShadowRoot nodes', async function() {
             assert.equal(
                 await exec(_ => {
@@ -2241,6 +2219,28 @@ describe('DOM Event Handlers', function() {
                     return result;
                 }),
                 1
+            );
+        });
+
+        it('works with array nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    let result = 0;
+                    dom.addEvent(
+                        'a',
+                        'click',
+                        _ => { result++; }
+                    );
+                    dom.triggerEvent(
+                        [
+                            document.getElementById('test1'),
+                            document.getElementById('test2')
+                        ],
+                        'click'
+                    );
+                    return result;
+                }),
+                2
             );
         });
 

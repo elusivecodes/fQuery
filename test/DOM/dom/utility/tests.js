@@ -1,5 +1,5 @@
 const assert = require('assert').strict;
-const exec = require('../../../setup');
+const { exec } = require('../../../setup');
 
 describe('DOM Tests', function() {
 
@@ -253,22 +253,6 @@ describe('DOM Tests', function() {
             );
         });
 
-        it('works with array nodes', async function() {
-            assert.equal(
-                await exec(_ => {
-                    return dom.hasChildren(
-                        [
-                            document.getElementById('div1'),
-                            document.getElementById('div2'),
-                            document.getElementById('div3'),
-                            document.getElementById('div4')
-                        ]
-                    );
-                }),
-                true
-            );
-        });
-
         it('works with DocumentFragment nodes', async function() {
             assert.equal(
                 await exec(_ => {
@@ -307,6 +291,22 @@ describe('DOM Tests', function() {
                 await exec(_ => {
                     return dom.hasChildren(
                         document
+                    );
+                }),
+                true
+            );
+        });
+
+        it('works with array nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    return dom.hasChildren(
+                        [
+                            document.getElementById('div1'),
+                            document.getElementById('div2'),
+                            document.getElementById('div3'),
+                            document.getElementById('div4')
+                        ]
                     );
                 }),
                 true
@@ -684,22 +684,6 @@ describe('DOM Tests', function() {
             );
         });
 
-        it('works with array nodes', async function() {
-            assert.equal(
-                await exec(_ => {
-                    return dom.hasData(
-                        [
-                            document.getElementById('div1'),
-                            document.getElementById('div2'),
-                            document.getElementById('div3'),
-                            document.getElementById('div4')
-                        ]
-                    );
-                }),
-                true
-            );
-        });
-
         it('works with DocumentFragment nodes', async function() {
             assert.equal(
                 await exec(_ => {
@@ -761,6 +745,22 @@ describe('DOM Tests', function() {
                     );
                     return dom.hasData(
                         window
+                    );
+                }),
+                true
+            );
+        });
+
+        it('works with array nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    return dom.hasData(
+                        [
+                            document.getElementById('div1'),
+                            document.getElementById('div2'),
+                            document.getElementById('div3'),
+                            document.getElementById('div4')
+                        ]
                     );
                 }),
                 true
@@ -849,23 +849,6 @@ describe('DOM Tests', function() {
             );
         });
 
-        it('works with array nodes', async function() {
-            assert.equal(
-                await exec(_ => {
-                    return dom.hasDescendent(
-                        [
-                            document.getElementById('div1'),
-                            document.getElementById('div2'),
-                            document.getElementById('div3'),
-                            document.getElementById('div4')
-                        ],
-                        'a'
-                    );
-                }),
-                true
-            );
-        });
-
         it('works with DocumentFragment nodes', async function() {
             assert.equal(
                 await exec(_ => {
@@ -907,6 +890,23 @@ describe('DOM Tests', function() {
                     return dom.hasDescendent(
                         document,
                         'div'
+                    );
+                }),
+                true
+            );
+        });
+
+        it('works with array nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    return dom.hasDescendent(
+                        [
+                            document.getElementById('div1'),
+                            document.getElementById('div2'),
+                            document.getElementById('div3'),
+                            document.getElementById('div4')
+                        ],
+                        'a'
                     );
                 }),
                 true
@@ -1330,23 +1330,6 @@ describe('DOM Tests', function() {
             );
         });
 
-        it('works with array nodes', async function() {
-            assert.equal(
-                await exec(_ => {
-                    return dom.is(
-                        [
-                            document.getElementById('div1'),
-                            document.getElementById('div2'),
-                            document.getElementById('div3'),
-                            document.getElementById('div4')
-                        ],
-                        '.test'
-                    );
-                }),
-                true
-            );
-        });
-
         it('works with DocumentFragment nodes', async function() {
             assert.equal(
                 await exec(_ => {
@@ -1366,6 +1349,23 @@ describe('DOM Tests', function() {
                     const shadow = div.attachShadow({ mode: 'open' });
                     return dom.is(
                         shadow
+                    );
+                }),
+                true
+            );
+        });
+
+        it('works with array nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    return dom.is(
+                        [
+                            document.getElementById('div1'),
+                            document.getElementById('div2'),
+                            document.getElementById('div3'),
+                            document.getElementById('div4')
+                        ],
+                        '.test'
                     );
                 }),
                 true
@@ -1420,23 +1420,6 @@ describe('DOM Tests', function() {
             );
         });
 
-        it('works with array filter', async function() {
-            assert.equal(
-                await exec(_ => {
-                    return dom.is(
-                        'div',
-                        [
-                            document.getElementById('div1'),
-                            document.getElementById('div2'),
-                            document.getElementById('div3'),
-                            document.getElementById('div4')
-                        ]
-                    );
-                }),
-                true
-            );
-        });
-
         it('works with DocumentFragment filter', async function() {
             assert.equal(
                 await exec(_ => {
@@ -1464,6 +1447,23 @@ describe('DOM Tests', function() {
                             shadow
                         ],
                         shadow
+                    );
+                }),
+                true
+            );
+        });
+
+        it('works with array filter', async function() {
+            assert.equal(
+                await exec(_ => {
+                    return dom.is(
+                        'div',
+                        [
+                            document.getElementById('div1'),
+                            document.getElementById('div2'),
+                            document.getElementById('div3'),
+                            document.getElementById('div4')
+                        ]
                     );
                 }),
                 true
@@ -1539,22 +1539,6 @@ describe('DOM Tests', function() {
             );
         });
 
-        it('works with array nodes', async function() {
-            assert.equal(
-                await exec(_ => {
-                    return dom.isConnected(
-                        [
-                            document.getElementById('div1'),
-                            document.getElementById('div2'),
-                            document.getElementById('div3'),
-                            document.getElementById('div4')
-                        ]
-                    );
-                }),
-                true
-            );
-        });
-
         it('works with DocumentFragment nodes', async function() {
             assert.equal(
                 await exec(_ => {
@@ -1574,6 +1558,22 @@ describe('DOM Tests', function() {
                     const shadow = div.attachShadow({ mode: 'open' });
                     return dom.isConnected(
                         shadow
+                    );
+                }),
+                true
+            );
+        });
+
+        it('works with array nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    return dom.isConnected(
+                        [
+                            document.getElementById('div1'),
+                            document.getElementById('div2'),
+                            document.getElementById('div3'),
+                            document.getElementById('div4')
+                        ]
                     );
                 }),
                 true
@@ -1665,22 +1665,6 @@ describe('DOM Tests', function() {
             );
         });
 
-        it('works with array nodes', async function() {
-            assert.equal(
-                await exec(_ => {
-                    return dom.isEqual(
-                        [
-                            document.querySelector('#parent1 > [data-id="span1"]'),
-                            document.querySelector('#parent1 > [data-id="span2"]'),
-                            document.querySelector('#parent1 > [data-id="span3"]')
-                        ],
-                        '#parent2 span'
-                    );
-                }),
-                true
-            );
-        });
-
         it('works with DocumentFragment nodes', async function() {
             assert.equal(
                 await exec(_ => {
@@ -1705,6 +1689,22 @@ describe('DOM Tests', function() {
                     return dom.isEqual(
                         shadow1,
                         shadow2
+                    );
+                }),
+                true
+            );
+        });
+
+        it('works with array nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    return dom.isEqual(
+                        [
+                            document.querySelector('#parent1 > [data-id="span1"]'),
+                            document.querySelector('#parent1 > [data-id="span2"]'),
+                            document.querySelector('#parent1 > [data-id="span3"]')
+                        ],
+                        '#parent2 span'
                     );
                 }),
                 true
@@ -1747,21 +1747,6 @@ describe('DOM Tests', function() {
             );
         });
 
-        it('works with array other nodes', async function() {
-            assert.equal(
-                await exec(_ => {
-                    return dom.isEqual(
-                        '#parent1 span',
-                        [
-                            document.querySelector('#parent2 > [data-id="span2"]'),
-                            document.querySelector('#parent2 > [data-id="span3"]')
-                        ]
-                    );
-                }),
-                true
-            );
-        });
-
         it('works with DocumentFragment other nodes', async function() {
             assert.equal(
                 await exec(_ => {
@@ -1792,6 +1777,21 @@ describe('DOM Tests', function() {
                             shadow1,
                         ],
                         shadow2
+                    );
+                }),
+                true
+            );
+        });
+
+        it('works with array other nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    return dom.isEqual(
+                        '#parent1 span',
+                        [
+                            document.querySelector('#parent2 > [data-id="span2"]'),
+                            document.querySelector('#parent2 > [data-id="span3"]')
+                        ]
                     );
                 }),
                 true
@@ -1977,6 +1977,34 @@ describe('DOM Tests', function() {
             );
         });
 
+        it('works with Document nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    const myDoc = new Document();
+                    return dom.isHidden(
+                        myDoc
+                    );
+                }),
+                true
+            );
+        });
+
+        it('works with Window nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    const myWindow = {
+                        document: {},
+                        id: 'window'
+                    };
+                    myWindow.document.defaultView = myWindow;
+                    return dom.isHidden(
+                        myWindow
+                    );
+                }),
+                true
+            );
+        });
+
         it('works with array nodes', async function() {
             assert.equal(
                 await exec(_ => {
@@ -1992,20 +2020,6 @@ describe('DOM Tests', function() {
                 true
             );
         });
-
-        it('works with Document nodes', async function() {
-            assert.equal(
-                await exec(_ => {
-                    const myDoc = new Document();
-                    return dom.isHidden(
-                        myDoc
-                    );
-                }),
-                true
-            );
-        });
-
-        it('works with Window nodes');
 
     });
 
@@ -2081,23 +2095,6 @@ describe('DOM Tests', function() {
             );
         });
 
-        it('works with array nodes', async function() {
-            assert.equal(
-                await exec(_ => {
-                    return dom.isSame(
-                        [
-                            document.getElementById('div1'),
-                            document.getElementById('div2'),
-                            document.getElementById('div3'),
-                            document.getElementById('div4')
-                        ],
-                        '#div2, #div4'
-                    );
-                }),
-                true
-            );
-        });
-
         it('works with DocumentFragment nodes', async function() {
             assert.equal(
                 await exec(_ => {
@@ -2119,6 +2116,23 @@ describe('DOM Tests', function() {
                     return dom.isSame(
                         shadow,
                         shadow
+                    );
+                }),
+                true
+            );
+        });
+
+        it('works with array nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    return dom.isSame(
+                        [
+                            document.getElementById('div1'),
+                            document.getElementById('div2'),
+                            document.getElementById('div3'),
+                            document.getElementById('div4')
+                        ],
+                        '#div2, #div4'
                     );
                 }),
                 true
@@ -2161,21 +2175,6 @@ describe('DOM Tests', function() {
             );
         });
 
-        it('works with array other nodes', async function() {
-            assert.equal(
-                await exec(_ => {
-                    return dom.isSame(
-                        'div',
-                        [
-                            document.querySelector('#div2'),
-                            document.querySelector('#div4')
-                        ]
-                    );
-                }),
-                true
-            );
-        });
-
         it('works with DocumentFragment other nodes', async function() {
             assert.equal(
                 await exec(_ => {
@@ -2203,6 +2202,21 @@ describe('DOM Tests', function() {
                             shadow,
                         ],
                         shadow
+                    );
+                }),
+                true
+            );
+        });
+
+        it('works with array other nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    return dom.isSame(
+                        'div',
+                        [
+                            document.querySelector('#div2'),
+                            document.querySelector('#div4')
+                        ]
                     );
                 }),
                 true
@@ -2281,22 +2295,6 @@ describe('DOM Tests', function() {
             );
         });
 
-        it('works with array nodes', async function() {
-            assert.equal(
-                await exec(_ => {
-                    return dom.isVisible(
-                        [
-                            document.getElementById('div1'),
-                            document.getElementById('div2'),
-                            document.getElementById('div3'),
-                            document.getElementById('div4')
-                        ]
-                    );
-                }),
-                true
-            );
-        });
-
         it('works with Document nodes', async function() {
             assert.equal(
                 await exec(_ => {
@@ -2313,6 +2311,22 @@ describe('DOM Tests', function() {
                 await exec(_ => {
                     return dom.isVisible(
                         window
+                    );
+                }),
+                true
+            );
+        });
+
+        it('works with array nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    return dom.isVisible(
+                        [
+                            document.getElementById('div1'),
+                            document.getElementById('div2'),
+                            document.getElementById('div3'),
+                            document.getElementById('div4')
+                        ]
                     );
                 }),
                 true

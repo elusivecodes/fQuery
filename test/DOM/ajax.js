@@ -1,5 +1,5 @@
 const assert = require('assert').strict;
-const exec = require('../setup');
+const { exec } = require('../setup');
 
 describe('DOM AJAX', function() {
 

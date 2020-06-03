@@ -1,5 +1,5 @@
 const assert = require('assert').strict;
-const exec = require('../../../setup');
+const { exec } = require('../../../setup');
 
 describe('DOM Manipulation', function() {
 
@@ -216,6 +216,35 @@ describe('DOM Manipulation', function() {
             );
         });
 
+        it('works with DocumentFragment nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    const range = document.createRange();
+                    const fragment = range.createContextualFragment(
+                        '<div><span></span></div>'
+                    );
+                    const clones = dom.clone(
+                        fragment
+                    );
+                    document.body.appendChild(fragment);
+                    for (const clone of clones) {
+                        document.body.appendChild(clone);
+                    }
+                    return document.body.innerHTML;
+                }),
+                '<div class="parent1">' +
+                '<a href="#" class="test1">Test</a>' +
+                '<a href="#" class="test2">Test</a>' +
+                '</div>' +
+                '<div class="parent2">' +
+                '<a href="#" class="test3">Test</a>' +
+                '<a href="#" class="test4">Test</a>' +
+                '</div>' +
+                '<div><span></span></div>' +
+                '<div><span></span></div>'
+            );
+        });
+
         it('works with array nodes', async function() {
             assert.equal(
                 await exec(_ => {
@@ -246,35 +275,6 @@ describe('DOM Manipulation', function() {
                 '<a href="#" class="test3">Test</a>' +
                 '<a href="#" class="test4">Test</a>' +
                 '</div>'
-            );
-        });
-
-        it('works with DocumentFragment nodes', async function() {
-            assert.equal(
-                await exec(_ => {
-                    const range = document.createRange();
-                    const fragment = range.createContextualFragment(
-                        '<div><span></span></div>'
-                    );
-                    const clones = dom.clone(
-                        fragment
-                    );
-                    document.body.appendChild(fragment);
-                    for (const clone of clones) {
-                        document.body.appendChild(clone);
-                    }
-                    return document.body.innerHTML;
-                }),
-                '<div class="parent1">' +
-                '<a href="#" class="test1">Test</a>' +
-                '<a href="#" class="test2">Test</a>' +
-                '</div>' +
-                '<div class="parent2">' +
-                '<a href="#" class="test3">Test</a>' +
-                '<a href="#" class="test4">Test</a>' +
-                '</div>' +
-                '<div><span></span></div>' +
-                '<div><span></span></div>'
             );
         });
 
@@ -589,22 +589,6 @@ describe('DOM Manipulation', function() {
             );
         });
 
-        it('works with array nodes', async function() {
-            assert.equal(
-                await exec(_ => {
-                    dom.empty(
-                        [
-                            document.getElementById('outer1'),
-                            document.getElementById('outer2')
-                        ]
-                    );
-                    return document.body.innerHTML;
-                }),
-                '<div id="outer1"></div>' +
-                '<div id="outer2"></div>'
-            );
-        });
-
         it('works with DocumentFragment nodes', async function() {
             assert.equal(
                 await exec(_ => {
@@ -652,6 +636,22 @@ describe('DOM Manipulation', function() {
                     return myDoc.childNodes.length
                 }),
                 0
+            );
+        });
+
+        it('works with array nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    dom.empty(
+                        [
+                            document.getElementById('outer1'),
+                            document.getElementById('outer2')
+                        ]
+                    );
+                    return document.body.innerHTML;
+                }),
+                '<div id="outer1"></div>' +
+                '<div id="outer2"></div>'
             );
         });
 
@@ -1008,28 +1008,6 @@ describe('DOM Manipulation', function() {
             );
         });
 
-        it('works with array nodes', async function() {
-            assert.equal(
-                await exec(_ => {
-                    dom.replaceAll(
-                        [
-                            document.querySelector('.inner1')
-                        ],
-                        'div'
-                    );
-                    return document.body.innerHTML;
-                }),
-                '<div class="inner1">' +
-                '<a href="#">Test</a>' +
-                '<a href="#">Test</a>' +
-                '</div>' +
-                '<div class="inner1">' +
-                '<a href="#">Test</a>' +
-                '<a href="#">Test</a>' +
-                '</div>'
-            );
-        });
-
         it('works with DocumentFragment nodes', async function() {
             assert.equal(
                 await exec(_ => {
@@ -1054,6 +1032,28 @@ describe('DOM Manipulation', function() {
                 '<div><span></span></div>' +
                 '<div><span></span></div>' +
                 '</div>' +
+                '</div>'
+            );
+        });
+
+        it('works with array nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    dom.replaceAll(
+                        [
+                            document.querySelector('.inner1')
+                        ],
+                        'div'
+                    );
+                    return document.body.innerHTML;
+                }),
+                '<div class="inner1">' +
+                '<a href="#">Test</a>' +
+                '<a href="#">Test</a>' +
+                '</div>' +
+                '<div class="inner1">' +
+                '<a href="#">Test</a>' +
+                '<a href="#">Test</a>' +
                 '</div>'
             );
         });
@@ -1380,28 +1380,6 @@ describe('DOM Manipulation', function() {
             );
         });
 
-        it('works with array other nodes', async function() {
-            assert.equal(
-                await exec(_ => {
-                    dom.replaceWith(
-                        'div',
-                        [
-                            document.querySelector('.inner1')
-                        ]
-                    );
-                    return document.body.innerHTML;
-                }),
-                '<div class="inner1">' +
-                '<a href="#">Test</a>' +
-                '<a href="#">Test</a>' +
-                '</div>' +
-                '<div class="inner1">' +
-                '<a href="#">Test</a>' +
-                '<a href="#">Test</a>' +
-                '</div>'
-            );
-        });
-
         it('works with DocumentFragment other nodes', async function() {
             assert.equal(
                 await exec(_ => {
@@ -1426,6 +1404,28 @@ describe('DOM Manipulation', function() {
                 '<div><span></span></div>' +
                 '<div><span></span></div>' +
                 '</div>' +
+                '</div>'
+            );
+        });
+
+        it('works with array other nodes', async function() {
+            assert.equal(
+                await exec(_ => {
+                    dom.replaceWith(
+                        'div',
+                        [
+                            document.querySelector('.inner1')
+                        ]
+                    );
+                    return document.body.innerHTML;
+                }),
+                '<div class="inner1">' +
+                '<a href="#">Test</a>' +
+                '<a href="#">Test</a>' +
+                '</div>' +
+                '<div class="inner1">' +
+                '<a href="#">Test</a>' +
+                '<a href="#">Test</a>' +
                 '</div>'
             );
         });
