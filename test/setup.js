@@ -5,8 +5,7 @@ const port = 3001;
 
 let browser, page;
 
-const core = fs.readFileSync('../FrostCore/dist/frost-core.js');
-const dom = fs.readFileSync('./dist/frost-dom.js');
+const dom = fs.readFileSync('./dist/frost-dom-bundle.js');
 
 const server = http.createServer((request, response) => {
     if (request.url === '/') {
@@ -17,7 +16,6 @@ const server = http.createServer((request, response) => {
             '</head>' +
             '<body id="body">' +
             '<script>' +
-            core +
             dom +
             '</script>' +
             '</body>' +
@@ -83,10 +81,10 @@ after(async function() {
     await closeServer();
 });
 
-module.exports.exec = async (callback, data) =>
+const exec = async (callback, data) =>
     await page.evaluate(callback, data);
 
-module.exports.waitFor = ms => {
+const waitFor = ms => {
     return _ => new Promise(resolve => {
         setTimeout(
             _ => {
@@ -95,4 +93,9 @@ module.exports.waitFor = ms => {
             ms
         );
     });
+};
+
+module.exports = {
+    exec,
+    waitFor
 };

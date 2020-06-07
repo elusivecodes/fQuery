@@ -17,6 +17,7 @@ if (!fs.existsSync(distFolder)) {
 // load files and wrapper
 let wrapper;
 const files = [];
+const core = fs.readFileSync('./node_modules/frostcore/dist/frost-core.js');
 
 filepath.create(srcFolder).recurse(fullPath => {
     if (!fullPath.isFile()) {
@@ -45,8 +46,17 @@ const code = wrapper.replace(
         )
 );
 
+const bundle = [core, code].join('\r\n\r\n');
+
 // minify
 const minified = terser.minify(code, {
+    ecma: 8,
+    compress: {
+        ecma: 8
+    }
+});
+
+const minifiedBundle = terser.minify(bundle, {
     ecma: 8,
     compress: {
         ecma: 8
@@ -68,10 +78,30 @@ if (minified.error) {
     );
 }
 
+if (minifiedBundle.error) {
+    console.error(minifiedBundle.error);
+} else {
+    fs.writeFileSync(
+        path.join(distFolder, name + '-bundle.js'),
+        bundle
+    );
+
+    fs.writeFileSync(
+        path.join(distFolder, name + '-bundle.min.js'),
+        minifiedBundle.code
+    );
+}
+
 // es5 transpile
 const es5 = babel.transformSync(code, { presets: ['@babel/env'] });
 
+const es5Bundle = babel.transformSync(bundle, { presets: ['@babel/env'] });
+
 const minifiedes5 = terser.minify(es5.code, {
+    ecma: 5
+});
+
+const minifiedes5Bundle = terser.minify(es5Bundle.code, {
     ecma: 5
 });
 
@@ -86,5 +116,19 @@ if (minifiedes5.error) {
     fs.writeFileSync(
         path.join(distFolder, name + '-es5.min.js'),
         minifiedes5.code
+    );
+}
+
+if (minifiedes5Bundle.error) {
+    console.error(minifiedes5Bundle.error);
+} else {
+    fs.writeFileSync(
+        path.join(distFolder, name + '-bundle-es5.js'),
+        es5Bundle.code
+    );
+
+    fs.writeFileSync(
+        path.join(distFolder, name + '-bundle-es5.min.js'),
+        minifiedes5Bundle.code
     );
 }

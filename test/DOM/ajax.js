@@ -219,7 +219,11 @@ describe('DOM AJAX', function() {
                         contentType: null
                     });
                     response.xhr = response.xhr.data;
-                    response.xhr.body = Object.fromEntries(response.xhr.body);
+                    const results = [];
+                    for (const [key, value] of response.xhr.body.entries()) {
+                        results.push({ key, value });
+                    }
+                    response.xhr.body = results;
                     return response;
                 }),
                 {
@@ -229,10 +233,16 @@ describe('DOM AJAX', function() {
                     response: 'Test',
                     xhr: {
                         async: true,
-                        body: {
-                            test1: 'Test 1',
-                            test2: 'Test 2'
-                        },
+                        body: [
+                            {
+                                key: 'test1',
+                                value: 'Test 1'
+                            },
+                            {
+                                key: 'test2',
+                                value: 'Test 2'
+                            }
+                        ],
                         headers: {
                             'X-Requested-With': 'XMLHttpRequest'
                         },
