@@ -1842,90 +1842,6 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
     }
   });
   /**
-   * DOM Cookie
-   */
-
-  Object.assign(DOM.prototype, {
-    /**
-     * Get a cookie value.
-     * @param {string} name The cookie name.
-     * @returns {*} The cookie value.
-     */
-    getCookie: function getCookie(name) {
-      var cookie = this._context.cookie.split(';').find(function (cookie) {
-        return cookie.trimStart().substring(0, name.length) === name;
-      }).trimStart();
-
-      if (!cookie) {
-        return null;
-      }
-
-      return decodeURIComponent(cookie.substring(name.length + 1));
-    },
-
-    /**
-     * Remove a cookie.
-     * @param {string} name The cookie name.
-     * @param {object} [options] The options to use for the cookie.
-     * @param {string} [options.path] The cookie path.
-     * @param {Boolean} [options.secure] Whether the cookie is secure.
-     */
-    removeCookie: function removeCookie(name, options) {
-      if (!name) {
-        return;
-      }
-
-      var cookie = "".concat(name, "=;expires=Thu, 01 Jan 1970 00:00:00 UTC");
-
-      if (options) {
-        if (options.path) {
-          cookie += ";path=".concat(options.path);
-        }
-
-        if (options.secure) {
-          cookie += ';secure';
-        }
-      }
-
-      this._context.cookie = cookie;
-    },
-
-    /**
-     * Set a cookie value.
-     * @param {string} name The cookie name.
-     * @param {*} value The cookie value.
-     * @param {object} [options] The options to use for the cookie.
-     * @param {number} [options.expires] The number of seconds until the cookie will expire.
-     * @param {string} [options.path] The path to use for the cookie.
-     * @param {Boolean} [options.secure] Whether the cookie is secure.
-     */
-    setCookie: function setCookie(name, value, options) {
-      if (!name) {
-        return;
-      }
-
-      var cookie = "".concat(name, "=").concat(value);
-
-      if (options) {
-        if (options.expires) {
-          var date = new Date();
-          date.setTime(date.getTime() + options.expires * 1000);
-          cookie += ";expires=".concat(date.toUTCString());
-        }
-
-        if (options.path) {
-          cookie += ";path=".concat(options.path);
-        }
-
-        if (options.secure) {
-          cookie += ';secure';
-        }
-      }
-
-      this._context.cookie = cookie;
-    }
-  });
-  /**
    * DOM Animate
    */
 
@@ -3473,6 +3389,90 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
       } finally {
         _iterator28.f();
       }
+    }
+  });
+  /**
+   * DOM Cookie
+   */
+
+  Object.assign(DOM.prototype, {
+    /**
+     * Get a cookie value.
+     * @param {string} name The cookie name.
+     * @returns {*} The cookie value.
+     */
+    getCookie: function getCookie(name) {
+      var cookie = this._context.cookie.split(';').find(function (cookie) {
+        return cookie.trimStart().substring(0, name.length) === name;
+      }).trimStart();
+
+      if (!cookie) {
+        return null;
+      }
+
+      return decodeURIComponent(cookie.substring(name.length + 1));
+    },
+
+    /**
+     * Remove a cookie.
+     * @param {string} name The cookie name.
+     * @param {object} [options] The options to use for the cookie.
+     * @param {string} [options.path] The cookie path.
+     * @param {Boolean} [options.secure] Whether the cookie is secure.
+     */
+    removeCookie: function removeCookie(name, options) {
+      if (!name) {
+        return;
+      }
+
+      var cookie = "".concat(name, "=;expires=Thu, 01 Jan 1970 00:00:00 UTC");
+
+      if (options) {
+        if (options.path) {
+          cookie += ";path=".concat(options.path);
+        }
+
+        if (options.secure) {
+          cookie += ';secure';
+        }
+      }
+
+      this._context.cookie = cookie;
+    },
+
+    /**
+     * Set a cookie value.
+     * @param {string} name The cookie name.
+     * @param {*} value The cookie value.
+     * @param {object} [options] The options to use for the cookie.
+     * @param {number} [options.expires] The number of seconds until the cookie will expire.
+     * @param {string} [options.path] The path to use for the cookie.
+     * @param {Boolean} [options.secure] Whether the cookie is secure.
+     */
+    setCookie: function setCookie(name, value, options) {
+      if (!name) {
+        return;
+      }
+
+      var cookie = "".concat(name, "=").concat(value);
+
+      if (options) {
+        if (options.expires) {
+          var date = new Date();
+          date.setTime(date.getTime() + options.expires * 1000);
+          cookie += ";expires=".concat(date.toUTCString());
+        }
+
+        if (options.path) {
+          cookie += ";path=".concat(options.path);
+        }
+
+        if (options.secure) {
+          cookie += ';secure';
+        }
+      }
+
+      this._context.cookie = cookie;
     }
   });
   /**

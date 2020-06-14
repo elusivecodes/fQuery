@@ -49,13 +49,22 @@ before(async function() {
     await startServer();
 
     browser = await puppeteer.launch({
-        args: ['--no-sandbox']
+        args: [
+            '--disable-background-timer-throttling',
+            '--disable-backgrounding-occluded-windows',
+            '--disable-renderer-backgrounding',
+            '--no-sandbox'
+        ]
     });
 
     page = await browser.newPage();
 
     await page.goto('http://localhost:3001', {
         waitUntil: 'domcontentloaded'
+    });
+
+    await page.evaluate(_ => {
+        AjaxRequest.useMock = true;
     });
 });
 

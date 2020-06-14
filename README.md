@@ -2,9 +2,9 @@
 
 **FrostDOM** is a free, open-source DOM manipulation library for *JavaScript*.
 
-It is a lightweight (~15kb gzipped) and modern library, utilizing ES6 syntax and features including Promises, with a focus on functional style programming.
+It is a lightweight (~15kb gzipped) and modern library, utilizing ES6 syntax and features including Promises.
 
-For an OOP implementation, also check out my [fQuery](https://github.com/elusivecodes/fQuery) library.
+For a fully OOP implementation, also check out my [fQuery](https://github.com/elusivecodes/fQuery) library.
 
 
 ## Table Of Contents
@@ -49,9 +49,31 @@ For an OOP implementation, also check out my [fQuery](https://github.com/elusive
 
 - [FrostCore](https://github.com/elusivecodes/FrostCore)
 
+**In Browser**
+
 ```html
 <script type="text/javascript" src="/path/to/frost-core.min.js"></script>
 <script type="text/javascript" src="/path/to/frost-dom.min.js"></script>
+```
+
+Alternatively, a bundle version is supplied which includes the FrostCore library in a single JS file.
+
+```html
+<script type="text/javascript" src="/path/to/frost-core-bundle.min.js"></script>
+```
+
+**Using NPM**
+
+```
+npm i frostdom
+```
+
+In Node.js:
+
+```javascript
+const { JSDOM } = require('jsdom');
+const { window } = new JSDOM('');
+const { dom } = require('frostdom')(window);
 ```
 
 
