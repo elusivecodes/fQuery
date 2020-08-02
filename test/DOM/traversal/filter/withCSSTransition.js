@@ -1,14 +1,12 @@
 const assert = require('assert').strict;
-const { exec } = require('../../../setup');
+const { exec, setStyle } = require('../../../setup');
 
 describe('#withCSSTransition', function() {
 
     beforeEach(async function() {
+        await setStyle('.test { transition: opacity 1s; }');
         await exec(_ => {
             document.body.innerHTML =
-                '<style>' +
-                '.test { transition: opacity 1s; }' +
-                '</style>' +
                 '<div id="div1" class="test"></div>' +
                 '<div id="div2"></div>' +
                 '<div id="div3" class="test"></div>' +

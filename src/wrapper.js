@@ -28,6 +28,7 @@
     // {{code}}
     return {
         AjaxRequest,
+        Animation,
         DOM,
         DOMNode,
         dom: new DOM

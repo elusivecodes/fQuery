@@ -38,7 +38,12 @@ Object.assign(DOM, {
         }
 
         const clones = others.map(other =>
-            this._clone(other, true)
+            this._clone(other, {
+                deep: true,
+                events: true,
+                data: true,
+                animations: true
+            })
         );
 
         const firstClone = clones.slice().shift();
@@ -62,7 +67,7 @@ Object.assign(DOM, {
      * @param {array} others The other node(s).
      */
     _wrapAll(nodes, others) {
-        const firstNode = nodes.slice().shift();
+        const firstNode = nodes[0];
 
         if (!firstNode) {
             return;
@@ -74,7 +79,7 @@ Object.assign(DOM, {
             return;
         }
 
-        const firstOther = others.slice().shift();
+        const firstOther = others[0];
 
         const deepest = this._deepest(
             Core.isFragment(firstOther) ?
@@ -100,7 +105,12 @@ Object.assign(DOM, {
         const children = Core.wrap(DOMNode.childNodes(node));
 
         const clones = others.map(other =>
-            this._clone(other, true)
+            this._clone(other, {
+                deep: true,
+                events: true,
+                data: true,
+                animatinos: true
+            })
         );
 
         const firstClone = clones.slice().shift();

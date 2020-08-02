@@ -59,7 +59,7 @@ describe('#select', function() {
         );
     });
 
-    it('works with HTMLElement', async function() {
+    it('works with HTMLElement nodes', async function() {
         assert.equal(
             await exec(_ => {
                 dom.select(
@@ -73,7 +73,7 @@ describe('#select', function() {
         );
     });
 
-    it('works with NodeList', async function() {
+    it('works with NodeList nodes', async function() {
         assert.equal(
             await exec(_ => {
                 dom.select(
@@ -87,7 +87,7 @@ describe('#select', function() {
         );
     });
 
-    it('works with HTMLCollection', async function() {
+    it('works with HTMLCollection nodes', async function() {
         assert.equal(
             await exec(_ => {
                 dom.select(
@@ -101,7 +101,7 @@ describe('#select', function() {
         );
     });
 
-    it('works with array', async function() {
+    it('works with array nodes', async function() {
         assert.equal(
             await exec(_ => {
                 dom.select(

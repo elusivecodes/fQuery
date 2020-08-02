@@ -31,8 +31,6 @@
 
 Object.assign(DOM, {
 
-    _animating: false,
-    _animations: new Map,
     _queues: new WeakMap,
 
     _data: new WeakMap,
@@ -71,13 +69,6 @@ Object.assign(DOM, {
         strong: [],
         u: [],
         ul: []
-    },
-
-    // Default animation options
-    animationDefaults: {
-        duration: 1000,
-        type: 'ease-in-out',
-        infinite: false
     },
 
     // CSS properties that can have number-only values

@@ -1,5 +1,6 @@
 const assert = require('assert').strict;
 const { exec } = require('../../../setup');
+const { testNoAnimation, waitFor } = require('../../../helpers');
 
 describe('#empty', function() {
 
@@ -34,16 +35,11 @@ describe('#empty', function() {
         );
     });
 
-    it('removes all events recursively', async function() {
+    it('removes events recursively', async function() {
         assert.equal(
             await exec(_ => {
                 let result = 0;
-                const nodes = [
-                    document.getElementById('test1'),
-                    document.getElementById('test2'),
-                    document.getElementById('test3'),
-                    document.getElementById('test4')
-                ];
+                const nodes = document.querySelectorAll('a');
                 dom.addEvent(
                     'a',
                     'click',
@@ -65,24 +61,14 @@ describe('#empty', function() {
         );
     });
 
-    it('removes all data recursively', async function() {
+    it('removes data recursively', async function() {
         assert.deepEqual(
             await exec(_ => {
-                const nodes = [
-                    document.getElementById('test1'),
-                    document.getElementById('test2'),
-                    document.getElementById('test3'),
-                    document.getElementById('test4')
-                ];
+                const nodes = document.querySelectorAll('a');
                 dom.setData(
-                    '#test1',
-                    'test1',
-                    'Test 1'
-                );
-                dom.setData(
-                    '#test2',
-                    'test2',
-                    'Test 2'
+                    'a',
+                    'test',
+                    'Test'
                 );
                 dom.empty(
                     'div'
@@ -90,16 +76,43 @@ describe('#empty', function() {
                 for (const node of nodes) {
                     document.body.appendChild(node);
                 }
-                return [
-                    dom.getData('#test1', 'test1'),
-                    dom.getData('#test2', 'test2')
-                ]
+                return [...document.querySelectorAll('a')]
+                    .map(node =>
+                        dom.getData(node, 'test')
+                    );
             }),
             [
+                null,
+                null,
                 null,
                 null
             ]
         );
+    });
+
+    it('removes animations recursively', async function() {
+        await exec(_ => {
+            dom.animate(
+                'a',
+                _ => { },
+                {
+                    duration: 100,
+                    debug: true
+                }
+            );
+        }).then(waitFor(50)).then(async _ => {
+            await exec(_ => {
+                const nodes = document.querySelectorAll('a');
+                dom.empty('div');
+                for (const node of nodes) {
+                    document.body.appendChild(node);
+                }
+            });
+            await testNoAnimation('#test1');
+            await testNoAnimation('#test2');
+            await testNoAnimation('#test3');
+            await testNoAnimation('#test4');
+        });
     });
 
     it('works with HTMLElement nodes', async function() {

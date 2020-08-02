@@ -1,5 +1,6 @@
 const assert = require('assert').strict;
 const { exec } = require('../../../setup');
+const { easeInOut, testAnimation, testNoAnimation, waitFor } = require('../../../helpers');
 
 describe('#insertAfter', function() {
 
@@ -45,16 +46,104 @@ describe('#insertAfter', function() {
         );
     });
 
-    it('clones all copies except last', async function() {
+    it('preserves events for nodes', async function() {
         assert.equal(
             await exec(_ => {
-                const element1 = document.querySelector('#parent1 > .test1');
+                let result = 0;
+                dom.addEvent(
+                    'a',
+                    'click',
+                    _ => { result++; }
+                );
                 dom.insertAfter(
                     'a',
                     'div'
                 );
-                const element2 = document.querySelector('#parent2 ~ .test1');
-                return element1.isSameNode(element2);
+                dom.triggerEvent(
+                    'a',
+                    'click'
+                );
+                return result;
+            }),
+            8
+        );
+    });
+
+    it('preserves data for nodes', async function() {
+        assert.deepEqual(
+            await exec(_ => {
+                dom.setData(
+                    'a',
+                    'test',
+                    'Test'
+                );
+                dom.insertAfter(
+                    'a',
+                    'div'
+                );
+                return [...document.querySelectorAll('a')]
+                    .map(node =>
+                        dom.getData(node, 'test')
+                    );
+            }),
+            [
+                'Test',
+                'Test',
+                'Test',
+                'Test',
+                'Test',
+                'Test',
+                'Test',
+                'Test'
+            ]
+        );
+    });
+
+    it('preserves animations for nodes', async function() {
+        await exec(_ => {
+            dom.animate(
+                'a',
+                _ => { },
+                {
+                    duration: 100,
+                    debug: true
+                }
+            );
+            dom.insertAfter(
+                'a',
+                'div'
+            );
+        }).then(waitFor(50)).then(async _ => {
+            await testAnimation('body > a:nth-of-type(1)', easeInOut, 100);
+            await testAnimation('body > a:nth-of-type(2)', easeInOut, 100);
+            await testAnimation('body > a:nth-of-type(3)', easeInOut, 100);
+            await testAnimation('body > a:nth-of-type(4)', easeInOut, 100);
+            await testAnimation('body > a:nth-of-type(5)', easeInOut, 100);
+            await testAnimation('body > a:nth-of-type(6)', easeInOut, 100);
+            await testAnimation('body > a:nth-of-type(7)', easeInOut, 100);
+            await testAnimation('body > a:nth-of-type(8)', easeInOut, 100);
+        }).then(waitFor(100)).then(async _ => {
+            await testNoAnimation('body > a:nth-of-type(1)');
+            await testNoAnimation('body > a:nth-of-type(2)');
+            await testNoAnimation('body > a:nth-of-type(3)');
+            await testNoAnimation('body > a:nth-of-type(4)');
+            await testNoAnimation('body > a:nth-of-type(5)');
+            await testNoAnimation('body > a:nth-of-type(6)');
+            await testNoAnimation('body > a:nth-of-type(7)');
+            await testNoAnimation('body > a:nth-of-type(8)');
+        });
+    });
+
+    it('does not clone for the last nodes', async function() {
+        assert.equal(
+            await exec(_ => {
+                const nodes = [...document.querySelectorAll('a')];
+                dom.insertAfter(
+                    'a',
+                    'div'
+                );
+                const newNodes = [...document.querySelectorAll('a')].slice(4);
+                return nodes.every((node, i) => node.isSameNode(newNodes[i]));
             }),
             true
         );

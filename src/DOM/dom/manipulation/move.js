@@ -17,7 +17,7 @@ Object.assign(DOM.prototype, {
         // ShadowRoot nodes can not be moved
         others = this.parseNodes(others, { node: true, fragment: true, html: true }).reverse();
 
-        const lastNode = nodes.slice(-1).pop();
+        const lastNode = nodes[nodes.length - 1];
 
         for (const node of nodes) {
             const parent = DOMNode.parent(node);
@@ -31,7 +31,12 @@ Object.assign(DOM.prototype, {
                     parent,
                     DOMNode.isSame(node, lastNode) ?
                         other :
-                        DOMNode.clone(other, true),
+                        this.constructor._clone(other, {
+                            deep: true,
+                            events: true,
+                            data: true,
+                            animations: true
+                        }),
                     DOMNode.next(node)
                 );
             }
@@ -49,7 +54,7 @@ Object.assign(DOM.prototype, {
         // ShadowRoot nodes can not be moved
         others = this.parseNodes(others, { node: true, fragment: true, html: true });
 
-        const lastNode = nodes.slice(-1).pop();
+        const lastNode = nodes[nodes.length - 1];
 
         for (const node of nodes) {
             for (const other of others) {
@@ -57,7 +62,12 @@ Object.assign(DOM.prototype, {
                     node,
                     DOMNode.isSame(node, lastNode) ?
                         other :
-                        DOMNode.clone(other, true)
+                        this.constructor._clone(other, {
+                            deep: true,
+                            events: true,
+                            data: true,
+                            animations: true
+                        })
                 );
             }
         }
@@ -85,7 +95,7 @@ Object.assign(DOM.prototype, {
         // ShadowRoot nodes can not be moved
         others = this.parseNodes(others, { node: true, fragment: true, html: true });
 
-        const lastNode = nodes.slice(-1).pop();
+        const lastNode = nodes[nodes.length - 1];
 
         for (const node of nodes) {
             const parent = DOMNode.parent(node);
@@ -99,7 +109,12 @@ Object.assign(DOM.prototype, {
                     parent,
                     DOMNode.isSame(node, lastNode) ?
                         other :
-                        DOMNode.clone(other, true),
+                        this.constructor._clone(other, {
+                            deep: true,
+                            events: true,
+                            data: true,
+                            animations: true
+                        }),
                     node
                 );
             }
@@ -135,7 +150,7 @@ Object.assign(DOM.prototype, {
         // ShadowRoot nodes can not be moved
         others = this.parseNodes(others, { node: true, fragment: true, html: true });
 
-        const lastNode = nodes.slice(-1).pop();
+        const lastNode = nodes[nodes.length - 1];
 
         for (const node of nodes) {
             const firstChild = DOMNode.firstChild(node);
@@ -145,7 +160,12 @@ Object.assign(DOM.prototype, {
                     node,
                     DOMNode.isSame(node, lastNode) ?
                         other :
-                        DOMNode.clone(other, true),
+                        this.constructor._clone(other, {
+                            deep: true,
+                            events: true,
+                            data: true,
+                            animations: true
+                        }),
                     firstChild
                 );
             }

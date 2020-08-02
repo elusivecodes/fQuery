@@ -22,43 +22,43 @@ class AjaxRequest {
      * @param {Boolean|function} [options.onUploadProgress=false] A callback to execute on upload progress.
      * @returns {AjaxRequest} A new AjaxRequest that resolves when the request is completed, or rejects on failure.
      */
-    constructor(settings) {
-        this._settings = Core.extend(
+    constructor(options) {
+        this._options = Core.extend(
             {},
             this.constructor.defaults,
-            settings
+            options
         );
 
-        if (!this._settings.url) {
-            this._settings.url = window.location.href;
+        if (!this._options.url) {
+            this._options.url = window.location.href;
         }
 
-        if (!this._settings.cache) {
+        if (!this._options.cache) {
             const baseHref = (window.location.origin + window.location.pathname).replace(/\/$/, '');
-            const url = new URL(this._settings.url, baseHref);
+            const url = new URL(this._options.url, baseHref);
             url.searchParams.append('_', Date.now());
-            this._settings.url = url.toString();
+            this._options.url = url.toString();
 
-            if (this._settings.url.substring(0, baseHref.length) === baseHref) {
-                this._settings.url = this._settings.url.substring(baseHref.length);
+            if (this._options.url.substring(0, baseHref.length) === baseHref) {
+                this._options.url = this._options.url.substring(baseHref.length);
             }
         }
 
-        if (!('Content-Type' in this._settings.headers) && this._settings.contentType) {
-            this._settings.headers['Content-Type'] = this._settings.contentType;
+        if (!('Content-Type' in this._options.headers) && this._options.contentType) {
+            this._options.headers['Content-Type'] = this._options.contentType;
         }
 
         this._isLocal = this.constructor._localRegExp.test(location.protocol);
 
-        if (!this._isLocal && !('X-Requested-With' in this._settings.headers)) {
-            this._settings.headers['X-Requested-With'] = 'XMLHttpRequest';
+        if (!this._isLocal && !('X-Requested-With' in this._options.headers)) {
+            this._options.headers['X-Requested-With'] = 'XMLHttpRequest';
         }
 
         this._isResolved = false;
         this._isRejected = false;
         this._isCancelled = false;
 
-        this._promise = new Promise((resolve, reject) => {
+        this.promise = new Promise((resolve, reject) => {
             this._resolve = value => {
                 this._isResolved = true;
                 resolve(value);
@@ -88,7 +88,7 @@ class AjaxRequest {
 
         this._isCancelled = true;
 
-        if (this._settings.rejectOnCancel) {
+        if (this._options.rejectOnCancel) {
             this._reject({
                 status: this._xhr.status,
                 xhr: this._xhr,
@@ -103,7 +103,7 @@ class AjaxRequest {
      * @returns {Promise} A new pending Promise.
      */
     catch(onRejected) {
-        return this._promise.catch(onRejected);
+        return this.promise.catch(onRejected);
     }
 
     /**
@@ -112,7 +112,7 @@ class AjaxRequest {
      * @returns {Promise} A new pending Promise.
      */
     finally(onFinally) {
-        return this._promise.finally(onFinally);
+        return this.promise.finally(onFinally);
     }
 
     /**
@@ -122,7 +122,7 @@ class AjaxRequest {
      * @returns {Promise} A new pending Promise.
      */
     then(onFulfilled, onRejected) {
-        return this._promise.then(onFulfilled, onRejected);
+        return this.promise.then(onFulfilled, onRejected);
     }
 
 }

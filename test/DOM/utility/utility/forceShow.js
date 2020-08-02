@@ -1,14 +1,12 @@
 const assert = require('assert').strict;
-const { exec } = require('../../../setup');
+const { exec, setStyle } = require('../../../setup');
 
 describe('#forceShow', function() {
 
     beforeEach(async function() {
+        await setStyle('.test { display: none; }');
         await exec(_ => {
             document.body.innerHTML =
-                '<style>' +
-                '.test { display: none; }' +
-                '</style>' +
                 '<div id="outer">' +
                 '<div id="div1" class="test"></div>' +
                 '<div id="div2"></div>' +
@@ -28,9 +26,6 @@ describe('#forceShow', function() {
                     }
                 );
             }),
-            '<style>' +
-            '.test { display: none; }' +
-            '</style>' +
             '<div id="outer">' +
             '<div id="div1" class="test" style="display: initial !important;"></div>' +
             '<div id="div2"></div>' +
@@ -51,9 +46,6 @@ describe('#forceShow', function() {
                     }
                 );
             }),
-            '<style>' +
-            '.test { display: none; }' +
-            '</style>' +
             '<div id="outer" style="display: initial !important;">' +
             '<div id="div1" class="test" style="display: initial !important;"></div>' +
             '<div id="div2"></div>' +
@@ -72,9 +64,6 @@ describe('#forceShow', function() {
                 );
                 return document.body.innerHTML;
             }),
-            '<style>' +
-            '.test { display: none; }' +
-            '</style>' +
             '<div id="outer">' +
             '<div id="div1" class="test"></div>' +
             '<div id="div2"></div>' +
@@ -94,9 +83,6 @@ describe('#forceShow', function() {
                 );
                 return document.body.innerHTML;
             }),
-            '<style>' +
-            '.test { display: none; }' +
-            '</style>' +
             '<div id="outer" style="display: none;">' +
             '<div id="div1" class="test"></div>' +
             '<div id="div2"></div>' +
@@ -116,9 +102,6 @@ describe('#forceShow', function() {
                     }
                 );
             }),
-            '<style>' +
-            '.test { display: none; }' +
-            '</style>' +
             '<div id="outer">' +
             '<div id="div1" class="test"></div>' +
             '<div id="div2"></div>' +
@@ -152,9 +135,6 @@ describe('#forceShow', function() {
                     }
                 );
             }),
-            '<style>' +
-            '.test { display: none; }' +
-            '</style>' +
             '<div id="outer">' +
             '<div id="div1" class="test" style="display: initial !important;"></div>' +
             '<div id="div2"></div>' +
@@ -174,9 +154,6 @@ describe('#forceShow', function() {
                     }
                 );
             }),
-            '<style>' +
-            '.test { display: none; }' +
-            '</style>' +
             '<div id="outer">' +
             '<div id="div1" class="test" style="display: initial !important;"></div>' +
             '<div id="div2"></div>' +
@@ -196,9 +173,6 @@ describe('#forceShow', function() {
                     }
                 );
             }),
-            '<style>' +
-            '.test { display: none; }' +
-            '</style>' +
             '<div id="outer">' +
             '<div id="div1" class="test" style="display: initial !important;"></div>' +
             '<div id="div2"></div>' +
@@ -221,9 +195,6 @@ describe('#forceShow', function() {
                     }
                 );
             }),
-            '<style>' +
-            '.test { display: none; }' +
-            '</style>' +
             '<div id="outer">' +
             '<div id="div1" class="test" style="display: initial !important;"></div>' +
             '<div id="div2"></div>' +

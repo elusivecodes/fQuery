@@ -1,18 +1,14 @@
 const assert = require('assert').strict;
-const { exec } = require('../../../setup');
+const { exec, setStyle } = require('../../../setup');
 
 describe('#css', function() {
 
     beforeEach(async function() {
+        await setStyle('.test { display: block; width: 50vw; }');
         await exec(_ => {
             document.body.innerHTML =
-                '<style>' +
-                '.test { display: block; width: 50vw; }' +
-                '</style>' +
-                '<div id="parent">' +
                 '<div id="test1" class="test"></div>' +
-                '<div id="test2" class="test"></div>' +
-                '</div>';
+                '<div id="test2" class="test"></div>';
         });
     });
 
@@ -86,7 +82,7 @@ describe('#css', function() {
         assert.equal(
             await exec(_ => {
                 return dom.css(
-                    document.getElementById('parent').children,
+                    document.body.children,
                     'width'
                 );
             }),

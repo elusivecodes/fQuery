@@ -13,6 +13,8 @@ const server = http.createServer((request, response) => {
         response.end(
             '<html id="html">' +
             '<head>' +
+            '<style id="style">' +
+            '</style>' +
             '</head>' +
             '<body id="body">' +
             '<script>' +
@@ -50,10 +52,13 @@ before(async function() {
 
     browser = await puppeteer.launch({
         args: [
-            '--disable-background-timer-throttling',
-            '--disable-backgrounding-occluded-windows',
-            '--disable-renderer-backgrounding',
-            '--no-sandbox'
+            '--disable-gpu',
+            '--disable-dev-shm-usage',
+            '--disable-setuid-sandbox',
+            '--no-first-run',
+            '--no-sandbox',
+            '--no-zygote',
+            '--single-process'
         ]
     });
 
@@ -65,10 +70,14 @@ before(async function() {
 
     await page.evaluate(_ => {
         AjaxRequest.useMock = true;
+        Animation.useTimeout = true;
+        Animation.defaults.duration = 200;
     });
 });
 
-beforeEach(async function() {
+afterEach(async function() {
+    this.timeout(30000);
+
     await page.evaluate(_ => {
         dom.removeData(window);
         dom.removeData(document);
@@ -81,11 +90,13 @@ beforeEach(async function() {
         document.id = 'document';
         document.body.innerHTML = '';
     });
+    await setStyle();
 });
 
 after(async function() {
     this.timeout(30000);
 
+    await page.close();
     await browser.close();
     await closeServer();
 });
@@ -93,18 +104,12 @@ after(async function() {
 const exec = async (callback, data) =>
     await page.evaluate(callback, data);
 
-const waitFor = ms => {
-    return _ => new Promise(resolve => {
-        setTimeout(
-            _ => {
-                exec(_ => document.body.innerHTML).then(resolve);
-            },
-            ms
-        );
-    });
-};
+const setStyle = async (style = '') =>
+    await exec(style => {
+        document.getElementById('style').innerText = style;
+    }, style);
 
 module.exports = {
     exec,
-    waitFor
+    setStyle
 };

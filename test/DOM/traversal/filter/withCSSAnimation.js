@@ -1,15 +1,15 @@
 const assert = require('assert').strict;
-const { exec } = require('../../../setup');
+const { exec, setStyle } = require('../../../setup');
 
 describe('#withCSSAnimation', function() {
 
     beforeEach(async function() {
+        await setStyle(
+            '.test { animation: spin 4s linear infinite; }' +
+            '@keyframes spin { 100% { transform: rotate(360deg); } }'
+        );
         await exec(_ => {
             document.body.innerHTML =
-                '<style>' +
-                '.test { animation: spin 4s linear infinite; }' +
-                '@keyframes spin { 100% { transform: rotate(360deg); } }' +
-                '</style>' +
                 '<div id="div1" class="test"></div>' +
                 '<div id="div2"></div>' +
                 '<div id="div3" class="test"></div>' +

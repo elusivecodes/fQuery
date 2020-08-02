@@ -12,14 +12,14 @@ Object.assign(AjaxRequest.prototype, {
             new MockXMLHttpRequest :
             new XMLHttpRequest;
 
-        this._xhr.open(this._settings.method, this._settings.url, true);
+        this._xhr.open(this._options.method, this._options.url, true);
 
-        for (const key in this._settings.headers) {
-            this._xhr.setRequestHeader(key, this._settings.headers[key]);
+        for (const key in this._options.headers) {
+            this._xhr.setRequestHeader(key, this._options.headers[key]);
         }
 
-        if (this._settings.responseType) {
-            this._xhr.responseType = this._settings.responseType;
+        if (this._options.responseType) {
+            this._xhr.responseType = this._options.responseType;
         }
     },
 
@@ -52,14 +52,14 @@ Object.assign(AjaxRequest.prototype, {
                 });
         }
 
-        if (this._settings.onProgress) {
+        if (this._options.onProgress) {
             this._xhr.onprogress = e =>
-                this._settings.onProgress(e.loaded / e.total, this._xhr, e);
+                this._options.onProgress(e.loaded / e.total, this._xhr, e);
         }
 
-        if (this._settings.onUploadProgress) {
+        if (this._options.onUploadProgress) {
             this._xhr.upload.onprogress = e =>
-                this._settings.onUploadProgress(e.loaded / e.total, this._xhr, e);
+                this._options.onUploadProgress(e.loaded / e.total, this._xhr, e);
         }
     },
 
@@ -67,24 +67,24 @@ Object.assign(AjaxRequest.prototype, {
      * Process the data and send the XHR request.
      */
     _send() {
-        if (this._settings.beforeSend) {
-            this._settings.beforeSend(this._xhr);
+        if (this._options.beforeSend) {
+            this._options.beforeSend(this._xhr);
         }
 
-        if (this._settings.data && this._settings.processData) {
-            if (this._settings.contentType === 'application/json') {
-                this._settings.data = JSON.stringify(this._settings.data);
-            } else if (this._settings.contentType === 'application/x-www-form-urlencoded') {
-                this._settings.data = this.constructor._parseParams(this._settings.data);
+        if (this._options.data && this._options.processData) {
+            if (this._options.contentType === 'application/json') {
+                this._options.data = JSON.stringify(this._options.data);
+            } else if (this._options.contentType === 'application/x-www-form-urlencoded') {
+                this._options.data = this.constructor._parseParams(this._options.data);
             } else {
-                this._settings.data = this.constructor._parseFormData(this._settings.data);
+                this._options.data = this.constructor._parseFormData(this._options.data);
             }
         }
 
-        this._xhr.send(this._settings.data);
+        this._xhr.send(this._options.data);
 
-        if (this._settings.afterSend) {
-            this._settings.afterSend(this._xhr);
+        if (this._options.afterSend) {
+            this._options.afterSend(this._xhr);
         }
     }
 

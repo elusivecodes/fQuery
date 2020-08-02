@@ -1,14 +1,12 @@
 const assert = require('assert').strict;
-const { exec } = require('../../../setup');
+const { exec, setStyle } = require('../../../setup');
 
 describe('#hidden', function() {
 
     beforeEach(async function() {
+        await setStyle('.test { display: none; }');
         await exec(_ => {
             document.body.innerHTML =
-                '<style>' +
-                '.test { display: none; }' +
-                '</style>' +
                 '<div id="div1">' +
                 '<span id="span1"></span>' +
                 '</div>' +

@@ -1,5 +1,6 @@
 const assert = require('assert').strict;
 const { exec } = require('../../../setup');
+const { easeInOut, testAnimation, testNoAnimation, waitFor } = require('../../../helpers');
 
 describe('#clone', function() {
 
@@ -52,7 +53,9 @@ describe('#clone', function() {
             await exec(_ => {
                 const clones = dom.clone(
                     'div',
-                    false
+                    {
+                        deep: false
+                    }
                 );
                 for (const clone of clones) {
                     document.body.appendChild(clone);
@@ -83,19 +86,20 @@ describe('#clone', function() {
                 );
                 const clones = dom.clone(
                     'a',
-                    true,
-                    true
+                    {
+                        events: true
+                    }
                 );
                 for (const clone of clones) {
                     document.body.appendChild(clone);
                 }
                 dom.triggerEvent(
-                    'body > a',
+                    'a',
                     'click'
                 );
                 return result;
             }),
-            4
+            8
         );
     });
 
@@ -103,34 +107,75 @@ describe('#clone', function() {
         assert.deepEqual(
             await exec(_ => {
                 dom.setData(
-                    '.test1',
-                    'test1',
-                    'Test 1'
-                );
-                dom.setData(
-                    '.test2',
-                    'test2',
-                    'Test 2'
+                    'a',
+                    'test',
+                    'Test'
                 );
                 const clones = dom.clone(
                     'a',
-                    true,
-                    false,
-                    true
+                    {
+                        data: true
+                    }
                 );
                 for (const clone of clones) {
                     document.body.appendChild(clone);
                 }
-                return [
-                    dom.getData('body > .test1', 'test1'),
-                    dom.getData('body > .test2', 'test2')
-                ];
+                return [...document.querySelectorAll('a')]
+                    .map(node =>
+                        dom.getData(node, 'test')
+                    );
             }),
             [
-                'Test 1',
-                'Test 2'
+                'Test',
+                'Test',
+                'Test',
+                'Test',
+                'Test',
+                'Test',
+                'Test',
+                'Test'
             ]
         );
+    });
+
+    it('clones all nodes with animations', async function() {
+        await exec(_ => {
+            dom.animate(
+                'a',
+                _ => { },
+                {
+                    duration: 100,
+                    debug: true
+                }
+            );
+            const clones = dom.clone(
+                'a',
+                {
+                    animations: true
+                }
+            );
+            for (const clone of clones) {
+                document.body.appendChild(clone);
+            }
+        }).then(waitFor(50)).then(async _ => {
+            await testAnimation('.parent1 > a:nth-of-type(1)', easeInOut, 100);
+            await testAnimation('.parent1 > a:nth-of-type(2)', easeInOut, 100);
+            await testAnimation('.parent2 > a:nth-of-type(1)', easeInOut, 100);
+            await testAnimation('.parent2 > a:nth-of-type(2)', easeInOut, 100);
+            await testAnimation('body > a:nth-of-type(1)', easeInOut, 100);
+            await testAnimation('body > a:nth-of-type(2)', easeInOut, 100);
+            await testAnimation('body > a:nth-of-type(3)', easeInOut, 100);
+            await testAnimation('body > a:nth-of-type(4)', easeInOut, 100);
+        }).then(waitFor(100)).then(async _ => {
+            await testNoAnimation('.parent1 > a:nth-of-type(1)');
+            await testNoAnimation('.parent1 > a:nth-of-type(2)');
+            await testNoAnimation('.parent2 > a:nth-of-type(1)');
+            await testNoAnimation('.parent2 > a:nth-of-type(2)');
+            await testNoAnimation('body > a:nth-of-type(1)');
+            await testNoAnimation('body > a:nth-of-type(2)');
+            await testNoAnimation('body > a:nth-of-type(3)');
+            await testNoAnimation('body > a:nth-of-type(4)');
+        });
     });
 
     it('works with HTMLElement nodes', async function() {
@@ -194,7 +239,9 @@ describe('#clone', function() {
             await exec(_ => {
                 const clones = dom.clone(
                     document.body.children,
-                    false
+                    {
+                        deep: false
+                    }
                 );
                 for (const clone of clones) {
                     document.body.appendChild(clone);

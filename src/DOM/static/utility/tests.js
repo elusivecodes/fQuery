@@ -10,7 +10,7 @@ Object.assign(DOM, {
      * @returns {Boolean} TRUE if the node has an animation, otherwise FALSE.
      */
     _hasAnimation(node) {
-        return this._animations.has(node);
+        return Animation._animations.has(node);
     },
 
     /**

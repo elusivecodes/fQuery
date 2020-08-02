@@ -95,6 +95,41 @@ Object.assign(DOM, {
     },
 
     /**
+     * Sort nodes by their position in the document.
+     * @param {array} nodes The input nodes.
+     * @returns {array} The sorted array of nodes.
+     */
+    _sort(nodes) {
+        return nodes.sort((node, other) => {
+            if (!Core.isNode(other)) {
+                return -1;
+            }
+
+            if (!Core.isNode(node)) {
+                return 1;
+            }
+
+            if (DOMNode.isSame(node, other)) {
+                return 0;
+            }
+
+            const pos = DOMNode.comparePosition(node, other);
+
+            if (pos & Node.DOCUMENT_POSITION_FOLLOWING ||
+                pos & Node.DOCUMENT_POSITION_CONTAINED_BY) {
+                return -1;
+            }
+
+            if (pos & Node.DOCUMENT_POSITION_PRECEDING ||
+                pos & Node.DOCUMENT_POSITION_CONTAINS) {
+                return 1;
+            }
+
+            return 0;
+        });
+    },
+
+    /**
      * Return the tag name (lowercase) of a single node.
      * @param {HTMLElement} node The input node.
      * @returns {string} The elements tag name (lowercase).

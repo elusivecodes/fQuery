@@ -1,14 +1,12 @@
 const assert = require('assert').strict;
-const { exec } = require('../../../setup');
+const { exec, setStyle } = require('../../../setup');
 
 describe('#fixed', function() {
 
     beforeEach(async function() {
+        await setStyle('.test { position: fixed; }');
         await exec(_ => {
             document.body.innerHTML =
-                '<style>' +
-                '.test { position: fixed; }' +
-                '</style>' +
                 '<div id="div1">' +
                 '<span id="span1"></span>' +
                 '</div>' +

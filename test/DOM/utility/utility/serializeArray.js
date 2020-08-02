@@ -92,7 +92,7 @@ describe('#serializeArray', function() {
         );
     });
 
-    it('works with HTMLElement', async function() {
+    it('works with HTMLElement nodes', async function() {
         assert.deepEqual(
             await exec(_ => {
                 return dom.serializeArray(
@@ -144,7 +144,7 @@ describe('#serializeArray', function() {
         );
     });
 
-    it('works with NodeList', async function() {
+    it('works with NodeList nodes', async function() {
         assert.deepEqual(
             await exec(_ => {
                 return dom.serializeArray(
@@ -196,7 +196,7 @@ describe('#serializeArray', function() {
         );
     });
 
-    it('works with HTMLCollection', async function() {
+    it('works with HTMLCollection nodes', async function() {
         assert.deepEqual(
             await exec(_ => {
                 return dom.serializeArray(
@@ -248,7 +248,7 @@ describe('#serializeArray', function() {
         );
     });
 
-    it('works with DocumentFragment', async function() {
+    it('works with DocumentFragment nodes', async function() {
         assert.deepEqual(
             await exec(_ => {
                 const range = document.createRange();
@@ -304,7 +304,7 @@ describe('#serializeArray', function() {
         );
     });
 
-    it('works with ShadowRoot', async function() {
+    it('works with ShadowRoot nodes', async function() {
         assert.deepEqual(
             await exec(_ => {
                 const div = document.createElement('div');
@@ -363,7 +363,7 @@ describe('#serializeArray', function() {
         );
     });
 
-    it('works with array', async function() {
+    it('works with array nodes', async function() {
         assert.deepEqual(
             await exec(_ => {
                 return dom.serializeArray(

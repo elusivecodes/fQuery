@@ -49,43 +49,43 @@
          * @param {Boolean|function} [options.onUploadProgress=false] A callback to execute on upload progress.
          * @returns {AjaxRequest} A new AjaxRequest that resolves when the request is completed, or rejects on failure.
          */
-        constructor(settings) {
-            this._settings = Core.extend(
+        constructor(options) {
+            this._options = Core.extend(
                 {},
                 this.constructor.defaults,
-                settings
+                options
             );
 
-            if (!this._settings.url) {
-                this._settings.url = window.location.href;
+            if (!this._options.url) {
+                this._options.url = window.location.href;
             }
 
-            if (!this._settings.cache) {
+            if (!this._options.cache) {
                 const baseHref = (window.location.origin + window.location.pathname).replace(/\/$/, '');
-                const url = new URL(this._settings.url, baseHref);
+                const url = new URL(this._options.url, baseHref);
                 url.searchParams.append('_', Date.now());
-                this._settings.url = url.toString();
+                this._options.url = url.toString();
 
-                if (this._settings.url.substring(0, baseHref.length) === baseHref) {
-                    this._settings.url = this._settings.url.substring(baseHref.length);
+                if (this._options.url.substring(0, baseHref.length) === baseHref) {
+                    this._options.url = this._options.url.substring(baseHref.length);
                 }
             }
 
-            if (!('Content-Type' in this._settings.headers) && this._settings.contentType) {
-                this._settings.headers['Content-Type'] = this._settings.contentType;
+            if (!('Content-Type' in this._options.headers) && this._options.contentType) {
+                this._options.headers['Content-Type'] = this._options.contentType;
             }
 
             this._isLocal = this.constructor._localRegExp.test(location.protocol);
 
-            if (!this._isLocal && !('X-Requested-With' in this._settings.headers)) {
-                this._settings.headers['X-Requested-With'] = 'XMLHttpRequest';
+            if (!this._isLocal && !('X-Requested-With' in this._options.headers)) {
+                this._options.headers['X-Requested-With'] = 'XMLHttpRequest';
             }
 
             this._isResolved = false;
             this._isRejected = false;
             this._isCancelled = false;
 
-            this._promise = new Promise((resolve, reject) => {
+            this.promise = new Promise((resolve, reject) => {
                 this._resolve = value => {
                     this._isResolved = true;
                     resolve(value);
@@ -115,7 +115,7 @@
 
             this._isCancelled = true;
 
-            if (this._settings.rejectOnCancel) {
+            if (this._options.rejectOnCancel) {
                 this._reject({
                     status: this._xhr.status,
                     xhr: this._xhr,
@@ -130,7 +130,7 @@
          * @returns {Promise} A new pending Promise.
          */
         catch(onRejected) {
-            return this._promise.catch(onRejected);
+            return this.promise.catch(onRejected);
         }
 
         /**
@@ -139,7 +139,7 @@
          * @returns {Promise} A new pending Promise.
          */
         finally(onFinally) {
-            return this._promise.finally(onFinally);
+            return this.promise.finally(onFinally);
         }
 
         /**
@@ -149,7 +149,7 @@
          * @returns {Promise} A new pending Promise.
          */
         then(onFulfilled, onRejected) {
-            return this._promise.then(onFulfilled, onRejected);
+            return this.promise.then(onFulfilled, onRejected);
         }
 
     }
@@ -248,14 +248,14 @@
                 new MockXMLHttpRequest :
                 new XMLHttpRequest;
 
-            this._xhr.open(this._settings.method, this._settings.url, true);
+            this._xhr.open(this._options.method, this._options.url, true);
 
-            for (const key in this._settings.headers) {
-                this._xhr.setRequestHeader(key, this._settings.headers[key]);
+            for (const key in this._options.headers) {
+                this._xhr.setRequestHeader(key, this._options.headers[key]);
             }
 
-            if (this._settings.responseType) {
-                this._xhr.responseType = this._settings.responseType;
+            if (this._options.responseType) {
+                this._xhr.responseType = this._options.responseType;
             }
         },
 
@@ -288,14 +288,14 @@
                     });
             }
 
-            if (this._settings.onProgress) {
+            if (this._options.onProgress) {
                 this._xhr.onprogress = e =>
-                    this._settings.onProgress(e.loaded / e.total, this._xhr, e);
+                    this._options.onProgress(e.loaded / e.total, this._xhr, e);
             }
 
-            if (this._settings.onUploadProgress) {
+            if (this._options.onUploadProgress) {
                 this._xhr.upload.onprogress = e =>
-                    this._settings.onUploadProgress(e.loaded / e.total, this._xhr, e);
+                    this._options.onUploadProgress(e.loaded / e.total, this._xhr, e);
             }
         },
 
@@ -303,24 +303,24 @@
          * Process the data and send the XHR request.
          */
         _send() {
-            if (this._settings.beforeSend) {
-                this._settings.beforeSend(this._xhr);
+            if (this._options.beforeSend) {
+                this._options.beforeSend(this._xhr);
             }
 
-            if (this._settings.data && this._settings.processData) {
-                if (this._settings.contentType === 'application/json') {
-                    this._settings.data = JSON.stringify(this._settings.data);
-                } else if (this._settings.contentType === 'application/x-www-form-urlencoded') {
-                    this._settings.data = this.constructor._parseParams(this._settings.data);
+            if (this._options.data && this._options.processData) {
+                if (this._options.contentType === 'application/json') {
+                    this._options.data = JSON.stringify(this._options.data);
+                } else if (this._options.contentType === 'application/x-www-form-urlencoded') {
+                    this._options.data = this.constructor._parseParams(this._options.data);
                 } else {
-                    this._settings.data = this.constructor._parseFormData(this._settings.data);
+                    this._options.data = this.constructor._parseFormData(this._options.data);
                 }
             }
 
-            this._xhr.send(this._settings.data);
+            this._xhr.send(this._options.data);
 
-            if (this._settings.afterSend) {
-                this._settings.afterSend(this._xhr);
+            if (this._options.afterSend) {
+                this._options.afterSend(this._xhr);
             }
         }
 
@@ -466,6 +466,229 @@
 
     // Set the AjaxRequest prototype
     Object.setPrototypeOf(AjaxRequest.prototype, Promise.prototype);
+
+    /**
+     * Animation Class
+     * @class
+     */
+    class Animation {
+
+        /**
+         * New AjaxRequest constructor.
+         * @param {HTMLElement} node The input node.
+         * @param {DOM~animationCallback} callback The animation callback.
+         * @param {object} [options] The options to use for the animation.
+         * @param {string} [options.type=ease-in-out] The type of animation
+         * @param {number} [options.duration=1000] The duration the animation should last.
+         * @param {Boolean} [options.infinite] Whether to repeat the animation.
+         * @param {Boolean} [options.debug] Whether to set debugging info on the node.
+         */
+        constructor(node, callback, options) {
+            this._node = node;
+            this._callback = callback;
+
+            this._options = {
+                ...this.constructor.defaults,
+                ...options
+            };
+
+            if (!('start' in this._options)) {
+                this._options.start = performance.now();
+            }
+
+            if (this._options.debug) {
+                DOMNode.setDataset(this._node, 'animationStart', this._options.start);
+            }
+
+            this.promise = new Promise((resolve, reject) => {
+                this._resolve = resolve;
+                this._reject = reject;
+            });
+
+            if (this.constructor._animations.has(node)) {
+                this.constructor._animations.get(node).push(this);
+            } else {
+                this.constructor._animations.set(node, [this]);
+            }
+        }
+
+        /**
+         * Execute a callback if the animation is rejected.
+         * @param {function} [onRejected] The callback to execute if the animation is rejected.
+         * @returns {Promise} A new pending Promise.
+         */
+        catch(onRejected) {
+            return this.promise.catch(onRejected);
+        }
+
+        /**
+         * Execute a callback once the animation is settled (resolved or rejected).
+         * @param {function} [onRejected] The callback to execute once the animation is settled.
+         * @returns {Promise} A new pending Promise.
+         */
+        finally(onFinally) {
+            return this.promise.finally(onFinally);
+        }
+
+        /**
+         * Execute a callback once the animation is resolved (or optionally rejected).
+         * @param {function} onFulfilled The callback to execute if the animation is resolved.
+         * @param {function} [onRejected] The callback to execute if the animation is rejected.
+         * @returns {Promise} A new pending Promise.
+         */
+        then(onFulfilled, onRejected) {
+            return this.promise.then(onFulfilled, onRejected);
+        }
+
+        /**
+         * Run a single frame of the animation.
+         * @param {Boolean} [stop] Whether to stop the animation.
+         * @param {Booelan} [finish] Whether to finish the animation.
+         */
+        update(stop = false, finish = false) {
+            if (stop && !finish) {
+                this._reject(this._node);
+                return true;
+            }
+
+            const now = performance.now();
+
+            let progress;
+            if (finish) {
+                progress = 1;
+            } else {
+                progress = (now - this._options.start) / this._options.duration;
+
+                if (this._options.infinite) {
+                    progress %= 1;
+                } else {
+                    progress = Core.clamp(progress);
+                }
+
+                if (this._options.type === 'ease-in') {
+                    progress = progress ** 2;
+                } else if (this._options.type === 'ease-out') {
+                    progress = Math.sqrt(progress);
+                } else if (this._options.type === 'ease-in-out') {
+                    if (progress <= 0.5) {
+                        progress = progress ** 2 * 2;
+                    } else {
+                        progress = 1 - ((1 - progress) ** 2 * 2);
+                    }
+                }
+            }
+
+            if (this._options.debug) {
+                DOMNode.setDataset(this._node, 'animationNow', now);
+                DOMNode.setDataset(this._node, 'animationProgress', progress);
+            }
+
+            this._callback(this._node, progress, this._options);
+
+            if (progress < 1) {
+                return;
+            }
+
+            if (this._options.debug) {
+                DOMNode.removeDataset(this._node, 'animationStart');
+                DOMNode.removeDataset(this._node, 'animationNow');
+                DOMNode.removeDataset(this._node, 'animationProgress');
+            }
+
+            this._resolve(this._node);
+            return true;
+        }
+
+    }
+
+    /**
+     * Animation (Static) Helpers
+     */
+
+    Object.assign(Animation, {
+
+        /**
+         * Start the animation loop (if not already started).
+         */
+        start() {
+            if (this._animating) {
+                return;
+            }
+
+            this._animating = true;
+            this.update();
+        },
+
+        /**
+         * Stop all animations for a single element.
+         * @param {HTMLElement} node The input node.
+         * @param {Boolean} [finish=true] Whether to complete all current animations.
+         */
+        stop(node, finish = true) {
+            if (!this._animations.has(node)) {
+                return;
+            }
+
+            const animations = this._animations.get(node);
+            for (const animation of animations) {
+                animation.update(true, finish);
+            }
+
+            this._animations.delete(node);
+        },
+
+        /**
+         * Run a single frame of all animations, and then queue up the next frame.
+         */
+        update() {
+            for (let [node, animations] of this._animations) {
+                animations = animations.filter(animation => !animation.update());
+
+                if (!animations.length) {
+                    this._animations.delete(node)
+                } else {
+                    this._animations.set(node, animations);
+                }
+            }
+
+            if (!this._animations.size) {
+                this._animating = false;
+                return;
+            }
+
+            if (this.useTimeout) {
+                setTimeout(_ => this.update(), 1000 / 60)
+            } else {
+                window.requestAnimationFrame(_ => this.update());
+            }
+        }
+
+    });
+
+    /**
+     * Animation (Static) Properties
+     */
+
+    Object.assign(Animation, {
+
+        // Animation defaults
+        defaults: {
+            duration: 1000,
+            type: 'ease-in-out',
+            infinite: false,
+            debug: false
+        },
+
+        // Animating flag
+        _animating: false,
+
+        // Current animations
+        _animations: new Map()
+
+    });
+
+    // Set the Animation prototype
+    Object.setPrototypeOf(Animation.prototype, Promise.prototype);
 
     /**
      * DOM Class
@@ -793,13 +1016,10 @@
             nodes = this.parseNodes(nodes);
 
             const promises = nodes.map(node =>
-                this.constructor._animate(node, callback, {
-                    ...this.constructor.animationDefaults,
-                    ...options
-                })
+                new Animation(node, callback, options)
             );
 
-            this.constructor._start();
+            Animation.start();
 
             return Promise.all(promises);
         },
@@ -813,7 +1033,7 @@
             nodes = this.parseNodes(nodes);
 
             for (const node of nodes) {
-                this.constructor._stop(node, finish);
+                Animation.stop(node, finish);
             }
         }
 
@@ -884,7 +1104,7 @@
                         node,
                         'opacity',
                         progress < 1 ?
-                            progress :
+                            progress.toFixed(2) :
                             ''
                     ),
                 options
@@ -908,7 +1128,7 @@
                         node,
                         'opacity',
                         progress < 1 ?
-                            1 - progress :
+                            (1 - progress).toFixed(2) :
                             ''
                     ),
                 options
@@ -930,14 +1150,16 @@
         rotateIn(nodes, options) {
             return this.animate(
                 nodes,
-                (node, progress, options) =>
+                (node, progress, options) => {
+                    const amount = ((90 - (progress * 90)) * (options.inverse ? -1 : 1)).toFixed(2);
                     DOMNode.setStyle(
                         node,
                         'transform',
                         progress < 1 ?
-                            `rotate3d(${options.x}, ${options.y}, 0, ${(90 - (progress * 90)) * (options.inverse ? -1 : 1)}deg)` :
+                            `rotate3d(${options.x}, ${options.y}, 0, ${amount}deg)` :
                             ''
-                    ),
+                    );
+                },
                 {
                     x: 0,
                     y: 1,
@@ -961,14 +1183,16 @@
         rotateOut(nodes, options) {
             return this.animate(
                 nodes,
-                (node, progress, options) =>
+                (node, progress, options) => {
+                    const amount = ((progress * 90) * (options.inverse ? -1 : 1)).toFixed(2);
                     DOMNode.setStyle(
                         node,
                         'transform',
                         progress < 1 ?
-                            `rotate3d(${options.x}, ${options.y}, 0, ${(progress * 90) * (options.inverse ? -1 : 1)}deg)` :
+                            `rotate3d(${options.x}, ${options.y}, 0, ${amount}deg)` :
                             ''
-                    ),
+                    );
+                },
                 {
                     x: 0,
                     y: 1,
@@ -1022,7 +1246,7 @@
                         inverse = dir === 'left';
                     }
 
-                    const translateAmount = (size - (size * progress)) * (inverse ? -1 : 1);
+                    const translateAmount = ((size - (size * progress)) * (inverse ? -1 : 1)).toFixed(2);
                     if (options.useGpu) {
                         DOMNode.setStyle(node, 'transform', `translate${translateStyle}(${translateAmount}px)`);
                     } else {
@@ -1082,7 +1306,7 @@
                         inverse = dir === 'left';
                     }
 
-                    const translateAmount = size * progress * (inverse ? -1 : 1);
+                    const translateAmount = (size * progress * (inverse ? -1 : 1)).toFixed(2);
                     if (options.useGpu) {
                         DOMNode.setStyle(node, 'transform', `translate${translateStyle}(${translateAmount}px)`);
                     } else {
@@ -1112,7 +1336,6 @@
             nodes = this.parseNodes(nodes);
 
             options = {
-                ...this.constructor.animationDefaults,
                 direction: 'bottom',
                 useGpu: true,
                 ...options
@@ -1123,7 +1346,7 @@
                 const initialWidth = DOMNode.getStyle(node, 'width');
                 DOMNode.setStyle(node, 'overflow', 'hidden');
 
-                return this.constructor._animate(
+                return new Animation(
                     node,
                     (node, progress, options) => {
                         DOMNode.setStyle(node, 'height', initialHeight);
@@ -1162,12 +1385,12 @@
                         }
 
                         const size = DOM[`_${sizeStyle}`](node),
-                            amount = size * progress;
+                            amount = (size * progress).toFixed(2);
 
                         DOMNode.setStyle(node, sizeStyle, `${amount}px`);
 
                         if (translateStyle) {
-                            const translateAmount = size - amount;
+                            const translateAmount = (size - amount).toFixed(2);
                             if (options.useGpu) {
                                 DOMNode.setStyle(node, 'transform', `translate${translateStyle}(${translateAmount}px)`);
                             } else {
@@ -1179,7 +1402,7 @@
                 );
             });
 
-            this.constructor._start();
+            Animation.start();
 
             return Promise.all(promises);
         },
@@ -1199,7 +1422,6 @@
             nodes = this.parseNodes(nodes);
 
             options = {
-                ...this.constructor.animationDefaults,
                 direction: 'bottom',
                 useGpu: true,
                 ...options
@@ -1210,7 +1432,7 @@
                 const initialWidth = DOMNode.getStyle(node, 'width');
                 DOMNode.setStyle(node, 'overflow', 'hidden');
 
-                return this.constructor._animate(
+                return new Animation(
                     node,
                     (node, progress, options) => {
                         DOMNode.setStyle(node, 'height', initialHeight);
@@ -1249,12 +1471,12 @@
                         }
 
                         const size = DOM[`_${sizeStyle}`](node),
-                            amount = size - (size * progress);
+                            amount = (size - (size * progress)).toFixed(2);
 
                         DOMNode.setStyle(node, sizeStyle, `${amount}px`);
 
                         if (translateStyle) {
-                            const translateAmount = size - amount;
+                            const translateAmount = (size - amount).toFixed(2);
                             if (options.useGpu) {
                                 DOMNode.setStyle(node, 'transform', `translate${translateStyle}(${translateAmount}px)`);
                             } else {
@@ -1266,7 +1488,7 @@
                 );
             });
 
-            this.constructor._start();
+            Animation.start();
 
             return Promise.all(promises);
         }
@@ -2668,18 +2890,24 @@
         /**
          * Clone each node.
          * @param {string|array|Node|HTMLElement|DocumentFragment|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
-         * @param {Boolean} [deep=true] Whether to also clone all descendent nodes.
-         * @param {Boolean} [cloneEvents=false] Whether to also clone events.
-         * @param {Boolean} [cloneData=false] Whether to also clone custom data.
+         * @param {object} options Options for cloning the node.
+         * @param {Boolean} [options.deep=true] Whether to also clone all descendent nodes.
+         * @param {Boolean} [options.events] Whether to also clone events.
+         * @param {Boolean} [options.data] Whether to also clone custom data.
+         * @param {Boolean} [options.animations] Whether to also clone animations.
          * @returns {array} The cloned nodes.
          */
-        clone(nodes, deep = true, cloneEvents = false, cloneData = false) {
+        clone(nodes, options) {
+            options = {
+                deep: true,
+                ...options
+            };
 
             // ShadowRoot nodes can not be cloned
             nodes = this.parseNodes(nodes, { node: true, fragment: true });
 
             return nodes.map(node =>
-                this.constructor._clone(node, deep, cloneEvents, cloneData)
+                this.constructor._clone(node, options)
             );
         },
 
@@ -2761,13 +2989,57 @@
             // ShadowRoot nodes can not be cloned
             others = this.parseNodes(others, { node: true, fragment: true, html: true });
 
-            // Clone other nodes first, so they can not be removed during replacement
-            const clones = others.map(
-                other => this.constructor._clone(other, true)
+            // Move nodes to a fragment so they don't get removed
+            const fragment = this.createFragment();
+
+            for (const other of others) {
+                DOMNode.insertBefore(fragment, other);
+            }
+
+            others = Core.wrap(DOMNode.childNodes(fragment));
+
+            nodes = nodes.filter(node =>
+                !others.includes(node) &&
+                !nodes.some(other =>
+                    !DOMNode.isSame(other, node) &&
+                    DOMNode.contains(other, node)
+                )
             );
 
+            const lastNode = nodes[nodes.length - 1];
+
             for (const node of nodes) {
-                this.constructor._replaceWith(node, clones);
+                const parent = DOMNode.parent(node);
+
+                if (!parent) {
+                    continue;
+                }
+
+                for (const other of others) {
+                    DOMNode.insertBefore(
+                        parent,
+                        DOMNode.isSame(node, lastNode) ?
+                            other :
+                            this.constructor._clone(other, {
+                                deep: true,
+                                events: true,
+                                data: true,
+                                animations: true
+                            }),
+                        node
+                    );
+                }
+            }
+
+            for (const node of nodes) {
+                const parent = DOMNode.parent(node);
+
+                if (!parent) {
+                    continue;
+                }
+
+                this.constructor._remove(node);
+                DOMNode.removeChild(parent, node);
             }
         }
 
@@ -2792,7 +3064,7 @@
             // ShadowRoot nodes can not be moved
             others = this.parseNodes(others, { node: true, fragment: true, html: true }).reverse();
 
-            const lastNode = nodes.slice(-1).pop();
+            const lastNode = nodes[nodes.length - 1];
 
             for (const node of nodes) {
                 const parent = DOMNode.parent(node);
@@ -2806,7 +3078,12 @@
                         parent,
                         DOMNode.isSame(node, lastNode) ?
                             other :
-                            DOMNode.clone(other, true),
+                            this.constructor._clone(other, {
+                                deep: true,
+                                events: true,
+                                data: true,
+                                animations: true
+                            }),
                         DOMNode.next(node)
                     );
                 }
@@ -2824,7 +3101,7 @@
             // ShadowRoot nodes can not be moved
             others = this.parseNodes(others, { node: true, fragment: true, html: true });
 
-            const lastNode = nodes.slice(-1).pop();
+            const lastNode = nodes[nodes.length - 1];
 
             for (const node of nodes) {
                 for (const other of others) {
@@ -2832,7 +3109,12 @@
                         node,
                         DOMNode.isSame(node, lastNode) ?
                             other :
-                            DOMNode.clone(other, true)
+                            this.constructor._clone(other, {
+                                deep: true,
+                                events: true,
+                                data: true,
+                                animations: true
+                            })
                     );
                 }
             }
@@ -2860,7 +3142,7 @@
             // ShadowRoot nodes can not be moved
             others = this.parseNodes(others, { node: true, fragment: true, html: true });
 
-            const lastNode = nodes.slice(-1).pop();
+            const lastNode = nodes[nodes.length - 1];
 
             for (const node of nodes) {
                 const parent = DOMNode.parent(node);
@@ -2874,7 +3156,12 @@
                         parent,
                         DOMNode.isSame(node, lastNode) ?
                             other :
-                            DOMNode.clone(other, true),
+                            this.constructor._clone(other, {
+                                deep: true,
+                                events: true,
+                                data: true,
+                                animations: true
+                            }),
                         node
                     );
                 }
@@ -2910,7 +3197,7 @@
             // ShadowRoot nodes can not be moved
             others = this.parseNodes(others, { node: true, fragment: true, html: true });
 
-            const lastNode = nodes.slice(-1).pop();
+            const lastNode = nodes[nodes.length - 1];
 
             for (const node of nodes) {
                 const firstChild = DOMNode.firstChild(node);
@@ -2920,7 +3207,12 @@
                         node,
                         DOMNode.isSame(node, lastNode) ?
                             other :
-                            DOMNode.clone(other, true),
+                            this.constructor._clone(other, {
+                                deep: true,
+                                events: true,
+                                data: true,
+                                animations: true
+                            }),
                         firstChild
                     );
                 }
@@ -3012,7 +3304,11 @@
             // ShadowRoot nodes can not be cloned
             others = this.parseNodes(others, { fragment: true, html: true });
 
-            const clones = this.clone(others, true);
+            const clones = this.clone(others, {
+                events: true,
+                data: true,
+                animations: true
+            });
 
             this.constructor._wrapAll(nodes, clones);
         },
@@ -4003,34 +4299,9 @@
          * @returns {Node|HTMLElement|DocumentFragment|ShadowRoot|Document|Window} The matching node.
          */
         parseNode(nodes, options = {}) {
-            if (Core.isString(nodes)) {
-                if ('html' in options && options.html && nodes.trim().charAt(0) === '<') {
-                    return this.parseHTML(nodes).shift();
-                }
+            const filter = this.constructor.parseNodesFactory(options);
 
-                const node = this.findOne(
-                    nodes,
-                    'context' in options ?
-                        options.context :
-                        this._context
-                );
-
-                return node ?
-                    node :
-                    null;
-            }
-
-            const nodeFilter = this.constructor.parseNodesFactory(options);
-
-            if (nodeFilter(nodes)) {
-                return nodes;
-            }
-
-            const node = Core.wrap(nodes).slice().shift();
-
-            return node && nodeFilter(node) ?
-                node :
-                null;
+            return this.parseNodesDeep(nodes, filter, options.html, true);
         },
 
         /**
@@ -4047,27 +4318,103 @@
          * @returns {array} The filtered array of nodes.
          */
         parseNodes(nodes, options = {}) {
+            const filter = this.constructor.parseNodesFactory(options);
+
+            return this.parseNodesDeep(nodes, filter, options.html);
+        },
+
+        /**
+         * Recursively parse nodes.
+         * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector or HTML string.
+         * @param {DOM~nodeCallback} [filter] The callback to use for filtering nodes.
+         * @param {Boolean} [first=false] Whether to only return the first result.
+         * @returns {array|Node|DocumentFragment|ShadowRoot|Document|Window} The parsed node(s).
+         */
+        parseNodesDeep(nodes, filter, html = false, first = false) {
+
+            // check nodes
+            if (!nodes) {
+                return !first ?
+                    [] :
+                    null;
+            }
+
+            // String
             if (Core.isString(nodes)) {
-                if ('html' in options && options.html && nodes.trim().charAt(0) === '<') {
+                // HTML string
+                if (html && nodes.trim().charAt(0) === '<') {
                     return this.parseHTML(nodes);
                 }
 
-                return this.find(
-                    nodes,
-                    'context' in options ?
-                        options.context :
-                        this._context
-                );
+                // query selector
+                if (!first) {
+                    return this.find(nodes, this._context);
+                }
+
+                const node = this.findOne(nodes, this._context);
+                return node ?
+                    node :
+                    null;
             }
 
-            const nodeFilter = this.constructor.parseNodesFactory(options);
+            // Node/HTMLElement/Window/Document
+            if (filter(nodes)) {
+                if (!first) {
+                    return [nodes];
+                }
 
-            if (nodeFilter(nodes)) {
-                return [nodes];
+                return nodes;
             }
 
-            return Core.wrap(nodes)
-                .filter(nodeFilter);
+            // QuerySet
+            if (this.constructor.queryLoaded && nodes instanceof QuerySet) {
+                if (!first) {
+                    return nodes.get().filter(filter);
+                }
+
+                const node = nodes.get(0);
+                return node && filter(node) ?
+                    node :
+                    null;
+            }
+
+            // NodeList/HTMLCollection
+            if (nodes instanceof NodeList || nodes instanceof HTMLCollection) {
+                if (!first) {
+                    return Core.wrap(nodes);
+                }
+
+                return nodes.length ?
+                    nodes.item(0) :
+                    null;
+            }
+
+            // Array
+            if (Core.isArray(nodes)) {
+                nodes = nodes.flatMap(node => this.parseNodesDeep(node, filter));
+                nodes = this.constructor._sort(nodes);
+
+                if (!first) {
+                    return nodes;
+                }
+
+                return nodes.length ?
+                    nodes.shift() :
+                    null;
+            }
+
+            node = Core.wrap(nodes);
+            nodes = nodes.filter(filter);
+
+            if (!first) {
+                nodes = nodes.filter(filter);
+                return this.constructor._sort(nodes);
+            }
+
+            const node = this.constructor._sort(nodes).shift();
+            return node && filter(node) ?
+                node :
+                null;
         }
 
     });
@@ -4712,26 +5059,7 @@
          * @returns {array} The sorted array of nodes.
          */
         sort(nodes) {
-            return this.parseNodes(nodes, { node: true })
-                .sort((node, other) => {
-                    if (DOMNode.isSame(node, other)) {
-                        return 0;
-                    }
-
-                    const pos = DOMNode.comparePosition(node, other);
-
-                    if (pos & Node.DOCUMENT_POSITION_FOLLOWING ||
-                        pos & Node.DOCUMENT_POSITION_CONTAINED_BY) {
-                        return -1;
-                    }
-
-                    if (pos & Node.DOCUMENT_POSITION_PRECEDING ||
-                        pos & Node.DOCUMENT_POSITION_CONTAINS) {
-                        return 1;
-                    }
-
-                    return 0;
-                });
+            return this.parseNodes(nodes, { node: true });
         },
 
         /**
@@ -4747,128 +5075,6 @@
             }
 
             return this.constructor._tagName(node);
-        }
-
-    });
-
-    /**
-     * DOM (Static) Animate
-     */
-
-    Object.assign(DOM, {
-
-        /**
-         * Add an animation to a single node.
-         * @param {HTMLElement} node The input node.
-         * @param {DOM~animationCallback} callback The animation callback.
-         * @param {object} [options] The options to use for animating.
-         * @param {number} [options.duration=1000] The duration of the animation.
-         * @param {string} [options.type=ease-in-out] The type of animation.
-         * @param {Boolean} [options.infinite] Whether the animation should run forever.
-         * @returns {Promise} A new Promise that resolves when the animation has completed.
-         */
-        _animate(node, callback, options) {
-            if (!DOM._hasAnimation(node)) {
-                this._animations.set(node, []);
-            }
-
-            const start = performance.now();
-
-            return new Promise((resolve, reject) => {
-
-                this._animations.get(node).push((stop = false, finish = false) => {
-
-                    if (stop && !finish) {
-                        reject(node);
-                        return true;
-                    }
-
-                    let progress;
-                    if (finish) {
-                        progress = 1;
-                    } else {
-                        progress = (performance.now() - start) / options.duration;
-
-                        if (options.infinite) {
-                            progress %= 1;
-                        } else {
-                            progress = Core.clamp(progress);
-                        }
-
-                        if (options.type === 'ease-in') {
-                            progress = Math.pow(progress, 2);
-                        } else if (options.type === 'ease-out') {
-                            progress = Math.sqrt(progress);
-                        } else if (options.type === 'ease-in-out') {
-                            if (progress <= 0.5) {
-                                progress = Math.pow(progress, 2) * 2;
-                            } else {
-                                progress = 1 - ((1 - progress) ** 2 * 2);
-                            }
-                        }
-                    }
-
-                    callback(node, progress, options);
-
-                    if (progress === 1) {
-                        resolve(node);
-                        return true;
-                    }
-                });
-            });
-        },
-
-        /**
-         * Run a single frame of all animations, and then queue up the next frame.
-         */
-        _animationFrame() {
-            for (let [node, animations] of this._animations) {
-                animations = animations.filter(animation => !animation());
-
-                if (!animations.length) {
-                    this._animations.delete(node)
-                } else {
-                    this._animations.set(node, animations);
-                }
-            }
-
-            if (this._animations.size) {
-                window.requestAnimationFrame(_ =>
-                    this._animationFrame()
-                );
-            } else {
-                this._animating = false;
-            }
-        },
-
-        /**
-         * Start the animation loop (if not already started).
-         */
-        _start() {
-            if (this._animating) {
-                return;
-            }
-
-            this._animating = true;
-            this._animationFrame();
-        },
-
-        /**
-         * Stop all animations for a single element.
-         * @param {HTMLElement} node The input node.
-         * @param {Boolean} [finish=true] Whether to complete all current animations.
-         */
-        _stop(node, finish = true) {
-            if (!DOM._hasAnimation(node)) {
-                return;
-            }
-
-            const animations = this._animations.get(node);
-            for (const animation of animations) {
-                animation(true, finish);
-            }
-
-            this._animations.delete(node);
         }
 
     });
@@ -4908,8 +5114,10 @@
             }
 
             Promise.resolve(next(node))
-                .finally(_ =>
+                .then(_ =>
                     this._dequeueNode(node)
+                ).catch(_ =>
+                    this._clearQueue(node)
                 );
         },
 
@@ -4922,7 +5130,11 @@
             const newQueue = !this._queues.has(node);
 
             if (newQueue) {
-                this._queues.set(node, []);
+                this._queues.set(node, [
+                    _ => new Promise(
+                        resolve => setTimeout(resolve, 0)
+                    )
+                ]);
             }
 
             this._queues.get(node).push(callback);
@@ -5956,54 +6168,80 @@
         /**
          * Clone a single node.
          * @param {Node|HTMLElement|DocumentFragment} node The input node.
-         * @param {Boolean} [deep=true] Whether to also clone all descendent nodes.
-         * @param {Boolean} [cloneEvents=false] Whether to also clone events.
-         * @param {Boolean} [cloneData=false] Whether to also clone custom data.
+         * @param {object} options Options for cloning the node.
+         * @param {Boolean} [options.deep] Whether to also clone all descendent nodes.
+         * @param {Boolean} [options.events] Whether to also clone events.
+         * @param {Boolean} [options.data] Whether to also clone custom data.
+         * @param {Boolean} [options.animations] Whether to also clone animations.
          * @returns {Node|HTMLElement|DocumentFragment} The cloned node.
          */
-        _clone(node, deep = true, cloneEvents = false, cloneData = false) {
-            const clone = DOMNode.clone(node, deep);
+        _clone(node, options) {
+            const clone = DOMNode.clone(node, options.deep);
 
-            if (!cloneEvents && !cloneData) {
-                return clone;
-            }
-
-            if (cloneEvents) {
+            if (options.events) {
                 this._cloneEvents(node, clone);
             }
 
-            if (cloneData) {
+            if (options.data) {
                 this._cloneData(node, clone);
             }
 
-            if (deep) {
-                this._deepClone(node, clone, cloneEvents, cloneData);
+            if (options.animations) {
+                this._cloneAnimations(node, clone);
+            }
+
+            if (options.deep) {
+                this._deepClone(node, clone, options);
             }
 
             return clone;
         },
 
         /**
+         * Clone animations for a single node.
+         * @param {Node|HTMLElement|DocumentFragment} node The input node.
+         * @param {Node|HTMLElement|DocumentFragment} clone The cloned node.
+         */
+        _cloneAnimations(node, clone) {
+            if (!this._hasAnimation(node)) {
+                return;
+            }
+
+            const animations = Animation._animations.get(node)
+                .map(animation =>
+                    new Animation(clone, animation._callback, animation._options)
+                );
+
+            Animation._animations.set(clone, animations);
+        },
+
+        /**
          * Deep clone a node.
          * @param {Node|HTMLElement|DocumentFragment} node The input node.
          * @param {Node|HTMLElement|DocumentFragment} clone The cloned node.
-         * @param {Boolean} [cloneEvents=false] Whether to also clone events.
-         * @param {Boolean} [cloneData=false] Whether to also clone custom data.
+         * @param {object} options Options for cloning the node.
+         * @param {Boolean} [options.events] Whether to also clone events.
+         * @param {Boolean} [options.data] Whether to also clone custom data.
+         * @param {Boolean} [options.animations] Whether to also clone animations.
          */
-        _deepClone(node, clone, cloneEvents = false, cloneData = false) {
+        _deepClone(node, clone, options) {
             const children = Core.wrap(DOMNode.childNodes(node));
             const cloneChildren = Core.wrap(DOMNode.childNodes(clone));
 
             for (let i = 0; i < children.length; i++) {
-                if (cloneEvents) {
+                if (options.events) {
                     this._cloneEvents(children[i], cloneChildren[i]);
                 }
 
-                if (cloneData) {
+                if (options.data) {
                     this._cloneData(children[i], cloneChildren[i]);
                 }
 
-                this._deepClone(children[i], cloneChildren[i]);
+                if (options.animations) {
+                    this._cloneAnimations(node, clone);
+                }
+
+                this._deepClone(children[i], cloneChildren[i], options);
             }
         },
 
@@ -6058,7 +6296,7 @@
 
             if (Core.isElement(node)) {
                 this._clearQueue(node);
-                this._stop(node);
+                Animation.stop(node);
 
                 if (this._styles.has(node)) {
                     this._styles.delete(node);
@@ -6067,27 +6305,6 @@
 
             this._removeEvent(node);
             this._removeData(node);
-        },
-
-        /**
-         * Replace a single node with other nodes.
-         * @param {Node|HTMLElement} node The input node.
-         * @param {array} others The other node(s).
-         */
-        _replaceWith(node, others) {
-            const parent = DOMNode.parent(node);
-
-            if (!parent) {
-                return;
-            }
-
-            for (const other of others) {
-                const clone = this._clone(other, true);
-                DOMNode.insertBefore(parent, clone, node);
-            }
-
-            this._remove(node);
-            DOMNode.removeChild(parent, node);
         }
 
     });
@@ -6132,7 +6349,12 @@
             }
 
             const clones = others.map(other =>
-                this._clone(other, true)
+                this._clone(other, {
+                    deep: true,
+                    events: true,
+                    data: true,
+                    animations: true
+                })
             );
 
             const firstClone = clones.slice().shift();
@@ -6156,7 +6378,7 @@
          * @param {array} others The other node(s).
          */
         _wrapAll(nodes, others) {
-            const firstNode = nodes.slice().shift();
+            const firstNode = nodes[0];
 
             if (!firstNode) {
                 return;
@@ -6168,7 +6390,7 @@
                 return;
             }
 
-            const firstOther = others.slice().shift();
+            const firstOther = others[0];
 
             const deepest = this._deepest(
                 Core.isFragment(firstOther) ?
@@ -6194,7 +6416,12 @@
             const children = Core.wrap(DOMNode.childNodes(node));
 
             const clones = others.map(other =>
-                this._clone(other, true)
+                this._clone(other, {
+                    deep: true,
+                    events: true,
+                    data: true,
+                    animatinos: true
+                })
             );
 
             const firstClone = clones.slice().shift();
@@ -6585,7 +6812,7 @@
          * @returns {Boolean} TRUE if the node has an animation, otherwise FALSE.
          */
         _hasAnimation(node) {
-            return this._animations.has(node);
+            return Animation._animations.has(node);
         },
 
         /**
@@ -6761,6 +6988,41 @@
         },
 
         /**
+         * Sort nodes by their position in the document.
+         * @param {array} nodes The input nodes.
+         * @returns {array} The sorted array of nodes.
+         */
+        _sort(nodes) {
+            return nodes.sort((node, other) => {
+                if (!Core.isNode(other)) {
+                    return -1;
+                }
+
+                if (!Core.isNode(node)) {
+                    return 1;
+                }
+
+                if (DOMNode.isSame(node, other)) {
+                    return 0;
+                }
+
+                const pos = DOMNode.comparePosition(node, other);
+
+                if (pos & Node.DOCUMENT_POSITION_FOLLOWING ||
+                    pos & Node.DOCUMENT_POSITION_CONTAINED_BY) {
+                    return -1;
+                }
+
+                if (pos & Node.DOCUMENT_POSITION_PRECEDING ||
+                    pos & Node.DOCUMENT_POSITION_CONTAINS) {
+                    return 1;
+                }
+
+                return 0;
+            });
+        },
+
+        /**
          * Return the tag name (lowercase) of a single node.
          * @param {HTMLElement} node The input node.
          * @returns {string} The elements tag name (lowercase).
@@ -6804,8 +7066,6 @@
 
     Object.assign(DOM, {
 
-        _animating: false,
-        _animations: new Map,
         _queues: new WeakMap,
 
         _data: new WeakMap,
@@ -6844,13 +7104,6 @@
             strong: [],
             u: [],
             ul: []
-        },
-
-        // Default animation options
-        animationDefaults: {
-            duration: 1000,
-            type: 'ease-in-out',
-            infinite: false
         },
 
         // CSS properties that can have number-only values
@@ -7894,6 +8147,7 @@
 
     return {
         AjaxRequest,
+        Animation,
         DOM,
         DOMNode,
         dom: new DOM

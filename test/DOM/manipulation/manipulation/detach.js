@@ -1,5 +1,6 @@
 const assert = require('assert').strict;
 const { exec } = require('../../../setup');
+const { easeInOut, testAnimation, testNoAnimation, waitFor } = require('../../../helpers');
 
 describe('#detach', function() {
 
@@ -75,14 +76,9 @@ describe('#detach', function() {
         assert.deepEqual(
             await exec(_ => {
                 dom.setData(
-                    '#test1',
-                    'test1',
-                    'Test 1'
-                );
-                dom.setData(
-                    '#test2',
-                    'test2',
-                    'Test 2'
+                    'a',
+                    'test',
+                    'Test'
                 );
                 const nodes = dom.detach(
                     'a'
@@ -90,16 +86,49 @@ describe('#detach', function() {
                 for (const node of nodes) {
                     document.body.appendChild(node);
                 }
-                return [
-                    dom.getData('#test1', 'test1'),
-                    dom.getData('#test2', 'test2')
-                ];
+                return [...document.querySelectorAll('a')]
+                    .map(node =>
+                        dom.getData(node, 'test')
+                    );
             }),
             [
-                'Test 1',
-                'Test 2'
+                'Test',
+                'Test',
+                'Test',
+                'Test'
             ]
         );
+    });
+
+    it('does not remove animations', function() {
+        return exec(_ => {
+            dom.animate(
+                'a',
+                _ => { },
+                {
+                    duration: 100,
+                    debug: true
+                }
+            );
+        }).then(waitFor(50)).then(async _ => {
+            await exec(_ => {
+                const nodes = dom.detach(
+                    'a'
+                );
+                for (const node of nodes) {
+                    document.body.appendChild(node);
+                }
+            });
+            await testAnimation('#test1', easeInOut, 100);
+            await testAnimation('#test2', easeInOut, 100);
+            await testAnimation('#test3', easeInOut, 100);
+            await testAnimation('#test4', easeInOut, 100);
+        }).then(waitFor(100)).then(async _ => {
+            await testNoAnimation('#test1');
+            await testNoAnimation('#test2');
+            await testNoAnimation('#test3');
+            await testNoAnimation('#test4');
+        });
     });
 
     it('works with HTMLElement nodes', async function() {

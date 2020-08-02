@@ -33,8 +33,10 @@ Object.assign(DOM, {
         }
 
         Promise.resolve(next(node))
-            .finally(_ =>
+            .then(_ =>
                 this._dequeueNode(node)
+            ).catch(_ =>
+                this._clearQueue(node)
             );
     },
 
@@ -47,7 +49,11 @@ Object.assign(DOM, {
         const newQueue = !this._queues.has(node);
 
         if (newQueue) {
-            this._queues.set(node, []);
+            this._queues.set(node, [
+                _ => new Promise(
+                    resolve => setTimeout(resolve, 0)
+                )
+            ]);
         }
 
         this._queues.get(node).push(callback);

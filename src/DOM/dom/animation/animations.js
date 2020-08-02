@@ -63,7 +63,7 @@ Object.assign(DOM.prototype, {
                     node,
                     'opacity',
                     progress < 1 ?
-                        progress :
+                        progress.toFixed(2) :
                         ''
                 ),
             options
@@ -87,7 +87,7 @@ Object.assign(DOM.prototype, {
                     node,
                     'opacity',
                     progress < 1 ?
-                        1 - progress :
+                        (1 - progress).toFixed(2) :
                         ''
                 ),
             options
@@ -109,14 +109,16 @@ Object.assign(DOM.prototype, {
     rotateIn(nodes, options) {
         return this.animate(
             nodes,
-            (node, progress, options) =>
+            (node, progress, options) => {
+                const amount = ((90 - (progress * 90)) * (options.inverse ? -1 : 1)).toFixed(2);
                 DOMNode.setStyle(
                     node,
                     'transform',
                     progress < 1 ?
-                        `rotate3d(${options.x}, ${options.y}, 0, ${(90 - (progress * 90)) * (options.inverse ? -1 : 1)}deg)` :
+                        `rotate3d(${options.x}, ${options.y}, 0, ${amount}deg)` :
                         ''
-                ),
+                );
+            },
             {
                 x: 0,
                 y: 1,
@@ -140,14 +142,16 @@ Object.assign(DOM.prototype, {
     rotateOut(nodes, options) {
         return this.animate(
             nodes,
-            (node, progress, options) =>
+            (node, progress, options) => {
+                const amount = ((progress * 90) * (options.inverse ? -1 : 1)).toFixed(2);
                 DOMNode.setStyle(
                     node,
                     'transform',
                     progress < 1 ?
-                        `rotate3d(${options.x}, ${options.y}, 0, ${(progress * 90) * (options.inverse ? -1 : 1)}deg)` :
+                        `rotate3d(${options.x}, ${options.y}, 0, ${amount}deg)` :
                         ''
-                ),
+                );
+            },
             {
                 x: 0,
                 y: 1,
@@ -201,7 +205,7 @@ Object.assign(DOM.prototype, {
                     inverse = dir === 'left';
                 }
 
-                const translateAmount = (size - (size * progress)) * (inverse ? -1 : 1);
+                const translateAmount = ((size - (size * progress)) * (inverse ? -1 : 1)).toFixed(2);
                 if (options.useGpu) {
                     DOMNode.setStyle(node, 'transform', `translate${translateStyle}(${translateAmount}px)`);
                 } else {
@@ -261,7 +265,7 @@ Object.assign(DOM.prototype, {
                     inverse = dir === 'left';
                 }
 
-                const translateAmount = size * progress * (inverse ? -1 : 1);
+                const translateAmount = (size * progress * (inverse ? -1 : 1)).toFixed(2);
                 if (options.useGpu) {
                     DOMNode.setStyle(node, 'transform', `translate${translateStyle}(${translateAmount}px)`);
                 } else {
@@ -291,7 +295,6 @@ Object.assign(DOM.prototype, {
         nodes = this.parseNodes(nodes);
 
         options = {
-            ...this.constructor.animationDefaults,
             direction: 'bottom',
             useGpu: true,
             ...options
@@ -302,7 +305,7 @@ Object.assign(DOM.prototype, {
             const initialWidth = DOMNode.getStyle(node, 'width');
             DOMNode.setStyle(node, 'overflow', 'hidden');
 
-            return this.constructor._animate(
+            return new Animation(
                 node,
                 (node, progress, options) => {
                     DOMNode.setStyle(node, 'height', initialHeight);
@@ -341,12 +344,12 @@ Object.assign(DOM.prototype, {
                     }
 
                     const size = DOM[`_${sizeStyle}`](node),
-                        amount = size * progress;
+                        amount = (size * progress).toFixed(2);
 
                     DOMNode.setStyle(node, sizeStyle, `${amount}px`);
 
                     if (translateStyle) {
-                        const translateAmount = size - amount;
+                        const translateAmount = (size - amount).toFixed(2);
                         if (options.useGpu) {
                             DOMNode.setStyle(node, 'transform', `translate${translateStyle}(${translateAmount}px)`);
                         } else {
@@ -358,7 +361,7 @@ Object.assign(DOM.prototype, {
             );
         });
 
-        this.constructor._start();
+        Animation.start();
 
         return Promise.all(promises);
     },
@@ -378,7 +381,6 @@ Object.assign(DOM.prototype, {
         nodes = this.parseNodes(nodes);
 
         options = {
-            ...this.constructor.animationDefaults,
             direction: 'bottom',
             useGpu: true,
             ...options
@@ -389,7 +391,7 @@ Object.assign(DOM.prototype, {
             const initialWidth = DOMNode.getStyle(node, 'width');
             DOMNode.setStyle(node, 'overflow', 'hidden');
 
-            return this.constructor._animate(
+            return new Animation(
                 node,
                 (node, progress, options) => {
                     DOMNode.setStyle(node, 'height', initialHeight);
@@ -428,12 +430,12 @@ Object.assign(DOM.prototype, {
                     }
 
                     const size = DOM[`_${sizeStyle}`](node),
-                        amount = size - (size * progress);
+                        amount = (size - (size * progress)).toFixed(2);
 
                     DOMNode.setStyle(node, sizeStyle, `${amount}px`);
 
                     if (translateStyle) {
-                        const translateAmount = size - amount;
+                        const translateAmount = (size - amount).toFixed(2);
                         if (options.useGpu) {
                             DOMNode.setStyle(node, 'transform', `translate${translateStyle}(${translateAmount}px)`);
                         } else {
@@ -445,7 +447,7 @@ Object.assign(DOM.prototype, {
             );
         });
 
-        this.constructor._start();
+        Animation.start();
 
         return Promise.all(promises);
     }

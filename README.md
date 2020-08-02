@@ -317,11 +317,13 @@ dom.clearQueue(nodes);
 Queue a callback on each node.
 
 - `nodes` is a query selector string, a *HTMLElement*, *NodeList*, *HTMLCollection*, [*QuerySet*](https://github.com/elusivecodes/fQuery) or an array of nodes.
-- `callback` is a function that accepts `node` as an argument, where node is a *HTMLElement*.
+- `callback` is a function that accepts `node` as an argument, where node is a *HTMLElement*. The callback can return a *Promise* which will pause the queue until the promise is resolved.
 
 ```javascript
 dom.queue(nodes, callback);
 ```
+
+If an item in the queue returns a *Promise* that rejects, the queue will be cleared.
 
 
 ### Attributes
@@ -1107,12 +1109,14 @@ const event = dom.mouseDragFactory(down, move, up, animated);
 Clone each node (optionally deep, and with events and data).
 
 - `nodes` is a query selector string, a *Node*, *HTMLElement*, *DocumentFragment*, *NodeList*, *HTMLCollection*, [*QuerySet*](https://github.com/elusivecodes/fQuery) or an array of nodes.
-- `deep` is a boolean indicating whether you wish to clone all descendent nodes, and will default to *true*.
-- `cloneEvents` is a boolean indicating whether you wish to clone all events to the new nodes, and will default to *false*.
-- `cloneData` is a boolean indicating whether you wish to clone all custom data to the new nodes, and will default to *false*.
+- `options` is an object containing properties to define the new node.
+    - `deep` is a boolean indicating whether to also clone child nodes, and will default to *true*.
+    - `events` is a boolean indicating whether to also clone events, and will default to *false*.
+    - `data` is a boolean indicating whether to also clone data, and will default to *false*.
+    - `animations` is a boolean indicating whether to also clone animations, and will default to *false*.
 
 ```javascript
-const clones = dom.clone(nodes, deep, cloneEvents, cloneData);
+const clones = dom.clone(nodes, options);
 ```
 
 **Detach**
@@ -1158,6 +1162,10 @@ dom.replaceAll(nodes, others);
 
 If a node you are replacing with is a *DocumentFragment*, the fragment contents will be used as a replacement.
 
+If multiple nodes are being replaced, cloned nodes will be created for each except for the last one.
+
+All events, data and animations will be removed from each node that is replaced.
+
 **Replace With**
 
 Replace each node with other nodes.
@@ -1170,6 +1178,10 @@ dom.replaceWith(nodes, others);
 ```
 
 If a node you are replacing with is a *DocumentFragment*, the fragment contents will be used as a replacement.
+
+If multiple nodes are being replaced, cloned nodes will be created for each except for the last one.
+
+All events, data and animations will be removed from each node that is replaced.
 
 ##### Create
 
@@ -1264,6 +1276,8 @@ dom.after(nodes, others);
 
 If a node you are moving is a *DocumentFragment*, the contents will be moved instead.
 
+If multiple copies of the nodes are being moved, cloned nodes will be created for each except for the last one.
+
 **Append**
 
 Append each other node to each node.
@@ -1276,6 +1290,8 @@ dom.append(nodes, others);
 ```
 
 If a node you are moving is a *DocumentFragment*, the contents will be moved instead.
+
+If multiple copies of the nodes are being moved, cloned nodes will be created for each except for the last one.
 
 **Append To**
 
@@ -1290,6 +1306,8 @@ dom.appendTo(nodes, others);
 
 If a node you are moving is a *DocumentFragment*, the contents will be moved instead.
 
+If multiple copies of the nodes are being moved, cloned nodes will be created for each except for the last one.
+
 **Before**
 
 Insert each other node before each node.
@@ -1302,6 +1320,8 @@ dom.before(nodes, others);
 ```
 
 If a node you are moving is a *DocumentFragment*, the contents will be moved instead.
+
+If multiple copies of the nodes are being moved, cloned nodes will be created for each except for the last one.
 
 **Insert After**
 
@@ -1316,6 +1336,8 @@ dom.insertAfter(nodes, others);
 
 If a node you are moving is a *DocumentFragment*, the contents will be moved instead.
 
+If multiple copies of the nodes are being moved, cloned nodes will be created for each except for the last one.
+
 **Insert Before**
 
 Insert each node before each other node.
@@ -1328,6 +1350,8 @@ dom.insertBefore(nodes, others);
 ```
 
 If a node you are moving is a *DocumentFragment*, the contents will be moved instead.
+
+If multiple copies of the nodes are being moved, cloned nodes will be created for each except for the last one.
 
 **Prepend**
 
@@ -1342,6 +1366,8 @@ dom.prepend(nodes, others);
 
 If a node you are moving is a *DocumentFragment*, the contents will be moved instead.
 
+If multiple copies of the nodes are being moved, cloned nodes will be created for each except for the last one.
+
 **Prepend To**
 
 Prepend each node to each other node.
@@ -1354,6 +1380,8 @@ dom.prependTo(nodes, others);
 ```
 
 If a node you are moving is a *DocumentFragment*, the contents will be moved instead.
+
+If multiple copies of the nodes are being moved, cloned nodes will be created for each except for the last one.
 
 ##### Wrap
 

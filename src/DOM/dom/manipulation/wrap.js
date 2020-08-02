@@ -72,7 +72,11 @@ Object.assign(DOM.prototype, {
         // ShadowRoot nodes can not be cloned
         others = this.parseNodes(others, { fragment: true, html: true });
 
-        const clones = this.clone(others, true);
+        const clones = this.clone(others, {
+            events: true,
+            data: true,
+            animations: true
+        });
 
         this.constructor._wrapAll(nodes, clones);
     },

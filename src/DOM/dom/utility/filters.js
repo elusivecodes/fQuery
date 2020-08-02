@@ -84,34 +84,9 @@ Object.assign(DOM.prototype, {
      * @returns {Node|HTMLElement|DocumentFragment|ShadowRoot|Document|Window} The matching node.
      */
     parseNode(nodes, options = {}) {
-        if (Core.isString(nodes)) {
-            if ('html' in options && options.html && nodes.trim().charAt(0) === '<') {
-                return this.parseHTML(nodes).shift();
-            }
+        const filter = this.constructor.parseNodesFactory(options);
 
-            const node = this.findOne(
-                nodes,
-                'context' in options ?
-                    options.context :
-                    this._context
-            );
-
-            return node ?
-                node :
-                null;
-        }
-
-        const nodeFilter = this.constructor.parseNodesFactory(options);
-
-        if (nodeFilter(nodes)) {
-            return nodes;
-        }
-
-        const node = Core.wrap(nodes).slice().shift();
-
-        return node && nodeFilter(node) ?
-            node :
-            null;
+        return this.parseNodesDeep(nodes, filter, options.html, true);
     },
 
     /**
@@ -128,27 +103,103 @@ Object.assign(DOM.prototype, {
      * @returns {array} The filtered array of nodes.
      */
     parseNodes(nodes, options = {}) {
+        const filter = this.constructor.parseNodesFactory(options);
+
+        return this.parseNodesDeep(nodes, filter, options.html);
+    },
+
+    /**
+     * Recursively parse nodes.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector or HTML string.
+     * @param {DOM~nodeCallback} [filter] The callback to use for filtering nodes.
+     * @param {Boolean} [first=false] Whether to only return the first result.
+     * @returns {array|Node|DocumentFragment|ShadowRoot|Document|Window} The parsed node(s).
+     */
+    parseNodesDeep(nodes, filter, html = false, first = false) {
+
+        // check nodes
+        if (!nodes) {
+            return !first ?
+                [] :
+                null;
+        }
+
+        // String
         if (Core.isString(nodes)) {
-            if ('html' in options && options.html && nodes.trim().charAt(0) === '<') {
+            // HTML string
+            if (html && nodes.trim().charAt(0) === '<') {
                 return this.parseHTML(nodes);
             }
 
-            return this.find(
-                nodes,
-                'context' in options ?
-                    options.context :
-                    this._context
-            );
+            // query selector
+            if (!first) {
+                return this.find(nodes, this._context);
+            }
+
+            const node = this.findOne(nodes, this._context);
+            return node ?
+                node :
+                null;
         }
 
-        const nodeFilter = this.constructor.parseNodesFactory(options);
+        // Node/HTMLElement/Window/Document
+        if (filter(nodes)) {
+            if (!first) {
+                return [nodes];
+            }
 
-        if (nodeFilter(nodes)) {
-            return [nodes];
+            return nodes;
         }
 
-        return Core.wrap(nodes)
-            .filter(nodeFilter);
+        // QuerySet
+        if (this.constructor.queryLoaded && nodes instanceof QuerySet) {
+            if (!first) {
+                return nodes.get().filter(filter);
+            }
+
+            const node = nodes.get(0);
+            return node && filter(node) ?
+                node :
+                null;
+        }
+
+        // NodeList/HTMLCollection
+        if (nodes instanceof NodeList || nodes instanceof HTMLCollection) {
+            if (!first) {
+                return Core.wrap(nodes);
+            }
+
+            return nodes.length ?
+                nodes.item(0) :
+                null;
+        }
+
+        // Array
+        if (Core.isArray(nodes)) {
+            nodes = nodes.flatMap(node => this.parseNodesDeep(node, filter));
+            nodes = this.constructor._sort(nodes);
+
+            if (!first) {
+                return nodes;
+            }
+
+            return nodes.length ?
+                nodes.shift() :
+                null;
+        }
+
+        node = Core.wrap(nodes);
+        nodes = nodes.filter(filter);
+
+        if (!first) {
+            nodes = nodes.filter(filter);
+            return this.constructor._sort(nodes);
+        }
+
+        const node = this.constructor._sort(nodes).shift();
+        return node && filter(node) ?
+            node :
+            null;
     }
 
 });

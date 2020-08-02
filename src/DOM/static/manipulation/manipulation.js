@@ -7,54 +7,80 @@ Object.assign(DOM, {
     /**
      * Clone a single node.
      * @param {Node|HTMLElement|DocumentFragment} node The input node.
-     * @param {Boolean} [deep=true] Whether to also clone all descendent nodes.
-     * @param {Boolean} [cloneEvents=false] Whether to also clone events.
-     * @param {Boolean} [cloneData=false] Whether to also clone custom data.
+     * @param {object} options Options for cloning the node.
+     * @param {Boolean} [options.deep] Whether to also clone all descendent nodes.
+     * @param {Boolean} [options.events] Whether to also clone events.
+     * @param {Boolean} [options.data] Whether to also clone custom data.
+     * @param {Boolean} [options.animations] Whether to also clone animations.
      * @returns {Node|HTMLElement|DocumentFragment} The cloned node.
      */
-    _clone(node, deep = true, cloneEvents = false, cloneData = false) {
-        const clone = DOMNode.clone(node, deep);
+    _clone(node, options) {
+        const clone = DOMNode.clone(node, options.deep);
 
-        if (!cloneEvents && !cloneData) {
-            return clone;
-        }
-
-        if (cloneEvents) {
+        if (options.events) {
             this._cloneEvents(node, clone);
         }
 
-        if (cloneData) {
+        if (options.data) {
             this._cloneData(node, clone);
         }
 
-        if (deep) {
-            this._deepClone(node, clone, cloneEvents, cloneData);
+        if (options.animations) {
+            this._cloneAnimations(node, clone);
+        }
+
+        if (options.deep) {
+            this._deepClone(node, clone, options);
         }
 
         return clone;
     },
 
     /**
+     * Clone animations for a single node.
+     * @param {Node|HTMLElement|DocumentFragment} node The input node.
+     * @param {Node|HTMLElement|DocumentFragment} clone The cloned node.
+     */
+    _cloneAnimations(node, clone) {
+        if (!this._hasAnimation(node)) {
+            return;
+        }
+
+        const animations = Animation._animations.get(node)
+            .map(animation =>
+                new Animation(clone, animation._callback, animation._options)
+            );
+
+        Animation._animations.set(clone, animations);
+    },
+
+    /**
      * Deep clone a node.
      * @param {Node|HTMLElement|DocumentFragment} node The input node.
      * @param {Node|HTMLElement|DocumentFragment} clone The cloned node.
-     * @param {Boolean} [cloneEvents=false] Whether to also clone events.
-     * @param {Boolean} [cloneData=false] Whether to also clone custom data.
+     * @param {object} options Options for cloning the node.
+     * @param {Boolean} [options.events] Whether to also clone events.
+     * @param {Boolean} [options.data] Whether to also clone custom data.
+     * @param {Boolean} [options.animations] Whether to also clone animations.
      */
-    _deepClone(node, clone, cloneEvents = false, cloneData = false) {
+    _deepClone(node, clone, options) {
         const children = Core.wrap(DOMNode.childNodes(node));
         const cloneChildren = Core.wrap(DOMNode.childNodes(clone));
 
         for (let i = 0; i < children.length; i++) {
-            if (cloneEvents) {
+            if (options.events) {
                 this._cloneEvents(children[i], cloneChildren[i]);
             }
 
-            if (cloneData) {
+            if (options.data) {
                 this._cloneData(children[i], cloneChildren[i]);
             }
 
-            this._deepClone(children[i], cloneChildren[i]);
+            if (options.animations) {
+                this._cloneAnimations(node, clone);
+            }
+
+            this._deepClone(children[i], cloneChildren[i], options);
         }
     },
 
@@ -109,7 +135,7 @@ Object.assign(DOM, {
 
         if (Core.isElement(node)) {
             this._clearQueue(node);
-            this._stop(node);
+            Animation.stop(node);
 
             if (this._styles.has(node)) {
                 this._styles.delete(node);
@@ -118,27 +144,6 @@ Object.assign(DOM, {
 
         this._removeEvent(node);
         this._removeData(node);
-    },
-
-    /**
-     * Replace a single node with other nodes.
-     * @param {Node|HTMLElement} node The input node.
-     * @param {array} others The other node(s).
-     */
-    _replaceWith(node, others) {
-        const parent = DOMNode.parent(node);
-
-        if (!parent) {
-            return;
-        }
-
-        for (const other of others) {
-            const clone = this._clone(other, true);
-            DOMNode.insertBefore(parent, clone, node);
-        }
-
-        this._remove(node);
-        DOMNode.removeChild(parent, node);
     }
 
 });

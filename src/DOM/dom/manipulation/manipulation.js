@@ -7,18 +7,24 @@ Object.assign(DOM.prototype, {
     /**
      * Clone each node.
      * @param {string|array|Node|HTMLElement|DocumentFragment|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
-     * @param {Boolean} [deep=true] Whether to also clone all descendent nodes.
-     * @param {Boolean} [cloneEvents=false] Whether to also clone events.
-     * @param {Boolean} [cloneData=false] Whether to also clone custom data.
+     * @param {object} options Options for cloning the node.
+     * @param {Boolean} [options.deep=true] Whether to also clone all descendent nodes.
+     * @param {Boolean} [options.events] Whether to also clone events.
+     * @param {Boolean} [options.data] Whether to also clone custom data.
+     * @param {Boolean} [options.animations] Whether to also clone animations.
      * @returns {array} The cloned nodes.
      */
-    clone(nodes, deep = true, cloneEvents = false, cloneData = false) {
+    clone(nodes, options) {
+        options = {
+            deep: true,
+            ...options
+        };
 
         // ShadowRoot nodes can not be cloned
         nodes = this.parseNodes(nodes, { node: true, fragment: true });
 
         return nodes.map(node =>
-            this.constructor._clone(node, deep, cloneEvents, cloneData)
+            this.constructor._clone(node, options)
         );
     },
 
@@ -100,13 +106,57 @@ Object.assign(DOM.prototype, {
         // ShadowRoot nodes can not be cloned
         others = this.parseNodes(others, { node: true, fragment: true, html: true });
 
-        // Clone other nodes first, so they can not be removed during replacement
-        const clones = others.map(
-            other => this.constructor._clone(other, true)
+        // Move nodes to a fragment so they don't get removed
+        const fragment = this.createFragment();
+
+        for (const other of others) {
+            DOMNode.insertBefore(fragment, other);
+        }
+
+        others = Core.wrap(DOMNode.childNodes(fragment));
+
+        nodes = nodes.filter(node =>
+            !others.includes(node) &&
+            !nodes.some(other =>
+                !DOMNode.isSame(other, node) &&
+                DOMNode.contains(other, node)
+            )
         );
 
+        const lastNode = nodes[nodes.length - 1];
+
         for (const node of nodes) {
-            this.constructor._replaceWith(node, clones);
+            const parent = DOMNode.parent(node);
+
+            if (!parent) {
+                continue;
+            }
+
+            for (const other of others) {
+                DOMNode.insertBefore(
+                    parent,
+                    DOMNode.isSame(node, lastNode) ?
+                        other :
+                        this.constructor._clone(other, {
+                            deep: true,
+                            events: true,
+                            data: true,
+                            animations: true
+                        }),
+                    node
+                );
+            }
+        }
+
+        for (const node of nodes) {
+            const parent = DOMNode.parent(node);
+
+            if (!parent) {
+                continue;
+            }
+
+            this.constructor._remove(node);
+            DOMNode.removeChild(parent, node);
         }
     }
 
