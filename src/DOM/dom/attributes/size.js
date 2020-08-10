@@ -18,12 +18,9 @@ Object.assign(DOM.prototype, {
         }
 
         if (Core.isWindow(node)) {
-            return DOMNode.heightWindow(
-                node,
-                Core.isUndefined(innerOuter) ?
-                    0 :
-                    innerOuter
-            );
+            return innerOuter ?
+                node.outerHeight :
+                node.innerHeight;
         }
 
         if (Core.isUndefined(innerOuter)) {
@@ -77,12 +74,9 @@ Object.assign(DOM.prototype, {
         }
 
         if (Core.isWindow(node)) {
-            return DOMNode.widthWindow(
-                node,
-                Core.isUndefined(innerOuter) ?
-                    0 :
-                    innerOuter
-            );
+            return innerOuter ?
+                node.outerWidth :
+                node.innerWidth;
         }
 
         if (Core.isUndefined(innerOuter)) {

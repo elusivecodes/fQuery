@@ -1,5 +1,5 @@
-- Add queue tests for node removal
-- Fix removal tests for setHTML/setText
+- Fix sort for window, document, fragment, shadow
+- Add triggerOne
 
 - Finish AJAX tests
     - data types (string, object, array, deep object, deep array)
@@ -9,9 +9,3 @@
     - upload
     - loadScript/loadScripts
     - loadStyle/loadStyles
-
-- Test defaults
-- Test unit conversions for setStyle
-
-- Add Z argument for rotation animations
-- Remove DOMNode

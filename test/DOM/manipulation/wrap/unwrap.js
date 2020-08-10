@@ -1,5 +1,6 @@
 const assert = require('assert').strict;
 const { exec } = require('../../../setup');
+const { testNoAnimation, waitFor } = require('../../../helpers');
 
 describe('#unwrap', function() {
 
@@ -20,9 +21,7 @@ describe('#unwrap', function() {
     it('unwraps each node', async function() {
         assert.equal(
             await exec(_ => {
-                dom.unwrap(
-                    'a'
-                );
+                dom.unwrap('a');
                 return document.body.innerHTML;
             }),
             '<a href="#" id="test1">Test</a>' +
@@ -47,6 +46,135 @@ describe('#unwrap', function() {
             '<a href="#" id="test3">Test</a>' +
             '<a href="#" id="test4">Test</a>' +
             '</div>'
+        );
+    });
+
+    it('removes events', async function() {
+        assert.equal(
+            await exec(_ => {
+                let result = 0;
+                const nodes = document.querySelectorAll('div');
+                dom.addEvent(
+                    'div',
+                    'click',
+                    _ => { result++; }
+                );
+                dom.unwrap('a');
+                for (const node of nodes) {
+                    document.body.appendChild(node);
+                }
+                dom.triggerEvent(
+                    'div',
+                    'click'
+                );
+                return result;
+            }),
+            0
+        );
+    });
+
+    it('removes data', async function() {
+        assert.deepEqual(
+            await exec(_ => {
+                const nodes = document.querySelectorAll('div');
+                dom.setData(
+                    'div',
+                    'test',
+                    'Test'
+                );
+                dom.unwrap('a');
+                for (const node of nodes) {
+                    document.body.appendChild(node);
+                }
+                return [...nodes]
+                    .map(node =>
+                        dom.getData(node, 'test')
+                    );
+            }),
+            [
+                null,
+                null
+            ]
+        );
+    });
+
+    it('removes animations', async function() {
+        await exec(_ => {
+            dom.animate(
+                'div',
+                _ => { },
+                {
+                    duration: 100,
+                    debug: true
+                }
+            );
+        }).then(waitFor(50)).then(async _ => {
+            await exec(_ => {
+                const nodes = document.querySelectorAll('div');
+                dom.unwrap('a');
+                for (const node of nodes) {
+                    document.body.appendChild(node);
+                }
+            });
+            await testNoAnimation('#parent1');
+            await testNoAnimation('#parent2');
+        });
+    });
+
+    it('removes queue', async function() {
+        await exec(_ => {
+            dom.queue(
+                'div',
+                _ => {
+                    return new Promise(resolve =>
+                        setTimeout(resolve, 100)
+                    );
+                }
+            );
+            dom.queue(
+                'div',
+                node => {
+                    node.dataset.test = 'Test'
+                }
+            );
+        }).then(waitFor(50)).then(async _ => {
+            await exec(_ => {
+                const nodes = document.querySelectorAll('div');
+                dom.unwrap('a');
+                for (const node of nodes) {
+                    document.body.appendChild(node);
+                }
+            });
+        }).then(waitFor(100)).then(async _ => {
+            assert.equal(
+                await exec(_ => {
+                    return document.body.innerHTML;
+                }),
+                '<a href="#" id="test1">Test</a>' +
+                '<a href="#" id="test2">Test</a>' +
+                '<a href="#" id="test3">Test</a>' +
+                '<a href="#" id="test4">Test</a>' +
+                '<div id="parent1">' +
+                '</div>' +
+                '<div id="parent2">' +
+                '</div>'
+            );
+        });
+    });
+
+    it('triggers a remove event', async function() {
+        assert.equal(
+            await exec(_ => {
+                let result = 0;
+                dom.addEvent(
+                    'div',
+                    'remove',
+                    _ => { result++; }
+                );
+                dom.unwrap('a');
+                return result;
+            }),
+            2
         );
     });
 

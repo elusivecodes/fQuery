@@ -12,12 +12,12 @@ Object.assign(DOM, {
      * @returns {DOM~eventCallback} The delegated event callback.
      */
     _delegateFactory(node, selector, callback) {
-        const getDelegate = selector.match(DOM._complexRegExp) ?
+        const getDelegate = selector.match(this._complexRegExp) ?
             this._getDelegateContainsFactory(node, selector) :
             this._getDelegateMatchFactory(node, selector);
 
         return e => {
-            if (DOMNode.isSame(e.target, node)) {
+            if (node.isSameNode(e.target)) {
                 return;
             }
 
@@ -52,11 +52,11 @@ Object.assign(DOM, {
      * @returns {DOM~delegateCallback} The callback for finding the matching delegate.
      */
     _getDelegateContainsFactory(node, selector) {
-        selector = DOM._prefixSelectors(selector, ':scope ');
+        selector = this._prefixSelectors(selector, ':scope ');
 
         return target => {
             const matches = Core.wrap(
-                DOMNode.findBySelector(selector, node)
+                node.querySelectorAll(selector)
             );
 
             if (!matches.length) {
@@ -70,7 +70,7 @@ Object.assign(DOM, {
             return this._parents(
                 target,
                 parent => matches.includes(parent),
-                parent => DOMNode.isSame(node, parent),
+                parent => parent.isSameNode(node),
                 true
             ).shift();
         };
@@ -84,12 +84,12 @@ Object.assign(DOM, {
      */
     _getDelegateMatchFactory(node, selector) {
         return target =>
-            DOMNode.is(target, selector) ?
+            target.matches(selector) ?
                 target :
                 this._parents(
                     target,
-                    parent => DOMNode.is(parent, selector),
-                    parent => DOMNode.isSame(node, parent),
+                    parent => parent.matches(selector),
+                    parent => parent.isSameNode(node),
                     true
                 ).shift();
     },

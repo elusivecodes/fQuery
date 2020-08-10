@@ -15,10 +15,10 @@ Object.assign(DOM, {
             node,
             node => {
                 if (Core.isDocument(node)) {
-                    node = DOMNode.documentElement(node);
+                    node = node.documentElement;
                 }
 
-                let result = DOMNode.height(node);
+                let result = node.clientHeight;
 
                 if (innerOuter === this.INNER) {
                     result -= parseInt(this._css(node, 'padding-top'))
@@ -50,10 +50,10 @@ Object.assign(DOM, {
             node,
             node => {
                 if (Core.isDocument(node)) {
-                    node = DOMNode.documentElement(node);
+                    node = node.documentElement;
                 }
 
-                return DOMNode.scrollHeight(node);
+                return node.scrollHeight;
             }
         );
     },
@@ -68,10 +68,10 @@ Object.assign(DOM, {
             node,
             node => {
                 if (Core.isDocument(node)) {
-                    node = DOMNode.documentElement(node);
+                    node = node.documentElement;
                 }
 
-                return DOMNode.scrollWidth(node);
+                return node.scrollWidth;
             }
         );
     },
@@ -87,10 +87,10 @@ Object.assign(DOM, {
             node,
             node => {
                 if (Core.isDocument(node)) {
-                    node = DOMNode.documentElement(node);
+                    node = node.documentElement;
                 }
 
-                let result = DOMNode.width(node);
+                let result = node.clientWidth;
 
                 if (innerOuter === this.INNER) {
                     result -= parseInt(this._css(node, 'padding-left'))

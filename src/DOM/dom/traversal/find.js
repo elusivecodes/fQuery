@@ -33,7 +33,7 @@ Object.assign(DOM.prototype, {
         // standard selector
         if (Core.isDocument(nodes) || Core.isElement(nodes) || Core.isFragment(nodes) || Core.isShadow(nodes)) {
             return Core.wrap(
-                DOMNode.findBySelector(selector, nodes)
+                nodes.querySelectorAll(selector)
             );
         }
 
@@ -50,11 +50,15 @@ Object.assign(DOM.prototype, {
      */
     findByClass(className, nodes = this._context) {
         if (Core.isDocument(nodes) || Core.isElement(nodes)) {
-            return Core.wrap(DOMNode.findByClass(className, nodes));
+            return Core.wrap(
+                nodes.getElementsByClassName(className)
+            );
         }
 
         if (Core.isFragment(nodes) || Core.isShadow(nodes)) {
-            return Core.wrap(DOMNode.findBySelector(`.${className}`, nodes));
+            return Core.wrap(
+                nodes.querySelectorAll(`.${className}`)
+            );
         }
 
         nodes = this.parseNodes(nodes, { fragment: true, shadow: true, document: true });
@@ -65,8 +69,8 @@ Object.assign(DOM.prototype, {
             Core.merge(
                 results,
                 Core.isFragment(node) || Core.isShadow(node) ?
-                    DOMNode.findBySelector(`.${className}`, node) :
-                    DOMNode.findByClass(className, node)
+                    node.querySelectorAll(`.${className}`) :
+                    node.getElementsByClassName(className)
             )
         }
 
@@ -95,11 +99,15 @@ Object.assign(DOM.prototype, {
      */
     findByTag(tagName, nodes = this._context) {
         if (Core.isDocument(nodes) || Core.isElement(nodes)) {
-            return Core.wrap(DOMNode.findByTag(tagName, nodes));
+            return Core.wrap(
+                nodes.getElementsByTagName(tagName)
+            );
         }
 
         if (Core.isFragment(nodes) || Core.isShadow(nodes)) {
-            return Core.wrap(DOMNode.findBySelector(tagName, nodes));
+            return Core.wrap(
+                nodes.querySelectorAll(tagName)
+            );
         }
 
         nodes = this.parseNodes(nodes, { fragment: true, shadow: true, document: true });
@@ -110,8 +118,8 @@ Object.assign(DOM.prototype, {
             Core.merge(
                 results,
                 Core.isFragment(node) || Core.isShadow(node) ?
-                    DOMNode.findBySelector(tagName, node) :
-                    DOMNode.findByTag(tagName, node)
+                    node.querySelectorAll(tagName) :
+                    node.getElementsByTagName(tagName)
             )
         }
 
@@ -148,7 +156,7 @@ Object.assign(DOM.prototype, {
 
         // standard selector
         if (Core.isDocument(nodes) || Core.isElement(nodes) || Core.isFragment(nodes) || Core.isShadow(nodes)) {
-            return DOMNode.findOneBySelector(selector, nodes);
+            return nodes.querySelector(selector);
         }
 
         nodes = this.parseNodes(nodes, { fragment: true, shadow: true, document: true });
@@ -168,11 +176,11 @@ Object.assign(DOM.prototype, {
      */
     findOneByClass(className, nodes = this._context) {
         if (Core.isDocument(nodes) || Core.isElement(nodes)) {
-            return DOMNode.findByClass(className, nodes).item(0);
+            return nodes.getElementsByClassName(className).item(0);
         }
 
         if (Core.isFragment(nodes) || Core.isShadow(nodes)) {
-            return DOMNode.findOneBySelector(`.${className}`, nodes);
+            return nodes.querySelector(`.${className}`);
         }
 
         nodes = this.parseNodes(nodes, { fragment: true, shadow: true, document: true });
@@ -183,8 +191,8 @@ Object.assign(DOM.prototype, {
 
         for (const node of nodes) {
             const result = Core.isFragment(node) || Core.isShadow(node) ?
-                DOMNode.findOneBySelector(`.${className}`, node) :
-                DOMNode.findByClass(className, node).item(0);
+                node.querySelector(`.${className}`) :
+                node.getElementsByClassName(className).item(0);
             if (result) {
                 return result;
             }
@@ -201,7 +209,7 @@ Object.assign(DOM.prototype, {
      */
     findOneById(id, nodes = this._context) {
         if (Core.isDocument(nodes)) {
-            return DOMNode.findById(id, nodes);
+            return nodes.getElementById(id);
         }
 
         nodes = this.parseNodes(nodes, { fragment: true, shadow: true, document: true });
@@ -221,11 +229,11 @@ Object.assign(DOM.prototype, {
      */
     findOneByTag(tagName, nodes = this._context) {
         if (Core.isDocument(nodes) || Core.isElement(nodes)) {
-            return DOMNode.findByTag(tagName, nodes).item(0);
+            return nodes.getElementsByTagName(tagName).item(0);
         }
 
         if (Core.isFragment(nodes) || Core.isShadow(nodes)) {
-            return DOMNode.findOneBySelector(tagName, nodes);
+            return nodes.querySelector(tagName);
         }
 
         nodes = this.parseNodes(nodes, { fragment: true, shadow: true, document: true });
@@ -236,8 +244,8 @@ Object.assign(DOM.prototype, {
 
         for (const node of nodes) {
             const result = Core.isFragment(node) || Core.isShadow(node) ?
-                DOMNode.findOneBySelector(tagName, node) :
-                DOMNode.findByTag(tagName, node).item(0);
+                node.querySelector(tagName) :
+                node.getElementsByTagName(tagName).item(0);
             if (result) {
                 return result;
             }

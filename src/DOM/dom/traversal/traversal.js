@@ -78,17 +78,17 @@ Object.assign(DOM.prototype, {
         }
 
         // Make sure all nodes have a parent
-        if (nodes.some(node => !DOMNode.parent(node))) {
+        if (nodes.some(node => !node.parentNode)) {
             return;
         }
 
         const range = this.createRange();
 
         if (nodes.length === 1) {
-            DOMNode.select(range, nodes.shift());
+            range.selectNode(nodes.shift());
         } else {
-            DOMNode.setStartBefore(range, nodes.shift());
-            DOMNode.setEndAfter(range, nodes.pop());
+            range.setStartBefore(nodes.shift());
+            range.setEndAfter(nodes.pop());
         }
 
         return range.commonAncestorContainer;
@@ -120,7 +120,7 @@ Object.assign(DOM.prototype, {
             return;
         }
 
-        return DOMNode.fragment(node);
+        return node.content;
     },
 
     /**
@@ -194,7 +194,7 @@ Object.assign(DOM.prototype, {
     offsetParent(nodes) {
         return this.forceShow(
             nodes,
-            node => DOMNode.offsetParent(node)
+            node => node.offsetParent
         );
     },
 
@@ -336,7 +336,7 @@ Object.assign(DOM.prototype, {
             return;
         }
 
-        return DOMNode.shadow(node);
+        return node.shadowRoot;
     },
 
     /**

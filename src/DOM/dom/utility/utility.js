@@ -45,9 +45,7 @@ Object.assign(DOM.prototype, {
         }
 
         return Core.wrap(
-            DOMNode.children(
-                DOMNode.parent(node)
-            )
+            node.parentNode.children
         ).indexOf(node);
     },
 
@@ -74,7 +72,7 @@ Object.assign(DOM.prototype, {
         nodes = this.parseNodes(nodes, { node: true, fragment: true, shadow: true, document: true });
 
         for (const node of nodes) {
-            DOMNode.normalize(node);
+            node.normalize();
         }
     },
 
@@ -86,7 +84,7 @@ Object.assign(DOM.prototype, {
      */
     sanitize(html, allowedTags = DOM.allowedTags) {
         const template = this.create('template', { html }),
-            fragment = DOMNode.fragment(template),
+            fragment = template.content,
             children = this.constructor._children(fragment, null, false, true);
 
         for (const child of children) {
@@ -116,45 +114,53 @@ Object.assign(DOM.prototype, {
         return this.parseNodes(nodes, { fragment: true, shadow: true })
             .reduce(
                 (values, node) => {
-                    if (DOMNode.is(node, 'form') || Core.isFragment(node) || Core.isShadow(node)) {
+                    if (
+                        (
+                            Core.isElement(node) &&
+                            node.matches('form')
+                        ) ||
+                        Core.isFragment(node) ||
+                        Core.isShadow(node)
+                    ) {
                         return values.concat(
                             this.serializeArray(
-                                DOMNode.findBySelector(
-                                    'input, select, textarea',
-                                    node
+                                node.querySelectorAll(
+                                    'input, select, textarea'
                                 )
                             )
                         );
                     }
 
-                    if (DOMNode.is(node, '[disabled], input[type=submit], input[type=reset], input[type=file], input[type=radio]:not(:checked), input[type=checkbox]:not(:checked)')) {
+                    if (
+                        Core.isElement(node) &&
+                        node.matches('[disabled], input[type=submit], input[type=reset], input[type=file], input[type=radio]:not(:checked), input[type=checkbox]:not(:checked)')
+                    ) {
                         return values;
                     }
 
-                    const name = DOMNode.getAttribute(node, 'name');
+                    const name = node.getAttribute('name');
                     if (!name) {
                         return values;
                     }
 
-                    if (DOMNode.is(node, 'select[multiple]')) {
+                    if (
+                        Core.isElement(node) &&
+                        node.matches('select[multiple]')
+                    ) {
                         const selected = Core.wrap(node.selectedOptions);
                         for (const option of selected) {
-                            const value = DOMNode.getProperty(option, 'value') || '';
-
                             values.push(
                                 {
                                     name,
-                                    value
+                                    value: option.value || ''
                                 }
                             );
                         }
                     } else {
-                        const value = DOMNode.getProperty(node, 'value') || '';
-
                         values.push(
                             {
                                 name,
-                                value
+                                value: node.value || ''
                             }
                         );
                     }
@@ -171,7 +177,7 @@ Object.assign(DOM.prototype, {
      * @returns {array} The sorted array of nodes.
      */
     sort(nodes) {
-        return this.parseNodes(nodes, { node: true });
+        return this.parseNodes(nodes, { node: true, document: true, window: true });
     },
 
     /**

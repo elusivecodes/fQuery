@@ -19,7 +19,7 @@ describe('#setStyle', function() {
                     {
                         display: 'block',
                         width: '100%',
-                        height: '100',
+                        height: '100px',
                         opacity: 0.5
                     }
                 );
@@ -45,7 +45,7 @@ describe('#setStyle', function() {
         );
     });
 
-    it('converts numbers to pixels arguments', async function() {
+    it('converts number values to pixels', async function() {
         assert.equal(
             await exec(_ => {
                 dom.setStyle(
@@ -60,7 +60,24 @@ describe('#setStyle', function() {
         );
     });
 
-    it('does not convert numbers with units to pixels arguments', async function() {
+    it('converts style object number values to pixels', async function() {
+        assert.equal(
+            await exec(_ => {
+                dom.setStyle(
+                    'div',
+                    {
+                        width: 100,
+                        height: 100
+                    }
+                );
+                return document.body.innerHTML;
+            }),
+            '<div id="test1" style="width: 100px; height: 100px;"></div>' +
+            '<div id="test2" style="width: 100px; height: 100px;"></div>'
+        );
+    });
+
+    it('does not convert number values with units to pixels', async function() {
         assert.equal(
             await exec(_ => {
                 dom.setStyle(
@@ -72,6 +89,40 @@ describe('#setStyle', function() {
             }),
             '<div id="test1" style="width: 100%;"></div>' +
             '<div id="test2" style="width: 100%;"></div>'
+        );
+    });
+
+    it('does not convert number values for CSS number properties', async function() {
+        assert.equal(
+            await exec(_ => {
+                dom.setStyle(
+                    'div',
+                    'font-weight',
+                    '500'
+                );
+                return document.body.innerHTML;
+            }),
+            '<div id="test1" style="font-weight: 500;"></div>' +
+            '<div id="test2" style="font-weight: 500;"></div>'
+        );
+    });
+
+    it('sets a style object for all nodes with important', async function() {
+        assert.equal(
+            await exec(_ => {
+                dom.setStyle(
+                    'div',
+                    {
+                        display: 'block',
+                        width: '100%'
+                    },
+                    null,
+                    true
+                );
+                return document.body.innerHTML;
+            }),
+            '<div id="test1" style="display: block !important; width: 100% !important;"></div>' +
+            '<div id="test2" style="display: block !important; width: 100% !important;"></div>'
         );
     });
 

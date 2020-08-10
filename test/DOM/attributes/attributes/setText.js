@@ -1,5 +1,6 @@
 const assert = require('assert').strict;
 const { exec } = require('../../../setup');
+const { testNoAnimation, waitFor } = require('../../../helpers');
 
 describe('#setText', function() {
 
@@ -41,36 +42,13 @@ describe('#setText', function() {
         );
     });
 
-    it('removes data for all previous descendents', async function() {
+    it('removes events recursively', async function() {
         assert.equal(
             await exec(_ => {
-                const element = document.getElementById('inner');
-                dom.setData(
-                    element,
-                    'test',
-                    'Test 1'
-                );
-                dom.setText(
-                    'div',
-                    'Test 2'
-                );
-                return dom.getData(
-                    element,
-                    'test'
-                );
-            }),
-            undefined
-        );
-    });
-
-    it('removes events for all previous descendents', async function() {
-        assert.equal(
-            await exec(_ => {
-                const event = new Event('click');
-                const element = document.getElementById('inner');
                 let result = 0;
+                const node = document.getElementById('inner');
                 dom.addEvent(
-                    element,
+                    node,
                     'click',
                     _ => { result++; }
                 );
@@ -78,11 +56,113 @@ describe('#setText', function() {
                     'div',
                     'Test 2'
                 );
-                document.body.appendChild(element);
-                element.dispatchEvent(event);
+                document.body.appendChild(node);
+                dom.triggerEvent(
+                    node,
+                    'click'
+                );
                 return result;
             }),
             0
+        );
+    });
+
+    it('removes data recursively', async function() {
+        assert.equal; (
+            await exec(_ => {
+                const node = document.getElementById('inner');
+                dom.setData(
+                    node,
+                    'test',
+                    'Test'
+                );
+                dom.setText(
+                    'div',
+                    'Test 2'
+                );
+                document.body.appendChild(node);
+                return dom.getData(node, 'test');
+            }),
+            null
+        );
+    });
+
+    it('removes animations recursively', async function() {
+        await exec(_ => {
+            dom.animate(
+                '#inner',
+                _ => { },
+                {
+                    duration: 100,
+                    debug: true
+                }
+            );
+        }).then(waitFor(50)).then(async _ => {
+            await exec(_ => {
+                const node = document.getElementById('inner');
+                dom.setText(
+                    'div',
+                    'Test 2'
+                );
+                document.body.appendChild(node);
+            });
+            await testNoAnimation('#inner');
+        });
+    });
+
+    it('removes queue recursively', async function() {
+        await exec(_ => {
+            dom.queue(
+                '#inner',
+                _ => {
+                    return new Promise(resolve =>
+                        setTimeout(resolve, 100)
+                    );
+                }
+            );
+            dom.queue(
+                '#inner',
+                node => {
+                    node.dataset.test = 'Test'
+                }
+            );
+        }).then(waitFor(50)).then(async _ => {
+            await exec(_ => {
+                const node = document.getElementById('inner');
+                dom.setText(
+                    'div',
+                    'Test 2'
+                );
+                document.body.appendChild(node);
+            });
+        }).then(waitFor(100)).then(async _ => {
+            assert.equal(
+                await exec(_ => {
+                    return document.body.innerHTML;
+                }),
+                '<div id="test1">Test 2</div>' +
+                '<div id="test2">Test 2</div>' +
+                '<span id="inner"></span>'
+            );
+        });
+    });
+
+    it('triggers a remove event recursively', async function() {
+        assert.equal(
+            await exec(_ => {
+                let result = 0;
+                dom.addEvent(
+                    '#inner',
+                    'remove',
+                    _ => { result++; }
+                );
+                dom.setText(
+                    'div',
+                    'Test 2'
+                );
+                return result;
+            }),
+            1
         );
     });
 

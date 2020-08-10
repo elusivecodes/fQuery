@@ -13,19 +13,19 @@ Object.assign(DOM.prototype, {
         // ShadowRoot nodes can not be moved
         nodes = this.parseNodes(nodes, { node: true, fragment: true, html: true }).reverse();
 
-        const selection = DOMNode.getSelection();
+        const selection = window.getSelection();
 
-        if (!DOMNode.rangeCount(selection)) {
+        if (!selection.rangeCount) {
             return;
         }
 
-        const range = DOMNode.getRange(selection);
+        const range = selection.getRangeAt(0);
 
-        DOMNode.removeRanges(selection);
-        DOMNode.collapse(range);
+        selection.removeAllRanges();
+        range.collapse();
 
         for (const node of nodes) {
-            DOMNode.insert(range, node);
+            range.insertNode(node);
         }
     },
 
@@ -38,18 +38,18 @@ Object.assign(DOM.prototype, {
         // ShadowRoot nodes can not be moved
         nodes = this.parseNodes(nodes, { node: true, fragment: true, html: true }).reverse();
 
-        const selection = DOMNode.getSelection();
+        const selection = window.getSelection();
 
-        if (!DOMNode.rangeCount(selection)) {
+        if (!selection.rangeCount) {
             return;
         }
 
-        const range = DOMNode.getRange(selection);
+        const range = selection.getRangeAt(0);
 
-        DOMNode.removeRanges(selection);
+        selection.removeAllRanges();
 
         for (const node of nodes) {
-            DOMNode.insert(range, node);
+            range.insertNode(node);
         }
     },
 
@@ -58,19 +58,19 @@ Object.assign(DOM.prototype, {
      * @returns {array} The selected nodes.
      */
     extractSelection() {
-        const selection = DOMNode.getSelection();
+        const selection = window.getSelection();
 
-        if (!DOMNode.rangeCount(selection)) {
+        if (!selection.rangeCount) {
             return [];
         }
 
-        const range = DOMNode.getRange(selection);
+        const range = selection.getRangeAt(0);
 
-        DOMNode.removeRanges(selection);
+        selection.removeAllRanges();
 
-        const fragment = DOMNode.extract(range);
+        const fragment = range.extractContents();
 
-        return Core.wrap(DOMNode.childNodes(fragment));
+        return Core.wrap(fragment.childNodes);
     },
 
     /**
@@ -78,15 +78,15 @@ Object.assign(DOM.prototype, {
      * @returns {array} The selected nodes.
      */
     getSelection() {
-        const selection = DOMNode.getSelection();
+        const selection = window.getSelection();
 
-        if (!DOMNode.rangeCount(selection)) {
+        if (!selection.rangeCount) {
             return [];
         }
 
-        const range = DOMNode.getRange(selection),
+        const range = selection.getRangeAt(0),
             nodes = Core.wrap(
-                DOMNode.findBySelector('*', range.commonAncestorContainer)
+                range.commonAncestorContainer.querySelectorAll('*')
             );
 
         if (!nodes.length) {
@@ -97,14 +97,14 @@ Object.assign(DOM.prototype, {
             return nodes;
         }
 
-        const startContainer = DOMNode.startContainer(range),
-            endContainer = DOMNode.endContainer(range),
+        const startContainer = range.startContainer,
+            endContainer = range.endContainer,
             start = (Core.isElement(startContainer) ?
                 startContainer :
-                DOMNode.parent(startContainer)),
+                startContainer.parentNode),
             end = (Core.isElement(endContainer) ?
                 endContainer :
-                DOMNode.parent(endContainer));
+                endContainer.parentNode);
 
         const selectedNodes = nodes.slice(
             nodes.indexOf(start),
@@ -114,7 +114,7 @@ Object.assign(DOM.prototype, {
 
         let lastNode;
         for (const node of selectedNodes) {
-            if (lastNode && DOMNode.contains(lastNode, node)) {
+            if (lastNode && lastNode.contains(node)) {
                 continue;
             }
 
@@ -136,10 +136,10 @@ Object.assign(DOM.prototype, {
             return node.select();
         }
 
-        const selection = DOMNode.getSelection();
+        const selection = window.getSelection();
 
-        if (DOMNode.rangeCount(selection) > 0) {
-            DOMNode.removeRanges(selection);
+        if (selection.rangeCount > 0) {
+            selection.removeAllRanges();
         }
 
         if (!node) {
@@ -147,8 +147,8 @@ Object.assign(DOM.prototype, {
         }
 
         const range = this.createRange();
-        DOMNode.select(range, node);
-        DOMNode.addRange(selection, range);
+        range.selectNode(node);
+        selection.addRange(range);
     },
 
     /**
@@ -158,10 +158,10 @@ Object.assign(DOM.prototype, {
     selectAll(nodes) {
         nodes = this.sort(nodes);
 
-        const selection = DOMNode.getSelection();
+        const selection = window.getSelection();
 
-        if (DOMNode.rangeCount(selection)) {
-            DOMNode.removeRanges(selection);
+        if (selection.rangeCount) {
+            selection.removeAllRanges();
         }
 
         if (!nodes.length) {
@@ -171,13 +171,13 @@ Object.assign(DOM.prototype, {
         const range = this.createRange();
 
         if (nodes.length == 1) {
-            DOMNode.select(range, nodes.shift());
+            range.selectNode(nodes.shift());
         } else {
-            DOMNode.setStartBefore(range, nodes.shift());
-            DOMNode.setEndAfter(range, nodes.pop());
+            range.setStartBefore(nodes.shift());
+            range.setEndAfter(nodes.pop());
         }
 
-        DOMNode.addRange(selection, range);
+        selection.addRange(range);
     },
 
     /**
@@ -189,26 +189,26 @@ Object.assign(DOM.prototype, {
         // ShadowRoot nodes can not be cloned
         nodes = this.parseNodes(nodes, { fragment: true, html: true });
 
-        const selection = DOMNode.getSelection();
+        const selection = window.getSelection();
 
-        if (!DOMNode.rangeCount(selection)) {
+        if (!selection.rangeCount) {
             return;
         }
 
-        const range = DOMNode.getRange(selection);
+        const range = selection.getRangeAt(0);
 
-        DOMNode.removeRanges(selection);
+        selection.removeAllRanges();
 
-        const fragment = DOMNode.extract(range),
+        const fragment = range.extractContents(),
             deepest = this.constructor._deepest(nodes.slice().shift()),
-            children = Core.wrap(DOMNode.childNodes(fragment));
+            children = Core.wrap(fragment.childNodes);
 
         for (const child of children) {
-            DOMNode.insertBefore(deepest, child);
+            deepest.insertBefore(child, null);
         }
 
         for (const node of nodes) {
-            DOMNode.insert(range, node);
+            range.insertNode(node);
         }
     }
 

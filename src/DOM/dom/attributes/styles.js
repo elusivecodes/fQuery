@@ -19,7 +19,7 @@ Object.assign(DOM.prototype, {
         }
 
         for (const node of nodes) {
-            DOMNode.addClass(node, ...classes);
+            node.classList.add(...classes);
         }
     },
 
@@ -82,7 +82,7 @@ Object.assign(DOM.prototype, {
         }
 
         for (const node of nodes) {
-            DOMNode.removeClass(node, ...classes);
+            node.classList.remove(...classes);
         }
     },
 
@@ -123,9 +123,12 @@ Object.assign(DOM.prototype, {
         nodes = this.parseNodes(nodes);
 
         for (const node of nodes) {
-            DOMNode.getStyle(node, 'display') === 'none' ?
-                DOMNode.setStyle(node, 'display', '') :
-                DOMNode.setStyle(node, 'display', 'none');
+            node.style.setProperty(
+                'display',
+                node.style.display === 'none' ?
+                    '' :
+                    'none'
+            );
         }
     },
 
@@ -145,7 +148,7 @@ Object.assign(DOM.prototype, {
 
         for (const node of nodes) {
             for (const className of classes) {
-                DOMNode.toggleClass(node, className);
+                node.classList.toggle(className);
             }
         }
     }

@@ -19,7 +19,7 @@ Object.assign(DOM.prototype, {
         const parents = [];
 
         for (const node of nodes) {
-            const parent = DOMNode.parent(node);
+            const parent = node.parentNode;
 
             if (!parent) {
                 continue;

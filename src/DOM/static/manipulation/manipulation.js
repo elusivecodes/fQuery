@@ -15,7 +15,7 @@ Object.assign(DOM, {
      * @returns {Node|HTMLElement|DocumentFragment} The cloned node.
      */
     _clone(node, options) {
-        const clone = DOMNode.clone(node, options.deep);
+        const clone = node.cloneNode(options.deep);
 
         if (options.events) {
             this._cloneEvents(node, clone);
@@ -64,8 +64,8 @@ Object.assign(DOM, {
      * @param {Boolean} [options.animations] Whether to also clone animations.
      */
     _deepClone(node, clone, options) {
-        const children = Core.wrap(DOMNode.childNodes(node));
-        const cloneChildren = Core.wrap(DOMNode.childNodes(clone));
+        const children = Core.wrap(node.childNodes);
+        const cloneChildren = Core.wrap(clone.childNodes);
 
         for (let i = 0; i < children.length; i++) {
             if (options.events) {
@@ -89,13 +89,13 @@ Object.assign(DOM, {
      * @param {Node|HTMLElement} node The input node.
      */
     _detach(node) {
-        const parent = DOMNode.parent(node);
+        const parent = node.parentNode;
 
         if (parent) {
             return;
         }
 
-        DOMNode.removeChild(parent, node);
+        parent.removeChild(node);
     },
 
     /**
@@ -104,22 +104,22 @@ Object.assign(DOM, {
      */
     _empty(node) {
         // Remove descendent elements
-        const children = Core.wrap(DOMNode.childNodes(node));
+        const children = Core.wrap(node.childNodes);
 
         for (const child of children) {
             this._remove(child);
-            DOMNode.removeChild(node, child);
+            node.removeChild(child);
         }
 
         // Remove ShadowRoot
         if (this._hasShadow(node)) {
-            const shadow = DOMNode.shadow(node);
+            const shadow = node.shadowRoot;
             this._remove(shadow);
         }
 
         // Remove DocumentFragment
         if (this._hasFragment(node)) {
-            const fragment = DOMNode.fragment(node);
+            const fragment = node.content;
             this._remove(fragment);
         }
     },
@@ -129,7 +129,8 @@ Object.assign(DOM, {
      * @param {Node|HTMLElement|DocumentFragment|ShadowRoot} node The input node.
      */
     _remove(node) {
-        DOMNode.triggerEvent(node, 'remove');
+        const eventData = new Event('remove');
+        node.dispatchEvent(eventData);
 
         this._empty(node);
 

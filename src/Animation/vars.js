@@ -12,6 +12,9 @@ Object.assign(Animation, {
         debug: false
     },
 
+    // Use timeout
+    useTimeout: false,
+
     // Animating flag
     _animating: false,
 

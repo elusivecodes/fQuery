@@ -17,7 +17,11 @@ Object.assign(DOM.prototype, {
             return;
         }
 
-        return DOMNode.attachShadow(node, open);
+        return node.attachShadow({
+            mode: open ?
+                'open' :
+                'closed'
+        });
     },
 
     /**
@@ -35,21 +39,20 @@ Object.assign(DOM.prototype, {
      * @returns {HTMLElement} The new HTMLElement.
      */
     create(tagName = 'div', options) {
-        const node = DOMNode.create(this._context, tagName);
+        const node = this._context.createElement(tagName);
 
         if (!options) {
             return node;
         }
 
         if ('html' in options) {
-            DOMNode.setProperty(node, 'innerHTML', options.html);
+            node.innerHTML = options.html;
         } else if ('text' in options) {
-            DOMNode.setProperty(node, 'innerText', options.text);
+            node.innerText = options.text;
         }
 
         if ('class' in options) {
-            DOMNode.addClass(
-                node,
+            node.classList.add(
                 ...this.constructor._parseClasses(
                     Core.wrap(options.class)
                 )
@@ -61,7 +64,7 @@ Object.assign(DOM.prototype, {
         }
 
         if ('value' in options) {
-            DOMNode.setProperty(node, 'value', options.value);
+            node.value = options.value;
         }
 
         if ('attributes' in options) {
@@ -70,7 +73,7 @@ Object.assign(DOM.prototype, {
 
         if ('properties' in options) {
             for (const key in options.properties) {
-                DOMNode.setProperty(node, key, options.properties[key]);
+                node[key] = options.properties[key];
             }
         }
 
@@ -89,7 +92,7 @@ Object.assign(DOM.prototype, {
      * @returns {Node} The new comment node.
      */
     createComment(comment) {
-        return DOMNode.createComment(this._context, comment);
+        return this._context.createComment(comment);
     },
 
     /**
@@ -97,7 +100,7 @@ Object.assign(DOM.prototype, {
      * @returns {DocumentFragment} The new DocumentFragment.
      */
     createFragment() {
-        return DOMNode.createFragment(this._context);
+        return this._context.createDocumentFragment();
     },
 
     /**
@@ -105,7 +108,7 @@ Object.assign(DOM.prototype, {
      * @returns {Range} The new Range.
      */
     createRange() {
-        return DOMNode.createRange(this._context);
+        return this._context.createRange();
     },
 
     /**
@@ -114,7 +117,7 @@ Object.assign(DOM.prototype, {
      * @returns {Node} The new text node.
      */
     createText(text) {
-        return DOMNode.createText(this._context, text);
+        return this._context.createTextNode(text);
     },
 
     /**
@@ -124,10 +127,9 @@ Object.assign(DOM.prototype, {
      */
     parseHTML(html) {
         return Core.wrap(
-            DOMNode.children(
-                this.createRange()
-                    .createContextualFragment(html)
-            )
+            this.createRange()
+                .createContextualFragment(html)
+                .children
         );
     }
 

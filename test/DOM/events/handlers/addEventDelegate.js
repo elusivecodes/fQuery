@@ -52,6 +52,48 @@ describe('#addEventDelegate', function() {
         );
     });
 
+    it('adds delegated events to each node', async function() {
+        assert.equal(
+            await exec(_ => {
+                let result = 0;
+                const event1 = new Event('click', {
+                    bubbles: true
+                });
+                const event2 = new Event('hover', {
+                    bubbles: true
+                });
+                const element1 = document.getElementById('test1');
+                const element2 = document.getElementById('test2');
+                const element3 = document.getElementById('test3');
+                const element4 = document.getElementById('test4');
+                dom.addEventDelegate(
+                    'div',
+                    'click hover',
+                    'a',
+                    _ => { result++; }
+                );
+                element1.dispatchEvent(event1);
+                element1.dispatchEvent(event1);
+                element1.dispatchEvent(event2);
+                element1.dispatchEvent(event2);
+                element2.dispatchEvent(event1);
+                element2.dispatchEvent(event1);
+                element2.dispatchEvent(event2);
+                element2.dispatchEvent(event2);
+                element3.dispatchEvent(event1);
+                element3.dispatchEvent(event1);
+                element3.dispatchEvent(event2);
+                element3.dispatchEvent(event2);
+                element4.dispatchEvent(event1);
+                element4.dispatchEvent(event1);
+                element4.dispatchEvent(event2);
+                element4.dispatchEvent(event2);
+                return result;
+            }),
+            16
+        );
+    });
+
     it('adds a delegated event to each node with custom child selector', async function() {
         assert.equal(
             await exec(_ => {
@@ -80,6 +122,194 @@ describe('#addEventDelegate', function() {
                 return result;
             }),
             4
+        );
+    });
+
+    it('adds delegated events to each node with custom child selector', async function() {
+        assert.equal(
+            await exec(_ => {
+                let result = 0;
+                const event1 = new Event('click', {
+                    bubbles: true
+                });
+                const event2 = new Event('hover', {
+                    bubbles: true
+                });
+                const element1 = document.getElementById('test1');
+                const element2 = document.getElementById('test2');
+                const element3 = document.getElementById('test3');
+                const element4 = document.getElementById('test4');
+                dom.addEventDelegate(
+                    'div',
+                    'click hover',
+                    '> a',
+                    _ => { result++; }
+                );
+                element1.dispatchEvent(event1);
+                element1.dispatchEvent(event1);
+                element1.dispatchEvent(event2);
+                element1.dispatchEvent(event2);
+                element2.dispatchEvent(event1);
+                element2.dispatchEvent(event1);
+                element2.dispatchEvent(event2);
+                element2.dispatchEvent(event2);
+                element3.dispatchEvent(event1);
+                element3.dispatchEvent(event1);
+                element3.dispatchEvent(event2);
+                element3.dispatchEvent(event2);
+                element4.dispatchEvent(event1);
+                element4.dispatchEvent(event1);
+                element4.dispatchEvent(event2);
+                element4.dispatchEvent(event2);
+                return result;
+            }),
+            8
+        );
+    });
+
+    it('adds a namespaced delegated event to each node', async function() {
+        assert.equal(
+            await exec(_ => {
+                let result = 0;
+                const event = new Event('click', {
+                    bubbles: true
+                });
+                const element1 = document.getElementById('test1');
+                const element2 = document.getElementById('test2');
+                const element3 = document.getElementById('test3');
+                const element4 = document.getElementById('test4');
+                dom.addEventDelegate(
+                    'div',
+                    'click.test',
+                    'a',
+                    _ => { result++; }
+                );
+                element1.dispatchEvent(event);
+                element1.dispatchEvent(event);
+                element2.dispatchEvent(event);
+                element2.dispatchEvent(event);
+                element3.dispatchEvent(event);
+                element3.dispatchEvent(event);
+                element4.dispatchEvent(event);
+                element4.dispatchEvent(event);
+                return result;
+            }),
+            8
+        );
+    });
+
+    it('adds namespaced delegated events to each node', async function() {
+        assert.equal(
+            await exec(_ => {
+                let result = 0;
+                const event1 = new Event('click', {
+                    bubbles: true
+                });
+                const event2 = new Event('hover', {
+                    bubbles: true
+                });
+                const element1 = document.getElementById('test1');
+                const element2 = document.getElementById('test2');
+                const element3 = document.getElementById('test3');
+                const element4 = document.getElementById('test4');
+                dom.addEventDelegate(
+                    'div',
+                    'click.test hover.test',
+                    'a',
+                    _ => { result++; }
+                );
+                element1.dispatchEvent(event1);
+                element1.dispatchEvent(event1);
+                element1.dispatchEvent(event2);
+                element1.dispatchEvent(event2);
+                element2.dispatchEvent(event1);
+                element2.dispatchEvent(event1);
+                element2.dispatchEvent(event2);
+                element2.dispatchEvent(event2);
+                element3.dispatchEvent(event1);
+                element3.dispatchEvent(event1);
+                element3.dispatchEvent(event2);
+                element3.dispatchEvent(event2);
+                element4.dispatchEvent(event1);
+                element4.dispatchEvent(event1);
+                element4.dispatchEvent(event2);
+                element4.dispatchEvent(event2);
+                return result;
+            }),
+            16
+        );
+    });
+
+    it('adds a deep namespaced delegated event to each node', async function() {
+        assert.equal(
+            await exec(_ => {
+                let result = 0;
+                const event = new Event('click', {
+                    bubbles: true
+                });
+                const element1 = document.getElementById('test1');
+                const element2 = document.getElementById('test2');
+                const element3 = document.getElementById('test3');
+                const element4 = document.getElementById('test4');
+                dom.addEventDelegate(
+                    'div',
+                    'click.test.deep',
+                    'a',
+                    _ => { result++; }
+                );
+                element1.dispatchEvent(event);
+                element1.dispatchEvent(event);
+                element2.dispatchEvent(event);
+                element2.dispatchEvent(event);
+                element3.dispatchEvent(event);
+                element3.dispatchEvent(event);
+                element4.dispatchEvent(event);
+                element4.dispatchEvent(event);
+                return result;
+            }),
+            8
+        );
+    });
+
+    it('adds deep namespaced delegated events to each node', async function() {
+        assert.equal(
+            await exec(_ => {
+                let result = 0;
+                const event1 = new Event('click', {
+                    bubbles: true
+                });
+                const event2 = new Event('hover', {
+                    bubbles: true
+                });
+                const element1 = document.getElementById('test1');
+                const element2 = document.getElementById('test2');
+                const element3 = document.getElementById('test3');
+                const element4 = document.getElementById('test4');
+                dom.addEventDelegate(
+                    'div',
+                    'click.test.deep hover.test.deep',
+                    'a',
+                    _ => { result++; }
+                );
+                element1.dispatchEvent(event1);
+                element1.dispatchEvent(event1);
+                element1.dispatchEvent(event2);
+                element1.dispatchEvent(event2);
+                element2.dispatchEvent(event1);
+                element2.dispatchEvent(event1);
+                element2.dispatchEvent(event2);
+                element2.dispatchEvent(event2);
+                element3.dispatchEvent(event1);
+                element3.dispatchEvent(event1);
+                element3.dispatchEvent(event2);
+                element3.dispatchEvent(event2);
+                element4.dispatchEvent(event1);
+                element4.dispatchEvent(event1);
+                element4.dispatchEvent(event2);
+                element4.dispatchEvent(event2);
+                return result;
+            }),
+            16
         );
     });
 

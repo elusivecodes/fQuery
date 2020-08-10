@@ -33,6 +33,131 @@ describe('#addEvent', function() {
         );
     });
 
+    it('adds events to each node', async function() {
+        assert.equal(
+            await exec(_ => {
+                let result = 0;
+                const event1 = new Event('click');
+                const event2 = new Event('hover');
+                const element1 = document.getElementById('test1');
+                const element2 = document.getElementById('test2');
+                dom.addEvent(
+                    'a',
+                    'click hover',
+                    _ => { result++; }
+                );
+                element1.dispatchEvent(event1);
+                element1.dispatchEvent(event1);
+                element1.dispatchEvent(event2);
+                element1.dispatchEvent(event2);
+                element2.dispatchEvent(event1);
+                element2.dispatchEvent(event1);
+                element2.dispatchEvent(event2);
+                element2.dispatchEvent(event2);
+                return result;
+            }),
+            8
+        );
+    });
+
+    it('adds a namespaced event to each node', async function() {
+        assert.equal(
+            await exec(_ => {
+                let result = 0;
+                const event = new Event('click');
+                const element1 = document.getElementById('test1');
+                const element2 = document.getElementById('test2');
+                dom.addEvent(
+                    'a',
+                    'click.test',
+                    _ => { result++; }
+                );
+                element1.dispatchEvent(event);
+                element1.dispatchEvent(event);
+                element2.dispatchEvent(event);
+                element2.dispatchEvent(event);
+                return result;
+            }),
+            4
+        );
+    });
+
+    it('adds namespaced events to each node', async function() {
+        assert.equal(
+            await exec(_ => {
+                let result = 0;
+                const event1 = new Event('click');
+                const event2 = new Event('hover');
+                const element1 = document.getElementById('test1');
+                const element2 = document.getElementById('test2');
+                dom.addEvent(
+                    'a',
+                    'click.test hover.test',
+                    _ => { result++; }
+                );
+                element1.dispatchEvent(event1);
+                element1.dispatchEvent(event1);
+                element1.dispatchEvent(event2);
+                element1.dispatchEvent(event2);
+                element2.dispatchEvent(event1);
+                element2.dispatchEvent(event1);
+                element2.dispatchEvent(event2);
+                element2.dispatchEvent(event2);
+                return result;
+            }),
+            8
+        );
+    });
+
+    it('adds a deep namespaced event to each node', async function() {
+        assert.equal(
+            await exec(_ => {
+                let result = 0;
+                const event = new Event('click');
+                const element1 = document.getElementById('test1');
+                const element2 = document.getElementById('test2');
+                dom.addEvent(
+                    'a',
+                    'click.test.deep',
+                    _ => { result++; }
+                );
+                element1.dispatchEvent(event);
+                element1.dispatchEvent(event);
+                element2.dispatchEvent(event);
+                element2.dispatchEvent(event);
+                return result;
+            }),
+            4
+        );
+    });
+
+    it('adds deep namespaced events to each node', async function() {
+        assert.equal(
+            await exec(_ => {
+                let result = 0;
+                const event1 = new Event('click');
+                const event2 = new Event('hover');
+                const element1 = document.getElementById('test1');
+                const element2 = document.getElementById('test2');
+                dom.addEvent(
+                    'a',
+                    'click.test.deep hover.test.deep',
+                    _ => { result++; }
+                );
+                element1.dispatchEvent(event1);
+                element1.dispatchEvent(event1);
+                element1.dispatchEvent(event2);
+                element1.dispatchEvent(event2);
+                element2.dispatchEvent(event1);
+                element2.dispatchEvent(event1);
+                element2.dispatchEvent(event2);
+                element2.dispatchEvent(event2);
+                return result;
+            }),
+            8
+        );
+    });
+
     it('works with HTMLElement nodes', async function() {
         assert.equal(
             await exec(_ => {

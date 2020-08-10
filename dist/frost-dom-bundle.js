@@ -1476,6 +1476,9 @@
             url: false
         },
 
+        // Use mock
+        useMock: false,
+
         // Local protocol test
         _localRegExp: /^(?:about|app|app-storage|.+-extension|file|res|widget):$/
 
@@ -1514,7 +1517,7 @@
             }
 
             if (this._options.debug) {
-                DOMNode.setDataset(this._node, 'animationStart', this._options.start);
+                this._node.dataset.animationStart = this._options.start;
             }
 
             this.promise = new Promise((resolve, reject) => {
@@ -1596,8 +1599,8 @@
             }
 
             if (this._options.debug) {
-                DOMNode.setDataset(this._node, 'animationNow', now);
-                DOMNode.setDataset(this._node, 'animationProgress', progress);
+                this._node.dataset.animationNow = now;
+                this._node.dataset.animationProgress = progress;
             }
 
             this._callback(this._node, progress, this._options);
@@ -1607,9 +1610,9 @@
             }
 
             if (this._options.debug) {
-                DOMNode.removeDataset(this._node, 'animationStart');
-                DOMNode.removeDataset(this._node, 'animationNow');
-                DOMNode.removeDataset(this._node, 'animationProgress');
+                delete this._node.dataset.animationStart;
+                delete this._node.dataset.animationNow;
+                delete this._node.dataset.animationProgress;
             }
 
             this._resolve(this._node);
@@ -1695,6 +1698,9 @@
             infinite: false,
             debug: false
         },
+
+        // Use timeout
+        useTimeout: false,
 
         // Animating flag
         _animating: false,
@@ -1970,14 +1976,14 @@
         loadStyle(url, cache = true) {
             return new AjaxRequest({ url, cache })
                 .then(response =>
-                    DOMNode.insertBefore(
-                        this._context.head,
+                    this._context.head.insertBefore(
                         this.create(
                             'style',
                             {
                                 html: response.response
                             }
-                        )
+                        ),
+                        null
                     )
                 );
         },
@@ -1997,14 +2003,14 @@
                 )
                 .then(responses => {
                     for (const response of responses) {
-                        DOMNode.insertBefore(
-                            this._context.head,
+                        this._context.head.insertBefore(
                             this.create(
                                 'style',
                                 {
                                     html: response.response
                                 }
-                            )
+                            ),
+                            null
                         );
                     }
 
@@ -2117,8 +2123,7 @@
             return this.animate(
                 nodes,
                 (node, progress) =>
-                    DOMNode.setStyle(
-                        node,
+                    node.style.setProperty(
                         'opacity',
                         progress < 1 ?
                             progress.toFixed(2) :
@@ -2141,8 +2146,7 @@
             return this.animate(
                 nodes,
                 (node, progress) =>
-                    DOMNode.setStyle(
-                        node,
+                    node.style.setProperty(
                         'opacity',
                         progress < 1 ?
                             (1 - progress).toFixed(2) :
@@ -2153,11 +2157,12 @@
         },
 
         /**
-         * Rotate each node in on an X,Y.
+         * Rotate each node in on an X, Y or Z.
          * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
          * @param {object} [options] The options to use for animating.
          * @param {number} [options.x=0] The amount to rotate on the X-axis.
          * @param {number} [options.y=1] The amount to rotate on the Y-axis.
+         * @param {number} [options.z=1] The amount to rotate on the Z-axis.
          * @param {Boolean} [options.inverse] Whether to invert the rotation.
          * @param {number} [options.duration=1000] The duration of the animation.
          * @param {string} [options.type=ease-in-out] The type of animation.
@@ -2169,28 +2174,29 @@
                 nodes,
                 (node, progress, options) => {
                     const amount = ((90 - (progress * 90)) * (options.inverse ? -1 : 1)).toFixed(2);
-                    DOMNode.setStyle(
-                        node,
+                    node.style.setProperty(
                         'transform',
                         progress < 1 ?
-                            `rotate3d(${options.x}, ${options.y}, 0, ${amount}deg)` :
+                            `rotate3d(${options.x}, ${options.y}, ${options.z}, ${amount}deg)` :
                             ''
                     );
                 },
                 {
                     x: 0,
                     y: 1,
+                    z: 0,
                     ...options
                 }
             );
         },
 
         /**
-         * Rotate each node out on an X,Y.
+         * Rotate each node out on an X, Y or Z.
          * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
          * @param {object} [options] The options to use for animating.
          * @param {number} [options.x=0] The amount to rotate on the X-axis.
          * @param {number} [options.y=1] The amount to rotate on the Y-axis.
+         * @param {number} [options.z=1] The amount to rotate on the Z-axis.
          * @param {Boolean} [options.inverse] Whether to invert the rotation.
          * @param {number} [options.duration=1000] The duration of the animation.
          * @param {string} [options.type=ease-in-out] The type of animation.
@@ -2202,17 +2208,17 @@
                 nodes,
                 (node, progress, options) => {
                     const amount = ((progress * 90) * (options.inverse ? -1 : 1)).toFixed(2);
-                    DOMNode.setStyle(
-                        node,
+                    node.style.setProperty(
                         'transform',
                         progress < 1 ?
-                            `rotate3d(${options.x}, ${options.y}, 0, ${amount}deg)` :
+                            `rotate3d(${options.x}, ${options.y}, ${options.z}, ${amount}deg)` :
                             ''
                     );
                 },
                 {
                     x: 0,
                     y: 1,
+                    z: 0,
                     ...options
                 }
             );
@@ -2234,12 +2240,12 @@
                 nodes,
                 (node, progress, options) => {
                     if (progress === 1) {
-                        DOMNode.setStyle(node, 'overflow', '');
+                        node.style.setProperty('overflow', '');
                         if (options.useGpu) {
-                            DOMNode.setStyle(node, 'transform', '');
+                            node.style.setProperty('transform', '');
                         } else {
-                            DOMNode.setStyle(node, 'margin-left', '');
-                            DOMNode.setStyle(node, 'margin-top', '');
+                            node.style.setProperty('margin-left', '');
+                            node.style.setProperty('margin-top', '');
                         }
                         return;
                     }
@@ -2265,9 +2271,9 @@
 
                     const translateAmount = ((size - (size * progress)) * (inverse ? -1 : 1)).toFixed(2);
                     if (options.useGpu) {
-                        DOMNode.setStyle(node, 'transform', `translate${translateStyle}(${translateAmount}px)`);
+                        node.style.setProperty('transform', `translate${translateStyle}(${translateAmount}px)`);
                     } else {
-                        DOMNode.setStyle(node, translateStyle, `${translateAmount}px`);
+                        node.style.setProperty(translateStyle, `${translateAmount}px`);
                     }
                 },
                 {
@@ -2294,12 +2300,12 @@
                 nodes,
                 (node, progress, options) => {
                     if (progress === 1) {
-                        DOMNode.setStyle(node, 'overflow', '');
+                        node.style.setProperty('overflow', '');
                         if (options.useGpu) {
-                            DOMNode.setStyle(node, 'transform', '');
+                            node.style.setProperty('transform', '');
                         } else {
-                            DOMNode.setStyle(node, 'margin-left', '');
-                            DOMNode.setStyle(node, 'margin-top', '');
+                            node.style.setProperty('margin-left', '');
+                            node.style.setProperty('margin-top', '');
                         }
                         return;
                     }
@@ -2325,9 +2331,9 @@
 
                     const translateAmount = (size * progress * (inverse ? -1 : 1)).toFixed(2);
                     if (options.useGpu) {
-                        DOMNode.setStyle(node, 'transform', `translate${translateStyle}(${translateAmount}px)`);
+                        node.style.setProperty('transform', `translate${translateStyle}(${translateAmount}px)`);
                     } else {
-                        DOMNode.setStyle(node, translateStyle, `${translateAmount}px`);
+                        node.style.setProperty(translateStyle, `${translateAmount}px`);
                     }
                 },
                 {
@@ -2359,23 +2365,23 @@
             };
 
             const promises = nodes.map(node => {
-                const initialHeight = DOMNode.getStyle(node, 'height');
-                const initialWidth = DOMNode.getStyle(node, 'width');
-                DOMNode.setStyle(node, 'overflow', 'hidden');
+                const initialHeight = node.style.height;
+                const initialWidth = node.style.width;
+                node.style.setProperty('overflow', 'hidden');
 
                 return new Animation(
                     node,
                     (node, progress, options) => {
-                        DOMNode.setStyle(node, 'height', initialHeight);
-                        DOMNode.setStyle(node, 'width', initialWidth);
+                        node.style.setProperty('height', initialHeight);
+                        node.style.setProperty('width', initialWidth);
 
                         if (progress === 1) {
-                            DOMNode.setStyle(node, 'overflow', '');
+                            node.style.setProperty('overflow', '');
                             if (options.useGpu) {
-                                DOMNode.setStyle(node, 'transform', '');
+                                node.style.setProperty('transform', '');
                             } else {
-                                DOMNode.setStyle(node, 'margin-left', '');
-                                DOMNode.setStyle(node, 'margin-top', '');
+                                node.style.setProperty('margin-left', '');
+                                node.style.setProperty('margin-top', '');
                             }
                             return;
                         }
@@ -2404,14 +2410,14 @@
                         const size = DOM[`_${sizeStyle}`](node),
                             amount = (size * progress).toFixed(2);
 
-                        DOMNode.setStyle(node, sizeStyle, `${amount}px`);
+                        node.style.setProperty(sizeStyle, `${amount}px`);
 
                         if (translateStyle) {
                             const translateAmount = (size - amount).toFixed(2);
                             if (options.useGpu) {
-                                DOMNode.setStyle(node, 'transform', `translate${translateStyle}(${translateAmount}px)`);
+                                node.style.setProperty('transform', `translate${translateStyle}(${translateAmount}px)`);
                             } else {
-                                DOMNode.setStyle(node, translateStyle, `${translateAmount}px`);
+                                node.style.setProperty(translateStyle, `${translateAmount}px`);
                             }
                         }
                     },
@@ -2445,23 +2451,23 @@
             };
 
             const promises = nodes.map(node => {
-                const initialHeight = DOMNode.getStyle(node, 'height');
-                const initialWidth = DOMNode.getStyle(node, 'width');
-                DOMNode.setStyle(node, 'overflow', 'hidden');
+                const initialHeight = node.style.height;
+                const initialWidth = node.style.width;
+                node.style.setProperty('overflow', 'hidden');
 
                 return new Animation(
                     node,
                     (node, progress, options) => {
-                        DOMNode.setStyle(node, 'height', initialHeight);
-                        DOMNode.setStyle(node, 'width', initialWidth);
+                        node.style.setProperty('height', initialHeight);
+                        node.style.setProperty('width', initialWidth);
 
                         if (progress === 1) {
-                            DOMNode.setStyle(node, 'overflow', '');
+                            node.style.setProperty('overflow', '');
                             if (options.useGpu) {
-                                DOMNode.setStyle(node, 'transform', '');
+                                node.style.setProperty('transform', '');
                             } else {
-                                DOMNode.setStyle(node, 'margin-left', '');
-                                DOMNode.setStyle(node, 'margin-top', '');
+                                node.style.setProperty('margin-left', '');
+                                node.style.setProperty('margin-top', '');
                             }
                             return;
                         }
@@ -2490,14 +2496,14 @@
                         const size = DOM[`_${sizeStyle}`](node),
                             amount = (size - (size * progress)).toFixed(2);
 
-                        DOMNode.setStyle(node, sizeStyle, `${amount}px`);
+                        node.style.setProperty(sizeStyle, `${amount}px`);
 
                         if (translateStyle) {
                             const translateAmount = (size - amount).toFixed(2);
                             if (options.useGpu) {
-                                DOMNode.setStyle(node, 'transform', `translate${translateStyle}(${translateAmount}px)`);
+                                node.style.setProperty('transform', `translate${translateStyle}(${translateAmount}px)`);
                             } else {
-                                DOMNode.setStyle(node, translateStyle, `${translateAmount}px`);
+                                node.style.setProperty(translateStyle, `${translateAmount}px`);
                             }
                         }
                     },
@@ -2608,7 +2614,7 @@
                 return;
             }
 
-            return DOMNode.getProperty(node, property);
+            return node[property];
         },
 
         /**
@@ -2644,7 +2650,7 @@
             nodes = this.parseNodes(nodes);
 
             for (const node of nodes) {
-                DOMNode.removeAttribute(node, attribute);
+                node.removeAttribute(attribute);
             }
         },
 
@@ -2670,7 +2676,7 @@
             nodes = this.parseNodes(nodes);
 
             for (const node of nodes) {
-                DOMNode.removeProperty(node, property);
+                delete node[property];
             }
         },
 
@@ -2734,7 +2740,7 @@
 
             for (const node of nodes) {
                 for (const property in properties) {
-                    DOMNode.setProperty(node, property, properties[property]);
+                    node[property] = properties[property];
                 }
             }
         },
@@ -3071,14 +3077,14 @@
             }
 
             if (Core.isWindow(node)) {
-                return DOMNode.getScrollXWindow(node);
+                return node.scrollX;
             }
 
             if (Core.isDocument(node)) {
                 return this.constructor._getScrollXDocument(node);
             }
 
-            return DOMNode.getScrollX(node);
+            return node.scrollLeft;
         },
 
         /**
@@ -3094,14 +3100,14 @@
             }
 
             if (Core.isWindow(node)) {
-                return DOMNode.getScrollYWindow(node);
+                return node.scrollY;
             }
 
             if (Core.isDocument(node)) {
                 return this.constructor._getScrollYDocument(node);
             }
 
-            return DOMNode.getScrollY(node);
+            return node.scrollTop;
         },
 
         /**
@@ -3115,7 +3121,7 @@
 
             for (const node of nodes) {
                 if (Core.isWindow(node)) {
-                    DOMNode.setScrollWindow(node, x, y);
+                    node.scroll(x, y);
                 } else if (Core.isDocument(node)) {
                     this.constructor._setScrollDocument(node, x, y);
                 } else {
@@ -3138,7 +3144,7 @@
                 } else if (Core.isDocument(node)) {
                     this.constructor._setScrollXDocument(node, x);
                 } else {
-                    DOMNode.setScrollX(node, x);
+                    node.scrollLeft = x;
                 }
             }
         },
@@ -3157,7 +3163,7 @@
                 } else if (Core.isDocument(node)) {
                     this.constructor._setScrollYDocument(node, y);
                 } else {
-                    DOMNode.setScrollY(node, y);
+                    node.scrollTop = y;
                 }
             }
         }
@@ -3184,12 +3190,9 @@
             }
 
             if (Core.isWindow(node)) {
-                return DOMNode.heightWindow(
-                    node,
-                    Core.isUndefined(innerOuter) ?
-                        0 :
-                        innerOuter
-                );
+                return innerOuter ?
+                    node.outerHeight :
+                    node.innerHeight;
             }
 
             if (Core.isUndefined(innerOuter)) {
@@ -3243,12 +3246,9 @@
             }
 
             if (Core.isWindow(node)) {
-                return DOMNode.widthWindow(
-                    node,
-                    Core.isUndefined(innerOuter) ?
-                        0 :
-                        innerOuter
-                );
+                return innerOuter ?
+                    node.outerWidth :
+                    node.innerWidth;
             }
 
             if (Core.isUndefined(innerOuter)) {
@@ -3281,7 +3281,7 @@
             }
 
             for (const node of nodes) {
-                DOMNode.addClass(node, ...classes);
+                node.classList.add(...classes);
             }
         },
 
@@ -3344,7 +3344,7 @@
             }
 
             for (const node of nodes) {
-                DOMNode.removeClass(node, ...classes);
+                node.classList.remove(...classes);
             }
         },
 
@@ -3385,9 +3385,12 @@
             nodes = this.parseNodes(nodes);
 
             for (const node of nodes) {
-                DOMNode.getStyle(node, 'display') === 'none' ?
-                    DOMNode.setStyle(node, 'display', '') :
-                    DOMNode.setStyle(node, 'display', 'none');
+                node.style.setProperty(
+                    'display',
+                    node.style.display === 'none' ?
+                        '' :
+                        'none'
+                );
             }
         },
 
@@ -3407,7 +3410,7 @@
 
             for (const node of nodes) {
                 for (const className of classes) {
-                    DOMNode.toggleClass(node, className);
+                    node.classList.toggle(className);
                 }
             }
         }
@@ -3577,7 +3580,7 @@
                 return;
             }
 
-            DOMNode.blur(node);
+            node.blur();
         },
 
         /**
@@ -3591,7 +3594,7 @@
                 return;
             }
 
-            DOMNode.click(node);
+            node.click();
         },
 
         /**
@@ -3605,7 +3608,7 @@
                 return;
             }
 
-            DOMNode.focus(node);
+            node.focus();
         },
 
         /**
@@ -3782,7 +3785,11 @@
                 return;
             }
 
-            return DOMNode.attachShadow(node, open);
+            return node.attachShadow({
+                mode: open ?
+                    'open' :
+                    'closed'
+            });
         },
 
         /**
@@ -3800,21 +3807,20 @@
          * @returns {HTMLElement} The new HTMLElement.
          */
         create(tagName = 'div', options) {
-            const node = DOMNode.create(this._context, tagName);
+            const node = this._context.createElement(tagName);
 
             if (!options) {
                 return node;
             }
 
             if ('html' in options) {
-                DOMNode.setProperty(node, 'innerHTML', options.html);
+                node.innerHTML = options.html;
             } else if ('text' in options) {
-                DOMNode.setProperty(node, 'innerText', options.text);
+                node.innerText = options.text;
             }
 
             if ('class' in options) {
-                DOMNode.addClass(
-                    node,
+                node.classList.add(
                     ...this.constructor._parseClasses(
                         Core.wrap(options.class)
                     )
@@ -3826,7 +3832,7 @@
             }
 
             if ('value' in options) {
-                DOMNode.setProperty(node, 'value', options.value);
+                node.value = options.value;
             }
 
             if ('attributes' in options) {
@@ -3835,7 +3841,7 @@
 
             if ('properties' in options) {
                 for (const key in options.properties) {
-                    DOMNode.setProperty(node, key, options.properties[key]);
+                    node[key] = options.properties[key];
                 }
             }
 
@@ -3854,7 +3860,7 @@
          * @returns {Node} The new comment node.
          */
         createComment(comment) {
-            return DOMNode.createComment(this._context, comment);
+            return this._context.createComment(comment);
         },
 
         /**
@@ -3862,7 +3868,7 @@
          * @returns {DocumentFragment} The new DocumentFragment.
          */
         createFragment() {
-            return DOMNode.createFragment(this._context);
+            return this._context.createDocumentFragment();
         },
 
         /**
@@ -3870,7 +3876,7 @@
          * @returns {Range} The new Range.
          */
         createRange() {
-            return DOMNode.createRange(this._context);
+            return this._context.createRange();
         },
 
         /**
@@ -3879,7 +3885,7 @@
          * @returns {Node} The new text node.
          */
         createText(text) {
-            return DOMNode.createText(this._context, text);
+            return this._context.createTextNode(text);
         },
 
         /**
@@ -3889,10 +3895,9 @@
          */
         parseHTML(html) {
             return Core.wrap(
-                DOMNode.children(
-                    this.createRange()
-                        .createContextualFragment(html)
-                )
+                this.createRange()
+                    .createContextualFragment(html)
+                    .children
             );
         }
 
@@ -3939,13 +3944,13 @@
             nodes = this.parseNodes(nodes, { node: true });
 
             for (const node of nodes) {
-                const parent = DOMNode.parent(node);
+                const parent = node.parentNode;
 
                 if (!parent) {
                     continue;
                 }
 
-                DOMNode.removeChild(parent, node);
+                parent.removeChild(node);
             }
 
             return nodes;
@@ -3973,14 +3978,14 @@
             nodes = this.parseNodes(nodes, { node: true });
 
             for (const node of nodes) {
-                const parent = DOMNode.parent(node);
+                const parent = node.parentNode;
 
                 if (!parent) {
                     continue;
                 }
 
                 this.constructor._remove(node);
-                DOMNode.removeChild(parent, node);
+                parent.removeChild(node);
             }
         },
 
@@ -4010,32 +4015,31 @@
             const fragment = this.createFragment();
 
             for (const other of others) {
-                DOMNode.insertBefore(fragment, other);
+                fragment.insertBefore(other, null);
             }
 
-            others = Core.wrap(DOMNode.childNodes(fragment));
+            others = Core.wrap(fragment.childNodes);
 
             nodes = nodes.filter(node =>
                 !others.includes(node) &&
                 !nodes.some(other =>
-                    !DOMNode.isSame(other, node) &&
-                    DOMNode.contains(other, node)
+                    !other.isSameNode(node) &&
+                    other.contains(node)
                 )
             );
 
             const lastNode = nodes[nodes.length - 1];
 
             for (const node of nodes) {
-                const parent = DOMNode.parent(node);
+                const parent = node.parentNode;
 
                 if (!parent) {
                     continue;
                 }
 
                 for (const other of others) {
-                    DOMNode.insertBefore(
-                        parent,
-                        DOMNode.isSame(node, lastNode) ?
+                    parent.insertBefore(
+                        node.isSameNode(lastNode) ?
                             other :
                             this.constructor._clone(other, {
                                 deep: true,
@@ -4049,14 +4053,14 @@
             }
 
             for (const node of nodes) {
-                const parent = DOMNode.parent(node);
+                const parent = node.parentNode;
 
                 if (!parent) {
                     continue;
                 }
 
                 this.constructor._remove(node);
-                DOMNode.removeChild(parent, node);
+                parent.removeChild(node);
             }
         }
 
@@ -4084,16 +4088,15 @@
             const lastNode = nodes[nodes.length - 1];
 
             for (const node of nodes) {
-                const parent = DOMNode.parent(node);
+                const parent = node.parentNode;
 
                 if (!parent) {
                     continue;
                 }
 
                 for (const other of others) {
-                    DOMNode.insertBefore(
-                        parent,
-                        DOMNode.isSame(node, lastNode) ?
+                    parent.insertBefore(
+                        node.isSameNode(lastNode) ?
                             other :
                             this.constructor._clone(other, {
                                 deep: true,
@@ -4101,7 +4104,7 @@
                                 data: true,
                                 animations: true
                             }),
-                        DOMNode.next(node)
+                        node.nextSibling
                     );
                 }
             }
@@ -4122,16 +4125,16 @@
 
             for (const node of nodes) {
                 for (const other of others) {
-                    DOMNode.insertBefore(
-                        node,
-                        DOMNode.isSame(node, lastNode) ?
+                    node.insertBefore(
+                        node.isSameNode(lastNode) ?
                             other :
                             this.constructor._clone(other, {
                                 deep: true,
                                 events: true,
                                 data: true,
                                 animations: true
-                            })
+                            }),
+                        null
                     );
                 }
             }
@@ -4162,16 +4165,15 @@
             const lastNode = nodes[nodes.length - 1];
 
             for (const node of nodes) {
-                const parent = DOMNode.parent(node);
+                const parent = node.parentNode;
 
                 if (!parent) {
                     continue;
                 }
 
                 for (const other of others) {
-                    DOMNode.insertBefore(
-                        parent,
-                        DOMNode.isSame(node, lastNode) ?
+                    parent.insertBefore(
+                        node.isSameNode(lastNode) ?
                             other :
                             this.constructor._clone(other, {
                                 deep: true,
@@ -4217,12 +4219,11 @@
             const lastNode = nodes[nodes.length - 1];
 
             for (const node of nodes) {
-                const firstChild = DOMNode.firstChild(node);
+                const firstChild = node.firstChild;
 
                 for (const other of others) {
-                    DOMNode.insertBefore(
-                        node,
-                        DOMNode.isSame(node, lastNode) ?
+                    node.insertBefore(
+                        node.isSameNode(lastNode) ?
                             other :
                             this.constructor._clone(other, {
                                 deep: true,
@@ -4268,7 +4269,7 @@
             const parents = [];
 
             for (const node of nodes) {
-                const parent = DOMNode.parent(node);
+                const parent = node.parentNode;
 
                 if (!parent) {
                     continue;
@@ -4361,7 +4362,7 @@
          */
         connected(nodes) {
             return this.parseNodes(nodes, { node: true, fragment: true, shadow: true })
-                .filter(node => DOMNode.isConnected(node));
+                .filter(node => node.isConnected);
         },
 
         /**
@@ -4375,7 +4376,7 @@
 
             return this.parseNodes(nodes, { node: true, fragment: true, shadow: true })
                 .filter(node =>
-                    others.some(other => DOMNode.isEqual(node, other))
+                    others.some(other => node.isEqualNode(other))
                 );
         },
 
@@ -4471,7 +4472,7 @@
 
             return this.parseNodes(nodes, { node: true, fragment: true, shadow: true })
                 .filter(node =>
-                    others.some(other => DOMNode.isSame(node, other))
+                    others.some(other => node.isSameNode(other))
                 );
         },
 
@@ -4506,7 +4507,7 @@
         withAttribute(nodes, attribute) {
             return this.parseNodes(nodes)
                 .filter(node =>
-                    DOMNode.hasAttribute(node, attribute)
+                    node.hasAttribute(attribute)
                 );
         },
 
@@ -4518,7 +4519,7 @@
         withChildren(nodes) {
             return this.parseNodes(nodes, { fragment: true, shadow: true, document: true })
                 .filter(node =>
-                    DOMNode.hasChildren(node)
+                    !!node.childElementCount
                 );
         },
 
@@ -4534,7 +4535,7 @@
             return this.parseNodes(nodes)
                 .filter(node =>
                     classes.some(className =>
-                        DOMNode.hasClass(node, className)
+                        node.classList.contains(className)
                     )
                 );
         },
@@ -4598,7 +4599,7 @@
         withProperty(nodes, property) {
             return this.parseNodes(nodes)
                 .filter(node =>
-                    DOMNode.hasProperty(node, property)
+                    node.hasOwnProperty(property)
                 );
         }
 
@@ -4639,7 +4640,7 @@
             // standard selector
             if (Core.isDocument(nodes) || Core.isElement(nodes) || Core.isFragment(nodes) || Core.isShadow(nodes)) {
                 return Core.wrap(
-                    DOMNode.findBySelector(selector, nodes)
+                    nodes.querySelectorAll(selector)
                 );
             }
 
@@ -4656,11 +4657,15 @@
          */
         findByClass(className, nodes = this._context) {
             if (Core.isDocument(nodes) || Core.isElement(nodes)) {
-                return Core.wrap(DOMNode.findByClass(className, nodes));
+                return Core.wrap(
+                    nodes.getElementsByClassName(className)
+                );
             }
 
             if (Core.isFragment(nodes) || Core.isShadow(nodes)) {
-                return Core.wrap(DOMNode.findBySelector(`.${className}`, nodes));
+                return Core.wrap(
+                    nodes.querySelectorAll(`.${className}`)
+                );
             }
 
             nodes = this.parseNodes(nodes, { fragment: true, shadow: true, document: true });
@@ -4671,8 +4676,8 @@
                 Core.merge(
                     results,
                     Core.isFragment(node) || Core.isShadow(node) ?
-                        DOMNode.findBySelector(`.${className}`, node) :
-                        DOMNode.findByClass(className, node)
+                        node.querySelectorAll(`.${className}`) :
+                        node.getElementsByClassName(className)
                 )
             }
 
@@ -4701,11 +4706,15 @@
          */
         findByTag(tagName, nodes = this._context) {
             if (Core.isDocument(nodes) || Core.isElement(nodes)) {
-                return Core.wrap(DOMNode.findByTag(tagName, nodes));
+                return Core.wrap(
+                    nodes.getElementsByTagName(tagName)
+                );
             }
 
             if (Core.isFragment(nodes) || Core.isShadow(nodes)) {
-                return Core.wrap(DOMNode.findBySelector(tagName, nodes));
+                return Core.wrap(
+                    nodes.querySelectorAll(tagName)
+                );
             }
 
             nodes = this.parseNodes(nodes, { fragment: true, shadow: true, document: true });
@@ -4716,8 +4725,8 @@
                 Core.merge(
                     results,
                     Core.isFragment(node) || Core.isShadow(node) ?
-                        DOMNode.findBySelector(tagName, node) :
-                        DOMNode.findByTag(tagName, node)
+                        node.querySelectorAll(tagName) :
+                        node.getElementsByTagName(tagName)
                 )
             }
 
@@ -4754,7 +4763,7 @@
 
             // standard selector
             if (Core.isDocument(nodes) || Core.isElement(nodes) || Core.isFragment(nodes) || Core.isShadow(nodes)) {
-                return DOMNode.findOneBySelector(selector, nodes);
+                return nodes.querySelector(selector);
             }
 
             nodes = this.parseNodes(nodes, { fragment: true, shadow: true, document: true });
@@ -4774,11 +4783,11 @@
          */
         findOneByClass(className, nodes = this._context) {
             if (Core.isDocument(nodes) || Core.isElement(nodes)) {
-                return DOMNode.findByClass(className, nodes).item(0);
+                return nodes.getElementsByClassName(className).item(0);
             }
 
             if (Core.isFragment(nodes) || Core.isShadow(nodes)) {
-                return DOMNode.findOneBySelector(`.${className}`, nodes);
+                return nodes.querySelector(`.${className}`);
             }
 
             nodes = this.parseNodes(nodes, { fragment: true, shadow: true, document: true });
@@ -4789,8 +4798,8 @@
 
             for (const node of nodes) {
                 const result = Core.isFragment(node) || Core.isShadow(node) ?
-                    DOMNode.findOneBySelector(`.${className}`, node) :
-                    DOMNode.findByClass(className, node).item(0);
+                    node.querySelector(`.${className}`) :
+                    node.getElementsByClassName(className).item(0);
                 if (result) {
                     return result;
                 }
@@ -4807,7 +4816,7 @@
          */
         findOneById(id, nodes = this._context) {
             if (Core.isDocument(nodes)) {
-                return DOMNode.findById(id, nodes);
+                return nodes.getElementById(id);
             }
 
             nodes = this.parseNodes(nodes, { fragment: true, shadow: true, document: true });
@@ -4827,11 +4836,11 @@
          */
         findOneByTag(tagName, nodes = this._context) {
             if (Core.isDocument(nodes) || Core.isElement(nodes)) {
-                return DOMNode.findByTag(tagName, nodes).item(0);
+                return nodes.getElementsByTagName(tagName).item(0);
             }
 
             if (Core.isFragment(nodes) || Core.isShadow(nodes)) {
-                return DOMNode.findOneBySelector(tagName, nodes);
+                return nodes.querySelector(tagName);
             }
 
             nodes = this.parseNodes(nodes, { fragment: true, shadow: true, document: true });
@@ -4842,8 +4851,8 @@
 
             for (const node of nodes) {
                 const result = Core.isFragment(node) || Core.isShadow(node) ?
-                    DOMNode.findOneBySelector(tagName, node) :
-                    DOMNode.findByTag(tagName, node).item(0);
+                    node.querySelector(tagName) :
+                    node.getElementsByTagName(tagName).item(0);
                 if (result) {
                     return result;
                 }
@@ -4934,17 +4943,17 @@
             }
 
             // Make sure all nodes have a parent
-            if (nodes.some(node => !DOMNode.parent(node))) {
+            if (nodes.some(node => !node.parentNode)) {
                 return;
             }
 
             const range = this.createRange();
 
             if (nodes.length === 1) {
-                DOMNode.select(range, nodes.shift());
+                range.selectNode(nodes.shift());
             } else {
-                DOMNode.setStartBefore(range, nodes.shift());
-                DOMNode.setEndAfter(range, nodes.pop());
+                range.setStartBefore(nodes.shift());
+                range.setEndAfter(nodes.pop());
             }
 
             return range.commonAncestorContainer;
@@ -4976,7 +4985,7 @@
                 return;
             }
 
-            return DOMNode.fragment(node);
+            return node.content;
         },
 
         /**
@@ -5050,7 +5059,7 @@
         offsetParent(nodes) {
             return this.forceShow(
                 nodes,
-                node => DOMNode.offsetParent(node)
+                node => node.offsetParent
             );
         },
 
@@ -5192,7 +5201,7 @@
                 return;
             }
 
-            return DOMNode.shadow(node);
+            return node.shadowRoot;
         },
 
         /**
@@ -5251,11 +5260,11 @@
             }
 
             if (Core.isString(filter)) {
-                return node => DOMNode.is(node, filter);
+                return node => Core.isElement(node) && node.matches(filter);
             }
 
             if (Core.isNode(filter) || Core.isFragment(filter) || Core.isShadow(filter)) {
-                return node => DOMNode.isSame(node, filter);
+                return node => node.isSameNode(filter);
             }
 
             filter = this.parseNodes(filter, { node: true, fragment: true, shadow: true });
@@ -5281,7 +5290,7 @@
                 return node =>
                     Core.merge(
                         [],
-                        DOMNode.findBySelector('*', node)
+                        node.querySelectorAll('*')
                     ).some(filter);
             }
 
@@ -5290,13 +5299,13 @@
             }
 
             if (Core.isNode(filter) || Core.isFragment(filter) || Core.isShadow(filter)) {
-                return node => DOMNode.contains(node, filter);
+                return node => node.contains(filter);
             }
 
             filter = this.parseNodes(filter, { node: true, fragment: true, shadow: true });
 
             if (filter.length) {
-                return node => filter.some(other => DOMNode.contains(node, other));
+                return node => filter.some(other => node.contains(other));
             }
 
             return false;
@@ -5451,19 +5460,19 @@
             // ShadowRoot nodes can not be moved
             nodes = this.parseNodes(nodes, { node: true, fragment: true, html: true }).reverse();
 
-            const selection = DOMNode.getSelection();
+            const selection = window.getSelection();
 
-            if (!DOMNode.rangeCount(selection)) {
+            if (!selection.rangeCount) {
                 return;
             }
 
-            const range = DOMNode.getRange(selection);
+            const range = selection.getRangeAt(0);
 
-            DOMNode.removeRanges(selection);
-            DOMNode.collapse(range);
+            selection.removeAllRanges();
+            range.collapse();
 
             for (const node of nodes) {
-                DOMNode.insert(range, node);
+                range.insertNode(node);
             }
         },
 
@@ -5476,18 +5485,18 @@
             // ShadowRoot nodes can not be moved
             nodes = this.parseNodes(nodes, { node: true, fragment: true, html: true }).reverse();
 
-            const selection = DOMNode.getSelection();
+            const selection = window.getSelection();
 
-            if (!DOMNode.rangeCount(selection)) {
+            if (!selection.rangeCount) {
                 return;
             }
 
-            const range = DOMNode.getRange(selection);
+            const range = selection.getRangeAt(0);
 
-            DOMNode.removeRanges(selection);
+            selection.removeAllRanges();
 
             for (const node of nodes) {
-                DOMNode.insert(range, node);
+                range.insertNode(node);
             }
         },
 
@@ -5496,19 +5505,19 @@
          * @returns {array} The selected nodes.
          */
         extractSelection() {
-            const selection = DOMNode.getSelection();
+            const selection = window.getSelection();
 
-            if (!DOMNode.rangeCount(selection)) {
+            if (!selection.rangeCount) {
                 return [];
             }
 
-            const range = DOMNode.getRange(selection);
+            const range = selection.getRangeAt(0);
 
-            DOMNode.removeRanges(selection);
+            selection.removeAllRanges();
 
-            const fragment = DOMNode.extract(range);
+            const fragment = range.extractContents();
 
-            return Core.wrap(DOMNode.childNodes(fragment));
+            return Core.wrap(fragment.childNodes);
         },
 
         /**
@@ -5516,15 +5525,15 @@
          * @returns {array} The selected nodes.
          */
         getSelection() {
-            const selection = DOMNode.getSelection();
+            const selection = window.getSelection();
 
-            if (!DOMNode.rangeCount(selection)) {
+            if (!selection.rangeCount) {
                 return [];
             }
 
-            const range = DOMNode.getRange(selection),
+            const range = selection.getRangeAt(0),
                 nodes = Core.wrap(
-                    DOMNode.findBySelector('*', range.commonAncestorContainer)
+                    range.commonAncestorContainer.querySelectorAll('*')
                 );
 
             if (!nodes.length) {
@@ -5535,14 +5544,14 @@
                 return nodes;
             }
 
-            const startContainer = DOMNode.startContainer(range),
-                endContainer = DOMNode.endContainer(range),
+            const startContainer = range.startContainer,
+                endContainer = range.endContainer,
                 start = (Core.isElement(startContainer) ?
                     startContainer :
-                    DOMNode.parent(startContainer)),
+                    startContainer.parentNode),
                 end = (Core.isElement(endContainer) ?
                     endContainer :
-                    DOMNode.parent(endContainer));
+                    endContainer.parentNode);
 
             const selectedNodes = nodes.slice(
                 nodes.indexOf(start),
@@ -5552,7 +5561,7 @@
 
             let lastNode;
             for (const node of selectedNodes) {
-                if (lastNode && DOMNode.contains(lastNode, node)) {
+                if (lastNode && lastNode.contains(node)) {
                     continue;
                 }
 
@@ -5574,10 +5583,10 @@
                 return node.select();
             }
 
-            const selection = DOMNode.getSelection();
+            const selection = window.getSelection();
 
-            if (DOMNode.rangeCount(selection) > 0) {
-                DOMNode.removeRanges(selection);
+            if (selection.rangeCount > 0) {
+                selection.removeAllRanges();
             }
 
             if (!node) {
@@ -5585,8 +5594,8 @@
             }
 
             const range = this.createRange();
-            DOMNode.select(range, node);
-            DOMNode.addRange(selection, range);
+            range.selectNode(node);
+            selection.addRange(range);
         },
 
         /**
@@ -5596,10 +5605,10 @@
         selectAll(nodes) {
             nodes = this.sort(nodes);
 
-            const selection = DOMNode.getSelection();
+            const selection = window.getSelection();
 
-            if (DOMNode.rangeCount(selection)) {
-                DOMNode.removeRanges(selection);
+            if (selection.rangeCount) {
+                selection.removeAllRanges();
             }
 
             if (!nodes.length) {
@@ -5609,13 +5618,13 @@
             const range = this.createRange();
 
             if (nodes.length == 1) {
-                DOMNode.select(range, nodes.shift());
+                range.selectNode(nodes.shift());
             } else {
-                DOMNode.setStartBefore(range, nodes.shift());
-                DOMNode.setEndAfter(range, nodes.pop());
+                range.setStartBefore(nodes.shift());
+                range.setEndAfter(nodes.pop());
             }
 
-            DOMNode.addRange(selection, range);
+            selection.addRange(range);
         },
 
         /**
@@ -5627,26 +5636,26 @@
             // ShadowRoot nodes can not be cloned
             nodes = this.parseNodes(nodes, { fragment: true, html: true });
 
-            const selection = DOMNode.getSelection();
+            const selection = window.getSelection();
 
-            if (!DOMNode.rangeCount(selection)) {
+            if (!selection.rangeCount) {
                 return;
             }
 
-            const range = DOMNode.getRange(selection);
+            const range = selection.getRangeAt(0);
 
-            DOMNode.removeRanges(selection);
+            selection.removeAllRanges();
 
-            const fragment = DOMNode.extract(range),
+            const fragment = range.extractContents(),
                 deepest = this.constructor._deepest(nodes.slice().shift()),
-                children = Core.wrap(DOMNode.childNodes(fragment));
+                children = Core.wrap(fragment.childNodes);
 
             for (const child of children) {
-                DOMNode.insertBefore(deepest, child);
+                deepest.insertBefore(child, null);
             }
 
             for (const node of nodes) {
-                DOMNode.insert(range, node);
+                range.insertNode(node);
             }
         }
 
@@ -5679,7 +5688,7 @@
         hasAttribute(nodes, attribute) {
             return this.parseNodes(nodes)
                 .some(node =>
-                    DOMNode.hasAttribute(node, attribute)
+                    node.hasAttribute(attribute)
                 );
         },
 
@@ -5691,7 +5700,7 @@
         hasChildren(nodes) {
             return this.parseNodes(nodes, { fragment: true, shadow: true, document: true })
                 .some(node =>
-                    DOMNode.hasChildren(node)
+                    !!node.childElementCount
                 );
         },
 
@@ -5707,7 +5716,7 @@
             return this.parseNodes(nodes)
                 .some(node =>
                     classes.some(className =>
-                        DOMNode.hasClass(node, className)
+                        node.classList.contains(className)
                     )
                 );
         },
@@ -5786,7 +5795,7 @@
         hasProperty(nodes, property) {
             return this.parseNodes(nodes)
                 .some(node =>
-                    DOMNode.hasProperty(node, property)
+                    node.hasOwnProperty(property)
                 );
         },
 
@@ -5825,7 +5834,7 @@
          */
         isConnected(nodes) {
             return this.parseNodes(nodes, { node: true, fragment: true, shadow: true })
-                .some(node => DOMNode.isConnected(node));
+                .some(node => node.isConnected);
         },
 
         /**
@@ -5839,7 +5848,7 @@
 
             return this.parseNodes(nodes, { node: true, fragment: true, shadow: true })
                 .some(node =>
-                    others.some(other => DOMNode.isEqual(node, other))
+                    others.some(other => node.isEqualNode(other))
                 );
         },
 
@@ -5885,7 +5894,7 @@
 
             return this.parseNodes(nodes, { node: true, fragment: true, shadow: true })
                 .some(node =>
-                    others.some(other => DOMNode.isSame(node, other))
+                    others.some(other => node.isSameNode(other))
                 );
         },
 
@@ -5950,9 +5959,7 @@
             }
 
             return Core.wrap(
-                DOMNode.children(
-                    DOMNode.parent(node)
-                )
+                node.parentNode.children
             ).indexOf(node);
         },
 
@@ -5979,7 +5986,7 @@
             nodes = this.parseNodes(nodes, { node: true, fragment: true, shadow: true, document: true });
 
             for (const node of nodes) {
-                DOMNode.normalize(node);
+                node.normalize();
             }
         },
 
@@ -5991,7 +5998,7 @@
          */
         sanitize(html, allowedTags = DOM.allowedTags) {
             const template = this.create('template', { html }),
-                fragment = DOMNode.fragment(template),
+                fragment = template.content,
                 children = this.constructor._children(fragment, null, false, true);
 
             for (const child of children) {
@@ -6021,45 +6028,53 @@
             return this.parseNodes(nodes, { fragment: true, shadow: true })
                 .reduce(
                     (values, node) => {
-                        if (DOMNode.is(node, 'form') || Core.isFragment(node) || Core.isShadow(node)) {
+                        if (
+                            (
+                                Core.isElement(node) &&
+                                node.matches('form')
+                            ) ||
+                            Core.isFragment(node) ||
+                            Core.isShadow(node)
+                        ) {
                             return values.concat(
                                 this.serializeArray(
-                                    DOMNode.findBySelector(
-                                        'input, select, textarea',
-                                        node
+                                    node.querySelectorAll(
+                                        'input, select, textarea'
                                     )
                                 )
                             );
                         }
 
-                        if (DOMNode.is(node, '[disabled], input[type=submit], input[type=reset], input[type=file], input[type=radio]:not(:checked), input[type=checkbox]:not(:checked)')) {
+                        if (
+                            Core.isElement(node) &&
+                            node.matches('[disabled], input[type=submit], input[type=reset], input[type=file], input[type=radio]:not(:checked), input[type=checkbox]:not(:checked)')
+                        ) {
                             return values;
                         }
 
-                        const name = DOMNode.getAttribute(node, 'name');
+                        const name = node.getAttribute('name');
                         if (!name) {
                             return values;
                         }
 
-                        if (DOMNode.is(node, 'select[multiple]')) {
+                        if (
+                            Core.isElement(node) &&
+                            node.matches('select[multiple]')
+                        ) {
                             const selected = Core.wrap(node.selectedOptions);
                             for (const option of selected) {
-                                const value = DOMNode.getProperty(option, 'value') || '';
-
                                 values.push(
                                     {
                                         name,
-                                        value
+                                        value: option.value || ''
                                     }
                                 );
                             }
                         } else {
-                            const value = DOMNode.getProperty(node, 'value') || '';
-
                             values.push(
                                 {
                                     name,
-                                    value
+                                    value: node.value || ''
                                 }
                             );
                         }
@@ -6177,13 +6192,12 @@
          */
         _getAttribute(node, attribute) {
             if (attribute) {
-                return DOMNode.getAttribute(node, attribute);
+                return node.getAttribute(attribute);
             }
 
-            const nodeAttributes = DOMNode.attributes(node),
-                attributes = {};
+            const attributes = {};
 
-            for (const attr of nodeAttributes) {
+            for (const attr of node.attributes) {
                 attributes[attr.nodeName] = attr.nodeValue;
             }
 
@@ -6200,20 +6214,18 @@
             if (key) {
                 key = Core.camelCase(key);
 
-                return DOM._parseDataset(
-                    DOMNode.getDataset(node, key)
+                return this._parseDataset(
+                    node.dataset[key]
                 );
             }
 
-            const dataset = DOMNode.dataset(node);
+            const dataset = {};
 
-            const result = {};
-
-            for (const k in dataset) {
-                result[k] = DOM._parseDataset(dataset[k]);
+            for (const k in node.dataset) {
+                dataset[k] = this._parseDataset(node.dataset[k]);
             }
 
-            return result;
+            return dataset;
         },
 
         /**
@@ -6224,7 +6236,7 @@
         _removeDataset(node, key) {
             key = Core.camelCase(key);
 
-            DOMNode.removeDataset(node, key);
+            delete node.dataset[key];
         },
 
         /**
@@ -6234,11 +6246,7 @@
          */
         _setAttribute(node, attributes) {
             for (const key in attributes) {
-                DOMNode.setAttribute(
-                    node,
-                    key,
-                    attributes[key]
-                );
+                node.setAttribute(key, attributes[key]);
             }
         },
 
@@ -6250,12 +6258,7 @@
         _setDataset(node, dataset) {
             for (const key in dataset) {
                 const realKey = Core.camelCase(key);
-
-                DOMNode.setDataset(
-                    node,
-                    realKey,
-                    dataset[key]
-                );
+                node.dataset[realKey] = dataset[key];
             }
         }
 
@@ -6409,16 +6412,16 @@
                 node,
                 node => {
                     const result = {
-                        x: DOMNode.offsetLeft(node),
-                        y: DOMNode.offsetTop(node)
+                        x: node.offsetLeft,
+                        y: node.offsetTop
                     };
 
                     if (offset) {
                         let offsetParent = node;
 
-                        while (offsetParent = DOMNode.offsetParent(offsetParent)) {
-                            result.x += DOMNode.offsetLeft(offsetParent);
-                            result.y += DOMNode.offsetTop(offsetParent);
+                        while (offsetParent = offsetParent.offsetParent) {
+                            result.x += offsetParent.offsetLeft;
+                            result.y += offsetParent.offsetTop;
                         }
                     }
 
@@ -6437,11 +6440,11 @@
             return this._forceShow(
                 node,
                 node => {
-                    const result = DOMNode.rect(node);
+                    const result = node.getBoundingClientRect();
 
                     if (offset) {
-                        result.x += DOMNode.getScrollXWindow(window);
-                        result.y += DOMNode.getScrollYWindow(window);
+                        result.x += window.scrollX;
+                        result.y += window.scrollY;
                     }
 
                     return result;
@@ -6463,9 +6466,7 @@
          * @returns {number} The scroll X position.
          */
         _getScrollXDocument(node) {
-            return DOMNode.getScrollX(
-                DOMNode.scrollingElement(node)
-            );
+            return node.scrollingElement.scrollLeft;
         },
 
         /**
@@ -6474,9 +6475,7 @@
          * @returns {number} The scroll Y position.
          */
         _getScrollYDocument(node) {
-            return DOMNode.getScrollY(
-                DOMNode.scrollingElement(node)
-            );
+            return node.scrollingElement.scrollTop;
         },
 
         /**
@@ -6486,8 +6485,8 @@
          * @param {number} y The scroll Y position.
          */
         _setScroll(node, x, y) {
-            DOMNode.setScrollX(node, x);
-            DOMNode.setScrollY(node, y);
+            node.scrollLeft = x;
+            node.scrollTop = y;
         },
 
         /**
@@ -6497,8 +6496,8 @@
          * @param {number} y The scroll Y position.
          */
         _setScrollDocument(node, x, y) {
-            return this._setScroll(
-                DOMNode.scrollingElement(node),
+            this._setScroll(
+                node.scrollingElement,
                 x,
                 y
             );
@@ -6510,10 +6509,7 @@
          * @param {number} x The scroll X position.
          */
         _setScrollXDocument(node, x) {
-            return DOMNode.setScrollX(
-                DOMNode.scrollingElement(node),
-                x
-            );
+            node.scrollingElement.scrollLeft = x;
         },
 
         /**
@@ -6522,11 +6518,7 @@
          * @param {number} x The scroll X position.
          */
         _setScrollXWindow(node, x) {
-            return DOMNode.setScrollWindow(
-                node,
-                x,
-                DOMNode.getScrollYWindow(node)
-            );
+            return node.scroll(x, node.scrollY);
         },
 
         /**
@@ -6535,10 +6527,7 @@
          * @param {number} y The scroll Y position.
          */
         _setScrollYDocument(node, y) {
-            return DOMNode.setScrollY(
-                DOMNode.scrollingElement(node),
-                y
-            );
+            node.scrollingElement.scrollTop = y;
         },
 
         /**
@@ -6547,11 +6536,7 @@
          * @param {number} y The scroll Y position.
          */
         _setScrollYWindow(node, y) {
-            return DOMNode.setScrollWindow(
-                node,
-                DOMNode.getScrollXWindow(node),
-                y
-            );
+            return node.scroll(node.scrollX, y);
         }
 
     });
@@ -6573,10 +6558,10 @@
                 node,
                 node => {
                     if (Core.isDocument(node)) {
-                        node = DOMNode.documentElement(node);
+                        node = node.documentElement;
                     }
 
-                    let result = DOMNode.height(node);
+                    let result = node.clientHeight;
 
                     if (innerOuter === this.INNER) {
                         result -= parseInt(this._css(node, 'padding-top'))
@@ -6608,10 +6593,10 @@
                 node,
                 node => {
                     if (Core.isDocument(node)) {
-                        node = DOMNode.documentElement(node);
+                        node = node.documentElement;
                     }
 
-                    return DOMNode.scrollHeight(node);
+                    return node.scrollHeight;
                 }
             );
         },
@@ -6626,10 +6611,10 @@
                 node,
                 node => {
                     if (Core.isDocument(node)) {
-                        node = DOMNode.documentElement(node);
+                        node = node.documentElement;
                     }
 
-                    return DOMNode.scrollWidth(node);
+                    return node.scrollWidth;
                 }
             );
         },
@@ -6645,10 +6630,10 @@
                 node,
                 node => {
                     if (Core.isDocument(node)) {
-                        node = DOMNode.documentElement(node);
+                        node = node.documentElement;
                     }
 
-                    let result = DOMNode.width(node);
+                    let result = node.clientWidth;
 
                     if (innerOuter === this.INNER) {
                         result -= parseInt(this._css(node, 'padding-left'))
@@ -6688,7 +6673,7 @@
             if (!this._styles.has(node)) {
                 this._styles.set(
                     node,
-                    DOMNode.css(node)
+                    window.getComputedStyle(node)
                 );
             }
 
@@ -6714,14 +6699,13 @@
             if (style) {
                 style = Core.kebabCase(style);
 
-                return DOMNode.getStyle(node, style);
+                return node.style[style];
             }
 
-            const nodeStyles = DOMNode.style(node),
-                styles = {};
+            const styles = {};
 
-            for (const style of nodeStyles) {
-                styles[style] = DOMNode.getStyle(node, style);
+            for (const style of node.style) {
+                styles[style] = node.style[style];
             }
 
             return styles;
@@ -6743,7 +6727,13 @@
                     value += 'px';
                 }
 
-                DOMNode.setStyle(node, style, value, important);
+                node.style.setProperty(
+                    style,
+                    value,
+                    important ?
+                        'important' :
+                        ''
+                );
             }
         }
 
@@ -6763,12 +6753,12 @@
          * @returns {DOM~eventCallback} The delegated event callback.
          */
         _delegateFactory(node, selector, callback) {
-            const getDelegate = selector.match(DOM._complexRegExp) ?
+            const getDelegate = selector.match(this._complexRegExp) ?
                 this._getDelegateContainsFactory(node, selector) :
                 this._getDelegateMatchFactory(node, selector);
 
             return e => {
-                if (DOMNode.isSame(e.target, node)) {
+                if (node.isSameNode(e.target)) {
                     return;
                 }
 
@@ -6803,11 +6793,11 @@
          * @returns {DOM~delegateCallback} The callback for finding the matching delegate.
          */
         _getDelegateContainsFactory(node, selector) {
-            selector = DOM._prefixSelectors(selector, ':scope ');
+            selector = this._prefixSelectors(selector, ':scope ');
 
             return target => {
                 const matches = Core.wrap(
-                    DOMNode.findBySelector(selector, node)
+                    node.querySelectorAll(selector)
                 );
 
                 if (!matches.length) {
@@ -6821,7 +6811,7 @@
                 return this._parents(
                     target,
                     parent => matches.includes(parent),
-                    parent => DOMNode.isSame(node, parent),
+                    parent => parent.isSameNode(node),
                     true
                 ).shift();
             };
@@ -6835,12 +6825,12 @@
          */
         _getDelegateMatchFactory(node, selector) {
             return target =>
-                DOMNode.is(target, selector) ?
+                target.matches(selector) ?
                     target :
                     this._parents(
                         target,
-                        parent => DOMNode.is(parent, selector),
-                        parent => DOMNode.isSame(node, parent),
+                        parent => parent.matches(selector),
+                        parent => parent.isSameNode(node),
                         true
                     ).shift();
         },
@@ -6917,9 +6907,7 @@
                 realCallback = this._delegateFactory(node, delegate, realCallback);
             }
 
-            if (event !== realEvent) {
-                realCallback = this._namespaceFactory(event, realCallback);
-            }
+            realCallback = this._namespaceFactory(event, realCallback);
 
             eventData.realCallback = realCallback;
             eventData.event = event;
@@ -6933,7 +6921,7 @@
 
             nodeEvents[realEvent].push(eventData);
 
-            DOMNode.addEvent(node, realEvent, realCallback);
+            node.addEventListener(realEvent, realCallback);
         },
 
         /**
@@ -7005,14 +6993,14 @@
                 }
 
                 if (realEvent !== event) {
-                    const regExp = DOM._eventNamespacedRegExp(event);
+                    const regExp = this._eventNamespacedRegExp(event);
 
                     if (!eventData.event.match(regExp)) {
                         return true;
                     }
                 }
 
-                DOMNode.removeEvent(node, eventData.realEvent, eventData.realCallback);
+                node.removeEventListener(eventData.realEvent, eventData.realCallback);
 
                 return false;
             });
@@ -7039,17 +7027,24 @@
          * @returns {Boolean} FALSE if the event was cancelled, otherwise TRUE.
          */
         _triggerEvent(node, event, data, options) {
-            const realEvent = DOM._parseEvent(event),
-                eventData = {
-                    ...data
-                };
+            const realEvent = this._parseEvent(event);
+
+            const eventData = new Event(realEvent, {
+                bubbles: true,
+                cancelable: true,
+                ...options
+            });
 
             if (realEvent !== event) {
                 eventData.namespace = event.substring(realEvent.length + 1);
-                eventData.namespaceRegExp = DOM._eventNamespacedRegExp(event);
+                eventData.namespaceRegExp = this._eventNamespacedRegExp(event);
             }
 
-            return DOMNode.triggerEvent(node, realEvent, eventData, options);
+            if (data) {
+                Object.assign(eventData, data);
+            }
+
+            return node.dispatchEvent(eventData);
         }
 
     });
@@ -7193,7 +7188,7 @@
          * @returns {Node|HTMLElement|DocumentFragment} The cloned node.
          */
         _clone(node, options) {
-            const clone = DOMNode.clone(node, options.deep);
+            const clone = node.cloneNode(options.deep);
 
             if (options.events) {
                 this._cloneEvents(node, clone);
@@ -7242,8 +7237,8 @@
          * @param {Boolean} [options.animations] Whether to also clone animations.
          */
         _deepClone(node, clone, options) {
-            const children = Core.wrap(DOMNode.childNodes(node));
-            const cloneChildren = Core.wrap(DOMNode.childNodes(clone));
+            const children = Core.wrap(node.childNodes);
+            const cloneChildren = Core.wrap(clone.childNodes);
 
             for (let i = 0; i < children.length; i++) {
                 if (options.events) {
@@ -7267,13 +7262,13 @@
          * @param {Node|HTMLElement} node The input node.
          */
         _detach(node) {
-            const parent = DOMNode.parent(node);
+            const parent = node.parentNode;
 
             if (parent) {
                 return;
             }
 
-            DOMNode.removeChild(parent, node);
+            parent.removeChild(node);
         },
 
         /**
@@ -7282,22 +7277,22 @@
          */
         _empty(node) {
             // Remove descendent elements
-            const children = Core.wrap(DOMNode.childNodes(node));
+            const children = Core.wrap(node.childNodes);
 
             for (const child of children) {
                 this._remove(child);
-                DOMNode.removeChild(node, child);
+                node.removeChild(child);
             }
 
             // Remove ShadowRoot
             if (this._hasShadow(node)) {
-                const shadow = DOMNode.shadow(node);
+                const shadow = node.shadowRoot;
                 this._remove(shadow);
             }
 
             // Remove DocumentFragment
             if (this._hasFragment(node)) {
-                const fragment = DOMNode.fragment(node);
+                const fragment = node.content;
                 this._remove(fragment);
             }
         },
@@ -7307,7 +7302,8 @@
          * @param {Node|HTMLElement|DocumentFragment|ShadowRoot} node The input node.
          */
         _remove(node) {
-            DOMNode.triggerEvent(node, 'remove');
+            const eventData = new Event('remove');
+            node.dispatchEvent(eventData);
 
             this._empty(node);
 
@@ -7337,20 +7333,20 @@
          * @param {Node|HTMLElement} parent The input node.
          */
         _unwrap(parent) {
-            const outerParent = DOMNode.parent(parent);
+            const outerParent = parent.parentNode;
 
             if (!outerParent) {
                 return;
             }
 
-            const children = Core.wrap(DOMNode.childNodes(parent));
+            const children = Core.wrap(parent.childNodes);
 
             for (const child of children) {
-                DOMNode.insertBefore(outerParent, child, parent);
+                outerParent.insertBefore(child, parent);
             }
 
             this._remove(parent);
-            DOMNode.removeChild(outerParent, parent);
+            outerParent.removeChild(parent);
         },
 
         /**
@@ -7359,7 +7355,7 @@
          * @param {array} others The other node(s).
          */
         _wrap(node, others) {
-            const parent = DOMNode.parent(node);
+            const parent = node.parentNode;
 
             if (!parent) {
                 return;
@@ -7378,15 +7374,15 @@
 
             const deepest = this._deepest(
                 Core.isFragment(firstClone) ?
-                    DOMNode.firstChild(firstClone) :
+                    firstClone.firstChild :
                     firstClone
             );
 
             for (const clone of clones) {
-                DOMNode.insertBefore(parent, clone, node);
+                parent.insertBefore(clone, node);
             }
 
-            DOMNode.insertBefore(deepest, node);
+            deepest.insertBefore(node, null);
         },
 
         /**
@@ -7401,7 +7397,7 @@
                 return;
             }
 
-            const parent = DOMNode.parent(firstNode);
+            const parent = firstNode.parentNode;
 
             if (!parent) {
                 return;
@@ -7411,16 +7407,16 @@
 
             const deepest = this._deepest(
                 Core.isFragment(firstOther) ?
-                    DOMNode.firstChild(firstOther) :
+                    firstOther.firstChild :
                     firstOther
             );
 
             for (const other of others) {
-                DOMNode.insertBefore(parent, other, firstNode);
+                parent.insertBefore(other, firstNode);
             }
 
             for (const node of nodes) {
-                DOMNode.insertBefore(deepest, node);
+                deepest.insertBefore(node, null);
             }
         },
 
@@ -7430,7 +7426,7 @@
          * @param {array} others The other node(s).
          */
         _wrapInner(node, others) {
-            const children = Core.wrap(DOMNode.childNodes(node));
+            const children = Core.wrap(node.childNodes);
 
             const clones = others.map(other =>
                 this._clone(other, {
@@ -7445,16 +7441,16 @@
 
             const deepest = this._deepest(
                 Core.isFragment(firstClone) ?
-                    DOMNode.firstChild(firstClone) :
+                    firstClone.firstChild :
                     firstClone
             );
 
             for (const clone of clones) {
-                DOMNode.insertBefore(node, clone);
+                node.insertBefore(clone, null);
             }
 
             for (const child of children) {
-                DOMNode.insertBefore(deepest, child);
+                deepest.insertBefore(child, null);
             }
         }
 
@@ -7506,7 +7502,7 @@
             for (const node of nodes) {
                 Core.merge(
                     results,
-                    DOMNode.findBySelector(selector, node)
+                    node.querySelectorAll(selector)
                 );
             }
 
@@ -7523,7 +7519,7 @@
          */
         _findOneBySelector(selector, nodes) {
             for (const node of nodes) {
-                const result = DOMNode.findOneBySelector(selector, node);
+                const result = node.querySelector(selector);
                 if (result) {
                     return result;
                 }
@@ -7551,8 +7547,8 @@
         _children(node, filter, first = false, elementsOnly = false) {
             const children = Core.wrap(
                 elementsOnly ?
-                    DOMNode.children(node) :
-                    DOMNode.childNodes(node)
+                    node.children :
+                    node.childNodes
             );
             const results = [];
 
@@ -7578,9 +7574,9 @@
          */
         _deepest(node) {
             return Core.wrap(
-                DOMNode.findBySelector('*', node)
+                node.querySelectorAll('*')
             ).find(node =>
-                !DOMNode.hasChildren(node)
+                !node.childElementCount
             ) || node;
         },
 
@@ -7593,7 +7589,7 @@
         _next(node, filter) {
             const results = [];
 
-            node = DOMNode.next(node);
+            node = node.nextSibling;
 
             if (!node) {
                 return results;
@@ -7619,7 +7615,7 @@
         _nextAll(node, filter, limit, first = false) {
             const results = [];
 
-            while (node = DOMNode.next(node)) {
+            while (node = node.nextSibling) {
                 if (limit && limit(node)) {
                     break;
                 }
@@ -7647,7 +7643,7 @@
         _parent(node, filter) {
             const results = [];
 
-            const parent = DOMNode.parent(node);
+            const parent = node.parentNode;
 
             if (!parent) {
                 return results;
@@ -7673,7 +7669,7 @@
         _parents(node, filter, limit, first = false) {
             const results = [];
 
-            while (node = DOMNode.parent(node)) {
+            while (node = node.parentNode) {
                 if (Core.isDocument(node)) {
                     break;
                 }
@@ -7705,7 +7701,7 @@
         _prev(node, filter) {
             const results = [];
 
-            node = DOMNode.prev(node);
+            node = node.previousSibling;
 
             if (!node) {
                 return results;
@@ -7731,7 +7727,7 @@
         _prevAll(node, filter, limit, first = false) {
             const results = [];
 
-            while (node = DOMNode.prev(node)) {
+            while (node = node.previousSibling) {
                 if (limit && limit(node)) {
                     break;
                 }
@@ -7760,7 +7756,7 @@
         _siblings(node, filter, elementsOnly = true) {
             const results = [];
 
-            const parent = DOMNode.parent(node);
+            const parent = node.parentNode;
 
             if (!parent) {
                 return results;
@@ -7772,7 +7768,7 @@
 
             let sibling;
             for (sibling of siblings) {
-                if (DOMNode.isSame(node, sibling)) {
+                if (node.isSameNode(sibling)) {
                     continue;
                 }
 
@@ -7875,7 +7871,7 @@
          * @returns {Boolean} TRUE if the node has a DocumentFragment, otherwise FALSE.
          */
         _hasFragment(node) {
-            return !!DOMNode.fragment(node);
+            return !!node.content;
         },
 
         /**
@@ -7884,7 +7880,7 @@
          * @returns {Boolean} TRUE if the node has a ShadowRoot, otherwise FALSE.
          */
         _hasShadow(node) {
-            return !!DOMNode.shadow(node);
+            return !!node.shadowRoot;
         },
 
         /**
@@ -7894,16 +7890,14 @@
          */
         _isVisible(node) {
             if (Core.isWindow(node)) {
-                return DOMNode.isVisibleDocument(
-                    DOMNode.document(node)
-                );
+                return node.document.visibilityState === 'visible';
             }
 
             if (Core.isDocument(node)) {
-                return DOMNode.isVisibleDocument(node);
+                return node.visibilityState === 'visible';
             }
 
-            return !!DOMNode.offsetParent(node);
+            return !!node.offsetParent;
         }
 
     });
@@ -7943,20 +7937,24 @@
             const hidden = new Map;
 
             for (const element of elements) {
-                hidden.set(element, DOMNode.getAttribute(element, 'style'));
+                hidden.set(element, element.getAttribute('style'));
 
-                DOMNode.setStyle(element, 'display', 'initial', true);
+                element.style.setProperty(
+                    'display',
+                    'initial',
+                    'important'
+                );
             }
 
             const result = callback(node);
 
             for (const [element, style] of hidden) {
                 if (style) {
-                    DOMNode.setAttribute(element, 'style', style);
+                    element.setAttribute('style', style);
                 } else {
                     // force DOM to update
-                    DOMNode.getAttribute(element, 'style');
-                    DOMNode.removeAttribute(element, 'style');
+                    element.getAttribute('style');
+                    element.removeAttribute('style');
                 }
             }
 
@@ -7973,7 +7971,7 @@
             // check node
             const name = this._tagName(node);
             if (!(name in allowedTags)) {
-                DOMNode.removeChild(parent, node);
+                parent.removeChild(node);
                 return;
             }
 
@@ -7993,7 +7991,7 @@
                 const valid = !!allowedAttributes.find(test => attribute.match(test));
 
                 if (!valid) {
-                    DOMNode.removeAttribute(node, attribute);
+                    node.removeAttribute(attribute);
                 }
             }
 
@@ -8019,11 +8017,11 @@
                     return 1;
                 }
 
-                if (DOMNode.isSame(node, other)) {
+                if (node.isSameNode(other)) {
                     return 0;
                 }
 
-                const pos = DOMNode.comparePosition(node, other);
+                const pos = node.compareDocumentPosition(other);
 
                 if (pos & Node.DOCUMENT_POSITION_FOLLOWING ||
                     pos & Node.DOCUMENT_POSITION_CONTAINED_BY) {
@@ -8045,7 +8043,7 @@
          * @returns {string} The elements tag name (lowercase).
          */
         _tagName(node) {
-            return DOMNode.tagName(node).toLowerCase();
+            return node.tagName.toLowerCase();
         }
 
     });
@@ -8148,1025 +8146,10 @@
 
     });
 
-    /**
-     * DOMNode Class
-     * @class
-     */
-    class DOMNode {
-
-    }
-
-    /**
-     * DOMNode (Static) Attributes
-     */
-
-    Object.assign(DOMNode, {
-
-        /**
-         * Get attribute values for a single node.
-         * @param {HTMLElement} node The input node.
-         * @returns {NamedNodeMap} The dataset value.
-         */
-        attributes(node) {
-            return node.attributes;
-        },
-
-        /**
-         * Get dataset values for a single node.
-         * @param {HTMLElement} node The input node.
-         * @returns {DOMStringMap} The dataset value.
-         */
-        dataset(node) {
-            return node.dataset;
-        },
-
-        /**
-         * Get an attribute value for a single node.
-         * @param {HTMLElement} node The input node.
-         * @param {string} attribute The attribute name.
-         * @returns {string} The attribute value.
-         */
-        getAttribute(node, attribute) {
-            return node.getAttribute(attribute);
-        },
-
-        /**
-         * Get a dataset value for a single node.
-         * @param {HTMLElement} node The input node.
-         * @param {string} [key] The dataset key.
-         * @returns {string} The dataset value.
-         */
-        getDataset(node, key) {
-            return this.dataset(node)[key];
-        },
-
-        /**
-         * Get a property value for a single node.
-         * @param {HTMLElement} node The input node.
-         * @param {string} property The property name.
-         * @returns {string} The property value.
-         */
-        getProperty(node, property) {
-            return node[property];
-        },
-
-        /**
-         * Remove an attribute from a single node.
-         * @param {HTMLElement} node The input node.
-         * @param {string} attribute The attribute name.
-         */
-        removeAttribute(node, attribute) {
-            node.removeAttribute(attribute)
-        },
-
-        /**
-         * Remove a dataset value from a single node.
-         * @param {HTMLElement} node The input node.
-         * @param {string} key The dataset key.
-         */
-        removeDataset(node, key) {
-            delete node.dataset[key];
-        },
-
-        /**
-         * Remove a property from a single node.
-         * @param {HTMLElement} node The input node.
-         * @param {string} property The property name.
-         */
-        removeProperty(node, property) {
-            delete node[property];
-        },
-
-        /**
-         * Set an attribute value for a single node.
-         * @param {HTMLElement} node The input node.
-         * @param {string} attribute The attribute name.
-         * @param {string} value The attribute value.
-         */
-        setAttribute(node, attribute, value) {
-            node.setAttribute(
-                attribute,
-                value
-            );
-        },
-
-        /**
-         * Set a dataset value for a single node.
-         * @param {HTMLElement} node The input node.
-         * @param {string} key The dataset key.
-         * @param {string} value The dataset value.
-         */
-        setDataset(node, key, value) {
-            this.dataset(node)[key] = value;
-        },
-
-        /**
-         * Set a property value for a single node.
-         * @param {HTMLElement} node The input node.
-         * @param {string} property The property name.
-         * @param {string} value The property value.
-         */
-        setProperty(node, property, value) {
-            node[property] = value;
-        }
-
-    });
-
-    /**
-     * DOMNode (Static) Position
-     */
-
-    Object.assign(DOMNode, {
-
-        /**
-         * Get the left offset of a single node.
-         * @param {HTMLElement} node The input node.
-         * @returns {number} The left offset of the node (in pixels).
-         */
-        offsetLeft(node) {
-            return node.offsetLeft;
-        },
-
-        /**
-         * Get the top offset of a single node.
-         * @param {HTMLElement} node The input node.
-         * @returns {number} The top offset of the node (in pixels).
-         */
-        offsetTop(node) {
-            return node.offsetTop;
-        },
-
-        /**
-         * Get the computed bounding rectangle of a single node.
-         * @param {HTMLElement} node The input node.
-         * @returns {DOMRect} The computed bounding rectangle.
-         */
-        rect(node) {
-            return node.getBoundingClientRect();
-        }
-
-    });
-
-    /**
-     * DOMNode (Static) Scroll
-     */
-
-    Object.assign(DOMNode, {
-
-        /**
-         * Get the scroll X position of a single node.
-         * @param {HTMLElement} node The input node.
-         * @returns {number} The scroll X position.
-         */
-        getScrollX(node) {
-            return node.scrollLeft;
-        },
-
-        /**
-         * Get the scroll X position of a Window.
-         * @param {Window} node The input node.
-         * @returns {number} The scroll X position.
-         */
-        getScrollXWindow(node) {
-            return node.scrollX;
-        },
-
-        /**
-         * Get the scroll Y position of a single node.
-         * @param {HTMLElement} node The input node.
-         * @returns {number} The scroll Y position.
-         */
-        getScrollY(node) {
-            return node.scrollTop;
-        },
-
-        /**
-         * Get the scroll Y position of a Window.
-         * @param {Document} node The input node.
-         * @returns {number} The scroll Y position.
-         */
-        getScrollYWindow(node) {
-            return node.scrollY;
-        },
-
-        /**
-         * Scroll a Window to an X,Y position.
-         * @param {Window} node The input node.
-         * @param {number} x The scroll X position.
-         * @param {number} y The scroll Y position.
-         */
-        setScrollWindow(node, x, y) {
-            return node.scroll(x, y);
-        },
-
-        /**
-         * Scroll a single node to an X position.
-         * @param {HTMLElement} node The input node.
-         * @param {number} x The scroll X position.
-         */
-        setScrollX(node, x) {
-            node.scrollLeft = x;
-        },
-
-        /**
-         * Scroll a single node to a Y position.
-         * @param {HTMLElement|Document|Window} node The input node.
-         * @param {number} y The scroll Y position.
-         */
-        setScrollY(node, y) {
-            node.scrollTop = y;
-        }
-
-    });
-
-    /**
-     * DOMNode (Static) Size
-     */
-
-    Object.assign(DOMNode, {
-
-        /**
-         * Get the client height of a single node.
-         * @param {HTMLElement} node The input node.
-         * @returns {number} The height.
-         */
-        height(node) {
-            return node.clientHeight;
-        },
-
-        /**
-         * Get the height of a Window.
-         * @param {Window} node The input node.
-         * @param {Boolean} [outer] Whether to use the outer height.
-         * @returns {number} The height.
-         */
-        heightWindow(node, outer) {
-            return outer ?
-                node.outerHeight :
-                node.innerHeight;
-        },
-
-        /**
-         * Get the scroll height of a single node.
-         * @param {HTMLElement} node The input node.
-         * @returns {number} The scroll height.
-         */
-        scrollHeight(node) {
-            return node.scrollHeight;
-        },
-
-        /**
-         * Get the scroll width of a single node.
-         * @param {HTMLElement} node The input node.
-         * @returns {number} The scroll width.
-         */
-        scrollWidth(node) {
-            return node.scrollWidth;
-        },
-
-        /**
-         * Get the client width of a single node.
-         * @param {HTMLElement} node The input node.
-         * @returns {number} The width.
-         */
-        width(node) {
-            return node.clientWidth;
-        },
-
-        /**
-         * Get the width of a Window.
-         * @param {Window} node The input node.
-         * @param {Boolean} [outer] Whether to use the outer width.
-         * @returns {number} The width.
-         */
-        widthWindow(node, outer) {
-            return outer ?
-                node.outerWidth :
-                node.innerWidth;
-        }
-
-    });
-
-    /**
-     * DOMNode (Static) Styles
-     */
-
-    Object.assign(DOMNode, {
-
-        /**
-         * Add classes to a single node.
-         * @param {HTMLElement} node The input node.
-         * @param {...string} classes The classes.
-         */
-        addClass(node, ...classes) {
-            node.classList.add(...classes)
-        },
-
-        /**
-         * Get a CSSStyleDeclaration for a single node.
-         * @param {HTMLElement} node The input node.
-         * @returns {CSSStyleDeclaration} The CSSStyleDeclaration.
-         */
-        css(node) {
-            return window.getComputedStyle(node);
-        },
-
-        /**
-         * Get a style property for a single node.
-         * @param {HTMLElement} node The input node.
-         * @param {string} [style] The style name.
-         * @returns {string} The style value.
-         */
-        getStyle(node, style) {
-            return this.style(node)[style];
-        },
-
-        /**
-         * Remove classes from a single node.
-         * @param {HTMLElement} node The input node.
-         * @param {...string} classes The classes.
-         */
-        removeClass(node, ...classes) {
-            node.classList.remove(...classes)
-        },
-
-        /**
-         * Set style properties for a single node.
-         * @param {HTMLElement} node The input node.
-         * @param {object} styles An object containing styles.
-         * @param {Boolean} [important] Whether the style should be !important.
-         */
-        setStyle(node, style, value, important) {
-            node.style.setProperty(
-                style,
-                value,
-                important ?
-                    'important' :
-                    ''
-            );
-        },
-
-        /**
-         * Get style properties for a single node.
-         * @param {HTMLElement} node The input node.
-         * @returns {CSSStyleDeclaration} The style value.
-         */
-        style(node) {
-            return node.style;
-        },
-
-        /**
-         * Toggle classes for a single node.
-         * @param {HTMLElement} node The input node.
-         * @param {...string} classes The classes.
-         */
-        toggleClass(node, ...classes) {
-            node.classList.toggle(...classes)
-        }
-
-    });
-
-    /**
-     * DOMNode (Static) Events
-     */
-
-    Object.assign(DOMNode, {
-
-        /**
-         * Trigger a blur event on a single node.
-         * @param {HTMLElement} node The input node.
-         */
-        blur(node) {
-            node.blur();
-        },
-
-        /**
-         * Trigger a click event on a single node.
-         * @param {HTMLElement} node The input node.
-         */
-        click(node) {
-            node.click();
-        },
-
-        /**
-         * Trigger a focus event on a single node.
-         * @param {HTMLElement} node The input node.
-         */
-        focus(node) {
-            node.focus();
-        }
-
-    });
-
-    /**
-     * DOMNode (Static) Event Handlers
-     */
-
-    Object.assign(DOMNode, {
-
-        /**
-         * Add an event to a single node.
-         * @param {HTMLElement|DocumentFragment|ShadowRoot|Document|Window} node The input node.
-         * @param {string} event The event name.
-         * @param {DOM~eventCallback} callback The callback to execute.
-         */
-        addEvent(node, event, callback) {
-            node.addEventListener(event, callback);
-        },
-
-        /**
-         * Remove an event from a single node.
-         * @param {HTMLElement|DocumentFragment|ShadowRoot|Document|Window} nodes The input node.
-         * @param {string} event The event name.
-         * @param {DOM~eventCallback} callback The callback to remove.
-         */
-        removeEvent(node, event, callback) {
-            node.removeEventListener(event, callback);
-        },
-
-        /**
-         * Trigger an event on a single node.
-         * @param {HTMLElement|DocumentFragment|ShadowRoot|Document|Window} node The input node.
-         * @param {string} event The event name.
-         * @param {object} [data] Additional data to attach to the Event object.
-         * @param {object} [options] The options to use for the Event.
-         * @param {Boolean} [options.bubbles=true] Whether the event will bubble.
-         * @param {Boolean} [options.cancelable=true] Whether the event is cancelable.
-         * @returns {Boolean} FALSE if the event was cancelled, otherwise TRUE.
-         */
-        triggerEvent(node, event, data, options) {
-            const eventData = new Event(event, {
-                bubbles: true,
-                cancelable: true,
-                ...options
-            });
-
-            if (data) {
-                Object.assign(eventData, data);
-            }
-
-            return node.dispatchEvent(eventData);
-        }
-
-    });
-
-    /**
-     * DOMNode (Static) Create
-     */
-
-    Object.assign(DOMNode, {
-
-        /**
-         * Attach a shadow DOM tree to a single node.
-         * @param {HTMLElement} node The input node.
-         * @param {Boolean} [open=true] Whether the elements are accessible from JavaScript outside the root.
-         * @returns {ShadowRoot} The new ShadowRoot.
-         */
-        attachShadow(node, open = true) {
-            return node.attachShadow({
-                mode: open ?
-                    'open' :
-                    'closed'
-            });
-        },
-
-        /**
-         * Create a new DOM element.
-         * @param {Document} context The document context.
-         * @param {string} tagName The type of HTML element to create.
-         * @returns {HTMLElement} The new element.
-         */
-        create(context, tagName) {
-            return context.createElement(tagName);
-        },
-
-        /**
-         * Create a new comment node.
-         * @param {Document} context The document context.
-         * @param {string} comment The comment contents.
-         * @returns {Node} The new comment node.
-         */
-        createComment(context, comment) {
-            return context.createComment(comment);
-        },
-
-        /**
-         * Create a new document fragment.
-         * @param {Document} context The document context.
-         * @returns {DocumentFragment} The new DocumentFragment.
-         */
-        createFragment(context) {
-            return context.createDocumentFragment();
-        },
-
-        /**
-         * Create a new range object.
-         * @param {Document} context The document context.
-         * @returns {Range} The new range.
-         */
-        createRange(context) {
-            return context.createRange();
-        },
-
-        /**
-         * Create a new text node.
-         * @param {Document} context The document context.
-         * @param {string} text The text contents.
-         * @returns {Node} The new text node.
-         */
-        createText(context, text) {
-            return context.createTextNode(text);
-        }
-
-    });
-
-    /**
-     * DOMNode (Static) Manipulation
-     */
-
-    Object.assign(DOMNode, {
-
-        /**
-         * Create a clone of a node.
-         * @param {Node} node The input node.
-         * @param {Boolean} deep Whether to deep clone the node.
-         * @returns {Node} The cloned node.
-         */
-        clone(node, deep) {
-            return node.cloneNode(deep);
-        },
-
-        /**
-         * Remove a child node from a parent node in the DOM.
-         * @param {HTMLElement|DocumentFragment|ShadowRoot|Document} node The parent node.
-         * @param {Node} child The child node to remove.
-         */
-        removeChild(node, child) {
-            node.removeChild(child);
-        }
-
-    });
-
-    /**
-     * DOMNode (Static) Move
-     */
-
-    Object.assign(DOMNode, {
-
-        /**
-         * Insert a new node into a parent node (optionally before a reference node).
-         * @param {HTMLElement|DocumentFragment|ShadowRoot|Document} parentNode The parent node.
-         * @param {Node} newNode The new node to insert.
-         * @param {Node} [referenceNode] The node to insert the new node before.
-         */
-        insertBefore(parentNode, newNode, referenceNode = null) {
-            parentNode.insertBefore(newNode, referenceNode);
-        }
-
-    });
-
-    /**
-     * DOMNode (Static) Find
-     */
-
-    Object.assign(DOMNode, {
-
-        /**
-         * Return all nodes with a specific class.
-         * @param {string} className The class name.
-         * @param {HTMLElement|DocumentFragment|ShadowRoot|Document} node The input node.
-         * @returns {HTMLCollection} The matching nodes.
-         */
-        findByClass(className, node) {
-            return node.getElementsByClassName(className);
-        },
-
-        /**
-         * Return a single nodes with a specific ID.
-         * @param {string} id The id.
-         * @param {Document} node The input node.
-         * @returns {HTMLElement} The matching node.
-         */
-        findById(id, node) {
-            return node.getElementById(id);
-        },
-
-        /**
-         * Return all nodes with a specific tag.
-         * @param {string} tagName The tag name.
-         * @param {HTMLElement|DocumentFragment|ShadowRoot|Document} node The input node.
-         * @returns {HTMLCollection} The matching nodes.
-         */
-        findByTag(tagName, node) {
-            return node.getElementsByTagName(tagName);
-        },
-
-        /**
-         * Return all nodes matching a standard CSS selector.
-         * @param {string} selector The query selector.
-         * @param {HTMLElement|DocumentFragment|ShadowRoot|Document} node The input node.
-         * @returns {NodeList} The matching nodes.
-         */
-        findBySelector(selector, node) {
-            return node.querySelectorAll(selector);
-        },
-
-        /**
-         * Return a single node matching a standard CSS selector.
-         * @param {string} selector The query selector.
-         * @param {HTMLElement|DocumentFragment|ShadowRoot|Document} node The input node.
-         * @returns {HTMLElement} The matching node.
-         */
-        findOneBySelector(selector, node) {
-            return node.querySelector(selector);
-        }
-
-    });
-
-    /**
-     * DOMNode Traversal
-     */
-
-    Object.assign(DOMNode, {
-
-        /**
-         * Return all child nodes for a single node.
-         * @param {HTMLElement} node The input node.
-         * @returns {NodeList} The child nodes.
-         */
-        childNodes(node) {
-            return node.childNodes;
-        },
-
-        /**
-         * Return all child elements for a single node.
-         * @param {ParentNode} node The input node.
-         * @returns {HTMLCollection} The child elements.
-         */
-        children(node) {
-            return node.children;
-        },
-
-        /**
-         * Get the Document from a Window.
-         * @param {Window} node The input node.
-         * @returns {Document} The Document.
-         */
-        document(node) {
-            return node.document;
-        },
-
-        /**
-         * Get the document element from a Document.
-         * @param {Document} node The input node.
-         * @returns {HTMLElement} The document element.
-         */
-        documentElement(node) {
-            return node.documentElement;
-        },
-
-        /**
-         * Return the first child for a single node.
-         * @param {Node} node The input node.
-         * @returns {Node} The first child.
-         */
-        firstChild(node) {
-            return node.firstChild;
-        },
-
-        /**
-         * Return the DocumentFragment for a single node.
-         * @param {HTMLElement} node The input node.
-         * @returns {DocumentFragment} The DocumentFragment.
-         */
-        fragment(node) {
-            return node.content;
-        },
-
-        /**
-         * Return the next sibling node of a single node.
-         * @param {Node} node The input node.
-         * @returns {Node} The next sibling node.
-         */
-        next(node) {
-            return node.nextSibling;
-        },
-
-        /**
-         * Return the offset parent node of a single node.
-         * @param {Node} node The input node.
-         * @returns {HTMLElement|DocumentFragment|ShadowRoot|Document} The offset parent node.
-         */
-        offsetParent(node) {
-            return node.offsetParent;
-        },
-
-        /**
-         * Return the parent node of a single node.
-         * @param {Node} node The input node.
-         * @returns {HTMLElement|DocumentFragment|ShadowRoot|Document} The parent node.
-         */
-        parent(node) {
-            return node.parentNode;
-        },
-
-        /**
-         * Return the previous sibling node of a single node.
-         * @param {Node} node The input node.
-         * @returns {Node} The previous sibling node.
-         */
-        prev(node) {
-            return node.previousSibling;
-        },
-
-        /**
-         * Get the scrolling element from a Document.
-         * @param {Document} node The input node.
-         * @returns {HTMLElement} The scrolling element.
-         */
-        scrollingElement(node) {
-            return node.scrollingElement;
-        },
-
-        /**
-         * Return the ShadowRoot for a single node.
-         * @param {HTMLElement} node The input node.
-         * @returns {ShadowRoot} The ShadowRoot.
-         */
-        shadow(node) {
-            return node.shadowRoot;
-        }
-
-    });
-
-    /**
-     * DOMNode (Static) Selection
-     */
-
-    Object.assign(DOMNode, {
-
-        /**
-         * Add a range to a selection.
-         * @param {Selection} selection The input selection.
-         * @param {Range} range The range to add.
-         */
-        addRange(selection, range) {
-            selection.addRange(range);
-        },
-
-        /**
-         * Collapse a range.
-         * @param {Range} range The input range.
-         */
-        collapse(range) {
-            range.collapse();
-        },
-
-        /**
-         * Return the end container of a range.
-         * @param {Range} range The input range.
-         * @returns {HTMLElement} The end container of the range.
-         */
-        endContainer(range) {
-            return range.endContainer;
-        },
-
-        /**
-         * Extract the contents of a range.
-         * @param {Range} range The input range.
-         * @returns {DocumentFragment} A DocumentFragment containing the range contents.
-         */
-        extract(range) {
-            return range.extractContents();
-        },
-
-        /**
-         * Get a range from a selection.
-         * @param {Selection} selection The input selection.
-         * @param {number} [index=0] The index of the range to return.
-         * @returns {Range} The selected range.
-         */
-        getRange(selection, index = 0) {
-            return selection.getRangeAt(index);
-        },
-
-        /**
-         * Get the current selection.
-         * @returns {Selection} The current selection.
-         */
-        getSelection() {
-            return window.getSelection();
-        },
-
-        /**
-         * Insert a node into a range.
-         * @param {Range} range The input range.
-         * @param {Node|HTMLElement} node The node to insert.
-         */
-        insert(range, node) {
-            range.insertNode(node);
-        },
-
-        /**
-         * Return the range count for a selection.
-         * @param {Selection} selection The input selection.
-         */
-        rangeCount(selection) {
-            return selection.rangeCount;
-        },
-
-        /**
-         * Remove all ranges from a selection.
-         * @param {Selection} selection The input selection.
-         */
-        removeRanges(selection) {
-            selection.removeAllRanges();
-        },
-
-        /**
-         * Add a node to a range.
-         * @param {Range} range The input range. 
-         * @param {Node|HTMLElement|DocumentFragment|ShadowRoot} node The node to select.
-         */
-        select(range, node) {
-            range.selectNode(node);
-        },
-
-        /**
-         * Set the end position of a range after a node.
-         * @param {Range} range The input range.
-         * @param {Node|HTMLElement|DocumentFragment|ShadowRoot} node The node to end the range after.
-         */
-        setEndAfter(range, node) {
-            range.setEndAfter(node);
-        },
-
-        /**
-         * Set the start position of a range before a node.
-         * @param {Range} range The input range.
-         * @param {Node|HTMLElement|DocumentFragment|ShadowRoot} node The node to start the range before.
-         */
-        setStartBefore(range, node) {
-            range.setStartBefore(node);
-        },
-
-        /**
-         * Return the start container of a range.
-         * @param {Range} range The input range.
-         * @returns {HTMLElement} The start container of the range.
-         */
-        startContainer(range) {
-            return range.startContainer;
-        }
-
-    });
-
-    /**
-     * DOMNode (Static) Tests
-     */
-
-    Object.assign(DOMNode, {
-
-        /**
-         * Returns true if a single node has another node as a descendent.
-         * @param {HTMLElement|DocumentFragment|ShadowRoot|Document} node The input node.
-         * @param {Node|HTMLElement|DocumentFragment|ShadowRoot|Document} node The other node.
-         * @returns {Boolean} TRUE if the node has the other node as a descendent, otherwise FALSE.
-         */
-        contains(node, other) {
-            return node.contains(other);
-        },
-
-        /**
-         * Returns true if a single node has a specified attribute.
-         * @param {HTMLElement} node The input node.
-         * @param {string} attribute The attribute name.
-         * @returns {Boolean} TRUE if the node has the attribute, otherwise FALSE.
-         */
-        hasAttribute(node, attribute) {
-            return node.hasAttribute(attribute);
-        },
-
-        /**
-         * Returns true if a single node has child elements.
-         * @param {HTMLElement|DocumentFragment|ShadowRoot|Document} node The input node.
-         * @returns {Boolean} TRUE if the node has child elements, otherwise FALSE.
-         */
-        hasChildren(node) {
-            return !!node.childElementCount;
-        },
-
-        /**
-         * Returns true if a single node has any a specified class.
-         * @param {HTMLElement} node The input node.
-         * @param {string} className The class name.
-         * @returns {Boolean} TRUE if the node has any of the classes, otherwise FALSE.
-         */
-        hasClass(node, className) {
-            return node.classList.contains(className);
-        },
-
-        /**
-         * Returns true if a single node has a specified property.
-         * @param {HTMLElement} node The input node.
-         * @param {string} property The property name.
-         * @returns {Boolean} TRUE if the node has the property, otherwise FALSE.
-         */
-        hasProperty(node, property) {
-            return node.hasOwnProperty(property);
-        },
-
-        /**
-         * Returns true if a single node matches a query selector.
-         * @param {HTMLElement} node The input node.
-         * @param {string} selector The query selector.
-         * @returns {Boolean} TRUE if the node matches the selector, otherwise FALSE.
-         */
-        is(node, selector) {
-            return Core.isElement(node) &&
-                node.matches(selector);
-        },
-
-        /**
-         * Returns true if a single node is connected to the DOM.
-         * @param {Node|HTMLElement|DocumentFragment|ShadowRoot} node The input node.
-         * @returns {Boolean} TRUE if the node is connected to the DOM, otherwise FALSE.
-         */
-        isConnected(node) {
-            return node.isConnected;
-        },
-
-        /**
-         * Returns true if a single node is equal to another node.
-         * @param {Node|HTMLElement|DocumentFragment|ShadowRoot|Document} node The input node.
-         * @param {Node|HTMLElement|DocumentFragment|ShadowRoot|Document} node The other node.
-         * @returns {Boolean} TRUE if the node is equal to the other node, otherwise FALSE.
-         */
-        isEqual(node, other) {
-            return node.isEqualNode(other);
-        },
-
-        /**
-         * Returns true if a single node is the same as another node.
-         * @param {Node|HTMLElement|DocumentFragment|ShadowRoot|Document} node The input node.
-         * @param {Node|HTMLElement|DocumentFragment|ShadowRoot|Document} node The other node.
-         * @returns {Boolean} TRUE if the node is the same as the other node, otherwise FALSE.
-         */
-        isSame(node, other) {
-            return node.isSameNode(other);
-        },
-
-        /**
-         * Returns true if a Document is visible.
-         * @param {Document} node The input node.
-         * @returns {Boolean} TRUE if the node is visible, otherwise FALSE.
-         */
-        isVisibleDocument(node) {
-            return node.visibilityState === 'visible';
-        }
-
-    });
-
-    /**
-     * DOMNode (Static) Utility
-     */
-
-    Object.assign(DOMNode, {
-
-        /**
-         * Compare the position of two nodes in a Document.
-         * @param {Node} node The input node.
-         * @param {Node} other The node to compare against.
-         * @returns {number} The bitmask representing the relationship of the nodes.
-         */
-        comparePosition(node, other) {
-            return node.compareDocumentPosition(other);
-        },
-
-        /**
-         * Normalize a single node (remove empty text nodes, and join neighbouring text nodes).
-         * @param {Node|HTMLElement|DocumentFragment|ShadowRoot|Document} node The input node.
-         */
-        normalize(node) {
-            node.normalize();
-        },
-
-        /**
-         * Return the tag name of a single node.
-         * @param {HTMLElement} node The input node.
-         * @returns {string} The elements tag name.
-         */
-        tagName(node) {
-            return node.tagName;
-        }
-
-    });
-
     return {
         AjaxRequest,
         Animation,
         DOM,
-        DOMNode,
         dom: new DOM
     };
 

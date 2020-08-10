@@ -61,7 +61,7 @@ Object.assign(DOM.prototype, {
             return;
         }
 
-        return DOMNode.getProperty(node, property);
+        return node[property];
     },
 
     /**
@@ -97,7 +97,7 @@ Object.assign(DOM.prototype, {
         nodes = this.parseNodes(nodes);
 
         for (const node of nodes) {
-            DOMNode.removeAttribute(node, attribute);
+            node.removeAttribute(attribute);
         }
     },
 
@@ -123,7 +123,7 @@ Object.assign(DOM.prototype, {
         nodes = this.parseNodes(nodes);
 
         for (const node of nodes) {
-            DOMNode.removeProperty(node, property);
+            delete node[property];
         }
     },
 
@@ -187,7 +187,7 @@ Object.assign(DOM.prototype, {
 
         for (const node of nodes) {
             for (const property in properties) {
-                DOMNode.setProperty(node, property, properties[property]);
+                node[property] = properties[property];
             }
         }
     },

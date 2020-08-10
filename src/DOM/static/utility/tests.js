@@ -56,7 +56,7 @@ Object.assign(DOM, {
      * @returns {Boolean} TRUE if the node has a DocumentFragment, otherwise FALSE.
      */
     _hasFragment(node) {
-        return !!DOMNode.fragment(node);
+        return !!node.content;
     },
 
     /**
@@ -65,7 +65,7 @@ Object.assign(DOM, {
      * @returns {Boolean} TRUE if the node has a ShadowRoot, otherwise FALSE.
      */
     _hasShadow(node) {
-        return !!DOMNode.shadow(node);
+        return !!node.shadowRoot;
     },
 
     /**
@@ -75,16 +75,14 @@ Object.assign(DOM, {
      */
     _isVisible(node) {
         if (Core.isWindow(node)) {
-            return DOMNode.isVisibleDocument(
-                DOMNode.document(node)
-            );
+            return node.document.visibilityState === 'visible';
         }
 
         if (Core.isDocument(node)) {
-            return DOMNode.isVisibleDocument(node);
+            return node.visibilityState === 'visible';
         }
 
-        return !!DOMNode.offsetParent(node);
+        return !!node.offsetParent;
     }
 
 });

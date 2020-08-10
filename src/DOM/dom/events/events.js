@@ -15,7 +15,7 @@ Object.assign(DOM.prototype, {
             return;
         }
 
-        DOMNode.blur(node);
+        node.blur();
     },
 
     /**
@@ -29,7 +29,7 @@ Object.assign(DOM.prototype, {
             return;
         }
 
-        DOMNode.click(node);
+        node.click();
     },
 
     /**
@@ -43,7 +43,7 @@ Object.assign(DOM.prototype, {
             return;
         }
 
-        DOMNode.focus(node);
+        node.focus();
     },
 
     /**

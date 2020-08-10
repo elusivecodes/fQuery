@@ -192,12 +192,13 @@ dom.fadeOut(nodes, options);
 
 **Rotate In**
 
-Rotate each node in on an X,Y.
+Rotate each node in on an X, Y or Z.
 
 - `nodes` is a query selector string, a *HTMLElement*, *NodeList*, *HTMLCollection*, [*QuerySet*](https://github.com/elusivecodes/fQuery) or an array of nodes.
 - `options` is an object containing properties to define how the animation should be handled.
     - `x` is the amount of rotation to apply to the X axis, and will default to *0*.
     - `y` is the amount of rotation to apply to the Y axis, and will default to *1*.
+    - `z` is the amount of rotation to apply to the Z axis, and will default to *0*.
     - `inverse` is a boolean indicating whether to rotate in the opposite direction, and will default to *false*.
     - `duration` is the number of milliseconds that the animation should last, and will default to *1000*.
     - `type` is a string of either "*ease-in*", "*ease-out*", "*ease-in-out*" or "*linear*" indicating the type of animation to run, and will default to "*ease-in-out*".
@@ -211,12 +212,13 @@ dom.rotateIn(nodes, options);
 
 **Rotate Out**
 
-Rotate each node out on an X,Y.
+Rotate each node out on an X, Y or Z.
 
 - `nodes` is a query selector string, a *HTMLElement*, *NodeList*, *HTMLCollection*, [*QuerySet*](https://github.com/elusivecodes/fQuery) or an array of nodes.
 - `options` is an object containing properties to define how the animation should be handled.
     - `x` is the amount of rotation to apply to the X axis, and will default to *0*.
     - `y` is the amount of rotation to apply to the Y axis, and will default to *1*.
+    - `z` is the amount of rotation to apply to the Z axis, and will default to *0*.
     - `inverse` is a boolean indicating whether to rotate in the opposite direction, and will default to *false*.
     - `duration` is the number of milliseconds that the animation should last, and will default to *1000*.
     - `type` is a string of either "*ease-in*", "*ease-out*", "*ease-in-out*" or "*linear*" indicating the type of animation to run, and will default to "*ease-in-out*".

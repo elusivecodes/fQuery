@@ -19,11 +19,11 @@ Object.assign(DOM.prototype, {
         }
 
         if (Core.isString(filter)) {
-            return node => DOMNode.is(node, filter);
+            return node => Core.isElement(node) && node.matches(filter);
         }
 
         if (Core.isNode(filter) || Core.isFragment(filter) || Core.isShadow(filter)) {
-            return node => DOMNode.isSame(node, filter);
+            return node => node.isSameNode(filter);
         }
 
         filter = this.parseNodes(filter, { node: true, fragment: true, shadow: true });
@@ -49,7 +49,7 @@ Object.assign(DOM.prototype, {
             return node =>
                 Core.merge(
                     [],
-                    DOMNode.findBySelector('*', node)
+                    node.querySelectorAll('*')
                 ).some(filter);
         }
 
@@ -58,13 +58,13 @@ Object.assign(DOM.prototype, {
         }
 
         if (Core.isNode(filter) || Core.isFragment(filter) || Core.isShadow(filter)) {
-            return node => DOMNode.contains(node, filter);
+            return node => node.contains(filter);
         }
 
         filter = this.parseNodes(filter, { node: true, fragment: true, shadow: true });
 
         if (filter.length) {
-            return node => filter.some(other => DOMNode.contains(node, other));
+            return node => filter.some(other => node.contains(other));
         }
 
         return false;

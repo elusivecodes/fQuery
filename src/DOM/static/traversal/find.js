@@ -16,7 +16,7 @@ Object.assign(DOM, {
         for (const node of nodes) {
             Core.merge(
                 results,
-                DOMNode.findBySelector(selector, node)
+                node.querySelectorAll(selector)
             );
         }
 
@@ -33,7 +33,7 @@ Object.assign(DOM, {
      */
     _findOneBySelector(selector, nodes) {
         for (const node of nodes) {
-            const result = DOMNode.findOneBySelector(selector, node);
+            const result = node.querySelector(selector);
             if (result) {
                 return result;
             }

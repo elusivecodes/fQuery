@@ -35,9 +35,7 @@ Object.assign(DOM, {
             realCallback = this._delegateFactory(node, delegate, realCallback);
         }
 
-        if (event !== realEvent) {
-            realCallback = this._namespaceFactory(event, realCallback);
-        }
+        realCallback = this._namespaceFactory(event, realCallback);
 
         eventData.realCallback = realCallback;
         eventData.event = event;
@@ -51,7 +49,7 @@ Object.assign(DOM, {
 
         nodeEvents[realEvent].push(eventData);
 
-        DOMNode.addEvent(node, realEvent, realCallback);
+        node.addEventListener(realEvent, realCallback);
     },
 
     /**
@@ -123,14 +121,14 @@ Object.assign(DOM, {
             }
 
             if (realEvent !== event) {
-                const regExp = DOM._eventNamespacedRegExp(event);
+                const regExp = this._eventNamespacedRegExp(event);
 
                 if (!eventData.event.match(regExp)) {
                     return true;
                 }
             }
 
-            DOMNode.removeEvent(node, eventData.realEvent, eventData.realCallback);
+            node.removeEventListener(eventData.realEvent, eventData.realCallback);
 
             return false;
         });
@@ -157,17 +155,24 @@ Object.assign(DOM, {
      * @returns {Boolean} FALSE if the event was cancelled, otherwise TRUE.
      */
     _triggerEvent(node, event, data, options) {
-        const realEvent = DOM._parseEvent(event),
-            eventData = {
-                ...data
-            };
+        const realEvent = this._parseEvent(event);
+
+        const eventData = new Event(realEvent, {
+            bubbles: true,
+            cancelable: true,
+            ...options
+        });
 
         if (realEvent !== event) {
             eventData.namespace = event.substring(realEvent.length + 1);
-            eventData.namespaceRegExp = DOM._eventNamespacedRegExp(event);
+            eventData.namespaceRegExp = this._eventNamespacedRegExp(event);
         }
 
-        return DOMNode.triggerEvent(node, realEvent, eventData, options);
+        if (data) {
+            Object.assign(eventData, data);
+        }
+
+        return node.dispatchEvent(eventData);
     }
 
 });

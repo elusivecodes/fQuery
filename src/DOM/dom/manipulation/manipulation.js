@@ -39,13 +39,13 @@ Object.assign(DOM.prototype, {
         nodes = this.parseNodes(nodes, { node: true });
 
         for (const node of nodes) {
-            const parent = DOMNode.parent(node);
+            const parent = node.parentNode;
 
             if (!parent) {
                 continue;
             }
 
-            DOMNode.removeChild(parent, node);
+            parent.removeChild(node);
         }
 
         return nodes;
@@ -73,14 +73,14 @@ Object.assign(DOM.prototype, {
         nodes = this.parseNodes(nodes, { node: true });
 
         for (const node of nodes) {
-            const parent = DOMNode.parent(node);
+            const parent = node.parentNode;
 
             if (!parent) {
                 continue;
             }
 
             this.constructor._remove(node);
-            DOMNode.removeChild(parent, node);
+            parent.removeChild(node);
         }
     },
 
@@ -110,32 +110,31 @@ Object.assign(DOM.prototype, {
         const fragment = this.createFragment();
 
         for (const other of others) {
-            DOMNode.insertBefore(fragment, other);
+            fragment.insertBefore(other, null);
         }
 
-        others = Core.wrap(DOMNode.childNodes(fragment));
+        others = Core.wrap(fragment.childNodes);
 
         nodes = nodes.filter(node =>
             !others.includes(node) &&
             !nodes.some(other =>
-                !DOMNode.isSame(other, node) &&
-                DOMNode.contains(other, node)
+                !other.isSameNode(node) &&
+                other.contains(node)
             )
         );
 
         const lastNode = nodes[nodes.length - 1];
 
         for (const node of nodes) {
-            const parent = DOMNode.parent(node);
+            const parent = node.parentNode;
 
             if (!parent) {
                 continue;
             }
 
             for (const other of others) {
-                DOMNode.insertBefore(
-                    parent,
-                    DOMNode.isSame(node, lastNode) ?
+                parent.insertBefore(
+                    node.isSameNode(lastNode) ?
                         other :
                         this.constructor._clone(other, {
                             deep: true,
@@ -149,14 +148,14 @@ Object.assign(DOM.prototype, {
         }
 
         for (const node of nodes) {
-            const parent = DOMNode.parent(node);
+            const parent = node.parentNode;
 
             if (!parent) {
                 continue;
             }
 
             this.constructor._remove(node);
-            DOMNode.removeChild(parent, node);
+            parent.removeChild(node);
         }
     }
 

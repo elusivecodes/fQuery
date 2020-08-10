@@ -86,10 +86,9 @@ describe('#detach', function() {
                 for (const node of nodes) {
                     document.body.appendChild(node);
                 }
-                return [...document.querySelectorAll('a')]
-                    .map(node =>
-                        dom.getData(node, 'test')
-                    );
+                return nodes.map(node =>
+                    dom.getData(node, 'test')
+                );
             }),
             [
                 'Test',
@@ -100,8 +99,8 @@ describe('#detach', function() {
         );
     });
 
-    it('does not remove animations', function() {
-        return exec(_ => {
+    it('does not remove animations', async function() {
+        await exec(_ => {
             dom.animate(
                 'a',
                 _ => { },
@@ -128,6 +127,44 @@ describe('#detach', function() {
             await testNoAnimation('#test2');
             await testNoAnimation('#test3');
             await testNoAnimation('#test4');
+        });
+    });
+
+    it('does not remove queue', async function() {
+        await exec(_ => {
+            dom.queue(
+                'a',
+                _ => {
+                    return new Promise(resolve =>
+                        setTimeout(resolve, 100)
+                    );
+                }
+            );
+            dom.queue(
+                'a',
+                node => {
+                    node.dataset.test = 'Test'
+                }
+            );
+        }).then(waitFor(50)).then(async _ => {
+            await exec(_ => {
+                const nodes = dom.detach('a');
+                for (const node of nodes) {
+                    document.body.appendChild(node);
+                }
+            });
+        }).then(waitFor(100)).then(async _ => {
+            assert.equal(
+                await exec(_ => {
+                    return document.body.innerHTML;
+                }),
+                '<div id="parent1"></div>' +
+                '<div id="parent2"></div>' +
+                '<a href="#" id="test1" data-test="Test">Test</a>' +
+                '<a href="#" id="test2" data-test="Test">Test</a>' +
+                '<a href="#" id="test3" data-test="Test">Test</a>' +
+                '<a href="#" id="test4" data-test="Test">Test</a>'
+            );
         });
     });
 

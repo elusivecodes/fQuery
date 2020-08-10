@@ -1,6 +1,7 @@
 const fs = require('fs');
 const http = require('http');
 const puppeteer = require('puppeteer');
+const assert = require('assert').strict;
 const port = 3001;
 
 let browser, page;
@@ -67,6 +68,27 @@ before(async function() {
     await page.goto('http://localhost:3001', {
         waitUntil: 'domcontentloaded'
     });
+
+    assert.equal(
+        await page.evaluate(_ => {
+            return AjaxRequest.useMock;
+        }),
+        false
+    );
+
+    assert.equal(
+        await page.evaluate(_ => {
+            return Animation.useTimeout;
+        }),
+        false
+    );
+
+    assert.equal(
+        await page.evaluate(_ => {
+            return Animation.defaults.duration;
+        }),
+        1000
+    );
 
     await page.evaluate(_ => {
         AjaxRequest.useMock = true;

@@ -14,7 +14,7 @@ Object.assign(DOM, {
         if (!this._styles.has(node)) {
             this._styles.set(
                 node,
-                DOMNode.css(node)
+                window.getComputedStyle(node)
             );
         }
 
@@ -40,14 +40,13 @@ Object.assign(DOM, {
         if (style) {
             style = Core.kebabCase(style);
 
-            return DOMNode.getStyle(node, style);
+            return node.style[style];
         }
 
-        const nodeStyles = DOMNode.style(node),
-            styles = {};
+        const styles = {};
 
-        for (const style of nodeStyles) {
-            styles[style] = DOMNode.getStyle(node, style);
+        for (const style of node.style) {
+            styles[style] = node.style[style];
         }
 
         return styles;
@@ -69,7 +68,13 @@ Object.assign(DOM, {
                 value += 'px';
             }
 
-            DOMNode.setStyle(node, style, value, important);
+            node.style.setProperty(
+                style,
+                value,
+                important ?
+                    'important' :
+                    ''
+            );
         }
     }
 

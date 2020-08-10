@@ -120,10 +120,9 @@ describe('#clone', function() {
                 for (const clone of clones) {
                     document.body.appendChild(clone);
                 }
-                return [...document.querySelectorAll('a')]
-                    .map(node =>
-                        dom.getData(node, 'test')
-                    );
+                return [...document.querySelectorAll('a')].map(node =>
+                    dom.getData(node, 'test')
+                );
             }),
             [
                 'Test',

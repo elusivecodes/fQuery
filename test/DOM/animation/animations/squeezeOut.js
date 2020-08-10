@@ -558,7 +558,7 @@ describe('#squeezeOut', function() {
     });
 
     it('resolves when the animation is completed', async function() {
-        return exec(async _ => {
+        await exec(async _ => {
             await dom.squeezeOut(
                 '.animate',
                 {

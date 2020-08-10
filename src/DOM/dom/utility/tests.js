@@ -25,7 +25,7 @@ Object.assign(DOM.prototype, {
     hasAttribute(nodes, attribute) {
         return this.parseNodes(nodes)
             .some(node =>
-                DOMNode.hasAttribute(node, attribute)
+                node.hasAttribute(attribute)
             );
     },
 
@@ -37,7 +37,7 @@ Object.assign(DOM.prototype, {
     hasChildren(nodes) {
         return this.parseNodes(nodes, { fragment: true, shadow: true, document: true })
             .some(node =>
-                DOMNode.hasChildren(node)
+                !!node.childElementCount
             );
     },
 
@@ -53,7 +53,7 @@ Object.assign(DOM.prototype, {
         return this.parseNodes(nodes)
             .some(node =>
                 classes.some(className =>
-                    DOMNode.hasClass(node, className)
+                    node.classList.contains(className)
                 )
             );
     },
@@ -132,7 +132,7 @@ Object.assign(DOM.prototype, {
     hasProperty(nodes, property) {
         return this.parseNodes(nodes)
             .some(node =>
-                DOMNode.hasProperty(node, property)
+                node.hasOwnProperty(property)
             );
     },
 
@@ -171,7 +171,7 @@ Object.assign(DOM.prototype, {
      */
     isConnected(nodes) {
         return this.parseNodes(nodes, { node: true, fragment: true, shadow: true })
-            .some(node => DOMNode.isConnected(node));
+            .some(node => node.isConnected);
     },
 
     /**
@@ -185,7 +185,7 @@ Object.assign(DOM.prototype, {
 
         return this.parseNodes(nodes, { node: true, fragment: true, shadow: true })
             .some(node =>
-                others.some(other => DOMNode.isEqual(node, other))
+                others.some(other => node.isEqualNode(other))
             );
     },
 
@@ -231,7 +231,7 @@ Object.assign(DOM.prototype, {
 
         return this.parseNodes(nodes, { node: true, fragment: true, shadow: true })
             .some(node =>
-                others.some(other => DOMNode.isSame(node, other))
+                others.some(other => node.isSameNode(other))
             );
     },
 

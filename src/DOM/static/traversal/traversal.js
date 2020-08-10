@@ -15,8 +15,8 @@ Object.assign(DOM, {
     _children(node, filter, first = false, elementsOnly = false) {
         const children = Core.wrap(
             elementsOnly ?
-                DOMNode.children(node) :
-                DOMNode.childNodes(node)
+                node.children :
+                node.childNodes
         );
         const results = [];
 
@@ -42,9 +42,9 @@ Object.assign(DOM, {
      */
     _deepest(node) {
         return Core.wrap(
-            DOMNode.findBySelector('*', node)
+            node.querySelectorAll('*')
         ).find(node =>
-            !DOMNode.hasChildren(node)
+            !node.childElementCount
         ) || node;
     },
 
@@ -57,7 +57,7 @@ Object.assign(DOM, {
     _next(node, filter) {
         const results = [];
 
-        node = DOMNode.next(node);
+        node = node.nextSibling;
 
         if (!node) {
             return results;
@@ -83,7 +83,7 @@ Object.assign(DOM, {
     _nextAll(node, filter, limit, first = false) {
         const results = [];
 
-        while (node = DOMNode.next(node)) {
+        while (node = node.nextSibling) {
             if (limit && limit(node)) {
                 break;
             }
@@ -111,7 +111,7 @@ Object.assign(DOM, {
     _parent(node, filter) {
         const results = [];
 
-        const parent = DOMNode.parent(node);
+        const parent = node.parentNode;
 
         if (!parent) {
             return results;
@@ -137,7 +137,7 @@ Object.assign(DOM, {
     _parents(node, filter, limit, first = false) {
         const results = [];
 
-        while (node = DOMNode.parent(node)) {
+        while (node = node.parentNode) {
             if (Core.isDocument(node)) {
                 break;
             }
@@ -169,7 +169,7 @@ Object.assign(DOM, {
     _prev(node, filter) {
         const results = [];
 
-        node = DOMNode.prev(node);
+        node = node.previousSibling;
 
         if (!node) {
             return results;
@@ -195,7 +195,7 @@ Object.assign(DOM, {
     _prevAll(node, filter, limit, first = false) {
         const results = [];
 
-        while (node = DOMNode.prev(node)) {
+        while (node = node.previousSibling) {
             if (limit && limit(node)) {
                 break;
             }
@@ -224,7 +224,7 @@ Object.assign(DOM, {
     _siblings(node, filter, elementsOnly = true) {
         const results = [];
 
-        const parent = DOMNode.parent(node);
+        const parent = node.parentNode;
 
         if (!parent) {
             return results;
@@ -236,7 +236,7 @@ Object.assign(DOM, {
 
         let sibling;
         for (sibling of siblings) {
-            if (DOMNode.isSame(node, sibling)) {
+            if (node.isSameNode(sibling)) {
                 continue;
             }
 

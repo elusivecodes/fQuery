@@ -76,7 +76,7 @@ describe('#empty', function() {
                 for (const node of nodes) {
                     document.body.appendChild(node);
                 }
-                return [...document.querySelectorAll('a')]
+                return [...nodes]
                     .map(node =>
                         dom.getData(node, 'test')
                     );
@@ -113,6 +113,63 @@ describe('#empty', function() {
             await testNoAnimation('#test3');
             await testNoAnimation('#test4');
         });
+    });
+
+    it('removes queue recursively', async function() {
+        await exec(_ => {
+            dom.queue(
+                'a',
+                _ => {
+                    return new Promise(resolve =>
+                        setTimeout(resolve, 100)
+                    );
+                }
+            );
+            dom.queue(
+                'a',
+                node => {
+                    node.dataset.test = 'Test'
+                }
+            );
+        }).then(waitFor(50)).then(async _ => {
+            await exec(_ => {
+                const nodes = document.querySelectorAll('a');
+                dom.empty('div');
+                for (const node of nodes) {
+                    document.body.appendChild(node);
+                }
+            });
+        }).then(waitFor(100)).then(async _ => {
+            assert.equal(
+                await exec(_ => {
+                    return document.body.innerHTML;
+                }),
+                '<div id="outer1">' +
+                '</div>' +
+                '<div id="outer2">' +
+                '</div>' +
+                '<a href="#" id="test1"></a>' +
+                '<a href="#" id="test2"></a>' +
+                '<a href="#" id="test3"></a>' +
+                '<a href="#" id="test4"></a>'
+            );
+        });
+    });
+
+    it('triggers a remove event recursively', async function() {
+        assert.equal(
+            await exec(_ => {
+                let result = 0;
+                dom.addEvent(
+                    'a',
+                    'remove',
+                    _ => { result++; }
+                );
+                dom.empty('div');
+                return result;
+            }),
+            4
+        );
     });
 
     it('works with HTMLElement nodes', async function() {

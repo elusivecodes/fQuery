@@ -12,13 +12,12 @@ Object.assign(DOM, {
      */
     _getAttribute(node, attribute) {
         if (attribute) {
-            return DOMNode.getAttribute(node, attribute);
+            return node.getAttribute(attribute);
         }
 
-        const nodeAttributes = DOMNode.attributes(node),
-            attributes = {};
+        const attributes = {};
 
-        for (const attr of nodeAttributes) {
+        for (const attr of node.attributes) {
             attributes[attr.nodeName] = attr.nodeValue;
         }
 
@@ -35,20 +34,18 @@ Object.assign(DOM, {
         if (key) {
             key = Core.camelCase(key);
 
-            return DOM._parseDataset(
-                DOMNode.getDataset(node, key)
+            return this._parseDataset(
+                node.dataset[key]
             );
         }
 
-        const dataset = DOMNode.dataset(node);
+        const dataset = {};
 
-        const result = {};
-
-        for (const k in dataset) {
-            result[k] = DOM._parseDataset(dataset[k]);
+        for (const k in node.dataset) {
+            dataset[k] = this._parseDataset(node.dataset[k]);
         }
 
-        return result;
+        return dataset;
     },
 
     /**
@@ -59,7 +56,7 @@ Object.assign(DOM, {
     _removeDataset(node, key) {
         key = Core.camelCase(key);
 
-        DOMNode.removeDataset(node, key);
+        delete node.dataset[key];
     },
 
     /**
@@ -69,11 +66,7 @@ Object.assign(DOM, {
      */
     _setAttribute(node, attributes) {
         for (const key in attributes) {
-            DOMNode.setAttribute(
-                node,
-                key,
-                attributes[key]
-            );
+            node.setAttribute(key, attributes[key]);
         }
     },
 
@@ -85,12 +78,7 @@ Object.assign(DOM, {
     _setDataset(node, dataset) {
         for (const key in dataset) {
             const realKey = Core.camelCase(key);
-
-            DOMNode.setDataset(
-                node,
-                realKey,
-                dataset[key]
-            );
+            node.dataset[realKey] = dataset[key];
         }
     }
 

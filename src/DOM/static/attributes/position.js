@@ -66,16 +66,16 @@ Object.assign(DOM, {
             node,
             node => {
                 const result = {
-                    x: DOMNode.offsetLeft(node),
-                    y: DOMNode.offsetTop(node)
+                    x: node.offsetLeft,
+                    y: node.offsetTop
                 };
 
                 if (offset) {
                     let offsetParent = node;
 
-                    while (offsetParent = DOMNode.offsetParent(offsetParent)) {
-                        result.x += DOMNode.offsetLeft(offsetParent);
-                        result.y += DOMNode.offsetTop(offsetParent);
+                    while (offsetParent = offsetParent.offsetParent) {
+                        result.x += offsetParent.offsetLeft;
+                        result.y += offsetParent.offsetTop;
                     }
                 }
 
@@ -94,11 +94,11 @@ Object.assign(DOM, {
         return this._forceShow(
             node,
             node => {
-                const result = DOMNode.rect(node);
+                const result = node.getBoundingClientRect();
 
                 if (offset) {
-                    result.x += DOMNode.getScrollXWindow(window);
-                    result.y += DOMNode.getScrollYWindow(window);
+                    result.x += window.scrollX;
+                    result.y += window.scrollY;
                 }
 
                 return result;

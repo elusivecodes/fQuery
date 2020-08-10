@@ -10,9 +10,7 @@ Object.assign(DOM, {
      * @returns {number} The scroll X position.
      */
     _getScrollXDocument(node) {
-        return DOMNode.getScrollX(
-            DOMNode.scrollingElement(node)
-        );
+        return node.scrollingElement.scrollLeft;
     },
 
     /**
@@ -21,9 +19,7 @@ Object.assign(DOM, {
      * @returns {number} The scroll Y position.
      */
     _getScrollYDocument(node) {
-        return DOMNode.getScrollY(
-            DOMNode.scrollingElement(node)
-        );
+        return node.scrollingElement.scrollTop;
     },
 
     /**
@@ -33,8 +29,8 @@ Object.assign(DOM, {
      * @param {number} y The scroll Y position.
      */
     _setScroll(node, x, y) {
-        DOMNode.setScrollX(node, x);
-        DOMNode.setScrollY(node, y);
+        node.scrollLeft = x;
+        node.scrollTop = y;
     },
 
     /**
@@ -44,8 +40,8 @@ Object.assign(DOM, {
      * @param {number} y The scroll Y position.
      */
     _setScrollDocument(node, x, y) {
-        return this._setScroll(
-            DOMNode.scrollingElement(node),
+        this._setScroll(
+            node.scrollingElement,
             x,
             y
         );
@@ -57,10 +53,7 @@ Object.assign(DOM, {
      * @param {number} x The scroll X position.
      */
     _setScrollXDocument(node, x) {
-        return DOMNode.setScrollX(
-            DOMNode.scrollingElement(node),
-            x
-        );
+        node.scrollingElement.scrollLeft = x;
     },
 
     /**
@@ -69,11 +62,7 @@ Object.assign(DOM, {
      * @param {number} x The scroll X position.
      */
     _setScrollXWindow(node, x) {
-        return DOMNode.setScrollWindow(
-            node,
-            x,
-            DOMNode.getScrollYWindow(node)
-        );
+        return node.scroll(x, node.scrollY);
     },
 
     /**
@@ -82,10 +71,7 @@ Object.assign(DOM, {
      * @param {number} y The scroll Y position.
      */
     _setScrollYDocument(node, y) {
-        return DOMNode.setScrollY(
-            DOMNode.scrollingElement(node),
-            y
-        );
+        node.scrollingElement.scrollTop = y;
     },
 
     /**
@@ -94,11 +80,7 @@ Object.assign(DOM, {
      * @param {number} y The scroll Y position.
      */
     _setScrollYWindow(node, y) {
-        return DOMNode.setScrollWindow(
-            node,
-            DOMNode.getScrollXWindow(node),
-            y
-        );
+        return node.scroll(node.scrollX, y);
     }
 
 });

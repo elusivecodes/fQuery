@@ -11,7 +11,7 @@ Object.assign(DOM.prototype, {
      */
     connected(nodes) {
         return this.parseNodes(nodes, { node: true, fragment: true, shadow: true })
-            .filter(node => DOMNode.isConnected(node));
+            .filter(node => node.isConnected);
     },
 
     /**
@@ -25,7 +25,7 @@ Object.assign(DOM.prototype, {
 
         return this.parseNodes(nodes, { node: true, fragment: true, shadow: true })
             .filter(node =>
-                others.some(other => DOMNode.isEqual(node, other))
+                others.some(other => node.isEqualNode(other))
             );
     },
 
@@ -121,7 +121,7 @@ Object.assign(DOM.prototype, {
 
         return this.parseNodes(nodes, { node: true, fragment: true, shadow: true })
             .filter(node =>
-                others.some(other => DOMNode.isSame(node, other))
+                others.some(other => node.isSameNode(other))
             );
     },
 
@@ -156,7 +156,7 @@ Object.assign(DOM.prototype, {
     withAttribute(nodes, attribute) {
         return this.parseNodes(nodes)
             .filter(node =>
-                DOMNode.hasAttribute(node, attribute)
+                node.hasAttribute(attribute)
             );
     },
 
@@ -168,7 +168,7 @@ Object.assign(DOM.prototype, {
     withChildren(nodes) {
         return this.parseNodes(nodes, { fragment: true, shadow: true, document: true })
             .filter(node =>
-                DOMNode.hasChildren(node)
+                !!node.childElementCount
             );
     },
 
@@ -184,7 +184,7 @@ Object.assign(DOM.prototype, {
         return this.parseNodes(nodes)
             .filter(node =>
                 classes.some(className =>
-                    DOMNode.hasClass(node, className)
+                    node.classList.contains(className)
                 )
             );
     },
@@ -248,7 +248,7 @@ Object.assign(DOM.prototype, {
     withProperty(nodes, property) {
         return this.parseNodes(nodes)
             .filter(node =>
-                DOMNode.hasProperty(node, property)
+                node.hasOwnProperty(property)
             );
     }
 

@@ -33,20 +33,24 @@ Object.assign(DOM, {
         const hidden = new Map;
 
         for (const element of elements) {
-            hidden.set(element, DOMNode.getAttribute(element, 'style'));
+            hidden.set(element, element.getAttribute('style'));
 
-            DOMNode.setStyle(element, 'display', 'initial', true);
+            element.style.setProperty(
+                'display',
+                'initial',
+                'important'
+            );
         }
 
         const result = callback(node);
 
         for (const [element, style] of hidden) {
             if (style) {
-                DOMNode.setAttribute(element, 'style', style);
+                element.setAttribute('style', style);
             } else {
                 // force DOM to update
-                DOMNode.getAttribute(element, 'style');
-                DOMNode.removeAttribute(element, 'style');
+                element.getAttribute('style');
+                element.removeAttribute('style');
             }
         }
 
@@ -63,7 +67,7 @@ Object.assign(DOM, {
         // check node
         const name = this._tagName(node);
         if (!(name in allowedTags)) {
-            DOMNode.removeChild(parent, node);
+            parent.removeChild(node);
             return;
         }
 
@@ -83,7 +87,7 @@ Object.assign(DOM, {
             const valid = !!allowedAttributes.find(test => attribute.match(test));
 
             if (!valid) {
-                DOMNode.removeAttribute(node, attribute);
+                node.removeAttribute(attribute);
             }
         }
 
@@ -109,11 +113,11 @@ Object.assign(DOM, {
                 return 1;
             }
 
-            if (DOMNode.isSame(node, other)) {
+            if (node.isSameNode(other)) {
                 return 0;
             }
 
-            const pos = DOMNode.comparePosition(node, other);
+            const pos = node.compareDocumentPosition(other);
 
             if (pos & Node.DOCUMENT_POSITION_FOLLOWING ||
                 pos & Node.DOCUMENT_POSITION_CONTAINED_BY) {
@@ -135,7 +139,7 @@ Object.assign(DOM, {
      * @returns {string} The elements tag name (lowercase).
      */
     _tagName(node) {
-        return DOMNode.tagName(node).toLowerCase();
+        return node.tagName.toLowerCase();
     }
 
 });

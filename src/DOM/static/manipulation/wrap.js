@@ -9,20 +9,20 @@ Object.assign(DOM, {
      * @param {Node|HTMLElement} parent The input node.
      */
     _unwrap(parent) {
-        const outerParent = DOMNode.parent(parent);
+        const outerParent = parent.parentNode;
 
         if (!outerParent) {
             return;
         }
 
-        const children = Core.wrap(DOMNode.childNodes(parent));
+        const children = Core.wrap(parent.childNodes);
 
         for (const child of children) {
-            DOMNode.insertBefore(outerParent, child, parent);
+            outerParent.insertBefore(child, parent);
         }
 
         this._remove(parent);
-        DOMNode.removeChild(outerParent, parent);
+        outerParent.removeChild(parent);
     },
 
     /**
@@ -31,7 +31,7 @@ Object.assign(DOM, {
      * @param {array} others The other node(s).
      */
     _wrap(node, others) {
-        const parent = DOMNode.parent(node);
+        const parent = node.parentNode;
 
         if (!parent) {
             return;
@@ -50,15 +50,15 @@ Object.assign(DOM, {
 
         const deepest = this._deepest(
             Core.isFragment(firstClone) ?
-                DOMNode.firstChild(firstClone) :
+                firstClone.firstChild :
                 firstClone
         );
 
         for (const clone of clones) {
-            DOMNode.insertBefore(parent, clone, node);
+            parent.insertBefore(clone, node);
         }
 
-        DOMNode.insertBefore(deepest, node);
+        deepest.insertBefore(node, null);
     },
 
     /**
@@ -73,7 +73,7 @@ Object.assign(DOM, {
             return;
         }
 
-        const parent = DOMNode.parent(firstNode);
+        const parent = firstNode.parentNode;
 
         if (!parent) {
             return;
@@ -83,16 +83,16 @@ Object.assign(DOM, {
 
         const deepest = this._deepest(
             Core.isFragment(firstOther) ?
-                DOMNode.firstChild(firstOther) :
+                firstOther.firstChild :
                 firstOther
         );
 
         for (const other of others) {
-            DOMNode.insertBefore(parent, other, firstNode);
+            parent.insertBefore(other, firstNode);
         }
 
         for (const node of nodes) {
-            DOMNode.insertBefore(deepest, node);
+            deepest.insertBefore(node, null);
         }
     },
 
@@ -102,7 +102,7 @@ Object.assign(DOM, {
      * @param {array} others The other node(s).
      */
     _wrapInner(node, others) {
-        const children = Core.wrap(DOMNode.childNodes(node));
+        const children = Core.wrap(node.childNodes);
 
         const clones = others.map(other =>
             this._clone(other, {
@@ -117,16 +117,16 @@ Object.assign(DOM, {
 
         const deepest = this._deepest(
             Core.isFragment(firstClone) ?
-                DOMNode.firstChild(firstClone) :
+                firstClone.firstChild :
                 firstClone
         );
 
         for (const clone of clones) {
-            DOMNode.insertBefore(node, clone);
+            node.insertBefore(clone, null);
         }
 
         for (const child of children) {
-            DOMNode.insertBefore(deepest, child);
+            deepest.insertBefore(child, null);
         }
     }
 

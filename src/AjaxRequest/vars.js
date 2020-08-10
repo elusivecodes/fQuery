@@ -21,6 +21,9 @@ Object.assign(AjaxRequest, {
         url: false
     },
 
+    // Use mock
+    useMock: false,
+
     // Local protocol test
     _localRegExp: /^(?:about|app|app-storage|.+-extension|file|res|widget):$/
 

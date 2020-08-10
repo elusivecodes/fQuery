@@ -13,14 +13,14 @@ Object.assign(DOM.prototype, {
     loadStyle(url, cache = true) {
         return new AjaxRequest({ url, cache })
             .then(response =>
-                DOMNode.insertBefore(
-                    this._context.head,
+                this._context.head.insertBefore(
                     this.create(
                         'style',
                         {
                             html: response.response
                         }
-                    )
+                    ),
+                    null
                 )
             );
     },
@@ -40,14 +40,14 @@ Object.assign(DOM.prototype, {
             )
             .then(responses => {
                 for (const response of responses) {
-                    DOMNode.insertBefore(
-                        this._context.head,
+                    this._context.head.insertBefore(
                         this.create(
                             'style',
                             {
                                 html: response.response
                             }
-                        )
+                        ),
+                        null
                     );
                 }
 

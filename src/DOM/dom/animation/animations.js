@@ -59,8 +59,7 @@ Object.assign(DOM.prototype, {
         return this.animate(
             nodes,
             (node, progress) =>
-                DOMNode.setStyle(
-                    node,
+                node.style.setProperty(
                     'opacity',
                     progress < 1 ?
                         progress.toFixed(2) :
@@ -83,8 +82,7 @@ Object.assign(DOM.prototype, {
         return this.animate(
             nodes,
             (node, progress) =>
-                DOMNode.setStyle(
-                    node,
+                node.style.setProperty(
                     'opacity',
                     progress < 1 ?
                         (1 - progress).toFixed(2) :
@@ -95,11 +93,12 @@ Object.assign(DOM.prototype, {
     },
 
     /**
-     * Rotate each node in on an X,Y.
+     * Rotate each node in on an X, Y or Z.
      * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
      * @param {object} [options] The options to use for animating.
      * @param {number} [options.x=0] The amount to rotate on the X-axis.
      * @param {number} [options.y=1] The amount to rotate on the Y-axis.
+     * @param {number} [options.z=1] The amount to rotate on the Z-axis.
      * @param {Boolean} [options.inverse] Whether to invert the rotation.
      * @param {number} [options.duration=1000] The duration of the animation.
      * @param {string} [options.type=ease-in-out] The type of animation.
@@ -111,28 +110,29 @@ Object.assign(DOM.prototype, {
             nodes,
             (node, progress, options) => {
                 const amount = ((90 - (progress * 90)) * (options.inverse ? -1 : 1)).toFixed(2);
-                DOMNode.setStyle(
-                    node,
+                node.style.setProperty(
                     'transform',
                     progress < 1 ?
-                        `rotate3d(${options.x}, ${options.y}, 0, ${amount}deg)` :
+                        `rotate3d(${options.x}, ${options.y}, ${options.z}, ${amount}deg)` :
                         ''
                 );
             },
             {
                 x: 0,
                 y: 1,
+                z: 0,
                 ...options
             }
         );
     },
 
     /**
-     * Rotate each node out on an X,Y.
+     * Rotate each node out on an X, Y or Z.
      * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
      * @param {object} [options] The options to use for animating.
      * @param {number} [options.x=0] The amount to rotate on the X-axis.
      * @param {number} [options.y=1] The amount to rotate on the Y-axis.
+     * @param {number} [options.z=1] The amount to rotate on the Z-axis.
      * @param {Boolean} [options.inverse] Whether to invert the rotation.
      * @param {number} [options.duration=1000] The duration of the animation.
      * @param {string} [options.type=ease-in-out] The type of animation.
@@ -144,17 +144,17 @@ Object.assign(DOM.prototype, {
             nodes,
             (node, progress, options) => {
                 const amount = ((progress * 90) * (options.inverse ? -1 : 1)).toFixed(2);
-                DOMNode.setStyle(
-                    node,
+                node.style.setProperty(
                     'transform',
                     progress < 1 ?
-                        `rotate3d(${options.x}, ${options.y}, 0, ${amount}deg)` :
+                        `rotate3d(${options.x}, ${options.y}, ${options.z}, ${amount}deg)` :
                         ''
                 );
             },
             {
                 x: 0,
                 y: 1,
+                z: 0,
                 ...options
             }
         );
@@ -176,12 +176,12 @@ Object.assign(DOM.prototype, {
             nodes,
             (node, progress, options) => {
                 if (progress === 1) {
-                    DOMNode.setStyle(node, 'overflow', '');
+                    node.style.setProperty('overflow', '');
                     if (options.useGpu) {
-                        DOMNode.setStyle(node, 'transform', '');
+                        node.style.setProperty('transform', '');
                     } else {
-                        DOMNode.setStyle(node, 'margin-left', '');
-                        DOMNode.setStyle(node, 'margin-top', '');
+                        node.style.setProperty('margin-left', '');
+                        node.style.setProperty('margin-top', '');
                     }
                     return;
                 }
@@ -207,9 +207,9 @@ Object.assign(DOM.prototype, {
 
                 const translateAmount = ((size - (size * progress)) * (inverse ? -1 : 1)).toFixed(2);
                 if (options.useGpu) {
-                    DOMNode.setStyle(node, 'transform', `translate${translateStyle}(${translateAmount}px)`);
+                    node.style.setProperty('transform', `translate${translateStyle}(${translateAmount}px)`);
                 } else {
-                    DOMNode.setStyle(node, translateStyle, `${translateAmount}px`);
+                    node.style.setProperty(translateStyle, `${translateAmount}px`);
                 }
             },
             {
@@ -236,12 +236,12 @@ Object.assign(DOM.prototype, {
             nodes,
             (node, progress, options) => {
                 if (progress === 1) {
-                    DOMNode.setStyle(node, 'overflow', '');
+                    node.style.setProperty('overflow', '');
                     if (options.useGpu) {
-                        DOMNode.setStyle(node, 'transform', '');
+                        node.style.setProperty('transform', '');
                     } else {
-                        DOMNode.setStyle(node, 'margin-left', '');
-                        DOMNode.setStyle(node, 'margin-top', '');
+                        node.style.setProperty('margin-left', '');
+                        node.style.setProperty('margin-top', '');
                     }
                     return;
                 }
@@ -267,9 +267,9 @@ Object.assign(DOM.prototype, {
 
                 const translateAmount = (size * progress * (inverse ? -1 : 1)).toFixed(2);
                 if (options.useGpu) {
-                    DOMNode.setStyle(node, 'transform', `translate${translateStyle}(${translateAmount}px)`);
+                    node.style.setProperty('transform', `translate${translateStyle}(${translateAmount}px)`);
                 } else {
-                    DOMNode.setStyle(node, translateStyle, `${translateAmount}px`);
+                    node.style.setProperty(translateStyle, `${translateAmount}px`);
                 }
             },
             {
@@ -301,23 +301,23 @@ Object.assign(DOM.prototype, {
         };
 
         const promises = nodes.map(node => {
-            const initialHeight = DOMNode.getStyle(node, 'height');
-            const initialWidth = DOMNode.getStyle(node, 'width');
-            DOMNode.setStyle(node, 'overflow', 'hidden');
+            const initialHeight = node.style.height;
+            const initialWidth = node.style.width;
+            node.style.setProperty('overflow', 'hidden');
 
             return new Animation(
                 node,
                 (node, progress, options) => {
-                    DOMNode.setStyle(node, 'height', initialHeight);
-                    DOMNode.setStyle(node, 'width', initialWidth);
+                    node.style.setProperty('height', initialHeight);
+                    node.style.setProperty('width', initialWidth);
 
                     if (progress === 1) {
-                        DOMNode.setStyle(node, 'overflow', '');
+                        node.style.setProperty('overflow', '');
                         if (options.useGpu) {
-                            DOMNode.setStyle(node, 'transform', '');
+                            node.style.setProperty('transform', '');
                         } else {
-                            DOMNode.setStyle(node, 'margin-left', '');
-                            DOMNode.setStyle(node, 'margin-top', '');
+                            node.style.setProperty('margin-left', '');
+                            node.style.setProperty('margin-top', '');
                         }
                         return;
                     }
@@ -346,14 +346,14 @@ Object.assign(DOM.prototype, {
                     const size = DOM[`_${sizeStyle}`](node),
                         amount = (size * progress).toFixed(2);
 
-                    DOMNode.setStyle(node, sizeStyle, `${amount}px`);
+                    node.style.setProperty(sizeStyle, `${amount}px`);
 
                     if (translateStyle) {
                         const translateAmount = (size - amount).toFixed(2);
                         if (options.useGpu) {
-                            DOMNode.setStyle(node, 'transform', `translate${translateStyle}(${translateAmount}px)`);
+                            node.style.setProperty('transform', `translate${translateStyle}(${translateAmount}px)`);
                         } else {
-                            DOMNode.setStyle(node, translateStyle, `${translateAmount}px`);
+                            node.style.setProperty(translateStyle, `${translateAmount}px`);
                         }
                     }
                 },
@@ -387,23 +387,23 @@ Object.assign(DOM.prototype, {
         };
 
         const promises = nodes.map(node => {
-            const initialHeight = DOMNode.getStyle(node, 'height');
-            const initialWidth = DOMNode.getStyle(node, 'width');
-            DOMNode.setStyle(node, 'overflow', 'hidden');
+            const initialHeight = node.style.height;
+            const initialWidth = node.style.width;
+            node.style.setProperty('overflow', 'hidden');
 
             return new Animation(
                 node,
                 (node, progress, options) => {
-                    DOMNode.setStyle(node, 'height', initialHeight);
-                    DOMNode.setStyle(node, 'width', initialWidth);
+                    node.style.setProperty('height', initialHeight);
+                    node.style.setProperty('width', initialWidth);
 
                     if (progress === 1) {
-                        DOMNode.setStyle(node, 'overflow', '');
+                        node.style.setProperty('overflow', '');
                         if (options.useGpu) {
-                            DOMNode.setStyle(node, 'transform', '');
+                            node.style.setProperty('transform', '');
                         } else {
-                            DOMNode.setStyle(node, 'margin-left', '');
-                            DOMNode.setStyle(node, 'margin-top', '');
+                            node.style.setProperty('margin-left', '');
+                            node.style.setProperty('margin-top', '');
                         }
                         return;
                     }
@@ -432,14 +432,14 @@ Object.assign(DOM.prototype, {
                     const size = DOM[`_${sizeStyle}`](node),
                         amount = (size - (size * progress)).toFixed(2);
 
-                    DOMNode.setStyle(node, sizeStyle, `${amount}px`);
+                    node.style.setProperty(sizeStyle, `${amount}px`);
 
                     if (translateStyle) {
                         const translateAmount = (size - amount).toFixed(2);
                         if (options.useGpu) {
-                            DOMNode.setStyle(node, 'transform', `translate${translateStyle}(${translateAmount}px)`);
+                            node.style.setProperty('transform', `translate${translateStyle}(${translateAmount}px)`);
                         } else {
-                            DOMNode.setStyle(node, translateStyle, `${translateAmount}px`);
+                            node.style.setProperty(translateStyle, `${translateAmount}px`);
                         }
                     }
                 },

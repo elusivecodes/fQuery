@@ -28,7 +28,7 @@ class Animation {
         }
 
         if (this._options.debug) {
-            DOMNode.setDataset(this._node, 'animationStart', this._options.start);
+            this._node.dataset.animationStart = this._options.start;
         }
 
         this.promise = new Promise((resolve, reject) => {
@@ -110,8 +110,8 @@ class Animation {
         }
 
         if (this._options.debug) {
-            DOMNode.setDataset(this._node, 'animationNow', now);
-            DOMNode.setDataset(this._node, 'animationProgress', progress);
+            this._node.dataset.animationNow = now;
+            this._node.dataset.animationProgress = progress;
         }
 
         this._callback(this._node, progress, this._options);
@@ -121,9 +121,9 @@ class Animation {
         }
 
         if (this._options.debug) {
-            DOMNode.removeDataset(this._node, 'animationStart');
-            DOMNode.removeDataset(this._node, 'animationNow');
-            DOMNode.removeDataset(this._node, 'animationProgress');
+            delete this._node.dataset.animationStart;
+            delete this._node.dataset.animationNow;
+            delete this._node.dataset.animationProgress;
         }
 
         this._resolve(this._node);

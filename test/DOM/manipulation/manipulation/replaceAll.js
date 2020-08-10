@@ -108,7 +108,7 @@ describe('#replaceAll', function() {
                 for (const node of nodes) {
                     document.body.appendChild(node);
                 }
-                return [...document.querySelectorAll('div')]
+                return [...nodes]
                     .map(node =>
                         dom.getData(node, 'test')
                     );
@@ -211,6 +211,73 @@ describe('#replaceAll', function() {
             await testNoAnimation('a:nth-of-type(3)');
             await testNoAnimation('a:nth-of-type(4)');
         });
+    });
+
+    it('removes queue from other nodes', async function() {
+        await exec(_ => {
+            dom.queue(
+                'div',
+                _ => {
+                    return new Promise(resolve =>
+                        setTimeout(resolve, 100)
+                    );
+                }
+            );
+            dom.queue(
+                'div',
+                node => {
+                    node.dataset.test = 'Test'
+                }
+            );
+        }).then(waitFor(50)).then(async _ => {
+            await exec(_ => {
+                const nodes = document.querySelectorAll('div');
+                dom.replaceAll(
+                    'a',
+                    'div'
+                );
+                for (const node of nodes) {
+                    document.body.appendChild(node);
+                }
+            });
+        }).then(waitFor(100)).then(async _ => {
+            assert.equal(
+                await exec(_ => {
+                    return document.body.innerHTML;
+                }),
+                '<a href="#">Test</a>' +
+                '<a href="#">Test</a>' +
+                '<a href="#">Test</a>' +
+                '<a href="#">Test</a>' +
+                '<a href="#">Test</a>' +
+                '<a href="#">Test</a>' +
+                '<a href="#">Test</a>' +
+                '<a href="#">Test</a>' +
+                '<div class="outer1"></div>' +
+                '<div class="inner1"></div>' +
+                '<div class="outer2"></div>' +
+                '<div class="inner2"></div>'
+            );
+        });
+    });
+
+    it('triggers a remove event for other nodes', async function() {
+        assert.equal(
+            await exec(_ => {
+                let result = 0;
+                dom.addEvent(
+                    'div',
+                    'remove',
+                    _ => { result++; }
+                );
+                dom.replaceAll(
+                    'a',
+                    'div'
+                );
+                return result;
+            }),
+            4
+        );
     });
 
     it('does not clone for the last nodes', async function() {

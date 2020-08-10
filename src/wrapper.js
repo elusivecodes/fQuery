@@ -30,7 +30,6 @@
         AjaxRequest,
         Animation,
         DOM,
-        DOMNode,
         dom: new DOM
     };
 

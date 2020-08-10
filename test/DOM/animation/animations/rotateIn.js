@@ -7,13 +7,13 @@ const rotateIn = (progress, inverse) => {
     return parseFloat(amount);
 };
 
-const testRotateIn = async (selector, x = 0, y = 1, inverse = 1) => {
+const testRotateIn = async (selector, x = 0, y = 1, z = 0, inverse = 1) => {
     const data = await getAnimationStyle(selector, 'transform');
 
     const amount = rotateIn(data.progress, inverse);
     assert.equal(
         data.transform,
-        `rotate3d(${x}, ${y}, 0, ${amount}deg)`
+        `rotate3d(${x}, ${y}, ${z}, ${amount}deg)`
     );
 };
 
@@ -126,7 +126,6 @@ describe('#rotateIn', function() {
             dom.rotateIn(
                 '.animate',
                 {
-                    x: 0,
                     y: 1,
                     duration: 100,
                     debug: true
@@ -153,13 +152,13 @@ describe('#rotateIn', function() {
         });
     });
 
-    it('adds a rotate-in animation to each node (X,Y)', async function() {
+    it('adds a rotate-in animation to each node (Z)', async function() {
         await exec(_ => {
             dom.rotateIn(
                 '.animate',
                 {
-                    x: 1,
-                    y: 1,
+                    y: 0,
+                    z: 1,
                     duration: 100,
                     debug: true
                 }
@@ -171,8 +170,41 @@ describe('#rotateIn', function() {
             await testNoStyle('#test3');
             await testAnimation('#test2', easeInOut, 100);
             await testAnimation('#test4', easeInOut, 100);
-            await testRotateIn('#test2', 1, 1);
-            await testRotateIn('#test4', 1, 1);
+            await testRotateIn('#test2', 0, 0, 1);
+            await testRotateIn('#test4', 0, 0, 1);
+        }).then(waitFor(100)).then(async _ => {
+            await testNoAnimation('#test1');
+            await testNoAnimation('#test2');
+            await testNoAnimation('#test3');
+            await testNoAnimation('#test4');
+            await testNoStyle('#test1');
+            await testNoStyle('#test2');
+            await testNoStyle('#test3');
+            await testNoStyle('#test4');
+        });
+    });
+
+    it('adds a rotate-in animation to each node (X,Y,Z)', async function() {
+        await exec(_ => {
+            dom.rotateIn(
+                '.animate',
+                {
+                    x: 1,
+                    y: 1,
+                    z: 1,
+                    duration: 100,
+                    debug: true
+                }
+            );
+        }).then(waitFor(50)).then(async _ => {
+            await testNoAnimation('#test1');
+            await testNoAnimation('#test3');
+            await testNoStyle('#test1');
+            await testNoStyle('#test3');
+            await testAnimation('#test2', easeInOut, 100);
+            await testAnimation('#test4', easeInOut, 100);
+            await testRotateIn('#test2', 1, 1, 1);
+            await testRotateIn('#test4', 1, 1, 1);
         }).then(waitFor(100)).then(async _ => {
             await testNoAnimation('#test1');
             await testNoAnimation('#test2');
@@ -202,8 +234,8 @@ describe('#rotateIn', function() {
             await testNoStyle('#test3');
             await testAnimation('#test2', easeInOut, 100);
             await testAnimation('#test4', easeInOut, 100);
-            await testRotateIn('#test2', 0, 1, -1);
-            await testRotateIn('#test4', 0, 1, -1);
+            await testRotateIn('#test2', 0, 1, 0, -1);
+            await testRotateIn('#test4', 0, 1, 0, -1);
         }).then(waitFor(100)).then(async _ => {
             await testNoAnimation('#test1');
             await testNoAnimation('#test2');

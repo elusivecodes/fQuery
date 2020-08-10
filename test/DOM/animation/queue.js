@@ -22,7 +22,7 @@ describe('#queue', function() {
                     node.dataset.test = 'Test'
                 }
             );
-        }).then(waitFor(0)).then(async _ => {
+        }).then(waitFor(100)).then(async _ => {
             assert.equal(
                 await exec(_ => {
                     return document.body.innerHTML;
@@ -141,7 +141,7 @@ describe('#queue', function() {
                     node.dataset.test = 'Test'
                 }
             );
-        }).then(waitFor(0)).then(async _ => {
+        }).then(waitFor(100)).then(async _ => {
             assert.equal(
                 await exec(_ => {
                     return document.body.innerHTML;
@@ -162,7 +162,7 @@ describe('#queue', function() {
                     node.dataset.test = 'Test'
                 }
             );
-        }).then(waitFor(0)).then(async _ => {
+        }).then(waitFor(100)).then(async _ => {
             assert.equal(
                 await exec(_ => {
                     return document.body.innerHTML;
@@ -183,7 +183,7 @@ describe('#queue', function() {
                     node.dataset.test = 'Test'
                 }
             );
-        }).then(waitFor(0)).then(async _ => {
+        }).then(waitFor(100)).then(async _ => {
             assert.equal(
                 await exec(_ => {
                     return document.body.innerHTML;
@@ -207,7 +207,7 @@ describe('#queue', function() {
                     node.dataset.test = 'Test'
                 }
             );
-        }).then(waitFor(0)).then(async _ => {
+        }).then(waitFor(100)).then(async _ => {
             assert.equal(
                 await exec(_ => {
                     return document.body.innerHTML;
