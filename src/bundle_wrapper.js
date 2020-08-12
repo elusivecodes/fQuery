@@ -11,26 +11,20 @@
         Object.assign(global, factory(global));
     }
 
-})(this || window, function(window) {
+})(this, function(window) {
     'use strict';
 
-    if (!window) {
-        throw new Error('FrostDOM requires a Window.');
+    if (typeof module === 'object') {
+        module.exports = null;
     }
-
-    if (!('Core' in window)) {
-        throw new Error('FrostDOM requires FrostCore.');
-    }
-
-    const Core = window.Core;
-    const document = window.document;
 
     // {{code}}
     return {
-        AjaxRequest,
-        Animation,
-        DOM,
-        dom: new DOM
+        AjaxRequest: window.AjaxRequest,
+        Animation: window.Animation,
+        Core: window.Core,
+        DOM: window.DOM,
+        dom: new window.DOM
     };
 
 });

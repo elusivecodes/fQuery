@@ -148,16 +148,16 @@ Object.assign(DOM, {
      * Trigger an event on a single node.
      * @param {HTMLElement|DocumentFragment|ShadowRoot|Document|Window} node The input node.
      * @param {string} event The event name.
-     * @param {object} [data] Additional data to attach to the Event object.
      * @param {object} [options] The options to use for the Event.
+     * @param {*} [options.detail] Additional data to attach to the event.
      * @param {Boolean} [options.bubbles=true] Whether the event will bubble.
      * @param {Boolean} [options.cancelable=true] Whether the event is cancelable.
      * @returns {Boolean} FALSE if the event was cancelled, otherwise TRUE.
      */
-    _triggerEvent(node, event, data, options) {
+    _triggerEvent(node, event, options) {
         const realEvent = this._parseEvent(event);
 
-        const eventData = new Event(realEvent, {
+        const eventData = new CustomEvent(realEvent, {
             bubbles: true,
             cancelable: true,
             ...options
@@ -166,10 +166,6 @@ Object.assign(DOM, {
         if (realEvent !== event) {
             eventData.namespace = event.substring(realEvent.length + 1);
             eventData.namespaceRegExp = this._eventNamespacedRegExp(event);
-        }
-
-        if (data) {
-            Object.assign(eventData, data);
         }
 
         return node.dispatchEvent(eventData);

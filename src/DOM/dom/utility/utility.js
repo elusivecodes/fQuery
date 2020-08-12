@@ -173,11 +173,13 @@ Object.assign(DOM.prototype, {
 
     /**
      * Sort nodes by their position in the document.
-     * @param {string|array|Node|HTMLElement|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
      * @returns {array} The sorted array of nodes.
      */
     sort(nodes) {
-        return this.parseNodes(nodes, { node: true, document: true, window: true });
+        nodes = this.parseNodes(nodes, { node: true, fragment: true, shadow: true, document: true, window: true });
+
+        return this.constructor._sort(nodes);
     },
 
     /**

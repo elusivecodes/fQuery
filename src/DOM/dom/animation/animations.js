@@ -186,9 +186,7 @@ Object.assign(DOM.prototype, {
                     return;
                 }
 
-                const dir = Core.isFunction(options.direction) ?
-                    options.direction() :
-                    options.direction;
+                const dir = Core.evaluate(options.direction);
 
                 let translateStyle, size, inverse;
                 if (['top', 'bottom'].includes(dir)) {
@@ -246,9 +244,7 @@ Object.assign(DOM.prototype, {
                     return;
                 }
 
-                const dir = Core.isFunction(options.direction) ?
-                    options.direction() :
-                    options.direction;
+                const dir = Core.evaluate(options.direction);
 
                 let translateStyle, size, inverse;
                 if (['top', 'bottom'].includes(dir)) {
@@ -322,9 +318,7 @@ Object.assign(DOM.prototype, {
                         return;
                     }
 
-                    const dir = Core.isFunction(options.direction) ?
-                        options.direction() :
-                        options.direction;
+                    const dir = Core.evaluate(options.direction);
 
                     let sizeStyle, translateStyle;
                     if (['top', 'bottom'].includes(dir)) {
@@ -408,9 +402,7 @@ Object.assign(DOM.prototype, {
                         return;
                     }
 
-                    const dir = Core.isFunction(options.direction) ?
-                        options.direction() :
-                        options.direction;
+                    const dir = Core.evaluate(options.direction);
 
                     let sizeStyle, translateStyle;
                     if (['top', 'bottom'].includes(dir)) {

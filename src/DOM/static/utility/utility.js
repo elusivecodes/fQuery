@@ -105,12 +105,36 @@ Object.assign(DOM, {
      */
     _sort(nodes) {
         return nodes.sort((node, other) => {
-            if (!Core.isNode(other)) {
+            if (Core.isWindow(node)) {
+                return 1;
+            }
+
+            if (Core.isWindow(other)) {
                 return -1;
             }
 
-            if (!Core.isNode(node)) {
+            if (Core.isDocument(node)) {
                 return 1;
+            }
+
+            if (Core.isDocument(other)) {
+                return -1;
+            }
+
+            if (Core.isFragment(other)) {
+                return 1;
+            }
+
+            if (Core.isFragment(node)) {
+                return -1;
+            }
+
+            if (Core.isShadow(node)) {
+                node = node.host;
+            }
+
+            if (Core.isShadow(other)) {
+                other = other.host;
             }
 
             if (node.isSameNode(other)) {

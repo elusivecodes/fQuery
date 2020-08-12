@@ -1,11 +1,3 @@
-- Fix sort for window, document, fragment, shadow
-- Add triggerOne
 
-- Finish AJAX tests
-    - data types (string, object, array, deep object, deep array)
-    - response types
-    - cancel
-    - HTTP methods (delete, get, patch, post, put)
-    - upload
-    - loadScript/loadScripts
-    - loadStyle/loadStyles
+- loadScript/loadScripts
+- loadStyle/loadStyles

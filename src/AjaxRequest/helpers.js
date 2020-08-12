@@ -12,7 +12,7 @@ Object.assign(AjaxRequest.prototype, {
             new MockXMLHttpRequest :
             new XMLHttpRequest;
 
-        this._xhr.open(this._options.method, this._options.url, true);
+        this._xhr.open(this._options.method, this._options.url, true, this._options.username, this._options.password);
 
         for (const key in this._options.headers) {
             this._xhr.setRequestHeader(key, this._options.headers[key]);
@@ -20,6 +20,14 @@ Object.assign(AjaxRequest.prototype, {
 
         if (this._options.responseType) {
             this._xhr.responseType = this._options.responseType;
+        }
+
+        if (this._options.mimeType) {
+            this._xhr.overrideMimeType(this._options.mimeType);
+        }
+
+        if (this._options.timeout) {
+            this._xhr.timeout = this._options.timeout;
         }
     },
 
@@ -71,7 +79,7 @@ Object.assign(AjaxRequest.prototype, {
             this._options.beforeSend(this._xhr);
         }
 
-        if (this._options.data && this._options.processData) {
+        if (this._options.data && this._options.processData && Core.isObject(this._options.data)) {
             if (this._options.contentType === 'application/json') {
                 this._options.data = JSON.stringify(this._options.data);
             } else if (this._options.contentType === 'application/x-www-form-urlencoded') {

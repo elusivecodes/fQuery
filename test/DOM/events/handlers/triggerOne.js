@@ -1,7 +1,7 @@
 const assert = require('assert').strict;
 const { exec } = require('../../../setup');
 
-describe('#triggerEvent', function() {
+describe('#triggerOne', function() {
 
     beforeEach(async function() {
         await exec(_ => {
@@ -13,7 +13,7 @@ describe('#triggerEvent', function() {
         });
     });
 
-    it('triggers an event for each node', async function() {
+    it('triggers an event for the first node', async function() {
         assert.equal(
             await exec(_ => {
                 let result = 0;
@@ -22,41 +22,17 @@ describe('#triggerEvent', function() {
                     'click',
                     _ => { result++; }
                 );
-                dom.triggerEvent(
+                dom.triggerOne(
                     'a',
                     'click'
                 );
                 return result;
             }),
-            2
+            1
         );
     });
 
-    it('triggers events for each node', async function() {
-        assert.equal(
-            await exec(_ => {
-                let result = 0;
-                dom.addEvent(
-                    'a',
-                    'click',
-                    _ => { result++; }
-                );
-                dom.addEvent(
-                    'a',
-                    'hover',
-                    _ => { result++; }
-                );
-                dom.triggerEvent(
-                    'a',
-                    'click hover'
-                );
-                return result;
-            }),
-            4
-        );
-    });
-
-    it('triggers a namespaced event for each node', async function() {
+    it('triggers a namespaced event for the first node', async function() {
         assert.equal(
             await exec(_ => {
                 let result = 0;
@@ -65,41 +41,17 @@ describe('#triggerEvent', function() {
                     'click.test',
                     _ => { result++; }
                 );
-                dom.triggerEvent(
+                dom.triggerOne(
                     'a',
                     'click'
                 );
                 return result;
             }),
-            2
+            1
         );
     });
 
-    it('triggers namespaced events for each node', async function() {
-        assert.equal(
-            await exec(_ => {
-                let result = 0;
-                dom.addEvent(
-                    'a',
-                    'click.test',
-                    _ => { result++; }
-                );
-                dom.addEvent(
-                    'a',
-                    'hover.test',
-                    _ => { result++; }
-                );
-                dom.triggerEvent(
-                    'a',
-                    'click hover'
-                );
-                return result;
-            }),
-            4
-        );
-    });
-
-    it('triggers a deep namespaced event for each node', async function() {
+    it('triggers a deep namespaced event for the first node', async function() {
         assert.equal(
             await exec(_ => {
                 let result = 0;
@@ -108,41 +60,17 @@ describe('#triggerEvent', function() {
                     'click.test.deep',
                     _ => { result++; }
                 );
-                dom.triggerEvent(
+                dom.triggerOne(
                     'a',
                     'click'
                 );
                 return result;
             }),
-            2
+            1
         );
     });
 
-    it('triggers deep namespaced events for each node', async function() {
-        assert.equal(
-            await exec(_ => {
-                let result = 0;
-                dom.addEvent(
-                    'a',
-                    'click.test.deep',
-                    _ => { result++; }
-                );
-                dom.addEvent(
-                    'a',
-                    'hover.test.deep',
-                    _ => { result++; }
-                );
-                dom.triggerEvent(
-                    'a',
-                    'click hover'
-                );
-                return result;
-            }),
-            4
-        );
-    });
-
-    it('triggers a namespaced event with namespacing for each node', async function() {
+    it('triggers a namespaced event with namespacing for the first node', async function() {
         assert.equal(
             await exec(_ => {
                 let result = 0;
@@ -151,41 +79,17 @@ describe('#triggerEvent', function() {
                     'click.test',
                     _ => { result++; }
                 );
-                dom.triggerEvent(
+                dom.triggerOne(
                     'a',
                     'click.test'
                 );
                 return result;
             }),
-            2
+            1
         );
     });
 
-    it('triggers namespaced events with namespacing for each node', async function() {
-        assert.equal(
-            await exec(_ => {
-                let result = 0;
-                dom.addEvent(
-                    'a',
-                    'click.test',
-                    _ => { result++; }
-                );
-                dom.addEvent(
-                    'a',
-                    'hover.test',
-                    _ => { result++; }
-                );
-                dom.triggerEvent(
-                    'a',
-                    'click.test hover.test'
-                );
-                return result;
-            }),
-            4
-        );
-    });
-
-    it('triggers a deep namespaced event with namespacing for each node', async function() {
+    it('triggers a deep namespaced event with namespacing for the first node', async function() {
         assert.equal(
             await exec(_ => {
                 let result = 0;
@@ -194,17 +98,17 @@ describe('#triggerEvent', function() {
                     'click.test.deep',
                     _ => { result++; }
                 );
-                dom.triggerEvent(
+                dom.triggerOne(
                     'a',
                     'click.test'
                 );
                 return result;
             }),
-            2
+            1
         );
     });
 
-    it('triggers deep namespaced events with namespacing for each node', async function() {
+    it('triggers a deep namespaced event with deep namespacing for the first node', async function() {
         assert.equal(
             await exec(_ => {
                 let result = 0;
@@ -213,65 +117,17 @@ describe('#triggerEvent', function() {
                     'click.test.deep',
                     _ => { result++; }
                 );
-                dom.addEvent(
-                    'a',
-                    'hover.test.deep',
-                    _ => { result++; }
-                );
-                dom.triggerEvent(
-                    'a',
-                    'click.test hover.test'
-                );
-                return result;
-            }),
-            4
-        );
-    });
-
-    it('triggers a deep namespaced event with deep namespacing for each node', async function() {
-        assert.equal(
-            await exec(_ => {
-                let result = 0;
-                dom.addEvent(
-                    'a',
-                    'click.test.deep',
-                    _ => { result++; }
-                );
-                dom.triggerEvent(
+                dom.triggerOne(
                     'a',
                     'click.test.deep'
                 );
                 return result;
             }),
-            2
+            1
         );
     });
 
-    it('triggers deep namespaced events with deep namespacing for each node', async function() {
-        assert.equal(
-            await exec(_ => {
-                let result = 0;
-                dom.addEvent(
-                    'a',
-                    'click.test.deep',
-                    _ => { result++; }
-                );
-                dom.addEvent(
-                    'a',
-                    'hover.test.deep',
-                    _ => { result++; }
-                );
-                dom.triggerEvent(
-                    'a',
-                    'click.test.deep hover.test.deep'
-                );
-                return result;
-            }),
-            4
-        );
-    });
-
-    it('does not trigger an event without namespacing for each node', async function() {
+    it('does not trigger an event without namespacing for the first node', async function() {
         assert.equal(
             await exec(_ => {
                 let result = 0;
@@ -280,7 +136,7 @@ describe('#triggerEvent', function() {
                     'click',
                     _ => { result++; }
                 );
-                dom.triggerEvent(
+                dom.triggerOne(
                     'a',
                     'click.test'
                 );
@@ -290,31 +146,7 @@ describe('#triggerEvent', function() {
         );
     });
 
-    it('does not trigger events without namespacing for each node', async function() {
-        assert.equal(
-            await exec(_ => {
-                let result = 0;
-                dom.addEvent(
-                    'a',
-                    'click',
-                    _ => { result++; }
-                );
-                dom.addEvent(
-                    'a',
-                    'hover',
-                    _ => { result++; }
-                );
-                dom.triggerEvent(
-                    'a',
-                    'click.test hover.test'
-                );
-                return result;
-            }),
-            0
-        );
-    });
-
-    it('does not trigger a namespaced event with deep namespacing for each node', async function() {
+    it('does not trigger a namespaced event with deep namespacing for the first node', async function() {
         assert.equal(
             await exec(_ => {
                 let result = 0;
@@ -323,7 +155,7 @@ describe('#triggerEvent', function() {
                     'click.test',
                     _ => { result++; }
                 );
-                dom.triggerEvent(
+                dom.triggerOne(
                     'a',
                     'click.test.deep'
                 );
@@ -333,31 +165,7 @@ describe('#triggerEvent', function() {
         );
     });
 
-    it('does not trigger namespaced events with deep namespacing for each node', async function() {
-        assert.equal(
-            await exec(_ => {
-                let result = 0;
-                dom.addEvent(
-                    'a',
-                    'click.test',
-                    _ => { result++; }
-                );
-                dom.addEvent(
-                    'a',
-                    'hover.test',
-                    _ => { result++; }
-                );
-                dom.triggerEvent(
-                    'a',
-                    'click.test.deep hover.test.deep'
-                );
-                return result;
-            }),
-            0
-        );
-    });
-
-    it('triggers an event for each node with custom data', async function() {
+    it('triggers an event for the first node with custom data', async function() {
         assert.equal(
             await exec(_ => {
                 let result = 0;
@@ -370,18 +178,18 @@ describe('#triggerEvent', function() {
                         }
                     }
                 );
-                dom.triggerEvent(
+                dom.triggerOne(
                     'a',
                     'click'
                 );
-                dom.triggerEvent(
+                dom.triggerOne(
                     'a',
                     'click',
                     { detail: 'test' }
                 );
                 return result;
             }),
-            2
+            1
         );
     });
 
@@ -396,13 +204,13 @@ describe('#triggerEvent', function() {
                         result++;
                     }
                 );
-                dom.triggerEvent(
+                dom.triggerOne(
                     'a',
                     'click'
                 );
                 return result;
             }),
-            2
+            1
         );
     });
 
@@ -417,7 +225,7 @@ describe('#triggerEvent', function() {
                         result++;
                     }
                 );
-                dom.triggerEvent(
+                dom.triggerOne(
                     'a',
                     'click',
                     {
@@ -430,22 +238,37 @@ describe('#triggerEvent', function() {
         );
     });
 
-    it('can be cancelled', async function() {
+    it('returns false if the event is cancelled', async function() {
         assert.equal(
             await exec(_ => {
-                let result;
                 dom.addEvent(
                     '#test1',
                     'click',
                     e => {
-                        result = e.cancelable;
+                        e.preventDefault();
                     }
                 );
-                dom.triggerEvent(
+                return dom.triggerOne(
                     '#test1',
                     'click'
                 );
-                return result;
+            }),
+            false
+        );
+    });
+
+    it('returns true if the event is not cancelled', async function() {
+        assert.equal(
+            await exec(_ => {
+                dom.addEvent(
+                    '#test1',
+                    'click',
+                    e => { }
+                );
+                return dom.triggerOne(
+                    '#test1',
+                    'click'
+                );
             }),
             true
         );
@@ -454,24 +277,22 @@ describe('#triggerEvent', function() {
     it('can be prevented from being cancelled', async function() {
         assert.equal(
             await exec(_ => {
-                let result;
                 dom.addEvent(
                     '#test1',
                     'click',
                     e => {
-                        result = e.cancelable;
+                        e.preventDefault();
                     }
                 );
-                dom.triggerEvent(
+                return dom.triggerOne(
                     '#test1',
                     'click',
                     {
                         cancelable: false
                     }
                 );
-                return result;
             }),
-            false
+            true
         );
     });
 
@@ -484,7 +305,7 @@ describe('#triggerEvent', function() {
                     'click',
                     _ => { result++; }
                 );
-                dom.triggerEvent(
+                dom.triggerOne(
                     document.getElementById('test1'),
                     'click'
                 );
@@ -503,13 +324,13 @@ describe('#triggerEvent', function() {
                     'click',
                     _ => { result++; }
                 );
-                dom.triggerEvent(
+                dom.triggerOne(
                     document.querySelectorAll('a'),
                     'click'
                 );
                 return result;
             }),
-            2
+            1
         );
     });
 
@@ -522,13 +343,13 @@ describe('#triggerEvent', function() {
                     'click',
                     _ => { result++; }
                 );
-                dom.triggerEvent(
+                dom.triggerOne(
                     document.getElementById('div1').children,
                     'click'
                 );
                 return result;
             }),
-            2
+            1
         );
     });
 
@@ -543,7 +364,7 @@ describe('#triggerEvent', function() {
                     'click',
                     _ => { result++; }
                 );
-                dom.triggerEvent(
+                dom.triggerOne(
                     shadow,
                     'click'
                 );
@@ -562,7 +383,7 @@ describe('#triggerEvent', function() {
                     'click',
                     _ => { result++; }
                 );
-                dom.triggerEvent(
+                dom.triggerOne(
                     document,
                     'click'
                 );
@@ -581,7 +402,7 @@ describe('#triggerEvent', function() {
                     'click',
                     _ => { result++; }
                 );
-                dom.triggerEvent(
+                dom.triggerOne(
                     window,
                     'click'
                 );
@@ -600,7 +421,7 @@ describe('#triggerEvent', function() {
                     'click',
                     _ => { result++; }
                 );
-                dom.triggerEvent(
+                dom.triggerOne(
                     [
                         document.getElementById('test1'),
                         document.getElementById('test2')
@@ -609,7 +430,7 @@ describe('#triggerEvent', function() {
                 );
                 return result;
             }),
-            2
+            1
         );
     });
 

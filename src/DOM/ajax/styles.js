@@ -7,22 +7,29 @@ Object.assign(DOM.prototype, {
     /**
      * Import a CSS Stylesheet file.
      * @param {string} url The URL of the stylesheet.
+     * @param {object} [attributes] Additional attributes to set on the style tag.
      * @param {Boolean} [cache=true] Whether to cache the request.
-     * @returns {AjaxRequest} A new AjaxRequest that resolves when the request is completed, or rejects on failure.
+     * @returns {Promise} A new Promise that resolves when the stylesheet is loaded, or rejects on failure.
      */
-    loadStyle(url, cache = true) {
-        return new AjaxRequest({ url, cache })
-            .then(response =>
-                this._context.head.insertBefore(
-                    this.create(
-                        'style',
-                        {
-                            html: response.response
-                        }
-                    ),
-                    null
-                )
-            );
+    loadStyle(url, attributes, cache = true) {
+        if (!cache) {
+            url = AjaxRequest.appendQueryString(url, '_', Date.now());
+        }
+
+        return new Promise((resolve, reject) => {
+            const link = this.create('link', {
+                attributes: {
+                    href: url,
+                    rel: 'stylesheet',
+                    ...attributes
+                }
+            });
+
+            link.onload = _ => resolve();
+            link.onerror = _ => reject();
+
+            this._context.head.appendChild(link);
+        });
     },
 
     /**
@@ -32,26 +39,11 @@ Object.assign(DOM.prototype, {
      * @returns {Promise} A new Promise that resolves when the request is completed, or rejects on failure.
      */
     loadStyles(urls, cache = true) {
-        return Promise.all
-            (
-                urls.map(url =>
-                    new AjaxRequest({ url, cache })
-                )
+        return Promise.all(
+            urls.map(url =>
+                this.loadStyle(url, cache)
             )
-            .then(responses => {
-                for (const response of responses) {
-                    this._context.head.insertBefore(
-                        this.create(
-                            'style',
-                            {
-                                html: response.response
-                            }
-                        ),
-                        null
-                    );
-                }
-
-            });
+        );
     }
 
 });

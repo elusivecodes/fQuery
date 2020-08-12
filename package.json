@@ -5,22 +5,18 @@
     "main": "build.js",
     "scripts": {
         "build": "node build.js",
-        "test": "./node_modules/.bin/mocha --recursive",
-        "preinstall": "npx npm-force-resolutions"
+        "test": "./node_modules/.bin/mocha --recursive"
     },
     "author": "Elusive",
     "license": "MIT",
     "devDependencies": {
-        "@babel/core": "^7.10.2",
-        "@babel/preset-env": "^7.10.2",
+        "@babel/core": "^7.11.1",
+        "@babel/preset-env": "^7.11.0",
         "filepath": "^1.1.0",
-        "frostcore": "^1.0.1",
+        "frostcore": "^1.0.5",
         "minimist": "^1.2.5",
         "mocha": "^7.2.0",
         "puppeteer": "^2.1.1",
-        "terser": "^4.7.0"
-    },
-    "resolutions": {
-        "minimist": "^1.2.5"
+        "terser": "^4.8.0"
     }
 }

@@ -9,17 +9,22 @@ class AjaxRequest {
      * @param {object} [options] The options to use for the request.
      * @param {string} [options.url=window.location] The URL of the request.
      * @param {string} [options.method=GET] The HTTP method of the request.
-     * @param {Boolean|string|array|object|FormData} [options.data=false] The data to send with the request.
+     * @param {Boolean|string|array|object|FormData} [options.data=null] The data to send with the request.
      * @param {Boolean|string} [options.contentType=application/x-www-form-urlencoded] The content type of the request.
      * @param {Boolean|string} [options.responseType] The content type of the response.
+     * @param {string} [options.mimeType] The MIME type to use.
+     * @param {string} [options.username] The username to authenticate with.
+     * @param {string} [options.password] The password to authenticate with.
+     * @param {number} [options.timeout] The number of milliseconds before the request will be terminated.
+     * @param {Boolean} [options.isLocal] Whether to treat the request as a local request.
      * @param {Boolean} [options.cache=true] Whether to cache the request.
      * @param {Boolean} [options.processData=true] Whether to process the data based on the content type.
      * @param {Boolean} [options.rejectOnCancel=true] Whether to reject the promise if the request is cancelled.
      * @param {object} [options.headers] Additional headers to send with the request.
-     * @param {Boolean|function} [options.afterSend=false] A callback to execute after making the request.
-     * @param {Boolean|function} [options.beforeSend=false] A callback to execute before making the request.
-     * @param {Boolean|function} [options.onProgress=false] A callback to execute on download progress.
-     * @param {Boolean|function} [options.onUploadProgress=false] A callback to execute on upload progress.
+     * @param {Boolean|function} [options.afterSend=null] A callback to execute after making the request.
+     * @param {Boolean|function} [options.beforeSend=null] A callback to execute before making the request.
+     * @param {Boolean|function} [options.onProgress=null] A callback to execute on download progress.
+     * @param {Boolean|function} [options.onUploadProgress=null] A callback to execute on upload progress.
      * @returns {AjaxRequest} A new AjaxRequest that resolves when the request is completed, or rejects on failure.
      */
     constructor(options) {
@@ -34,23 +39,18 @@ class AjaxRequest {
         }
 
         if (!this._options.cache) {
-            const baseHref = (window.location.origin + window.location.pathname).replace(/\/$/, '');
-            const url = new URL(this._options.url, baseHref);
-            url.searchParams.append('_', Date.now());
-            this._options.url = url.toString();
-
-            if (this._options.url.substring(0, baseHref.length) === baseHref) {
-                this._options.url = this._options.url.substring(baseHref.length);
-            }
+            this._options.url = this.constructor.appendQueryString(this._options.url, '_', Date.now());
         }
 
         if (!('Content-Type' in this._options.headers) && this._options.contentType) {
             this._options.headers['Content-Type'] = this._options.contentType;
         }
 
-        this._isLocal = this.constructor._localRegExp.test(location.protocol);
+        if (this._options.isLocal === null) {
+            this._options.isLocal = this.constructor._localRegExp.test(location.protocol);
+        }
 
-        if (!this._isLocal && !('X-Requested-With' in this._options.headers)) {
+        if (!this._options.isLocal && !('X-Requested-With' in this._options.headers)) {
             this._options.headers['X-Requested-With'] = 'XMLHttpRequest';
         }
 

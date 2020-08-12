@@ -11,7 +11,7 @@
         Object.assign(global, factory(global));
     }
 
-})(this, function(window) {
+})(this || window, function(window) {
     'use strict';
 
     if (!window) {
@@ -36,17 +36,22 @@
          * @param {object} [options] The options to use for the request.
          * @param {string} [options.url=window.location] The URL of the request.
          * @param {string} [options.method=GET] The HTTP method of the request.
-         * @param {Boolean|string|array|object|FormData} [options.data=false] The data to send with the request.
+         * @param {Boolean|string|array|object|FormData} [options.data=null] The data to send with the request.
          * @param {Boolean|string} [options.contentType=application/x-www-form-urlencoded] The content type of the request.
          * @param {Boolean|string} [options.responseType] The content type of the response.
+         * @param {string} [options.mimeType] The MIME type to use.
+         * @param {string} [options.username] The username to authenticate with.
+         * @param {string} [options.password] The password to authenticate with.
+         * @param {number} [options.timeout] The number of milliseconds before the request will be terminated.
+         * @param {Boolean} [options.isLocal] Whether to treat the request as a local request.
          * @param {Boolean} [options.cache=true] Whether to cache the request.
          * @param {Boolean} [options.processData=true] Whether to process the data based on the content type.
          * @param {Boolean} [options.rejectOnCancel=true] Whether to reject the promise if the request is cancelled.
          * @param {object} [options.headers] Additional headers to send with the request.
-         * @param {Boolean|function} [options.afterSend=false] A callback to execute after making the request.
-         * @param {Boolean|function} [options.beforeSend=false] A callback to execute before making the request.
-         * @param {Boolean|function} [options.onProgress=false] A callback to execute on download progress.
-         * @param {Boolean|function} [options.onUploadProgress=false] A callback to execute on upload progress.
+         * @param {Boolean|function} [options.afterSend=null] A callback to execute after making the request.
+         * @param {Boolean|function} [options.beforeSend=null] A callback to execute before making the request.
+         * @param {Boolean|function} [options.onProgress=null] A callback to execute on download progress.
+         * @param {Boolean|function} [options.onUploadProgress=null] A callback to execute on upload progress.
          * @returns {AjaxRequest} A new AjaxRequest that resolves when the request is completed, or rejects on failure.
          */
         constructor(options) {
@@ -61,23 +66,18 @@
             }
 
             if (!this._options.cache) {
-                const baseHref = (window.location.origin + window.location.pathname).replace(/\/$/, '');
-                const url = new URL(this._options.url, baseHref);
-                url.searchParams.append('_', Date.now());
-                this._options.url = url.toString();
-
-                if (this._options.url.substring(0, baseHref.length) === baseHref) {
-                    this._options.url = this._options.url.substring(baseHref.length);
-                }
+                this._options.url = this.constructor.appendQueryString(this._options.url, '_', Date.now());
             }
 
             if (!('Content-Type' in this._options.headers) && this._options.contentType) {
                 this._options.headers['Content-Type'] = this._options.contentType;
             }
 
-            this._isLocal = this.constructor._localRegExp.test(location.protocol);
+            if (this._options.isLocal === null) {
+                this._options.isLocal = this.constructor._localRegExp.test(location.protocol);
+            }
 
-            if (!this._isLocal && !('X-Requested-With' in this._options.headers)) {
+            if (!this._options.isLocal && !('X-Requested-With' in this._options.headers)) {
                 this._options.headers['X-Requested-With'] = 'XMLHttpRequest';
             }
 
@@ -154,33 +154,72 @@
 
     }
 
+    /**
+     * MockXMLHttpRequest Class
+     * @class
+     */
     class MockXMLHttpRequest {
 
+        /**
+         * New MockXMLHttpRequest constructor.
+         * @returns {MockXMLHttpRequest} A new MockXMLHttpRequest.
+         */
         constructor() {
             this.data = {
                 headers: {}
             };
             this.status = 200;
+            this.timeout = 0;
             this.upload = {};
+            this._response = 'Test';
         }
 
+        /**
+         * Abort the request if it has already been sent.
+         */
         abort() {
             clearTimeout(this._uploadTimer);
             clearTimeout(this._progressTimer);
             clearTimeout(this._completeTimer);
         }
 
-        open(method, url, async) {
+        /**
+         * Initialize a request.
+         * @param {string} method The request method.
+         * @param {string} url The URL to send the request to.
+         * @param {Boolean} [async=true] Whether to perform the request asynchronously.
+         * @param {string} [username] The username to authenticate with.
+         * @param {string} [password] The password to authenticate with.
+         */
+        open(method, url, async = true, username = undefined, password = undefined) {
             this.data.method = method;
             this.data.url = url;
             this.data.async = async;
+            this.data.username = username;
+            this.data.password = password;
         }
 
-        send(data) {
+        /**
+         * Override the MIME type sent by the server.
+         * @param {string} mimeType The MIME type to use.
+         */
+        overrideMimeType(mimeType) {
+            this.data.mimeType = mimeType;
+        }
+
+        /**
+         * Send the request.
+         * @param {*} [data=null] Data to send with the request.
+         */
+        send(data = null) {
             this.data.body = data;
 
             if (this.responseType) {
                 this.data.responseType = this.responseType;
+            }
+
+            if (this.timeout) {
+                this.data.timeout = this.timeout;
             }
 
             if (this.upload && this.upload.onprogress) {
@@ -219,7 +258,7 @@
                 }
 
                 this.data.status = this.status;
-                this.response = 'Test';
+                this.response = this._response;
 
                 if (this.onload) {
                     const loadEvent = new Event('load');
@@ -228,6 +267,11 @@
             }, 20);
         }
 
+        /**
+         * Set a value of a HTTP request header.
+         * @param {string} header The header to set.
+         * @param {string} value The value to set.
+         */
         setRequestHeader(header, value) {
             this.data.headers[header] = value;
         }
@@ -248,7 +292,7 @@
                 new MockXMLHttpRequest :
                 new XMLHttpRequest;
 
-            this._xhr.open(this._options.method, this._options.url, true);
+            this._xhr.open(this._options.method, this._options.url, true, this._options.username, this._options.password);
 
             for (const key in this._options.headers) {
                 this._xhr.setRequestHeader(key, this._options.headers[key]);
@@ -256,6 +300,14 @@
 
             if (this._options.responseType) {
                 this._xhr.responseType = this._options.responseType;
+            }
+
+            if (this._options.mimeType) {
+                this._xhr.overrideMimeType(this._options.mimeType);
+            }
+
+            if (this._options.timeout) {
+                this._xhr.timeout = this._options.timeout;
             }
         },
 
@@ -307,7 +359,7 @@
                 this._options.beforeSend(this._xhr);
             }
 
-            if (this._options.data && this._options.processData) {
+            if (this._options.data && this._options.processData && Core.isObject(this._options.data)) {
                 if (this._options.contentType === 'application/json') {
                     this._options.data = JSON.stringify(this._options.data);
                 } else if (this._options.contentType === 'application/x-www-form-urlencoded') {
@@ -332,6 +384,19 @@
      */
 
     Object.assign(AjaxRequest, {
+
+        appendQueryString(url, key, value) {
+            const baseHref = (window.location.origin + window.location.pathname).replace(/\/$/, '');
+            const urlData = new URL(url, baseHref);
+            urlData.searchParams.append(key, value);
+            url = urlData.toString();
+
+            if (url.substring(0, baseHref.length) === baseHref) {
+                url = url.substring(baseHref.length);
+            }
+
+            return url;
+        },
 
         /**
          * Return a FormData object from an array or object.
@@ -408,6 +473,11 @@
             return [[key, value]];
         },
 
+        /**
+         * Return an attributes array from a data array or data object.
+         * @param {array|object} data The input data.
+         * @returns {array} The parsed attributes.
+         */
         _parseValues(data) {
             const values = [];
 
@@ -444,19 +514,20 @@
 
         // AjaxRequest defaults
         defaults: {
-            afterSend: false,
-            beforeSend: false,
+            afterSend: null,
+            beforeSend: null,
             cache: true,
             contentType: 'application/x-www-form-urlencoded',
             data: null,
             headers: {},
+            isLocal: null,
             method: 'GET',
-            onProgress: false,
-            onUploadProgress: false,
+            onProgress: null,
+            onUploadProgress: null,
             processData: true,
             rejectOnCancel: true,
-            responseType: false,
-            url: false
+            responseType: null,
+            url: null
         },
 
         // Use mock
@@ -724,17 +795,17 @@
          * @param {object} [options] The options to use for the request.
          * @param {string} [options.url=window.location] The URL of the request.
          * @param {string} [options.method=GET] The HTTP method of the request.
-         * @param {Boolean|string|array|object|FormData} [options.data=false] The data to send with the request.
+         * @param {Boolean|string|array|object|FormData} [options.data=null] The data to send with the request.
          * @param {Boolean|string} [options.contentType=application/x-www-form-urlencoded] The content type of the request.
          * @param {Boolean|string} [options.responseType] The content type of the response.
          * @param {Boolean} [options.cache=true] Whether to cache the request.
          * @param {Boolean} [options.processData=true] Whether to process the data based on the content type.
          * @param {Boolean} [options.rejectOnCancel=true] Whether to reject the promise if the request is cancelled.
          * @param {object} [options.headers] Additional headers to send with the request.
-         * @param {Boolean|function} [options.afterSend=false] A callback to execute after making the request.
-         * @param {Boolean|function} [options.beforeSend=false] A callback to execute before making the request.
-         * @param {Boolean|function} [options.onProgress=false] A callback to execute on download progress.
-         * @param {Boolean|function} [options.onUploadProgress=false] A callback to execute on upload progress.
+         * @param {Boolean|function} [options.afterSend=null] A callback to execute after making the request.
+         * @param {Boolean|function} [options.beforeSend=null] A callback to execute before making the request.
+         * @param {Boolean|function} [options.onProgress=null] A callback to execute on download progress.
+         * @param {Boolean|function} [options.onUploadProgress=null] A callback to execute on upload progress.
          * @returns {AjaxRequest} A new AjaxRequest that resolves when the request is completed, or rejects on failure.
          */
         ajax(options) {
@@ -746,17 +817,16 @@
          * @param {string} url The URL of the request.
          * @param {object} [options] The options to use for the request.
          * @param {string} [options.method=DELETE] The HTTP method of the request.
-         * @param {Boolean|string|array|object} [options.data=false] The data to send with the request.
          * @param {Boolean|string} [options.contentType=application/x-www-form-urlencoded] The content type of the request.
          * @param {Boolean|string} [options.responseType] The content type of the response.
          * @param {Boolean} [options.cache=true] Whether to cache the request.
          * @param {Boolean} [options.processData=true] Whether to process the data based on the content type.
          * @param {Boolean} [options.rejectOnCancel=true] Whether to reject the promise if the request is cancelled.
          * @param {object} [options.headers] Additional headers to send with the request.
-         * @param {Boolean|function} [options.afterSend=false] A callback to execute after making the request.
-         * @param {Boolean|function} [options.beforeSend=false] A callback to execute before making the request.
-         * @param {Boolean|function} [options.onProgress=false] A callback to execute on download progress.
-         * @param {Boolean|function} [options.onUploadProgress=false] A callback to execute on upload progress.
+         * @param {Boolean|function} [options.afterSend=null] A callback to execute after making the request.
+         * @param {Boolean|function} [options.beforeSend=null] A callback to execute before making the request.
+         * @param {Boolean|function} [options.onProgress=null] A callback to execute on download progress.
+         * @param {Boolean|function} [options.onUploadProgress=null] A callback to execute on upload progress.
          * @returns {AjaxRequest} A new AjaxRequest that resolves when the request is completed, or rejects on failure.
          */
         delete(url, options) {
@@ -770,24 +840,25 @@
         /**
          * Perform an XHR GET request.
          * @param {string} url The URL of the request.
+         * @param {string|array|object} data The data to send with the request.
          * @param {object} [options] The options to use for the request.
          * @param {string} [options.method=GET] The HTTP method of the request.
-         * @param {Boolean|string|array|object} [options.data=false] The data to send with the request.
          * @param {Boolean|string} [options.contentType=application/x-www-form-urlencoded] The content type of the request.
          * @param {Boolean|string} [options.responseType] The content type of the response.
          * @param {Boolean} [options.cache=true] Whether to cache the request.
          * @param {Boolean} [options.processData=true] Whether to process the data based on the content type.
          * @param {Boolean} [options.rejectOnCancel=true] Whether to reject the promise if the request is cancelled.
          * @param {object} [options.headers] Additional headers to send with the request.
-         * @param {Boolean|function} [options.afterSend=false] A callback to execute after making the request.
-         * @param {Boolean|function} [options.beforeSend=false] A callback to execute before making the request.
-         * @param {Boolean|function} [options.onProgress=false] A callback to execute on download progress.
-         * @param {Boolean|function} [options.onUploadProgress=false] A callback to execute on upload progress.
+         * @param {Boolean|function} [options.afterSend=null] A callback to execute after making the request.
+         * @param {Boolean|function} [options.beforeSend=null] A callback to execute before making the request.
+         * @param {Boolean|function} [options.onProgress=null] A callback to execute on download progress.
+         * @param {Boolean|function} [options.onUploadProgress=null] A callback to execute on upload progress.
          * @returns {AjaxRequest} A new AjaxRequest that resolves when the request is completed, or rejects on failure.
          */
-        get(url, options) {
+        get(url, data, options) {
             return new AjaxRequest({
                 url,
+                data,
                 ...options
             });
         },
@@ -804,10 +875,10 @@
          * @param {Boolean} [options.processData=true] Whether to process the data based on the content type.
          * @param {Boolean} [options.rejectOnCancel=true] Whether to reject the promise if the request is cancelled.
          * @param {object} [options.headers] Additional headers to send with the request.
-         * @param {Boolean|function} [options.afterSend=false] A callback to execute after making the request.
-         * @param {Boolean|function} [options.beforeSend=false] A callback to execute before making the request.
-         * @param {Boolean|function} [options.onProgress=false] A callback to execute on download progress.
-         * @param {Boolean|function} [options.onUploadProgress=false] A callback to execute on upload progress.
+         * @param {Boolean|function} [options.afterSend=null] A callback to execute after making the request.
+         * @param {Boolean|function} [options.beforeSend=null] A callback to execute before making the request.
+         * @param {Boolean|function} [options.onProgress=null] A callback to execute on download progress.
+         * @param {Boolean|function} [options.onUploadProgress=null] A callback to execute on upload progress.
          * @returns {AjaxRequest} A new AjaxRequest that resolves when the request is completed, or rejects on failure.
          */
         patch(url, data, options) {
@@ -831,10 +902,10 @@
          * @param {Boolean} [options.processData=true] Whether to process the data based on the content type.
          * @param {Boolean} [options.rejectOnCancel=true] Whether to reject the promise if the request is cancelled.
          * @param {object} [options.headers] Additional headers to send with the request.
-         * @param {Boolean|function} [options.afterSend=false] A callback to execute after making the request.
-         * @param {Boolean|function} [options.beforeSend=false] A callback to execute before making the request.
-         * @param {Boolean|function} [options.onProgress=false] A callback to execute on download progress.
-         * @param {Boolean|function} [options.onUploadProgress=false] A callback to execute on upload progress.
+         * @param {Boolean|function} [options.afterSend=null] A callback to execute after making the request.
+         * @param {Boolean|function} [options.beforeSend=null] A callback to execute before making the request.
+         * @param {Boolean|function} [options.onProgress=null] A callback to execute on download progress.
+         * @param {Boolean|function} [options.onUploadProgress=null] A callback to execute on upload progress.
          * @returns {AjaxRequest} A new AjaxRequest that resolves when the request is completed, or rejects on failure.
          */
         post(url, data, options) {
@@ -858,10 +929,10 @@
          * @param {Boolean} [options.processData=true] Whether to process the data based on the content type.
          * @param {Boolean} [options.rejectOnCancel=true] Whether to reject the promise if the request is cancelled.
          * @param {object} [options.headers] Additional headers to send with the request.
-         * @param {Boolean|function} [options.afterSend=false] A callback to execute after making the request.
-         * @param {Boolean|function} [options.beforeSend=false] A callback to execute before making the request.
-         * @param {Boolean|function} [options.onProgress=false] A callback to execute on download progress.
-         * @param {Boolean|function} [options.onUploadProgress=false] A callback to execute on upload progress.
+         * @param {Boolean|function} [options.afterSend=null] A callback to execute after making the request.
+         * @param {Boolean|function} [options.beforeSend=null] A callback to execute before making the request.
+         * @param {Boolean|function} [options.onProgress=null] A callback to execute on download progress.
+         * @param {Boolean|function} [options.onUploadProgress=null] A callback to execute on upload progress.
          * @returns {AjaxRequest} A new AjaxRequest that resolves when the request is completed, or rejects on failure.
          */
         put(url, data, options) {
@@ -869,34 +940,6 @@
                 url,
                 data,
                 method: 'PUT',
-                ...options
-            });
-        },
-
-        /**
-         * Perform an XHR request for a file upload.
-         * @param {string} url The URL of the request.
-         * @param {FormData} data The data to send with the request.
-         * @param {object} [options] The options to use for the request.
-         * @param {string} [options.method=POST] The HTTP method of the request.
-         * @param {Boolean|string} [options.contentType=false] The content type of the request.
-         * @param {Boolean|string} [options.responseType] The content type of the response.
-         * @param {Boolean} [options.cache=true] Whether to cache the request.
-         * @param {Boolean} [options.processData=false] Whether to process the data based on the content type.
-         * @param {Boolean} [options.rejectOnCancel=true] Whether to reject the promise if the request is cancelled.
-         * @param {object} [options.headers] Additional headers to send with the request.
-         * @param {Boolean|function} [options.afterSend=false] A callback to execute after making the request.
-         * @param {Boolean|function} [options.beforeSend=false] A callback to execute before making the request.
-         * @param {Boolean|function} [options.onProgress=false] A callback to execute on download progress.
-         * @param {Boolean|function} [options.onUploadProgress=false] A callback to execute on upload progress.
-         * @returns {AjaxRequest} A new AjaxRequest that resolves when the request is completed, or rejects on failure.
-         */
-        upload(url, data, options) {
-            return new AjaxRequest({
-                url,
-                data,
-                method: 'POST',
-                contentType: false,
                 ...options
             });
         }
@@ -912,14 +955,29 @@
         /**
          * Load and execute a JavaScript file.
          * @param {string} url The URL of the script.
+         * @param {object} [attributes] Additional attributes to set on the script tag.
          * @param {Boolean} [cache=true] Whether to cache the request.
-         * @returns {AjaxRequest} A new AjaxRequest that resolves when the request is completed, or rejects on failure.
+         * @returns {Promise} A new Promise that resolves when the script is loaded, or rejects on failure.
          */
-        loadScript(url, cache = true) {
-            return new AjaxRequest({ url, cache })
-                .then(response =>
-                    eval.call(window, response.response)
-                );
+        loadScript(url, attributes, cache = true) {
+            if (!cache) {
+                url = AjaxRequest.appendQueryString(url, '_', Date.now());
+            }
+
+            return new Promise((resolve, reject) => {
+                const script = this.create('script', {
+                    attributes: {
+                        src: url,
+                        type: 'text/javascript',
+                        ...attributes
+                    }
+                });
+
+                script.onload = _ => resolve();
+                script.onerror = _ => reject();
+
+                this._context.head.appendChild(script);
+            });
         },
 
         /**
@@ -929,17 +987,11 @@
          * @returns {Promise} A new Promise that resolves when the request is completed, or rejects on failure.
          */
         loadScripts(urls, cache = true) {
-            return Promise.all
-                (
-                    urls.map(url =>
-                        new AjaxRequest({ url, cache })
-                    )
+            return Promise.all(
+                urls.map(url =>
+                    this.loadScript(url, cache)
                 )
-                .then(responses => {
-                    for (const response of responses) {
-                        eval.call(window, response.response);
-                    }
-                });
+            );
         }
 
     });
@@ -953,22 +1005,29 @@
         /**
          * Import a CSS Stylesheet file.
          * @param {string} url The URL of the stylesheet.
+         * @param {object} [attributes] Additional attributes to set on the style tag.
          * @param {Boolean} [cache=true] Whether to cache the request.
-         * @returns {AjaxRequest} A new AjaxRequest that resolves when the request is completed, or rejects on failure.
+         * @returns {Promise} A new Promise that resolves when the stylesheet is loaded, or rejects on failure.
          */
-        loadStyle(url, cache = true) {
-            return new AjaxRequest({ url, cache })
-                .then(response =>
-                    this._context.head.insertBefore(
-                        this.create(
-                            'style',
-                            {
-                                html: response.response
-                            }
-                        ),
-                        null
-                    )
-                );
+        loadStyle(url, attributes, cache = true) {
+            if (!cache) {
+                url = AjaxRequest.appendQueryString(url, '_', Date.now());
+            }
+
+            return new Promise((resolve, reject) => {
+                const link = this.create('link', {
+                    attributes: {
+                        href: url,
+                        rel: 'stylesheet',
+                        ...attributes
+                    }
+                });
+
+                link.onload = _ => resolve();
+                link.onerror = _ => reject();
+
+                this._context.head.appendChild(link);
+            });
         },
 
         /**
@@ -978,26 +1037,11 @@
          * @returns {Promise} A new Promise that resolves when the request is completed, or rejects on failure.
          */
         loadStyles(urls, cache = true) {
-            return Promise.all
-                (
-                    urls.map(url =>
-                        new AjaxRequest({ url, cache })
-                    )
+            return Promise.all(
+                urls.map(url =>
+                    this.loadStyle(url, cache)
                 )
-                .then(responses => {
-                    for (const response of responses) {
-                        this._context.head.insertBefore(
-                            this.create(
-                                'style',
-                                {
-                                    html: response.response
-                                }
-                            ),
-                            null
-                        );
-                    }
-
-                });
+            );
         }
 
     });
@@ -1233,9 +1277,7 @@
                         return;
                     }
 
-                    const dir = Core.isFunction(options.direction) ?
-                        options.direction() :
-                        options.direction;
+                    const dir = Core.evaluate(options.direction);
 
                     let translateStyle, size, inverse;
                     if (['top', 'bottom'].includes(dir)) {
@@ -1293,9 +1335,7 @@
                         return;
                     }
 
-                    const dir = Core.isFunction(options.direction) ?
-                        options.direction() :
-                        options.direction;
+                    const dir = Core.evaluate(options.direction);
 
                     let translateStyle, size, inverse;
                     if (['top', 'bottom'].includes(dir)) {
@@ -1369,9 +1409,7 @@
                             return;
                         }
 
-                        const dir = Core.isFunction(options.direction) ?
-                            options.direction() :
-                            options.direction;
+                        const dir = Core.evaluate(options.direction);
 
                         let sizeStyle, translateStyle;
                         if (['top', 'bottom'].includes(dir)) {
@@ -1455,9 +1493,7 @@
                             return;
                         }
 
-                        const dir = Core.isFunction(options.direction) ?
-                            options.direction() :
-                            options.direction;
+                        const dir = Core.evaluate(options.direction);
 
                         let sizeStyle, translateStyle;
                         if (['top', 'bottom'].includes(dir)) {
@@ -2730,21 +2766,36 @@
          * Trigger events on each node.
          * @param {string|array|HTMLElement|ShadowRoot|Document|Window|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
          * @param {string} events The event names.
-         * @param {object} [data] Additional data to attach to the event.
          * @param {object} [options] The options to use for the Event.
+         * @param {*} [options.detail] Additional data to attach to the event.
          * @param {Boolean} [options.bubbles=true] Whether the event will bubble.
          * @param {Boolean} [options.cancelable=true] Whether the event is cancelable.
          */
-        triggerEvent(nodes, events, data, options) {
+        triggerEvent(nodes, events, options) {
             nodes = this.parseNodes(nodes, { shadow: true, document: true, window: true });
 
             events = this.constructor._parseEvents(events);
 
             for (const node of nodes) {
                 for (const event of events) {
-                    this.constructor._triggerEvent(node, event, data, options);
+                    this.constructor._triggerEvent(node, event, options);
                 }
             }
+        },
+
+        /**
+         * Trigger an event for the first node.
+         * @param {string|array|HTMLElement|ShadowRoot|Document|Window|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
+         * @param {string} event The event name.
+         * @param {object} [options] The options to use for the Event.
+         * @param {*} [options.detail] Additional data to attach to the event.
+         * @param {Boolean} [options.bubbles=true] Whether the event will bubble.
+         * @param {Boolean} [options.cancelable=true] Whether the event is cancelable.
+         */
+        triggerOne(nodes, event, options) {
+            const node = this.parseNode(nodes, { shadow: true, document: true, window: true });
+
+            return this.constructor._triggerEvent(node, event, options);
         }
 
     });
@@ -4343,9 +4394,9 @@
 
             // check nodes
             if (!nodes) {
-                return !first ?
-                    [] :
-                    null;
+                return first ?
+                    null :
+                    [];
             }
 
             // String
@@ -4368,15 +4419,13 @@
 
             // Node/HTMLElement/Window/Document
             if (filter(nodes)) {
-                if (!first) {
-                    return [nodes];
-                }
-
-                return nodes;
+                return first ?
+                    nodes :
+                    [nodes];
             }
 
             // QuerySet
-            if (this.constructor.queryLoaded && nodes instanceof QuerySet) {
+            if ('QuerySet' in window && nodes instanceof QuerySet) {
                 if (!first) {
                     return nodes.get().filter(filter);
                 }
@@ -4387,8 +4436,8 @@
                     null;
             }
 
-            // NodeList/HTMLCollection
-            if (nodes instanceof NodeList || nodes instanceof HTMLCollection) {
+            // HTMLCollection
+            if (nodes instanceof HTMLCollection) {
                 if (!first) {
                     return Core.wrap(nodes);
                 }
@@ -4400,27 +4449,21 @@
 
             // Array
             if (Core.isArray(nodes)) {
-                nodes = nodes.flatMap(node => this.parseNodesDeep(node, filter));
-                nodes = this.constructor._sort(nodes);
-
-                if (!first) {
-                    return nodes;
-                }
-
-                return nodes.length ?
-                    nodes.shift() :
-                    null;
+                const subFilter = this.constructor.parseNodesFactory({ node: true, fragment: true, shadow: true, document: true, window: true });
+                nodes = nodes.flatMap(node => this.parseNodesDeep(node, subFilter, html));
+            } else {
+                nodes = Core.wrap(nodes);
             }
 
-            node = Core.wrap(nodes);
-            nodes = nodes.filter(filter);
+            if (nodes.length) {
+                nodes = Core.unique(nodes);
+            }
 
             if (!first) {
-                nodes = nodes.filter(filter);
-                return this.constructor._sort(nodes);
+                return nodes.filter(filter);
             }
 
-            const node = this.constructor._sort(nodes).shift();
+            const node = nodes.shift();
             return node && filter(node) ?
                 node :
                 null;
@@ -5070,11 +5113,13 @@
 
         /**
          * Sort nodes by their position in the document.
-         * @param {string|array|Node|HTMLElement|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
+         * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
          * @returns {array} The sorted array of nodes.
          */
         sort(nodes) {
-            return this.parseNodes(nodes, { node: true });
+            nodes = this.parseNodes(nodes, { node: true, fragment: true, shadow: true, document: true, window: true });
+
+            return this.constructor._sort(nodes);
         },
 
         /**
@@ -6003,16 +6048,16 @@
          * Trigger an event on a single node.
          * @param {HTMLElement|DocumentFragment|ShadowRoot|Document|Window} node The input node.
          * @param {string} event The event name.
-         * @param {object} [data] Additional data to attach to the Event object.
          * @param {object} [options] The options to use for the Event.
+         * @param {*} [options.detail] Additional data to attach to the event.
          * @param {Boolean} [options.bubbles=true] Whether the event will bubble.
          * @param {Boolean} [options.cancelable=true] Whether the event is cancelable.
          * @returns {Boolean} FALSE if the event was cancelled, otherwise TRUE.
          */
-        _triggerEvent(node, event, data, options) {
+        _triggerEvent(node, event, options) {
             const realEvent = this._parseEvent(event);
 
-            const eventData = new Event(realEvent, {
+            const eventData = new CustomEvent(realEvent, {
                 bubbles: true,
                 cancelable: true,
                 ...options
@@ -6021,10 +6066,6 @@
             if (realEvent !== event) {
                 eventData.namespace = event.substring(realEvent.length + 1);
                 eventData.namespaceRegExp = this._eventNamespacedRegExp(event);
-            }
-
-            if (data) {
-                Object.assign(eventData, data);
             }
 
             return node.dispatchEvent(eventData);
@@ -6992,12 +7033,36 @@
          */
         _sort(nodes) {
             return nodes.sort((node, other) => {
-                if (!Core.isNode(other)) {
+                if (Core.isWindow(node)) {
+                    return 1;
+                }
+
+                if (Core.isWindow(other)) {
                     return -1;
                 }
 
-                if (!Core.isNode(node)) {
+                if (Core.isDocument(node)) {
                     return 1;
+                }
+
+                if (Core.isDocument(other)) {
+                    return -1;
+                }
+
+                if (Core.isFragment(other)) {
+                    return 1;
+                }
+
+                if (Core.isFragment(node)) {
+                    return -1;
+                }
+
+                if (Core.isShadow(node)) {
+                    node = node.host;
+                }
+
+                if (Core.isShadow(other)) {
+                    other = other.host;
                 }
 
                 if (node.isSameNode(other)) {

@@ -6,19 +6,20 @@ Object.assign(AjaxRequest, {
 
     // AjaxRequest defaults
     defaults: {
-        afterSend: false,
-        beforeSend: false,
+        afterSend: null,
+        beforeSend: null,
         cache: true,
         contentType: 'application/x-www-form-urlencoded',
         data: null,
         headers: {},
+        isLocal: null,
         method: 'GET',
-        onProgress: false,
-        onUploadProgress: false,
+        onProgress: null,
+        onUploadProgress: null,
         processData: true,
         rejectOnCancel: true,
-        responseType: false,
-        url: false
+        responseType: null,
+        url: null
     },
 
     // Use mock

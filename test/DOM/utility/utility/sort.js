@@ -74,28 +74,98 @@ describe('#sort', function() {
         );
     });
 
-    it('works with array nodes', async function() {
+    it('works with DocumentFragment', async function() {
         assert.deepEqual(
             await exec(_ => {
+                const fragment = document.createDocumentFragment();
+                fragment.id = 'fragment';
                 return dom.sort(
-                    [
-                        document.getElementById('div3'),
-                        document.getElementById('div4'),
-                        document.getElementById('div2'),
-                        document.getElementById('div1')
-                    ]
+                    fragment
                 ).map(node => node.id);
             }),
             [
-                'div1',
-                'div2',
-                'div3',
-                'div4'
+                'fragment'
             ]
         );
     });
 
-    it('works with DocumentFragment');
-    it('works with ShadowRoot');
+    it('works with ShadowRoot', async function() {
+        assert.deepEqual(
+            await exec(_ => {
+                const div = document.createElement('div');
+                const shadow = div.attachShadow({ mode: 'open' });
+                shadow.id = 'shadow';
+                return dom.sort(
+                    shadow
+                ).map(node => node.id);
+            }),
+            [
+                'shadow'
+            ]
+        );
+    });
+
+    it('works with Document', async function() {
+        assert.deepEqual(
+            await exec(_ => {
+                return dom.sort(
+                    document
+                ).map(node => node.id);
+            }),
+            [
+                'document'
+            ]
+        );
+    });
+
+    it('works with Window', async function() {
+        assert.deepEqual(
+            await exec(_ => {
+                return dom.sort(
+                    window
+                ).map(node => node.id);
+            }),
+            [
+                'window'
+            ]
+        );
+    });
+
+    it('works with array nodes', async function() {
+        assert.deepEqual(
+            await exec(_ => {
+                const template = document.createElement('template');
+                const fragment = template.content;
+                fragment.id = 'fragment';
+                const div = document.createElement('div');
+                const shadow = div.attachShadow({ mode: 'open' });
+                shadow.id = 'shadow';
+                document.body.insertBefore(template, document.body.firstChild);
+                document.body.insertBefore(div, document.body.firstChild);
+                return dom.sort(
+                    [
+                        fragment,
+                        document.getElementById('div3'),
+                        document.getElementById('div4'),
+                        document.getElementById('div2'),
+                        document.getElementById('div1'),
+                        shadow,
+                        document,
+                        window
+                    ]
+                ).map(node => node.id);
+            }),
+            [
+                'fragment',
+                'shadow',
+                'div1',
+                'div2',
+                'div3',
+                'div4',
+                'document',
+                'window'
+            ]
+        );
+    });
 
 });

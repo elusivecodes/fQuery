@@ -4,6 +4,19 @@
 
 Object.assign(AjaxRequest, {
 
+    appendQueryString(url, key, value) {
+        const baseHref = (window.location.origin + window.location.pathname).replace(/\/$/, '');
+        const urlData = new URL(url, baseHref);
+        urlData.searchParams.append(key, value);
+        url = urlData.toString();
+
+        if (url.substring(0, baseHref.length) === baseHref) {
+            url = url.substring(baseHref.length);
+        }
+
+        return url;
+    },
+
     /**
      * Return a FormData object from an array or object.
      * @param {array|object} data The input data.
@@ -79,6 +92,11 @@ Object.assign(AjaxRequest, {
         return [[key, value]];
     },
 
+    /**
+     * Return an attributes array from a data array or data object.
+     * @param {array|object} data The input data.
+     * @returns {array} The parsed attributes.
+     */
     _parseValues(data) {
         const values = [];
 

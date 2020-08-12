@@ -7,14 +7,29 @@ Object.assign(DOM.prototype, {
     /**
      * Load and execute a JavaScript file.
      * @param {string} url The URL of the script.
+     * @param {object} [attributes] Additional attributes to set on the script tag.
      * @param {Boolean} [cache=true] Whether to cache the request.
-     * @returns {AjaxRequest} A new AjaxRequest that resolves when the request is completed, or rejects on failure.
+     * @returns {Promise} A new Promise that resolves when the script is loaded, or rejects on failure.
      */
-    loadScript(url, cache = true) {
-        return new AjaxRequest({ url, cache })
-            .then(response =>
-                eval.call(window, response.response)
-            );
+    loadScript(url, attributes, cache = true) {
+        if (!cache) {
+            url = AjaxRequest.appendQueryString(url, '_', Date.now());
+        }
+
+        return new Promise((resolve, reject) => {
+            const script = this.create('script', {
+                attributes: {
+                    src: url,
+                    type: 'text/javascript',
+                    ...attributes
+                }
+            });
+
+            script.onload = _ => resolve();
+            script.onerror = _ => reject();
+
+            this._context.head.appendChild(script);
+        });
     },
 
     /**
@@ -24,17 +39,11 @@ Object.assign(DOM.prototype, {
      * @returns {Promise} A new Promise that resolves when the request is completed, or rejects on failure.
      */
     loadScripts(urls, cache = true) {
-        return Promise.all
-            (
-                urls.map(url =>
-                    new AjaxRequest({ url, cache })
-                )
+        return Promise.all(
+            urls.map(url =>
+                this.loadScript(url, cache)
             )
-            .then(responses => {
-                for (const response of responses) {
-                    eval.call(window, response.response);
-                }
-            });
+        );
     }
 
 });

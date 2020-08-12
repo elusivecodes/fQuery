@@ -119,9 +119,9 @@ Object.assign(DOM.prototype, {
 
         // check nodes
         if (!nodes) {
-            return !first ?
-                [] :
-                null;
+            return first ?
+                null :
+                [];
         }
 
         // String
@@ -144,15 +144,13 @@ Object.assign(DOM.prototype, {
 
         // Node/HTMLElement/Window/Document
         if (filter(nodes)) {
-            if (!first) {
-                return [nodes];
-            }
-
-            return nodes;
+            return first ?
+                nodes :
+                [nodes];
         }
 
         // QuerySet
-        if (this.constructor.queryLoaded && nodes instanceof QuerySet) {
+        if ('QuerySet' in window && nodes instanceof QuerySet) {
             if (!first) {
                 return nodes.get().filter(filter);
             }
@@ -163,8 +161,8 @@ Object.assign(DOM.prototype, {
                 null;
         }
 
-        // NodeList/HTMLCollection
-        if (nodes instanceof NodeList || nodes instanceof HTMLCollection) {
+        // HTMLCollection
+        if (nodes instanceof HTMLCollection) {
             if (!first) {
                 return Core.wrap(nodes);
             }
@@ -176,27 +174,21 @@ Object.assign(DOM.prototype, {
 
         // Array
         if (Core.isArray(nodes)) {
-            nodes = nodes.flatMap(node => this.parseNodesDeep(node, filter));
-            nodes = this.constructor._sort(nodes);
-
-            if (!first) {
-                return nodes;
-            }
-
-            return nodes.length ?
-                nodes.shift() :
-                null;
+            const subFilter = this.constructor.parseNodesFactory({ node: true, fragment: true, shadow: true, document: true, window: true });
+            nodes = nodes.flatMap(node => this.parseNodesDeep(node, subFilter, html));
+        } else {
+            nodes = Core.wrap(nodes);
         }
 
-        node = Core.wrap(nodes);
-        nodes = nodes.filter(filter);
+        if (nodes.length) {
+            nodes = Core.unique(nodes);
+        }
 
         if (!first) {
-            nodes = nodes.filter(filter);
-            return this.constructor._sort(nodes);
+            return nodes.filter(filter);
         }
 
-        const node = this.constructor._sort(nodes).shift();
+        const node = nodes.shift();
         return node && filter(node) ?
             node :
             null;

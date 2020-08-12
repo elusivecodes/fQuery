@@ -1079,14 +1079,31 @@ Trigger events on each node.
 
 - `nodes` is a query selector string, a *HTMLElement*, *ShadowRoot*, *Document*, *Window*, *NodeList*, *HTMLCollection*, [*QuerySet*](https://github.com/elusivecodes/fQuery) or an array of nodes.
 - `events` is a space-separated string of events to trigger on the nodes.
-- `data` is an object containing custom data to add to the `event` object.
 - `options` is an object containing properties to define the new Event.
+    - `details` can be used to attach additional data to the event.
     - `bubbles` is a boolean indicating whether the event should bubble, and will default to *true*.
     - `cancelable` is a boolean indicating whether the event is cancelable, and will default to *true*.
 
 ```javascript
 dom.triggerEvent(nodes, events, data, options);
 ```
+
+**Trigger One**
+
+Trigger an event on the first node.
+
+- `nodes` is a query selector string, a *HTMLElement*, *ShadowRoot*, *Document*, *Window*, *NodeList*, *HTMLCollection*, [*QuerySet*](https://github.com/elusivecodes/fQuery) or an array of nodes.
+- `event` is an event to trigger on the nodes.
+- `options` is an object containing properties to define the new Event.
+    - `details` can be used to attach additional data to the event.
+    - `bubbles` is a boolean indicating whether the event should bubble, and will default to *true*.
+    - `cancelable` is a boolean indicating whether the event is cancelable, and will default to *true*.
+
+```javascript
+const cancelled = !dom.triggerOne(nodes, event, data, options);
+```
+
+This method returns *false* if the event was cancelled, otherwise returns *true*.
 
 ##### Event Factory
 
@@ -1998,7 +2015,7 @@ const serializedArray = dom.serializeArray(nodes);
 
 Sort nodes by their position in the document
 
-- `nodes` is a query selector string, a *Node*, *HTMLElement*, *NodeList*, *HTMLCollection*, [*QuerySet*](https://github.com/elusivecodes/fQuery) or an array of nodes.
+- `nodes` is a query selector string, a *Node*, *HTMLElement*, *DocumentFragment*, *ShadowRoot*, *Document*, *Window*, *NodeList*, *HTMLCollection*, [*QuerySet*](https://github.com/elusivecodes/fQuery) or an array of nodes.
 
 ```javascript
 const sorted = dom.sort(nodes);
@@ -2294,9 +2311,14 @@ Perform an XHR request.
 - `options` is an object containing options for the request.
     - `url` is a string containing the URL for the request, and will default to the current window location.
     - `method` is a string containing the method to use for the request, and will default to "*GET*".
-    - `data` is an object containing data to send with the request, and will default to *false*.
+    - `data` can be an object, array, string or *FormData* containing data to send with the request, and will default to *null*.
     - `contentType` is a string containing the Content-Type header to send with the request, and will default to "*application/x-www-form-urlencoded*".
     - `responseType` is a string containing the expected Content-Type header of the response.
+    - `mimeType` is a string containing the MIME type to use for the server response.
+    - `username` is a string containing the username to authenticate with.
+    - `password` is a string containing the password to authenticate with.
+    - `timeout` is a number indicating the number of milliseconds before the request will be terminated, and will default to *0*.
+    - `isLocal` is a boolean indicating whether the request will be treated as local.
     - `cache` is a boolean indicating whether to cache the request, and will default to *true*.
     - `processData` is a boolean indicating whether to process the data depending on the `contentType`, and will default to *true*.
     - `rejectOnCancel` is a boolean indicating whether to reject the promise if the request is cancelled, and will default to *true*.
@@ -2319,9 +2341,13 @@ Perform an XHR DELETE request.
 - `url` is a string containing the URL for the request.
 - `options` is an object containing options for the request.
     - `method` is a string containing the method to use for the request, and will default to "*DELETE*".
-    - `data` is an object containing data to send with the request, and will default to *false*.
     - `contentType` is a string containing the Content-Type header to send with the request, and will default to "*application/x-www-form-urlencoded*".
     - `responseType` is a string containing the expected Content-Type header of the response.
+    - `mimeType` is a string containing the MIME type to use for the server response.
+    - `username` is a string containing the username to authenticate with.
+    - `password` is a string containing the password to authenticate with.
+    - `timeout` is a number indicating the number of milliseconds before the request will be terminated, and will default to *0*.
+    - `isLocal` is a boolean indicating whether the request will be treated as local.
     - `cache` is a boolean indicating whether to cache the request, and will default to *true*.
     - `processData` is a boolean indicating whether to process the data depending on the `contentType`, and will default to *true*.
     - `rejectOnCancel` is a boolean indicating whether to reject the promise if the request is cancelled, and will default to *true*.
@@ -2342,11 +2368,16 @@ dom.delete(url, options);
 Perform an XHR GET request.
 
 - `url` is a string containing the URL for the request.
+- `data` can be an object, array, string containing data to send with the request, and will default to *null*.
 - `options` is an object containing options for the request.
     - `method` is a string containing the method to use for the request, and will default to "*GET*".
-    - `data` is an object containing data to send with the request, and will default to *false*.
     - `contentType` is a string containing the Content-Type header to send with the request, and will default to "*application/x-www-form-urlencoded*".
     - `responseType` is a string containing the expected Content-Type header of the response.
+    - `mimeType` is a string containing the MIME type to use for the server response.
+    - `username` is a string containing the username to authenticate with.
+    - `password` is a string containing the password to authenticate with.
+    - `timeout` is a number indicating the number of milliseconds before the request will be terminated, and will default to *0*.
+    - `isLocal` is a boolean indicating whether the request will be treated as local.
     - `cache` is a boolean indicating whether to cache the request, and will default to *true*.
     - `processData` is a boolean indicating whether to process the data depending on the `contentType`, and will default to *true*.
     - `rejectOnCancel` is a boolean indicating whether to reject the promise if the request is cancelled, and will default to *true*.
@@ -2359,7 +2390,7 @@ Perform an XHR GET request.
 This method returns an *AjaxRequest* that resolves when the request is completed, or rejects on failure.
 
 ```javascript
-dom.get(url, options);
+dom.get(url, data, options);
 ```
 
 **Patch**
@@ -2367,11 +2398,16 @@ dom.get(url, options);
 Perform an XHR PATCH request.
 
 - `url` is a string containing the URL for the request.
-- `data` is an object containing data to send with the request, and will default to *false*.
+- `data` can be an object, array, string or *FormData* containing data to send with the request, and will default to *null*.
 - `options` is an object containing options for the request.
     - `method` is a string containing the method to use for the request, and will default to "*PATCH*".
     - `contentType` is a string containing the Content-Type header to send with the request, and will default to "*application/x-www-form-urlencoded*".
     - `responseType` is a string containing the expected Content-Type header of the response.
+    - `mimeType` is a string containing the MIME type to use for the server response.
+    - `username` is a string containing the username to authenticate with.
+    - `password` is a string containing the password to authenticate with.
+    - `timeout` is a number indicating the number of milliseconds before the request will be terminated, and will default to *0*.
+    - `isLocal` is a boolean indicating whether the request will be treated as local.
     - `cache` is a boolean indicating whether to cache the request, and will default to *true*.
     - `processData` is a boolean indicating whether to process the data depending on the `contentType`, and will default to *true*.
     - `rejectOnCancel` is a boolean indicating whether to reject the promise if the request is cancelled, and will default to *true*.
@@ -2392,11 +2428,16 @@ dom.patch(url, data, options);
 Perform an XHR POST request.
 
 - `url` is a string containing the URL for the request.
-- `data` is an object containing data to send with the request, and will default to *false*.
+- `data` can be an object, array, string or *FormData* containing data to send with the request, and will default to *null*.
 - `options` is an object containing options for the request.
     - `method` is a string containing the method to use for the request, and will default to "*POST*".
     - `contentType` is a string containing the Content-Type header to send with the request, and will default to "*application/x-www-form-urlencoded*".
     - `responseType` is a string containing the expected Content-Type header of the response.
+    - `mimeType` is a string containing the MIME type to use for the server response.
+    - `username` is a string containing the username to authenticate with.
+    - `password` is a string containing the password to authenticate with.
+    - `timeout` is a number indicating the number of milliseconds before the request will be terminated, and will default to *0*.
+    - `isLocal` is a boolean indicating whether the request will be treated as local.
     - `cache` is a boolean indicating whether to cache the request, and will default to *true*.
     - `processData` is a boolean indicating whether to process the data depending on the `contentType`, and will default to *true*.
     - `rejectOnCancel` is a boolean indicating whether to reject the promise if the request is cancelled, and will default to *true*.
@@ -2417,11 +2458,16 @@ dom.post(url, data, options);
 Perform an XHR PUT request.
 
 - `url` is a string containing the URL for the request.
-- `data` is an object containing data to send with the request, and will default to *false*.
+- `data` can be an object, array, string or *FormData* containing data to send with the request, and will default to *null*.
 - `options` is an object containing options for the request.
     - `method` is a string containing the method to use for the request, and will default to "*PUT*".
     - `contentType` is a string containing the Content-Type header to send with the request, and will default to "*application/x-www-form-urlencoded*".
     - `responseType` is a string containing the expected Content-Type header of the response.
+    - `mimeType` is a string containing the MIME type to use for the server response.
+    - `username` is a string containing the username to authenticate with.
+    - `password` is a string containing the password to authenticate with.
+    - `timeout` is a number indicating the number of milliseconds before the request will be terminated, and will default to *0*.
+    - `isLocal` is a boolean indicating whether the request will be treated as local.
     - `cache` is a boolean indicating whether to cache the request, and will default to *true*.
     - `processData` is a boolean indicating whether to process the data depending on the `contentType`, and will default to *true*.
     - `rejectOnCancel` is a boolean indicating whether to reject the promise if the request is cancelled, and will default to *true*.
@@ -2437,31 +2483,6 @@ This method returns an *AjaxRequest* that resolves when the request is completed
 dom.put(url, data, options);
 ```
 
-**Upload**
-
-Perform an XHR request for a file upload.
-
-- `url` is a string containing the URL for the request.
-- `data` is a *FormData* object to send with the request.
-- `options` is an object containing options for the request.
-    - `method` is a string containing the method to use for the request, and will default to "*POST*".
-    - `contentType` is a string containing the Content-Type header to send with the request, and will default to *false*.
-    - `responseType` is a string containing the expected Content-Type header of the response.
-    - `cache` is a boolean indicating whether to cache the request, and will default to *true*.
-    - `processData` is a boolean indicating whether to process the data depending on the `contentType`, and will default to *true*.
-    - `rejectOnCancel` is a boolean indicating whether to reject the promise if the request is cancelled, and will default to *true*.
-    - `headers` is an object containing additional headers to send with the request.
-    - `afterSend` is a function that accepts an `xhr` argument, and will be called after the request is sent.
-    - `beforeSend` is a function that accepts an `xhr` argument, and will be called before the request is sent.
-    - `onProgress` is a function that accepts `progress`, `xhr` and `event` as arguments and will be called on XHR download progress.
-    - `onUploadProgress` is a function that accepts `progress`, `xhr` and `event` as arguments and will be called on XHR upload progress.
-
-This method returns an *AjaxRequest* that resolves when the request is completed, or rejects on failure.
-
-```javascript
-dom.upload(url, data, options);
-```
-
 ### Scripts
 
 **Load Script**
@@ -2469,11 +2490,13 @@ dom.upload(url, data, options);
 Load and execute a JavaScript file.
 
 - `script` is a string containing the URL for the script to load.
+- `attributes` is an object containing additional attributes on the `script` tag.
+- `cache` is a boolean indicating whether to cache the request, and will default to *true*.
 
-This method returns an *AjaxRequest* that resolves when the request is completed, or rejects on failure.
+This method returns an *Promise* that resolves when the script is loaded, or rejects on failure.
 
 ```javascript
-dom.loadScript(script);
+dom.loadScript(script, attributes, cache);
 ```
 
 **Load Scripts**
@@ -2481,11 +2504,12 @@ dom.loadScript(script);
 Load and execute multiple JavaScript files (in order).
 
 - `scripts` is a array of strings containing the URLs for the scripts to load.
+- `cache` is a boolean indicating whether to cache the request, and will default to *true*.
 
-This method returns a *Promise* that resolves when the request is completed, or rejects on failure.
+This method returns a *Promise* that resolves when the scripts are loaded, or rejects on failure.
 
 ```javascript
-dom.loadScripts(scripts);
+dom.loadScripts(scripts, attributes, cache);
 ```
 
 ### Stylesheets
@@ -2495,11 +2519,13 @@ dom.loadScripts(scripts);
 Import A CSS Stylesheet file.
 
 - `stylesheet` is a string containing the URL for the stylesheet to load.
+- `attributes` is an object containing additional attributes on the `link` tag.
+- `cache` is a boolean indicating whether to cache the request, and will default to *true*.
 
-This method returns an *AjaxRequest* that resolves when the request is completed, or rejects on failure.
+This method returns an *Promise* that resolves when the stylesheet is loaded, or rejects on failure.
 
 ```javascript
-dom.loadStyle(stylesheet);
+dom.loadStyle(stylesheet, attributes, cache);
 ```
 
 **Load Stylesheets**
@@ -2507,11 +2533,12 @@ dom.loadStyle(stylesheet);
 Import multiple CSS Stylesheet files.
 
 - `stylesheets` is a array of strings containing the URLs for the stylesheets to load.
+- `cache` is a boolean indicating whether to cache the request, and will default to *true*.
 
-This method returns a *Promise* that resolves when the request is completed, or rejects on failure.
+This method returns a *Promise* that resolves when the stylesheets are loaded, or rejects on failure.
 
 ```javascript
-dom.loadStyles(stylesheets);
+dom.loadStyles(stylesheets, cache);
 ```
 
 
@@ -2589,7 +2616,7 @@ The *AjaxRequest* class provides a Promise-based wrapper for performing XHR requ
 - `options` is an object containing options for the request.
     - `url` is a string containing the URL for the request, and will default to the current window location.
     - `method` is a string containing the method to use for the request, and will default to "*GET*".
-    - `data` is an object containing data to send with the request, and will default to *false*.
+    - `data` can be an object, array, string or *FormData* containing data to send with the request, and will default to *null*.
     - `contentType` is a string containing the Content-Type header to send with the request, and will default to "*application/x-www-form-urlencoded*".
     - `responseType` is a string containing the expected Content-Type header of the response.
     - `cache` is a boolean indicating whether to cache the request, and will default to *true*.

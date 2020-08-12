@@ -15,7 +15,7 @@ if (!fs.existsSync(distFolder)) {
 }
 
 // load files and wrapper
-let wrapper;
+let bundleWrapper, wrapper;
 const files = [];
 const core = fs.readFileSync('./node_modules/frostcore/dist/frost-core.js');
 
@@ -28,7 +28,9 @@ filepath.create(srcFolder).recurse(fullPath => {
         const fileName = path.basename(fullPath.path, '.js');
         const data = fs.readFileSync(fullPath.path, 'utf8');
 
-        if (fileName === 'wrapper') {
+        if (fileName === 'bundle_wrapper') {
+            bundleWrapper = data;
+        } else if (fileName === 'wrapper') {
             wrapper = data;
         } else {
             files.push(data);
@@ -46,7 +48,14 @@ const code = wrapper.replace(
         )
 );
 
-const bundle = [core, code].join('\r\n\r\n');
+const bundle = bundleWrapper.replace(
+    '    // {{code}}',
+    _ => [core, code].join('\r\n\r\n')
+        .replace(
+            /^(?!\s*$)/mg,
+            ' '.repeat(4)
+        )
+);
 
 // minify
 const minified = terser.minify(code, {
