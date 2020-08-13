@@ -12,17 +12,19 @@ Object.assign(DOM.prototype, {
      * @returns {Promise} A new Promise that resolves when the script is loaded, or rejects on failure.
      */
     loadScript(url, attributes, cache = true) {
+        attributes = {
+            src: url,
+            type: 'text/javascript',
+            ...attributes
+        };
+
         if (!cache) {
-            url = AjaxRequest.appendQueryString(url, '_', Date.now());
+            attributes.src = AjaxRequest.appendQueryString(attributes.src, '_', Date.now());
         }
 
         return new Promise((resolve, reject) => {
             const script = this.create('script', {
-                attributes: {
-                    src: url,
-                    type: 'text/javascript',
-                    ...attributes
-                }
+                attributes
             });
 
             script.onload = _ => resolve();
@@ -41,7 +43,9 @@ Object.assign(DOM.prototype, {
     loadScripts(urls, cache = true) {
         return Promise.all(
             urls.map(url =>
-                this.loadScript(url, cache)
+                Core.isString(url) ?
+                    this.loadScript(url, null, cache) :
+                    this.loadScript(null, url, cache)
             )
         );
     }

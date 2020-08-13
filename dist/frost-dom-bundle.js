@@ -1,5 +1,6 @@
 /**
- * FrostDOM v1.0
+ * FrostDOM Bundle v1.0.0
+ * https://github.com/elusivecodes/FrostCore
  * https://github.com/elusivecodes/FrostDOM
  */
 (function(global, factory) {
@@ -1046,7 +1047,7 @@
     });
 
     /**
-     * FrostDOM v1.0
+     * FrostDOM v1.0.0
      * https://github.com/elusivecodes/FrostDOM
      */
     (function(global, factory) {
@@ -1432,17 +1433,25 @@
 
         Object.assign(AjaxRequest, {
 
+            /**
+             * Append a query string to a URL.
+             * @param {string} url The input URL.
+             * @param {string} key The query string key.
+             * @param {string} value The query string value.
+             * @returns {string} The new URL.
+             */
             appendQueryString(url, key, value) {
                 const baseHref = (window.location.origin + window.location.pathname).replace(/\/$/, '');
                 const urlData = new URL(url, baseHref);
                 urlData.searchParams.append(key, value);
-                url = urlData.toString();
+                let newUrl = urlData.toString();
 
-                if (url.substring(0, baseHref.length) === baseHref) {
-                    url = url.substring(baseHref.length);
+                if (newUrl.substring(0, url.length) === url) {
+                    return newUrl;
                 }
 
-                return url;
+                const pos = newUrl.indexOf(url);
+                return newUrl.substring(pos);
             },
 
             /**
@@ -2007,17 +2016,19 @@
              * @returns {Promise} A new Promise that resolves when the script is loaded, or rejects on failure.
              */
             loadScript(url, attributes, cache = true) {
+                attributes = {
+                    src: url,
+                    type: 'text/javascript',
+                    ...attributes
+                };
+
                 if (!cache) {
-                    url = AjaxRequest.appendQueryString(url, '_', Date.now());
+                    attributes.src = AjaxRequest.appendQueryString(attributes.src, '_', Date.now());
                 }
 
                 return new Promise((resolve, reject) => {
                     const script = this.create('script', {
-                        attributes: {
-                            src: url,
-                            type: 'text/javascript',
-                            ...attributes
-                        }
+                        attributes
                     });
 
                     script.onload = _ => resolve();
@@ -2036,7 +2047,9 @@
             loadScripts(urls, cache = true) {
                 return Promise.all(
                     urls.map(url =>
-                        this.loadScript(url, cache)
+                        Core.isString(url) ?
+                            this.loadScript(url, null, cache) :
+                            this.loadScript(null, url, cache)
                     )
                 );
             }
@@ -2057,17 +2070,19 @@
              * @returns {Promise} A new Promise that resolves when the stylesheet is loaded, or rejects on failure.
              */
             loadStyle(url, attributes, cache = true) {
+                attributes = {
+                    href: url,
+                    rel: 'stylesheet',
+                    ...attributes
+                };
+
                 if (!cache) {
-                    url = AjaxRequest.appendQueryString(url, '_', Date.now());
+                    attributes.href = AjaxRequest.appendQueryString(attributes.href, '_', Date.now());
                 }
 
                 return new Promise((resolve, reject) => {
                     const link = this.create('link', {
-                        attributes: {
-                            href: url,
-                            rel: 'stylesheet',
-                            ...attributes
-                        }
+                        attributes
                     });
 
                     link.onload = _ => resolve();
@@ -2086,7 +2101,9 @@
             loadStyles(urls, cache = true) {
                 return Promise.all(
                     urls.map(url =>
-                        this.loadStyle(url, cache)
+                        Core.isString(url) ?
+                            this.loadStyle(url, null, cache) :
+                            this.loadStyle(null, url, cache)
                     )
                 );
             }
@@ -3614,7 +3631,7 @@
                     }
 
                     if (move || up) {
-                        this.addEvent(window, 'mouseup', e => {
+                        this.addEventOnce(window, 'mouseup', e => {
                             if (move) {
                                 this.removeEvent(window, 'mousemove', move);
                             }
@@ -3622,7 +3639,7 @@
                             if (up) {
                                 up(e);
                             }
-                        }, false, true);
+                        });
                     }
                 };
             }

@@ -74,7 +74,7 @@ describe('#sort', function() {
         );
     });
 
-    it('works with DocumentFragment', async function() {
+    it('works with DocumentFragment nodes', async function() {
         assert.deepEqual(
             await exec(_ => {
                 const fragment = document.createDocumentFragment();
@@ -89,7 +89,7 @@ describe('#sort', function() {
         );
     });
 
-    it('works with ShadowRoot', async function() {
+    it('works with ShadowRoot nodes', async function() {
         assert.deepEqual(
             await exec(_ => {
                 const div = document.createElement('div');
@@ -105,7 +105,7 @@ describe('#sort', function() {
         );
     });
 
-    it('works with Document', async function() {
+    it('works with Document nodes', async function() {
         assert.deepEqual(
             await exec(_ => {
                 return dom.sort(
@@ -118,7 +118,7 @@ describe('#sort', function() {
         );
     });
 
-    it('works with Window', async function() {
+    it('works with Window nodes', async function() {
         assert.deepEqual(
             await exec(_ => {
                 return dom.sort(

@@ -12,17 +12,19 @@ Object.assign(DOM.prototype, {
      * @returns {Promise} A new Promise that resolves when the stylesheet is loaded, or rejects on failure.
      */
     loadStyle(url, attributes, cache = true) {
+        attributes = {
+            href: url,
+            rel: 'stylesheet',
+            ...attributes
+        };
+
         if (!cache) {
-            url = AjaxRequest.appendQueryString(url, '_', Date.now());
+            attributes.href = AjaxRequest.appendQueryString(attributes.href, '_', Date.now());
         }
 
         return new Promise((resolve, reject) => {
             const link = this.create('link', {
-                attributes: {
-                    href: url,
-                    rel: 'stylesheet',
-                    ...attributes
-                }
+                attributes
             });
 
             link.onload = _ => resolve();
@@ -41,7 +43,9 @@ Object.assign(DOM.prototype, {
     loadStyles(urls, cache = true) {
         return Promise.all(
             urls.map(url =>
-                this.loadStyle(url, cache)
+                Core.isString(url) ?
+                    this.loadStyle(url, null, cache) :
+                    this.loadStyle(null, url, cache)
             )
         );
     }

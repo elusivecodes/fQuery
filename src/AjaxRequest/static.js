@@ -4,17 +4,25 @@
 
 Object.assign(AjaxRequest, {
 
+    /**
+     * Append a query string to a URL.
+     * @param {string} url The input URL.
+     * @param {string} key The query string key.
+     * @param {string} value The query string value.
+     * @returns {string} The new URL.
+     */
     appendQueryString(url, key, value) {
         const baseHref = (window.location.origin + window.location.pathname).replace(/\/$/, '');
         const urlData = new URL(url, baseHref);
         urlData.searchParams.append(key, value);
-        url = urlData.toString();
+        let newUrl = urlData.toString();
 
-        if (url.substring(0, baseHref.length) === baseHref) {
-            url = url.substring(baseHref.length);
+        if (newUrl.substring(0, url.length) === url) {
+            return newUrl;
         }
 
-        return url;
+        const pos = newUrl.indexOf(url);
+        return newUrl.substring(pos);
     },
 
     /**

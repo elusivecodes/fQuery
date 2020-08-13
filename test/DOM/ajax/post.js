@@ -749,6 +749,24 @@ describe('#post', function() {
         assert.ok(match);
     });
 
+    it('performs an AJAX POST request without cache (query string)', async function() {
+        const response = await exec(async _ => {
+            const response = await dom.post(
+                '/?test=1',
+                null,
+                {
+                    cache: false
+                }
+            );
+            response.xhr = response.xhr.data;
+            return response;
+        });
+
+        const match = response.xhr.url.match(/\/?test=1&_=(\d+)/);
+
+        assert.ok(match);
+    });
+
     it('works with beforeSend callback', async function() {
         assert.deepEqual(
             await exec(async _ => {

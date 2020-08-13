@@ -1,55 +1,14 @@
-const fs = require('fs');
-const http = require('http');
 const puppeteer = require('puppeteer');
 const assert = require('assert').strict;
+const server = require('../server/server.js');
 const port = 3001;
 
 let browser, page;
 
-const dom = fs.readFileSync('./dist/frost-dom-bundle.js');
-
-const server = http.createServer((request, response) => {
-    if (request.url === '/') {
-        response.writeHead(200, { 'Content-Type': 'text/html' });
-        response.end(
-            '<html id="html">' +
-            '<head>' +
-            '<style id="style">' +
-            '</style>' +
-            '</head>' +
-            '<body id="body">' +
-            '<script>' +
-            dom +
-            '</script>' +
-            '</body>' +
-            '</html>'
-        );
-        return;
-    }
-});
-
-const startServer = _ => {
-    return new Promise((resolve, reject) => {
-        server.listen(port, (err) => {
-            if (err) {
-                return reject(err);
-            }
-
-            resolve();
-        });
-    });
-};
-
-const closeServer = _ => {
-    return new Promise(resolve => {
-        server.close(resolve);
-    });
-};
-
 before(async function() {
     this.timeout(30000);
 
-    await startServer();
+    await server.start(port);
 
     browser = await puppeteer.launch({
         args: [
@@ -97,7 +56,7 @@ before(async function() {
     });
 });
 
-afterEach(async function() {
+beforeEach(async function() {
     this.timeout(30000);
 
     await page.evaluate(_ => {
@@ -107,12 +66,12 @@ afterEach(async function() {
         dom.removeEvent(window);
         dom.removeEvent(document);
 
-        window.data = {};
+        delete window.data;
         window.id = 'window';
         document.id = 'document';
+        document.head.innerHTML = '';
         document.body.innerHTML = '';
     });
-    await setStyle();
 });
 
 after(async function() {
@@ -120,7 +79,7 @@ after(async function() {
 
     await page.close();
     await browser.close();
-    await closeServer();
+    await server.close();
 });
 
 const exec = async (callback, data) =>
@@ -128,7 +87,9 @@ const exec = async (callback, data) =>
 
 const setStyle = async (style = '') =>
     await exec(style => {
-        document.getElementById('style').innerText = style;
+        const element = document.createElement('style');
+        element.innerText = style;
+        document.head.appendChild(element);
     }, style);
 
 module.exports = {

@@ -1,14 +1,37 @@
 {
     "name": "frostdom",
-    "version": "0.9.0",
+    "version": "1.0.0",
     "description": "FrostDOM is a free, open-source DOM manipulation library for JavaScript.",
-    "main": "build.js",
+    "keywords": [
+        "dom",
+        "document",
+        "query",
+        "ajax",
+        "cookie"
+    ],
+    "homepage": "https://github.com/elusivecodes/FrostDOM",
+    "bugs": {
+        "url": "https://github.com/elusivecodes/FrostDOM/issues",
+        "email": "elusivecodes@gmail.com"
+    },
+    "main": "./dist/frost-dom-bundle.js",
+    "files": [
+        "/dist/frost-dom.js",
+        "/dist/frost-dom-bundle.js",
+        "/LICENSE",
+        "/README.md"
+    ],
     "scripts": {
         "build": "node build.js",
         "test": "./node_modules/.bin/mocha --recursive"
     },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/elusivecodes/FrostDOM.git"
+    },
     "author": "Elusive",
     "license": "MIT",
+    "private": false,
     "devDependencies": {
         "@babel/core": "^7.11.1",
         "@babel/preset-env": "^7.11.0",

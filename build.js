@@ -6,6 +6,7 @@ const babel = require('@babel/core');
 
 const srcFolder = 'src';
 const distFolder = 'dist';
+const assetsFolder = 'public/assets';
 
 const name = 'frost-dom';
 
@@ -97,6 +98,11 @@ if (minifiedBundle.error) {
 
     fs.writeFileSync(
         path.join(distFolder, name + '-bundle.min.js'),
+        minifiedBundle.code
+    );
+
+    fs.writeFileSync(
+        path.join(assetsFolder, name + '-bundle.min.js'),
         minifiedBundle.code
     );
 }

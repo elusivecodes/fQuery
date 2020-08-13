@@ -2503,7 +2503,7 @@ dom.loadScript(script, attributes, cache);
 
 Load and execute multiple JavaScript files (in order).
 
-- `scripts` is a array of strings containing the URLs for the scripts to load.
+- `scripts` is a array of strings containing the URLs for the scripts to load, or an array of script attributes.
 - `cache` is a boolean indicating whether to cache the request, and will default to *true*.
 
 This method returns a *Promise* that resolves when the scripts are loaded, or rejects on failure.
@@ -2532,7 +2532,7 @@ dom.loadStyle(stylesheet, attributes, cache);
 
 Import multiple CSS Stylesheet files.
 
-- `stylesheets` is a array of strings containing the URLs for the stylesheets to load.
+- `stylesheets` is a array of strings containing the URLs for the stylesheets to load, or an array of link attributes.
 - `cache` is a boolean indicating whether to cache the request, and will default to *true*.
 
 This method returns a *Promise* that resolves when the stylesheets are loaded, or rejects on failure.

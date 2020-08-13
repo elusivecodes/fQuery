@@ -37,7 +37,8 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 /**
- * FrostDOM v1.0
+ * FrostDOM Bundle v1.0.0
+ * https://github.com/elusivecodes/FrostCore
  * https://github.com/elusivecodes/FrostDOM
  */
 (function (global, factory) {
@@ -1057,7 +1058,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
     return Core;
   });
   /**
-   * FrostDOM v1.0
+   * FrostDOM v1.0.0
    * https://github.com/elusivecodes/FrostDOM
    */
 
@@ -1477,17 +1478,25 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
      */
 
     Object.assign(AjaxRequest, {
+      /**
+       * Append a query string to a URL.
+       * @param {string} url The input URL.
+       * @param {string} key The query string key.
+       * @param {string} value The query string value.
+       * @returns {string} The new URL.
+       */
       appendQueryString: function appendQueryString(url, key, value) {
         var baseHref = (window.location.origin + window.location.pathname).replace(/\/$/, '');
         var urlData = new URL(url, baseHref);
         urlData.searchParams.append(key, value);
-        url = urlData.toString();
+        var newUrl = urlData.toString();
 
-        if (url.substring(0, baseHref.length) === baseHref) {
-          url = url.substring(baseHref.length);
+        if (newUrl.substring(0, url.length) === url) {
+          return newUrl;
         }
 
-        return url;
+        var pos = newUrl.indexOf(url);
+        return newUrl.substring(pos);
       },
 
       /**
@@ -2101,17 +2110,18 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
         var _this6 = this;
 
         var cache = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : true;
+        attributes = _objectSpread({
+          src: url,
+          type: 'text/javascript'
+        }, attributes);
 
         if (!cache) {
-          url = AjaxRequest.appendQueryString(url, '_', Date.now());
+          attributes.src = AjaxRequest.appendQueryString(attributes.src, '_', Date.now());
         }
 
         return new Promise(function (resolve, reject) {
           var script = _this6.create('script', {
-            attributes: _objectSpread({
-              src: url,
-              type: 'text/javascript'
-            }, attributes)
+            attributes: attributes
           });
 
           script.onload = function (_) {
@@ -2137,7 +2147,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
 
         var cache = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
         return Promise.all(urls.map(function (url) {
-          return _this7.loadScript(url, cache);
+          return Core.isString(url) ? _this7.loadScript(url, null, cache) : _this7.loadScript(null, url, cache);
         }));
       }
     });
@@ -2157,17 +2167,18 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
         var _this8 = this;
 
         var cache = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : true;
+        attributes = _objectSpread({
+          href: url,
+          rel: 'stylesheet'
+        }, attributes);
 
         if (!cache) {
-          url = AjaxRequest.appendQueryString(url, '_', Date.now());
+          attributes.href = AjaxRequest.appendQueryString(attributes.href, '_', Date.now());
         }
 
         return new Promise(function (resolve, reject) {
           var link = _this8.create('link', {
-            attributes: _objectSpread({
-              href: url,
-              rel: 'stylesheet'
-            }, attributes)
+            attributes: attributes
           });
 
           link.onload = function (_) {
@@ -2193,7 +2204,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
 
         var cache = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
         return Promise.all(urls.map(function (url) {
-          return _this9.loadStyle(url, cache);
+          return Core.isString(url) ? _this9.loadStyle(url, null, cache) : _this9.loadStyle(null, url, cache);
         }));
       }
     });
@@ -3866,7 +3877,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
           }
 
           if (move || up) {
-            _this12.addEvent(window, 'mouseup', function (e) {
+            _this12.addEventOnce(window, 'mouseup', function (e) {
               if (move) {
                 _this12.removeEvent(window, 'mousemove', move);
               }
@@ -3874,7 +3885,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
               if (up) {
                 up(e);
               }
-            }, false, true);
+            });
           }
         };
       }
