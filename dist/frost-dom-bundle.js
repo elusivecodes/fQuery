@@ -1,5 +1,5 @@
 /**
- * FrostDOM Bundle v1.0.1
+ * FrostDOM Bundle v1.0.2
  * https://github.com/elusivecodes/FrostCore
  * https://github.com/elusivecodes/FrostDOM
  */
@@ -1047,7 +1047,7 @@
     });
 
     /**
-     * FrostDOM v1.0.1
+     * FrostDOM v1.0.2
      * https://github.com/elusivecodes/FrostDOM
      */
     (function(global, factory) {
@@ -5276,7 +5276,11 @@
             parseNode(nodes, options = {}) {
                 const filter = this.constructor.parseNodesFactory(options);
 
-                return this.parseNodesDeep(nodes, filter, options.html, true);
+                if (!('context' in options)) {
+                    options.context = this._context;
+                }
+
+                return this.parseNodesDeep(nodes, options.context, filter, options.html, true);
             },
 
             /**
@@ -5295,17 +5299,22 @@
             parseNodes(nodes, options = {}) {
                 const filter = this.constructor.parseNodesFactory(options);
 
-                return this.parseNodesDeep(nodes, filter, options.html);
+                if (!('context' in options)) {
+                    options.context = this._context;
+                }
+
+                return this.parseNodesDeep(nodes, options.context, filter, options.html);
             },
 
             /**
              * Recursively parse nodes.
              * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector or HTML string.
+             * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|NodeList|HTMLCollection|QuerySet} context The context node(s), or a query selector string.
              * @param {DOM~nodeCallback} [filter] The callback to use for filtering nodes.
              * @param {Boolean} [first=false] Whether to only return the first result.
              * @returns {array|Node|DocumentFragment|ShadowRoot|Document|Window} The parsed node(s).
              */
-            parseNodesDeep(nodes, filter, html = false, first = false) {
+            parseNodesDeep(nodes, context, filter, html = false, first = false) {
 
                 // check nodes
                 if (!nodes) {
@@ -5323,10 +5332,10 @@
 
                     // query selector
                     if (!first) {
-                        return this.find(nodes, this._context);
+                        return this.find(nodes, context);
                     }
 
-                    const node = this.findOne(nodes, this._context);
+                    const node = this.findOne(nodes, context);
                     return node ?
                         node :
                         null;
@@ -5365,7 +5374,7 @@
                 // Array
                 if (Core.isArray(nodes)) {
                     const subFilter = this.constructor.parseNodesFactory({ node: true, fragment: true, shadow: true, document: true, window: true });
-                    nodes = nodes.flatMap(node => this.parseNodesDeep(node, subFilter, html));
+                    nodes = nodes.flatMap(node => this.parseNodesDeep(node, context, subFilter, html));
                 } else {
                     nodes = Core.wrap(nodes);
                 }

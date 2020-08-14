@@ -37,7 +37,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 /**
- * FrostDOM Bundle v1.0.1
+ * FrostDOM Bundle v1.0.2
  * https://github.com/elusivecodes/FrostCore
  * https://github.com/elusivecodes/FrostDOM
  */
@@ -1058,7 +1058,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
     return Core;
   });
   /**
-   * FrostDOM v1.0.1
+   * FrostDOM v1.0.2
    * https://github.com/elusivecodes/FrostDOM
    */
 
@@ -5982,7 +5982,12 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
       parseNode: function parseNode(nodes) {
         var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
         var filter = this.constructor.parseNodesFactory(options);
-        return this.parseNodesDeep(nodes, filter, options.html, true);
+
+        if (!('context' in options)) {
+          options.context = this._context;
+        }
+
+        return this.parseNodesDeep(nodes, options.context, filter, options.html, true);
       },
 
       /**
@@ -6001,21 +6006,27 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
       parseNodes: function parseNodes(nodes) {
         var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
         var filter = this.constructor.parseNodesFactory(options);
-        return this.parseNodesDeep(nodes, filter, options.html);
+
+        if (!('context' in options)) {
+          options.context = this._context;
+        }
+
+        return this.parseNodesDeep(nodes, options.context, filter, options.html);
       },
 
       /**
        * Recursively parse nodes.
        * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector or HTML string.
+       * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|NodeList|HTMLCollection|QuerySet} context The context node(s), or a query selector string.
        * @param {DOM~nodeCallback} [filter] The callback to use for filtering nodes.
        * @param {Boolean} [first=false] Whether to only return the first result.
        * @returns {array|Node|DocumentFragment|ShadowRoot|Document|Window} The parsed node(s).
        */
-      parseNodesDeep: function parseNodesDeep(nodes, filter) {
+      parseNodesDeep: function parseNodesDeep(nodes, context, filter) {
         var _this21 = this;
 
-        var html = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
-        var first = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : false;
+        var html = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : false;
+        var first = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : false;
 
         // check nodes
         if (!nodes) {
@@ -6031,10 +6042,10 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
 
 
           if (!first) {
-            return this.find(nodes, this._context);
+            return this.find(nodes, context);
           }
 
-          var _node2 = this.findOne(nodes, this._context);
+          var _node2 = this.findOne(nodes, context);
 
           return _node2 ? _node2 : null;
         } // Node/HTMLElement/Window/Document
@@ -6074,7 +6085,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
             window: true
           });
           nodes = nodes.flatMap(function (node) {
-            return _this21.parseNodesDeep(node, subFilter, html);
+            return _this21.parseNodesDeep(node, context, subFilter, html);
           });
         } else {
           nodes = Core.wrap(nodes);
