@@ -143,7 +143,7 @@ Object.assign(DOM.prototype, {
     withAnimation(nodes) {
         return this.parseNodes(nodes)
             .filter(node =>
-                this.constructor._hasAnimation(node)
+                Animation._animations.has(node)
             );
     },
 

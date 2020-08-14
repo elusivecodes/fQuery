@@ -5,15 +5,6 @@
 Object.assign(DOM, {
 
     /**
-     * Returns true if a single node has an animation.
-     * @param {HTMLElement} node The input node.
-     * @returns {Boolean} TRUE if the node has an animation, otherwise FALSE.
-     */
-    _hasAnimation(node) {
-        return Animation._animations.has(node);
-    },
-
-    /**
      * Returns true if a single node has a CSS animation.
      * @param {HTMLElement} node The input node.
      * @returns {Boolean} TRUE if the node has a CSS animation, otherwise FALSE.
@@ -48,24 +39,6 @@ Object.assign(DOM, {
                 this._data.get(node)
                     .hasOwnProperty(key)
             );
-    },
-
-    /**
-     * Returns true if a single node has a DocumentFragment.
-     * @param {HTMLElement} node The input node.
-     * @returns {Boolean} TRUE if the node has a DocumentFragment, otherwise FALSE.
-     */
-    _hasFragment(node) {
-        return !!node.content;
-    },
-
-    /**
-     * Returns true if a single node has a ShadowRoot.
-     * @param {HTMLElement} node The input node.
-     * @returns {Boolean} TRUE if the node has a ShadowRoot, otherwise FALSE.
-     */
-    _hasShadow(node) {
-        return !!node.shadowRoot;
     },
 
     /**

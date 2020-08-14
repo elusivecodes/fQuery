@@ -37,7 +37,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 /**
- * FrostDOM Bundle v1.0.0
+ * FrostDOM Bundle v1.0.1
  * https://github.com/elusivecodes/FrostCore
  * https://github.com/elusivecodes/FrostDOM
  */
@@ -1058,7 +1058,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
     return Core;
   });
   /**
-   * FrostDOM v1.0.0
+   * FrostDOM v1.0.1
    * https://github.com/elusivecodes/FrostDOM
    */
 
@@ -1953,6 +1953,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
        * @param {number} [options.duration=1000] The duration of the animation.
        * @param {string} [options.type=ease-in-out] The type of animation.
        * @param {Boolean} [options.infinite] Whether the animation should run forever.
+       * @param {Boolean} [options.debug] Whether to set debugging info on the node.
        * @returns {Promise} A new Promise that resolves when the animation has completed.
        */
       animate: function animate(nodes, callback, options) {
@@ -2002,6 +2003,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
        * @param {string} [options.type=ease-in-out] The type of animation.
        * @param {Boolean} [options.infinite] Whether the animation should run forever.
        * @param {Boolean} [options.useGpu=true] Whether the animation should use GPU acceleration.
+       * @param {Boolean} [options.debug] Whether to set debugging info on the node.
        * @returns {Promise} A new Promise that resolves when the animation has completed.
        */
       dropIn: function dropIn(nodes, options) {
@@ -2019,6 +2021,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
        * @param {string} [options.type=ease-in-out] The type of animation.
        * @param {Boolean} [options.infinite] Whether the animation should run forever.
        * @param {Boolean} [options.useGpu=true] Whether the animation should use GPU acceleration.
+       * @param {Boolean} [options.debug] Whether to set debugging info on the node.
        * @returns {Promise} A new Promise that resolves when the animation has completed.
        */
       dropOut: function dropOut(nodes, options) {
@@ -2034,6 +2037,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
        * @param {number} [options.duration=1000] The duration of the animation.
        * @param {string} [options.type=ease-in-out] The type of animation.
        * @param {Boolean} [options.infinite] Whether the animation should run forever.
+       * @param {Boolean} [options.debug] Whether to set debugging info on the node.
        * @returns {Promise} A new Promise that resolves when the animation has completed.
        */
       fadeIn: function fadeIn(nodes, options) {
@@ -2049,6 +2053,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
        * @param {number} [options.duration=1000] The duration of the animation.
        * @param {string} [options.type=ease-in-out] The type of animation.
        * @param {Boolean} [options.infinite] Whether the animation should run forever.
+       * @param {Boolean} [options.debug] Whether to set debugging info on the node.
        * @returns {Promise} A new Promise that resolves when the animation has completed.
        */
       fadeOut: function fadeOut(nodes, options) {
@@ -2068,6 +2073,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
        * @param {number} [options.duration=1000] The duration of the animation.
        * @param {string} [options.type=ease-in-out] The type of animation.
        * @param {Boolean} [options.infinite] Whether the animation should run forever.
+       * @param {Boolean} [options.debug] Whether to set debugging info on the node.
        * @returns {Promise} A new Promise that resolves when the animation has completed.
        */
       rotateIn: function rotateIn(nodes, options) {
@@ -2092,6 +2098,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
        * @param {number} [options.duration=1000] The duration of the animation.
        * @param {string} [options.type=ease-in-out] The type of animation.
        * @param {Boolean} [options.infinite] Whether the animation should run forever.
+       * @param {Boolean} [options.debug] Whether to set debugging info on the node.
        * @returns {Promise} A new Promise that resolves when the animation has completed.
        */
       rotateOut: function rotateOut(nodes, options) {
@@ -2114,6 +2121,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
        * @param {string} [options.type=ease-in-out] The type of animation.
        * @param {Boolean} [options.infinite] Whether the animation should run forever.
        * @param {Boolean} [options.useGpu=true] Whether the animation should use GPU acceleration.
+       * @param {Boolean} [options.debug] Whether to set debugging info on the node.
        * @returns {Promise} A new Promise that resolves when the animation has completed.
        */
       slideIn: function slideIn(nodes, options) {
@@ -2168,6 +2176,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
        * @param {string} [options.type=ease-in-out] The type of animation.
        * @param {Boolean} [options.infinite] Whether the animation should run forever.
        * @param {Boolean} [options.useGpu=true] Whether the animation should use GPU acceleration.
+       * @param {Boolean} [options.debug] Whether to set debugging info on the node.
        * @returns {Promise} A new Promise that resolves when the animation has completed.
        */
       slideOut: function slideOut(nodes, options) {
@@ -2222,6 +2231,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
        * @param {string} [options.type=ease-in-out] The type of animation.
        * @param {Boolean} [options.infinite] Whether the animation should run forever.
        * @param {Boolean} [options.useGpu=true] Whether the animation should use GPU acceleration.
+       * @param {Boolean} [options.debug] Whether to set debugging info on the node.
        * @returns {Promise} A new Promise that resolves when the animation has completed.
        */
       squeezeIn: function squeezeIn(nodes, options) {
@@ -2296,6 +2306,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
        * @param {string} [options.type=ease-in-out] The type of animation.
        * @param {Boolean} [options.infinite] Whether the animation should run forever.
        * @param {Boolean} [options.useGpu=true] Whether the animation should use GPU acceleration.
+       * @param {Boolean} [options.debug] Whether to set debugging info on the node.
        * @returns {Promise} A new Promise that resolves when the animation has completed.
        */
       squeezeOut: function squeezeOut(nodes, options) {
@@ -2591,7 +2602,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
       },
 
       /**
-       * Set a dataset value for the first node.
+       * Set a dataset value for each node.
        * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
        * @param {string|object} key The dataset key, or an object containing dataset values.
        * @param {*} [value] The dataset value.
@@ -3046,7 +3057,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
         }
 
         if (Core.isDocument(node)) {
-          return this.constructor._getScrollXDocument(node);
+          return node.scrollingElement.scrollLeft;
         }
 
         return node.scrollLeft;
@@ -3072,7 +3083,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
         }
 
         if (Core.isDocument(node)) {
-          return this.constructor._getScrollYDocument(node);
+          return node.scrollingElement.scrollTop;
         }
 
         return node.scrollTop;
@@ -3100,9 +3111,11 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
             if (Core.isWindow(node)) {
               node.scroll(x, y);
             } else if (Core.isDocument(node)) {
-              this.constructor._setScrollDocument(node, x, y);
+              node.scrollingElement.scrollLeft = x;
+              node.scrollingElement.scrollTop = y;
             } else {
-              this.constructor._setScroll(node, x, y);
+              node.scrollLeft = x;
+              node.scrollTop = y;
             }
           }
         } catch (err) {
@@ -3131,9 +3144,9 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
             var node = _step22.value;
 
             if (Core.isWindow(node)) {
-              this.constructor._setScrollXWindow(node, x);
+              node.scroll(x, node.scrollY);
             } else if (Core.isDocument(node)) {
-              this.constructor._setScrollXDocument(node, x);
+              node.scrollingElement.scrollLeft = x;
             } else {
               node.scrollLeft = x;
             }
@@ -3164,9 +3177,9 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
             var node = _step23.value;
 
             if (Core.isWindow(node)) {
-              this.constructor._setScrollYWindow(node, y);
+              node.scroll(node.scrollX, y);
             } else if (Core.isDocument(node)) {
-              this.constructor._setScrollYDocument(node, y);
+              node.scrollingElement.scrollTop = y;
             } else {
               node.scrollTop = y;
             }
@@ -3186,7 +3199,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
       /**
        * Get the computed height of the first node.
        * @param {string|array|HTMLElement|Document|Window|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
-       * @param {number} [innerOuter=1] Whether to include padding, border and margin heights.
+       * @param {number} [innerOuter] Whether to include padding, border and margin heights.
        * @returns {number} The height.
        */
       height: function height(nodes, innerOuter) {
@@ -5008,10 +5021,8 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
        * @returns {array} The filtered nodes.
        */
       withAnimation: function withAnimation(nodes) {
-        var _this17 = this;
-
         return this.parseNodes(nodes).filter(function (node) {
-          return _this17.constructor._hasAnimation(node);
+          return Animation._animations.has(node);
         });
       },
 
@@ -5067,10 +5078,10 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
        * @returns {array} The filtered nodes.
        */
       withCSSAnimation: function withCSSAnimation(nodes) {
-        var _this18 = this;
+        var _this17 = this;
 
         return this.parseNodes(nodes).filter(function (node) {
-          return _this18.constructor._hasCSSAnimation(node);
+          return _this17.constructor._hasCSSAnimation(node);
         });
       },
 
@@ -5080,10 +5091,10 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
        * @returns {array} The filtered nodes.
        */
       withCSSTransition: function withCSSTransition(nodes) {
-        var _this19 = this;
+        var _this18 = this;
 
         return this.parseNodes(nodes).filter(function (node) {
-          return _this19.constructor._hasCSSTransition(node);
+          return _this18.constructor._hasCSSTransition(node);
         });
       },
 
@@ -5094,7 +5105,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
        * @returns {array} The filtered nodes.
        */
       withData: function withData(nodes, key) {
-        var _this20 = this;
+        var _this19 = this;
 
         return this.parseNodes(nodes, {
           node: true,
@@ -5103,7 +5114,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
           document: true,
           window: true
         }).filter(function (node) {
-          return _this20.constructor._hasData(node, key);
+          return _this19.constructor._hasData(node, key);
         });
       },
 
@@ -5914,7 +5925,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
        * @returns {DOM~filterCallback} The node contains filter callback.
        */
       parseFilterContains: function parseFilterContains(filter) {
-        var _this21 = this;
+        var _this20 = this;
 
         if (!filter) {
           return false;
@@ -5928,7 +5939,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
 
         if (Core.isString(filter)) {
           return function (node) {
-            return !!_this21.findOne(filter, node);
+            return !!_this20.findOne(filter, node);
           };
         }
 
@@ -6001,7 +6012,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
        * @returns {array|Node|DocumentFragment|ShadowRoot|Document|Window} The parsed node(s).
        */
       parseNodesDeep: function parseNodesDeep(nodes, filter) {
-        var _this22 = this;
+        var _this21 = this;
 
         var html = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
         var first = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : false;
@@ -6063,7 +6074,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
             window: true
           });
           nodes = nodes.flatMap(function (node) {
-            return _this22.parseNodesDeep(node, subFilter, html);
+            return _this21.parseNodesDeep(node, subFilter, html);
           });
         } else {
           nodes = Core.wrap(nodes);
@@ -6346,10 +6357,8 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
        * @returns {Boolean} TRUE if any of the nodes has an animation, otherwise FALSE.
        */
       hasAnimation: function hasAnimation(nodes) {
-        var _this23 = this;
-
         return this.parseNodes(nodes).some(function (node) {
-          return _this23.constructor._hasAnimation(node);
+          return Animation._animations.has(node);
         });
       },
 
@@ -6405,10 +6414,10 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
        * @returns {Boolean} TRUE if any of the nodes has a CSS animation, otherwise FALSE.
        */
       hasCSSAnimation: function hasCSSAnimation(nodes) {
-        var _this24 = this;
+        var _this22 = this;
 
         return this.parseNodes(nodes).some(function (node) {
-          return _this24.constructor._hasCSSAnimation(node);
+          return _this22.constructor._hasCSSAnimation(node);
         });
       },
 
@@ -6418,10 +6427,10 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
        * @returns {Boolean} TRUE if any of the nodes has a CSS transition, otherwise FALSE.
        */
       hasCSSTransition: function hasCSSTransition(nodes) {
-        var _this25 = this;
+        var _this23 = this;
 
         return this.parseNodes(nodes).some(function (node) {
-          return _this25.constructor._hasCSSTransition(node);
+          return _this23.constructor._hasCSSTransition(node);
         });
       },
 
@@ -6432,7 +6441,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
        * @returns {Boolean} TRUE if any of the nodes has custom data, otherwise FALSE.
        */
       hasData: function hasData(nodes, key) {
-        var _this26 = this;
+        var _this24 = this;
 
         return this.parseNodes(nodes, {
           fragment: true,
@@ -6440,7 +6449,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
           document: true,
           window: true
         }).some(function (node) {
-          return _this26.constructor._hasData(node, key);
+          return _this24.constructor._hasData(node, key);
         });
       },
 
@@ -6467,10 +6476,8 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
        * @returns {Boolean} TRUE if any of the nodes has a DocumentFragment, otherwise FALSE.
        */
       hasFragment: function hasFragment(nodes) {
-        var _this27 = this;
-
         return this.parseNodes(nodes).some(function (node) {
-          return _this27.constructor._hasFragment(node);
+          return !!node.content;
         });
       },
 
@@ -6492,10 +6499,8 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
        * @returns {Boolean} TRUE if any of the nodes has a ShadowRoot, otherwise FALSE.
        */
       hasShadow: function hasShadow(nodes) {
-        var _this28 = this;
-
         return this.parseNodes(nodes).some(function (node) {
-          return _this28.constructor._hasShadow(node);
+          return !!node.shadowRoot;
         });
       },
 
@@ -6560,13 +6565,13 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
        * @returns {Boolean} TRUE if any of the nodes is "fixed", otherwise FALSE.
        */
       isFixed: function isFixed(nodes) {
-        var _this29 = this;
+        var _this25 = this;
 
         return this.parseNodes(nodes, {
           node: true
         }).some(function (node) {
-          return Core.isElement(node) && _this29.constructor._css(node, 'position') === 'fixed' || _this29.constructor._parents(node, function (parent) {
-            return Core.isElement(parent) && _this29.constructor._css(parent, 'position') === 'fixed';
+          return Core.isElement(node) && _this25.constructor._css(node, 'position') === 'fixed' || _this25.constructor._parents(node, function (parent) {
+            return Core.isElement(parent) && _this25.constructor._css(parent, 'position') === 'fixed';
           }, false, true).length;
         });
       },
@@ -6577,14 +6582,14 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
        * @returns {Boolean} TRUE if any of the nodes is hidden, otherwise FALSE.
        */
       isHidden: function isHidden(nodes) {
-        var _this30 = this;
+        var _this26 = this;
 
         return this.parseNodes(nodes, {
           node: true,
           document: true,
           window: true
         }).some(function (node) {
-          return !_this30.constructor._isVisible(node);
+          return !_this26.constructor._isVisible(node);
         });
       },
 
@@ -6617,14 +6622,14 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
        * @returns {Boolean} TRUE if any of the nodes is visible, otherwise FALSE.
        */
       isVisible: function isVisible(nodes) {
-        var _this31 = this;
+        var _this27 = this;
 
         return this.parseNodes(nodes, {
           node: true,
           document: true,
           window: true
         }).some(function (node) {
-          return _this31.constructor._isVisible(node);
+          return _this27.constructor._isVisible(node);
         });
       }
     });
@@ -6772,14 +6777,14 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
        * @returns {array} The serialized array.
        */
       serializeArray: function serializeArray(nodes) {
-        var _this32 = this;
+        var _this28 = this;
 
         return this.parseNodes(nodes, {
           fragment: true,
           shadow: true
         }).reduce(function (values, node) {
           if (Core.isElement(node) && node.matches('form') || Core.isFragment(node) || Core.isShadow(node)) {
-            return values.concat(_this32.serializeArray(node.querySelectorAll('input, select, textarea')));
+            return values.concat(_this28.serializeArray(node.querySelectorAll('input, select, textarea')));
           }
 
           if (Core.isElement(node) && node.matches('[disabled], input[type=submit], input[type=reset], input[type=file], input[type=radio]:not(:checked), input[type=checkbox]:not(:checked)')) {
@@ -6841,7 +6846,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
       /**
        * Return the tag name (lowercase) of the first node.
        * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
-       * @returns {string} The elements tag name (lowercase).
+       * @returns {string} The nodes tag name (lowercase).
        */
       tagName: function tagName(nodes) {
         var node = this.parseNode(nodes);
@@ -6850,7 +6855,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
           return;
         }
 
-        return this.constructor._tagName(node);
+        return node.tagName.toLowerCase();
       }
     });
     /**
@@ -7029,7 +7034,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
        * @param {HTMLElement} node The input node.
        */
       _dequeueNode: function _dequeueNode(node) {
-        var _this33 = this;
+        var _this29 = this;
 
         if (!this._queues.has(node)) {
           return;
@@ -7044,9 +7049,9 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
         }
 
         Promise.resolve(next(node)).then(function (_) {
-          return _this33._dequeueNode(node);
+          return _this29._dequeueNode(node);
         })["catch"](function (_) {
-          return _this33._clearQueue(node);
+          return _this29._clearQueue(node);
         });
       },
 
@@ -7340,86 +7345,6 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
       }
     });
     /**
-     * DOM (Static) Scroll
-     */
-
-    Object.assign(DOM, {
-      /**
-       * Get the scroll X position of a Document.
-       * @param {Document} node The input node.
-       * @returns {number} The scroll X position.
-       */
-      _getScrollXDocument: function _getScrollXDocument(node) {
-        return node.scrollingElement.scrollLeft;
-      },
-
-      /**
-       * Get the scroll Y position of a Document.
-       * @param {Document} node The input node.
-       * @returns {number} The scroll Y position.
-       */
-      _getScrollYDocument: function _getScrollYDocument(node) {
-        return node.scrollingElement.scrollTop;
-      },
-
-      /**
-       * Scroll a single node to an X,Y position.
-       * @param {HTMLElement} node The input node.
-       * @param {number} x The scroll X position.
-       * @param {number} y The scroll Y position.
-       */
-      _setScroll: function _setScroll(node, x, y) {
-        node.scrollLeft = x;
-        node.scrollTop = y;
-      },
-
-      /**
-       * Scroll a Document to an X,Y position.
-       * @param {Document} node The input node.
-       * @param {number} x The scroll X position.
-       * @param {number} y The scroll Y position.
-       */
-      _setScrollDocument: function _setScrollDocument(node, x, y) {
-        this._setScroll(node.scrollingElement, x, y);
-      },
-
-      /**
-       * Scroll a Document to an X position.
-       * @param {Document} node The input node.
-       * @param {number} x The scroll X position.
-       */
-      _setScrollXDocument: function _setScrollXDocument(node, x) {
-        node.scrollingElement.scrollLeft = x;
-      },
-
-      /**
-       * Scroll a Window to an X position.
-       * @param {Window} node The input node.
-       * @param {number} x The scroll X position.
-       */
-      _setScrollXWindow: function _setScrollXWindow(node, x) {
-        return node.scroll(x, node.scrollY);
-      },
-
-      /**
-       * Scroll a single node to a Y position.
-       * @param {Document} node The input node.
-       * @param {number} y The scroll Y position.
-       */
-      _setScrollYDocument: function _setScrollYDocument(node, y) {
-        node.scrollingElement.scrollTop = y;
-      },
-
-      /**
-       * Scroll a Window to a Y position.
-       * @param {Window} node The input node.
-       * @param {number} y The scroll Y position.
-       */
-      _setScrollYWindow: function _setScrollYWindow(node, y) {
-        return node.scroll(node.scrollX, y);
-      }
-    });
-    /**
      * DOM (Static) Size
      */
 
@@ -7431,7 +7356,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
        * @returns {number} The height.
        */
       _height: function _height(node) {
-        var _this34 = this;
+        var _this30 = this;
 
         var innerOuter = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 1;
         return this._forceShow(node, function (node) {
@@ -7441,16 +7366,16 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
 
           var result = node.clientHeight;
 
-          if (innerOuter === _this34.INNER) {
-            result -= parseInt(_this34._css(node, 'padding-top')) + parseInt(_this34._css(node, 'padding-bottom'));
+          if (innerOuter === _this30.INNER) {
+            result -= parseInt(_this30._css(node, 'padding-top')) + parseInt(_this30._css(node, 'padding-bottom'));
           }
 
-          if (innerOuter >= _this34.OUTER) {
-            result += parseInt(_this34._css(node, 'border-top-width')) + parseInt(_this34._css(node, 'border-bottom-width'));
+          if (innerOuter >= _this30.OUTER) {
+            result += parseInt(_this30._css(node, 'border-top-width')) + parseInt(_this30._css(node, 'border-bottom-width'));
           }
 
-          if (innerOuter === _this34.OUTER_MARGIN) {
-            result += parseInt(_this34._css(node, 'margin-top')) + parseInt(_this34._css(node, 'margin-bottom'));
+          if (innerOuter === _this30.OUTER_MARGIN) {
+            result += parseInt(_this30._css(node, 'margin-top')) + parseInt(_this30._css(node, 'margin-bottom'));
           }
 
           return result;
@@ -7494,7 +7419,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
        * @returns {number} The width.
        */
       _width: function _width(node) {
-        var _this35 = this;
+        var _this31 = this;
 
         var innerOuter = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 1;
         return this._forceShow(node, function (node) {
@@ -7504,16 +7429,16 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
 
           var result = node.clientWidth;
 
-          if (innerOuter === _this35.INNER) {
-            result -= parseInt(_this35._css(node, 'padding-left')) + parseInt(_this35._css(node, 'padding-right'));
+          if (innerOuter === _this31.INNER) {
+            result -= parseInt(_this31._css(node, 'padding-left')) + parseInt(_this31._css(node, 'padding-right'));
           }
 
-          if (innerOuter >= _this35.OUTER) {
-            result += parseInt(_this35._css(node, 'border-left-width')) + parseInt(_this35._css(node, 'border-right-width'));
+          if (innerOuter >= _this31.OUTER) {
+            result += parseInt(_this31._css(node, 'border-left-width')) + parseInt(_this31._css(node, 'border-right-width'));
           }
 
-          if (innerOuter === _this35.OUTER_MARGIN) {
-            result += parseInt(_this35._css(node, 'margin-left')) + parseInt(_this35._css(node, 'margin-right'));
+          if (innerOuter === _this31.OUTER_MARGIN) {
+            result += parseInt(_this31._css(node, 'margin-left')) + parseInt(_this31._css(node, 'margin-right'));
           }
 
           return result;
@@ -7646,7 +7571,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
        * @returns {DOM~delegateCallback} The callback for finding the matching delegate.
        */
       _getDelegateContainsFactory: function _getDelegateContainsFactory(node, selector) {
-        var _this36 = this;
+        var _this32 = this;
 
         selector = this._prefixSelectors(selector, ':scope ');
         return function (target) {
@@ -7660,7 +7585,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
             return target;
           }
 
-          return _this36._parents(target, function (parent) {
+          return _this32._parents(target, function (parent) {
             return matches.includes(parent);
           }, function (parent) {
             return parent.isSameNode(node);
@@ -7675,10 +7600,10 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
        * @returns {DOM~delegateCallback} The callback for finding the matching delegate.
        */
       _getDelegateMatchFactory: function _getDelegateMatchFactory(node, selector) {
-        var _this37 = this;
+        var _this33 = this;
 
         return function (target) {
-          return target.matches(selector) ? target : _this37._parents(target, function (parent) {
+          return target.matches(selector) ? target : _this33._parents(target, function (parent) {
             return parent.matches(selector);
           }, function (parent) {
             return parent.isSameNode(node);
@@ -7711,10 +7636,10 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
        * @returns {DOM~eventCallback} The wrapped event callback.
        */
       _selfDestructFactory: function _selfDestructFactory(node, events, delegate, callback) {
-        var _this38 = this;
+        var _this34 = this;
 
         return function (e) {
-          delegate ? _this38._removeEvent(node, events, callback, delegate) : _this38._removeEvent(node, events, callback);
+          delegate ? _this34._removeEvent(node, events, callback, delegate) : _this34._removeEvent(node, events, callback);
           return callback(e);
         };
       }
@@ -7808,7 +7733,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
        * @param {string} [delegate] The delegate selector.
        */
       _removeEvent: function _removeEvent(node, event, callback, delegate) {
-        var _this39 = this;
+        var _this35 = this;
 
         if (!this._events.has(node)) {
           return;
@@ -7840,7 +7765,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
           }
 
           if (realEvent !== event) {
-            var regExp = _this39._eventNamespacedRegExp(event);
+            var regExp = _this35._eventNamespacedRegExp(event);
 
             if (!eventData.event.match(regExp)) {
               return true;
@@ -8046,7 +7971,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
        * @param {Node|HTMLElement|DocumentFragment} clone The cloned node.
        */
       _cloneAnimations: function _cloneAnimations(node, clone) {
-        if (!this._hasAnimation(node)) {
+        if (!Animation._animations.has(node)) {
           return;
         }
 
@@ -8088,20 +8013,6 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
       },
 
       /**
-       * Detach a single node from the DOM.
-       * @param {Node|HTMLElement} node The input node.
-       */
-      _detach: function _detach(node) {
-        var parent = node.parentNode;
-
-        if (parent) {
-          return;
-        }
-
-        parent.removeChild(node);
-      },
-
-      /**
        * Remove all children of a single node from the DOM.
        * @param {HTMLElement|DocumentFragment|ShadowRoot|Document} node The input node.
        */
@@ -8127,14 +8038,14 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
           _iterator79.f();
         }
 
-        if (this._hasShadow(node)) {
+        if (node.shadowRoot) {
           var shadow = node.shadowRoot;
 
           this._remove(shadow);
         } // Remove DocumentFragment
 
 
-        if (this._hasFragment(node)) {
+        if (node.content) {
           var fragment = node.content;
 
           this._remove(fragment);
@@ -8209,7 +8120,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
        * @param {array} others The other node(s).
        */
       _wrap: function _wrap(node, others) {
-        var _this40 = this;
+        var _this36 = this;
 
         var parent = node.parentNode;
 
@@ -8218,7 +8129,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
         }
 
         var clones = others.map(function (other) {
-          return _this40._clone(other, {
+          return _this36._clone(other, {
             deep: true,
             events: true,
             data: true,
@@ -8303,11 +8214,11 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
        * @param {array} others The other node(s).
        */
       _wrapInner: function _wrapInner(node, others) {
-        var _this41 = this;
+        var _this37 = this;
 
         var children = Core.wrap(node.childNodes);
         var clones = others.map(function (other) {
-          return _this41._clone(other, {
+          return _this37._clone(other, {
             deep: true,
             events: true,
             data: true,
@@ -8721,15 +8632,6 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
 
     Object.assign(DOM, {
       /**
-       * Returns true if a single node has an animation.
-       * @param {HTMLElement} node The input node.
-       * @returns {Boolean} TRUE if the node has an animation, otherwise FALSE.
-       */
-      _hasAnimation: function _hasAnimation(node) {
-        return Animation._animations.has(node);
-      },
-
-      /**
        * Returns true if a single node has a CSS animation.
        * @param {HTMLElement} node The input node.
        * @returns {Boolean} TRUE if the node has a CSS animation, otherwise FALSE.
@@ -8755,24 +8657,6 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
        */
       _hasData: function _hasData(node, key) {
         return this._data.has(node) && (!key || this._data.get(node).hasOwnProperty(key));
-      },
-
-      /**
-       * Returns true if a single node has a DocumentFragment.
-       * @param {HTMLElement} node The input node.
-       * @returns {Boolean} TRUE if the node has a DocumentFragment, otherwise FALSE.
-       */
-      _hasFragment: function _hasFragment(node) {
-        return !!node.content;
-      },
-
-      /**
-       * Returns true if a single node has a ShadowRoot.
-       * @param {HTMLElement} node The input node.
-       * @returns {Boolean} TRUE if the node has a ShadowRoot, otherwise FALSE.
-       */
-      _hasShadow: function _hasShadow(node) {
-        return !!node.shadowRoot;
       },
 
       /**
@@ -8804,7 +8688,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
        * @returns {*} The result of the callback.
        */
       _forceShow: function _forceShow(node, callback) {
-        var _this42 = this;
+        var _this38 = this;
 
         if (this._isVisible(node)) {
           return callback(node);
@@ -8817,7 +8701,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
         }
 
         Core.merge(elements, this._parents(node, function (parent) {
-          return Core.isElement(parent) && _this42._css(parent, 'display') === 'none';
+          return Core.isElement(parent) && _this38._css(parent, 'display') === 'none';
         }));
         var hidden = new Map();
 
@@ -8864,9 +8748,8 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
        */
       _sanitize: function _sanitize(node, parent) {
         var allowedTags = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : this.allowedTags;
-
         // check node
-        var name = this._tagName(node);
+        var name = node.tagName.toLowerCase();
 
         if (!(name in allowedTags)) {
           parent.removeChild(node);
@@ -8974,15 +8857,6 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
 
           return 0;
         });
-      },
-
-      /**
-       * Return the tag name (lowercase) of a single node.
-       * @param {HTMLElement} node The input node.
-       * @returns {string} The elements tag name (lowercase).
-       */
-      _tagName: function _tagName(node) {
-        return node.tagName.toLowerCase();
       }
     });
     /**

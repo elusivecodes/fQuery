@@ -65,7 +65,8 @@ Object.assign(DOM, {
      */
     _sanitize(node, parent, allowedTags = this.allowedTags) {
         // check node
-        const name = this._tagName(node);
+        const name = node.tagName.toLowerCase();
+
         if (!(name in allowedTags)) {
             parent.removeChild(node);
             return;
@@ -155,15 +156,6 @@ Object.assign(DOM, {
 
             return 0;
         });
-    },
-
-    /**
-     * Return the tag name (lowercase) of a single node.
-     * @param {HTMLElement} node The input node.
-     * @returns {string} The elements tag name (lowercase).
-     */
-    _tagName(node) {
-        return node.tagName.toLowerCase();
     }
 
 });

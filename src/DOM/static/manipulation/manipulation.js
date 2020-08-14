@@ -42,7 +42,7 @@ Object.assign(DOM, {
      * @param {Node|HTMLElement|DocumentFragment} clone The cloned node.
      */
     _cloneAnimations(node, clone) {
-        if (!this._hasAnimation(node)) {
+        if (!Animation._animations.has(node)) {
             return;
         }
 
@@ -85,20 +85,6 @@ Object.assign(DOM, {
     },
 
     /**
-     * Detach a single node from the DOM.
-     * @param {Node|HTMLElement} node The input node.
-     */
-    _detach(node) {
-        const parent = node.parentNode;
-
-        if (parent) {
-            return;
-        }
-
-        parent.removeChild(node);
-    },
-
-    /**
      * Remove all children of a single node from the DOM.
      * @param {HTMLElement|DocumentFragment|ShadowRoot|Document} node The input node.
      */
@@ -112,13 +98,13 @@ Object.assign(DOM, {
         }
 
         // Remove ShadowRoot
-        if (this._hasShadow(node)) {
+        if (node.shadowRoot) {
             const shadow = node.shadowRoot;
             this._remove(shadow);
         }
 
         // Remove DocumentFragment
-        if (this._hasFragment(node)) {
+        if (node.content) {
             const fragment = node.content;
             this._remove(fragment);
         }

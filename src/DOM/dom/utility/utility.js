@@ -185,7 +185,7 @@ Object.assign(DOM.prototype, {
     /**
      * Return the tag name (lowercase) of the first node.
      * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
-     * @returns {string} The elements tag name (lowercase).
+     * @returns {string} The nodes tag name (lowercase).
      */
     tagName(nodes) {
         const node = this.parseNode(nodes);
@@ -194,7 +194,7 @@ Object.assign(DOM.prototype, {
             return;
         }
 
-        return this.constructor._tagName(node);
+        return node.tagName.toLowerCase();
     }
 
 });

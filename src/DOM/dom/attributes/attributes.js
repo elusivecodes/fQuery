@@ -144,7 +144,7 @@ Object.assign(DOM.prototype, {
     },
 
     /**
-     * Set a dataset value for the first node.
+     * Set a dataset value for each node.
      * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
      * @param {string|object} key The dataset key, or an object containing dataset values.
      * @param {*} [value] The dataset value.

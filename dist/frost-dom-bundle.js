@@ -1,5 +1,5 @@
 /**
- * FrostDOM Bundle v1.0.0
+ * FrostDOM Bundle v1.0.1
  * https://github.com/elusivecodes/FrostCore
  * https://github.com/elusivecodes/FrostDOM
  */
@@ -1047,7 +1047,7 @@
     });
 
     /**
-     * FrostDOM v1.0.0
+     * FrostDOM v1.0.1
      * https://github.com/elusivecodes/FrostDOM
      */
     (function(global, factory) {
@@ -1854,6 +1854,7 @@
              * @param {number} [options.duration=1000] The duration of the animation.
              * @param {string} [options.type=ease-in-out] The type of animation.
              * @param {Boolean} [options.infinite] Whether the animation should run forever.
+             * @param {Boolean} [options.debug] Whether to set debugging info on the node.
              * @returns {Promise} A new Promise that resolves when the animation has completed.
              */
             animate(nodes, callback, options) {
@@ -1898,6 +1899,7 @@
              * @param {string} [options.type=ease-in-out] The type of animation.
              * @param {Boolean} [options.infinite] Whether the animation should run forever.
              * @param {Boolean} [options.useGpu=true] Whether the animation should use GPU acceleration.
+             * @param {Boolean} [options.debug] Whether to set debugging info on the node.
              * @returns {Promise} A new Promise that resolves when the animation has completed.
              */
             dropIn(nodes, options) {
@@ -1919,6 +1921,7 @@
              * @param {string} [options.type=ease-in-out] The type of animation.
              * @param {Boolean} [options.infinite] Whether the animation should run forever.
              * @param {Boolean} [options.useGpu=true] Whether the animation should use GPU acceleration.
+             * @param {Boolean} [options.debug] Whether to set debugging info on the node.
              * @returns {Promise} A new Promise that resolves when the animation has completed.
              */
             dropOut(nodes, options) {
@@ -1938,6 +1941,7 @@
              * @param {number} [options.duration=1000] The duration of the animation.
              * @param {string} [options.type=ease-in-out] The type of animation.
              * @param {Boolean} [options.infinite] Whether the animation should run forever.
+             * @param {Boolean} [options.debug] Whether to set debugging info on the node.
              * @returns {Promise} A new Promise that resolves when the animation has completed.
              */
             fadeIn(nodes, options) {
@@ -1961,6 +1965,7 @@
              * @param {number} [options.duration=1000] The duration of the animation.
              * @param {string} [options.type=ease-in-out] The type of animation.
              * @param {Boolean} [options.infinite] Whether the animation should run forever.
+             * @param {Boolean} [options.debug] Whether to set debugging info on the node.
              * @returns {Promise} A new Promise that resolves when the animation has completed.
              */
             fadeOut(nodes, options) {
@@ -1988,6 +1993,7 @@
              * @param {number} [options.duration=1000] The duration of the animation.
              * @param {string} [options.type=ease-in-out] The type of animation.
              * @param {Boolean} [options.infinite] Whether the animation should run forever.
+             * @param {Boolean} [options.debug] Whether to set debugging info on the node.
              * @returns {Promise} A new Promise that resolves when the animation has completed.
              */
             rotateIn(nodes, options) {
@@ -2022,6 +2028,7 @@
              * @param {number} [options.duration=1000] The duration of the animation.
              * @param {string} [options.type=ease-in-out] The type of animation.
              * @param {Boolean} [options.infinite] Whether the animation should run forever.
+             * @param {Boolean} [options.debug] Whether to set debugging info on the node.
              * @returns {Promise} A new Promise that resolves when the animation has completed.
              */
             rotateOut(nodes, options) {
@@ -2054,6 +2061,7 @@
              * @param {string} [options.type=ease-in-out] The type of animation.
              * @param {Boolean} [options.infinite] Whether the animation should run forever.
              * @param {Boolean} [options.useGpu=true] Whether the animation should use GPU acceleration.
+             * @param {Boolean} [options.debug] Whether to set debugging info on the node.
              * @returns {Promise} A new Promise that resolves when the animation has completed.
              */
             slideIn(nodes, options) {
@@ -2112,6 +2120,7 @@
              * @param {string} [options.type=ease-in-out] The type of animation.
              * @param {Boolean} [options.infinite] Whether the animation should run forever.
              * @param {Boolean} [options.useGpu=true] Whether the animation should use GPU acceleration.
+             * @param {Boolean} [options.debug] Whether to set debugging info on the node.
              * @returns {Promise} A new Promise that resolves when the animation has completed.
              */
             slideOut(nodes, options) {
@@ -2170,6 +2179,7 @@
              * @param {string} [options.type=ease-in-out] The type of animation.
              * @param {Boolean} [options.infinite] Whether the animation should run forever.
              * @param {Boolean} [options.useGpu=true] Whether the animation should use GPU acceleration.
+             * @param {Boolean} [options.debug] Whether to set debugging info on the node.
              * @returns {Promise} A new Promise that resolves when the animation has completed.
              */
             squeezeIn(nodes, options) {
@@ -2254,6 +2264,7 @@
              * @param {string} [options.type=ease-in-out] The type of animation.
              * @param {Boolean} [options.infinite] Whether the animation should run forever.
              * @param {Boolean} [options.useGpu=true] Whether the animation should use GPU acceleration.
+             * @param {Boolean} [options.debug] Whether to set debugging info on the node.
              * @returns {Promise} A new Promise that resolves when the animation has completed.
              */
             squeezeOut(nodes, options) {
@@ -2510,7 +2521,7 @@
             },
 
             /**
-             * Set a dataset value for the first node.
+             * Set a dataset value for each node.
              * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
              * @param {string|object} key The dataset key, or an object containing dataset values.
              * @param {*} [value] The dataset value.
@@ -2894,7 +2905,7 @@
                 }
 
                 if (Core.isDocument(node)) {
-                    return this.constructor._getScrollXDocument(node);
+                    return node.scrollingElement.scrollLeft;
                 }
 
                 return node.scrollLeft;
@@ -2917,7 +2928,7 @@
                 }
 
                 if (Core.isDocument(node)) {
-                    return this.constructor._getScrollYDocument(node);
+                    return node.scrollingElement.scrollTop;
                 }
 
                 return node.scrollTop;
@@ -2936,9 +2947,11 @@
                     if (Core.isWindow(node)) {
                         node.scroll(x, y);
                     } else if (Core.isDocument(node)) {
-                        this.constructor._setScrollDocument(node, x, y);
+                        node.scrollingElement.scrollLeft = x;
+                        node.scrollingElement.scrollTop = y;
                     } else {
-                        this.constructor._setScroll(node, x, y);
+                        node.scrollLeft = x;
+                        node.scrollTop = y;
                     }
                 }
             },
@@ -2953,9 +2966,9 @@
 
                 for (const node of nodes) {
                     if (Core.isWindow(node)) {
-                        this.constructor._setScrollXWindow(node, x);
+                        node.scroll(x, node.scrollY);
                     } else if (Core.isDocument(node)) {
-                        this.constructor._setScrollXDocument(node, x);
+                        node.scrollingElement.scrollLeft = x;
                     } else {
                         node.scrollLeft = x;
                     }
@@ -2972,9 +2985,9 @@
 
                 for (const node of nodes) {
                     if (Core.isWindow(node)) {
-                        this.constructor._setScrollYWindow(node, y);
+                        node.scroll(node.scrollX, y);
                     } else if (Core.isDocument(node)) {
-                        this.constructor._setScrollYDocument(node, y);
+                        node.scrollingElement.scrollTop = y;
                     } else {
                         node.scrollTop = y;
                     }
@@ -2992,7 +3005,7 @@
             /**
              * Get the computed height of the first node.
              * @param {string|array|HTMLElement|Document|Window|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
-             * @param {number} [innerOuter=1] Whether to include padding, border and margin heights.
+             * @param {number} [innerOuter] Whether to include padding, border and margin heights.
              * @returns {number} The height.
              */
             height(nodes, innerOuter) {
@@ -4430,7 +4443,7 @@
             withAnimation(nodes) {
                 return this.parseNodes(nodes)
                     .filter(node =>
-                        this.constructor._hasAnimation(node)
+                        Animation._animations.has(node)
                     );
             },
 
@@ -5603,7 +5616,7 @@
             hasAnimation(nodes) {
                 return this.parseNodes(nodes)
                     .some(node =>
-                        this.constructor._hasAnimation(node)
+                        Animation._animations.has(node)
                     );
             },
 
@@ -5710,7 +5723,7 @@
             hasFragment(nodes) {
                 return this.parseNodes(nodes)
                     .some(node =>
-                        this.constructor._hasFragment(node)
+                        !!node.content
                     );
             },
 
@@ -5735,7 +5748,7 @@
             hasShadow(nodes) {
                 return this.parseNodes(nodes)
                     .some(node =>
-                        this.constructor._hasShadow(node)
+                        !!node.shadowRoot
                     );
             },
 
@@ -6027,7 +6040,7 @@
             /**
              * Return the tag name (lowercase) of the first node.
              * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
-             * @returns {string} The elements tag name (lowercase).
+             * @returns {string} The nodes tag name (lowercase).
              */
             tagName(nodes) {
                 const node = this.parseNode(nodes);
@@ -6036,7 +6049,7 @@
                     return;
                 }
 
-                return this.constructor._tagName(node);
+                return node.tagName.toLowerCase();
             }
 
         });
@@ -6542,93 +6555,6 @@
                         return result;
                     }
                 );
-            }
-
-        });
-
-        /**
-         * DOM (Static) Scroll
-         */
-
-        Object.assign(DOM, {
-
-            /**
-             * Get the scroll X position of a Document.
-             * @param {Document} node The input node.
-             * @returns {number} The scroll X position.
-             */
-            _getScrollXDocument(node) {
-                return node.scrollingElement.scrollLeft;
-            },
-
-            /**
-             * Get the scroll Y position of a Document.
-             * @param {Document} node The input node.
-             * @returns {number} The scroll Y position.
-             */
-            _getScrollYDocument(node) {
-                return node.scrollingElement.scrollTop;
-            },
-
-            /**
-             * Scroll a single node to an X,Y position.
-             * @param {HTMLElement} node The input node.
-             * @param {number} x The scroll X position.
-             * @param {number} y The scroll Y position.
-             */
-            _setScroll(node, x, y) {
-                node.scrollLeft = x;
-                node.scrollTop = y;
-            },
-
-            /**
-             * Scroll a Document to an X,Y position.
-             * @param {Document} node The input node.
-             * @param {number} x The scroll X position.
-             * @param {number} y The scroll Y position.
-             */
-            _setScrollDocument(node, x, y) {
-                this._setScroll(
-                    node.scrollingElement,
-                    x,
-                    y
-                );
-            },
-
-            /**
-             * Scroll a Document to an X position.
-             * @param {Document} node The input node.
-             * @param {number} x The scroll X position.
-             */
-            _setScrollXDocument(node, x) {
-                node.scrollingElement.scrollLeft = x;
-            },
-
-            /**
-             * Scroll a Window to an X position.
-             * @param {Window} node The input node.
-             * @param {number} x The scroll X position.
-             */
-            _setScrollXWindow(node, x) {
-                return node.scroll(x, node.scrollY);
-            },
-
-            /**
-             * Scroll a single node to a Y position.
-             * @param {Document} node The input node.
-             * @param {number} y The scroll Y position.
-             */
-            _setScrollYDocument(node, y) {
-                node.scrollingElement.scrollTop = y;
-            },
-
-            /**
-             * Scroll a Window to a Y position.
-             * @param {Window} node The input node.
-             * @param {number} y The scroll Y position.
-             */
-            _setScrollYWindow(node, y) {
-                return node.scroll(node.scrollX, y);
             }
 
         });
@@ -7303,7 +7229,7 @@
              * @param {Node|HTMLElement|DocumentFragment} clone The cloned node.
              */
             _cloneAnimations(node, clone) {
-                if (!this._hasAnimation(node)) {
+                if (!Animation._animations.has(node)) {
                     return;
                 }
 
@@ -7346,20 +7272,6 @@
             },
 
             /**
-             * Detach a single node from the DOM.
-             * @param {Node|HTMLElement} node The input node.
-             */
-            _detach(node) {
-                const parent = node.parentNode;
-
-                if (parent) {
-                    return;
-                }
-
-                parent.removeChild(node);
-            },
-
-            /**
              * Remove all children of a single node from the DOM.
              * @param {HTMLElement|DocumentFragment|ShadowRoot|Document} node The input node.
              */
@@ -7373,13 +7285,13 @@
                 }
 
                 // Remove ShadowRoot
-                if (this._hasShadow(node)) {
+                if (node.shadowRoot) {
                     const shadow = node.shadowRoot;
                     this._remove(shadow);
                 }
 
                 // Remove DocumentFragment
-                if (this._hasFragment(node)) {
+                if (node.content) {
                     const fragment = node.content;
                     this._remove(fragment);
                 }
@@ -7908,15 +7820,6 @@
         Object.assign(DOM, {
 
             /**
-             * Returns true if a single node has an animation.
-             * @param {HTMLElement} node The input node.
-             * @returns {Boolean} TRUE if the node has an animation, otherwise FALSE.
-             */
-            _hasAnimation(node) {
-                return Animation._animations.has(node);
-            },
-
-            /**
              * Returns true if a single node has a CSS animation.
              * @param {HTMLElement} node The input node.
              * @returns {Boolean} TRUE if the node has a CSS animation, otherwise FALSE.
@@ -7951,24 +7854,6 @@
                         this._data.get(node)
                             .hasOwnProperty(key)
                     );
-            },
-
-            /**
-             * Returns true if a single node has a DocumentFragment.
-             * @param {HTMLElement} node The input node.
-             * @returns {Boolean} TRUE if the node has a DocumentFragment, otherwise FALSE.
-             */
-            _hasFragment(node) {
-                return !!node.content;
-            },
-
-            /**
-             * Returns true if a single node has a ShadowRoot.
-             * @param {HTMLElement} node The input node.
-             * @returns {Boolean} TRUE if the node has a ShadowRoot, otherwise FALSE.
-             */
-            _hasShadow(node) {
-                return !!node.shadowRoot;
             },
 
             /**
@@ -8057,7 +7942,8 @@
              */
             _sanitize(node, parent, allowedTags = this.allowedTags) {
                 // check node
-                const name = this._tagName(node);
+                const name = node.tagName.toLowerCase();
+
                 if (!(name in allowedTags)) {
                     parent.removeChild(node);
                     return;
@@ -8147,15 +8033,6 @@
 
                     return 0;
                 });
-            },
-
-            /**
-             * Return the tag name (lowercase) of a single node.
-             * @param {HTMLElement} node The input node.
-             * @returns {string} The elements tag name (lowercase).
-             */
-            _tagName(node) {
-                return node.tagName.toLowerCase();
             }
 
         });

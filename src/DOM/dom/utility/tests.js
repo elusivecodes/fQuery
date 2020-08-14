@@ -12,7 +12,7 @@ Object.assign(DOM.prototype, {
     hasAnimation(nodes) {
         return this.parseNodes(nodes)
             .some(node =>
-                this.constructor._hasAnimation(node)
+                Animation._animations.has(node)
             );
     },
 
@@ -119,7 +119,7 @@ Object.assign(DOM.prototype, {
     hasFragment(nodes) {
         return this.parseNodes(nodes)
             .some(node =>
-                this.constructor._hasFragment(node)
+                !!node.content
             );
     },
 
@@ -144,7 +144,7 @@ Object.assign(DOM.prototype, {
     hasShadow(nodes) {
         return this.parseNodes(nodes)
             .some(node =>
-                this.constructor._hasShadow(node)
+                !!node.shadowRoot
             );
     },
 

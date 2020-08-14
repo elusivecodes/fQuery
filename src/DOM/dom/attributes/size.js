@@ -7,7 +7,7 @@ Object.assign(DOM.prototype, {
     /**
      * Get the computed height of the first node.
      * @param {string|array|HTMLElement|Document|Window|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
-     * @param {number} [innerOuter=1] Whether to include padding, border and margin heights.
+     * @param {number} [innerOuter] Whether to include padding, border and margin heights.
      * @returns {number} The height.
      */
     height(nodes, innerOuter) {

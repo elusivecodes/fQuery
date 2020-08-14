@@ -13,6 +13,7 @@ Object.assign(DOM.prototype, {
      * @param {string} [options.type=ease-in-out] The type of animation.
      * @param {Boolean} [options.infinite] Whether the animation should run forever.
      * @param {Boolean} [options.useGpu=true] Whether the animation should use GPU acceleration.
+     * @param {Boolean} [options.debug] Whether to set debugging info on the node.
      * @returns {Promise} A new Promise that resolves when the animation has completed.
      */
     dropIn(nodes, options) {
@@ -34,6 +35,7 @@ Object.assign(DOM.prototype, {
      * @param {string} [options.type=ease-in-out] The type of animation.
      * @param {Boolean} [options.infinite] Whether the animation should run forever.
      * @param {Boolean} [options.useGpu=true] Whether the animation should use GPU acceleration.
+     * @param {Boolean} [options.debug] Whether to set debugging info on the node.
      * @returns {Promise} A new Promise that resolves when the animation has completed.
      */
     dropOut(nodes, options) {
@@ -53,6 +55,7 @@ Object.assign(DOM.prototype, {
      * @param {number} [options.duration=1000] The duration of the animation.
      * @param {string} [options.type=ease-in-out] The type of animation.
      * @param {Boolean} [options.infinite] Whether the animation should run forever.
+     * @param {Boolean} [options.debug] Whether to set debugging info on the node.
      * @returns {Promise} A new Promise that resolves when the animation has completed.
      */
     fadeIn(nodes, options) {
@@ -76,6 +79,7 @@ Object.assign(DOM.prototype, {
      * @param {number} [options.duration=1000] The duration of the animation.
      * @param {string} [options.type=ease-in-out] The type of animation.
      * @param {Boolean} [options.infinite] Whether the animation should run forever.
+     * @param {Boolean} [options.debug] Whether to set debugging info on the node.
      * @returns {Promise} A new Promise that resolves when the animation has completed.
      */
     fadeOut(nodes, options) {
@@ -103,6 +107,7 @@ Object.assign(DOM.prototype, {
      * @param {number} [options.duration=1000] The duration of the animation.
      * @param {string} [options.type=ease-in-out] The type of animation.
      * @param {Boolean} [options.infinite] Whether the animation should run forever.
+     * @param {Boolean} [options.debug] Whether to set debugging info on the node.
      * @returns {Promise} A new Promise that resolves when the animation has completed.
      */
     rotateIn(nodes, options) {
@@ -137,6 +142,7 @@ Object.assign(DOM.prototype, {
      * @param {number} [options.duration=1000] The duration of the animation.
      * @param {string} [options.type=ease-in-out] The type of animation.
      * @param {Boolean} [options.infinite] Whether the animation should run forever.
+     * @param {Boolean} [options.debug] Whether to set debugging info on the node.
      * @returns {Promise} A new Promise that resolves when the animation has completed.
      */
     rotateOut(nodes, options) {
@@ -169,6 +175,7 @@ Object.assign(DOM.prototype, {
      * @param {string} [options.type=ease-in-out] The type of animation.
      * @param {Boolean} [options.infinite] Whether the animation should run forever.
      * @param {Boolean} [options.useGpu=true] Whether the animation should use GPU acceleration.
+     * @param {Boolean} [options.debug] Whether to set debugging info on the node.
      * @returns {Promise} A new Promise that resolves when the animation has completed.
      */
     slideIn(nodes, options) {
@@ -227,6 +234,7 @@ Object.assign(DOM.prototype, {
      * @param {string} [options.type=ease-in-out] The type of animation.
      * @param {Boolean} [options.infinite] Whether the animation should run forever.
      * @param {Boolean} [options.useGpu=true] Whether the animation should use GPU acceleration.
+     * @param {Boolean} [options.debug] Whether to set debugging info on the node.
      * @returns {Promise} A new Promise that resolves when the animation has completed.
      */
     slideOut(nodes, options) {
@@ -285,6 +293,7 @@ Object.assign(DOM.prototype, {
      * @param {string} [options.type=ease-in-out] The type of animation.
      * @param {Boolean} [options.infinite] Whether the animation should run forever.
      * @param {Boolean} [options.useGpu=true] Whether the animation should use GPU acceleration.
+     * @param {Boolean} [options.debug] Whether to set debugging info on the node.
      * @returns {Promise} A new Promise that resolves when the animation has completed.
      */
     squeezeIn(nodes, options) {
@@ -369,6 +378,7 @@ Object.assign(DOM.prototype, {
      * @param {string} [options.type=ease-in-out] The type of animation.
      * @param {Boolean} [options.infinite] Whether the animation should run forever.
      * @param {Boolean} [options.useGpu=true] Whether the animation should use GPU acceleration.
+     * @param {Boolean} [options.debug] Whether to set debugging info on the node.
      * @returns {Promise} A new Promise that resolves when the animation has completed.
      */
     squeezeOut(nodes, options) {

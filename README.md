@@ -56,7 +56,7 @@ For a fully OOP implementation, also check out my [fQuery](https://github.com/el
 <script type="text/javascript" src="/path/to/frost-dom.min.js"></script>
 ```
 
-Alternatively, a bundle version is supplied which includes the FrostCore library in a single JS file.
+Alternatively, a bundle version is supplied which includes the *FrostCore* library in a single JS file.
 
 ```html
 <script type="text/javascript" src="/path/to/frost-core-bundle.min.js"></script>
@@ -1060,6 +1060,10 @@ Remove events from each node.
 dom.removeEvent(nodes, events, callback);
 ```
 
+If the `events` and `callback` arguments are omitted, this method will remove all events from each node.
+
+If just the `callback` arguments is omitted, this method will remove all events of the specified types.
+
 **Remove Event Delegate**
 
 Remove delegated events from each node.
@@ -1085,7 +1089,7 @@ Trigger events on each node.
     - `cancelable` is a boolean indicating whether the event is cancelable, and will default to *true*.
 
 ```javascript
-dom.triggerEvent(nodes, events, data, options);
+dom.triggerEvent(nodes, events, options);
 ```
 
 **Trigger One**
@@ -1100,7 +1104,7 @@ Trigger an event on the first node.
     - `cancelable` is a boolean indicating whether the event is cancelable, and will default to *true*.
 
 ```javascript
-const cancelled = !dom.triggerOne(nodes, event, data, options);
+const cancelled = !dom.triggerOne(nodes, event, options);
 ```
 
 This method returns *false* if the event was cancelled, otherwise returns *true*.
@@ -1472,11 +1476,9 @@ Find all children of each node (optionally matching a filter).
 
 - `nodes` is a query selector string, a *HTMLElement*, *DocumentFragment*, *ShadowRoot*, *Document*, *NodeList*, *HTMLCollection*, [*QuerySet*](https://github.com/elusivecodes/fQuery) or an array of nodes.
 - `filter` is either a function that accepts a `node` argument, a query selector string, a *Node*, *HTMLElement*, *DocumentFragment*, *ShadowRoot*, *NodeList*, *HTMLCollection*, [*QuerySet*](https://github.com/elusivecodes/fQuery) or an array of nodes that the nodes will be filtered by, and will default to *false*.
-- `first` is a boolean indicating whether to only return the first matching node for each node, and will default to *false*.
-- `elementsOnly` is a boolean indicating whether to only return elements, and will default to *true*.
 
 ```javascript
-const children = dom.children(nodes, filter, first, elementsOnly);
+const children = dom.children(nodes, filter);
 ```
 
 **Closest**
@@ -1882,7 +1884,7 @@ const elements = dom.findByTag(tagName, nodes);
 
 **Find One**
 
-Find a single node matching a selector.
+Find the first node matching a selector.
 
 - `selector` is a query selector string to search for.
 - `nodes` is a query selector string, a *HTMLElement*, *DocumentFragment*, *ShadowRoot*, *Document*, *NodeList*, *HTMLCollection*, [*QuerySet*](https://github.com/elusivecodes/fQuery) or an array of nodes, and will default to the *Document* context.
@@ -2130,7 +2132,7 @@ const hasAttribute = dom.hasAttribute(nodes, attribute);
 
 **Has Children**
 
-Returns *true* if any of the nodes has child elements.
+Returns *true* if any of the nodes has child nodes.
 
 - `nodes` is a query selector string, a *HTMLElement*, *DocumentFragment*, *ShadowRoot*, *Document*, *NodeList*, *HTMLCollection*, [*QuerySet*](https://github.com/elusivecodes/fQuery) or an array of nodes.
 

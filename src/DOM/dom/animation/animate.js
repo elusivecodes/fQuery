@@ -12,6 +12,7 @@ Object.assign(DOM.prototype, {
      * @param {number} [options.duration=1000] The duration of the animation.
      * @param {string} [options.type=ease-in-out] The type of animation.
      * @param {Boolean} [options.infinite] Whether the animation should run forever.
+     * @param {Boolean} [options.debug] Whether to set debugging info on the node.
      * @returns {Promise} A new Promise that resolves when the animation has completed.
      */
     animate(nodes, callback, options) {
