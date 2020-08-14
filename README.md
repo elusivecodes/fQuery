@@ -32,11 +32,11 @@ For a fully OOP implementation, also check out my [fQuery](https://github.com/el
     - [Utility](#utility)
         - [Selection](#selection)
         - [Tests](#tests)
-- [Ajax](#ajax)
     - [Scripts](#scripts)
     - [Stylesheets](#stylesheets)
 - [Cookie](#cookie)
 - [Static Methods](#static-methods)
+    - [Ajax](#ajax)
     - [Parsing](#parsing)
 - [Ajax Request](#ajax-request)
     - [Cancelling A Request](#cancelling-a-request)
@@ -2301,8 +2301,110 @@ Returns *true* if any of the nodes is visible.
 const isVisible = dom.isVisible(nodes);
 ```
 
+### Scripts
 
-## Ajax
+**Load Script**
+
+Load and execute a JavaScript file.
+
+- `script` is a string containing the URL for the script to load.
+- `attributes` is an object containing additional attributes on the `script` tag.
+- `cache` is a boolean indicating whether to cache the request, and will default to *true*.
+
+This method returns an *Promise* that resolves when the script is loaded, or rejects on failure.
+
+```javascript
+dom.loadScript(script, attributes, cache);
+```
+
+**Load Scripts**
+
+Load and execute multiple JavaScript files (in order).
+
+- `scripts` is a array of strings containing the URLs for the scripts to load, or an array of script attributes.
+- `cache` is a boolean indicating whether to cache the request, and will default to *true*.
+
+This method returns a *Promise* that resolves when the scripts are loaded, or rejects on failure.
+
+```javascript
+dom.loadScripts(scripts, attributes, cache);
+```
+
+### Stylesheets
+
+**Load Stylesheet**
+
+Import A CSS Stylesheet file.
+
+- `stylesheet` is a string containing the URL for the stylesheet to load.
+- `attributes` is an object containing additional attributes on the `link` tag.
+- `cache` is a boolean indicating whether to cache the request, and will default to *true*.
+
+This method returns an *Promise* that resolves when the stylesheet is loaded, or rejects on failure.
+
+```javascript
+dom.loadStyle(stylesheet, attributes, cache);
+```
+
+**Load Stylesheets**
+
+Import multiple CSS Stylesheet files.
+
+- `stylesheets` is a array of strings containing the URLs for the stylesheets to load, or an array of link attributes.
+- `cache` is a boolean indicating whether to cache the request, and will default to *true*.
+
+This method returns a *Promise* that resolves when the stylesheets are loaded, or rejects on failure.
+
+```javascript
+dom.loadStyles(stylesheets, cache);
+```
+
+
+## Cookie
+
+**Get Cookie**
+
+Get a cookie value.
+
+- `name` is a string containing the name of the cookie value to retrieve.
+
+```javascript
+const value = dom.getCookie(name);
+```
+
+**Remove Cookie**
+
+Remove a cookie.
+
+- `name` is a string containing the name of the cookie value to remove.
+- `options` is an object containing configuration options for the cookie.
+    - `expires` is a number indicating the number of seconds until the cookie will expire, and will default to *-1*.
+    - `path` is a string indicating the path to use for the cookie.
+    - `secure` is a boolean indicating whether only set the cookie for secure requests, and will default to *false*.
+
+```javascript
+dom.removeCookie(name, options);
+```
+
+**Set Cookie**
+
+Set a cookie value.
+
+- `name` is a string containing the name of the cookie value to set.
+- `value` is the value you wish to set the cookie to.
+- `options` is an object containing configuration options for the cookie.
+    - `expires` is a number indicating the number of seconds until the cookie will expire.
+    - `path` is a string indicating the path to use for the cookie.
+    - `secure` is a boolean indicating whether only set the cookie for secure requests, and will default to *false*.
+
+```javascript
+dom.setCookie(name, value, options);
+```
+
+
+## Static Methods
+
+### Ajax
 
 **Ajax**
 
@@ -2482,109 +2584,6 @@ This method returns an *AjaxRequest* that resolves when the request is completed
 ```javascript
 dom.put(url, data, options);
 ```
-
-### Scripts
-
-**Load Script**
-
-Load and execute a JavaScript file.
-
-- `script` is a string containing the URL for the script to load.
-- `attributes` is an object containing additional attributes on the `script` tag.
-- `cache` is a boolean indicating whether to cache the request, and will default to *true*.
-
-This method returns an *Promise* that resolves when the script is loaded, or rejects on failure.
-
-```javascript
-dom.loadScript(script, attributes, cache);
-```
-
-**Load Scripts**
-
-Load and execute multiple JavaScript files (in order).
-
-- `scripts` is a array of strings containing the URLs for the scripts to load, or an array of script attributes.
-- `cache` is a boolean indicating whether to cache the request, and will default to *true*.
-
-This method returns a *Promise* that resolves when the scripts are loaded, or rejects on failure.
-
-```javascript
-dom.loadScripts(scripts, attributes, cache);
-```
-
-### Stylesheets
-
-**Load Stylesheet**
-
-Import A CSS Stylesheet file.
-
-- `stylesheet` is a string containing the URL for the stylesheet to load.
-- `attributes` is an object containing additional attributes on the `link` tag.
-- `cache` is a boolean indicating whether to cache the request, and will default to *true*.
-
-This method returns an *Promise* that resolves when the stylesheet is loaded, or rejects on failure.
-
-```javascript
-dom.loadStyle(stylesheet, attributes, cache);
-```
-
-**Load Stylesheets**
-
-Import multiple CSS Stylesheet files.
-
-- `stylesheets` is a array of strings containing the URLs for the stylesheets to load, or an array of link attributes.
-- `cache` is a boolean indicating whether to cache the request, and will default to *true*.
-
-This method returns a *Promise* that resolves when the stylesheets are loaded, or rejects on failure.
-
-```javascript
-dom.loadStyles(stylesheets, cache);
-```
-
-
-## Cookie
-
-**Get Cookie**
-
-Get a cookie value.
-
-- `name` is a string containing the name of the cookie value to retrieve.
-
-```javascript
-const value = dom.getCookie(name);
-```
-
-**Remove Cookie**
-
-Remove a cookie.
-
-- `name` is a string containing the name of the cookie value to remove.
-- `options` is an object containing configuration options for the cookie.
-    - `expires` is a number indicating the number of seconds until the cookie will expire, and will default to *-1*.
-    - `path` is a string indicating the path to use for the cookie.
-    - `secure` is a boolean indicating whether only set the cookie for secure requests, and will default to *false*.
-
-```javascript
-dom.removeCookie(name, options);
-```
-
-**Set Cookie**
-
-Set a cookie value.
-
-- `name` is a string containing the name of the cookie value to set.
-- `value` is the value you wish to set the cookie to.
-- `options` is an object containing configuration options for the cookie.
-    - `expires` is a number indicating the number of seconds until the cookie will expire.
-    - `path` is a string indicating the path to use for the cookie.
-    - `secure` is a boolean indicating whether only set the cookie for secure requests, and will default to *false*.
-
-```javascript
-dom.setCookie(name, value, options);
-```
-
-
-## Static Methods
 
 ### Parsing
 

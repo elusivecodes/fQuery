@@ -6,7 +6,7 @@ describe('#ajax', function() {
     it('performs an AJAX request', async function() {
         assert.deepEqual(
             await exec(async _ => {
-                const response = await dom.ajax();
+                const response = await DOM.ajax();
                 response.xhr = response.xhr.data;
                 return response;
             }),
@@ -33,7 +33,7 @@ describe('#ajax', function() {
     it('performs an AJAX request with URL', async function() {
         assert.deepEqual(
             await exec(async _ => {
-                const response = await dom.ajax({
+                const response = await DOM.ajax({
                     url: '/test'
                 });
                 response.xhr = response.xhr.data;
@@ -62,7 +62,7 @@ describe('#ajax', function() {
     it('performs an AJAX request with method', async function() {
         assert.deepEqual(
             await exec(async _ => {
-                const response = await dom.ajax({
+                const response = await DOM.ajax({
                     method: 'POST'
                 });
                 response.xhr = response.xhr.data;
@@ -91,7 +91,7 @@ describe('#ajax', function() {
     it('performs an AJAX request with data (object)', async function() {
         assert.deepEqual(
             await exec(async _ => {
-                const response = await dom.ajax({
+                const response = await DOM.ajax({
                     data: {
                         test1: 'Test 1',
                         test2: 'Test 2'
@@ -123,7 +123,7 @@ describe('#ajax', function() {
     it('performs an AJAX request with data (deep object)', async function() {
         assert.deepEqual(
             await exec(async _ => {
-                const response = await dom.ajax({
+                const response = await DOM.ajax({
                     data: {
                         test1: 'Test 1',
                         test2: {
@@ -158,7 +158,7 @@ describe('#ajax', function() {
     it('performs an AJAX request with data (implicit deep object)', async function() {
         assert.deepEqual(
             await exec(async _ => {
-                const response = await dom.ajax({
+                const response = await DOM.ajax({
                     data: {
                         test1: 'Test 1',
                         'test2[a]': '1',
@@ -191,7 +191,7 @@ describe('#ajax', function() {
     it('performs an AJAX request with data (object with array)', async function() {
         assert.deepEqual(
             await exec(async _ => {
-                const response = await dom.ajax({
+                const response = await DOM.ajax({
                     data: {
                         test1: 'Test 1',
                         test2: ['1', '2']
@@ -223,7 +223,7 @@ describe('#ajax', function() {
     it('performs an AJAX request with data (object with implicit array)', async function() {
         assert.deepEqual(
             await exec(async _ => {
-                const response = await dom.ajax({
+                const response = await DOM.ajax({
                     data: {
                         test1: 'Test 1',
                         'test2[]': ['1', '2']
@@ -255,7 +255,7 @@ describe('#ajax', function() {
     it('performs an AJAX request with data (array)', async function() {
         assert.deepEqual(
             await exec(async _ => {
-                const response = await dom.ajax({
+                const response = await DOM.ajax({
                     data: [
                         {
                             name: 'test1',
@@ -293,7 +293,7 @@ describe('#ajax', function() {
     it('performs an AJAX request with data (deep array)', async function() {
         assert.deepEqual(
             await exec(async _ => {
-                const response = await dom.ajax({
+                const response = await DOM.ajax({
                     data: [
                         {
                             name: 'test1',
@@ -331,7 +331,7 @@ describe('#ajax', function() {
     it('performs an AJAX request with data (implicit deep array)', async function() {
         assert.deepEqual(
             await exec(async _ => {
-                const response = await dom.ajax({
+                const response = await DOM.ajax({
                     data: [
                         {
                             name: 'test1',
@@ -369,7 +369,7 @@ describe('#ajax', function() {
     it('performs an AJAX request with data (string)', async function() {
         assert.deepEqual(
             await exec(async _ => {
-                const response = await dom.ajax({
+                const response = await DOM.ajax({
                     data: 'test1=Test%201&test2=Test%202'
                 });
                 response.xhr = response.xhr.data;
@@ -398,7 +398,7 @@ describe('#ajax', function() {
     it('performs an AJAX request with data (JSON)', async function() {
         assert.deepEqual(
             await exec(async _ => {
-                const response = await dom.ajax({
+                const response = await DOM.ajax({
                     data: {
                         test1: 'Test 1',
                         test2: 'Test 2'
@@ -431,7 +431,7 @@ describe('#ajax', function() {
     it('performs an AJAX request with FormData', async function() {
         assert.deepEqual(
             await exec(async _ => {
-                const response = await dom.ajax({
+                const response = await DOM.ajax({
                     data: {
                         test1: 'Test 1',
                         test2: 'Test 2'
@@ -477,7 +477,7 @@ describe('#ajax', function() {
     it('performs an AJAX request with content type', async function() {
         assert.deepEqual(
             await exec(async _ => {
-                const response = await dom.ajax({
+                const response = await DOM.ajax({
                     contentType: 'text/plain'
                 });
                 response.xhr = response.xhr.data;
@@ -506,7 +506,7 @@ describe('#ajax', function() {
     it('performs an AJAX request with response type', async function() {
         assert.deepEqual(
             await exec(async _ => {
-                const response = await dom.ajax({
+                const response = await DOM.ajax({
                     responseType: 'json'
                 });
                 response.xhr = response.xhr.data;
@@ -536,7 +536,7 @@ describe('#ajax', function() {
     it('performs an AJAX request with MIME type', async function() {
         assert.deepEqual(
             await exec(async _ => {
-                const response = await dom.ajax({
+                const response = await DOM.ajax({
                     mimeType: 'text/plain'
                 });
                 response.xhr = response.xhr.data;
@@ -566,7 +566,7 @@ describe('#ajax', function() {
     it('performs an AJAX request with username', async function() {
         assert.deepEqual(
             await exec(async _ => {
-                const response = await dom.ajax({
+                const response = await DOM.ajax({
                     username: 'test'
                 });
                 response.xhr = response.xhr.data;
@@ -596,7 +596,7 @@ describe('#ajax', function() {
     it('performs an AJAX request with password', async function() {
         assert.deepEqual(
             await exec(async _ => {
-                const response = await dom.ajax({
+                const response = await DOM.ajax({
                     password: 'test'
                 });
                 response.xhr = response.xhr.data;
@@ -626,7 +626,7 @@ describe('#ajax', function() {
     it('performs an AJAX request with timeout', async function() {
         assert.deepEqual(
             await exec(async _ => {
-                const response = await dom.ajax({
+                const response = await DOM.ajax({
                     timeout: 1000
                 });
                 response.xhr = response.xhr.data;
@@ -656,7 +656,7 @@ describe('#ajax', function() {
     it('performs an AJAX request (local)', async function() {
         assert.deepEqual(
             await exec(async _ => {
-                const response = await dom.ajax({
+                const response = await DOM.ajax({
                     isLocal: true
                 });
                 response.xhr = response.xhr.data;
@@ -684,7 +684,7 @@ describe('#ajax', function() {
     it('performs an AJAX request with custom headers', async function() {
         assert.deepEqual(
             await exec(async _ => {
-                const response = await dom.ajax({
+                const response = await DOM.ajax({
                     headers: {
                         'Test': 'Test 1'
                     }
@@ -715,7 +715,7 @@ describe('#ajax', function() {
 
     it('performs an AJAX request without cache', async function() {
         const response = await exec(async _ => {
-            const response = await dom.ajax({
+            const response = await DOM.ajax({
                 cache: false
             });
             response.xhr = response.xhr.data;
@@ -729,7 +729,7 @@ describe('#ajax', function() {
 
     it('performs an AJAX request without cache (query string)', async function() {
         const response = await exec(async _ => {
-            const response = await dom.ajax({
+            const response = await DOM.ajax({
                 url: '/?test=1',
                 cache: false
             });
@@ -746,7 +746,7 @@ describe('#ajax', function() {
         assert.deepEqual(
             await exec(async _ => {
                 let result;
-                await dom.ajax({
+                await DOM.ajax({
                     beforeSend: xhr => {
                         result = {
                             ...xhr.data
@@ -771,7 +771,7 @@ describe('#ajax', function() {
         assert.deepEqual(
             await exec(async _ => {
                 let result;
-                await dom.ajax({
+                await DOM.ajax({
                     afterSend: xhr => {
                         result = {
                             ...xhr.data
@@ -797,7 +797,7 @@ describe('#ajax', function() {
         assert.deepEqual(
             await exec(async _ => {
                 let result;
-                await dom.ajax({
+                await DOM.ajax({
                     onProgress: (progress, xhr, event) => {
                         result = {
                             progress,
@@ -833,7 +833,7 @@ describe('#ajax', function() {
         assert.deepEqual(
             await exec(async _ => {
                 let result;
-                await dom.ajax({
+                await DOM.ajax({
                     onUploadProgress: (progress, xhr, event) => {
                         result = {
                             progress,
@@ -869,7 +869,7 @@ describe('#ajax', function() {
         assert.deepEqual(
             await exec(async _ => {
                 try {
-                    const ajax = dom.ajax();
+                    const ajax = DOM.ajax();
                     ajax.cancel();
                     await ajax;
                     return false;
@@ -899,7 +899,7 @@ describe('#ajax', function() {
         assert.deepEqual(
             await exec(async _ => {
                 try {
-                    const ajax = dom.ajax();
+                    const ajax = DOM.ajax();
                     ajax._xhr.forceError = true;
                     ajax._xhr.status = null;
                     await ajax;
@@ -932,7 +932,7 @@ describe('#ajax', function() {
         assert.deepEqual(
             await exec(async _ => {
                 try {
-                    const ajax = dom.ajax();
+                    const ajax = DOM.ajax();
                     ajax._xhr.status = 404;
                     await ajax;
                     return false;

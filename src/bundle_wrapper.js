@@ -9,7 +9,7 @@
     if (typeof module === 'object' && typeof module.exports === 'object') {
         module.exports = factory;
     } else {
-        Object.assign(global, factory(global));
+        factory(global);
     }
 
 })(this, function(window) {

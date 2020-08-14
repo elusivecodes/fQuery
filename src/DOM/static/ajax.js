@@ -1,8 +1,8 @@
 /**
- * DOM AJAX
+ * DOM (Static) AJAX
  */
 
-Object.assign(DOM.prototype, {
+Object.assign(DOM, {
 
     /**
      * New AjaxRequest constructor.

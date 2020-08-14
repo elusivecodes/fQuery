@@ -6,7 +6,7 @@ describe('#put', function() {
     it('performs an AJAX PUT request', async function() {
         assert.deepEqual(
             await exec(async _ => {
-                const response = await dom.put();
+                const response = await DOM.put();
                 response.xhr = response.xhr.data;
                 return response;
             }),
@@ -33,7 +33,7 @@ describe('#put', function() {
     it('performs an AJAX PUT request with URL', async function() {
         assert.deepEqual(
             await exec(async _ => {
-                const response = await dom.put(
+                const response = await DOM.put(
                     '/test'
                 );
                 response.xhr = response.xhr.data;
@@ -62,7 +62,7 @@ describe('#put', function() {
     it('performs an AJAX PUT request with data (object)', async function() {
         assert.deepEqual(
             await exec(async _ => {
-                const response = await dom.put(
+                const response = await DOM.put(
                     null,
                     {
                         test1: 'Test 1',
@@ -95,7 +95,7 @@ describe('#put', function() {
     it('performs an AJAX PUT request with data (deep object)', async function() {
         assert.deepEqual(
             await exec(async _ => {
-                const response = await dom.put(
+                const response = await DOM.put(
                     null,
                     {
                         test1: 'Test 1',
@@ -131,7 +131,7 @@ describe('#put', function() {
     it('performs an AJAX PUT request with data (implicit deep object)', async function() {
         assert.deepEqual(
             await exec(async _ => {
-                const response = await dom.put(
+                const response = await DOM.put(
                     null,
                     {
                         test1: 'Test 1',
@@ -165,7 +165,7 @@ describe('#put', function() {
     it('performs an AJAX PUT request with data (object with array)', async function() {
         assert.deepEqual(
             await exec(async _ => {
-                const response = await dom.put(
+                const response = await DOM.put(
                     null,
                     {
                         test1: 'Test 1',
@@ -198,7 +198,7 @@ describe('#put', function() {
     it('performs an AJAX PUT request with data (object with implicit array)', async function() {
         assert.deepEqual(
             await exec(async _ => {
-                const response = await dom.put(
+                const response = await DOM.put(
                     null,
                     {
                         test1: 'Test 1',
@@ -231,7 +231,7 @@ describe('#put', function() {
     it('performs an AJAX PUT request with data (array)', async function() {
         assert.deepEqual(
             await exec(async _ => {
-                const response = await dom.put(
+                const response = await DOM.put(
                     null,
                     [
                         {
@@ -270,7 +270,7 @@ describe('#put', function() {
     it('performs an AJAX PUT request with data (deep array)', async function() {
         assert.deepEqual(
             await exec(async _ => {
-                const response = await dom.put(
+                const response = await DOM.put(
                     null,
                     [
                         {
@@ -309,7 +309,7 @@ describe('#put', function() {
     it('performs an AJAX PUT request with data (implicit deep array)', async function() {
         assert.deepEqual(
             await exec(async _ => {
-                const response = await dom.put(
+                const response = await DOM.put(
                     null,
                     [
                         {
@@ -348,7 +348,7 @@ describe('#put', function() {
     it('performs an AJAX PUT request with data (string)', async function() {
         assert.deepEqual(
             await exec(async _ => {
-                const response = await dom.put(
+                const response = await DOM.put(
                     null,
                     'test1=Test%201&test2=Test%202'
                 );
@@ -378,7 +378,7 @@ describe('#put', function() {
     it('performs an AJAX PUT request with data (JSON)', async function() {
         assert.deepEqual(
             await exec(async _ => {
-                const response = await dom.put(
+                const response = await DOM.put(
                     null,
                     {
                         test1: 'Test 1',
@@ -414,7 +414,7 @@ describe('#put', function() {
     it('performs an AJAX PUT request with FormData', async function() {
         assert.deepEqual(
             await exec(async _ => {
-                const response = await dom.put(
+                const response = await DOM.put(
                     null,
                     {
                         test1: 'Test 1',
@@ -463,7 +463,7 @@ describe('#put', function() {
     it('performs an AJAX PUT request with content type', async function() {
         assert.deepEqual(
             await exec(async _ => {
-                const response = await dom.put(
+                const response = await DOM.put(
                     null,
                     null,
                     {
@@ -496,7 +496,7 @@ describe('#put', function() {
     it('performs an AJAX PUT request with response type', async function() {
         assert.deepEqual(
             await exec(async _ => {
-                const response = await dom.put(
+                const response = await DOM.put(
                     null,
                     null,
                     {
@@ -530,7 +530,7 @@ describe('#put', function() {
     it('performs an AJAX PUT request with MIME type', async function() {
         assert.deepEqual(
             await exec(async _ => {
-                const response = await dom.put(
+                const response = await DOM.put(
                     null,
                     null,
                     {
@@ -564,7 +564,7 @@ describe('#put', function() {
     it('performs an AJAX PUT request with username', async function() {
         assert.deepEqual(
             await exec(async _ => {
-                const response = await dom.put(
+                const response = await DOM.put(
                     null,
                     null,
                     {
@@ -598,7 +598,7 @@ describe('#put', function() {
     it('performs an AJAX PUT request with password', async function() {
         assert.deepEqual(
             await exec(async _ => {
-                const response = await dom.put(
+                const response = await DOM.put(
                     null,
                     null,
                     {
@@ -632,7 +632,7 @@ describe('#put', function() {
     it('performs an AJAX PUT request with timeout', async function() {
         assert.deepEqual(
             await exec(async _ => {
-                const response = await dom.put(
+                const response = await DOM.put(
                     null,
                     null,
                     {
@@ -666,7 +666,7 @@ describe('#put', function() {
     it('performs an AJAX PUT request (local)', async function() {
         assert.deepEqual(
             await exec(async _ => {
-                const response = await dom.put(
+                const response = await DOM.put(
                     null,
                     null,
                     {
@@ -698,7 +698,7 @@ describe('#put', function() {
     it('performs an AJAX PUT request with custom headers', async function() {
         assert.deepEqual(
             await exec(async _ => {
-                const response = await dom.put(
+                const response = await DOM.put(
                     null,
                     null,
                     {
@@ -733,7 +733,7 @@ describe('#put', function() {
 
     it('performs an AJAX PUT request without cache', async function() {
         const response = await exec(async _ => {
-            const response = await dom.put(
+            const response = await DOM.put(
                 null,
                 null,
                 {
@@ -751,7 +751,7 @@ describe('#put', function() {
 
     it('performs an AJAX PUT request without cache (query string)', async function() {
         const response = await exec(async _ => {
-            const response = await dom.put(
+            const response = await DOM.put(
                 '/?test=1',
                 null,
                 {
@@ -771,7 +771,7 @@ describe('#put', function() {
         assert.deepEqual(
             await exec(async _ => {
                 let result;
-                await dom.put(
+                await DOM.put(
                     null,
                     null,
                     {
@@ -800,7 +800,7 @@ describe('#put', function() {
         assert.deepEqual(
             await exec(async _ => {
                 let result;
-                await dom.put(
+                await DOM.put(
                     null,
                     null,
                     {
@@ -830,7 +830,7 @@ describe('#put', function() {
         assert.deepEqual(
             await exec(async _ => {
                 let result;
-                await dom.put(
+                await DOM.put(
                     null,
                     null,
                     {
@@ -870,7 +870,7 @@ describe('#put', function() {
         assert.deepEqual(
             await exec(async _ => {
                 let result;
-                await dom.put(
+                await DOM.put(
                     null,
                     null,
                     {
@@ -910,7 +910,7 @@ describe('#put', function() {
         assert.deepEqual(
             await exec(async _ => {
                 try {
-                    const ajax = dom.put();
+                    const ajax = DOM.put();
                     ajax.cancel();
                     await ajax;
                     return false;
@@ -940,7 +940,7 @@ describe('#put', function() {
         assert.deepEqual(
             await exec(async _ => {
                 try {
-                    const ajax = dom.put();
+                    const ajax = DOM.put();
                     ajax._xhr.forceError = true;
                     ajax._xhr.status = null;
                     await ajax;
@@ -973,7 +973,7 @@ describe('#put', function() {
         assert.deepEqual(
             await exec(async _ => {
                 try {
-                    const ajax = dom.put();
+                    const ajax = DOM.put();
                     ajax._xhr.status = 404;
                     await ajax;
                     return false;

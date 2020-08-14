@@ -47,7 +47,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
   if ((typeof module === "undefined" ? "undefined" : _typeof(module)) === 'object' && _typeof(module.exports) === 'object') {
     module.exports = factory;
   } else {
-    Object.assign(global, factory(global));
+    factory(global);
   }
 })(void 0, function (window) {
   'use strict';
@@ -1940,277 +1940,9 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
       this._context = context;
     };
     /**
-     * DOM AJAX
-     */
-
-
-    Object.assign(DOM.prototype, {
-      /**
-       * New AjaxRequest constructor.
-       * @param {object} [options] The options to use for the request.
-       * @param {string} [options.url=window.location] The URL of the request.
-       * @param {string} [options.method=GET] The HTTP method of the request.
-       * @param {Boolean|string|array|object|FormData} [options.data=null] The data to send with the request.
-       * @param {Boolean|string} [options.contentType=application/x-www-form-urlencoded] The content type of the request.
-       * @param {Boolean|string} [options.responseType] The content type of the response.
-       * @param {Boolean} [options.cache=true] Whether to cache the request.
-       * @param {Boolean} [options.processData=true] Whether to process the data based on the content type.
-       * @param {Boolean} [options.rejectOnCancel=true] Whether to reject the promise if the request is cancelled.
-       * @param {object} [options.headers] Additional headers to send with the request.
-       * @param {Boolean|function} [options.afterSend=null] A callback to execute after making the request.
-       * @param {Boolean|function} [options.beforeSend=null] A callback to execute before making the request.
-       * @param {Boolean|function} [options.onProgress=null] A callback to execute on download progress.
-       * @param {Boolean|function} [options.onUploadProgress=null] A callback to execute on upload progress.
-       * @returns {AjaxRequest} A new AjaxRequest that resolves when the request is completed, or rejects on failure.
-       */
-      ajax: function ajax(options) {
-        return new AjaxRequest(options);
-      },
-
-      /**
-       * Perform an XHR DELETE request.
-       * @param {string} url The URL of the request.
-       * @param {object} [options] The options to use for the request.
-       * @param {string} [options.method=DELETE] The HTTP method of the request.
-       * @param {Boolean|string} [options.contentType=application/x-www-form-urlencoded] The content type of the request.
-       * @param {Boolean|string} [options.responseType] The content type of the response.
-       * @param {Boolean} [options.cache=true] Whether to cache the request.
-       * @param {Boolean} [options.processData=true] Whether to process the data based on the content type.
-       * @param {Boolean} [options.rejectOnCancel=true] Whether to reject the promise if the request is cancelled.
-       * @param {object} [options.headers] Additional headers to send with the request.
-       * @param {Boolean|function} [options.afterSend=null] A callback to execute after making the request.
-       * @param {Boolean|function} [options.beforeSend=null] A callback to execute before making the request.
-       * @param {Boolean|function} [options.onProgress=null] A callback to execute on download progress.
-       * @param {Boolean|function} [options.onUploadProgress=null] A callback to execute on upload progress.
-       * @returns {AjaxRequest} A new AjaxRequest that resolves when the request is completed, or rejects on failure.
-       */
-      "delete": function _delete(url, options) {
-        return new AjaxRequest(_objectSpread({
-          url: url,
-          method: 'DELETE'
-        }, options));
-      },
-
-      /**
-       * Perform an XHR GET request.
-       * @param {string} url The URL of the request.
-       * @param {string|array|object} data The data to send with the request.
-       * @param {object} [options] The options to use for the request.
-       * @param {string} [options.method=GET] The HTTP method of the request.
-       * @param {Boolean|string} [options.contentType=application/x-www-form-urlencoded] The content type of the request.
-       * @param {Boolean|string} [options.responseType] The content type of the response.
-       * @param {Boolean} [options.cache=true] Whether to cache the request.
-       * @param {Boolean} [options.processData=true] Whether to process the data based on the content type.
-       * @param {Boolean} [options.rejectOnCancel=true] Whether to reject the promise if the request is cancelled.
-       * @param {object} [options.headers] Additional headers to send with the request.
-       * @param {Boolean|function} [options.afterSend=null] A callback to execute after making the request.
-       * @param {Boolean|function} [options.beforeSend=null] A callback to execute before making the request.
-       * @param {Boolean|function} [options.onProgress=null] A callback to execute on download progress.
-       * @param {Boolean|function} [options.onUploadProgress=null] A callback to execute on upload progress.
-       * @returns {AjaxRequest} A new AjaxRequest that resolves when the request is completed, or rejects on failure.
-       */
-      get: function get(url, data, options) {
-        return new AjaxRequest(_objectSpread({
-          url: url,
-          data: data
-        }, options));
-      },
-
-      /**
-       * Perform an XHR PATCH request.
-       * @param {string} url The URL of the request.
-       * @param {string|array|object|FormData} data The data to send with the request.
-       * @param {object} [options] The options to use for the request.
-       * @param {string} [options.method=PATCH] The HTTP method of the request.
-       * @param {Boolean|string} [options.contentType=application/x-www-form-urlencoded] The content type of the request.
-       * @param {Boolean|string} [options.responseType] The content type of the response.
-       * @param {Boolean} [options.cache=true] Whether to cache the request.
-       * @param {Boolean} [options.processData=true] Whether to process the data based on the content type.
-       * @param {Boolean} [options.rejectOnCancel=true] Whether to reject the promise if the request is cancelled.
-       * @param {object} [options.headers] Additional headers to send with the request.
-       * @param {Boolean|function} [options.afterSend=null] A callback to execute after making the request.
-       * @param {Boolean|function} [options.beforeSend=null] A callback to execute before making the request.
-       * @param {Boolean|function} [options.onProgress=null] A callback to execute on download progress.
-       * @param {Boolean|function} [options.onUploadProgress=null] A callback to execute on upload progress.
-       * @returns {AjaxRequest} A new AjaxRequest that resolves when the request is completed, or rejects on failure.
-       */
-      patch: function patch(url, data, options) {
-        return new AjaxRequest(_objectSpread({
-          url: url,
-          data: data,
-          method: 'PATCH'
-        }, options));
-      },
-
-      /**
-       * Perform an XHR POST request.
-       * @param {string} url The URL of the request.
-       * @param {string|array|object|FormData} data The data to send with the request.
-       * @param {object} [options] The options to use for the request.
-       * @param {string} [options.method=POST] The HTTP method of the request.
-       * @param {Boolean|string} [options.contentType=application/x-www-form-urlencoded] The content type of the request.
-       * @param {Boolean|string} [options.responseType] The content type of the response.
-       * @param {Boolean} [options.cache=true] Whether to cache the request.
-       * @param {Boolean} [options.processData=true] Whether to process the data based on the content type.
-       * @param {Boolean} [options.rejectOnCancel=true] Whether to reject the promise if the request is cancelled.
-       * @param {object} [options.headers] Additional headers to send with the request.
-       * @param {Boolean|function} [options.afterSend=null] A callback to execute after making the request.
-       * @param {Boolean|function} [options.beforeSend=null] A callback to execute before making the request.
-       * @param {Boolean|function} [options.onProgress=null] A callback to execute on download progress.
-       * @param {Boolean|function} [options.onUploadProgress=null] A callback to execute on upload progress.
-       * @returns {AjaxRequest} A new AjaxRequest that resolves when the request is completed, or rejects on failure.
-       */
-      post: function post(url, data, options) {
-        return new AjaxRequest(_objectSpread({
-          url: url,
-          data: data,
-          method: 'POST'
-        }, options));
-      },
-
-      /**
-       * Perform an XHR PUT request.
-       * @param {string} url The URL of the request.
-       * @param {string|array|object|FormData} data The data to send with the request.
-       * @param {object} [options] The options to use for the request.
-       * @param {string} [options.method=PUT] The HTTP method of the request.
-       * @param {Boolean|string} [options.contentType=application/x-www-form-urlencoded] The content type of the request.
-       * @param {Boolean|string} [options.responseType] The content type of the response.
-       * @param {Boolean} [options.cache=true] Whether to cache the request.
-       * @param {Boolean} [options.processData=true] Whether to process the data based on the content type.
-       * @param {Boolean} [options.rejectOnCancel=true] Whether to reject the promise if the request is cancelled.
-       * @param {object} [options.headers] Additional headers to send with the request.
-       * @param {Boolean|function} [options.afterSend=null] A callback to execute after making the request.
-       * @param {Boolean|function} [options.beforeSend=null] A callback to execute before making the request.
-       * @param {Boolean|function} [options.onProgress=null] A callback to execute on download progress.
-       * @param {Boolean|function} [options.onUploadProgress=null] A callback to execute on upload progress.
-       * @returns {AjaxRequest} A new AjaxRequest that resolves when the request is completed, or rejects on failure.
-       */
-      put: function put(url, data, options) {
-        return new AjaxRequest(_objectSpread({
-          url: url,
-          data: data,
-          method: 'PUT'
-        }, options));
-      }
-    });
-    /**
-     * DOM AJAX Scripts
-     */
-
-    Object.assign(DOM.prototype, {
-      /**
-       * Load and execute a JavaScript file.
-       * @param {string} url The URL of the script.
-       * @param {object} [attributes] Additional attributes to set on the script tag.
-       * @param {Boolean} [cache=true] Whether to cache the request.
-       * @returns {Promise} A new Promise that resolves when the script is loaded, or rejects on failure.
-       */
-      loadScript: function loadScript(url, attributes) {
-        var _this6 = this;
-
-        var cache = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : true;
-        attributes = _objectSpread({
-          src: url,
-          type: 'text/javascript'
-        }, attributes);
-
-        if (!cache) {
-          attributes.src = AjaxRequest.appendQueryString(attributes.src, '_', Date.now());
-        }
-
-        return new Promise(function (resolve, reject) {
-          var script = _this6.create('script', {
-            attributes: attributes
-          });
-
-          script.onload = function (_) {
-            return resolve();
-          };
-
-          script.onerror = function (_) {
-            return reject();
-          };
-
-          _this6._context.head.appendChild(script);
-        });
-      },
-
-      /**
-       * Load and executes multiple JavaScript files (in order).
-       * @param {string[]} urls An array of script URLs.
-       * @param {Boolean} [cache=true] Whether to cache the requests.
-       * @returns {Promise} A new Promise that resolves when the request is completed, or rejects on failure.
-       */
-      loadScripts: function loadScripts(urls) {
-        var _this7 = this;
-
-        var cache = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
-        return Promise.all(urls.map(function (url) {
-          return Core.isString(url) ? _this7.loadScript(url, null, cache) : _this7.loadScript(null, url, cache);
-        }));
-      }
-    });
-    /**
-     * DOM AJAX Styles
-     */
-
-    Object.assign(DOM.prototype, {
-      /**
-       * Import a CSS Stylesheet file.
-       * @param {string} url The URL of the stylesheet.
-       * @param {object} [attributes] Additional attributes to set on the style tag.
-       * @param {Boolean} [cache=true] Whether to cache the request.
-       * @returns {Promise} A new Promise that resolves when the stylesheet is loaded, or rejects on failure.
-       */
-      loadStyle: function loadStyle(url, attributes) {
-        var _this8 = this;
-
-        var cache = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : true;
-        attributes = _objectSpread({
-          href: url,
-          rel: 'stylesheet'
-        }, attributes);
-
-        if (!cache) {
-          attributes.href = AjaxRequest.appendQueryString(attributes.href, '_', Date.now());
-        }
-
-        return new Promise(function (resolve, reject) {
-          var link = _this8.create('link', {
-            attributes: attributes
-          });
-
-          link.onload = function (_) {
-            return resolve();
-          };
-
-          link.onerror = function (_) {
-            return reject();
-          };
-
-          _this8._context.head.appendChild(link);
-        });
-      },
-
-      /**
-       * Import multiple CSS Stylesheet files.
-       * @param {string[]} urls An array of stylesheet URLs.
-       * @param {Boolean} [cache=true] Whether to cache the requests.
-       * @returns {Promise} A new Promise that resolves when the request is completed, or rejects on failure.
-       */
-      loadStyles: function loadStyles(urls) {
-        var _this9 = this;
-
-        var cache = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
-        return Promise.all(urls.map(function (url) {
-          return Core.isString(url) ? _this9.loadStyle(url, null, cache) : _this9.loadStyle(null, url, cache);
-        }));
-      }
-    });
-    /**
      * DOM Animate
      */
+
 
     Object.assign(DOM.prototype, {
       /**
@@ -2385,7 +2117,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
        * @returns {Promise} A new Promise that resolves when the animation has completed.
        */
       slideIn: function slideIn(nodes, options) {
-        var _this10 = this;
+        var _this6 = this;
 
         return this.animate(nodes, function (node, progress, options) {
           if (progress === 1) {
@@ -2406,11 +2138,11 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
 
           if (['top', 'bottom'].includes(dir)) {
             translateStyle = options.useGpu ? 'Y' : 'margin-top';
-            size = _this10.constructor._height(node);
+            size = _this6.constructor._height(node);
             inverse = dir === 'top';
           } else {
             translateStyle = options.useGpu ? 'X' : 'margin-left';
-            size = _this10.constructor._width(node);
+            size = _this6.constructor._width(node);
             inverse = dir === 'left';
           }
 
@@ -2439,7 +2171,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
        * @returns {Promise} A new Promise that resolves when the animation has completed.
        */
       slideOut: function slideOut(nodes, options) {
-        var _this11 = this;
+        var _this7 = this;
 
         return this.animate(nodes, function (node, progress, options) {
           if (progress === 1) {
@@ -2460,11 +2192,11 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
 
           if (['top', 'bottom'].includes(dir)) {
             translateStyle = options.useGpu ? 'Y' : 'margin-top';
-            size = _this11.constructor._height(node);
+            size = _this7.constructor._height(node);
             inverse = dir === 'top';
           } else {
             translateStyle = options.useGpu ? 'X' : 'margin-left';
-            size = _this11.constructor._width(node);
+            size = _this7.constructor._width(node);
             inverse = dir === 'left';
           }
 
@@ -3855,7 +3587,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
        * @returns {DOM~eventCallback} The mouse drag event callback.
        */
       mouseDragFactory: function mouseDragFactory(down, move, up) {
-        var _this12 = this;
+        var _this8 = this;
 
         var animated = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : true;
 
@@ -3873,13 +3605,13 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
           }
 
           if (move) {
-            _this12.addEvent(window, 'mousemove', move);
+            _this8.addEvent(window, 'mousemove', move);
           }
 
           if (move || up) {
-            _this12.addEventOnce(window, 'mouseup', function (e) {
+            _this8.addEventOnce(window, 'mouseup', function (e) {
               if (move) {
-                _this12.removeEvent(window, 'mousemove', move);
+                _this8.removeEvent(window, 'mousemove', move);
               }
 
               if (up) {
@@ -4352,7 +4084,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
        * @returns {array} The cloned nodes.
        */
       clone: function clone(nodes, options) {
-        var _this13 = this;
+        var _this9 = this;
 
         options = _objectSpread({
           deep: true
@@ -4363,7 +4095,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
           fragment: true
         });
         return nodes.map(function (node) {
-          return _this13.constructor._clone(node, options);
+          return _this9.constructor._clone(node, options);
         });
       },
 
@@ -4969,6 +4701,120 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
         } finally {
           _iterator55.f();
         }
+      }
+    });
+    /**
+     * DOM AJAX Scripts
+     */
+
+    Object.assign(DOM.prototype, {
+      /**
+       * Load and execute a JavaScript file.
+       * @param {string} url The URL of the script.
+       * @param {object} [attributes] Additional attributes to set on the script tag.
+       * @param {Boolean} [cache=true] Whether to cache the request.
+       * @returns {Promise} A new Promise that resolves when the script is loaded, or rejects on failure.
+       */
+      loadScript: function loadScript(url, attributes) {
+        var _this10 = this;
+
+        var cache = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : true;
+        attributes = _objectSpread({
+          src: url,
+          type: 'text/javascript'
+        }, attributes);
+
+        if (!cache) {
+          attributes.src = AjaxRequest.appendQueryString(attributes.src, '_', Date.now());
+        }
+
+        return new Promise(function (resolve, reject) {
+          var script = _this10.create('script', {
+            attributes: attributes
+          });
+
+          script.onload = function (_) {
+            return resolve();
+          };
+
+          script.onerror = function (_) {
+            return reject();
+          };
+
+          _this10._context.head.appendChild(script);
+        });
+      },
+
+      /**
+       * Load and executes multiple JavaScript files (in order).
+       * @param {string[]} urls An array of script URLs.
+       * @param {Boolean} [cache=true] Whether to cache the requests.
+       * @returns {Promise} A new Promise that resolves when the request is completed, or rejects on failure.
+       */
+      loadScripts: function loadScripts(urls) {
+        var _this11 = this;
+
+        var cache = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
+        return Promise.all(urls.map(function (url) {
+          return Core.isString(url) ? _this11.loadScript(url, null, cache) : _this11.loadScript(null, url, cache);
+        }));
+      }
+    });
+    /**
+     * DOM AJAX Styles
+     */
+
+    Object.assign(DOM.prototype, {
+      /**
+       * Import a CSS Stylesheet file.
+       * @param {string} url The URL of the stylesheet.
+       * @param {object} [attributes] Additional attributes to set on the style tag.
+       * @param {Boolean} [cache=true] Whether to cache the request.
+       * @returns {Promise} A new Promise that resolves when the stylesheet is loaded, or rejects on failure.
+       */
+      loadStyle: function loadStyle(url, attributes) {
+        var _this12 = this;
+
+        var cache = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : true;
+        attributes = _objectSpread({
+          href: url,
+          rel: 'stylesheet'
+        }, attributes);
+
+        if (!cache) {
+          attributes.href = AjaxRequest.appendQueryString(attributes.href, '_', Date.now());
+        }
+
+        return new Promise(function (resolve, reject) {
+          var link = _this12.create('link', {
+            attributes: attributes
+          });
+
+          link.onload = function (_) {
+            return resolve();
+          };
+
+          link.onerror = function (_) {
+            return reject();
+          };
+
+          _this12._context.head.appendChild(link);
+        });
+      },
+
+      /**
+       * Import multiple CSS Stylesheet files.
+       * @param {string[]} urls An array of stylesheet URLs.
+       * @param {Boolean} [cache=true] Whether to cache the requests.
+       * @returns {Promise} A new Promise that resolves when the request is completed, or rejects on failure.
+       */
+      loadStyles: function loadStyles(urls) {
+        var _this13 = this;
+
+        var cache = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
+        return Promise.all(urls.map(function (url) {
+          return Core.isString(url) ? _this13.loadStyle(url, null, cache) : _this13.loadStyle(null, url, cache);
+        }));
       }
     });
     /**
@@ -7005,6 +6851,160 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
         }
 
         return this.constructor._tagName(node);
+      }
+    });
+    /**
+     * DOM (Static) AJAX
+     */
+
+    Object.assign(DOM, {
+      /**
+       * New AjaxRequest constructor.
+       * @param {object} [options] The options to use for the request.
+       * @param {string} [options.url=window.location] The URL of the request.
+       * @param {string} [options.method=GET] The HTTP method of the request.
+       * @param {Boolean|string|array|object|FormData} [options.data=null] The data to send with the request.
+       * @param {Boolean|string} [options.contentType=application/x-www-form-urlencoded] The content type of the request.
+       * @param {Boolean|string} [options.responseType] The content type of the response.
+       * @param {Boolean} [options.cache=true] Whether to cache the request.
+       * @param {Boolean} [options.processData=true] Whether to process the data based on the content type.
+       * @param {Boolean} [options.rejectOnCancel=true] Whether to reject the promise if the request is cancelled.
+       * @param {object} [options.headers] Additional headers to send with the request.
+       * @param {Boolean|function} [options.afterSend=null] A callback to execute after making the request.
+       * @param {Boolean|function} [options.beforeSend=null] A callback to execute before making the request.
+       * @param {Boolean|function} [options.onProgress=null] A callback to execute on download progress.
+       * @param {Boolean|function} [options.onUploadProgress=null] A callback to execute on upload progress.
+       * @returns {AjaxRequest} A new AjaxRequest that resolves when the request is completed, or rejects on failure.
+       */
+      ajax: function ajax(options) {
+        return new AjaxRequest(options);
+      },
+
+      /**
+       * Perform an XHR DELETE request.
+       * @param {string} url The URL of the request.
+       * @param {object} [options] The options to use for the request.
+       * @param {string} [options.method=DELETE] The HTTP method of the request.
+       * @param {Boolean|string} [options.contentType=application/x-www-form-urlencoded] The content type of the request.
+       * @param {Boolean|string} [options.responseType] The content type of the response.
+       * @param {Boolean} [options.cache=true] Whether to cache the request.
+       * @param {Boolean} [options.processData=true] Whether to process the data based on the content type.
+       * @param {Boolean} [options.rejectOnCancel=true] Whether to reject the promise if the request is cancelled.
+       * @param {object} [options.headers] Additional headers to send with the request.
+       * @param {Boolean|function} [options.afterSend=null] A callback to execute after making the request.
+       * @param {Boolean|function} [options.beforeSend=null] A callback to execute before making the request.
+       * @param {Boolean|function} [options.onProgress=null] A callback to execute on download progress.
+       * @param {Boolean|function} [options.onUploadProgress=null] A callback to execute on upload progress.
+       * @returns {AjaxRequest} A new AjaxRequest that resolves when the request is completed, or rejects on failure.
+       */
+      "delete": function _delete(url, options) {
+        return new AjaxRequest(_objectSpread({
+          url: url,
+          method: 'DELETE'
+        }, options));
+      },
+
+      /**
+       * Perform an XHR GET request.
+       * @param {string} url The URL of the request.
+       * @param {string|array|object} data The data to send with the request.
+       * @param {object} [options] The options to use for the request.
+       * @param {string} [options.method=GET] The HTTP method of the request.
+       * @param {Boolean|string} [options.contentType=application/x-www-form-urlencoded] The content type of the request.
+       * @param {Boolean|string} [options.responseType] The content type of the response.
+       * @param {Boolean} [options.cache=true] Whether to cache the request.
+       * @param {Boolean} [options.processData=true] Whether to process the data based on the content type.
+       * @param {Boolean} [options.rejectOnCancel=true] Whether to reject the promise if the request is cancelled.
+       * @param {object} [options.headers] Additional headers to send with the request.
+       * @param {Boolean|function} [options.afterSend=null] A callback to execute after making the request.
+       * @param {Boolean|function} [options.beforeSend=null] A callback to execute before making the request.
+       * @param {Boolean|function} [options.onProgress=null] A callback to execute on download progress.
+       * @param {Boolean|function} [options.onUploadProgress=null] A callback to execute on upload progress.
+       * @returns {AjaxRequest} A new AjaxRequest that resolves when the request is completed, or rejects on failure.
+       */
+      get: function get(url, data, options) {
+        return new AjaxRequest(_objectSpread({
+          url: url,
+          data: data
+        }, options));
+      },
+
+      /**
+       * Perform an XHR PATCH request.
+       * @param {string} url The URL of the request.
+       * @param {string|array|object|FormData} data The data to send with the request.
+       * @param {object} [options] The options to use for the request.
+       * @param {string} [options.method=PATCH] The HTTP method of the request.
+       * @param {Boolean|string} [options.contentType=application/x-www-form-urlencoded] The content type of the request.
+       * @param {Boolean|string} [options.responseType] The content type of the response.
+       * @param {Boolean} [options.cache=true] Whether to cache the request.
+       * @param {Boolean} [options.processData=true] Whether to process the data based on the content type.
+       * @param {Boolean} [options.rejectOnCancel=true] Whether to reject the promise if the request is cancelled.
+       * @param {object} [options.headers] Additional headers to send with the request.
+       * @param {Boolean|function} [options.afterSend=null] A callback to execute after making the request.
+       * @param {Boolean|function} [options.beforeSend=null] A callback to execute before making the request.
+       * @param {Boolean|function} [options.onProgress=null] A callback to execute on download progress.
+       * @param {Boolean|function} [options.onUploadProgress=null] A callback to execute on upload progress.
+       * @returns {AjaxRequest} A new AjaxRequest that resolves when the request is completed, or rejects on failure.
+       */
+      patch: function patch(url, data, options) {
+        return new AjaxRequest(_objectSpread({
+          url: url,
+          data: data,
+          method: 'PATCH'
+        }, options));
+      },
+
+      /**
+       * Perform an XHR POST request.
+       * @param {string} url The URL of the request.
+       * @param {string|array|object|FormData} data The data to send with the request.
+       * @param {object} [options] The options to use for the request.
+       * @param {string} [options.method=POST] The HTTP method of the request.
+       * @param {Boolean|string} [options.contentType=application/x-www-form-urlencoded] The content type of the request.
+       * @param {Boolean|string} [options.responseType] The content type of the response.
+       * @param {Boolean} [options.cache=true] Whether to cache the request.
+       * @param {Boolean} [options.processData=true] Whether to process the data based on the content type.
+       * @param {Boolean} [options.rejectOnCancel=true] Whether to reject the promise if the request is cancelled.
+       * @param {object} [options.headers] Additional headers to send with the request.
+       * @param {Boolean|function} [options.afterSend=null] A callback to execute after making the request.
+       * @param {Boolean|function} [options.beforeSend=null] A callback to execute before making the request.
+       * @param {Boolean|function} [options.onProgress=null] A callback to execute on download progress.
+       * @param {Boolean|function} [options.onUploadProgress=null] A callback to execute on upload progress.
+       * @returns {AjaxRequest} A new AjaxRequest that resolves when the request is completed, or rejects on failure.
+       */
+      post: function post(url, data, options) {
+        return new AjaxRequest(_objectSpread({
+          url: url,
+          data: data,
+          method: 'POST'
+        }, options));
+      },
+
+      /**
+       * Perform an XHR PUT request.
+       * @param {string} url The URL of the request.
+       * @param {string|array|object|FormData} data The data to send with the request.
+       * @param {object} [options] The options to use for the request.
+       * @param {string} [options.method=PUT] The HTTP method of the request.
+       * @param {Boolean|string} [options.contentType=application/x-www-form-urlencoded] The content type of the request.
+       * @param {Boolean|string} [options.responseType] The content type of the response.
+       * @param {Boolean} [options.cache=true] Whether to cache the request.
+       * @param {Boolean} [options.processData=true] Whether to process the data based on the content type.
+       * @param {Boolean} [options.rejectOnCancel=true] Whether to reject the promise if the request is cancelled.
+       * @param {object} [options.headers] Additional headers to send with the request.
+       * @param {Boolean|function} [options.afterSend=null] A callback to execute after making the request.
+       * @param {Boolean|function} [options.beforeSend=null] A callback to execute before making the request.
+       * @param {Boolean|function} [options.onProgress=null] A callback to execute on download progress.
+       * @param {Boolean|function} [options.onUploadProgress=null] A callback to execute on upload progress.
+       * @returns {AjaxRequest} A new AjaxRequest that resolves when the request is completed, or rejects on failure.
+       */
+      put: function put(url, data, options) {
+        return new AjaxRequest(_objectSpread({
+          url: url,
+          data: data,
+          method: 'PUT'
+        }, options));
       }
     });
     /**

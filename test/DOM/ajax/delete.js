@@ -6,7 +6,7 @@ describe('#delete', function() {
     it('performs an AJAX DELETE request', async function() {
         assert.deepEqual(
             await exec(async _ => {
-                const response = await dom.delete();
+                const response = await DOM.delete();
                 response.xhr = response.xhr.data;
                 return response;
             }),
@@ -33,7 +33,7 @@ describe('#delete', function() {
     it('performs an AJAX DELETE request with URL', async function() {
         assert.deepEqual(
             await exec(async _ => {
-                const response = await dom.delete(
+                const response = await DOM.delete(
                     '/test'
                 );
                 response.xhr = response.xhr.data;
@@ -62,7 +62,7 @@ describe('#delete', function() {
     it('performs an AJAX DELETE request with content type', async function() {
         assert.deepEqual(
             await exec(async _ => {
-                const response = await dom.delete(
+                const response = await DOM.delete(
                     null,
                     {
                         contentType: 'text/plain'
@@ -94,7 +94,7 @@ describe('#delete', function() {
     it('performs an AJAX DELETE request with response type', async function() {
         assert.deepEqual(
             await exec(async _ => {
-                const response = await dom.delete(
+                const response = await DOM.delete(
                     null,
                     {
                         responseType: 'json'
@@ -127,7 +127,7 @@ describe('#delete', function() {
     it('performs an AJAX DELETE request with MIME type', async function() {
         assert.deepEqual(
             await exec(async _ => {
-                const response = await dom.delete(
+                const response = await DOM.delete(
                     null,
                     {
                         mimeType: 'text/plain'
@@ -160,7 +160,7 @@ describe('#delete', function() {
     it('performs an AJAX DELETE request with username', async function() {
         assert.deepEqual(
             await exec(async _ => {
-                const response = await dom.delete(
+                const response = await DOM.delete(
                     null,
                     {
                         username: 'test'
@@ -193,7 +193,7 @@ describe('#delete', function() {
     it('performs an AJAX DELETE request with password', async function() {
         assert.deepEqual(
             await exec(async _ => {
-                const response = await dom.delete(
+                const response = await DOM.delete(
                     null,
                     {
                         password: 'test'
@@ -226,7 +226,7 @@ describe('#delete', function() {
     it('performs an AJAX DELETE request with timeout', async function() {
         assert.deepEqual(
             await exec(async _ => {
-                const response = await dom.delete(
+                const response = await DOM.delete(
                     null,
                     {
                         timeout: 1000
@@ -259,7 +259,7 @@ describe('#delete', function() {
     it('performs an AJAX DELETE request (local)', async function() {
         assert.deepEqual(
             await exec(async _ => {
-                const response = await dom.delete(
+                const response = await DOM.delete(
                     null,
                     {
                         isLocal: true
@@ -290,7 +290,7 @@ describe('#delete', function() {
     it('performs an AJAX DELETE request with custom headers', async function() {
         assert.deepEqual(
             await exec(async _ => {
-                const response = await dom.delete(
+                const response = await DOM.delete(
                     null,
                     {
                         headers: {
@@ -324,7 +324,7 @@ describe('#delete', function() {
 
     it('performs an AJAX DELETE request without cache', async function() {
         const response = await exec(async _ => {
-            const response = await dom.delete(
+            const response = await DOM.delete(
                 null,
                 {
                     cache: false
@@ -341,7 +341,7 @@ describe('#delete', function() {
 
     it('performs an AJAX DELETE request without cache (query string)', async function() {
         const response = await exec(async _ => {
-            const response = await dom.delete(
+            const response = await DOM.delete(
                 '/?test=1',
                 {
                     cache: false
@@ -360,7 +360,7 @@ describe('#delete', function() {
         assert.deepEqual(
             await exec(async _ => {
                 let result;
-                await dom.delete(
+                await DOM.delete(
                     null,
                     {
                         beforeSend: xhr => {
@@ -388,7 +388,7 @@ describe('#delete', function() {
         assert.deepEqual(
             await exec(async _ => {
                 let result;
-                await dom.delete(
+                await DOM.delete(
                     null,
                     {
                         afterSend: xhr => {
@@ -417,7 +417,7 @@ describe('#delete', function() {
         assert.deepEqual(
             await exec(async _ => {
                 let result;
-                await dom.delete(
+                await DOM.delete(
                     null,
                     {
                         onProgress: (progress, xhr, event) => {
@@ -456,7 +456,7 @@ describe('#delete', function() {
         assert.deepEqual(
             await exec(async _ => {
                 let result;
-                await dom.delete(
+                await DOM.delete(
                     null,
                     {
                         onUploadProgress: (progress, xhr, event) => {
@@ -495,7 +495,7 @@ describe('#delete', function() {
         assert.deepEqual(
             await exec(async _ => {
                 try {
-                    const ajax = dom.delete();
+                    const ajax = DOM.delete();
                     ajax.cancel();
                     await ajax;
                     return false;
@@ -525,7 +525,7 @@ describe('#delete', function() {
         assert.deepEqual(
             await exec(async _ => {
                 try {
-                    const ajax = dom.delete();
+                    const ajax = DOM.delete();
                     ajax._xhr.forceError = true;
                     ajax._xhr.status = null;
                     await ajax;
@@ -558,7 +558,7 @@ describe('#delete', function() {
         assert.deepEqual(
             await exec(async _ => {
                 try {
-                    const ajax = dom.delete();
+                    const ajax = DOM.delete();
                     ajax._xhr.status = 404;
                     await ajax;
                     return false;
