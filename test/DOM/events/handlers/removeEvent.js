@@ -21,16 +21,8 @@ describe('#removeEvent', function() {
                 const event2 = new Event('hover');
                 const element1 = document.getElementById('test1');
                 const element2 = document.getElementById('test2');
-                dom.addEvent(
-                    'a',
-                    'click',
-                    callback1
-                );
-                dom.addEvent(
-                    'a',
-                    'hover',
-                    callback2
-                );
+                dom.addEvent('a', 'click', callback1);
+                dom.addEvent('a', 'hover', callback2);
                 dom.removeEvent('a');
                 element1.dispatchEvent(event1);
                 element1.dispatchEvent(event2);
@@ -52,25 +44,10 @@ describe('#removeEvent', function() {
                 const event2 = new Event('hover');
                 const element1 = document.getElementById('test1');
                 const element2 = document.getElementById('test2');
-                dom.addEvent(
-                    'a',
-                    'click',
-                    callback1
-                );
-                dom.addEvent(
-                    'a',
-                    'click',
-                    callback2
-                );
-                dom.addEvent(
-                    'a',
-                    'hover',
-                    callback1
-                );
-                dom.removeEvent(
-                    'a',
-                    'click'
-                );
+                dom.addEvent('a', 'click', callback1);
+                dom.addEvent('a', 'click', callback2);
+                dom.addEvent('a', 'hover', callback1);
+                dom.removeEvent('a', 'click');
                 element1.dispatchEvent(event1);
                 element1.dispatchEvent(event2);
                 element2.dispatchEvent(event1);
@@ -91,25 +68,10 @@ describe('#removeEvent', function() {
                 const event2 = new Event('hover');
                 const element1 = document.getElementById('test1');
                 const element2 = document.getElementById('test2');
-                dom.addEvent(
-                    'a',
-                    'click',
-                    callback1
-                );
-                dom.addEvent(
-                    'a',
-                    'click',
-                    callback2
-                );
-                dom.addEvent(
-                    'a',
-                    'hover',
-                    callback1
-                );
-                dom.removeEvent(
-                    'a',
-                    'click hover'
-                );
+                dom.addEvent('a', 'click', callback1);
+                dom.addEvent('a', 'click', callback2);
+                dom.addEvent('a', 'hover', callback1);
+                dom.removeEvent('a', 'click hover');
                 element1.dispatchEvent(event1);
                 element1.dispatchEvent(event2);
                 element2.dispatchEvent(event1);
@@ -129,21 +91,9 @@ describe('#removeEvent', function() {
                 const event = new Event('click');
                 const element1 = document.getElementById('test1');
                 const element2 = document.getElementById('test2');
-                dom.addEvent(
-                    'a',
-                    'click',
-                    callback1
-                );
-                dom.addEvent(
-                    'a',
-                    'click',
-                    callback2
-                );
-                dom.removeEvent(
-                    'a',
-                    'click',
-                    callback1
-                );
+                dom.addEvent('a', 'click', callback1);
+                dom.addEvent('a', 'click', callback2);
+                dom.removeEvent('a', 'click', callback1);
                 element1.dispatchEvent(event);
                 element2.dispatchEvent(event);
                 return result;
@@ -160,15 +110,8 @@ describe('#removeEvent', function() {
                 const event = new Event('click');
                 const element1 = document.getElementById('test1');
                 const element2 = document.getElementById('test2');
-                dom.addEvent(
-                    'a',
-                    'click.test',
-                    callback
-                );
-                dom.removeEvent(
-                    'a',
-                    'click'
-                );
+                dom.addEvent('a', 'click.test', callback);
+                dom.removeEvent('a', 'click');
                 element1.dispatchEvent(event);
                 element2.dispatchEvent(event);
                 return result;
@@ -186,20 +129,9 @@ describe('#removeEvent', function() {
                 const event2 = new Event('hover');
                 const element1 = document.getElementById('test1');
                 const element2 = document.getElementById('test2');
-                dom.addEvent(
-                    'a',
-                    'click.test',
-                    callback
-                );
-                dom.addEvent(
-                    'a',
-                    'hover.test',
-                    callback
-                );
-                dom.removeEvent(
-                    'a',
-                    'click hover'
-                );
+                dom.addEvent('a', 'click.test', callback);
+                dom.addEvent('a', 'hover.test', callback);
+                dom.removeEvent('a', 'click hover');
                 element1.dispatchEvent(event1);
                 element1.dispatchEvent(event2);
                 element2.dispatchEvent(event1);
@@ -218,15 +150,8 @@ describe('#removeEvent', function() {
                 const event = new Event('click');
                 const element1 = document.getElementById('test1');
                 const element2 = document.getElementById('test2');
-                dom.addEvent(
-                    'a',
-                    'click.test.deep',
-                    callback
-                );
-                dom.removeEvent(
-                    'a',
-                    'click'
-                );
+                dom.addEvent('a', 'click.test.deep', callback);
+                dom.removeEvent('a', 'click');
                 element1.dispatchEvent(event);
                 element2.dispatchEvent(event);
                 return result;
@@ -244,20 +169,9 @@ describe('#removeEvent', function() {
                 const event2 = new Event('hover');
                 const element1 = document.getElementById('test1');
                 const element2 = document.getElementById('test2');
-                dom.addEvent(
-                    'a',
-                    'click.test.deep',
-                    callback
-                );
-                dom.addEvent(
-                    'a',
-                    'hover.test.deep',
-                    callback
-                );
-                dom.removeEvent(
-                    'a',
-                    'click hover'
-                );
+                dom.addEvent('a', 'click.test.deep', callback);
+                dom.addEvent('a', 'hover.test.deep', callback);
+                dom.removeEvent('a', 'click hover');
                 element1.dispatchEvent(event1);
                 element1.dispatchEvent(event2);
                 element2.dispatchEvent(event1);
@@ -276,15 +190,8 @@ describe('#removeEvent', function() {
                 const event = new Event('click');
                 const element1 = document.getElementById('test1');
                 const element2 = document.getElementById('test2');
-                dom.addEvent(
-                    'a',
-                    'click.test',
-                    callback
-                );
-                dom.removeEvent(
-                    'a',
-                    'click.test'
-                );
+                dom.addEvent('a', 'click.test', callback);
+                dom.removeEvent('a', 'click.test');
                 element1.dispatchEvent(event);
                 element2.dispatchEvent(event);
                 return result;
@@ -302,20 +209,9 @@ describe('#removeEvent', function() {
                 const event2 = new Event('hover');
                 const element1 = document.getElementById('test1');
                 const element2 = document.getElementById('test2');
-                dom.addEvent(
-                    'a',
-                    'click.test',
-                    callback
-                );
-                dom.addEvent(
-                    'a',
-                    'hover.test',
-                    callback
-                );
-                dom.removeEvent(
-                    'a',
-                    'click.test hover.test'
-                );
+                dom.addEvent('a', 'click.test', callback);
+                dom.addEvent('a', 'hover.test', callback);
+                dom.removeEvent('a', 'click.test hover.test');
                 element1.dispatchEvent(event1);
                 element1.dispatchEvent(event2);
                 element2.dispatchEvent(event1);
@@ -334,15 +230,8 @@ describe('#removeEvent', function() {
                 const event = new Event('click');
                 const element1 = document.getElementById('test1');
                 const element2 = document.getElementById('test2');
-                dom.addEvent(
-                    'a',
-                    'click.test.deep',
-                    callback
-                );
-                dom.removeEvent(
-                    'a',
-                    'click.test'
-                );
+                dom.addEvent('a', 'click.test.deep', callback);
+                dom.removeEvent('a', 'click.test');
                 element1.dispatchEvent(event);
                 element2.dispatchEvent(event);
                 return result;
@@ -360,20 +249,9 @@ describe('#removeEvent', function() {
                 const event2 = new Event('hover');
                 const element1 = document.getElementById('test1');
                 const element2 = document.getElementById('test2');
-                dom.addEvent(
-                    'a',
-                    'click.test.deep',
-                    callback
-                );
-                dom.addEvent(
-                    'a',
-                    'hover.test.deep',
-                    callback
-                );
-                dom.removeEvent(
-                    'a',
-                    'click.test hover.test'
-                );
+                dom.addEvent('a', 'click.test.deep', callback);
+                dom.addEvent('a', 'hover.test.deep', callback);
+                dom.removeEvent('a', 'click.test hover.test');
                 element1.dispatchEvent(event1);
                 element1.dispatchEvent(event2);
                 element2.dispatchEvent(event1);
@@ -392,15 +270,8 @@ describe('#removeEvent', function() {
                 const event = new Event('click');
                 const element1 = document.getElementById('test1');
                 const element2 = document.getElementById('test2');
-                dom.addEvent(
-                    'a',
-                    'click.test.deep',
-                    callback
-                );
-                dom.removeEvent(
-                    'a',
-                    'click.test.deep'
-                );
+                dom.addEvent('a', 'click.test.deep', callback);
+                dom.removeEvent('a', 'click.test.deep');
                 element1.dispatchEvent(event);
                 element2.dispatchEvent(event);
                 return result;
@@ -418,20 +289,9 @@ describe('#removeEvent', function() {
                 const event2 = new Event('hover');
                 const element1 = document.getElementById('test1');
                 const element2 = document.getElementById('test2');
-                dom.addEvent(
-                    'a',
-                    'click.test.deep',
-                    callback
-                );
-                dom.addEvent(
-                    'a',
-                    'hover.test.deep',
-                    callback
-                );
-                dom.removeEvent(
-                    'a',
-                    'click.test.deep hover.test.deep'
-                );
+                dom.addEvent('a', 'click.test.deep', callback);
+                dom.addEvent('a', 'hover.test.deep', callback);
+                dom.removeEvent('a', 'click.test.deep hover.test.deep');
                 element1.dispatchEvent(event1);
                 element1.dispatchEvent(event2);
                 element2.dispatchEvent(event1);
@@ -451,21 +311,9 @@ describe('#removeEvent', function() {
                 const event = new Event('click');
                 const element1 = document.getElementById('test1');
                 const element2 = document.getElementById('test2');
-                dom.addEvent(
-                    'a',
-                    'click',
-                    callback1
-                );
-                dom.addEvent(
-                    'a',
-                    'click',
-                    callback2
-                );
-                dom.removeEvent(
-                    'a',
-                    'hover',
-                    callback1
-                );
+                dom.addEvent('a', 'click', callback1);
+                dom.addEvent('a', 'click', callback2);
+                dom.removeEvent('a', 'hover', callback1);
                 element1.dispatchEvent(event);
                 element2.dispatchEvent(event);
                 return result;
@@ -482,15 +330,8 @@ describe('#removeEvent', function() {
                 const event = new Event('click');
                 const element1 = document.getElementById('test1');
                 const element2 = document.getElementById('test2');
-                dom.addEvent(
-                    'a',
-                    'click',
-                    callback
-                );
-                dom.removeEvent(
-                    'a',
-                    'click.test'
-                );
+                dom.addEvent('a', 'click', callback);
+                dom.removeEvent('a', 'click.test');
                 element1.dispatchEvent(event);
                 element2.dispatchEvent(event);
                 return result;
@@ -508,20 +349,9 @@ describe('#removeEvent', function() {
                 const event2 = new Event('hover');
                 const element1 = document.getElementById('test1');
                 const element2 = document.getElementById('test2');
-                dom.addEvent(
-                    'a',
-                    'click',
-                    callback
-                );
-                dom.addEvent(
-                    'a',
-                    'hover',
-                    callback
-                );
-                dom.removeEvent(
-                    'a',
-                    'click.test hover.test'
-                );
+                dom.addEvent('a', 'click', callback);
+                dom.addEvent('a', 'hover', callback);
+                dom.removeEvent('a', 'click.test hover.test');
                 element1.dispatchEvent(event1);
                 element1.dispatchEvent(event2);
                 element2.dispatchEvent(event1);
@@ -540,15 +370,8 @@ describe('#removeEvent', function() {
                 const event = new Event('click');
                 const element1 = document.getElementById('test1');
                 const element2 = document.getElementById('test2');
-                dom.addEvent(
-                    'a',
-                    'click.test',
-                    callback
-                );
-                dom.removeEvent(
-                    'a',
-                    'click.test.deep'
-                );
+                dom.addEvent('a', 'click.test', callback);
+                dom.removeEvent('a', 'click.test.deep');
                 element1.dispatchEvent(event);
                 element2.dispatchEvent(event);
                 return result;
@@ -566,20 +389,9 @@ describe('#removeEvent', function() {
                 const event2 = new Event('hover');
                 const element1 = document.getElementById('test1');
                 const element2 = document.getElementById('test2');
-                dom.addEvent(
-                    'a',
-                    'click.test',
-                    callback
-                );
-                dom.addEvent(
-                    'a',
-                    'hover.test',
-                    callback
-                );
-                dom.removeEvent(
-                    'a',
-                    'click.test.deep hover.test.deep'
-                );
+                dom.addEvent('a', 'click.test', callback);
+                dom.addEvent('a', 'hover.test', callback);
+                dom.removeEvent('a', 'click.test.deep hover.test.deep');
                 element1.dispatchEvent(event1);
                 element1.dispatchEvent(event2);
                 element2.dispatchEvent(event1);
@@ -599,21 +411,9 @@ describe('#removeEvent', function() {
                 const event = new Event('click');
                 const element1 = document.getElementById('test1');
                 const element2 = document.getElementById('test2');
-                dom.addEvent(
-                    'a',
-                    'click',
-                    callback1
-                );
-                dom.addEvent(
-                    'a',
-                    'click',
-                    callback2
-                );
-                dom.removeEvent(
-                    element1,
-                    'click',
-                    callback1
-                );
+                dom.addEvent('a', 'click', callback1);
+                dom.addEvent('a', 'click', callback2);
+                dom.removeEvent(element1, 'click', callback1);
                 element1.dispatchEvent(event);
                 element2.dispatchEvent(event);
                 return result;
@@ -631,16 +431,8 @@ describe('#removeEvent', function() {
                 const event = new Event('click');
                 const element1 = document.getElementById('test1');
                 const element2 = document.getElementById('test2');
-                dom.addEvent(
-                    'a',
-                    'click',
-                    callback1
-                );
-                dom.addEvent(
-                    'a',
-                    'click',
-                    callback2
-                );
+                dom.addEvent('a', 'click', callback1);
+                dom.addEvent('a', 'click', callback2);
                 dom.removeEvent(
                     document.querySelectorAll('a'),
                     'click',
@@ -663,16 +455,8 @@ describe('#removeEvent', function() {
                 const event = new Event('click');
                 const element1 = document.getElementById('test1');
                 const element2 = document.getElementById('test2');
-                dom.addEvent(
-                    'a',
-                    'click',
-                    callback1
-                );
-                dom.addEvent(
-                    'a',
-                    'click',
-                    callback2
-                );
+                dom.addEvent('a', 'click', callback1);
+                dom.addEvent('a', 'click', callback2);
                 dom.removeEvent(
                     document.body.children,
                     'click',
@@ -695,21 +479,9 @@ describe('#removeEvent', function() {
                 const event = new Event('click');
                 const div = document.createElement('div');
                 const shadow = div.attachShadow({ mode: 'open' });
-                dom.addEvent(
-                    shadow,
-                    'click',
-                    callback1
-                );
-                dom.addEvent(
-                    shadow,
-                    'click',
-                    callback2
-                );
-                dom.removeEvent(
-                    shadow,
-                    'click',
-                    callback1
-                );
+                dom.addEvent(shadow, 'click', callback1);
+                dom.addEvent(shadow, 'click', callback2);
+                dom.removeEvent(shadow, 'click', callback1);
                 shadow.dispatchEvent(event);
                 return result;
             }),
@@ -724,21 +496,9 @@ describe('#removeEvent', function() {
                 const callback1 = _ => { result++; };
                 const callback2 = _ => { result++; };
                 const event = new Event('click');
-                dom.addEvent(
-                    document,
-                    'click',
-                    callback1
-                );
-                dom.addEvent(
-                    document,
-                    'click',
-                    callback2
-                );
-                dom.removeEvent(
-                    document,
-                    'click',
-                    callback1
-                );
+                dom.addEvent(document, 'click', callback1);
+                dom.addEvent(document, 'click', callback2);
+                dom.removeEvent(document, 'click', callback1);
                 document.dispatchEvent(event);
                 return result;
             }),
@@ -753,21 +513,9 @@ describe('#removeEvent', function() {
                 const callback1 = _ => { result++; };
                 const callback2 = _ => { result++; };
                 const event = new Event('click');
-                dom.addEvent(
-                    window,
-                    'click',
-                    callback1
-                );
-                dom.addEvent(
-                    window,
-                    'click',
-                    callback2
-                );
-                dom.removeEvent(
-                    window,
-                    'click',
-                    callback1
-                );
+                dom.addEvent(window, 'click', callback1);
+                dom.addEvent(window, 'click', callback2);
+                dom.removeEvent(window, 'click', callback1);
                 window.dispatchEvent(event);
                 return result;
             }),
@@ -784,24 +532,12 @@ describe('#removeEvent', function() {
                 const event = new Event('click');
                 const element1 = document.getElementById('test1');
                 const element2 = document.getElementById('test2');
-                dom.addEvent(
-                    'a',
-                    'click',
-                    callback1
-                );
-                dom.addEvent(
-                    'a',
-                    'click',
-                    callback2
-                );
-                dom.removeEvent(
-                    [
-                        element1,
-                        element2
-                    ],
-                    'click',
-                    callback1
-                );
+                dom.addEvent('a', 'click', callback1);
+                dom.addEvent('a', 'click', callback2);
+                dom.removeEvent([
+                    element1,
+                    element2
+                ], 'click', callback1);
                 element1.dispatchEvent(event);
                 element2.dispatchEvent(event);
                 return result;

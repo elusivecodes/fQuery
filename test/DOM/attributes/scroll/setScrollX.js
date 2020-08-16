@@ -18,10 +18,7 @@ describe('#setScrollX', function() {
     it('sets the scroll X position for all nodes', async function() {
         assert.deepEqual(
             await exec(_ => {
-                dom.setScrollX(
-                    'div',
-                    100,
-                );
+                dom.setScrollX('div', 100,);
                 return [
                     document.getElementById('test1').scrollLeft,
                     document.getElementById('test2').scrollLeft
@@ -38,10 +35,7 @@ describe('#setScrollX', function() {
         assert.equal(
             await exec(_ => {
                 const element = document.getElementById('test1');
-                dom.setScrollX(
-                    element,
-                    100,
-                );
+                dom.setScrollX(element, 100,);
                 return element.scrollLeft;
             }),
             100
@@ -90,10 +84,7 @@ describe('#setScrollX', function() {
         assert.equal(
             await exec(_ => {
                 document.body.innerHTML = '<div style="display: block; width: 1000px; height: 1000px;"></div>';
-                dom.setScrollX(
-                    document,
-                    100
-                );
+                dom.setScrollX(document, 100);
                 return document.scrollingElement.scrollLeft;
             }),
             100
@@ -104,10 +95,7 @@ describe('#setScrollX', function() {
         assert.equal(
             await exec(_ => {
                 document.body.innerHTML = '<div style="display: block; width: 1000px; height: 1000px;"></div>';
-                dom.setScrollX(
-                    window,
-                    100
-                );
+                dom.setScrollX(window, 100);
                 return window.scrollX;
             }),
             100
@@ -119,13 +107,10 @@ describe('#setScrollX', function() {
             await exec(_ => {
                 const element1 = document.getElementById('test1');
                 const element2 = document.getElementById('test2');
-                dom.setScrollX(
-                    [
-                        element1,
-                        element2
-                    ],
-                    100
-                );
+                dom.setScrollX([
+                    element1,
+                    element2
+                ], 100);
                 return [
                     element1.scrollLeft,
                     element2.scrollLeft

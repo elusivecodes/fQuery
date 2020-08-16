@@ -32,11 +32,10 @@ describe('#findByTag', function() {
 
     it('finds elements by tag name', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.findByTag(
-                    'span'
-                ).map(node => node.id);
-            }),
+            await exec(_ =>
+                dom.findByTag('span')
+                    .map(node => node.id)
+            ),
             [
                 'span1',
                 'span2',
@@ -52,35 +51,28 @@ describe('#findByTag', function() {
 
     it('returns an empty array for non-matching tag', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.findByTag(
-                    'invalid'
-                ).map(node => node.id);
-            }),
+            await exec(_ =>
+                dom.findByTag('invalid')
+            ),
             []
         );
     });
 
     it('returns an empty array for empty nodes', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.findByTag(
-                    'test',
-                    '#invalid'
-                ).map(node => node.id);
-            }),
+            await exec(_ =>
+                dom.findByTag('test', '#invalid')
+            ),
             []
         );
     });
 
     it('works with query selector nodes', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.findByTag(
-                    'span',
-                    '#parent1'
-                ).map(node => node.id);
-            }),
+            await exec(_ =>
+                dom.findByTag('span', '#parent1')
+                    .map(node => node.id)
+            ),
             [
                 'span1',
                 'span2',
@@ -92,12 +84,12 @@ describe('#findByTag', function() {
 
     it('works with HTMLElement nodes', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.findByTag(
+            await exec(_ =>
+                dom.findByTag(
                     'span',
                     document.getElementById('parent1')
-                ).map(node => node.id);
-            }),
+                ).map(node => node.id)
+            ),
             [
                 'span1',
                 'span2',
@@ -109,12 +101,12 @@ describe('#findByTag', function() {
 
     it('works with NodeList nodes', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.findByTag(
+            await exec(_ =>
+                dom.findByTag(
                     'span',
                     document.querySelectorAll('#parent1')
-                ).map(node => node.id);
-            }),
+                ).map(node => node.id)
+            ),
             [
                 'span1',
                 'span2',
@@ -126,12 +118,12 @@ describe('#findByTag', function() {
 
     it('works with HTMLElement nodes', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.findByTag(
+            await exec(_ =>
+                dom.findByTag(
                     'span',
                     document.getElementById('parent1').children
-                ).map(node => node.id);
-            }),
+                ).map(node => node.id)
+            ),
             [
                 'span1',
                 'span2',
@@ -151,10 +143,8 @@ describe('#findByTag', function() {
                     '<span id="span1"></span>' +
                     '<span id="span2"></span>'
                 );
-                return dom.findByTag(
-                    'span',
-                    fragment
-                ).map(node => node.id);
+                return dom.findByTag('span', fragment)
+                    .map(node => node.id);
             }),
             [
                 'span1',
@@ -176,10 +166,8 @@ describe('#findByTag', function() {
                     '<span id="span2"></span>'
                 );
                 shadow.appendChild(fragment);
-                return dom.findByTag(
-                    'span',
-                    shadow
-                ).map(node => node.id);
+                return dom.findByTag('span', shadow)
+                    .map(node => node.id);
             }),
             [
                 'span1',
@@ -205,10 +193,8 @@ describe('#findByTag', function() {
                     '</html>',
                     'text/html'
                 );
-                return dom.findByTag(
-                    'span',
-                    myDoc
-                ).map(node => node.id);
+                return dom.findByTag('span', myDoc)
+                    .map(node => node.id);
             }),
             [
                 'span1',
@@ -219,15 +205,12 @@ describe('#findByTag', function() {
 
     it('works with array nodes', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.findByTag(
-                    'span',
-                    [
-                        document.getElementById('child1'),
-                        document.getElementById('child2')
-                    ]
-                ).map(node => node.id);
-            }),
+            await exec(_ =>
+                dom.findByTag('span', [
+                    document.getElementById('child1'),
+                    document.getElementById('child2')
+                ]).map(node => node.id)
+            ),
             [
                 'span1',
                 'span2',

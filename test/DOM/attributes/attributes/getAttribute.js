@@ -13,11 +13,9 @@ describe('#getAttribute', function() {
 
     it('returns an object with all attributes for the first node', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.getAttribute(
-                    'input'
-                );
-            }),
+            await exec(_ =>
+                dom.getAttribute('input')
+            ),
             {
                 type: 'text',
                 id: 'test1',
@@ -28,87 +26,75 @@ describe('#getAttribute', function() {
 
     it('returns an attribute value for the first node', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.getAttribute(
-                    'input',
-                    'type'
-                );
-            }),
+            await exec(_ =>
+                dom.getAttribute('input', 'type')
+            ),
             'text'
         );
     });
 
     it('returns null for an undefined property', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.getAttribute(
-                    'input',
-                    'disabled'
-                );
-            }),
+            await exec(_ =>
+                dom.getAttribute('input', 'disabled')
+            ),
             null
         );
     });
 
     it('returns undefined for empty nodes', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.getAttribute(
-                    '#invalid',
-                    'type'
-                );
-            }),
+            await exec(_ =>
+                dom.getAttribute('#invalid', 'type')
+            ),
             undefined
         );
     });
 
     it('works with HTMLElement nodes', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.getAttribute(
+            await exec(_ =>
+                dom.getAttribute(
                     document.getElementById('test1'),
                     'type'
-                );
-            }),
+                )
+            ),
             'text'
         );
     });
 
     it('works with NodeList nodes', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.getAttribute(
+            await exec(_ =>
+                dom.getAttribute(
                     document.querySelectorAll('input'),
                     'type'
-                );
-            }),
+                )
+            ),
             'text'
         );
     });
 
     it('works with HTMLCollection nodes', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.getAttribute(
+            await exec(_ =>
+                dom.getAttribute(
                     document.body.children,
                     'type'
-                );
-            }),
+                )
+            ),
             'text'
         );
     });
 
     it('works with array nodes', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.getAttribute(
-                    [
-                        document.getElementById('test1'),
-                        document.getElementById('test2')
-                    ],
-                    'type'
-                );
-            }),
+            await exec(_ =>
+                dom.getAttribute([
+                    document.getElementById('test1'),
+                    document.getElementById('test2')
+                ], 'type')
+            ),
             'text'
         );
     });

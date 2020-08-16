@@ -21,11 +21,10 @@ describe('#withAnimation', function() {
 
     it('returns nodes with animations', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.withAnimation(
-                    'div'
-                ).map(node => node.id);
-            }),
+            await exec(_ =>
+                dom.withAnimation('div')
+                    .map(node => node.id)
+            ),
             [
                 'div1',
                 'div3'
@@ -35,11 +34,11 @@ describe('#withAnimation', function() {
 
     it('works with HTMLElement nodes', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.withAnimation(
+            await exec(_ =>
+                dom.withAnimation(
                     document.getElementById('div1')
-                ).map(node => node.id);
-            }),
+                ).map(node => node.id)
+            ),
             [
                 'div1'
             ]
@@ -48,11 +47,11 @@ describe('#withAnimation', function() {
 
     it('works with NodeList nodes', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.withAnimation(
+            await exec(_ =>
+                dom.withAnimation(
                     document.querySelectorAll('div')
-                ).map(node => node.id);
-            }),
+                ).map(node => node.id)
+            ),
             [
                 'div1',
                 'div3'
@@ -62,11 +61,11 @@ describe('#withAnimation', function() {
 
     it('works with HTMLCollection nodes', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.withAnimation(
+            await exec(_ =>
+                dom.withAnimation(
                     document.body.children
-                ).map(node => node.id);
-            }),
+                ).map(node => node.id)
+            ),
             [
                 'div1',
                 'div3'
@@ -76,16 +75,14 @@ describe('#withAnimation', function() {
 
     it('works with array nodes', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.withAnimation(
-                    [
-                        document.getElementById('div1'),
-                        document.getElementById('div2'),
-                        document.getElementById('div3'),
-                        document.getElementById('div4')
-                    ]
-                ).map(node => node.id);
-            }),
+            await exec(_ =>
+                dom.withAnimation([
+                    document.getElementById('div1'),
+                    document.getElementById('div2'),
+                    document.getElementById('div3'),
+                    document.getElementById('div4')
+                ]).map(node => node.id)
+            ),
             [
                 'div1',
                 'div3'

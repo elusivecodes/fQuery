@@ -75,12 +75,10 @@ describe('#focus', function() {
                 let result;
                 const element = document.getElementById('test1');
                 element.addEventListener('focus', _ => { result = true; });
-                dom.focus(
-                    [
-                        document.getElementById('test1'),
-                        document.getElementById('test2')
-                    ]
-                );
+                dom.focus([
+                    document.getElementById('test1'),
+                    document.getElementById('test2')
+                ]);
                 return result;
             }),
             true

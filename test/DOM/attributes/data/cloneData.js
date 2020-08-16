@@ -14,26 +14,15 @@ describe('#cloneData', function() {
                 '<div id="test3" data-toggle="noData"></div>' +
                 '<div id="test4" data-toggle="noData"></div>' +
                 '</div>';
-            dom.setData(
-                '#test1',
-                'test1',
-                'Test 1'
-            );
-            dom.setData(
-                '#test2',
-                'test2',
-                'Test 2'
-            );
+            dom.setData('#test1', 'test1', 'Test 1');
+            dom.setData('#test2', 'test2', 'Test 2');
         });
     });
 
     it('clones data from all nodes to all other nodes', async function() {
         assert.deepEqual(
             await exec(_ => {
-                dom.cloneData(
-                    '[data-toggle="data"]',
-                    '[data-toggle="noData"]'
-                );
+                dom.cloneData('[data-toggle="data"]', '[data-toggle="noData"]');
                 return [
                     dom.getData('#test3'),
                     dom.getData('#test4')
@@ -129,15 +118,8 @@ describe('#cloneData', function() {
         assert.deepEqual(
             await exec(_ => {
                 const fragment = document.createDocumentFragment();
-                dom.setData(
-                    fragment,
-                    'test',
-                    'Test 1'
-                );
-                dom.cloneData(
-                    fragment,
-                    '[data-toggle="noData"]'
-                );
+                dom.setData(fragment, 'test', 'Test 1');
+                dom.cloneData(fragment, '[data-toggle="noData"]');
                 return [
                     dom.getData('#test3'),
                     dom.getData('#test4')
@@ -159,15 +141,8 @@ describe('#cloneData', function() {
             await exec(_ => {
                 const div = document.createElement('div');
                 const shadow = div.attachShadow({ mode: 'open' });
-                dom.setData(
-                    shadow,
-                    'test',
-                    'Test 1'
-                );
-                dom.cloneData(
-                    shadow,
-                    '[data-toggle="noData"]'
-                );
+                dom.setData(shadow, 'test', 'Test 1');
+                dom.cloneData(shadow, '[data-toggle="noData"]');
                 return [
                     dom.getData('#test3'),
                     dom.getData('#test4')
@@ -187,15 +162,8 @@ describe('#cloneData', function() {
     it('works with Document nodes', async function() {
         assert.deepEqual(
             await exec(_ => {
-                dom.setData(
-                    document,
-                    'test',
-                    'Test 1'
-                );
-                dom.cloneData(
-                    document,
-                    '[data-toggle="noData"]'
-                );
+                dom.setData(document, 'test', 'Test 1');
+                dom.cloneData(document, '[data-toggle="noData"]');
                 return [
                     dom.getData('#test3'),
                     dom.getData('#test4')
@@ -215,15 +183,8 @@ describe('#cloneData', function() {
     it('works with Window nodes', async function() {
         assert.deepEqual(
             await exec(_ => {
-                dom.setData(
-                    window,
-                    'test',
-                    'Test 1'
-                );
-                dom.cloneData(
-                    window,
-                    '[data-toggle="noData"]'
-                );
+                dom.setData(window, 'test', 'Test 1');
+                dom.cloneData(window, '[data-toggle="noData"]');
                 return [
                     dom.getData('#test3'),
                     dom.getData('#test4')
@@ -243,13 +204,10 @@ describe('#cloneData', function() {
     it('works with array nodes', async function() {
         assert.deepEqual(
             await exec(_ => {
-                dom.cloneData(
-                    [
-                        document.getElementById('test1'),
-                        document.getElementById('test2')
-                    ],
-                    '[data-toggle="noData"]'
-                );
+                dom.cloneData([
+                    document.getElementById('test1'),
+                    document.getElementById('test2')
+                ], '[data-toggle="noData"]');
                 return [
                     dom.getData('#test3'),
                     dom.getData('#test4')
@@ -338,10 +296,7 @@ describe('#cloneData', function() {
         assert.deepEqual(
             await exec(_ => {
                 const fragment = document.createDocumentFragment();
-                dom.cloneData(
-                    '[data-toggle="data"]',
-                    fragment
-                );
+                dom.cloneData('[data-toggle="data"]', fragment);
                 return dom.getData(fragment);
             }),
             {
@@ -356,10 +311,7 @@ describe('#cloneData', function() {
             await exec(_ => {
                 const div = document.createElement('div');
                 const shadow = div.attachShadow({ mode: 'open' });
-                dom.cloneData(
-                    '[data-toggle="data"]',
-                    shadow
-                );
+                dom.cloneData('[data-toggle="data"]', shadow);
                 return dom.getData(shadow);
             }),
             {
@@ -372,10 +324,7 @@ describe('#cloneData', function() {
     it('works with Document other nodes', async function() {
         assert.deepEqual(
             await exec(_ => {
-                dom.cloneData(
-                    '[data-toggle="data"]',
-                    document
-                );
+                dom.cloneData('[data-toggle="data"]', document);
                 return dom.getData(document);
             }),
             {
@@ -388,10 +337,7 @@ describe('#cloneData', function() {
     it('works with Window other nodes', async function() {
         assert.deepEqual(
             await exec(_ => {
-                dom.cloneData(
-                    '[data-toggle="data"]',
-                    window
-                );
+                dom.cloneData('[data-toggle="data"]', window);
                 return dom.getData(window);
             }),
             {
@@ -404,13 +350,10 @@ describe('#cloneData', function() {
     it('works with array other nodes', async function() {
         assert.deepEqual(
             await exec(_ => {
-                dom.cloneData(
-                    '[data-toggle="data"]',
-                    [
-                        document.getElementById('test3'),
-                        document.getElementById('test4')
-                    ]
-                );
+                dom.cloneData('[data-toggle="data"]', [
+                    document.getElementById('test3'),
+                    document.getElementById('test4')
+                ]);
                 return [
                     dom.getData('#test3'),
                     dom.getData('#test4')

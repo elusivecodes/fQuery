@@ -42,9 +42,7 @@ describe('#normalize', function() {
     it('normalizes all text nodes', async function() {
         assert.deepEqual(
             await exec(_ => {
-                dom.normalize(
-                    '.test'
-                );
+                dom.normalize('.test');
                 return [
                     document.getElementById('child1').childNodes.length,
                     document.getElementById('child2').childNodes.length
@@ -60,9 +58,7 @@ describe('#normalize', function() {
     it('retains HTML contents', async function() {
         assert.equal(
             await exec(_ => {
-                dom.normalize(
-                    '.test'
-                );
+                dom.normalize('.test');
                 return document.body.innerHTML;
             }),
             '<div id="parent1" class="test">' +
@@ -184,12 +180,10 @@ describe('#normalize', function() {
     it('works with array nodes', async function() {
         assert.deepEqual(
             await exec(_ => {
-                dom.normalize(
-                    [
-                        document.getElementById('parent1'),
-                        document.getElementById('parent2')
-                    ]
-                );
+                dom.normalize([
+                    document.getElementById('parent1'),
+                    document.getElementById('parent2')
+                ]);
                 return [
                     document.getElementById('child1').childNodes.length,
                     document.getElementById('child2').childNodes.length

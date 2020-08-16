@@ -14,9 +14,7 @@ describe('#show', function() {
     it('shows all nodes', async function() {
         assert.equal(
             await exec(_ => {
-                dom.show(
-                    'div'
-                );
+                dom.show('div');
                 return document.body.innerHTML;
             }),
             '<div id="test1" style=""></div>' +
@@ -66,12 +64,10 @@ describe('#show', function() {
     it('works with array nodes', async function() {
         assert.equal(
             await exec(_ => {
-                dom.show(
-                    [
-                        document.getElementById('test1'),
-                        document.getElementById('test2')
-                    ]
-                );
+                dom.show([
+                    document.getElementById('test1'),
+                    document.getElementById('test2')
+                ]);
                 return document.body.innerHTML;
             }),
             '<div id="test1" style=""></div>' +

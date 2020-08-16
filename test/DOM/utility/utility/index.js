@@ -15,58 +15,54 @@ describe('#index', function() {
 
     it('returns the index of the first node relative to the parent', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.index(
-                    '.test'
-                );
-            }),
+            await exec(_ =>
+                dom.index('.test')
+            ),
             1
         );
     });
 
     it('works with HTMLElement nodes', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.index(
+            await exec(_ =>
+                dom.index(
                     document.getElementById('div2')
-                );
-            }),
+                )
+            ),
             1
         );
     });
 
     it('works with NodeList nodes', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.index(
+            await exec(_ =>
+                dom.index(
                     document.querySelectorAll('.test')
-                );
-            }),
+                )
+            ),
             1
         );
     });
 
     it('works with HTMLCollection nodes', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.index(
+            await exec(_ =>
+                dom.index(
                     document.body.children
-                );
-            }),
+                )
+            ),
             0
         );
     });
 
     it('works with array nodes', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.index(
-                    [
-                        document.getElementById('div2'),
-                        document.getElementById('div4')
-                    ]
-                );
-            }),
+            await exec(_ =>
+                dom.index([
+                    document.getElementById('div2'),
+                    document.getElementById('div4')
+                ])
+            ),
             1
         );
     });

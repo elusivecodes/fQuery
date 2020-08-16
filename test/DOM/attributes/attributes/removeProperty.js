@@ -14,19 +14,14 @@ describe('#removeProperty', function() {
     });
 
     it('removes a property for all nodes', async function() {
-        const result = await exec(_ => {
-            dom.removeProperty(
-                'input',
-                'test'
-            );
-            return [
-                document.getElementById('test1').test,
-                document.getElementById('test2').test
-            ];
-        });
-
         assert.deepEqual(
-            result,
+            await exec(_ => {
+                dom.removeProperty('input', 'test');
+                return [
+                    document.getElementById('test1').test,
+                    document.getElementById('test2').test
+                ];
+            }),
             [
                 null,
                 null
@@ -35,20 +30,18 @@ describe('#removeProperty', function() {
     });
 
     it('works with HTMLElement nodes', async function() {
-        const result = await exec(_ => {
-            const element = document.getElementById('test1');
-            dom.removeProperty(
-                element,
-                'test'
-            );
-            return [
-                element.test,
-                document.getElementById('test2').test
-            ];
-        });
-
         assert.deepEqual(
-            result,
+            await exec(_ => {
+                const element = document.getElementById('test1');
+                dom.removeProperty(
+                    element,
+                    'test'
+                );
+                return [
+                    element.test,
+                    document.getElementById('test2').test
+                ];
+            }),
             [
                 null,
                 'Test 2'
@@ -57,19 +50,17 @@ describe('#removeProperty', function() {
     });
 
     it('works with NodeList nodes', async function() {
-        const result = await exec(_ => {
-            dom.removeProperty(
-                document.querySelectorAll('input'),
-                'test'
-            );
-            return [
-                document.getElementById('test1').test,
-                document.getElementById('test2').test
-            ];
-        });
-
         assert.deepEqual(
-            result,
+            await exec(_ => {
+                dom.removeProperty(
+                    document.querySelectorAll('input'),
+                    'test'
+                );
+                return [
+                    document.getElementById('test1').test,
+                    document.getElementById('test2').test
+                ];
+            }),
             [
                 null,
                 null
@@ -78,19 +69,17 @@ describe('#removeProperty', function() {
     });
 
     it('works with HTMLCollection nodes', async function() {
-        const result = await exec(_ => {
-            dom.removeProperty(
-                document.body.children,
-                'test'
-            );
-            return [
-                document.getElementById('test1').test,
-                document.getElementById('test2').test
-            ];
-        });
-
         assert.deepEqual(
-            result,
+            await exec(_ => {
+                dom.removeProperty(
+                    document.body.children,
+                    'test'
+                );
+                return [
+                    document.getElementById('test1').test,
+                    document.getElementById('test2').test
+                ];
+            }),
             [
                 null,
                 null
@@ -99,24 +88,19 @@ describe('#removeProperty', function() {
     });
 
     it('works with array nodes', async function() {
-        const result = await exec(_ => {
-            const element1 = document.getElementById('test1');
-            const element2 = document.getElementById('test2');
-            dom.removeProperty(
-                [
+        assert.deepEqual(
+            await exec(_ => {
+                const element1 = document.getElementById('test1');
+                const element2 = document.getElementById('test2');
+                dom.removeProperty([
                     element1,
                     element2
-                ],
-                'test'
-            );
-            return [
-                element1.test,
-                element2.test
-            ];
-        });
-
-        assert.deepEqual(
-            result,
+                ], 'test');
+                return [
+                    element1.test,
+                    element2.test
+                ];
+            }),
             [
                 null,
                 null

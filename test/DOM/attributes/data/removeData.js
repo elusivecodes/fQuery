@@ -8,22 +8,17 @@ describe('#removeData', function() {
             document.body.innerHTML =
                 '<div id="test1"></div>' +
                 '<div id="test2"></div>';
-            dom.setData(
-                'div',
-                {
-                    testA: 'Test 1',
-                    testB: 'Test 2'
-                }
-            );
+            dom.setData('div', {
+                testA: 'Test 1',
+                testB: 'Test 2'
+            });
         });
     });
 
     it('removes all data for all nodes', async function() {
         assert.deepEqual(
             await exec(_ => {
-                dom.removeData(
-                    'div'
-                );
+                dom.removeData('div');
                 return [
                     dom.getData('#test1'),
                     dom.getData('#test2')
@@ -39,10 +34,7 @@ describe('#removeData', function() {
     it('removes data for all nodes', async function() {
         assert.deepEqual(
             await exec(_ => {
-                dom.removeData(
-                    'div',
-                    'testA'
-                );
+                dom.removeData('div', 'testA');
                 return [
                     dom.getData('#test1'),
                     dom.getData('#test2')
@@ -124,17 +116,11 @@ describe('#removeData', function() {
         assert.deepEqual(
             await exec(_ => {
                 const fragment = document.createDocumentFragment();
-                dom.setData(
-                    fragment,
-                    {
-                        testA: 'Test 1',
-                        testB: 'Test 2'
-                    }
-                );
-                dom.removeData(
-                    fragment,
-                    'testA'
-                );
+                dom.setData(fragment, {
+                    testA: 'Test 1',
+                    testB: 'Test 2'
+                });
+                dom.removeData(fragment, 'testA');
                 return dom.getData(fragment);
             }),
             {
@@ -148,17 +134,11 @@ describe('#removeData', function() {
             await exec(_ => {
                 const div = document.createElement('div');
                 const shadow = div.attachShadow({ mode: 'open' });
-                dom.setData(
-                    shadow,
-                    {
-                        testA: 'Test 1',
-                        testB: 'Test 2'
-                    }
-                );
-                dom.removeData(
-                    shadow,
-                    'testA'
-                );
+                dom.setData(shadow, {
+                    testA: 'Test 1',
+                    testB: 'Test 2'
+                });
+                dom.removeData(shadow, 'testA');
                 return dom.getData(shadow);
             }),
             {
@@ -170,17 +150,11 @@ describe('#removeData', function() {
     it('works with Document nodes', async function() {
         assert.deepEqual(
             await exec(_ => {
-                dom.setData(
-                    document,
-                    {
-                        testA: 'Test 1',
-                        testB: 'Test 2'
-                    }
-                );
-                dom.removeData(
-                    document,
-                    'testA'
-                );
+                dom.setData(document, {
+                    testA: 'Test 1',
+                    testB: 'Test 2'
+                });
+                dom.removeData(document, 'testA');
                 return dom.getData(document);
             }),
             {
@@ -192,17 +166,11 @@ describe('#removeData', function() {
     it('works with Window nodes', async function() {
         assert.deepEqual(
             await exec(_ => {
-                dom.setData(
-                    window,
-                    {
-                        testA: 'Test 1',
-                        testB: 'Test 2'
-                    }
-                );
-                dom.removeData(
-                    window,
-                    'testA'
-                );
+                dom.setData(window, {
+                    testA: 'Test 1',
+                    testB: 'Test 2'
+                });
+                dom.removeData(window, 'testA');
                 return dom.getData(window);
             }),
             {
@@ -214,13 +182,10 @@ describe('#removeData', function() {
     it('works with array nodes', async function() {
         assert.deepEqual(
             await exec(_ => {
-                dom.removeData(
-                    [
-                        document.getElementById('test1'),
-                        document.getElementById('test2')
-                    ],
-                    'testA'
-                );
+                dom.removeData([
+                    document.getElementById('test1'),
+                    document.getElementById('test2')
+                ], 'testA');
                 return [
                     dom.getData('#test1'),
                     dom.getData('#test2')

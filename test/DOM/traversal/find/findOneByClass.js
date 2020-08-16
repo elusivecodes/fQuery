@@ -32,82 +32,72 @@ describe('#findOneByClass', function() {
 
     it('finds elements by class name', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.findOneByClass(
-                    'test'
-                ).id;
-            }),
+            await exec(_ =>
+                dom.findOneByClass('test').id
+            ),
             'span1'
         );
     });
 
     it('returns null for non-matching class', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.findOneByClass(
-                    'invalid'
-                );
-            }),
+            await exec(_ =>
+                dom.findOneByClass('invalid')
+            ),
             null
         );
     });
 
     it('returns undefined for empty nodes', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.findOneByClass(
-                    'test',
-                    '#invalid'
-                );
-            }),
+            await exec(_ =>
+                dom.findOneByClass('test', '#invalid')
+            ),
             undefined
         );
     });
 
     it('works with query selector nodes', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.findOneByClass(
-                    'test',
-                    '#parent2'
-                ).id;
-            }),
+            await exec(_ =>
+                dom.findOneByClass('test', '#parent2').id
+            ),
             'span5'
         );
     });
 
     it('works with HTMLElement nodes', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.findOneByClass(
+            await exec(_ =>
+                dom.findOneByClass(
                     'test',
                     document.getElementById('parent2')
-                ).id;
-            }),
+                ).id
+            ),
             'span5'
         );
     });
 
     it('works with NodeList nodes', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.findOneByClass(
+            await exec(_ =>
+                dom.findOneByClass(
                     'test',
                     document.querySelectorAll('#parent2')
-                ).id;
-            }),
+                ).id
+            ),
             'span5'
         );
     });
 
     it('works with HTMLCollection nodes', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.findOneByClass(
+            await exec(_ =>
+                dom.findOneByClass(
                     'test',
                     document.getElementById('parent2').children
-                ).id;
-            }),
+                ).id
+            ),
             'span5'
         );
     });
@@ -122,10 +112,7 @@ describe('#findOneByClass', function() {
                     '<div id="div3" class="test"></div>' +
                     '<div id="div4"></div>'
                 );
-                return dom.findOneByClass(
-                    'test',
-                    fragment
-                ).id;
+                return dom.findOneByClass('test', fragment).id;
             }),
             'div1'
         );
@@ -144,10 +131,7 @@ describe('#findOneByClass', function() {
                     '<div id="div4"></div>'
                 );
                 shadow.appendChild(fragment);
-                return dom.findOneByClass(
-                    'test',
-                    shadow
-                ).id;
+                return dom.findOneByClass('test', shadow).id;
             }),
             'div1'
         );
@@ -170,10 +154,7 @@ describe('#findOneByClass', function() {
                     '</html>',
                     'text/html'
                 );
-                return dom.findOneByClass(
-                    'test',
-                    myDoc
-                ).id;
+                return dom.findOneByClass('test', myDoc).id;
             }),
             'div1'
         );
@@ -181,15 +162,12 @@ describe('#findOneByClass', function() {
 
     it('works with array nodes', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.findOneByClass(
-                    'test',
-                    [
-                        document.getElementById('child3'),
-                        document.getElementById('child4')
-                    ]
-                ).id;
-            }),
+            await exec(_ =>
+                dom.findOneByClass('test', [
+                    document.getElementById('child3'),
+                    document.getElementById('child4')
+                ]).id
+            ),
             'span5'
         );
     });

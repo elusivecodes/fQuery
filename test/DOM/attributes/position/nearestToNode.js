@@ -21,10 +21,7 @@ describe('#nearestToNode', function() {
     it('returns the nearest node to another node', async function() {
         assert.equal(
             await exec(_ => {
-                const nearest = dom.nearestToNode(
-                    '[data-toggle="from"]',
-                    '[data-toggle="to"]'
-                );
+                const nearest = dom.nearestToNode('[data-toggle="from"]', '[data-toggle="to"]');
                 return nearest.id;
             }),
             'test2'
@@ -33,24 +30,18 @@ describe('#nearestToNode', function() {
 
     it('returns undefined for empty nodes', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.nearestToNode(
-                    '#invalid',
-                    '[data-toggle="to"]'
-                );
-            }),
+            await exec(_ =>
+                dom.nearestToNode('#invalid', '[data-toggle="to"]')
+            ),
             undefined
         );
     });
 
     it('returns undefined for empty other nodes', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.nearestToNode(
-                    '[data-toggle="from"]',
-                    '#invalid'
-                );
-            }),
+            await exec(_ =>
+                dom.nearestToNode('[data-toggle="from"]', '#invalid')
+            ),
             undefined
         );
     });
@@ -97,13 +88,10 @@ describe('#nearestToNode', function() {
     it('works with array nodes', async function() {
         assert.equal(
             await exec(_ => {
-                const nearest = dom.nearestToNode(
-                    [
-                        document.getElementById('test1'),
-                        document.getElementById('test2')
-                    ],
-                    '[data-toggle="to"]'
-                );
+                const nearest = dom.nearestToNode([
+                    document.getElementById('test1'),
+                    document.getElementById('test2')
+                ], '[data-toggle="to"]');
                 return nearest.id;
             }),
             'test2'
@@ -152,13 +140,10 @@ describe('#nearestToNode', function() {
     it('works with array other nodes', async function() {
         assert.equal(
             await exec(_ => {
-                const nearest = dom.nearestToNode(
-                    '[data-toggle="from"]',
-                    [
-                        document.getElementById('test3'),
-                        document.getElementById('test4')
-                    ]
-                );
+                const nearest = dom.nearestToNode('[data-toggle="from"]', [
+                    document.getElementById('test3'),
+                    document.getElementById('test4')
+                ]);
                 return nearest.id;
             }),
             'test2'

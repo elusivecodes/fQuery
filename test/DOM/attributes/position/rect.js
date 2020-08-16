@@ -14,11 +14,9 @@ describe('#rect', function() {
 
     it('returns the bounding rectangle of the first node', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.rect(
-                    'div'
-                ).toJSON();
-            }),
+            await exec(_ =>
+                dom.rect('div').toJSON()
+            ),
             {
                 x: 600,
                 y: 50,
@@ -34,12 +32,9 @@ describe('#rect', function() {
 
     it('returns the bounding rectangle of the first node with offset', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.rect(
-                    'div',
-                    true
-                ).toJSON();
-            }),
+            await exec(_ =>
+                dom.rect('div', true).toJSON()
+            ),
             {
                 x: 1058,
                 y: 1050,
@@ -55,22 +50,20 @@ describe('#rect', function() {
 
     it('returns undefined for empty nodes', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.rect(
-                    '#invalid'
-                );
-            }),
+            await exec(_ =>
+                dom.rect('#invalid')
+            ),
             undefined
         );
     });
 
     it('works with HTMLElement nodes', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.rect(
+            await exec(_ =>
+                dom.rect(
                     document.getElementById('test1')
-                ).toJSON();
-            }),
+                ).toJSON()
+            ),
             {
                 x: 600,
                 y: 50,
@@ -86,11 +79,11 @@ describe('#rect', function() {
 
     it('works with NodeList nodes', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.rect(
+            await exec(_ =>
+                dom.rect(
                     document.querySelectorAll('div')
-                ).toJSON();
-            }),
+                ).toJSON()
+            ),
             {
                 x: 600,
                 y: 50,
@@ -106,11 +99,11 @@ describe('#rect', function() {
 
     it('works with HTMLCollection nodes', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.rect(
+            await exec(_ =>
+                dom.rect(
                     document.body.children
-                ).toJSON();
-            }),
+                ).toJSON()
+            ),
             {
                 x: 600,
                 y: 50,
@@ -126,14 +119,12 @@ describe('#rect', function() {
 
     it('works with array nodes', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.rect(
-                    [
-                        document.getElementById('test1'),
-                        document.getElementById('test2')
-                    ]
-                ).toJSON();
-            }),
+            await exec(_ =>
+                dom.rect([
+                    document.getElementById('test1'),
+                    document.getElementById('test2')
+                ]).toJSON()
+            ),
             {
                 x: 600,
                 y: 50,

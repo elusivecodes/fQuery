@@ -39,11 +39,10 @@ describe('#prev', function() {
 
     it('returns the previous sibling of each node', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.prev(
-                    '.span'
-                ).map(node => node.id);
-            }),
+            await exec(_ =>
+                dom.prev('.span')
+                    .map(node => node.id)
+            ),
             [
                 'span2',
                 'span6'
@@ -53,12 +52,10 @@ describe('#prev', function() {
 
     it('returns the previous sibling of each node matching a filter', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.prev(
-                    '.span',
-                    '#span6'
-                ).map(node => node.id);
-            }),
+            await exec(_ =>
+                dom.prev('.span', '#span6')
+                    .map(node => node.id)
+            ),
             [
                 'span6'
             ]
@@ -67,23 +64,21 @@ describe('#prev', function() {
 
     it('returns an empty array for empty nodes', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.prev(
-                    '#invalid'
-                );
-            }),
+            await exec(_ =>
+                dom.prev('#invalid')
+            ),
             []
         );
     });
 
     it('works with HTMLElement nodes', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.prev(
+            await exec(_ =>
+                dom.prev(
                     document.getElementById('span7'),
                     '#span6'
-                ).map(node => node.id);
-            }),
+                ).map(node => node.id)
+            ),
             [
                 'span6'
             ]
@@ -92,12 +87,12 @@ describe('#prev', function() {
 
     it('works with NodeList nodes', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.prev(
+            await exec(_ =>
+                dom.prev(
                     document.querySelectorAll('.span'),
                     '#span6'
-                ).map(node => node.id);
-            }),
+                ).map(node => node.id)
+            ),
             [
                 'span6'
             ]
@@ -106,12 +101,12 @@ describe('#prev', function() {
 
     it('works with HTMLCollection nodes', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.prev(
+            await exec(_ =>
+                dom.prev(
                     document.getElementById('parent2').children,
                     '#span6'
-                ).map(node => node.id);
-            }),
+                ).map(node => node.id)
+            ),
             [
                 'span6'
             ]
@@ -120,15 +115,12 @@ describe('#prev', function() {
 
     it('works with array nodes', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.prev(
-                    [
-                        document.getElementById('span3'),
-                        document.getElementById('span7')
-                    ],
-                    '#span6'
-                ).map(node => node.id);
-            }),
+            await exec(_ =>
+                dom.prev([
+                    document.getElementById('span3'),
+                    document.getElementById('span7')
+                ], '#span6').map(node => node.id)
+            ),
             [
                 'span6'
             ]
@@ -137,12 +129,12 @@ describe('#prev', function() {
 
     it('works with function filter', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.prev(
+            await exec(_ =>
+                dom.prev(
                     '.span',
                     node => node.id === 'span6'
-                ).map(node => node.id);
-            }),
+                ).map(node => node.id)
+            ),
             [
                 'span6'
             ]
@@ -151,12 +143,12 @@ describe('#prev', function() {
 
     it('works with HTMLElement filter', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.prev(
+            await exec(_ =>
+                dom.prev(
                     '.span',
                     document.getElementById('span6')
-                ).map(node => node.id);
-            }),
+                ).map(node => node.id)
+            ),
             [
                 'span6'
             ]
@@ -165,12 +157,12 @@ describe('#prev', function() {
 
     it('works with NodeList filter', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.prev(
+            await exec(_ =>
+                dom.prev(
                     '.span',
                     document.querySelectorAll('#span6')
-                ).map(node => node.id);
-            }),
+                ).map(node => node.id)
+            ),
             [
                 'span6'
             ]
@@ -179,12 +171,12 @@ describe('#prev', function() {
 
     it('works with HTMLCollection filter', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.prev(
+            await exec(_ =>
+                dom.prev(
                     '.span',
                     document.getElementById('parent2').children
-                ).map(node => node.id);
-            }),
+                ).map(node => node.id)
+            ),
             [
                 'span6'
             ]
@@ -193,15 +185,12 @@ describe('#prev', function() {
 
     it('works with array filter', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.prev(
-                    '.span',
-                    [
-                        document.getElementById('span2'),
-                        document.getElementById('span6')
-                    ]
-                ).map(node => node.id);
-            }),
+            await exec(_ =>
+                dom.prev('.span', [
+                    document.getElementById('span2'),
+                    document.getElementById('span6')
+                ]).map(node => node.id)
+            ),
             [
                 'span2',
                 'span6'

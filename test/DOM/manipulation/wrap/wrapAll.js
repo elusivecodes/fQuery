@@ -27,10 +27,7 @@ describe('#wrapAll', function() {
     it('wraps all nodes', async function() {
         assert.equal(
             await exec(_ => {
-                dom.wrapAll(
-                    'a',
-                    '.outer'
-                );
+                dom.wrapAll('a', '.outer');
                 return document.body.innerHTML;
             }),
             '<div id="wrap">' +
@@ -151,15 +148,12 @@ describe('#wrapAll', function() {
     it('works with array nodes', async function() {
         assert.equal(
             await exec(_ => {
-                dom.wrapAll(
-                    [
-                        document.getElementById('test1'),
-                        document.getElementById('test2'),
-                        document.getElementById('test3'),
-                        document.getElementById('test4')
-                    ],
-                    '.outer'
-                );
+                dom.wrapAll([
+                    document.getElementById('test1'),
+                    document.getElementById('test2'),
+                    document.getElementById('test3'),
+                    document.getElementById('test4')
+                ], '.outer');
                 return document.body.innerHTML;
             }),
             '<div id="wrap">' +
@@ -284,10 +278,7 @@ describe('#wrapAll', function() {
                 const fragment = range.createContextualFragment(
                     '<div><span></span></div>'
                 );
-                dom.wrapAll(
-                    'a',
-                    fragment
-                );
+                dom.wrapAll('a', fragment);
                 return document.body.innerHTML;
             }),
             '<div id="wrap">' +
@@ -315,12 +306,9 @@ describe('#wrapAll', function() {
     it('works with array other nodes', async function() {
         assert.equal(
             await exec(_ => {
-                dom.wrapAll(
-                    'a',
-                    [
-                        document.querySelector('.outer')
-                    ]
-                );
+                dom.wrapAll('a', [
+                    document.querySelector('.outer')
+                ]);
                 return document.body.innerHTML;
             }),
             '<div id="wrap">' +
@@ -348,10 +336,7 @@ describe('#wrapAll', function() {
     it('works with HTML other nodes', async function() {
         assert.equal(
             await exec(_ => {
-                dom.wrapAll(
-                    'a',
-                    '<div class="div-outer"><span class="span-inner"></span></div>'
-                );
+                dom.wrapAll('a', '<div class="div-outer"><span class="span-inner"></span></div>');
                 return document.body.innerHTML;
             }),
             '<div id="wrap">' +

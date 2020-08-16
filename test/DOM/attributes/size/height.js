@@ -13,127 +13,108 @@ describe('#height', function() {
 
     it('returns the height of the first node', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.height(
-                    'div'
-                );
-            }),
+            await exec(_ =>
+                dom.height('div')
+            ),
             1050
         );
     });
 
     it('returns the inner height of the first node', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.height(
-                    'div',
-                    DOM.INNER
-                );
-            }),
+            await exec(_ =>
+                dom.height('div', DOM.INNER)
+            ),
             1000
         );
     });
 
     it('returns the outer height of the first node', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.height(
-                    'div',
-                    DOM.OUTER
-                );
-            }),
+            await exec(_ =>
+                dom.height('div', DOM.OUTER)
+            ),
             1052
         );
     });
 
     it('returns the outer height of the first node with margin', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.height(
-                    'div',
-                    DOM.OUTER_MARGIN
-                );
-            }),
+            await exec(_ =>
+                dom.height('div', DOM.OUTER_MARGIN)
+            ),
             1152
         );
     });
 
     it('returns undefined for empty nodes', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.height(
-                    '#invalid'
-                );
-            }),
+            await exec(_ =>
+                dom.height('#invalid')
+            ),
             undefined
         );
     });
 
     it('works with HTMLElement nodes', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.height(
+            await exec(_ =>
+                dom.height(
                     document.getElementById('test1')
-                );
-            }),
+                )
+            ),
             1050
         );
     });
 
     it('works with NodeList nodes', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.height(
+            await exec(_ =>
+                dom.height(
                     document.querySelectorAll('div')
-                );
-            }),
+                )
+            ),
             1050
         );
     });
 
     it('works with HTMLCollection nodes', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.height(
+            await exec(_ =>
+                dom.height(
                     document.body.children
-                );
-            }),
+                )
+            ),
             1050
         );
     });
 
     it('works with Document nodes', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.height(
-                    document
-                );
-            }),
+            await exec(_ =>
+                dom.height(document)
+            ),
             1152
         );
     });
 
     it('works with Window nodes', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.height(
-                    window
-                );
-            }),
+            await exec(_ =>
+                dom.height(window)
+            ),
             600
         );
     });
 
     it('works with array nodes', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.height(
-                    [
-                        document.getElementById('test1'),
-                        document.getElementById('test2')
-                    ]
-                );
-            }),
+            await exec(_ =>
+                dom.height([
+                    document.getElementById('test1'),
+                    document.getElementById('test2')
+                ])
+            ),
             1050
         );
     });

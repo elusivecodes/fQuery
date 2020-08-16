@@ -14,9 +14,7 @@ describe('#hide', function() {
     it('hides all nodes', async function() {
         assert.equal(
             await exec(_ => {
-                dom.hide(
-                    'div'
-                );
+                dom.hide('div');
                 return document.body.innerHTML;
             }),
             '<div id="test1" style="display: none;"></div>' +
@@ -66,12 +64,10 @@ describe('#hide', function() {
     it('works with array nodes', async function() {
         assert.equal(
             await exec(_ => {
-                dom.hide(
-                    [
-                        document.getElementById('test1'),
-                        document.getElementById('test2')
-                    ]
-                );
+                dom.hide([
+                    document.getElementById('test1'),
+                    document.getElementById('test2')
+                ]);
                 return document.body.innerHTML;
             }),
             '<div id="test1" style="display: none;"></div>' +

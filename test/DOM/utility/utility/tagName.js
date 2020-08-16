@@ -15,60 +15,56 @@ describe('#tagName', function() {
 
     it('returns the tag name of the first node', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.tagName(
-                    'div'
-                );
-            }),
+            await exec(_ =>
+                dom.tagName('div')
+            ),
             'div'
         );
     });
 
     it('works with HTMLElement nodes', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.tagName(
+            await exec(_ =>
+                dom.tagName(
                     document.getElementById('span1')
-                );
-            }),
+                )
+            ),
             'span'
         );
     });
 
     it('works with NodeList nodes', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.tagName(
+            await exec(_ =>
+                dom.tagName(
                     document.querySelectorAll('div')
-                );
-            }),
+                )
+            ),
             'div'
         );
     });
 
     it('works with HTMLCollection nodes', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.tagName(
+            await exec(_ =>
+                dom.tagName(
                     document.body.children
-                );
-            }),
+                )
+            ),
             'div'
         );
     });
 
     it('works with array nodes', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.tagName(
-                    [
-                        document.getElementById('div1'),
-                        document.getElementById('div2'),
-                        document.getElementById('span1'),
-                        document.getElementById('span2')
-                    ]
-                );
-            }),
+            await exec(_ =>
+                dom.tagName([
+                    document.getElementById('div1'),
+                    document.getElementById('div2'),
+                    document.getElementById('span1'),
+                    document.getElementById('span2')
+                ])
+            ),
             'div'
         );
     });

@@ -47,13 +47,10 @@ describe('#loadStyles', function() {
 
     it('loads a stylesheet without cache', async function() {
         const link = await exec(_ => {
-            dom.loadStyles(
-                [
-                    'assets/test.css',
-                    'assets/test2.css'
-                ],
-                false
-            );
+            dom.loadStyles([
+                'assets/test.css',
+                'assets/test2.css'
+            ], false);
             return document.head.innerHTML;
         });
 
@@ -64,13 +61,10 @@ describe('#loadStyles', function() {
 
     it('loads a stylesheet without cache (query string)', async function() {
         const link = await exec(_ => {
-            dom.loadStyles(
-                [
-                    'assets/test.css?test=1',
-                    'assets/test2.css?test=2'
-                ],
-                false
-            );
+            dom.loadStyles([
+                'assets/test.css?test=1',
+                'assets/test2.css?test=2'
+            ], false);
             return Core.unescape(document.head.innerHTML);
         });
 

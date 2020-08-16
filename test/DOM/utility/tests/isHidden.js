@@ -16,55 +16,51 @@ describe('#isHidden', function() {
 
     it('returns true if any node is hidden', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.isHidden(
-                    'div'
-                );
-            }),
+            await exec(_ =>
+                dom.isHidden('div')
+            ),
             true
         );
     });
 
     it('returns false if no nodes are hidden', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.isHidden(
-                    'div:not(.test)'
-                );
-            }),
+            await exec(_ =>
+                dom.isHidden('div:not(.test)')
+            ),
             false
         );
     });
 
     it('works with HTMLElement nodes', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.isHidden(
+            await exec(_ =>
+                dom.isHidden(
                     document.getElementById('div1')
-                );
-            }),
+                )
+            ),
             true
         );
     });
 
     it('works with NodeList nodes', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.isHidden(
+            await exec(_ =>
+                dom.isHidden(
                     document.querySelectorAll('div')
-                );
-            }),
+                )
+            ),
             true
         );
     });
 
     it('works with HTMLCollection nodes', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.isHidden(
+            await exec(_ =>
+                dom.isHidden(
                     document.body.children
-                );
-            }),
+                )
+            ),
             true
         );
     });
@@ -73,9 +69,7 @@ describe('#isHidden', function() {
         assert.equal(
             await exec(_ => {
                 const myDoc = new Document();
-                return dom.isHidden(
-                    myDoc
-                );
+                return dom.isHidden(myDoc);
             }),
             true
         );
@@ -89,9 +83,7 @@ describe('#isHidden', function() {
                     id: 'window'
                 };
                 myWindow.document.defaultView = myWindow;
-                return dom.isHidden(
-                    myWindow
-                );
+                return dom.isHidden(myWindow);
             }),
             true
         );
@@ -99,16 +91,14 @@ describe('#isHidden', function() {
 
     it('works with array nodes', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.isHidden(
-                    [
-                        document.getElementById('div1'),
-                        document.getElementById('div2'),
-                        document.getElementById('div3'),
-                        document.getElementById('div4')
-                    ]
-                );
-            }),
+            await exec(_ =>
+                dom.isHidden([
+                    document.getElementById('div1'),
+                    document.getElementById('div2'),
+                    document.getElementById('div3'),
+                    document.getElementById('div4')
+                ])
+            ),
             true
         );
     });

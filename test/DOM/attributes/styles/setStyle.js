@@ -14,15 +14,12 @@ describe('#setStyle', function() {
     it('sets a styles object for all nodes', async function() {
         assert.equal(
             await exec(_ => {
-                dom.setStyle(
-                    'div',
-                    {
-                        display: 'block',
-                        width: '100%',
-                        height: '100px',
-                        opacity: 0.5
-                    }
-                );
+                dom.setStyle('div', {
+                    display: 'block',
+                    width: '100%',
+                    height: '100px',
+                    opacity: 0.5
+                });
                 return document.body.innerHTML;
             }),
             '<div id="test1" style="display: block; width: 100%; height: 100px; opacity: 0.5;"></div>' +
@@ -33,11 +30,7 @@ describe('#setStyle', function() {
     it('sets a style value for all nodes', async function() {
         assert.equal(
             await exec(_ => {
-                dom.setStyle(
-                    'div',
-                    'display',
-                    'block'
-                );
+                dom.setStyle('div', 'display', 'block');
                 return document.body.innerHTML;
             }),
             '<div id="test1" style="display: block;"></div>' +
@@ -48,11 +41,7 @@ describe('#setStyle', function() {
     it('converts number values to pixels', async function() {
         assert.equal(
             await exec(_ => {
-                dom.setStyle(
-                    'div',
-                    'width',
-                    '100'
-                );
+                dom.setStyle('div', 'width', '100');
                 return document.body.innerHTML;
             }),
             '<div id="test1" style="width: 100px;"></div>' +
@@ -63,13 +52,10 @@ describe('#setStyle', function() {
     it('converts style object number values to pixels', async function() {
         assert.equal(
             await exec(_ => {
-                dom.setStyle(
-                    'div',
-                    {
-                        width: 100,
-                        height: 100
-                    }
-                );
+                dom.setStyle('div', {
+                    width: 100,
+                    height: 100
+                });
                 return document.body.innerHTML;
             }),
             '<div id="test1" style="width: 100px; height: 100px;"></div>' +
@@ -80,11 +66,7 @@ describe('#setStyle', function() {
     it('does not convert number values with units to pixels', async function() {
         assert.equal(
             await exec(_ => {
-                dom.setStyle(
-                    'div',
-                    'width',
-                    '100%'
-                );
+                dom.setStyle('div', 'width', '100%');
                 return document.body.innerHTML;
             }),
             '<div id="test1" style="width: 100%;"></div>' +
@@ -95,11 +77,7 @@ describe('#setStyle', function() {
     it('does not convert number values for CSS number properties', async function() {
         assert.equal(
             await exec(_ => {
-                dom.setStyle(
-                    'div',
-                    'font-weight',
-                    '500'
-                );
+                dom.setStyle('div', 'font-weight', '500');
                 return document.body.innerHTML;
             }),
             '<div id="test1" style="font-weight: 500;"></div>' +
@@ -110,15 +88,10 @@ describe('#setStyle', function() {
     it('sets a style object for all nodes with important', async function() {
         assert.equal(
             await exec(_ => {
-                dom.setStyle(
-                    'div',
-                    {
-                        display: 'block',
-                        width: '100%'
-                    },
-                    null,
-                    true
-                );
+                dom.setStyle('div', {
+                    display: 'block',
+                    width: '100%'
+                }, null, true);
                 return document.body.innerHTML;
             }),
             '<div id="test1" style="display: block !important; width: 100% !important;"></div>' +
@@ -129,12 +102,7 @@ describe('#setStyle', function() {
     it('sets a style value for all nodes with important', async function() {
         assert.equal(
             await exec(_ => {
-                dom.setStyle(
-                    'div',
-                    'display',
-                    'block',
-                    true
-                );
+                dom.setStyle('div', 'display', 'block', true);
                 return document.body.innerHTML;
             }),
             '<div id="test1" style="display: block !important;"></div>' +
@@ -190,14 +158,10 @@ describe('#setStyle', function() {
     it('works with array nodes', async function() {
         assert.equal(
             await exec(_ => {
-                dom.setStyle(
-                    [
-                        document.getElementById('test1'),
-                        document.getElementById('test2')
-                    ],
-                    'display',
-                    'block'
-                );
+                dom.setStyle([
+                    document.getElementById('test1'),
+                    document.getElementById('test2')
+                ], 'display', 'block');
                 return document.body.innerHTML;
             }),
             '<div id="test1" style="display: block;"></div>' +

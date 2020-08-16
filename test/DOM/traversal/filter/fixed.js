@@ -24,11 +24,10 @@ describe('#fixed', function() {
 
     it('returns fixed nodes', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.fixed(
-                    'div'
-                ).map(node => node.id);
-            }),
+            await exec(_ =>
+                dom.fixed('div')
+                    .map(node => node.id)
+            ),
             [
                 'div2',
                 'div4'
@@ -38,11 +37,10 @@ describe('#fixed', function() {
 
     it('returns descendents of fixed nodes', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.fixed(
-                    'span'
-                ).map(node => node.id);
-            }),
+            await exec(_ =>
+                dom.fixed('span')
+                    .map(node => node.id)
+            ),
             [
                 'span2',
                 'span4'
@@ -52,11 +50,11 @@ describe('#fixed', function() {
 
     it('works with HTMLElement nodes', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.fixed(
+            await exec(_ =>
+                dom.fixed(
                     document.getElementById('div2')
-                ).map(node => node.id);
-            }),
+                ).map(node => node.id)
+            ),
             [
                 'div2'
             ]
@@ -65,11 +63,11 @@ describe('#fixed', function() {
 
     it('works with NodeList nodes', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.fixed(
+            await exec(_ =>
+                dom.fixed(
                     document.querySelectorAll('div')
-                ).map(node => node.id);
-            }),
+                ).map(node => node.id)
+            ),
             [
                 'div2',
                 'div4'
@@ -79,11 +77,11 @@ describe('#fixed', function() {
 
     it('works with HTMLCollection nodes', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.fixed(
+            await exec(_ =>
+                dom.fixed(
                     document.body.children
-                ).map(node => node.id);
-            }),
+                ).map(node => node.id)
+            ),
             [
                 'div2',
                 'div4'
@@ -93,16 +91,14 @@ describe('#fixed', function() {
 
     it('works with array nodes', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.fixed(
-                    [
-                        document.getElementById('div1'),
-                        document.getElementById('div2'),
-                        document.getElementById('div3'),
-                        document.getElementById('div4')
-                    ]
-                ).map(node => node.id);
-            }),
+            await exec(_ =>
+                dom.fixed([
+                    document.getElementById('div1'),
+                    document.getElementById('div2'),
+                    document.getElementById('div3'),
+                    document.getElementById('div4')
+                ]).map(node => node.id)
+            ),
             [
                 'div2',
                 'div4'

@@ -12,9 +12,7 @@ describe('#attachShadow', function() {
     it('attaches a shadow root to the first node', async function() {
         assert.deepEqual(
             await exec(_ => {
-                const shadow = dom.attachShadow(
-                    '#test'
-                );
+                const shadow = dom.attachShadow('#test');
                 return [
                     shadow instanceof ShadowRoot,
                     document.getElementById('test').shadowRoot instanceof ShadowRoot
@@ -30,10 +28,7 @@ describe('#attachShadow', function() {
     it('attaches a closed shadow root to the first node', async function() {
         assert.deepEqual(
             await exec(_ => {
-                const shadow = dom.attachShadow(
-                    '#test',
-                    false
-                );
+                const shadow = dom.attachShadow('#test', false);
                 return [
                     shadow instanceof ShadowRoot,
                     document.getElementById('test').shadowRoot
@@ -50,9 +45,7 @@ describe('#attachShadow', function() {
         assert.equal(
             await exec(_ => {
                 const element = document.getElementById('test');
-                dom.attachShadow(
-                    element
-                );
+                dom.attachShadow(element);
                 return element.shadowRoot instanceof ShadowRoot;
             }),
             true
@@ -87,11 +80,7 @@ describe('#attachShadow', function() {
         assert.equal(
             await exec(_ => {
                 const element = document.getElementById('test');
-                dom.attachShadow(
-                    [
-                        element
-                    ]
-                );
+                dom.attachShadow([element]);
                 return element.shadowRoot instanceof ShadowRoot;
             }),
             true

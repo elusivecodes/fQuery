@@ -15,44 +15,51 @@ describe('#scrollHeight', function() {
 
     it('returns the scroll height of the first node', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.scrollHeight(
-                    'div'
-                );
-            }),
+            await exec(_ =>
+                dom.scrollHeight('div')
+            ),
             1000
         );
     });
 
     it('returns undefined for empty nodes', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.scrollHeight(
-                    '#invalid'
-                );
-            }),
+            await exec(_ =>
+                dom.scrollHeight('#invalid')
+            ),
             undefined
+        );
+    });
+
+    it('works with HTMLElement nodes', async function() {
+        assert.equal(
+            await exec(_ =>
+                dom.scrollHeight(
+                    document.getElementById('test1')
+                )
+            ),
+            1000
         );
     });
 
     it('works with NodeList nodes', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.scrollHeight(
+            await exec(_ =>
+                dom.scrollHeight(
                     document.querySelectorAll('div')
-                );
-            }),
+                )
+            ),
             1000
         );
     });
 
     it('works with HTMLCollection nodes', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.scrollHeight(
+            await exec(_ =>
+                dom.scrollHeight(
                     document.body.children
-                );
-            }),
+                )
+            ),
             1000
         );
     });
@@ -61,9 +68,7 @@ describe('#scrollHeight', function() {
         assert.equal(
             await exec(_ => {
                 document.body.innerHTML = '<div style="block; width: 1000px; height: 1000px;"></div>';
-                return dom.scrollHeight(
-                    document
-                );
+                return dom.scrollHeight(document);
             }),
             1016
         );
@@ -71,14 +76,12 @@ describe('#scrollHeight', function() {
 
     it('works with array nodes', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.scrollHeight(
-                    [
-                        document.getElementById('test1'),
-                        document.getElementById('test2')
-                    ]
-                );
-            }),
+            await exec(_ =>
+                dom.scrollHeight([
+                    document.getElementById('test1'),
+                    document.getElementById('test2')
+                ])
+            ),
             1000
         );
     });

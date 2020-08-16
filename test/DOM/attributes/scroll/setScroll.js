@@ -20,11 +20,7 @@ describe('#setScroll', function() {
             await exec(_ => {
                 const element1 = document.getElementById('test1');
                 const element2 = document.getElementById('test2');
-                dom.setScroll(
-                    'div',
-                    100,
-                    50
-                );
+                dom.setScroll('div', 100, 50);
                 return [
                     [
                         element1.scrollLeft,
@@ -47,11 +43,7 @@ describe('#setScroll', function() {
         assert.deepEqual(
             await exec(_ => {
                 const element = document.getElementById('test1');
-                dom.setScroll(
-                    element,
-                    100,
-                    50
-                );
+                dom.setScroll(element, 100, 50);
                 return [
                     element.scrollLeft,
                     element.scrollTop
@@ -121,11 +113,7 @@ describe('#setScroll', function() {
         assert.deepEqual(
             await exec(_ => {
                 document.body.innerHTML = '<div style="display: block; width: 1000px; height: 1000px;"></div>';
-                dom.setScroll(
-                    document,
-                    100,
-                    50
-                );
+                dom.setScroll(document, 100, 50);
                 return [
                     document.scrollingElement.scrollLeft,
                     document.scrollingElement.scrollTop
@@ -139,11 +127,7 @@ describe('#setScroll', function() {
         assert.deepEqual(
             await exec(_ => {
                 document.body.innerHTML = '<div style="display: block; width: 1000px; height: 1000px;"></div>';
-                dom.setScroll(
-                    window,
-                    100,
-                    50
-                );
+                dom.setScroll(window, 100, 50);
                 return [
                     window.scrollX,
                     window.scrollY
@@ -158,14 +142,10 @@ describe('#setScroll', function() {
             await exec(_ => {
                 const element1 = document.getElementById('test1');
                 const element2 = document.getElementById('test2');
-                dom.setScroll(
-                    [
-                        element1,
-                        element2
-                    ],
-                    100,
-                    50
-                );
+                dom.setScroll([
+                    element1,
+                    element2
+                ], 100, 50);
                 return [
                     [
                         element1.scrollLeft,

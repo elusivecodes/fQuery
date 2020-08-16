@@ -17,9 +17,7 @@ describe('#click', function() {
                 let result;
                 const element = document.getElementById('test1');
                 element.addEventListener('click', _ => { result = true; });
-                dom.click(
-                    'a'
-                );
+                dom.click('a');
                 return result;
             }),
             true
@@ -77,12 +75,10 @@ describe('#click', function() {
                 let result;
                 const element = document.getElementById('test1');
                 element.addEventListener('click', _ => { result = true; });
-                dom.click(
-                    [
-                        document.getElementById('test1'),
-                        document.getElementById('test2')
-                    ]
-                );
+                dom.click([
+                    document.getElementById('test1'),
+                    document.getElementById('test2')
+                ]);
                 return result;
             }),
             true

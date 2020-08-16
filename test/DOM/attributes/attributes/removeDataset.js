@@ -14,10 +14,7 @@ describe('#removeDataset', function() {
     it('removes a dataset value for all nodes', async function() {
         assert.equal(
             await exec(_ => {
-                dom.removeDataset(
-                    'div',
-                    'text'
-                );
+                dom.removeDataset('div', 'text');
                 return document.body.innerHTML;
             }),
             '<div id="test1"></div>' +
@@ -70,13 +67,10 @@ describe('#removeDataset', function() {
     it('works with array nodes', async function() {
         assert.equal(
             await exec(_ => {
-                dom.removeDataset(
-                    [
-                        document.getElementById('test1'),
-                        document.getElementById('test2')
-                    ],
-                    'text'
-                );
+                dom.removeDataset([
+                    document.getElementById('test1'),
+                    document.getElementById('test2')
+                ], 'text');
                 return document.body.innerHTML;
             }),
             '<div id="test1"></div>' +

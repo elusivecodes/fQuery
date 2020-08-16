@@ -14,10 +14,7 @@ describe('#toggleClass', function() {
     it('toggles a class for all nodes', async function() {
         assert.equal(
             await exec(_ => {
-                dom.toggleClass(
-                    'div',
-                    'test1'
-                );
+                dom.toggleClass('div', 'test1');
                 return document.body.innerHTML;
             }),
             '<div id="test1" class="test2"></div>' +
@@ -28,10 +25,7 @@ describe('#toggleClass', function() {
     it('parses classes from string', async function() {
         assert.equal(
             await exec(_ => {
-                dom.toggleClass(
-                    'div',
-                    'test1 test2'
-                );
+                dom.toggleClass('div', 'test1 test2');
                 return document.body.innerHTML;
             }),
             '<div id="test1" class=""></div>' +
@@ -42,13 +36,10 @@ describe('#toggleClass', function() {
     it('parses classes from array', async function() {
         assert.equal(
             await exec(_ => {
-                dom.toggleClass(
-                    'div',
-                    [
-                        'test1',
-                        'test2'
-                    ]
-                );
+                dom.toggleClass('div', [
+                    'test1',
+                    'test2'
+                ]);
                 return document.body.innerHTML;
             }),
             '<div id="test1" class=""></div>' +
@@ -59,11 +50,7 @@ describe('#toggleClass', function() {
     it('parses classes from multiple arguments', async function() {
         assert.equal(
             await exec(_ => {
-                dom.toggleClass(
-                    'div',
-                    'test1',
-                    ['test2']
-                );
+                dom.toggleClass('div', 'test1', ['test2']);
                 return document.body.innerHTML;
             }),
             '<div id="test1" class=""></div>' +
@@ -116,13 +103,10 @@ describe('#toggleClass', function() {
     it('works with array nodes', async function() {
         assert.equal(
             await exec(_ => {
-                dom.toggleClass(
-                    [
-                        document.getElementById('test1'),
-                        document.getElementById('test2')
-                    ],
-                    'test1'
-                );
+                dom.toggleClass([
+                    document.getElementById('test1'),
+                    document.getElementById('test2')
+                ], 'test1');
                 return document.body.innerHTML;
             }),
             '<div id="test1" class="test2"></div>' +

@@ -34,12 +34,9 @@ describe('#slideOut', function() {
 
     it('adds a slide-out animation to each node', async function() {
         await exec(_ => {
-            dom.slideOut(
-                '.animate',
-                {
-                    debug: true
-                }
-            );
+            dom.slideOut('.animate', {
+                debug: true
+            });
         }).then(waitFor(100)).then(async _ => {
             await testNoAnimation('#test1');
             await testNoAnimation('#test3');
@@ -63,13 +60,10 @@ describe('#slideOut', function() {
 
     it('adds a slide-out animation to each node with duration', async function() {
         await exec(_ => {
-            dom.slideOut(
-                '.animate',
-                {
-                    duration: 100,
-                    debug: true
-                }
-            );
+            dom.slideOut('.animate', {
+                duration: 100,
+                debug: true
+            });
         }).then(waitFor(50)).then(async _ => {
             await testNoAnimation('#test1');
             await testNoAnimation('#test3');
@@ -93,14 +87,11 @@ describe('#slideOut', function() {
 
     it('adds a slide-out animation to each node (top)', async function() {
         await exec(_ => {
-            dom.slideOut(
-                '.animate',
-                {
-                    direction: 'top',
-                    duration: 100,
-                    debug: true
-                }
-            );
+            dom.slideOut('.animate', {
+                direction: 'top',
+                duration: 100,
+                debug: true
+            });
         }).then(waitFor(50)).then(async _ => {
             await testNoAnimation('#test1');
             await testNoAnimation('#test3');
@@ -124,14 +115,11 @@ describe('#slideOut', function() {
 
     it('adds a slide-out animation to each node (right)', async function() {
         await exec(_ => {
-            dom.slideOut(
-                '.animate',
-                {
-                    direction: 'right',
-                    duration: 100,
-                    debug: true
-                }
-            );
+            dom.slideOut('.animate', {
+                direction: 'right',
+                duration: 100,
+                debug: true
+            });
         }).then(waitFor(50)).then(async _ => {
             await testNoAnimation('#test1');
             await testNoAnimation('#test3');
@@ -155,14 +143,11 @@ describe('#slideOut', function() {
 
     it('adds a slide-out animation to each node (bottom)', async function() {
         await exec(_ => {
-            dom.slideOut(
-                '.animate',
-                {
-                    direction: 'bottom',
-                    duration: 100,
-                    debug: true
-                }
-            );
+            dom.slideOut('.animate', {
+                direction: 'bottom',
+                duration: 100,
+                debug: true
+            });
         }).then(waitFor(50)).then(async _ => {
             await testNoAnimation('#test1');
             await testNoAnimation('#test3');
@@ -186,14 +171,11 @@ describe('#slideOut', function() {
 
     it('adds a slide-out animation to each node (left)', async function() {
         await exec(_ => {
-            dom.slideOut(
-                '.animate',
-                {
-                    direction: 'left',
-                    duration: 100,
-                    debug: true
-                }
-            );
+            dom.slideOut('.animate', {
+                direction: 'left',
+                duration: 100,
+                debug: true
+            });
         }).then(waitFor(50)).then(async _ => {
             await testNoAnimation('#test1');
             await testNoAnimation('#test3');
@@ -217,14 +199,11 @@ describe('#slideOut', function() {
 
     it('adds a slide-out animation to each node (direction callback)', async function() {
         await exec(_ => {
-            dom.slideOut(
-                '.animate',
-                {
-                    direction: _ => 'top',
-                    duration: 100,
-                    debug: true
-                }
-            );
+            dom.slideOut('.animate', {
+                direction: _ => 'top',
+                duration: 100,
+                debug: true
+            });
         }).then(waitFor(50)).then(async _ => {
             await testNoAnimation('#test1');
             await testNoAnimation('#test3');
@@ -248,14 +227,11 @@ describe('#slideOut', function() {
 
     it('adds a slide-out animation to each node without gpu', async function() {
         await exec(_ => {
-            dom.slideOut(
-                '.animate',
-                {
-                    duration: 100,
-                    useGpu: false,
-                    debug: true
-                }
-            );
+            dom.slideOut('.animate', {
+                duration: 100,
+                useGpu: false,
+                debug: true
+            });
         }).then(waitFor(50)).then(async _ => {
             await testNoAnimation('#test1');
             await testNoAnimation('#test3');
@@ -279,15 +255,12 @@ describe('#slideOut', function() {
 
     it('adds a slide-out animation to each node without gpu (top)', async function() {
         await exec(_ => {
-            dom.slideOut(
-                '.animate',
-                {
-                    direction: 'top',
-                    duration: 100,
-                    useGpu: false,
-                    debug: true
-                }
-            );
+            dom.slideOut('.animate', {
+                direction: 'top',
+                duration: 100,
+                useGpu: false,
+                debug: true
+            });
         }).then(waitFor(50)).then(async _ => {
             await testNoAnimation('#test1');
             await testNoAnimation('#test3');
@@ -311,15 +284,12 @@ describe('#slideOut', function() {
 
     it('adds a slide-out animation to each node without gpu (right)', async function() {
         await exec(_ => {
-            dom.slideOut(
-                '.animate',
-                {
-                    direction: 'right',
-                    duration: 100,
-                    useGpu: false,
-                    debug: true
-                }
-            );
+            dom.slideOut('.animate', {
+                direction: 'right',
+                duration: 100,
+                useGpu: false,
+                debug: true
+            });
         }).then(waitFor(50)).then(async _ => {
             await testNoAnimation('#test1');
             await testNoAnimation('#test3');
@@ -343,15 +313,12 @@ describe('#slideOut', function() {
 
     it('adds a slide-out animation to each node without gpu (bottom)', async function() {
         await exec(_ => {
-            dom.slideOut(
-                '.animate',
-                {
-                    direction: 'bottom',
-                    duration: 100,
-                    useGpu: false,
-                    debug: true
-                }
-            );
+            dom.slideOut('.animate', {
+                direction: 'bottom',
+                duration: 100,
+                useGpu: false,
+                debug: true
+            });
         }).then(waitFor(50)).then(async _ => {
             await testNoAnimation('#test1');
             await testNoAnimation('#test3');
@@ -375,15 +342,12 @@ describe('#slideOut', function() {
 
     it('adds a slide-out animation to each node without gpu (left)', async function() {
         await exec(_ => {
-            dom.slideOut(
-                '.animate',
-                {
-                    direction: 'left',
-                    duration: 100,
-                    useGpu: false,
-                    debug: true
-                }
-            );
+            dom.slideOut('.animate', {
+                direction: 'left',
+                duration: 100,
+                useGpu: false,
+                debug: true
+            });
         }).then(waitFor(50)).then(async _ => {
             await testNoAnimation('#test1');
             await testNoAnimation('#test3');
@@ -407,14 +371,11 @@ describe('#slideOut', function() {
 
     it('adds a slide-out animation to each node (linear)', async function() {
         await exec(_ => {
-            dom.slideOut(
-                '.animate',
-                {
-                    duration: 100,
-                    type: 'linear',
-                    debug: true
-                }
-            );
+            dom.slideOut('.animate', {
+                duration: 100,
+                type: 'linear',
+                debug: true
+            });
         }).then(waitFor(50)).then(async _ => {
             await testNoAnimation('#test1');
             await testNoAnimation('#test3');
@@ -438,14 +399,11 @@ describe('#slideOut', function() {
 
     it('adds a slide-out animation to each node (ease-in)', async function() {
         await exec(_ => {
-            dom.slideOut(
-                '.animate',
-                {
-                    duration: 100,
-                    type: 'ease-in',
-                    debug: true
-                }
-            );
+            dom.slideOut('.animate', {
+                duration: 100,
+                type: 'ease-in',
+                debug: true
+            });
         }).then(waitFor(50)).then(async _ => {
             await testNoAnimation('#test1');
             await testNoAnimation('#test3');
@@ -469,14 +427,11 @@ describe('#slideOut', function() {
 
     it('adds a slide-out animation to each node (ease-out)', async function() {
         await exec(_ => {
-            dom.slideOut(
-                '.animate',
-                {
-                    duration: 100,
-                    type: 'ease-out',
-                    debug: true
-                }
-            );
+            dom.slideOut('.animate', {
+                duration: 100,
+                type: 'ease-out',
+                debug: true
+            });
         }).then(waitFor(50)).then(async _ => {
             await testNoAnimation('#test1');
             await testNoAnimation('#test3');
@@ -500,15 +455,12 @@ describe('#slideOut', function() {
 
     it('adds a slide-out animation to each node (infinite)', async function() {
         await exec(_ => {
-            dom.slideOut(
-                '.animate',
-                {
-                    duration: 100,
-                    type: 'linear',
-                    infinite: true,
-                    debug: true
-                }
-            );
+            dom.slideOut('.animate', {
+                duration: 100,
+                type: 'linear',
+                infinite: true,
+                debug: true
+            });
         }).then(waitFor(50)).then(async _ => {
             await testNoAnimation('#test1');
             await testNoAnimation('#test3');
@@ -541,13 +493,10 @@ describe('#slideOut', function() {
 
     it('resolves when the animation is completed', async function() {
         await exec(async _ => {
-            await dom.slideOut(
-                '.animate',
-                {
-                    duration: 100,
-                    debug: true
-                }
-            );
+            await dom.slideOut('.animate', {
+                duration: 100,
+                debug: true
+            });
         }).then(async _ => {
             await testNoAnimation('#test1');
             await testNoAnimation('#test2');
@@ -564,13 +513,10 @@ describe('#slideOut', function() {
         assert.equal(
             await exec(async _ => {
                 try {
-                    const animation = dom.slideOut(
-                        '.animate',
-                        {
-                            duration: 1000,
-                            debug: true
-                        }
-                    );
+                    const animation = dom.slideOut('.animate', {
+                        duration: 1000,
+                        debug: true
+                    });
                     dom.stop('.animate', false);
                     await animation;
                     return false;
@@ -674,16 +620,13 @@ describe('#slideOut', function() {
 
     it('works with array nodes', async function() {
         await exec(_ => {
-            dom.slideOut(
-                [
-                    document.getElementById('test2'),
-                    document.getElementById('test4')
-                ],
-                {
-                    duration: 100,
-                    debug: true
-                }
-            );
+            dom.slideOut([
+                document.getElementById('test2'),
+                document.getElementById('test4')
+            ], {
+                duration: 100,
+                debug: true
+            });
         }).then(waitFor(50)).then(async _ => {
             await testNoAnimation('#test1');
             await testNoAnimation('#test3');

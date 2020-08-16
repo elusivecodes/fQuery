@@ -17,10 +17,7 @@ describe('#setHTML', function() {
     it('sets the HTML contents for all nodes', async function() {
         assert.equal(
             await exec(_ => {
-                dom.setHTML(
-                    'div',
-                    '<span>Test 2</span>'
-                );
+                dom.setHTML('div', '<span>Test 2</span>');
                 return document.body.innerHTML;
             }),
             '<div id="test1"><span>Test 2</span></div>' +
@@ -38,15 +35,9 @@ describe('#setHTML', function() {
                     'click',
                     _ => { result++; }
                 );
-                dom.setHTML(
-                    'div',
-                    '<span>Test 2</span>'
-                );
+                dom.setHTML('div', '<span>Test 2</span>');
                 document.body.appendChild(node);
-                dom.triggerEvent(
-                    node,
-                    'click'
-                );
+                dom.triggerEvent(node, 'click');
                 return result;
             }),
             0
@@ -57,15 +48,8 @@ describe('#setHTML', function() {
         assert.equal; (
             await exec(_ => {
                 const node = document.getElementById('inner');
-                dom.setData(
-                    node,
-                    'test',
-                    'Test'
-                );
-                dom.setHTML(
-                    'div',
-                    '<span>Test 2</span>'
-                );
+                dom.setData(node, 'test', 'Test');
+                dom.setHTML('div', '<span>Test 2</span>');
                 document.body.appendChild(node);
                 return dom.getData(node, 'test');
             }),
@@ -86,10 +70,7 @@ describe('#setHTML', function() {
         }).then(waitFor(50)).then(async _ => {
             await exec(_ => {
                 const node = document.getElementById('inner');
-                dom.setHTML(
-                    'div',
-                    '<span>Test 2</span>'
-                );
+                dom.setHTML('div', '<span>Test 2</span>');
                 document.body.appendChild(node);
             });
             await testNoAnimation('#inner');
@@ -115,17 +96,12 @@ describe('#setHTML', function() {
         }).then(waitFor(50)).then(async _ => {
             await exec(_ => {
                 const node = document.getElementById('inner');
-                dom.setHTML(
-                    'div',
-                    '<span>Test 2</span>'
-                );
+                dom.setHTML('div', '<span>Test 2</span>');
                 document.body.appendChild(node);
             });
         }).then(waitFor(100)).then(async _ => {
             assert.equal(
-                await exec(_ => {
-                    return document.body.innerHTML;
-                }),
+                await exec(_ => document.body.innerHTML),
                 '<div id="test1"><span>Test 2</span></div>' +
                 '<div id="test2"><span>Test 2</span></div>' +
                 '<span id="inner"></span>'
@@ -142,10 +118,7 @@ describe('#setHTML', function() {
                     'remove',
                     _ => { result++; }
                 );
-                dom.setHTML(
-                    'div',
-                    '<span>Test 2</span>'
-                );
+                dom.setHTML('div', '<span>Test 2</span>');
                 return result;
             }),
             1
@@ -197,13 +170,10 @@ describe('#setHTML', function() {
     it('works with array nodes', async function() {
         assert.equal(
             await exec(_ => {
-                dom.setHTML(
-                    [
-                        document.getElementById('test1'),
-                        document.getElementById('test2')
-                    ],
-                    '<span>Test 2</span>'
-                );
+                dom.setHTML([
+                    document.getElementById('test1'),
+                    document.getElementById('test2')
+                ], '<span>Test 2</span>');
                 return document.body.innerHTML;
             }),
             '<div id="test1"><span>Test 2</span></div>' +

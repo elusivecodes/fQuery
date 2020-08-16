@@ -10,26 +10,17 @@ describe('#withData', function() {
                 '<div id="div2"></div>' +
                 '<div id="div3"></div>' +
                 '<div id="div4"></div>';
-            dom.setData(
-                '#div1',
-                'test1',
-                'Test 1'
-            );
-            dom.setData(
-                '#div3',
-                'test2',
-                'Test 2'
-            );
+            dom.setData('#div1', 'test1', 'Test 1');
+            dom.setData('#div3', 'test2', 'Test 2');
         });
     });
 
     it('returns nodes with data', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.withData(
-                    'div'
-                ).map(node => node.id);
-            }),
+            await exec(_ =>
+                dom.withData('div')
+                    .map(node => node.id)
+            ),
             [
                 'div1',
                 'div3'
@@ -39,12 +30,10 @@ describe('#withData', function() {
 
     it('returns nodes with data for a key', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.withData(
-                    'div',
-                    'test1'
-                ).map(node => node.id);
-            }),
+            await exec(_ =>
+                dom.withData('div', 'test1')
+                    .map(node => node.id)
+            ),
             [
                 'div1'
             ]
@@ -53,11 +42,11 @@ describe('#withData', function() {
 
     it('works with HTMLElement nodes', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.withData(
+            await exec(_ =>
+                dom.withData(
                     document.getElementById('div1')
-                ).map(node => node.id);
-            }),
+                ).map(node => node.id)
+            ),
             [
                 'div1'
             ]
@@ -66,11 +55,11 @@ describe('#withData', function() {
 
     it('works with NodeList nodes', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.withData(
+            await exec(_ =>
+                dom.withData(
                     document.querySelectorAll('div')
-                ).map(node => node.id);
-            }),
+                ).map(node => node.id)
+            ),
             [
                 'div1',
                 'div3'
@@ -80,11 +69,11 @@ describe('#withData', function() {
 
     it('works with HTMLCollection nodes', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.withData(
+            await exec(_ =>
+                dom.withData(
                     document.body.children
-                ).map(node => node.id);
-            }),
+                ).map(node => node.id)
+            ),
             [
                 'div1',
                 'div3'
@@ -96,15 +85,10 @@ describe('#withData', function() {
         assert.deepEqual(
             await exec(_ => {
                 const fragment = document.createDocumentFragment();
-                dom.setData(
-                    fragment,
-                    'test',
-                    'Test'
-                );
+                dom.setData(fragment, 'test', 'Test');
                 fragment.id = 'fragment';
-                return dom.withData(
-                    fragment
-                ).map(node => node.id);
+                return dom.withData(fragment)
+                    .map(node => node.id);
             }),
             [
                 'fragment'
@@ -117,15 +101,10 @@ describe('#withData', function() {
             await exec(_ => {
                 const div = document.createElement('div');
                 const shadow = div.attachShadow({ mode: 'open' });
-                dom.setData(
-                    shadow,
-                    'test',
-                    'Test'
-                );
+                dom.setData(shadow, 'test', 'Test');
                 shadow.id = 'shadow';
-                return dom.withData(
-                    shadow
-                ).map(node => node.id);
+                return dom.withData(shadow)
+                    .map(node => node.id);
             }),
             [
                 'shadow'
@@ -136,14 +115,9 @@ describe('#withData', function() {
     it('works with Document nodes', async function() {
         assert.deepEqual(
             await exec(_ => {
-                dom.setData(
-                    document,
-                    'test',
-                    'Test'
-                );
-                return dom.withData(
-                    document
-                ).map(node => node.id);
+                dom.setData(document, 'test', 'Test');
+                return dom.withData(document)
+                    .map(node => node.id);
             }),
             [
                 'document'
@@ -154,14 +128,9 @@ describe('#withData', function() {
     it('works with Window nodes', async function() {
         assert.deepEqual(
             await exec(_ => {
-                dom.setData(
-                    window,
-                    'test',
-                    'Test'
-                );
-                return dom.withData(
-                    window
-                ).map(node => node.id);
+                dom.setData(window, 'test', 'Test');
+                return dom.withData(window)
+                    .map(node => node.id);
             }),
             [
                 'window'
@@ -171,16 +140,14 @@ describe('#withData', function() {
 
     it('works with array nodes', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.withData(
-                    [
-                        document.getElementById('div1'),
-                        document.getElementById('div2'),
-                        document.getElementById('div3'),
-                        document.getElementById('div4')
-                    ]
-                ).map(node => node.id);
-            }),
+            await exec(_ =>
+                dom.withData([
+                    document.getElementById('div1'),
+                    document.getElementById('div2'),
+                    document.getElementById('div3'),
+                    document.getElementById('div4')
+                ]).map(node => node.id)
+            ),
             [
                 'div1',
                 'div3'

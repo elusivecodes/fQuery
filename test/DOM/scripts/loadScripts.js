@@ -41,13 +41,10 @@ describe('#loadScripts', function() {
 
     it('loads scripts without cache', async function() {
         const script = await exec(_ => {
-            dom.loadScripts(
-                [
-                    'assets/test.js',
-                    'assets/test2.js'
-                ],
-                false
-            );
+            dom.loadScripts([
+                'assets/test.js',
+                'assets/test2.js'
+            ], false);
             return document.head.innerHTML;
         });
 
@@ -58,13 +55,10 @@ describe('#loadScripts', function() {
 
     it('loads scripts without cache (query string)', async function() {
         const script = await exec(_ => {
-            dom.loadScripts(
-                [
-                    'assets/test.js?test=1',
-                    'assets/test2.js?test=2'
-                ],
-                false
-            );
+            dom.loadScripts([
+                'assets/test.js?test=1',
+                'assets/test2.js?test=2'
+            ], false);
             return Core.unescape(document.head.innerHTML);
         });
 

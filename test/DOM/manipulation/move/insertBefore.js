@@ -23,10 +23,7 @@ describe('#insertBefore', function() {
     it('inserts each node before each other node', async function() {
         assert.equal(
             await exec(_ => {
-                dom.insertBefore(
-                    'a',
-                    'div'
-                );
+                dom.insertBefore('a', 'div');
                 return document.body.innerHTML;
             }),
             '<a href="#" class="test1">Test</a>' +
@@ -55,14 +52,8 @@ describe('#insertBefore', function() {
                     'click',
                     _ => { result++; }
                 );
-                dom.insertBefore(
-                    'a',
-                    'div'
-                );
-                dom.triggerEvent(
-                    'a',
-                    'click'
-                );
+                dom.insertBefore('a', 'div');
+                dom.triggerEvent('a', 'click');
                 return result;
             }),
             8
@@ -72,15 +63,8 @@ describe('#insertBefore', function() {
     it('preserves data for nodes', async function() {
         assert.deepEqual(
             await exec(_ => {
-                dom.setData(
-                    'a',
-                    'test',
-                    'Test'
-                );
-                dom.insertBefore(
-                    'a',
-                    'div'
-                );
+                dom.setData('a', 'test', 'Test');
+                dom.insertBefore('a', 'div');
                 return [...document.querySelectorAll('a')]
                     .map(node =>
                         dom.getData(node, 'test')
@@ -109,10 +93,7 @@ describe('#insertBefore', function() {
                     debug: true
                 }
             );
-            dom.insertBefore(
-                'a',
-                'div'
-            );
+            dom.insertBefore('a', 'div');
         }).then(waitFor(50)).then(async _ => {
             await testAnimation('body > a:nth-of-type(1)', easeInOut, 100);
             await testAnimation('body > a:nth-of-type(2)', easeInOut, 100);
@@ -138,10 +119,7 @@ describe('#insertBefore', function() {
         assert.equal(
             await exec(_ => {
                 const nodes = [...document.querySelectorAll('a')];
-                dom.insertBefore(
-                    'a',
-                    'div'
-                );
+                dom.insertBefore('a', 'div');
                 const newNodes = [...document.querySelectorAll('a')].slice(4);
                 return nodes.every((node, i) => node.isSameNode(newNodes[i]));
             }),
@@ -230,10 +208,7 @@ describe('#insertBefore', function() {
                 const fragment = range.createContextualFragment(
                     '<div><span></span></div>'
                 );
-                dom.insertBefore(
-                    fragment,
-                    'div'
-                );
+                dom.insertBefore(fragment, 'div');
                 return document.body.innerHTML;
             }),
             '<div><span></span></div>' +
@@ -254,15 +229,12 @@ describe('#insertBefore', function() {
     it('works with array nodes', async function() {
         assert.equal(
             await exec(_ => {
-                dom.insertBefore(
-                    [
-                        document.querySelector('.test1'),
-                        document.querySelector('.test2'),
-                        document.querySelector('.test3'),
-                        document.querySelector('.test4')
-                    ],
-                    'div'
-                );
+                dom.insertBefore([
+                    document.querySelector('.test1'),
+                    document.querySelector('.test2'),
+                    document.querySelector('.test3'),
+                    document.querySelector('.test4')
+                ], 'div');
                 return document.body.innerHTML;
             }),
             '<a href="#" class="test1">Test</a>' +
@@ -285,10 +257,7 @@ describe('#insertBefore', function() {
     it('works with HTML nodes', async function() {
         assert.equal(
             await exec(_ => {
-                dom.insertBefore(
-                    '<div><span></span></div>',
-                    'div'
-                );
+                dom.insertBefore('<div><span></span></div>', 'div');
                 return document.body.innerHTML;
             }),
             '<div><span></span></div>' +
@@ -383,13 +352,10 @@ describe('#insertBefore', function() {
     it('works with array other nodes', async function() {
         assert.equal(
             await exec(_ => {
-                dom.insertBefore(
-                    'a',
-                    [
-                        document.getElementById('parent1'),
-                        document.getElementById('parent2')
-                    ]
-                );
+                dom.insertBefore('a', [
+                    document.getElementById('parent1'),
+                    document.getElementById('parent2')
+                ]);
                 return document.body.innerHTML;
             }),
             '<a href="#" class="test1">Test</a>' +

@@ -34,9 +34,7 @@ describe('#beforeSelection', function() {
     it('inserts each node before the selected nodes', async function() {
         assert.equal(
             await exec(_ => {
-                dom.beforeSelection(
-                    'a'
-                );
+                dom.beforeSelection('a');
                 return document.body.innerHTML;
             }),
             '<div id="select">' +
@@ -131,9 +129,7 @@ describe('#beforeSelection', function() {
                 const fragment = range.createContextualFragment(
                     '<div><span></span></div>'
                 );
-                dom.beforeSelection(
-                    fragment
-                );
+                dom.beforeSelection(fragment);
                 return document.body.innerHTML;
             }),
             '<div id="select">' +
@@ -156,12 +152,10 @@ describe('#beforeSelection', function() {
     it('works with array nodes', async function() {
         assert.equal(
             await exec(_ => {
-                dom.beforeSelection(
-                    [
-                        document.getElementById('a1'),
-                        document.getElementById('a2')
-                    ]
-                );
+                dom.beforeSelection([
+                    document.getElementById('a1'),
+                    document.getElementById('a2')
+                ]);
                 return document.body.innerHTML;
             }),
             '<div id="select">' +
@@ -182,9 +176,7 @@ describe('#beforeSelection', function() {
     it('works with HTML nodes', async function() {
         assert.equal(
             await exec(_ => {
-                dom.beforeSelection(
-                    '<div><span></span></div>'
-                );
+                dom.beforeSelection('<div><span></span></div>');
                 return document.body.innerHTML;
             }),
             '<div id="select">' +

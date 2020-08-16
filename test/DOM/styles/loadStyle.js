@@ -22,13 +22,10 @@ describe('#loadStyle', function() {
     it('loads a stylesheet with attributes', async function() {
         assert.equal(
             await exec(_ => {
-                dom.loadStyle(
-                    'assets/test.css',
-                    {
-                        integrity: 'sha384-92bXn1Q36iY7yWatlPt66wCfjkIltnOTBPgiq2Vf8xM816mhHZfQ1w4JliBw10Fw',
-                        crossorigin: 'anonymous'
-                    }
-                );
+                dom.loadStyle('assets/test.css', {
+                    integrity: 'sha384-92bXn1Q36iY7yWatlPt66wCfjkIltnOTBPgiq2Vf8xM816mhHZfQ1w4JliBw10Fw',
+                    crossorigin: 'anonymous'
+                });
                 return document.head.innerHTML;
             }),
             '<link href="assets/test.css" rel="stylesheet" integrity="sha384-92bXn1Q36iY7yWatlPt66wCfjkIltnOTBPgiq2Vf8xM816mhHZfQ1w4JliBw10Fw" crossorigin="anonymous">'
@@ -37,11 +34,7 @@ describe('#loadStyle', function() {
 
     it('loads a stylesheet without cache', async function() {
         const link = await exec(_ => {
-            dom.loadStyle(
-                'assets/test.css',
-                null,
-                false
-            );
+            dom.loadStyle('assets/test.css', null, false);
             return document.head.innerHTML;
         });
 
@@ -52,11 +45,7 @@ describe('#loadStyle', function() {
 
     it('loads a stylesheet without cache (query string)', async function() {
         const link = await exec(_ => {
-            dom.loadStyle(
-                'assets/test.css?test=1',
-                null,
-                false
-            );
+            dom.loadStyle('assets/test.css?test=1', null, false);
             return Core.unescape(document.head.innerHTML);
         });
 

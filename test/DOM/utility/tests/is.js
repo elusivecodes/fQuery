@@ -15,60 +15,54 @@ describe('#is', function() {
 
     it('returns true if any node matches a filter', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.is(
-                    'div',
-                    '.test'
-                );
-            }),
+            await exec(_ =>
+                dom.is('div', '.test')
+            ),
             true
         );
     });
 
     it('returns false if no nodes match a filter', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.is(
-                    'div:not(.test)',
-                    '.test'
-                );
-            }),
+            await exec(_ =>
+                dom.is('div:not(.test)', '.test')
+            ),
             false
         );
     });
 
     it('works with HTMLElement nodes', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.is(
+            await exec(_ =>
+                dom.is(
                     document.getElementById('div1'),
                     '.test'
-                );
-            }),
+                )
+            ),
             true
         );
     });
 
     it('works with NodeList nodes', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.is(
+            await exec(_ =>
+                dom.is(
                     document.querySelectorAll('div'),
                     '.test'
-                );
-            }),
+                )
+            ),
             true
         );
     });
 
     it('works with HTMLCollection nodes', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.is(
+            await exec(_ =>
+                dom.is(
                     document.body.children,
                     '.test'
-                );
-            }),
+                )
+            ),
             true
         );
     });
@@ -77,9 +71,7 @@ describe('#is', function() {
         assert.equal(
             await exec(_ => {
                 const fragment = document.createDocumentFragment();
-                return dom.is(
-                    fragment
-                );
+                return dom.is(fragment);
             }),
             true
         );
@@ -90,9 +82,7 @@ describe('#is', function() {
             await exec(_ => {
                 const div = document.createElement('div');
                 const shadow = div.attachShadow({ mode: 'open' });
-                return dom.is(
-                    shadow
-                );
+                return dom.is(shadow);
             }),
             true
         );
@@ -100,65 +90,62 @@ describe('#is', function() {
 
     it('works with array nodes', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.is(
-                    [
-                        document.getElementById('div1'),
-                        document.getElementById('div2'),
-                        document.getElementById('div3'),
-                        document.getElementById('div4')
-                    ],
-                    '.test'
-                );
-            }),
+            await exec(_ =>
+                dom.is([
+                    document.getElementById('div1'),
+                    document.getElementById('div2'),
+                    document.getElementById('div3'),
+                    document.getElementById('div4')
+                ], '.test')
+            ),
             true
         );
     });
 
     it('works with function filter', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.is(
+            await exec(_ =>
+                dom.is(
                     'div',
                     node => node.classList.contains('test')
-                );
-            }),
+                )
+            ),
             true
         );
     });
 
     it('works with HTMLElement filter', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.is(
+            await exec(_ =>
+                dom.is(
                     'div',
                     document.getElementById('div1')
-                );
-            }),
+                )
+            ),
             true
         );
     });
 
     it('works with NodeList filter', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.is(
+            await exec(_ =>
+                dom.is(
                     'div',
                     document.querySelectorAll('div')
-                );
-            }),
+                )
+            ),
             true
         );
     });
 
     it('works with HTMLCollection filter', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.is(
+            await exec(_ =>
+                dom.is(
                     'div',
                     document.body.children
-                );
-            }),
+                )
+            ),
             true
         );
     });
@@ -198,17 +185,14 @@ describe('#is', function() {
 
     it('works with array filter', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.is(
-                    'div',
-                    [
-                        document.getElementById('div1'),
-                        document.getElementById('div2'),
-                        document.getElementById('div3'),
-                        document.getElementById('div4')
-                    ]
-                );
-            }),
+            await exec(_ =>
+                dom.is('div', [
+                    document.getElementById('div1'),
+                    document.getElementById('div2'),
+                    document.getElementById('div3'),
+                    document.getElementById('div4')
+                ])
+            ),
             true
         );
     });

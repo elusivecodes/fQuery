@@ -23,60 +23,54 @@ describe('#hasDescendent', function() {
 
     it('returns true if any node has a descendent matching a filter', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.hasDescendent(
-                    'div',
-                    'a'
-                );
-            }),
+            await exec(_ =>
+                dom.hasDescendent('div', 'a')
+            ),
             true
         );
     });
 
     it('returns false if no nodes have a descendent matching a filter', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.hasDescendent(
-                    'div:not(.test)',
-                    'a'
-                );
-            }),
+            await exec(_ =>
+                dom.hasDescendent('div:not(.test)', 'a')
+            ),
             false
         );
     });
 
     it('works with HTMLElement nodes', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.hasDescendent(
+            await exec(_ =>
+                dom.hasDescendent(
                     document.getElementById('div1'),
                     'a'
-                );
-            }),
+                )
+            ),
             true
         );
     });
 
     it('works with HTMLCollection nodes', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.hasDescendent(
+            await exec(_ =>
+                dom.hasDescendent(
                     document.body.children,
                     'a'
-                );
-            }),
+                )
+            ),
             true
         );
     });
 
     it('works with NodeList nodes', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.hasDescendent(
+            await exec(_ =>
+                dom.hasDescendent(
                     document.querySelectorAll('div'),
                     'a'
-                );
-            }),
+                )
+            ),
             true
         );
     });
@@ -88,10 +82,7 @@ describe('#hasDescendent', function() {
                 const fragment = range.createContextualFragment(
                     '<div></div>'
                 );
-                return dom.hasDescendent(
-                    fragment,
-                    'div'
-                );
+                return dom.hasDescendent(fragment, 'div');
             }),
             true
         );
@@ -107,10 +98,7 @@ describe('#hasDescendent', function() {
                     '<div></div>'
                 );
                 shadow.appendChild(fragment);
-                return dom.hasDescendent(
-                    shadow,
-                    'div'
-                );
+                return dom.hasDescendent(shadow, 'div');
             }),
             true
         );
@@ -118,92 +106,83 @@ describe('#hasDescendent', function() {
 
     it('works with Document nodes', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.hasDescendent(
-                    document,
-                    'div'
-                );
-            }),
+            await exec(_ =>
+                dom.hasDescendent(document, 'div')
+            ),
             true
         );
     });
 
     it('works with array nodes', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.hasDescendent(
-                    [
-                        document.getElementById('div1'),
-                        document.getElementById('div2'),
-                        document.getElementById('div3'),
-                        document.getElementById('div4')
-                    ],
-                    'a'
-                );
-            }),
+            await exec(_ =>
+                dom.hasDescendent([
+                    document.getElementById('div1'),
+                    document.getElementById('div2'),
+                    document.getElementById('div3'),
+                    document.getElementById('div4')
+                ], 'a')
+            ),
             true
         );
     });
 
     it('works with function filter', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.hasDescendent(
+            await exec(_ =>
+                dom.hasDescendent(
                     'div',
                     node => node.id === 'a1'
-                );
-            }),
+                )
+            ),
             true
         );
     });
 
     it('works with HTMLElement filter', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.hasDescendent(
+            await exec(_ =>
+                dom.hasDescendent(
                     'div',
                     document.getElementById('a1')
-                );
-            }),
+                )
+            ),
             true
         );
     });
 
     it('works with NodeList filter', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.hasDescendent(
+            await exec(_ =>
+                dom.hasDescendent(
                     'div',
                     document.querySelectorAll('a')
-                );
-            }),
+                )
+            ),
             true
         );
     });
 
     it('works with HTMLCollection filter', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.hasDescendent(
+            await exec(_ =>
+                dom.hasDescendent(
                     'div',
                     document.getElementById('span1').children
-                );
-            }),
+                )
+            ),
             true
         );
     });
 
     it('works with array filter', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.hasDescendent(
-                    'div',
-                    [
-                        document.getElementById('a1'),
-                        document.getElementById('a2')
-                    ]
-                );
-            }),
+            await exec(_ =>
+                dom.hasDescendent('div', [
+                    document.getElementById('a1'),
+                    document.getElementById('a2')
+                ])
+            ),
             true
         );
     });

@@ -16,91 +16,81 @@ describe('#getValue', function() {
 
     it('returns the input value of the first node', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.getValue(
-                    'input'
-                );
-            }),
+            await exec(_ =>
+                dom.getValue('input')
+            ),
             'Test 1'
         );
     });
 
     it('returns undefined for empty nodes', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.getValue(
-                    '#invalid'
-                );
-            }),
+            await exec(_ =>
+                dom.getValue('#invalid')
+            ),
             undefined
         );
     });
 
     it('works with textarea input nodes', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.getValue(
-                    'textarea'
-                );
-            }),
+            await exec(_ =>
+                dom.getValue('textarea')
+            ),
             'Test 2'
         );
     });
 
     it('works with select input nodes', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.getValue(
-                    'select'
-                );
-            }),
+            await exec(_ =>
+                dom.getValue('select')
+            ),
             '2'
         );
     });
 
     it('works with HTMLElement nodes', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.getValue(
+            await exec(_ =>
+                dom.getValue(
                     document.getElementById('test1')
-                );
-            }),
+                )
+            ),
             'Test 1'
         );
     });
 
     it('works with NodeList nodes', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.getValue(
+            await exec(_ =>
+                dom.getValue(
                     document.querySelectorAll('input')
-                );
-            }),
+                )
+            ),
             'Test 1'
         );
     });
 
     it('works with HTMLCollection nodes', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.getValue(
+            await exec(_ =>
+                dom.getValue(
                     document.body.children
-                );
-            }),
+                )
+            ),
             'Test 1'
         );
     });
 
     it('works with array nodes', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.getValue(
-                    [
-                        document.getElementById('test1'),
-                        document.getElementById('test2')
-                    ]
-                );
-            }),
+            await exec(_ =>
+                dom.getValue([
+                    document.getElementById('test1'),
+                    document.getElementById('test2')
+                ])
+            ),
             'Test 1'
         );
     });

@@ -21,9 +21,7 @@ describe('#detach', function() {
     it('detaches all nodes from the DOM', async function() {
         assert.equal(
             await exec(_ => {
-                dom.detach(
-                    'a'
-                );
+                dom.detach('a');
                 return document.body.innerHTML;
             }),
             '<div id="parent1"></div>' +
@@ -33,11 +31,10 @@ describe('#detach', function() {
 
     it('returns detached nodes', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.detach(
-                    'a'
-                ).map(node => node.id);
-            }),
+            await exec(_ =>
+                dom.detach('a')
+                    .map(node => node.id)
+            ),
             [
                 'test1',
                 'test2',
@@ -56,16 +53,11 @@ describe('#detach', function() {
                     'click',
                     _ => { result++; }
                 );
-                const nodes = dom.detach(
-                    'a'
-                );
+                const nodes = dom.detach('a');
                 for (const node of nodes) {
                     document.body.appendChild(node);
                 }
-                dom.triggerEvent(
-                    'a',
-                    'click'
-                );
+                dom.triggerEvent('a', 'click');
                 return result;
             }),
             4
@@ -80,9 +72,7 @@ describe('#detach', function() {
                     'test',
                     'Test'
                 );
-                const nodes = dom.detach(
-                    'a'
-                );
+                const nodes = dom.detach('a');
                 for (const node of nodes) {
                     document.body.appendChild(node);
                 }
@@ -111,9 +101,7 @@ describe('#detach', function() {
             );
         }).then(waitFor(50)).then(async _ => {
             await exec(_ => {
-                const nodes = dom.detach(
-                    'a'
-                );
+                const nodes = dom.detach('a');
                 for (const node of nodes) {
                     document.body.appendChild(node);
                 }
@@ -155,9 +143,7 @@ describe('#detach', function() {
             });
         }).then(waitFor(100)).then(async _ => {
             assert.equal(
-                await exec(_ => {
-                    return document.body.innerHTML;
-                }),
+                await exec(_ => document.body.innerHTML),
                 '<div id="parent1"></div>' +
                 '<div id="parent2"></div>' +
                 '<a href="#" id="test1" data-test="Test">Test</a>' +
@@ -214,14 +200,12 @@ describe('#detach', function() {
     it('works with array nodes', async function() {
         assert.equal(
             await exec(_ => {
-                dom.detach(
-                    [
-                        document.getElementById('test1'),
-                        document.getElementById('test2'),
-                        document.getElementById('test3'),
-                        document.getElementById('test4')
-                    ]
-                );
+                dom.detach([
+                    document.getElementById('test1'),
+                    document.getElementById('test2'),
+                    document.getElementById('test3'),
+                    document.getElementById('test4')
+                ]);
                 return document.body.innerHTML;
             }),
             '<div id="parent1"></div>' +

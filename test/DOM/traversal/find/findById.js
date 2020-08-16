@@ -32,11 +32,10 @@ describe('#findById', function() {
 
     it('finds elements by ID', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.findById(
-                    'test'
-                ).map(node => node.dataset.id);
-            }),
+            await exec(_ =>
+                dom.findById('test')
+                    .map(node => node.dataset.id)
+            ),
             [
                 'span1',
                 'span3',
@@ -48,35 +47,28 @@ describe('#findById', function() {
 
     it('returns an empty array for non-matching id', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.findById(
-                    'invalid'
-                ).map(node => node.id);
-            }),
+            await exec(_ =>
+                dom.findById('invalid')
+            ),
             []
         );
     });
 
     it('returns an empty array for empty nodes', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.findById(
-                    'test',
-                    '#invalid'
-                ).map(node => node.id);
-            }),
+            await exec(_ =>
+                dom.findById('test', '#invalid')
+            ),
             []
         );
     });
 
     it('works with query selector nodes', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.findById(
-                    'test',
-                    '#parent1'
-                ).map(node => node.dataset.id);
-            }),
+            await exec(_ =>
+                dom.findById('test', '#parent1')
+                    .map(node => node.dataset.id)
+            ),
             [
                 'span1',
                 'span3'
@@ -86,12 +78,12 @@ describe('#findById', function() {
 
     it('works with HTMLElement nodes', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.findById(
+            await exec(_ =>
+                dom.findById(
                     'test',
                     document.getElementById('parent1')
-                ).map(node => node.dataset.id);
-            }),
+                ).map(node => node.dataset.id)
+            ),
             [
                 'span1',
                 'span3'
@@ -101,12 +93,12 @@ describe('#findById', function() {
 
     it('works with NodeList nodes', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.findById(
+            await exec(_ =>
+                dom.findById(
                     'test',
                     document.querySelectorAll('#parent1')
-                ).map(node => node.dataset.id);
-            }),
+                ).map(node => node.dataset.id)
+            ),
             [
                 'span1',
                 'span3'
@@ -116,12 +108,12 @@ describe('#findById', function() {
 
     it('works with HTMLCollection nodes', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.findById(
+            await exec(_ =>
+                dom.findById(
                     'test',
                     document.getElementById('parent1').children
-                ).map(node => node.dataset.id);
-            }),
+                ).map(node => node.dataset.id)
+            ),
             [
                 'span1',
                 'span3'
@@ -139,10 +131,8 @@ describe('#findById', function() {
                     '<div id="test" data-id="div3"></div>' +
                     '<div data-id="div4"></div>'
                 );
-                return dom.findById(
-                    'test',
-                    fragment
-                ).map(node => node.dataset.id);
+                return dom.findById('test', fragment)
+                    .map(node => node.dataset.id);
             }),
             [
                 'div1',
@@ -164,10 +154,8 @@ describe('#findById', function() {
                     '<div data-id="div4"></div>'
                 );
                 shadow.appendChild(fragment);
-                return dom.findById(
-                    'test',
-                    shadow
-                ).map(node => node.dataset.id);
+                return dom.findById('test', shadow)
+                    .map(node => node.dataset.id);
             }),
             [
                 'div1',
@@ -193,10 +181,8 @@ describe('#findById', function() {
                     '</html>',
                     'text/html'
                 );
-                return dom.findById(
-                    'test',
-                    myDoc
-                ).map(node => node.dataset.id);
+                return dom.findById('test', myDoc)
+                    .map(node => node.dataset.id);
             }),
             [
                 'div1',
@@ -207,15 +193,12 @@ describe('#findById', function() {
 
     it('works with array nodes', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.findById(
-                    'test',
-                    [
-                        document.getElementById('child1'),
-                        document.getElementById('child2')
-                    ]
-                ).map(node => node.dataset.id);
-            }),
+            await exec(_ =>
+                dom.findById('test', [
+                    document.getElementById('child1'),
+                    document.getElementById('child2')
+                ]).map(node => node.dataset.id)
+            ),
             [
                 'span1',
                 'span3'

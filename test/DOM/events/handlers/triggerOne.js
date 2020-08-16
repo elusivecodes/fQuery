@@ -22,10 +22,7 @@ describe('#triggerOne', function() {
                     'click',
                     _ => { result++; }
                 );
-                dom.triggerOne(
-                    'a',
-                    'click'
-                );
+                dom.triggerOne('a', 'click');
                 return result;
             }),
             1
@@ -41,10 +38,7 @@ describe('#triggerOne', function() {
                     'click.test',
                     _ => { result++; }
                 );
-                dom.triggerOne(
-                    'a',
-                    'click'
-                );
+                dom.triggerOne('a', 'click');
                 return result;
             }),
             1
@@ -60,10 +54,7 @@ describe('#triggerOne', function() {
                     'click.test.deep',
                     _ => { result++; }
                 );
-                dom.triggerOne(
-                    'a',
-                    'click'
-                );
+                dom.triggerOne('a', 'click');
                 return result;
             }),
             1
@@ -79,10 +70,7 @@ describe('#triggerOne', function() {
                     'click.test',
                     _ => { result++; }
                 );
-                dom.triggerOne(
-                    'a',
-                    'click.test'
-                );
+                dom.triggerOne('a', 'click.test');
                 return result;
             }),
             1
@@ -98,10 +86,7 @@ describe('#triggerOne', function() {
                     'click.test.deep',
                     _ => { result++; }
                 );
-                dom.triggerOne(
-                    'a',
-                    'click.test'
-                );
+                dom.triggerOne('a', 'click.test');
                 return result;
             }),
             1
@@ -117,10 +102,7 @@ describe('#triggerOne', function() {
                     'click.test.deep',
                     _ => { result++; }
                 );
-                dom.triggerOne(
-                    'a',
-                    'click.test.deep'
-                );
+                dom.triggerOne('a', 'click.test.deep');
                 return result;
             }),
             1
@@ -136,10 +118,7 @@ describe('#triggerOne', function() {
                     'click',
                     _ => { result++; }
                 );
-                dom.triggerOne(
-                    'a',
-                    'click.test'
-                );
+                dom.triggerOne('a', 'click.test');
                 return result;
             }),
             0
@@ -155,10 +134,7 @@ describe('#triggerOne', function() {
                     'click.test',
                     _ => { result++; }
                 );
-                dom.triggerOne(
-                    'a',
-                    'click.test.deep'
-                );
+                dom.triggerOne('a', 'click.test.deep');
                 return result;
             }),
             0
@@ -178,15 +154,8 @@ describe('#triggerOne', function() {
                         }
                     }
                 );
-                dom.triggerOne(
-                    'a',
-                    'click'
-                );
-                dom.triggerOne(
-                    'a',
-                    'click',
-                    { detail: 'test' }
-                );
+                dom.triggerOne('a', 'click');
+                dom.triggerOne('a', 'click', { detail: 'test' });
                 return result;
             }),
             1
@@ -204,10 +173,7 @@ describe('#triggerOne', function() {
                         result++;
                     }
                 );
-                dom.triggerOne(
-                    'a',
-                    'click'
-                );
+                dom.triggerOne('a', 'click');
                 return result;
             }),
             1
@@ -225,13 +191,9 @@ describe('#triggerOne', function() {
                         result++;
                     }
                 );
-                dom.triggerOne(
-                    'a',
-                    'click',
-                    {
-                        bubbles: false
-                    }
-                );
+                dom.triggerOne('a', 'click', {
+                    bubbles: false
+                });
                 return result;
             }),
             0
@@ -248,10 +210,7 @@ describe('#triggerOne', function() {
                         e.preventDefault();
                     }
                 );
-                return dom.triggerOne(
-                    '#test1',
-                    'click'
-                );
+                return dom.triggerOne('#test1', 'click');
             }),
             false
         );
@@ -265,10 +224,7 @@ describe('#triggerOne', function() {
                     'click',
                     e => { }
                 );
-                return dom.triggerOne(
-                    '#test1',
-                    'click'
-                );
+                return dom.triggerOne('#test1', 'click');
             }),
             true
         );
@@ -284,13 +240,9 @@ describe('#triggerOne', function() {
                         e.preventDefault();
                     }
                 );
-                return dom.triggerOne(
-                    '#test1',
-                    'click',
-                    {
-                        cancelable: false
-                    }
-                );
+                return dom.triggerOne('#test1', 'click', {
+                    cancelable: false
+                });
             }),
             true
         );
@@ -364,10 +316,7 @@ describe('#triggerOne', function() {
                     'click',
                     _ => { result++; }
                 );
-                dom.triggerOne(
-                    shadow,
-                    'click'
-                );
+                dom.triggerOne(shadow, 'click');
                 return result;
             }),
             1
@@ -383,10 +332,7 @@ describe('#triggerOne', function() {
                     'click',
                     _ => { result++; }
                 );
-                dom.triggerOne(
-                    document,
-                    'click'
-                );
+                dom.triggerOne(document, 'click');
                 return result;
             }),
             1
@@ -402,10 +348,7 @@ describe('#triggerOne', function() {
                     'click',
                     _ => { result++; }
                 );
-                dom.triggerOne(
-                    window,
-                    'click'
-                );
+                dom.triggerOne(window, 'click');
                 return result;
             }),
             1
@@ -421,13 +364,10 @@ describe('#triggerOne', function() {
                     'click',
                     _ => { result++; }
                 );
-                dom.triggerOne(
-                    [
-                        document.getElementById('test1'),
-                        document.getElementById('test2')
-                    ],
-                    'click'
-                );
+                dom.triggerOne([
+                    document.getElementById('test1'),
+                    document.getElementById('test2')
+                ], 'click');
                 return result;
             }),
             1

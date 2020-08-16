@@ -27,10 +27,7 @@ describe('#wrapInner', function() {
     it('wraps contents of each node', async function() {
         assert.equal(
             await exec(_ => {
-                dom.wrapInner(
-                    '#wrap > div',
-                    '.outer'
-                );
+                dom.wrapInner('#wrap > div', '.outer');
                 return document.body.innerHTML;
             }),
             '<div id="wrap">' +
@@ -172,10 +169,7 @@ describe('#wrapInner', function() {
                     '<div><span></span></div>' +
                     '<div><span></span></div>'
                 );
-                dom.wrapInner(
-                    fragment,
-                    '.outer'
-                );
+                dom.wrapInner(fragment, '.outer');
                 document.body.appendChild(fragment);
                 return document.body.innerHTML;
             }),
@@ -215,10 +209,7 @@ describe('#wrapInner', function() {
                     '<div><span></span></div>'
                 );
                 shadow.appendChild(fragment);
-                dom.wrapInner(
-                    shadow,
-                    '.outer'
-                );
+                dom.wrapInner(shadow, '.outer');
                 return shadow.innerHTML;
             }),
             '<div class="outer">' +
@@ -233,13 +224,10 @@ describe('#wrapInner', function() {
     it('works with array nodes', async function() {
         assert.equal(
             await exec(_ => {
-                dom.wrapInner(
-                    [
-                        document.getElementById('parent1'),
-                        document.getElementById('parent2')
-                    ],
-                    '.outer'
-                );
+                dom.wrapInner([
+                    document.getElementById('parent1'),
+                    document.getElementById('parent2')
+                ], '.outer');
                 return document.body.innerHTML;
             }),
             '<div id="wrap">' +
@@ -384,10 +372,7 @@ describe('#wrapInner', function() {
                 const fragment = range.createContextualFragment(
                     '<div><span></span></div>'
                 );
-                dom.wrapInner(
-                    '#wrap > div',
-                    fragment
-                );
+                dom.wrapInner('#wrap > div', fragment);
                 return document.body.innerHTML;
             }),
             '<div id="wrap">' +
@@ -420,12 +405,9 @@ describe('#wrapInner', function() {
     it('works with array other nodes', async function() {
         assert.equal(
             await exec(_ => {
-                dom.wrapInner(
-                    '#wrap > div',
-                    [
-                        document.querySelector('.outer')
-                    ]
-                );
+                dom.wrapInner('#wrap > div', [
+                    document.querySelector('.outer')
+                ]);
                 return document.body.innerHTML;
             }),
             '<div id="wrap">' +
@@ -458,10 +440,7 @@ describe('#wrapInner', function() {
     it('works with HTML other nodes', async function() {
         assert.equal(
             await exec(_ => {
-                dom.wrapInner(
-                    '#wrap > div',
-                    '<div class="div-outer"><span class="span-inner"></span></div>'
-                );
+                dom.wrapInner('#wrap > div', '<div class="div-outer"><span class="span-inner"></span></div>');
                 return document.body.innerHTML;
             }),
             '<div id="wrap">' +

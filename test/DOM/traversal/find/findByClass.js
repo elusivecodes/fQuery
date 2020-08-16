@@ -32,11 +32,10 @@ describe('#findByClass', function() {
 
     it('finds elements by class name', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.findByClass(
-                    'test'
-                ).map(node => node.id);
-            }),
+            await exec(_ =>
+                dom.findByClass('test')
+                    .map(node => node.id)
+            ),
             [
                 'span1',
                 'span3',
@@ -48,35 +47,28 @@ describe('#findByClass', function() {
 
     it('returns an empty array for non-matching class', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.findByClass(
-                    'invalid'
-                ).map(node => node.id);
-            }),
+            await exec(_ =>
+                dom.findByClass('invalid')
+            ),
             []
         );
     });
 
     it('returns an empty array for empty nodes', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.findByClass(
-                    'test',
-                    '#invalid'
-                ).map(node => node.id);
-            }),
+            await exec(_ =>
+                dom.findByClass('test', '#invalid')
+            ),
             []
         );
     });
 
     it('works with query selector nodes', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.findByClass(
-                    'test',
-                    '#parent1'
-                ).map(node => node.id);
-            }),
+            await exec(_ =>
+                dom.findByClass('test', '#parent1')
+                    .map(node => node.id)
+            ),
             [
                 'span1',
                 'span3'
@@ -86,12 +78,12 @@ describe('#findByClass', function() {
 
     it('works with HTMLElement nodes', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.findByClass(
+            await exec(_ =>
+                dom.findByClass(
                     'test',
                     document.getElementById('parent1')
-                ).map(node => node.id);
-            }),
+                ).map(node => node.id)
+            ),
             [
                 'span1',
                 'span3'
@@ -101,12 +93,12 @@ describe('#findByClass', function() {
 
     it('works with NodeList nodes', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.findByClass(
+            await exec(_ =>
+                dom.findByClass(
                     'test',
                     document.querySelectorAll('#parent1')
-                ).map(node => node.id);
-            }),
+                ).map(node => node.id)
+            ),
             [
                 'span1',
                 'span3'
@@ -116,12 +108,12 @@ describe('#findByClass', function() {
 
     it('works with HTMLCollection nodes', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.findByClass(
+            await exec(_ =>
+                dom.findByClass(
                     'test',
                     document.getElementById('parent1').children
-                ).map(node => node.id);
-            }),
+                ).map(node => node.id)
+            ),
             [
                 'span1',
                 'span3'
@@ -139,10 +131,8 @@ describe('#findByClass', function() {
                     '<div id="div3" class="test"></div>' +
                     '<div id="div4"></div>'
                 );
-                return dom.findByClass(
-                    'test',
-                    fragment
-                ).map(node => node.id);
+                return dom.findByClass('test', fragment)
+                    .map(node => node.id);
             }),
             [
                 'div1',
@@ -164,10 +154,8 @@ describe('#findByClass', function() {
                     '<div id="div4"></div>'
                 );
                 shadow.appendChild(fragment);
-                return dom.findByClass(
-                    'test',
-                    shadow
-                ).map(node => node.id);
+                return dom.findByClass('test', shadow)
+                    .map(node => node.id);
             }),
             [
                 'div1',
@@ -193,10 +181,8 @@ describe('#findByClass', function() {
                     '</html>',
                     'text/html'
                 );
-                return dom.findByClass(
-                    'test',
-                    myDoc
-                ).map(node => node.id);
+                return dom.findByClass('test', myDoc)
+                    .map(node => node.id);
             }),
             [
                 'div1',
@@ -207,15 +193,12 @@ describe('#findByClass', function() {
 
     it('works with array nodes', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.findByClass(
-                    'test',
-                    [
-                        document.getElementById('child1'),
-                        document.getElementById('child2')
-                    ]
-                ).map(node => node.id);
-            }),
+            await exec(_ =>
+                dom.findByClass('test', [
+                    document.getElementById('child1'),
+                    document.getElementById('child2')
+                ]).map(node => node.id)
+            ),
             [
                 'span1',
                 'span3'

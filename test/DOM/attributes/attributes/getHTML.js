@@ -13,69 +13,63 @@ describe('#getHTML', function() {
 
     it('returns the HTML contents of the first node', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.getHTML(
-                    'div'
-                );
-            }),
+            await exec(_ =>
+                dom.getHTML('div')
+            ),
             '<span>Test</span>'
         );
     });
 
     it('returns undefined for empty nodes', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.getHTML(
-                    '#invalid'
-                );
-            }),
+            await exec(_ =>
+                dom.getHTML('#invalid')
+            ),
             undefined
         );
     });
 
     it('works with HTMLElement nodes', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.getHTML(
+            await exec(_ =>
+                dom.getHTML(
                     document.getElementById('test1')
-                );
-            }),
+                )
+            ),
             '<span>Test</span>'
         );
     });
 
     it('works with NodeList nodes', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.getHTML(
+            await exec(_ =>
+                dom.getHTML(
                     document.querySelectorAll('div')
-                );
-            }),
+                )
+            ),
             '<span>Test</span>'
         );
     });
 
     it('works with HTMLCollection nodes', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.getHTML(
+            await exec(_ =>
+                dom.getHTML(
                     document.body.children
-                );
-            }),
+                )
+            ),
             '<span>Test</span>'
         );
     });
 
     it('works with array nodes', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.getHTML(
-                    [
-                        document.getElementById('test1'),
-                        document.getElementById('test2')
-                    ]
-                );
-            }),
+            await exec(_ =>
+                dom.getHTML([
+                    document.getElementById('test1'),
+                    document.getElementById('test2')
+                ])
+            ),
             '<span>Test</span>'
         );
     });

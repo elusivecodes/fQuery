@@ -21,69 +21,63 @@ describe('#commonAncestor', function() {
 
     it('returns the closest common ancestor of all nodes', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.commonAncestor(
-                    'a'
-                ).id;
-            }),
+            await exec(_ =>
+                dom.commonAncestor('a').id
+            ),
             'child'
         );
     });
 
     it('returns undefined for empty nodes', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.commonAncestor(
-                    '#invalid'
-                );
-            }),
+            await exec(_ =>
+                dom.commonAncestor('#invalid')
+            ),
             undefined
         );
     });
 
     it('works with HTMLElement nodes', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.commonAncestor(
+            await exec(_ =>
+                dom.commonAncestor(
                     document.getElementById('a1')
-                ).id;
-            }),
+                ).id
+            ),
             'span1'
         );
     });
 
     it('works with NodeList nodes', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.commonAncestor(
+            await exec(_ =>
+                dom.commonAncestor(
                     document.querySelectorAll('a')
-                ).id;
-            }),
+                ).id
+            ),
             'child'
         );
     });
 
     it('works with HTMLCollection nodes', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.commonAncestor(
+            await exec(_ =>
+                dom.commonAncestor(
                     document.getElementById('span1').children
-                ).id;
-            }),
+                ).id
+            ),
             'span1'
         );
     });
 
     it('works with array nodes', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.commonAncestor(
-                    [
-                        document.getElementById('a1'),
-                        document.getElementById('a2')
-                    ]
-                ).id;
-            }),
+            await exec(_ =>
+                dom.commonAncestor([
+                    document.getElementById('a1'),
+                    document.getElementById('a2')
+                ]).id
+            ),
             'child'
         );
     });

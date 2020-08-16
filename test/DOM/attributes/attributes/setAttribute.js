@@ -14,13 +14,10 @@ describe('#setAttribute', function() {
     it('sets an attributes object for all nodes', async function() {
         assert.equal(
             await exec(_ => {
-                dom.setAttribute(
-                    'input',
-                    {
-                        min: '1',
-                        max: '10'
-                    }
-                );
+                dom.setAttribute('input', {
+                    min: '1',
+                    max: '10'
+                });
                 return document.body.innerHTML;
             }),
             '<input type="number" id="test1" min="1" max="10">' +
@@ -31,11 +28,7 @@ describe('#setAttribute', function() {
     it('sets an attribute for all nodes', async function() {
         assert.equal(
             await exec(_ => {
-                dom.setAttribute(
-                    'input',
-                    'placeholder',
-                    '123'
-                );
+                dom.setAttribute('input', 'placeholder', '123');
                 return document.body.innerHTML;
             }),
             '<input type="number" id="test1" placeholder="123">' +
@@ -91,14 +84,10 @@ describe('#setAttribute', function() {
     it('works with array nodes', async function() {
         assert.equal(
             await exec(_ => {
-                dom.setAttribute(
-                    [
-                        document.getElementById('test1'),
-                        document.getElementById('test2')
-                    ],
-                    'placeholder',
-                    '123'
-                );
+                dom.setAttribute([
+                    document.getElementById('test1'),
+                    document.getElementById('test2')
+                ], 'placeholder', '123');
                 return document.body.innerHTML;
             }),
             '<input type="number" id="test1" placeholder="123">' +

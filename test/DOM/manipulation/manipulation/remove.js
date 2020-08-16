@@ -25,9 +25,7 @@ describe('#remove', function() {
     it('removes all nodes from the DOM', async function() {
         assert.equal(
             await exec(_ => {
-                dom.remove(
-                    'a'
-                );
+                dom.remove('a');
                 return document.body.innerHTML;
             }),
             '<div id="outer1">' +
@@ -51,16 +49,11 @@ describe('#remove', function() {
                     'click',
                     _ => { result++; }
                 );
-                dom.remove(
-                    'a'
-                );
+                dom.remove('a');
                 for (const node of nodes) {
                     document.body.appendChild(node);
                 }
-                dom.triggerEvent(
-                    'a',
-                    'click'
-                );
+                dom.triggerEvent('a', 'click');
                 return result;
             }),
             0
@@ -77,16 +70,11 @@ describe('#remove', function() {
                     'click',
                     _ => { result++; }
                 );
-                dom.remove(
-                    'div'
-                );
+                dom.remove('div');
                 for (const node of nodes) {
                     document.body.appendChild(node);
                 }
-                dom.triggerEvent(
-                    'a',
-                    'click'
-                );
+                dom.triggerEvent('a', 'click');
                 return result;
             }),
             0
@@ -97,14 +85,8 @@ describe('#remove', function() {
         assert.deepEqual(
             await exec(_ => {
                 const nodes = document.querySelectorAll('a');
-                dom.setData(
-                    'a',
-                    'test',
-                    'Test'
-                );
-                dom.remove(
-                    'a'
-                );
+                dom.setData('a', 'test', 'Test');
+                dom.remove('a');
                 for (const node of nodes) {
                     document.body.appendChild(node);
                 }
@@ -126,14 +108,8 @@ describe('#remove', function() {
         assert.deepEqual(
             await exec(_ => {
                 const nodes = document.querySelectorAll('a');
-                dom.setData(
-                    'a',
-                    'test',
-                    'Test'
-                );
-                dom.remove(
-                    'div'
-                );
+                dom.setData('a', 'test', 'Test');
+                dom.remove('div');
                 for (const node of nodes) {
                     document.body.appendChild(node);
                 }
@@ -227,9 +203,7 @@ describe('#remove', function() {
             });
         }).then(waitFor(100)).then(async _ => {
             assert.equal(
-                await exec(_ => {
-                    return document.body.innerHTML;
-                }),
+                await exec(_ => document.body.innerHTML),
                 '<div id="outer1">' +
                 '<div id="inner1"></div>' +
                 '</div>' +
@@ -270,9 +244,7 @@ describe('#remove', function() {
             });
         }).then(waitFor(100)).then(async _ => {
             assert.equal(
-                await exec(_ => {
-                    return document.body.innerHTML;
-                }),
+                await exec(_ => document.body.innerHTML),
                 '<a href="#" id="test1"></a>' +
                 '<a href="#" id="test2"></a>' +
                 '<a href="#" id="test3"></a>' +
@@ -366,14 +338,12 @@ describe('#remove', function() {
     it('works with array nodes', async function() {
         assert.equal(
             await exec(_ => {
-                dom.remove(
-                    [
-                        document.getElementById('test1'),
-                        document.getElementById('test2'),
-                        document.getElementById('test3'),
-                        document.getElementById('test4')
-                    ]
-                );
+                dom.remove([
+                    document.getElementById('test1'),
+                    document.getElementById('test2'),
+                    document.getElementById('test3'),
+                    document.getElementById('test4')
+                ]);
                 return document.body.innerHTML;
             }),
             '<div id="outer1">' +

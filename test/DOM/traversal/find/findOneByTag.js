@@ -32,82 +32,72 @@ describe('#findOneByTag', function() {
 
     it('finds elements by tag name', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.findOneByTag(
-                    'span'
-                ).id;
-            }),
+            await exec(_ =>
+                dom.findOneByTag('span').id
+            ),
             'span1'
         );
     });
 
     it('returns null for non-matching tag', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.findOneByTag(
-                    'invalid'
-                );
-            }),
+            await exec(_ =>
+                dom.findOneByTag('invalid')
+            ),
             null
         );
     });
 
     it('returns undefined for empty nodes', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.findOneByTag(
-                    'span',
-                    '#invalid'
-                );
-            }),
+            await exec(_ =>
+                dom.findOneByTag('span', '#invalid')
+            ),
             undefined
         );
     });
 
     it('works with query selector nodes', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.findOneByTag(
-                    'span',
-                    '#parent2'
-                ).id;
-            }),
+            await exec(_ =>
+                dom.findOneByTag('span', '#parent2').id
+            ),
             'span5'
         );
     });
 
     it('works with HTMLElement nodes', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.findOneByTag(
+            await exec(_ =>
+                dom.findOneByTag(
                     'span',
                     document.getElementById('parent2')
-                ).id;
-            }),
+                ).id
+            ),
             'span5'
         );
     });
 
     it('works with NodeList nodes', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.findOneByTag(
+            await exec(_ =>
+                dom.findOneByTag(
                     'span',
                     document.querySelectorAll('#parent2')
-                ).id;
-            }),
+                ).id
+            ),
             'span5'
         );
     });
 
     it('works with HTMLElement nodes', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.findOneByTag(
+            await exec(_ =>
+                dom.findOneByTag(
                     'span',
                     document.getElementById('parent2').children
-                ).id;
-            }),
+                ).id
+            ),
             'span5'
         );
     });
@@ -122,10 +112,7 @@ describe('#findOneByTag', function() {
                     '<span id="span1"></span>' +
                     '<span id="span2"></span>'
                 );
-                return dom.findOneByTag(
-                    'span',
-                    fragment
-                ).id;
+                return dom.findOneByTag('span', fragment).id;
             }),
             'span1'
         );
@@ -144,10 +131,7 @@ describe('#findOneByTag', function() {
                     '<span id="span2"></span>'
                 );
                 shadow.appendChild(fragment);
-                return dom.findOneByTag(
-                    'span',
-                    shadow
-                ).id;
+                return dom.findOneByTag('span', shadow).id;
             }),
             'span1'
         );
@@ -170,10 +154,7 @@ describe('#findOneByTag', function() {
                     '</html>',
                     'text/html'
                 );
-                return dom.findOneByTag(
-                    'span',
-                    myDoc
-                ).id;
+                return dom.findOneByTag('span', myDoc).id;
             }),
             'span1'
         );
@@ -181,15 +162,12 @@ describe('#findOneByTag', function() {
 
     it('works with array nodes', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.findOneByTag(
-                    'span',
-                    [
-                        document.getElementById('child3'),
-                        document.getElementById('child4')
-                    ]
-                ).id;
-            }),
+            await exec(_ =>
+                dom.findOneByTag('span', [
+                    document.getElementById('child3'),
+                    document.getElementById('child4')
+                ]).id
+            ),
             'span5'
         );
     });

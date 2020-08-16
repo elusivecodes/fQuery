@@ -15,55 +15,53 @@ describe('#isConnected', function() {
 
     it('returns true if any node is connected to the DOM', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.isConnected(
-                    'div'
-                );
-            }),
+            await exec(_ =>
+                dom.isConnected('div')
+            ),
             true
         );
     });
 
     it('returns false if no nodes are connected to the DOM', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.isConnected(
+            await exec(_ =>
+                dom.isConnected(
                     document.createElement('div')
-                );
-            }),
+                )
+            ),
             false
         );
     });
 
     it('works with HTMLElement nodes', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.isConnected(
+            await exec(_ =>
+                dom.isConnected(
                     document.getElementById('div1')
-                );
-            }),
+                )
+            ),
             true
         );
     });
 
     it('works with NodeList nodes', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.isConnected(
+            await exec(_ =>
+                dom.isConnected(
                     document.querySelectorAll('div')
-                );
-            }),
+                )
+            ),
             true
         );
     });
 
     it('works with HTMLCollection nodes', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.isConnected(
+            await exec(_ =>
+                dom.isConnected(
                     document.body.children
-                );
-            }),
+                )
+            ),
             true
         );
     });
@@ -72,9 +70,7 @@ describe('#isConnected', function() {
         assert.equal(
             await exec(_ => {
                 const fragment = document.createDocumentFragment();
-                return dom.isConnected(
-                    fragment
-                );
+                return dom.isConnected(fragment);
             }),
             false
         );
@@ -85,9 +81,7 @@ describe('#isConnected', function() {
             await exec(_ => {
                 const div = document.getElementById('div1');
                 const shadow = div.attachShadow({ mode: 'open' });
-                return dom.isConnected(
-                    shadow
-                );
+                return dom.isConnected(shadow);
             }),
             true
         );
@@ -95,16 +89,14 @@ describe('#isConnected', function() {
 
     it('works with array nodes', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.isConnected(
-                    [
-                        document.getElementById('div1'),
-                        document.getElementById('div2'),
-                        document.getElementById('div3'),
-                        document.getElementById('div4')
-                    ]
-                );
-            }),
+            await exec(_ =>
+                dom.isConnected([
+                    document.getElementById('div1'),
+                    document.getElementById('div2'),
+                    document.getElementById('div3'),
+                    document.getElementById('div4')
+                ])
+            ),
             true
         );
     });

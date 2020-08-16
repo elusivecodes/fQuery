@@ -16,55 +16,51 @@ describe('#getScrollY', function() {
 
     it('returns the scroll Y position of the first node', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.getScrollY(
-                    'div'
-                );
-            }),
+            await exec(_ =>
+                dom.getScrollY('div')
+            ),
             100
         );
     });
 
     it('returns undefined for empty nodes', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.getScrollY(
-                    '#invalid'
-                );
-            }),
+            await exec(_ =>
+                dom.getScrollY('#invalid')
+            ),
             undefined
         );
     });
 
     it('works with HTMLElement nodes', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.getScrollY(
+            await exec(_ =>
+                dom.getScrollY(
                     document.getElementById('test1')
-                );
-            }),
+                )
+            ),
             100
         );
     });
 
     it('works with NodeList nodes', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.getScrollY(
+            await exec(_ =>
+                dom.getScrollY(
                     document.querySelectorAll('div')
-                );
-            }),
+                )
+            ),
             100
         );
     });
 
     it('works with HTMLCollection nodes', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.getScrollY(
+            await exec(_ =>
+                dom.getScrollY(
                     document.body.children
-                );
-            }),
+                )
+            ),
             100
         );
     });
@@ -74,9 +70,7 @@ describe('#getScrollY', function() {
             await exec(_ => {
                 document.body.innerHTML = '<div style="block; width: 1000px; height: 1000px;"></div>';
                 document.scrollingElement.scrollTop = 100;
-                return dom.getScrollY(
-                    document
-                );
+                return dom.getScrollY(document);
             }),
             100
         );
@@ -87,9 +81,7 @@ describe('#getScrollY', function() {
             await exec(_ => {
                 document.body.innerHTML = '<div style="block; width: 1000px; height: 1000px;"></div>';
                 window.scrollTo(0, 100);
-                return dom.getScrollY(
-                    window
-                );
+                return dom.getScrollY(window);
             }),
             100
         );
@@ -97,14 +89,12 @@ describe('#getScrollY', function() {
 
     it('works with array nodes', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.getScrollY(
-                    [
-                        document.getElementById('test1'),
-                        document.getElementById('test2')
-                    ]
-                );
-            }),
+            await exec(_ =>
+                dom.getScrollY([
+                    document.getElementById('test1'),
+                    document.getElementById('test2')
+                ])
+            ),
             100
         );
     });

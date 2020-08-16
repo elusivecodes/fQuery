@@ -17,9 +17,7 @@ describe('#fragment', function() {
     it('returns the document fragment of the first node', async function() {
         assert.equal(
             await exec(_ => {
-                const fragment = dom.fragment(
-                    'template'
-                );
+                const fragment = dom.fragment('template');
                 return fragment instanceof DocumentFragment;
             }),
             true
@@ -28,22 +26,18 @@ describe('#fragment', function() {
 
     it('returns undefined for nodes without a fragment', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.fragment(
-                    '#div1'
-                );
-            }),
+            await exec(_ =>
+                dom.fragment('#div1')
+            ),
             undefined
         );
     });
 
     it('returns undefined for empty nodes', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.fragment(
-                    '#invalid'
-                );
-            }),
+            await exec(_ =>
+                dom.fragment('#invalid')
+            ),
             undefined
         );
     });
@@ -87,12 +81,10 @@ describe('#fragment', function() {
     it('works with array nodes', async function() {
         assert.equal(
             await exec(_ => {
-                const fragment = dom.fragment(
-                    [
-                        document.getElementById('template1'),
-                        document.getElementById('template2')
-                    ]
-                );
+                const fragment = dom.fragment([
+                    document.getElementById('template1'),
+                    document.getElementById('template2')
+                ]);
                 return fragment instanceof DocumentFragment;
             }),
             true

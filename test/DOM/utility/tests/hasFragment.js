@@ -19,71 +19,65 @@ describe('#hasFragment', function() {
 
     it('returns true if any node has a document fragment', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.hasFragment(
-                    'template'
-                );
-            }),
+            await exec(_ =>
+                dom.hasFragment('template')
+            ),
             true
         );
     });
 
     it('returns false if no nodes have a document fragment', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.hasFragment(
-                    'div'
-                );
-            }),
+            await exec(_ =>
+                dom.hasFragment('div')
+            ),
             false
         );
     });
 
     it('works with HTMLElement nodes', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.hasFragment(
+            await exec(_ =>
+                dom.hasFragment(
                     document.getElementById('template1')
-                );
-            }),
+                )
+            ),
             true
         );
     });
 
     it('works with NodeList nodes', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.hasFragment(
+            await exec(_ =>
+                dom.hasFragment(
                     document.querySelectorAll('template')
-                );
-            }),
+                )
+            ),
             true
         );
     });
 
     it('works with HTMLCollection nodes', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.hasFragment(
+            await exec(_ =>
+                dom.hasFragment(
                     document.body.children
-                );
-            }),
+                )
+            ),
             true
         );
     });
 
     it('works with array nodes', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.hasFragment(
-                    [
-                        document.getElementById('template1'),
-                        document.getElementById('template2'),
-                        document.getElementById('div1'),
-                        document.getElementById('div2')
-                    ]
-                );
-            }),
+            await exec(_ =>
+                dom.hasFragment([
+                    document.getElementById('template1'),
+                    document.getElementById('template2'),
+                    document.getElementById('div1'),
+                    document.getElementById('div2')
+                ])
+            ),
             true
         );
     });

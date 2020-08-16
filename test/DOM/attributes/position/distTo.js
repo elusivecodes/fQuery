@@ -14,95 +14,78 @@ describe('#distTo', function() {
 
     it('returns the distance to the first node', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.distTo(
-                    'div',
-                    580,
-                    128
-                )
-            }),
+            await exec(_ =>
+                dom.distTo('div', 580, 128)
+            ),
             122
         );
     });
 
     it('returns the distance to the first node with offset', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.distTo(
-                    'div',
-                    1180,
-                    1270,
-                    true
-                )
-            }),
+            await exec(_ =>
+                dom.distTo('div', 1180, 1270, true)
+            ),
             122
         );
     });
 
     it('returns undefined for empty nodes', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.distTo(
-                    '#invalid',
-                    580,
-                    128
-                );
-            }),
+            await exec(_ =>
+                dom.distTo('#invalid', 580, 128)
+            ),
             undefined
         );
     });
 
     it('works with HTMLElement nodes', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.distTo(
+            await exec(_ =>
+                dom.distTo(
                     document.getElementById('test1'),
                     580,
                     128
                 )
-            }),
+            ),
             122
         );
     });
 
     it('works with NodeList nodes', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.distTo(
+            await exec(_ =>
+                dom.distTo(
                     document.querySelectorAll('div'),
                     580,
                     128
                 )
-            }),
+            ),
             122
         );
     });
 
     it('works with HTMLCollection nodes', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.distTo(
+            await exec(_ =>
+                dom.distTo(
                     document.body.children,
                     580,
                     128
                 )
-            }),
+            ),
             122
         );
     });
 
     it('works with array nodes', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.distTo(
-                    [
-                        document.getElementById('test1'),
-                        document.getElementById('test2')
-                    ],
-                    580,
-                    128
-                )
-            }),
+            await exec(_ =>
+                dom.distTo([
+                    document.getElementById('test1'),
+                    document.getElementById('test2')
+                ], 580, 128)
+            ),
             122
         );
     });

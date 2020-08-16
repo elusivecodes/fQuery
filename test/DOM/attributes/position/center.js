@@ -14,11 +14,9 @@ describe('#center', function() {
 
     it('returns the center position of the first node', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.center(
-                    'div'
-                );
-            }),
+            await exec(_ =>
+                dom.center('div')
+            ),
             {
                 x: 700,
                 y: 150
@@ -28,12 +26,9 @@ describe('#center', function() {
 
     it('returns the center position of the first node with offset', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.center(
-                    'div',
-                    true
-                );
-            }),
+            await exec(_ =>
+                dom.center('div', true)
+            ),
             {
                 x: 1158,
                 y: 1150
@@ -43,22 +38,20 @@ describe('#center', function() {
 
     it('returns undefined for empty nodes', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.center(
-                    '#invalid'
-                );
-            }),
+            await exec(_ =>
+                dom.center('#invalid')
+            ),
             undefined
         );
     });
 
     it('works with HTMLElement nodes', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.center(
+            await exec(_ =>
+                dom.center(
                     document.getElementById('test1')
-                );
-            }),
+                )
+            ),
             {
                 x: 700,
                 y: 150
@@ -68,11 +61,11 @@ describe('#center', function() {
 
     it('works with NodeList nodes', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.center(
+            await exec(_ =>
+                dom.center(
                     document.querySelectorAll('div')
-                );
-            }),
+                )
+            ),
             {
                 x: 700,
                 y: 150
@@ -82,11 +75,11 @@ describe('#center', function() {
 
     it('works with HTMLCollection nodes', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.center(
+            await exec(_ =>
+                dom.center(
                     document.body.children
-                );
-            }),
+                )
+            ),
             {
                 x: 700,
                 y: 150
@@ -96,14 +89,12 @@ describe('#center', function() {
 
     it('works with array nodes', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.center(
-                    [
-                        document.getElementById('test1'),
-                        document.getElementById('test2')
-                    ]
-                );
-            }),
+            await exec(_ =>
+                dom.center([
+                    document.getElementById('test1'),
+                    document.getElementById('test2')
+                ])
+            ),
             {
                 x: 700,
                 y: 150

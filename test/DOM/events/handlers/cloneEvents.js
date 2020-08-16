@@ -35,10 +35,7 @@ describe('#cloneEvents', function() {
         assert.equal(
             await exec(_ => {
                 const event = new Event('click');
-                dom.cloneEvents(
-                    '[data-toggle="event"]',
-                    '[data-toggle="noEvent"]'
-                );
+                dom.cloneEvents('[data-toggle="event"]', '[data-toggle="noEvent"]');
                 document.getElementById('test1').dispatchEvent(event);
                 document.getElementById('test2').dispatchEvent(event);
                 document.getElementById('test3').dispatchEvent(event);
@@ -61,10 +58,7 @@ describe('#cloneEvents', function() {
             await exec(_ => {
                 const event = new Event('click');
                 const element = document.getElementById('test1');
-                dom.cloneEvents(
-                    element,
-                    '[data-toggle="noEvent"]'
-                );
+                dom.cloneEvents(element, '[data-toggle="noEvent"]');
                 element.dispatchEvent(event);
                 document.getElementById('test2').dispatchEvent(event);
                 document.getElementById('test3').dispatchEvent(event);
@@ -144,10 +138,7 @@ describe('#cloneEvents', function() {
                     'click',
                     _ => { result++; }
                 );
-                dom.cloneEvents(
-                    shadow,
-                    '[data-toggle="noEvent"]'
-                );
+                dom.cloneEvents(shadow, '[data-toggle="noEvent"]');
                 shadow.dispatchEvent(event);
                 document.getElementById('test3').dispatchEvent(event);
                 document.getElementById('test4').dispatchEvent(event);
@@ -167,10 +158,7 @@ describe('#cloneEvents', function() {
                     'click',
                     _ => { result++; }
                 );
-                dom.cloneEvents(
-                    document,
-                    '[data-toggle="noEvent"]'
-                );
+                dom.cloneEvents(document, '[data-toggle="noEvent"]');
                 document.dispatchEvent(event);
                 document.getElementById('test3').dispatchEvent(event);
                 document.getElementById('test4').dispatchEvent(event);
@@ -190,10 +178,7 @@ describe('#cloneEvents', function() {
                     'click',
                     _ => { result++; }
                 );
-                dom.cloneEvents(
-                    window,
-                    '[data-toggle="noEvent"]'
-                );
+                dom.cloneEvents(window, '[data-toggle="noEvent"]');
                 window.dispatchEvent(event);
                 document.getElementById('test3').dispatchEvent(event);
                 document.getElementById('test4').dispatchEvent(event);
@@ -209,13 +194,10 @@ describe('#cloneEvents', function() {
                 const event = new Event('click');
                 const element1 = document.getElementById('test1');
                 const element2 = document.getElementById('test2');
-                dom.cloneEvents(
-                    [
-                        element1,
-                        element2
-                    ],
-                    '[data-toggle="noEvent"]'
-                );
+                dom.cloneEvents([
+                    element1,
+                    element2
+                ], '[data-toggle="noEvent"]');
                 element1.dispatchEvent(event);
                 element2.dispatchEvent(event);
                 document.getElementById('test3').dispatchEvent(event);
@@ -238,10 +220,7 @@ describe('#cloneEvents', function() {
             await exec(_ => {
                 const event = new Event('click');
                 const element = document.getElementById('test3');
-                dom.cloneEvents(
-                    '[data-toggle="event"]',
-                    element
-                );
+                dom.cloneEvents('[data-toggle="event"]', element);
                 document.getElementById('test1').dispatchEvent(event);
                 document.getElementById('test2').dispatchEvent(event);
                 element.dispatchEvent(event);
@@ -309,7 +288,7 @@ describe('#cloneEvents', function() {
         );
     });
 
-    it('works with ShadowRoot nodes', async function() {
+    it('works with ShadowRoot other nodes', async function() {
         assert.equal(
             await exec(_ => {
                 let result = 0;
@@ -322,10 +301,7 @@ describe('#cloneEvents', function() {
                     'click',
                     _ => { result++; }
                 );
-                dom.cloneEvents(
-                    a,
-                    shadow
-                );
+                dom.cloneEvents(a, shadow);
                 a.dispatchEvent(event);
                 shadow.dispatchEvent(event);
                 return result;
@@ -334,7 +310,7 @@ describe('#cloneEvents', function() {
         );
     });
 
-    it('works with Document nodes', async function() {
+    it('works with Document other nodes', async function() {
         assert.equal(
             await exec(_ => {
                 let result = 0;
@@ -345,10 +321,7 @@ describe('#cloneEvents', function() {
                     'click',
                     _ => { result++; }
                 );
-                dom.cloneEvents(
-                    a,
-                    document
-                );
+                dom.cloneEvents(a, document);
                 a.dispatchEvent(event);
                 document.dispatchEvent(event);
                 return result;
@@ -357,7 +330,7 @@ describe('#cloneEvents', function() {
         );
     });
 
-    it('works with Window nodes', async function() {
+    it('works with Window other nodes', async function() {
         assert.equal(
             await exec(_ => {
                 let result = 0;
@@ -368,10 +341,7 @@ describe('#cloneEvents', function() {
                     'click',
                     _ => { result++; }
                 );
-                dom.cloneEvents(
-                    a,
-                    window
-                );
+                dom.cloneEvents(a, window);
                 a.dispatchEvent(event);
                 window.dispatchEvent(event);
                 return result;
@@ -386,13 +356,10 @@ describe('#cloneEvents', function() {
                 const event = new Event('click');
                 const element1 = document.getElementById('test3');
                 const element2 = document.getElementById('test4');
-                dom.cloneEvents(
-                    '[data-toggle="event"]',
-                    [
-                        element1,
-                        element2
-                    ]
-                );
+                dom.cloneEvents('[data-toggle="event"]', [
+                    element1,
+                    element2
+                ]);
                 document.getElementById('test1').dispatchEvent(event);
                 document.getElementById('test2').dispatchEvent(event);
                 element1.dispatchEvent(event);

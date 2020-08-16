@@ -17,77 +17,68 @@ describe('#hasProperty', function() {
 
     it('returns true if any node has a specified property', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.hasProperty(
-                    'div',
-                    'test'
-                );
-            }),
+            await exec(_ =>
+                dom.hasProperty('div', 'test')
+            ),
             true
         );
     });
 
     it('returns false if no nodes have a specified property', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.hasProperty(
-                    'div:not(.test)',
-                    'test'
-                );
-            }),
+            await exec(_ =>
+                dom.hasProperty('div:not(.test)', 'test')
+            ),
             false
         );
     });
 
     it('works with HTMLElement nodes', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.hasProperty(
+            await exec(_ =>
+                dom.hasProperty(
                     document.getElementById('div1'),
                     'test'
-                );
-            }),
+                )
+            ),
             true
         );
     });
 
     it('works with NodeList nodes', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.hasProperty(
+            await exec(_ =>
+                dom.hasProperty(
                     document.querySelectorAll('div'),
                     'test'
-                );
-            }),
+                )
+            ),
             true
         );
     });
 
     it('works with HTMLCollection nodes', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.hasProperty(
+            await exec(_ =>
+                dom.hasProperty(
                     document.body.children,
                     'test'
-                );
-            }),
+                )
+            ),
             true
         );
     });
 
     it('works with array nodes', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.hasProperty(
-                    [
-                        document.getElementById('div1'),
-                        document.getElementById('div2'),
-                        document.getElementById('div3'),
-                        document.getElementById('div4')
-                    ],
-                    'test'
-                );
-            }),
+            await exec(_ =>
+                dom.hasProperty([
+                    document.getElementById('div1'),
+                    document.getElementById('div2'),
+                    document.getElementById('div3'),
+                    document.getElementById('div4')
+                ], 'test')
+            ),
             true
         );
     });

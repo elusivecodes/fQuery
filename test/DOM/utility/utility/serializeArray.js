@@ -42,11 +42,9 @@ describe('#serializeArray', function() {
 
     it('returns a serialized string of all form elements', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.serializeArray(
-                    'form'
-                );
-            }),
+            await exec(_ =>
+                dom.serializeArray('form')
+            ),
             [
                 {
                     name: 'test1',
@@ -94,11 +92,11 @@ describe('#serializeArray', function() {
 
     it('works with HTMLElement nodes', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.serializeArray(
+            await exec(_ =>
+                dom.serializeArray(
                     document.getElementById('form')
-                );
-            }),
+                )
+            ),
             [
                 {
                     name: 'test1',
@@ -146,11 +144,11 @@ describe('#serializeArray', function() {
 
     it('works with NodeList nodes', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.serializeArray(
+            await exec(_ =>
+                dom.serializeArray(
                     document.querySelectorAll('input, textarea, select')
-                );
-            }),
+                )
+            ),
             [
                 {
                     name: 'test1',
@@ -198,11 +196,11 @@ describe('#serializeArray', function() {
 
     it('works with HTMLCollection nodes', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.serializeArray(
+            await exec(_ =>
+                dom.serializeArray(
                     document.body.children
-                );
-            }),
+                )
+            ),
             [
                 {
                     name: 'test1',
@@ -255,9 +253,7 @@ describe('#serializeArray', function() {
                 const fragment = range.createContextualFragment(
                     document.body.innerHTML
                 );
-                return dom.serializeArray(
-                    fragment
-                );
+                return dom.serializeArray(fragment);
             }),
             [
                 {
@@ -314,9 +310,7 @@ describe('#serializeArray', function() {
                     document.body.innerHTML
                 );
                 shadow.appendChild(fragment);
-                return dom.serializeArray(
-                    shadow
-                );
+                return dom.serializeArray(shadow);
             }),
             [
                 {
@@ -365,23 +359,21 @@ describe('#serializeArray', function() {
 
     it('works with array nodes', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.serializeArray(
-                    [
-                        document.getElementById('test1'),
-                        document.getElementById('test2'),
-                        document.getElementById('test3'),
-                        document.getElementById('test4'),
-                        document.getElementById('test5'),
-                        document.getElementById('test6'),
-                        document.getElementById('test7'),
-                        document.getElementById('test8a'),
-                        document.getElementById('test8b'),
-                        document.getElementById('test9a'),
-                        document.getElementById('test9b')
-                    ]
-                );
-            }),
+            await exec(_ =>
+                dom.serializeArray([
+                    document.getElementById('test1'),
+                    document.getElementById('test2'),
+                    document.getElementById('test3'),
+                    document.getElementById('test4'),
+                    document.getElementById('test5'),
+                    document.getElementById('test6'),
+                    document.getElementById('test7'),
+                    document.getElementById('test8a'),
+                    document.getElementById('test8b'),
+                    document.getElementById('test9a'),
+                    document.getElementById('test9b')
+                ])
+            ),
             [
                 {
                     name: 'test1',

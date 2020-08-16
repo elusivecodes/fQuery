@@ -14,13 +14,10 @@ describe('#setData', function() {
     it('sets a data object for all nodes', async function() {
         assert.deepEqual(
             await exec(_ => {
-                dom.setData(
-                    'div',
-                    {
-                        testA: 'Test 1',
-                        testB: 'Test 2'
-                    }
-                );
+                dom.setData('div', {
+                    testA: 'Test 1',
+                    testB: 'Test 2'
+                });
                 return [
                     dom.getData('#test1'),
                     dom.getData('#test2')
@@ -42,11 +39,7 @@ describe('#setData', function() {
     it('sets data for all nodes', async function() {
         assert.deepEqual(
             await exec(_ => {
-                dom.setData(
-                    'div',
-                    'test',
-                    'Test 1'
-                );
+                dom.setData('div', 'test', 'Test 1');
                 return [
                     dom.getData('#test1'),
                     dom.getData('#test2')
@@ -131,11 +124,7 @@ describe('#setData', function() {
         assert.deepEqual(
             await exec(_ => {
                 const fragment = document.createDocumentFragment();
-                dom.setData(
-                    fragment,
-                    'test',
-                    'Test 1'
-                );
+                dom.setData(fragment, 'test', 'Test 1');
                 return dom.getData(fragment);
             }),
             {
@@ -149,11 +138,7 @@ describe('#setData', function() {
             await exec(_ => {
                 const div = document.createElement('div');
                 const shadow = div.attachShadow({ mode: 'open' });
-                dom.setData(
-                    shadow,
-                    'test',
-                    'Test 1'
-                );
+                dom.setData(shadow, 'test', 'Test 1');
                 return dom.getData(shadow);
             }),
             {
@@ -165,11 +150,7 @@ describe('#setData', function() {
     it('works with Document nodes', async function() {
         assert.deepEqual(
             await exec(_ => {
-                dom.setData(
-                    document,
-                    'test',
-                    'Test 1'
-                );
+                dom.setData(document, 'test', 'Test 1');
                 return dom.getData(document);
             }),
             {
@@ -181,11 +162,7 @@ describe('#setData', function() {
     it('works with Window nodes', async function() {
         assert.deepEqual(
             await exec(_ => {
-                dom.setData(
-                    window,
-                    'test',
-                    'Test 1'
-                );
+                dom.setData(window, 'test', 'Test 1');
                 return dom.getData(window);
             }),
             {
@@ -197,14 +174,10 @@ describe('#setData', function() {
     it('works with array nodes', async function() {
         assert.deepEqual(
             await exec(_ => {
-                dom.setData(
-                    [
-                        document.getElementById('test1'),
-                        document.getElementById('test2')
-                    ],
-                    'test',
-                    'Test 1'
-                );
+                dom.setData([
+                    document.getElementById('test1'),
+                    document.getElementById('test2')
+                ], 'test', 'Test 1');
                 return [
                     dom.getData('#test1'),
                     dom.getData('#test2')

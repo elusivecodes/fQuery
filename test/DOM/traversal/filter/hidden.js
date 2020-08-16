@@ -24,11 +24,10 @@ describe('#hidden', function() {
 
     it('returns hidden nodes', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.hidden(
-                    'div'
-                ).map(node => node.id);
-            }),
+            await exec(_ =>
+                dom.hidden('div')
+                    .map(node => node.id)
+            ),
             [
                 'div2',
                 'div4'
@@ -38,11 +37,10 @@ describe('#hidden', function() {
 
     it('returns descendents of hidden nodes', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.hidden(
-                    'span'
-                ).map(node => node.id);
-            }),
+            await exec(_ =>
+                dom.hidden('span')
+                    .map(node => node.id)
+            ),
             [
                 'span2',
                 'span4'
@@ -52,11 +50,11 @@ describe('#hidden', function() {
 
     it('works with HTMLElement nodes', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.hidden(
+            await exec(_ =>
+                dom.hidden(
                     document.getElementById('div2')
-                ).map(node => node.id);
-            }),
+                ).map(node => node.id)
+            ),
             [
                 'div2'
             ]
@@ -65,11 +63,11 @@ describe('#hidden', function() {
 
     it('works with NodeList nodes', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.hidden(
+            await exec(_ =>
+                dom.hidden(
                     document.querySelectorAll('div')
-                ).map(node => node.id);
-            }),
+                ).map(node => node.id)
+            ),
             [
                 'div2',
                 'div4'
@@ -79,11 +77,11 @@ describe('#hidden', function() {
 
     it('works with HTMLCollection nodes', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.hidden(
+            await exec(_ =>
+                dom.hidden(
                     document.body.children
-                ).map(node => node.id).filter(id => id);
-            }),
+                ).map(node => node.id).filter(id => id)
+            ),
             [
                 'div2',
                 'div4'
@@ -96,9 +94,8 @@ describe('#hidden', function() {
             await exec(_ => {
                 const myDoc = new Document();
                 myDoc.id = 'document';
-                return dom.hidden(
-                    myDoc
-                ).map(node => node.id);
+                return dom.hidden(myDoc)
+                    .map(node => node.id);
             }),
             [
                 'document'
@@ -114,9 +111,8 @@ describe('#hidden', function() {
                     id: 'window'
                 };
                 myWindow.document.defaultView = myWindow;
-                return dom.hidden(
-                    myWindow
-                ).map(node => node.id);
+                return dom.hidden(myWindow)
+                    .map(node => node.id);
             }),
             [
                 'window'
@@ -126,16 +122,14 @@ describe('#hidden', function() {
 
     it('works with array nodes', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.hidden(
-                    [
-                        document.getElementById('div1'),
-                        document.getElementById('div2'),
-                        document.getElementById('div3'),
-                        document.getElementById('div4')
-                    ]
-                ).map(node => node.id);
-            }),
+            await exec(_ =>
+                dom.hidden([
+                    document.getElementById('div1'),
+                    document.getElementById('div2'),
+                    document.getElementById('div3'),
+                    document.getElementById('div4')
+                ]).map(node => node.id)
+            ),
             [
                 'div2',
                 'div4'

@@ -23,12 +23,10 @@ describe('#withDescendent', function() {
 
     it('returns nodes with a descendent matching a filter', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.withDescendent(
-                    'div',
-                    'a'
-                ).map(node => node.id);
-            }),
+            await exec(_ =>
+                dom.withDescendent('div', 'a')
+                    .map(node => node.id)
+            ),
             [
                 'div1',
                 'div3'
@@ -38,12 +36,10 @@ describe('#withDescendent', function() {
 
     it('returns nodes with a descendent matching a custom selector filter', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.withDescendent(
-                    'div',
-                    '> span > a'
-                ).map(node => node.id);
-            }),
+            await exec(_ =>
+                dom.withDescendent('div', '> span > a')
+                    .map(node => node.id)
+            ),
             [
                 'div1',
                 'div3'
@@ -53,12 +49,12 @@ describe('#withDescendent', function() {
 
     it('works with HTMLElement nodes', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.withDescendent(
+            await exec(_ =>
+                dom.withDescendent(
                     document.getElementById('div1'),
                     'a'
-                ).map(node => node.id);
-            }),
+                ).map(node => node.id)
+            ),
             [
                 'div1'
             ]
@@ -67,12 +63,12 @@ describe('#withDescendent', function() {
 
     it('works with NodeList nodes', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.withDescendent(
+            await exec(_ =>
+                dom.withDescendent(
                     document.querySelectorAll('div'),
                     'a'
-                ).map(node => node.id);
-            }),
+                ).map(node => node.id)
+            ),
             [
                 'div1',
                 'div3'
@@ -82,12 +78,12 @@ describe('#withDescendent', function() {
 
     it('works with HTMLCollection nodes', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.withDescendent(
+            await exec(_ =>
+                dom.withDescendent(
                     document.body.children,
                     'a'
-                ).map(node => node.id);
-            }),
+                ).map(node => node.id)
+            ),
             [
                 'div1',
                 'div3'
@@ -103,10 +99,8 @@ describe('#withDescendent', function() {
                     '<div></div>'
                 );
                 fragment.id = 'fragment';
-                return dom.withDescendent(
-                    fragment,
-                    'div'
-                ).map(node => node.id);
+                return dom.withDescendent(fragment, 'div')
+                    .map(node => node.id);
             }),
             [
                 'fragment'
@@ -125,10 +119,8 @@ describe('#withDescendent', function() {
                 );
                 shadow.appendChild(fragment);
                 shadow.id = 'shadow';
-                return dom.withDescendent(
-                    shadow,
-                    'div'
-                ).map(node => node.id);
+                return dom.withDescendent(shadow, 'div')
+                    .map(node => node.id);
             }),
             [
                 'shadow'
@@ -138,12 +130,10 @@ describe('#withDescendent', function() {
 
     it('works with Document nodes', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.withDescendent(
-                    document,
-                    'div'
-                ).map(node => node.id);
-            }),
+            await exec(_ =>
+                dom.withDescendent(document, 'div')
+                    .map(node => node.id)
+            ),
             [
                 'document'
             ]
@@ -152,17 +142,14 @@ describe('#withDescendent', function() {
 
     it('works with array nodes', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.withDescendent(
-                    [
-                        document.getElementById('div1'),
-                        document.getElementById('div2'),
-                        document.getElementById('div3'),
-                        document.getElementById('div4')
-                    ],
-                    'a'
-                ).map(node => node.id);
-            }),
+            await exec(_ =>
+                dom.withDescendent([
+                    document.getElementById('div1'),
+                    document.getElementById('div2'),
+                    document.getElementById('div3'),
+                    document.getElementById('div4')
+                ], 'a').map(node => node.id)
+            ),
             [
                 'div1',
                 'div3'
@@ -172,12 +159,12 @@ describe('#withDescendent', function() {
 
     it('works with function filter', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.withDescendent(
+            await exec(_ =>
+                dom.withDescendent(
                     'div',
                     node => node.id === 'a1'
-                ).map(node => node.id);
-            }),
+                ).map(node => node.id)
+            ),
             [
                 'div1'
             ]
@@ -186,12 +173,12 @@ describe('#withDescendent', function() {
 
     it('works with HTMLElement filter', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.withDescendent(
+            await exec(_ =>
+                dom.withDescendent(
                     'div',
                     document.getElementById('a1')
-                ).map(node => node.id);
-            }),
+                ).map(node => node.id)
+            ),
             [
                 'div1'
             ]
@@ -200,12 +187,12 @@ describe('#withDescendent', function() {
 
     it('works with NodeList filter', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.withDescendent(
+            await exec(_ =>
+                dom.withDescendent(
                     'div',
                     document.querySelectorAll('a')
-                ).map(node => node.id);
-            }),
+                ).map(node => node.id)
+            ),
             [
                 'div1',
                 'div3'
@@ -215,12 +202,12 @@ describe('#withDescendent', function() {
 
     it('works with HTMLCollection filter', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.withDescendent(
+            await exec(_ =>
+                dom.withDescendent(
                     'div',
                     document.getElementById('span1').children
-                ).map(node => node.id);
-            }),
+                ).map(node => node.id)
+            ),
             [
                 'div1'
             ]
@@ -229,15 +216,12 @@ describe('#withDescendent', function() {
 
     it('works with array filter', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.withDescendent(
-                    'div',
-                    [
-                        document.getElementById('a1'),
-                        document.getElementById('a2')
-                    ]
-                ).map(node => node.id);
-            }),
+            await exec(_ =>
+                dom.withDescendent('div', [
+                    document.getElementById('a1'),
+                    document.getElementById('a2')
+                ]).map(node => node.id)
+            ),
             [
                 'div1',
                 'div3'

@@ -17,10 +17,7 @@ describe('#setText', function() {
     it('sets the text contents for all nodes', async function() {
         assert.equal(
             await exec(_ => {
-                dom.setText(
-                    'div',
-                    'Test 2'
-                );
+                dom.setText('div', 'Test 2');
                 return document.body.innerHTML;
             }),
             '<div id="test1">Test 2</div>' +
@@ -31,10 +28,7 @@ describe('#setText', function() {
     it('escapes HTML strings', async function() {
         assert.equal(
             await exec(_ => {
-                dom.setText(
-                    document.getElementById('test1'),
-                    '<span>Test 2</span>'
-                );
+                dom.setText('#test1', '<span>Test 2</span>');
                 return document.body.innerHTML;
             }),
             '<div id="test1">&lt;span&gt;Test 2&lt;/span&gt;</div>' +
@@ -52,15 +46,9 @@ describe('#setText', function() {
                     'click',
                     _ => { result++; }
                 );
-                dom.setText(
-                    'div',
-                    'Test 2'
-                );
+                dom.setText('div', 'Test 2');
                 document.body.appendChild(node);
-                dom.triggerEvent(
-                    node,
-                    'click'
-                );
+                dom.triggerEvent(node, 'click');
                 return result;
             }),
             0
@@ -71,15 +59,8 @@ describe('#setText', function() {
         assert.equal; (
             await exec(_ => {
                 const node = document.getElementById('inner');
-                dom.setData(
-                    node,
-                    'test',
-                    'Test'
-                );
-                dom.setText(
-                    'div',
-                    'Test 2'
-                );
+                dom.setData(node, 'test', 'Test');
+                dom.setText('div', 'Test 2');
                 document.body.appendChild(node);
                 return dom.getData(node, 'test');
             }),
@@ -100,10 +81,7 @@ describe('#setText', function() {
         }).then(waitFor(50)).then(async _ => {
             await exec(_ => {
                 const node = document.getElementById('inner');
-                dom.setText(
-                    'div',
-                    'Test 2'
-                );
+                dom.setText('div', 'Test 2');
                 document.body.appendChild(node);
             });
             await testNoAnimation('#inner');
@@ -129,17 +107,12 @@ describe('#setText', function() {
         }).then(waitFor(50)).then(async _ => {
             await exec(_ => {
                 const node = document.getElementById('inner');
-                dom.setText(
-                    'div',
-                    'Test 2'
-                );
+                dom.setText('div', 'Test 2');
                 document.body.appendChild(node);
             });
         }).then(waitFor(100)).then(async _ => {
             assert.equal(
-                await exec(_ => {
-                    return document.body.innerHTML;
-                }),
+                await exec(_ => document.body.innerHTML),
                 '<div id="test1">Test 2</div>' +
                 '<div id="test2">Test 2</div>' +
                 '<span id="inner"></span>'
@@ -156,10 +129,7 @@ describe('#setText', function() {
                     'remove',
                     _ => { result++; }
                 );
-                dom.setText(
-                    'div',
-                    'Test 2'
-                );
+                dom.setText('div', 'Test 2');
                 return result;
             }),
             1
@@ -211,13 +181,10 @@ describe('#setText', function() {
     it('works with array nodes', async function() {
         assert.equal(
             await exec(_ => {
-                dom.setText(
-                    [
-                        document.getElementById('test1'),
-                        document.getElementById('test2')
-                    ],
-                    'Test 2'
-                );
+                dom.setText([
+                    document.getElementById('test1'),
+                    document.getElementById('test2')
+                ], 'Test 2');
                 return document.body.innerHTML;
             }),
             '<div id="test1">Test 2</div>' +

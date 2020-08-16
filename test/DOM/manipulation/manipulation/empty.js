@@ -25,9 +25,7 @@ describe('#empty', function() {
     it('removes contents of all nodes from the DOM', async function() {
         assert.equal(
             await exec(_ => {
-                dom.empty(
-                    'div'
-                );
+                dom.empty('div');
                 return document.body.innerHTML;
             }),
             '<div id="outer1"></div>' +
@@ -45,16 +43,11 @@ describe('#empty', function() {
                     'click',
                     _ => { result++; }
                 );
-                dom.empty(
-                    'div'
-                );
+                dom.empty('div');
                 for (const node of nodes) {
                     document.body.appendChild(node);
                 }
-                dom.triggerEvent(
-                    'a',
-                    'click'
-                );
+                dom.triggerEvent('a', 'click');
                 return result;
             }),
             0
@@ -65,14 +58,8 @@ describe('#empty', function() {
         assert.deepEqual(
             await exec(_ => {
                 const nodes = document.querySelectorAll('a');
-                dom.setData(
-                    'a',
-                    'test',
-                    'Test'
-                );
-                dom.empty(
-                    'div'
-                );
+                dom.setData('a', 'test', 'Test');
+                dom.empty('div');
                 for (const node of nodes) {
                     document.body.appendChild(node);
                 }
@@ -141,9 +128,7 @@ describe('#empty', function() {
             });
         }).then(waitFor(100)).then(async _ => {
             assert.equal(
-                await exec(_ => {
-                    return document.body.innerHTML;
-                }),
+                await exec(_ => document.body.innerHTML),
                 '<div id="outer1">' +
                 '</div>' +
                 '<div id="outer2">' +
@@ -223,9 +208,7 @@ describe('#empty', function() {
                 const fragment = range.createContextualFragment(
                     '<div><span></span></div>'
                 );
-                dom.empty(
-                    fragment
-                );
+                dom.empty(fragment);
                 document.body.innerHTML = '';
                 document.body.appendChild(fragment);
                 return document.body.innerHTML;
@@ -269,12 +252,10 @@ describe('#empty', function() {
     it('works with array nodes', async function() {
         assert.equal(
             await exec(_ => {
-                dom.empty(
-                    [
-                        document.getElementById('outer1'),
-                        document.getElementById('outer2')
-                    ]
-                );
+                dom.empty([
+                    document.getElementById('outer1'),
+                    document.getElementById('outer2')
+                ]);
                 return document.body.innerHTML;
             }),
             '<div id="outer1"></div>' +

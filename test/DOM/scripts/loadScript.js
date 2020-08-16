@@ -16,13 +16,10 @@ describe('#loadScript', function() {
     it('loads a script with attributes', async function() {
         assert.equal(
             await exec(_ => {
-                dom.loadScript(
-                    'assets/test.js',
-                    {
-                        integrity: 'sha384-1AK0oxsmb9+cemh1YwLG4rPfSc3jb81aGOY8CBrD6WNTumSzeeAs3p5iYyXJemZu',
-                        crossorigin: 'anonymous'
-                    }
-                );
+                dom.loadScript('assets/test.js', {
+                    integrity: 'sha384-1AK0oxsmb9+cemh1YwLG4rPfSc3jb81aGOY8CBrD6WNTumSzeeAs3p5iYyXJemZu',
+                    crossorigin: 'anonymous'
+                });
                 return document.head.innerHTML;
             }),
             '<script src="assets/test.js" type="text/javascript" integrity="sha384-1AK0oxsmb9+cemh1YwLG4rPfSc3jb81aGOY8CBrD6WNTumSzeeAs3p5iYyXJemZu" crossorigin="anonymous"></script>'
@@ -31,11 +28,7 @@ describe('#loadScript', function() {
 
     it('loads a script without cache', async function() {
         const script = await exec(_ => {
-            dom.loadScript(
-                'assets/test.js',
-                null,
-                false
-            );
+            dom.loadScript('assets/test.js', null, false);
             return document.head.innerHTML;
         });
 
@@ -46,11 +39,7 @@ describe('#loadScript', function() {
 
     it('loads a script without cache (query string)', async function() {
         const script = await exec(_ => {
-            dom.loadScript(
-                'assets/test.js?test=1',
-                null,
-                false
-            );
+            dom.loadScript('assets/test.js?test=1', null, false);
             return Core.unescape(document.head.innerHTML);
         });
 

@@ -24,11 +24,10 @@ describe('#visible', function() {
 
     it('returns visible nodes', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.visible(
-                    'div'
-                ).map(node => node.id);
-            }),
+            await exec(_ =>
+                dom.visible('div')
+                    .map(node => node.id)
+            ),
             [
                 'div1',
                 'div3'
@@ -38,11 +37,10 @@ describe('#visible', function() {
 
     it('returns descendents of visible nodes', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.visible(
-                    'span'
-                ).map(node => node.id);
-            }),
+            await exec(_ =>
+                dom.visible('span')
+                    .map(node => node.id)
+            ),
             [
                 'span1',
                 'span3'
@@ -52,11 +50,11 @@ describe('#visible', function() {
 
     it('works with HTMLElement nodes', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.visible(
+            await exec(_ =>
+                dom.visible(
                     document.getElementById('div1')
-                ).map(node => node.id);
-            }),
+                ).map(node => node.id)
+            ),
             [
                 'div1'
             ]
@@ -65,11 +63,11 @@ describe('#visible', function() {
 
     it('works with NodeList nodes', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.visible(
+            await exec(_ =>
+                dom.visible(
                     document.querySelectorAll('div')
-                ).map(node => node.id);
-            }),
+                ).map(node => node.id)
+            ),
             [
                 'div1',
                 'div3'
@@ -79,11 +77,11 @@ describe('#visible', function() {
 
     it('works with HTMLCollection nodes', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.visible(
+            await exec(_ =>
+                dom.visible(
                     document.body.children
-                ).map(node => node.id);
-            }),
+                ).map(node => node.id)
+            ),
             [
                 'div1',
                 'div3'
@@ -93,11 +91,10 @@ describe('#visible', function() {
 
     it('works with Document nodes', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.visible(
-                    document
-                ).map(node => node.id);
-            }),
+            await exec(_ =>
+                dom.visible(document)
+                    .map(node => node.id)
+            ),
             [
                 'document'
             ]
@@ -106,11 +103,10 @@ describe('#visible', function() {
 
     it('works with Window nodes', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.visible(
-                    window
-                ).map(node => node.id);
-            }),
+            await exec(_ =>
+                dom.visible(window)
+                    .map(node => node.id)
+            ),
             [
                 'window'
             ]
@@ -119,16 +115,14 @@ describe('#visible', function() {
 
     it('works with array nodes', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.visible(
-                    [
-                        document.getElementById('div1'),
-                        document.getElementById('div2'),
-                        document.getElementById('div3'),
-                        document.getElementById('div4')
-                    ]
-                ).map(node => node.id);
-            }),
+            await exec(_ =>
+                dom.visible([
+                    document.getElementById('div1'),
+                    document.getElementById('div2'),
+                    document.getElementById('div3'),
+                    document.getElementById('div4')
+                ]).map(node => node.id)
+            ),
             [
                 'div1',
                 'div3'

@@ -33,9 +33,7 @@ describe('#delete', function() {
     it('performs an AJAX DELETE request with URL', async function() {
         assert.deepEqual(
             await exec(async _ => {
-                const response = await DOM.delete(
-                    '/test'
-                );
+                const response = await DOM.delete('/test');
                 response.xhr = response.xhr.data;
                 return response;
             }),
@@ -62,12 +60,9 @@ describe('#delete', function() {
     it('performs an AJAX DELETE request with content type', async function() {
         assert.deepEqual(
             await exec(async _ => {
-                const response = await DOM.delete(
-                    null,
-                    {
-                        contentType: 'text/plain'
-                    }
-                );
+                const response = await DOM.delete(null, {
+                    contentType: 'text/plain'
+                });
                 response.xhr = response.xhr.data;
                 return response;
             }),
@@ -94,12 +89,9 @@ describe('#delete', function() {
     it('performs an AJAX DELETE request with response type', async function() {
         assert.deepEqual(
             await exec(async _ => {
-                const response = await DOM.delete(
-                    null,
-                    {
-                        responseType: 'json'
-                    }
-                );
+                const response = await DOM.delete(null, {
+                    responseType: 'json'
+                });
                 response.xhr = response.xhr.data;
                 return response;
             }),
@@ -127,12 +119,9 @@ describe('#delete', function() {
     it('performs an AJAX DELETE request with MIME type', async function() {
         assert.deepEqual(
             await exec(async _ => {
-                const response = await DOM.delete(
-                    null,
-                    {
-                        mimeType: 'text/plain'
-                    }
-                );
+                const response = await DOM.delete(null, {
+                    mimeType: 'text/plain'
+                });
                 response.xhr = response.xhr.data;
                 return response;
             }),
@@ -160,12 +149,9 @@ describe('#delete', function() {
     it('performs an AJAX DELETE request with username', async function() {
         assert.deepEqual(
             await exec(async _ => {
-                const response = await DOM.delete(
-                    null,
-                    {
-                        username: 'test'
-                    }
-                );
+                const response = await DOM.delete(null, {
+                    username: 'test'
+                });
                 response.xhr = response.xhr.data;
                 return response;
             }),
@@ -193,12 +179,9 @@ describe('#delete', function() {
     it('performs an AJAX DELETE request with password', async function() {
         assert.deepEqual(
             await exec(async _ => {
-                const response = await DOM.delete(
-                    null,
-                    {
-                        password: 'test'
-                    }
-                );
+                const response = await DOM.delete(null, {
+                    password: 'test'
+                });
                 response.xhr = response.xhr.data;
                 return response;
             }),
@@ -226,12 +209,9 @@ describe('#delete', function() {
     it('performs an AJAX DELETE request with timeout', async function() {
         assert.deepEqual(
             await exec(async _ => {
-                const response = await DOM.delete(
-                    null,
-                    {
-                        timeout: 1000
-                    }
-                );
+                const response = await DOM.delete(null, {
+                    timeout: 1000
+                });
                 response.xhr = response.xhr.data;
                 return response;
             }),
@@ -259,12 +239,9 @@ describe('#delete', function() {
     it('performs an AJAX DELETE request (local)', async function() {
         assert.deepEqual(
             await exec(async _ => {
-                const response = await DOM.delete(
-                    null,
-                    {
-                        isLocal: true
-                    }
-                );
+                const response = await DOM.delete(null, {
+                    isLocal: true
+                });
                 response.xhr = response.xhr.data;
                 return response;
             }),
@@ -290,14 +267,11 @@ describe('#delete', function() {
     it('performs an AJAX DELETE request with custom headers', async function() {
         assert.deepEqual(
             await exec(async _ => {
-                const response = await DOM.delete(
-                    null,
-                    {
-                        headers: {
-                            'Test': 'Test 1'
-                        }
+                const response = await DOM.delete(null, {
+                    headers: {
+                        'Test': 'Test 1'
                     }
-                );
+                });
                 response.xhr = response.xhr.data;
                 return response;
             }),
@@ -324,12 +298,9 @@ describe('#delete', function() {
 
     it('performs an AJAX DELETE request without cache', async function() {
         const response = await exec(async _ => {
-            const response = await DOM.delete(
-                null,
-                {
-                    cache: false
-                }
-            );
+            const response = await DOM.delete(null, {
+                cache: false
+            });
             response.xhr = response.xhr.data;
             return response;
         });
@@ -341,12 +312,9 @@ describe('#delete', function() {
 
     it('performs an AJAX DELETE request without cache (query string)', async function() {
         const response = await exec(async _ => {
-            const response = await DOM.delete(
-                '/?test=1',
-                {
-                    cache: false
-                }
-            );
+            const response = await DOM.delete('/?test=1', {
+                cache: false
+            });
             response.xhr = response.xhr.data;
             return response;
         });
@@ -360,16 +328,13 @@ describe('#delete', function() {
         assert.deepEqual(
             await exec(async _ => {
                 let result;
-                await DOM.delete(
-                    null,
-                    {
-                        beforeSend: xhr => {
-                            result = {
-                                ...xhr.data
-                            };
-                        }
+                await DOM.delete(null, {
+                    beforeSend: xhr => {
+                        result = {
+                            ...xhr.data
+                        };
                     }
-                );
+                });
                 return result;
             }),
             {
@@ -388,16 +353,13 @@ describe('#delete', function() {
         assert.deepEqual(
             await exec(async _ => {
                 let result;
-                await DOM.delete(
-                    null,
-                    {
-                        afterSend: xhr => {
-                            result = {
-                                ...xhr.data
-                            };
-                        }
+                await DOM.delete(null, {
+                    afterSend: xhr => {
+                        result = {
+                            ...xhr.data
+                        };
                     }
-                );
+                });
                 return result;
             }),
             {
@@ -417,18 +379,15 @@ describe('#delete', function() {
         assert.deepEqual(
             await exec(async _ => {
                 let result;
-                await DOM.delete(
-                    null,
-                    {
-                        onProgress: (progress, xhr, event) => {
-                            result = {
-                                progress,
-                                xhr: { ...xhr.data },
-                                event
-                            };
-                        }
+                await DOM.delete(null, {
+                    onProgress: (progress, xhr, event) => {
+                        result = {
+                            progress,
+                            xhr: { ...xhr.data },
+                            event
+                        };
                     }
-                );
+                });
                 return result;
             }),
             {
@@ -456,18 +415,15 @@ describe('#delete', function() {
         assert.deepEqual(
             await exec(async _ => {
                 let result;
-                await DOM.delete(
-                    null,
-                    {
-                        onUploadProgress: (progress, xhr, event) => {
-                            result = {
-                                progress,
-                                xhr: { ...xhr.data },
-                                event
-                            };
-                        }
+                await DOM.delete(null, {
+                    onUploadProgress: (progress, xhr, event) => {
+                        result = {
+                            progress,
+                            xhr: { ...xhr.data },
+                            event
+                        };
                     }
-                );
+                });
                 return result;
             }),
             {

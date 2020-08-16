@@ -14,13 +14,10 @@ describe('#setDataset', function() {
     it('sets a dataset object for all nodes', async function() {
         assert.equal(
             await exec(_ => {
-                dom.setDataset(
-                    'div',
-                    {
-                        testA: 'Test 1',
-                        testB: 'Test 2'
-                    }
-                );
+                dom.setDataset('div', {
+                    testA: 'Test 1',
+                    testB: 'Test 2'
+                });
                 return document.body.innerHTML;
             }),
             '<div id="test1" data-test-a="Test 1" data-test-b="Test 2"></div>' +
@@ -31,11 +28,7 @@ describe('#setDataset', function() {
     it('sets a dataset value for all nodes', async function() {
         assert.equal(
             await exec(_ => {
-                dom.setDataset(
-                    'div',
-                    'text',
-                    'Test'
-                );
+                dom.setDataset('div', 'text', 'Test');
                 return document.body.innerHTML;
             }),
             '<div id="test1" data-text="Test"></div>' +
@@ -46,11 +39,7 @@ describe('#setDataset', function() {
     it('formats boolean true values', async function() {
         assert.equal(
             await exec(_ => {
-                dom.setDataset(
-                    '#test1',
-                    'true',
-                    true
-                );
+                dom.setDataset('#test1', 'true', true);
                 return document.body.innerHTML;
             }),
             '<div id="test1" data-true="true"></div>' +
@@ -61,11 +50,7 @@ describe('#setDataset', function() {
     it('formats boolean false values', async function() {
         assert.equal(
             await exec(_ => {
-                dom.setDataset(
-                    '#test1',
-                    'false',
-                    false
-                );
+                dom.setDataset('#test1', 'false', false);
                 return document.body.innerHTML;
             }),
             '<div id="test1" data-false="false"></div>' +
@@ -76,11 +61,7 @@ describe('#setDataset', function() {
     it('formats boolean null values', async function() {
         assert.equal(
             await exec(_ => {
-                dom.setDataset(
-                    '#test1',
-                    'null',
-                    null
-                );
+                dom.setDataset('#test1', 'null', null);
                 return document.body.innerHTML;
             }),
             '<div id="test1" data-null="null"></div>' +
@@ -91,11 +72,7 @@ describe('#setDataset', function() {
     it('formats array values', async function() {
         assert.equal(
             await exec(_ => {
-                dom.setDataset(
-                    '#test1',
-                    'array',
-                    [1, 2, 3]
-                );
+                dom.setDataset('#test1', 'array', [1, 2, 3]);
                 return document.body.innerHTML;
             }),
             '<div id="test1" data-array="[1,2,3]"></div>' +
@@ -106,11 +83,7 @@ describe('#setDataset', function() {
     it('formats object values', async function() {
         assert.equal(
             await exec(_ => {
-                dom.setDataset(
-                    '#test1',
-                    'object',
-                    { a: 1 }
-                );
+                dom.setDataset('#test1', 'object', { a: 1 });
                 return document.body.innerHTML;
             }),
             '<div id="test1" data-object="{&quot;a&quot;:1}"></div>' +
@@ -166,14 +139,10 @@ describe('#setDataset', function() {
     it('works with array nodes', async function() {
         assert.equal(
             await exec(_ => {
-                dom.setDataset(
-                    [
-                        document.getElementById('test1'),
-                        document.getElementById('test2')
-                    ],
-                    'text',
-                    'Test'
-                );
+                dom.setDataset([
+                    document.getElementById('test1'),
+                    document.getElementById('test2')
+                ], 'text', 'Test');
                 return document.body.innerHTML;
             }),
             '<div id="test1" data-text="Test"></div>' +

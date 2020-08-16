@@ -14,10 +14,7 @@ describe('#addClass', function() {
     it('adds a class to all nodes', async function() {
         assert.equal(
             await exec(_ => {
-                dom.addClass(
-                    'div',
-                    'test'
-                );
+                dom.addClass('div', 'test');
                 return document.body.innerHTML;
             }),
             '<div id="test1" class="test"></div>' +
@@ -28,10 +25,7 @@ describe('#addClass', function() {
     it('parses classes from string', async function() {
         assert.equal(
             await exec(_ => {
-                dom.addClass(
-                    'div',
-                    'test1 test2'
-                );
+                dom.addClass('div', 'test1 test2');
                 return document.body.innerHTML;
             }),
             '<div id="test1" class="test1 test2"></div>' +
@@ -42,13 +36,10 @@ describe('#addClass', function() {
     it('parses classes from array', async function() {
         assert.equal(
             await exec(_ => {
-                dom.addClass(
-                    'div',
-                    [
-                        'test1',
-                        'test2'
-                    ]
-                );
+                dom.addClass('div', [
+                    'test1',
+                    'test2'
+                ]);
                 return document.body.innerHTML;
             }),
             '<div id="test1" class="test1 test2"></div>' +
@@ -59,11 +50,7 @@ describe('#addClass', function() {
     it('parses classes from multiple arguments', async function() {
         assert.equal(
             await exec(_ => {
-                dom.addClass(
-                    'div',
-                    'test1',
-                    ['test2']
-                );
+                dom.addClass('div', 'test1', ['test2']);
                 return document.body.innerHTML;
             }),
             '<div id="test1" class="test1 test2"></div>' +
@@ -116,13 +103,10 @@ describe('#addClass', function() {
     it('works with array nodes', async function() {
         assert.equal(
             await exec(_ => {
-                dom.addClass(
-                    [
-                        document.getElementById('test1'),
-                        document.getElementById('test2')
-                    ],
-                    'test'
-                );
+                dom.addClass([
+                    document.getElementById('test1'),
+                    document.getElementById('test2')
+                ], 'test');
                 return document.body.innerHTML;
             }),
             '<div id="test1" class="test"></div>' +

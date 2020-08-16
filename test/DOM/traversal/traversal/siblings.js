@@ -45,11 +45,10 @@ describe('#siblings', function() {
 
     it('returns all siblings of each node', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.siblings(
-                    '.span'
-                ).map(node => node.id);
-            }),
+            await exec(_ =>
+                dom.siblings('.span')
+                    .map(node => node.id)
+            ),
             [
                 'span1',
                 'span2',
@@ -65,12 +64,10 @@ describe('#siblings', function() {
 
     it('returns all siblings of each node matching a filter', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.siblings(
-                    '.span',
-                    '#span1, #span10'
-                ).map(node => node.id);
-            }),
+            await exec(_ =>
+                dom.siblings('.span', '#span1, #span10')
+                    .map(node => node.id)
+            ),
             [
                 'span1',
                 'span10'
@@ -80,23 +77,21 @@ describe('#siblings', function() {
 
     it('returns an empty array for empty nodes', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.siblings(
-                    '#invalid'
-                );
-            }),
+            await exec(_ =>
+                dom.siblings('#invalid')
+            ),
             []
         );
     });
 
     it('works with HTMLElement nodes', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.siblings(
+            await exec(_ =>
+                dom.siblings(
                     document.getElementById('span3'),
                     '#span1, #span10'
-                ).map(node => node.id);
-            }),
+                ).map(node => node.id)
+            ),
             [
                 'span1'
             ]
@@ -105,12 +100,12 @@ describe('#siblings', function() {
 
     it('works with NodeList nodes', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.siblings(
+            await exec(_ =>
+                dom.siblings(
                     document.querySelectorAll('.span'),
                     '#span1, #span10'
-                ).map(node => node.id);
-            }),
+                ).map(node => node.id)
+            ),
             [
                 'span1',
                 'span10'
@@ -120,12 +115,12 @@ describe('#siblings', function() {
 
     it('works with HTMLCollection nodes', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.siblings(
+            await exec(_ =>
+                dom.siblings(
                     document.getElementById('parent2').children,
                     '#span1, #span10'
-                ).map(node => node.id);
-            }),
+                ).map(node => node.id)
+            ),
             [
                 'span10'
             ]
@@ -134,15 +129,12 @@ describe('#siblings', function() {
 
     it('works with array nodes', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.siblings(
-                    [
-                        document.getElementById('span3'),
-                        document.getElementById('span8')
-                    ],
-                    '#span1, #span10'
-                ).map(node => node.id);
-            }),
+            await exec(_ =>
+                dom.siblings([
+                    document.getElementById('span3'),
+                    document.getElementById('span8')
+                ], '#span1, #span10').map(node => node.id)
+            ),
             [
                 'span1',
                 'span10'
@@ -152,12 +144,12 @@ describe('#siblings', function() {
 
     it('works with function filter', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.siblings(
+            await exec(_ =>
+                dom.siblings(
                     '.span',
                     node => node.id === 'span5'
-                ).map(node => node.id);
-            }),
+                ).map(node => node.id)
+            ),
             [
                 'span5'
             ]
@@ -166,12 +158,12 @@ describe('#siblings', function() {
 
     it('works with HTMLElement filter', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.siblings(
+            await exec(_ =>
+                dom.siblings(
                     '.span',
                     document.getElementById('span1')
-                ).map(node => node.id);
-            }),
+                ).map(node => node.id)
+            ),
             [
                 'span1'
             ]
@@ -180,12 +172,12 @@ describe('#siblings', function() {
 
     it('works with NodeList filter', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.siblings(
+            await exec(_ =>
+                dom.siblings(
                     '.span',
                     document.querySelectorAll('#span1, #span10')
-                ).map(node => node.id);
-            }),
+                ).map(node => node.id)
+            ),
             [
                 'span1',
                 'span10'
@@ -195,12 +187,12 @@ describe('#siblings', function() {
 
     it('works with HTMLCollection filter', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.siblings(
+            await exec(_ =>
+                dom.siblings(
                     '.span',
                     document.getElementById('parent2').children
-                ).map(node => node.id);
-            }),
+                ).map(node => node.id)
+            ),
             [
                 'span6',
                 'span7',
@@ -212,15 +204,12 @@ describe('#siblings', function() {
 
     it('works with array filter', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.siblings(
-                    '.span',
-                    [
-                        document.getElementById('span1'),
-                        document.getElementById('span10')
-                    ]
-                ).map(node => node.id);
-            }),
+            await exec(_ =>
+                dom.siblings('.span', [
+                    document.getElementById('span1'),
+                    document.getElementById('span10')
+                ]).map(node => node.id)
+            ),
             [
                 'span1',
                 'span10'

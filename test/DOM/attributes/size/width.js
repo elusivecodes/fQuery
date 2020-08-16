@@ -13,127 +13,108 @@ describe('#width', function() {
 
     it('returns the width of the first node', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.width(
-                    'div'
-                );
-            }),
+            await exec(_ =>
+                dom.width('div')
+            ),
             1250
         );
     });
 
     it('returns the inner width of the first node', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.width(
-                    'div',
-                    DOM.INNER
-                );
-            }),
+            await exec(_ =>
+                dom.width('div', DOM.INNER)
+            ),
             1200
         );
     });
 
     it('returns the outer width of the first node', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.width(
-                    'div',
-                    DOM.OUTER
-                );
-            }),
+            await exec(_ =>
+                dom.width('div', DOM.OUTER)
+            ),
             1252
         );
     });
 
     it('returns the outer width of the first node with margin', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.width(
-                    'div',
-                    DOM.OUTER_MARGIN
-                );
-            }),
+            await exec(_ =>
+                dom.width('div', DOM.OUTER_MARGIN)
+            ),
             1352
         );
     });
 
     it('returns undefined for empty nodes', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.width(
-                    '#invalid'
-                );
-            }),
+            await exec(_ =>
+                dom.width('#invalid')
+            ),
             undefined
         );
     });
 
     it('works with HTMLElement nodes', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.width(
+            await exec(_ =>
+                dom.width(
                     document.getElementById('test1')
-                );
-            }),
+                )
+            ),
             1250
         );
     });
 
     it('works with NodeList nodes', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.width(
+            await exec(_ =>
+                dom.width(
                     document.querySelectorAll('div')
-                );
-            }),
+                )
+            ),
             1250
         );
     });
 
     it('works with HTMLCollection nodes', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.width(
+            await exec(_ =>
+                dom.width(
                     document.body.children
-                );
-            }),
+                )
+            ),
             1250
         );
     });
 
     it('works with Document nodes', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.width(
-                    document
-                );
-            }),
+            await exec(_ =>
+                dom.width(document)
+            ),
             800
         );
     });
 
     it('works with Window nodes', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.width(
-                    window
-                );
-            }),
+            await exec(_ =>
+                dom.width(window)
+            ),
             800
         );
     });
 
     it('works with array nodes', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.width(
-                    [
-                        document.getElementById('test1'),
-                        document.getElementById('test2')
-                    ]
-                );
-            }),
+            await exec(_ =>
+                dom.width([
+                    document.getElementById('test1'),
+                    document.getElementById('test2')
+                ])
+            ),
             1250
         );
     });

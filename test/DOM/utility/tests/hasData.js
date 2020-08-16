@@ -10,94 +10,76 @@ describe('#hasData', function() {
                 '<div id="div2"></div>' +
                 '<div id="div3" class="test"></div>' +
                 '<div id="div4"></div>';
-            dom.setData(
-                '#div1',
-                'test1',
-                'Test 1'
-            );
-            dom.setData(
-                '#div3',
-                'test2',
-                'Test 2'
-            );
+            dom.setData('#div1', 'test1', 'Test 1');
+            dom.setData('#div3', 'test2', 'Test 2');
         });
     });
 
     it('returns true if any node has data', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.hasData(
-                    'div'
-                );
-            }),
+            await exec(_ =>
+                dom.hasData('div')
+            ),
             true
         );
     });
 
     it('returns false if no nodes have data', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.hasData(
-                    'div:not(.test)'
-                );
-            }),
+            await exec(_ =>
+                dom.hasData('div:not(.test)')
+            ),
             false
         );
     });
 
     it('returns true if any node has data for a key', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.hasData(
-                    '#div1',
-                    'test1'
-                );
-            }),
+            await exec(_ =>
+                dom.hasData('#div1', 'test1')
+            ),
             true
         );
     });
 
     it('returns false if no nodes have data for a key', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.hasData(
-                    '#div1',
-                    'test2'
-                );
-            }),
+            await exec(_ =>
+                dom.hasData('#div1', 'test2')
+            ),
             false
         );
     });
 
     it('works with HTMLElement nodes', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.hasData(
+            await exec(_ =>
+                dom.hasData(
                     document.getElementById('div1')
-                );
-            }),
+                )
+            ),
             true
         );
     });
 
     it('works with NodeList nodes', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.hasData(
+            await exec(_ =>
+                dom.hasData(
                     document.querySelectorAll('div')
-                );
-            }),
+                )
+            ),
             true
         );
     });
 
     it('works with HTMLCollection nodes', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.hasData(
+            await exec(_ =>
+                dom.hasData(
                     document.body.children
-                );
-            }),
+                )
+            ),
             true
         );
     });
@@ -106,14 +88,8 @@ describe('#hasData', function() {
         assert.equal(
             await exec(_ => {
                 const fragment = document.createDocumentFragment();
-                dom.setData(
-                    fragment,
-                    'test',
-                    'Test'
-                );
-                return dom.hasData(
-                    fragment
-                );
+                dom.setData(fragment, 'test', 'Test');
+                return dom.hasData(fragment);
             }),
             true
         );
@@ -124,14 +100,8 @@ describe('#hasData', function() {
             await exec(_ => {
                 const div = document.createElement('div');
                 const shadow = div.attachShadow({ mode: 'open' });
-                dom.setData(
-                    shadow,
-                    'test',
-                    'Test'
-                );
-                return dom.hasData(
-                    shadow
-                );
+                dom.setData(shadow, 'test', 'Test');
+                return dom.hasData(shadow);
             }),
             true
         );
@@ -140,14 +110,8 @@ describe('#hasData', function() {
     it('works with Document nodes', async function() {
         assert.equal(
             await exec(_ => {
-                dom.setData(
-                    document,
-                    'test',
-                    'Test'
-                );
-                return dom.hasData(
-                    document
-                );
+                dom.setData(document, 'test', 'Test');
+                return dom.hasData(document);
             }),
             true
         );
@@ -156,14 +120,8 @@ describe('#hasData', function() {
     it('works with Window nodes', async function() {
         assert.equal(
             await exec(_ => {
-                dom.setData(
-                    window,
-                    'test',
-                    'Test'
-                );
-                return dom.hasData(
-                    window
-                );
+                dom.setData(window, 'test', 'Test');
+                return dom.hasData(window);
             }),
             true
         );
@@ -171,16 +129,14 @@ describe('#hasData', function() {
 
     it('works with array nodes', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.hasData(
-                    [
-                        document.getElementById('div1'),
-                        document.getElementById('div2'),
-                        document.getElementById('div3'),
-                        document.getElementById('div4')
-                    ]
-                );
-            }),
+            await exec(_ =>
+                dom.hasData([
+                    document.getElementById('div1'),
+                    document.getElementById('div2'),
+                    document.getElementById('div3'),
+                    document.getElementById('div4')
+                ])
+            ),
             true
         );
     });

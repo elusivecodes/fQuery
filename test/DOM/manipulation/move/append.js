@@ -23,10 +23,7 @@ describe('#append', function() {
     it('appends each other node to each node', async function() {
         assert.equal(
             await exec(_ => {
-                dom.append(
-                    'div',
-                    'a'
-                );
+                dom.append('div', 'a');
                 return document.body.innerHTML;
             }),
             '<div id="parent1">' +
@@ -55,14 +52,8 @@ describe('#append', function() {
                     'click',
                     _ => { result++; }
                 );
-                dom.append(
-                    'div',
-                    'a'
-                );
-                dom.triggerEvent(
-                    'a',
-                    'click'
-                );
+                dom.append('div', 'a');
+                dom.triggerEvent('a', 'click');
                 return result;
             }),
             8
@@ -72,15 +63,8 @@ describe('#append', function() {
     it('preserves data for other nodes', async function() {
         assert.deepEqual(
             await exec(_ => {
-                dom.setData(
-                    'a',
-                    'test',
-                    'Test'
-                );
-                dom.append(
-                    'div',
-                    'a'
-                );
+                dom.setData('a', 'test', 'Test');
+                dom.append('div', 'a');
                 return [...document.querySelectorAll('a')]
                     .map(node =>
                         dom.getData(node, 'test')
@@ -109,10 +93,7 @@ describe('#append', function() {
                     debug: true
                 }
             );
-            dom.append(
-                'div',
-                'a'
-            );
+            dom.append('div', 'a');
         }).then(waitFor(50)).then(async _ => {
             await testAnimation('#parent1 > a:nth-of-type(1)', easeInOut, 100);
             await testAnimation('#parent1 > a:nth-of-type(2)', easeInOut, 100);
@@ -138,10 +119,7 @@ describe('#append', function() {
         assert.equal(
             await exec(_ => {
                 const nodes = [...document.querySelectorAll('a')];
-                dom.append(
-                    'div',
-                    'a'
-                );
+                dom.append('div', 'a');
                 const newNodes = [...document.querySelectorAll('a')].slice(4);
                 return nodes.every((node, i) => node.isSameNode(newNodes[i]));
             }),
@@ -230,10 +208,7 @@ describe('#append', function() {
                 const fragment = range.createContextualFragment(
                     '<span></span>'
                 );
-                dom.append(
-                    fragment,
-                    'a'
-                );
+                dom.append(fragment, 'a');
                 document.body.appendChild(fragment);
                 return document.body.innerHTML;
             }),
@@ -258,10 +233,7 @@ describe('#append', function() {
                 const shadow = div.attachShadow({ mode: 'open' });
                 const span = document.createElement('span');
                 shadow.appendChild(span);
-                dom.append(
-                    shadow,
-                    'a'
-                );
+                dom.append(shadow, 'a');
                 return shadow.innerHTML;
             }),
             '<span></span>' +
@@ -289,13 +261,10 @@ describe('#append', function() {
     it('works with array nodes', async function() {
         assert.equal(
             await exec(_ => {
-                dom.append(
-                    [
-                        document.getElementById('parent1'),
-                        document.getElementById('parent2')
-                    ],
-                    'a'
-                );
+                dom.append([
+                    document.getElementById('parent1'),
+                    document.getElementById('parent2')
+                ], 'a');
                 return document.body.innerHTML;
             }),
             '<div id="parent1">' +
@@ -396,10 +365,7 @@ describe('#append', function() {
                 const fragment = range.createContextualFragment(
                     '<div><span></span></div>'
                 );
-                dom.append(
-                    'div',
-                    fragment
-                );
+                dom.append('div', fragment);
                 return document.body.innerHTML;
             }),
             '<div id="parent1">' +
@@ -420,15 +386,12 @@ describe('#append', function() {
     it('works with array other nodes', async function() {
         assert.equal(
             await exec(_ => {
-                dom.append(
-                    'div',
-                    [
-                        document.querySelector('.test1'),
-                        document.querySelector('.test2'),
-                        document.querySelector('.test3'),
-                        document.querySelector('.test4')
-                    ]
-                );
+                dom.append('div', [
+                    document.querySelector('.test1'),
+                    document.querySelector('.test2'),
+                    document.querySelector('.test3'),
+                    document.querySelector('.test4')
+                ]);
                 return document.body.innerHTML;
             }),
             '<div id="parent1">' +
@@ -451,10 +414,7 @@ describe('#append', function() {
     it('works with HTML other nodes', async function() {
         assert.equal(
             await exec(_ => {
-                dom.append(
-                    'div',
-                    '<div><span></span></div>'
-                );
+                dom.append('div', '<div><span></span></div>');
                 return document.body.innerHTML;
             }),
             '<div id="parent1">' +

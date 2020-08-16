@@ -99,11 +99,10 @@ describe('#find', function() {
 
     it('finds elements by query selector', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.find(
-                    '#parent1 > #child1 > span, #parent1 > #child2 > span'
-                ).map(node => node.id);
-            }),
+            await exec(_ =>
+                dom.find('#parent1 > #child1 > span, #parent1 > #child2 > span')
+                    .map(node => node.id)
+            ),
             [
                 'span1',
                 'span2',
@@ -115,12 +114,10 @@ describe('#find', function() {
 
     it('finds elements by custom child selector', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.find(
-                    '> .group1 > .group1, > .group2 > .group2',
-                    '#child1, #child4'
-                ).map(node => node.id);
-            }),
+            await exec(_ =>
+                dom.find('> .group1 > .group1, > .group2 > .group2', '#child1, #child4')
+                    .map(node => node.id)
+            ),
             [
                 'a1',
                 'a2',
@@ -140,11 +137,10 @@ describe('#find', function() {
 
     it('finds elements by ID', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.find(
-                    '#parent1'
-                ).map(node => node.id);
-            }),
+            await exec(_ =>
+                dom.find('#parent1')
+                    .map(node => node.id)
+            ),
             [
                 'parent1'
             ]
@@ -153,11 +149,10 @@ describe('#find', function() {
 
     it('finds elements by class name', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.find(
-                    '.span1'
-                ).map(node => node.id);
-            }),
+            await exec(_ =>
+                dom.find('.span1')
+                    .map(node => node.id)
+            ),
             [
                 'span1',
                 'span2',
@@ -171,11 +166,10 @@ describe('#find', function() {
 
     it('finds elements by tag name', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.find(
-                    'span'
-                ).map(node => node.id);
-            }),
+            await exec(_ =>
+                dom.find('span')
+                    .map(node => node.id)
+            ),
             [
                 'span1',
                 'span2',
@@ -195,35 +189,28 @@ describe('#find', function() {
 
     it('returns an empty array for non-matching selector', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.find(
-                    '#invalid'
-                ).map(node => node.id);
-            }),
+            await exec(_ =>
+                dom.find('#invalid')
+            ),
             []
         );
     });
 
     it('returns an empty array for empty nodes', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.find(
-                    'span',
-                    '#invalid'
-                ).map(node => node.id);
-            }),
+            await exec(_ =>
+                dom.find('span', '#invalid')
+            ),
             []
         );
     });
 
     it('works with query selector nodes', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.find(
-                    'span',
-                    '#parent1 > #child1'
-                ).map(node => node.id);
-            }),
+            await exec(_ =>
+                dom.find('span', '#parent1 > #child1')
+                    .map(node => node.id)
+            ),
             [
                 'span1',
                 'span2'
@@ -233,12 +220,12 @@ describe('#find', function() {
 
     it('works with HTMLElement nodes', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.find(
+            await exec(_ =>
+                dom.find(
                     'span',
                     document.getElementById('child1')
-                ).map(node => node.id);
-            }),
+                ).map(node => node.id)
+            ),
             [
                 'span1',
                 'span2'
@@ -248,12 +235,12 @@ describe('#find', function() {
 
     it('works with NodeList nodes', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.find(
+            await exec(_ =>
+                dom.find(
                     'span',
                     document.querySelectorAll('#parent1 > div')
-                ).map(node => node.id);
-            }),
+                ).map(node => node.id)
+            ),
             [
                 'span1',
                 'span2',
@@ -267,12 +254,12 @@ describe('#find', function() {
 
     it('works with HTMLCollection nodes', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.find(
+            await exec(_ =>
+                dom.find(
                     'span',
                     document.getElementById('parent1').children
-                ).map(node => node.id);
-            }),
+                ).map(node => node.id)
+            ),
             [
                 'span1',
                 'span2',
@@ -292,10 +279,8 @@ describe('#find', function() {
                     '<div id="div1"></div>' +
                     '<div id="div2"></div>'
                 );
-                return dom.find(
-                    'div',
-                    fragment
-                ).map(node => node.id);
+                return dom.find('div', fragment)
+                    .map(node => node.id);
             }),
             [
                 'div1',
@@ -315,10 +300,8 @@ describe('#find', function() {
                     '<div id="div2"></div>'
                 );
                 shadow.appendChild(fragment);
-                return dom.find(
-                    'div',
-                    shadow
-                ).map(node => node.id);
+                return dom.find('div', shadow)
+                    .map(node => node.id);
             }),
             [
                 'div1',
@@ -342,10 +325,8 @@ describe('#find', function() {
                     '</html>',
                     'text/html'
                 );
-                return dom.find(
-                    'div',
-                    myDoc
-                ).map(node => node.id);
+                return dom.find('div', myDoc)
+                    .map(node => node.id);
             }),
             [
                 'div1',
@@ -356,16 +337,13 @@ describe('#find', function() {
 
     it('works with array nodes', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.find(
-                    'span',
-                    [
-                        document.getElementById('child1'),
-                        document.getElementById('child2'),
-                        document.getElementById('child3')
-                    ]
-                ).map(node => node.id);
-            }),
+            await exec(_ =>
+                dom.find('span', [
+                    document.getElementById('child1'),
+                    document.getElementById('child2'),
+                    document.getElementById('child3')
+                ]).map(node => node.id)
+            ),
             [
                 'span1',
                 'span2',

@@ -39,11 +39,10 @@ describe('#next', function() {
 
     it('returns the next sibling of each node', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.next(
-                    '.span'
-                ).map(node => node.id);
-            }),
+            await exec(_ =>
+                dom.next('.span')
+                    .map(node => node.id)
+            ),
             [
                 'span3',
                 'span7'
@@ -53,12 +52,10 @@ describe('#next', function() {
 
     it('returns the next sibling of each node matching a filter', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.next(
-                    '.span',
-                    '#span7'
-                ).map(node => node.id);
-            }),
+            await exec(_ =>
+                dom.next('.span', '#span7')
+                    .map(node => node.id)
+            ),
             [
                 'span7'
             ]
@@ -67,23 +64,21 @@ describe('#next', function() {
 
     it('returns an empty array for empty nodes', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.next(
-                    '#invalid'
-                );
-            }),
+            await exec(_ =>
+                dom.next('#invalid')
+            ),
             []
         );
     });
 
     it('works with HTMLElement nodes', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.next(
+            await exec(_ =>
+                dom.next(
                     document.getElementById('span6'),
                     '#span7'
-                ).map(node => node.id);
-            }),
+                ).map(node => node.id)
+            ),
             [
                 'span7'
             ]
@@ -92,12 +87,12 @@ describe('#next', function() {
 
     it('works with NodeList nodes', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.next(
+            await exec(_ =>
+                dom.next(
                     document.querySelectorAll('.span'),
                     '#span7'
-                ).map(node => node.id);
-            }),
+                ).map(node => node.id)
+            ),
             [
                 'span7'
             ]
@@ -106,12 +101,12 @@ describe('#next', function() {
 
     it('works with HTMLCollection nodes', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.next(
+            await exec(_ =>
+                dom.next(
                     document.getElementById('parent2').children,
                     '#span7'
-                ).map(node => node.id);
-            }),
+                ).map(node => node.id)
+            ),
             [
                 'span7'
             ]
@@ -120,15 +115,12 @@ describe('#next', function() {
 
     it('works with array nodes', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.next(
-                    [
-                        document.getElementById('span2'),
-                        document.getElementById('span6')
-                    ],
-                    '#span7'
-                ).map(node => node.id);
-            }),
+            await exec(_ =>
+                dom.next([
+                    document.getElementById('span2'),
+                    document.getElementById('span6')
+                ], '#span7').map(node => node.id)
+            ),
             [
                 'span7'
             ]
@@ -137,12 +129,12 @@ describe('#next', function() {
 
     it('works with function filter', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.next(
+            await exec(_ =>
+                dom.next(
                     '.span',
                     node => node.id === 'span7'
-                ).map(node => node.id);
-            }),
+                ).map(node => node.id)
+            ),
             [
                 'span7'
             ]
@@ -151,12 +143,12 @@ describe('#next', function() {
 
     it('works with HTMLElement filter', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.next(
+            await exec(_ =>
+                dom.next(
                     '.span',
                     document.getElementById('span7')
-                ).map(node => node.id);
-            }),
+                ).map(node => node.id)
+            ),
             [
                 'span7'
             ]
@@ -165,12 +157,12 @@ describe('#next', function() {
 
     it('works with NodeList filter', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.next(
+            await exec(_ =>
+                dom.next(
                     '.span',
                     document.querySelectorAll('#span7')
-                ).map(node => node.id);
-            }),
+                ).map(node => node.id)
+            ),
             [
                 'span7'
             ]
@@ -179,12 +171,12 @@ describe('#next', function() {
 
     it('works with HTMLCollection filter', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.next(
+            await exec(_ =>
+                dom.next(
                     '.span',
                     document.getElementById('parent2').children
-                ).map(node => node.id);
-            }),
+                ).map(node => node.id)
+            ),
             [
                 'span7'
             ]
@@ -193,15 +185,12 @@ describe('#next', function() {
 
     it('works with array filter', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.next(
-                    '.span',
-                    [
-                        document.getElementById('span3'),
-                        document.getElementById('span7')
-                    ]
-                ).map(node => node.id);
-            }),
+            await exec(_ =>
+                dom.next('.span', [
+                    document.getElementById('span3'),
+                    document.getElementById('span7')
+                ]).map(node => node.id)
+            ),
             [
                 'span3',
                 'span7'

@@ -15,60 +15,54 @@ describe('#isSame', function() {
 
     it('returns true if any node is identical to any other node', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.isSame(
-                    'div',
-                    '#div2, #div4'
-                );
-            }),
+            await exec(_ =>
+                dom.isSame('div', '#div2, #div4')
+            ),
             true
         );
     });
 
     it('returns false if no nodes are identical to any other node', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.isSame(
-                    'div',
-                    'span'
-                );
-            }),
+            await exec(_ =>
+                dom.isSame('div', 'span')
+            ),
             false
         );
     });
 
     it('works with HTMLElement nodes', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.isSame(
+            await exec(_ =>
+                dom.isSame(
                     document.getElementById('div2'),
                     '#div2, #div4'
-                );
-            }),
+                )
+            ),
             true
         );
     });
 
     it('works with NodeList nodes', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.isSame(
+            await exec(_ =>
+                dom.isSame(
                     document.querySelectorAll('div'),
                     '#div2, #div4'
-                );
-            }),
+                )
+            ),
             true
         );
     });
 
     it('works with HTMLCollection nodes', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.isSame(
+            await exec(_ =>
+                dom.isSame(
                     document.body.children,
                     '#div2, #div4'
-                );
-            }),
+                )
+            ),
             true
         );
     });
@@ -77,10 +71,7 @@ describe('#isSame', function() {
         assert.equal(
             await exec(_ => {
                 const fragment = document.createDocumentFragment();
-                return dom.isSame(
-                    fragment,
-                    fragment
-                );
+                return dom.isSame(fragment, fragment);
             }),
             true
         );
@@ -91,10 +82,7 @@ describe('#isSame', function() {
             await exec(_ => {
                 const div = document.createElement('div');
                 const shadow = div.attachShadow({ mode: 'open' });
-                return dom.isSame(
-                    shadow,
-                    shadow
-                );
+                return dom.isSame(shadow, shadow);
             }),
             true
         );
@@ -102,53 +90,50 @@ describe('#isSame', function() {
 
     it('works with array nodes', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.isSame(
-                    [
-                        document.getElementById('div1'),
-                        document.getElementById('div2'),
-                        document.getElementById('div3'),
-                        document.getElementById('div4')
-                    ],
-                    '#div2, #div4'
-                );
-            }),
+            await exec(_ =>
+                dom.isSame([
+                    document.getElementById('div1'),
+                    document.getElementById('div2'),
+                    document.getElementById('div3'),
+                    document.getElementById('div4')
+                ], '#div2, #div4')
+            ),
             true
         );
     });
 
     it('works with HTMLElement other nodes', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.isSame(
+            await exec(_ =>
+                dom.isSame(
                     'div',
                     document.getElementById('div2')
-                );
-            }),
+                )
+            ),
             true
         );
     });
 
     it('works with NodeList other nodes', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.isSame(
+            await exec(_ =>
+                dom.isSame(
                     'div',
                     document.querySelectorAll('#div2, #div4')
-                );
-            }),
+                )
+            ),
             true
         );
     });
 
     it('works with HTMLCollection other nodes', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.isSame(
+            await exec(_ =>
+                dom.isSame(
                     'div',
                     document.body.children
-                );
-            }),
+                )
+            ),
             true
         );
     });
@@ -188,15 +173,12 @@ describe('#isSame', function() {
 
     it('works with array other nodes', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.isSame(
-                    'div',
-                    [
-                        document.querySelector('#div2'),
-                        document.querySelector('#div4')
-                    ]
-                );
-            }),
+            await exec(_ =>
+                dom.isSame('div', [
+                    document.querySelector('#div2'),
+                    document.querySelector('#div4')
+                ])
+            ),
             true
         );
     });

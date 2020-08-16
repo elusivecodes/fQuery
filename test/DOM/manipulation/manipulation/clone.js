@@ -21,9 +21,7 @@ describe('#clone', function() {
     it('clones all nodes', async function() {
         assert.equal(
             await exec(_ => {
-                const clones = dom.clone(
-                    'div'
-                );
+                const clones = dom.clone('div');
                 for (const clone of clones) {
                     document.body.appendChild(clone);
                 }
@@ -51,12 +49,9 @@ describe('#clone', function() {
     it('shallow clones all nodes', async function() {
         assert.equal(
             await exec(_ => {
-                const clones = dom.clone(
-                    'div',
-                    {
-                        deep: false
-                    }
-                );
+                const clones = dom.clone('div', {
+                    deep: false
+                });
                 for (const clone of clones) {
                     document.body.appendChild(clone);
                 }
@@ -84,19 +79,13 @@ describe('#clone', function() {
                     'click',
                     _ => { result++; }
                 );
-                const clones = dom.clone(
-                    'a',
-                    {
-                        events: true
-                    }
-                );
+                const clones = dom.clone('a', {
+                    events: true
+                });
                 for (const clone of clones) {
                     document.body.appendChild(clone);
                 }
-                dom.triggerEvent(
-                    'a',
-                    'click'
-                );
+                dom.triggerEvent('a', 'click');
                 return result;
             }),
             8
@@ -106,17 +95,10 @@ describe('#clone', function() {
     it('clones all nodes with data', async function() {
         assert.deepEqual(
             await exec(_ => {
-                dom.setData(
-                    'a',
-                    'test',
-                    'Test'
-                );
-                const clones = dom.clone(
-                    'a',
-                    {
-                        data: true
-                    }
-                );
+                dom.setData('a', 'test', 'Test');
+                const clones = dom.clone('a', {
+                    data: true
+                });
                 for (const clone of clones) {
                     document.body.appendChild(clone);
                 }
@@ -147,12 +129,9 @@ describe('#clone', function() {
                     debug: true
                 }
             );
-            const clones = dom.clone(
-                'a',
-                {
-                    animations: true
-                }
-            );
+            const clones = dom.clone('a', {
+                animations: true
+            });
             for (const clone of clones) {
                 document.body.appendChild(clone);
             }
@@ -267,9 +246,7 @@ describe('#clone', function() {
                 const fragment = range.createContextualFragment(
                     '<div><span></span></div>'
                 );
-                const clones = dom.clone(
-                    fragment
-                );
+                const clones = dom.clone(fragment);
                 document.body.appendChild(fragment);
                 for (const clone of clones) {
                     document.body.appendChild(clone);
@@ -292,12 +269,10 @@ describe('#clone', function() {
     it('works with array nodes', async function() {
         assert.equal(
             await exec(_ => {
-                const clones = dom.clone(
-                    [
-                        document.querySelector('.parent1'),
-                        document.querySelector('.parent2')
-                    ]
-                );
+                const clones = dom.clone([
+                    document.querySelector('.parent1'),
+                    document.querySelector('.parent2')
+                ]);
                 for (const clone of clones) {
                     document.body.appendChild(clone);
                 }

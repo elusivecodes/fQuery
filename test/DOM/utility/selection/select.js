@@ -22,9 +22,7 @@ describe('#select', function() {
     it('creates a selection on the first node', async function() {
         assert.equal(
             await exec(_ => {
-                dom.select(
-                    '.select'
-                );
+                dom.select('.select');
                 const selection = document.getSelection();
                 const range = selection.getRangeAt(0);
                 return range.toString();
@@ -36,9 +34,7 @@ describe('#select', function() {
     it('creates a selection on an input node', async function() {
         assert.equal(
             await exec(_ => {
-                dom.select(
-                    '#input'
-                );
+                dom.select('#input');
                 document.execCommand('cut');
                 return document.getElementById('input').value;
             }),
@@ -49,9 +45,7 @@ describe('#select', function() {
     it('creates a selection on a textarea node', async function() {
         assert.equal(
             await exec(_ => {
-                dom.select(
-                    '#textarea'
-                );
+                dom.select('#textarea');
                 document.execCommand('cut');
                 return document.getElementById('textarea').value;
             }),
@@ -104,12 +98,10 @@ describe('#select', function() {
     it('works with array nodes', async function() {
         assert.equal(
             await exec(_ => {
-                dom.select(
-                    [
-                        document.getElementById('div1'),
-                        document.getElementById('div2')
-                    ]
-                );
+                dom.select([
+                    document.getElementById('div1'),
+                    document.getElementById('div2')
+                ]);
                 const selection = document.getSelection();
                 const range = selection.getRangeAt(0);
                 return range.toString();

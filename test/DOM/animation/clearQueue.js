@@ -22,14 +22,10 @@ describe('#clearQueue', function() {
                     node.dataset.test = 'Test'
                 }
             );
-            dom.clearQueue(
-                '.queue'
-            );
+            dom.clearQueue('.queue');
         }).then(waitFor(100)).then(async _ => {
             assert.equal(
-                await exec(_ => {
-                    return document.body.innerHTML;
-                }),
+                await exec(_ => document.body.innerHTML),
                 '<div id="test1"></div>' +
                 '<div id="test2" class="queue"></div>' +
                 '<div id="test3"></div>' +
@@ -56,14 +52,10 @@ describe('#clearQueue', function() {
             );
         }).then(waitFor(50)).then(async _ => {
             await exec(_ => {
-                dom.clearQueue(
-                    '.queue'
-                );
+                dom.clearQueue('.queue');
             });
             assert.equal(
-                await exec(_ => {
-                    return document.body.innerHTML;
-                }),
+                await exec(_ => document.body.innerHTML),
                 '<div id="test1"></div>' +
                 '<div id="test2" class="queue"></div>' +
                 '<div id="test3"></div>' +
@@ -71,9 +63,7 @@ describe('#clearQueue', function() {
             );
         }).then(waitFor(100)).then(async _ => {
             assert.equal(
-                await exec(_ => {
-                    return document.body.innerHTML;
-                }),
+                await exec(_ => document.body.innerHTML),
                 '<div id="test1"></div>' +
                 '<div id="test2" class="queue"></div>' +
                 '<div id="test3"></div>' +
@@ -95,9 +85,7 @@ describe('#clearQueue', function() {
             );
         }).then(waitFor(100)).then(async _ => {
             assert.equal(
-                await exec(_ => {
-                    return document.body.innerHTML;
-                }),
+                await exec(_ => document.body.innerHTML),
                 '<div id="test1"></div>' +
                 '<div id="test2" class="queue"></div>' +
                 '<div id="test3"></div>' +
@@ -119,9 +107,7 @@ describe('#clearQueue', function() {
             );
         }).then(waitFor(100)).then(async _ => {
             assert.equal(
-                await exec(_ => {
-                    return document.body.innerHTML;
-                }),
+                await exec(_ => document.body.innerHTML),
                 '<div id="test1"></div>' +
                 '<div id="test2" class="queue"></div>' +
                 '<div id="test3"></div>' +
@@ -143,9 +129,7 @@ describe('#clearQueue', function() {
             );
         }).then(waitFor(100)).then(async _ => {
             assert.equal(
-                await exec(_ => {
-                    return document.body.innerHTML;
-                }),
+                await exec(_ => document.body.innerHTML),
                 '<div id="test1"></div>' +
                 '<div id="test2" class="queue"></div>' +
                 '<div id="test3"></div>' +
@@ -162,17 +146,13 @@ describe('#clearQueue', function() {
                     node.dataset.test = 'Test'
                 }
             );
-            dom.clearQueue(
-                [
-                    document.getElementById('test2'),
-                    document.getElementById('test4')
-                ]
-            );
+            dom.clearQueue([
+                document.getElementById('test2'),
+                document.getElementById('test4')
+            ]);
         }).then(waitFor(100)).then(async _ => {
             assert.equal(
-                await exec(_ => {
-                    return document.body.innerHTML;
-                }),
+                await exec(_ => document.body.innerHTML),
                 '<div id="test1"></div>' +
                 '<div id="test2" class="queue"></div>' +
                 '<div id="test3"></div>' +

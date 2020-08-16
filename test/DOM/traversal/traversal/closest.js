@@ -25,11 +25,10 @@ describe('#closest', function() {
 
     it('returns the closest ancestor of each node', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.closest(
-                    'a'
-                ).map(node => node.id);
-            }),
+            await exec(_ =>
+                dom.closest('a')
+                    .map(node => node.id)
+            ),
             [
                 'span1',
                 'span2'
@@ -39,12 +38,10 @@ describe('#closest', function() {
 
     it('returns the closest ancestor of each node matching a filter', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.closest(
-                    'a',
-                    'div'
-                ).map(node => node.id);
-            }),
+            await exec(_ =>
+                dom.closest('a', 'div')
+                    .map(node => node.id)
+            ),
             [
                 'child1',
                 'child2'
@@ -54,23 +51,21 @@ describe('#closest', function() {
 
     it('returns an empty array for empty nodes', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.closest(
-                    '#invalid'
-                );
-            }),
+            await exec(_ =>
+                dom.closest('#invalid')
+            ),
             []
         );
     });
 
     it('works with HTMLElement nodes', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.closest(
+            await exec(_ =>
+                dom.closest(
                     document.getElementById('a1'),
                     'div'
-                ).map(node => node.id);
-            }),
+                ).map(node => node.id)
+            ),
             [
                 'child1'
             ]
@@ -79,12 +74,12 @@ describe('#closest', function() {
 
     it('works with NodeList nodes', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.closest(
+            await exec(_ =>
+                dom.closest(
                     document.querySelectorAll('a'),
                     'div'
-                ).map(node => node.id);
-            }),
+                ).map(node => node.id)
+            ),
             [
                 'child1',
                 'child2'
@@ -94,12 +89,12 @@ describe('#closest', function() {
 
     it('works with HTMLCollection nodes', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.closest(
+            await exec(_ =>
+                dom.closest(
                     document.getElementById('child1').children,
                     'div'
-                ).map(node => node.id);
-            }),
+                ).map(node => node.id)
+            ),
             [
                 'child1'
             ]
@@ -108,15 +103,12 @@ describe('#closest', function() {
 
     it('works with array nodes', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.closest(
-                    [
-                        document.getElementById('a1'),
-                        document.getElementById('a2')
-                    ],
-                    'div'
-                ).map(node => node.id);
-            }),
+            await exec(_ =>
+                dom.closest([
+                    document.getElementById('a1'),
+                    document.getElementById('a2')
+                ], 'div').map(node => node.id)
+            ),
             [
                 'child1',
                 'child2'
@@ -126,12 +118,12 @@ describe('#closest', function() {
 
     it('works with function filter', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.closest(
+            await exec(_ =>
+                dom.closest(
                     'a',
                     node => node.tagName === 'DIV'
-                ).map(node => node.id);
-            }),
+                ).map(node => node.id)
+            ),
             [
                 'child1',
                 'child2'
@@ -141,12 +133,12 @@ describe('#closest', function() {
 
     it('works with HTMLElement filter', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.closest(
+            await exec(_ =>
+                dom.closest(
                     'a',
                     document.getElementById('child1')
-                ).map(node => node.id);
-            }),
+                ).map(node => node.id)
+            ),
             [
                 'child1'
             ]
@@ -155,12 +147,12 @@ describe('#closest', function() {
 
     it('works with NodeList filter', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.closest(
+            await exec(_ =>
+                dom.closest(
                     'a',
                     document.querySelectorAll('div')
-                ).map(node => node.id);
-            }),
+                ).map(node => node.id)
+            ),
             [
                 'child1',
                 'child2'
@@ -170,12 +162,12 @@ describe('#closest', function() {
 
     it('works with HTMLCollection filter', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.closest(
+            await exec(_ =>
+                dom.closest(
                     'a',
                     document.body.children
-                ).map(node => node.id);
-            }),
+                ).map(node => node.id)
+            ),
             [
                 'parent1',
                 'parent2'
@@ -185,15 +177,12 @@ describe('#closest', function() {
 
     it('works with array filter', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.closest(
-                    'a',
-                    [
-                        document.getElementById('child1'),
-                        document.getElementById('child2')
-                    ]
-                ).map(node => node.id);
-            }),
+            await exec(_ =>
+                dom.closest('a', [
+                    document.getElementById('child1'),
+                    document.getElementById('child2')
+                ]).map(node => node.id)
+            ),
             [
                 'child1',
                 'child2'
@@ -203,13 +192,13 @@ describe('#closest', function() {
 
     it('works with function limit', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.closest(
+            await exec(_ =>
+                dom.closest(
                     'a',
                     'div',
                     node => node.id === 'span2'
-                ).map(node => node.id);
-            }),
+                ).map(node => node.id)
+            ),
             [
                 'child1'
             ]
@@ -218,13 +207,13 @@ describe('#closest', function() {
 
     it('works with HTMLElement limit', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.closest(
+            await exec(_ =>
+                dom.closest(
                     'a',
                     'div',
                     document.getElementById('span2')
-                ).map(node => node.id);
-            }),
+                ).map(node => node.id)
+            ),
             [
                 'child1'
             ]
@@ -233,13 +222,13 @@ describe('#closest', function() {
 
     it('works with NodeList limit', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.closest(
+            await exec(_ =>
+                dom.closest(
                     'a',
                     'div',
                     document.querySelectorAll('#span2')
-                ).map(node => node.id);
-            }),
+                ).map(node => node.id)
+            ),
             [
                 'child1'
             ]
@@ -248,13 +237,13 @@ describe('#closest', function() {
 
     it('works with HTMLCollection limit', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.closest(
+            await exec(_ =>
+                dom.closest(
                     'a',
                     'div',
                     document.getElementById('child2').children
-                ).map(node => node.id);
-            }),
+                ).map(node => node.id)
+            ),
             [
                 'child1'
             ]
@@ -263,15 +252,11 @@ describe('#closest', function() {
 
     it('works with array limit', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.closest(
-                    'a',
-                    'div',
-                    [
-                        document.getElementById('span2')
-                    ]
-                ).map(node => node.id);
-            }),
+            await exec(_ =>
+                dom.closest('a', 'div', [
+                    document.getElementById('span2')
+                ]).map(node => node.id)
+            ),
             [
                 'child1'
             ]

@@ -42,44 +42,42 @@ describe('#serialize', function() {
 
     it('returns a serialized string of all form elements', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.serialize(
-                    'form'
-                );
-            }),
+            await exec(_ =>
+                dom.serialize('form')
+            ),
             'test1=Test%201&test2=2&test3=Test%203&test4=42&test5%5B%5D=51&test5%5B%5D=52&test6=Test%206&test8=Test%208b&test9%5B%5D=Test%209a&test9%5B%5D=Test%209b'
         );
     });
 
     it('works with HTMLElement nodes', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.serialize(
+            await exec(_ =>
+                dom.serialize(
                     document.getElementById('form')
-                );
-            }),
+                )
+            ),
             'test1=Test%201&test2=2&test3=Test%203&test4=42&test5%5B%5D=51&test5%5B%5D=52&test6=Test%206&test8=Test%208b&test9%5B%5D=Test%209a&test9%5B%5D=Test%209b'
         );
     });
 
     it('works with NodeList nodes', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.serialize(
+            await exec(_ =>
+                dom.serialize(
                     document.querySelectorAll('input, textarea, select')
-                );
-            }),
+                )
+            ),
             'test1=Test%201&test2=2&test3=Test%203&test4=42&test5%5B%5D=51&test5%5B%5D=52&test6=Test%206&test8=Test%208b&test9%5B%5D=Test%209a&test9%5B%5D=Test%209b'
         );
     });
 
     it('works with HTMLCollection nodes', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.serialize(
+            await exec(_ =>
+                dom.serialize(
                     document.body.children
-                );
-            }),
+                )
+            ),
             'test1=Test%201&test2=2&test3=Test%203&test4=42&test5%5B%5D=51&test5%5B%5D=52&test6=Test%206&test8=Test%208b&test9%5B%5D=Test%209a&test9%5B%5D=Test%209b'
         );
     });
@@ -91,9 +89,7 @@ describe('#serialize', function() {
                 const fragment = range.createContextualFragment(
                     document.body.innerHTML
                 );
-                return dom.serialize(
-                    fragment
-                );
+                return dom.serialize(fragment);
             }),
             'test1=Test%201&test2=2&test3=Test%203&test4=42&test5%5B%5D=51&test5%5B%5D=52&test6=Test%206&test8=Test%208b&test9%5B%5D=Test%209a&test9%5B%5D=Test%209b'
         );
@@ -109,9 +105,7 @@ describe('#serialize', function() {
                     document.body.innerHTML
                 );
                 shadow.appendChild(fragment);
-                return dom.serialize(
-                    shadow
-                );
+                return dom.serialize(shadow);
             }),
             'test1=Test%201&test2=2&test3=Test%203&test4=42&test5%5B%5D=51&test5%5B%5D=52&test6=Test%206&test8=Test%208b&test9%5B%5D=Test%209a&test9%5B%5D=Test%209b'
         );
@@ -119,23 +113,21 @@ describe('#serialize', function() {
 
     it('works with array nodes', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.serialize(
-                    [
-                        document.getElementById('test1'),
-                        document.getElementById('test2'),
-                        document.getElementById('test3'),
-                        document.getElementById('test4'),
-                        document.getElementById('test5'),
-                        document.getElementById('test6'),
-                        document.getElementById('test7'),
-                        document.getElementById('test8a'),
-                        document.getElementById('test8b'),
-                        document.getElementById('test9a'),
-                        document.getElementById('test9b')
-                    ]
-                );
-            }),
+            await exec(_ =>
+                dom.serialize([
+                    document.getElementById('test1'),
+                    document.getElementById('test2'),
+                    document.getElementById('test3'),
+                    document.getElementById('test4'),
+                    document.getElementById('test5'),
+                    document.getElementById('test6'),
+                    document.getElementById('test7'),
+                    document.getElementById('test8a'),
+                    document.getElementById('test8b'),
+                    document.getElementById('test9a'),
+                    document.getElementById('test9b')
+                ])
+            ),
             'test1=Test%201&test2=2&test3=Test%203&test4=42&test5%5B%5D=51&test5%5B%5D=52&test6=Test%206&test8=Test%208b&test9%5B%5D=Test%209a&test9%5B%5D=Test%209b'
         );
     });

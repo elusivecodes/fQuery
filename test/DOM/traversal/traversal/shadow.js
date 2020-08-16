@@ -17,9 +17,7 @@ describe('#shadow', function() {
     it('returns the shadow root of the first node', async function() {
         assert.equal(
             await exec(_ => {
-                const shadow = dom.shadow(
-                    'div'
-                );
+                const shadow = dom.shadow('div');
                 return shadow instanceof ShadowRoot;
             }),
             true
@@ -28,33 +26,27 @@ describe('#shadow', function() {
 
     it('returns null for closed shadow roots', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.shadow(
-                    '#div2'
-                );
-            }),
+            await exec(_ =>
+                dom.shadow('#div2')
+            ),
             null
         );
     });
 
     it('returns null for nodes without a shadow root', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.shadow(
-                    '#div3'
-                );
-            }),
+            await exec(_ =>
+                dom.shadow('#div3')
+            ),
             null
         );
     });
 
     it('returns undefined for empty nodes', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.shadow(
-                    '#invalid'
-                );
-            }),
+            await exec(_ =>
+                dom.shadow('#invalid')
+            ),
             undefined
         );
     });
@@ -98,12 +90,10 @@ describe('#shadow', function() {
     it('works with array nodes', async function() {
         assert.equal(
             await exec(_ => {
-                const shadow = dom.shadow(
-                    [
-                        document.getElementById('div1'),
-                        document.getElementById('div2')
-                    ]
-                );
+                const shadow = dom.shadow([
+                    document.getElementById('div1'),
+                    document.getElementById('div2')
+                ]);
                 return shadow instanceof ShadowRoot;
             }),
             true

@@ -19,55 +19,51 @@ describe('#hasChildren', function() {
 
     it('returns true if any node has children', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.hasChildren(
-                    'div'
-                );
-            }),
+            await exec(_ =>
+                dom.hasChildren('div')
+            ),
             true
         );
     });
 
     it('returns false if no nodes have children', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.hasChildren(
-                    'div:not(.test)'
-                );
-            }),
+            await exec(_ =>
+                dom.hasChildren('div:not(.test)')
+            ),
             false
         );
     });
 
     it('works with HTMLElement nodes', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.hasChildren(
+            await exec(_ =>
+                dom.hasChildren(
                     document.getElementById('div1')
-                );
-            }),
+                )
+            ),
             true
         );
     });
 
     it('works with NodeList nodes', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.hasChildren(
+            await exec(_ =>
+                dom.hasChildren(
                     document.querySelectorAll('div')
-                );
-            }),
+                )
+            ),
             true
         );
     });
 
     it('works with HTMLCollection nodes', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.hasChildren(
+            await exec(_ =>
+                dom.hasChildren(
                     document.body.children
-                );
-            }),
+                )
+            ),
             true
         );
     });
@@ -79,9 +75,7 @@ describe('#hasChildren', function() {
                 const fragment = range.createContextualFragment(
                     '<div></div>'
                 );
-                return dom.hasChildren(
-                    fragment
-                );
+                return dom.hasChildren(fragment);
             }),
             true
         );
@@ -97,9 +91,7 @@ describe('#hasChildren', function() {
                     '<div></div>'
                 );
                 shadow.appendChild(fragment);
-                return dom.hasChildren(
-                    shadow
-                );
+                return dom.hasChildren(shadow);
             }),
             true
         );
@@ -107,27 +99,23 @@ describe('#hasChildren', function() {
 
     it('works with Document nodes', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.hasChildren(
-                    document
-                );
-            }),
+            await exec(_ =>
+                dom.hasChildren(document)
+            ),
             true
         );
     });
 
     it('works with array nodes', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.hasChildren(
-                    [
-                        document.getElementById('div1'),
-                        document.getElementById('div2'),
-                        document.getElementById('div3'),
-                        document.getElementById('div4')
-                    ]
-                );
-            }),
+            await exec(_ =>
+                dom.hasChildren([
+                    document.getElementById('div1'),
+                    document.getElementById('div2'),
+                    document.getElementById('div3'),
+                    document.getElementById('div4')
+                ])
+            ),
             true
         );
     });

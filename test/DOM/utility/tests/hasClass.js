@@ -15,77 +15,68 @@ describe('#hasClass', function() {
 
     it('returns true if any node has a specified class', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.hasClass(
-                    'div',
-                    'test'
-                );
-            }),
+            await exec(_ =>
+                dom.hasClass('div', 'test')
+            ),
             true
         );
     });
 
     it('returns false if no nodes have a specified class', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.hasClass(
-                    'div:not(.test)',
-                    'test'
-                );
-            }),
+            await exec(_ =>
+                dom.hasClass('div:not(.test)', 'test')
+            ),
             false
         );
     });
 
     it('works with HTMLElement nodes', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.hasClass(
+            await exec(_ =>
+                dom.hasClass(
                     document.getElementById('div1'),
                     'test'
-                );
-            }),
+                )
+            ),
             true
         );
     });
 
     it('works with NodeList nodes', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.hasClass(
+            await exec(_ =>
+                dom.hasClass(
                     document.querySelectorAll('div'),
                     'test'
-                );
-            }),
+                )
+            ),
             true
         );
     });
 
     it('works with HTMLCollection nodes', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.hasClass(
+            await exec(_ =>
+                dom.hasClass(
                     document.body.children,
                     'test'
-                );
-            }),
+                )
+            ),
             true
         );
     });
 
     it('works with array nodes', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.hasClass(
-                    [
-                        document.getElementById('div1'),
-                        document.getElementById('div2'),
-                        document.getElementById('div3'),
-                        document.getElementById('div4')
-                    ],
-                    'test'
-                );
-            }),
+            await exec(_ =>
+                dom.hasClass([
+                    document.getElementById('div1'),
+                    document.getElementById('div2'),
+                    document.getElementById('div3'),
+                    document.getElementById('div4')
+                ], 'test')
+            ),
             true
         );
     });

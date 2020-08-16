@@ -16,13 +16,10 @@ describe('#setProperty', function() {
             await exec(_ => {
                 const element1 = document.getElementById('test1');
                 const element2 = document.getElementById('test2');
-                dom.setProperty(
-                    'input',
-                    {
-                        test1: 'Test 1',
-                        test2: 'Test 2'
-                    }
-                );
+                dom.setProperty('input', {
+                    test1: 'Test 1',
+                    test2: 'Test 2'
+                });
                 return [
                     element1.test1,
                     element1.test2,
@@ -42,11 +39,7 @@ describe('#setProperty', function() {
     it('sets a property for all nodes', async function() {
         assert.deepEqual(
             await exec(_ => {
-                dom.setProperty(
-                    'input',
-                    'test',
-                    'Test'
-                );
+                dom.setProperty('input', 'test', 'Test');
                 return [
                     document.getElementById('test1').test,
                     document.getElementById('test2').test
@@ -125,14 +118,10 @@ describe('#setProperty', function() {
             await exec(_ => {
                 const element1 = document.getElementById('test1');
                 const element2 = document.getElementById('test2');
-                dom.setProperty(
-                    [
-                        element1,
-                        element2
-                    ],
-                    'test',
-                    'Test'
-                );
+                dom.setProperty([
+                    element1,
+                    element2
+                ], 'test', 'Test');
                 return [
                     element1.test,
                     element2.test

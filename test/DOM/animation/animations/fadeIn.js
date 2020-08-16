@@ -31,12 +31,9 @@ describe('#fadeIn', function() {
 
     it('adds a fade-in animation to each node', async function() {
         await exec(_ => {
-            dom.fadeIn(
-                '.animate',
-                {
-                    debug: true
-                }
-            );
+            dom.fadeIn('.animate', {
+                debug: true
+            });
         }).then(waitFor(100)).then(async _ => {
             await testNoAnimation('#test1');
             await testNoAnimation('#test3');
@@ -60,13 +57,10 @@ describe('#fadeIn', function() {
 
     it('adds a fade-in animation to each node with duration', async function() {
         await exec(_ => {
-            dom.fadeIn(
-                '.animate',
-                {
-                    duration: 100,
-                    debug: true
-                }
-            );
+            dom.fadeIn('.animate', {
+                duration: 100,
+                debug: true
+            });
         }).then(waitFor(50)).then(async _ => {
             await testNoAnimation('#test1');
             await testNoAnimation('#test3');
@@ -90,14 +84,11 @@ describe('#fadeIn', function() {
 
     it('adds a fade-in animation to each node (linear)', async function() {
         await exec(_ => {
-            dom.fadeIn(
-                '.animate',
-                {
-                    duration: 100,
-                    type: 'linear',
-                    debug: true
-                }
-            );
+            dom.fadeIn('.animate', {
+                duration: 100,
+                type: 'linear',
+                debug: true
+            });
         }).then(waitFor(50)).then(async _ => {
             await testNoAnimation('#test1');
             await testNoAnimation('#test3');
@@ -121,14 +112,11 @@ describe('#fadeIn', function() {
 
     it('adds a fade-in animation to each node (ease-in)', async function() {
         await exec(_ => {
-            dom.fadeIn(
-                '.animate',
-                {
-                    duration: 100,
-                    type: 'ease-in',
-                    debug: true
-                }
-            );
+            dom.fadeIn('.animate', {
+                duration: 100,
+                type: 'ease-in',
+                debug: true
+            });
         }).then(waitFor(50)).then(async _ => {
             await testNoAnimation('#test1');
             await testNoAnimation('#test3');
@@ -152,14 +140,11 @@ describe('#fadeIn', function() {
 
     it('adds a fade-in animation to each node (ease-out)', async function() {
         await exec(_ => {
-            dom.fadeIn(
-                '.animate',
-                {
-                    duration: 100,
-                    type: 'ease-out',
-                    debug: true
-                }
-            );
+            dom.fadeIn('.animate', {
+                duration: 100,
+                type: 'ease-out',
+                debug: true
+            });
         }).then(waitFor(50)).then(async _ => {
             await testNoAnimation('#test1');
             await testNoAnimation('#test3');
@@ -183,15 +168,12 @@ describe('#fadeIn', function() {
 
     it('adds a fade-in animation to each node (infinite)', async function() {
         await exec(_ => {
-            dom.fadeIn(
-                '.animate',
-                {
-                    duration: 100,
-                    type: 'linear',
-                    infinite: true,
-                    debug: true
-                }
-            );
+            dom.fadeIn('.animate', {
+                duration: 100,
+                type: 'linear',
+                infinite: true,
+                debug: true
+            });
         }).then(waitFor(50)).then(async _ => {
             await testNoAnimation('#test1');
             await testNoAnimation('#test3');
@@ -224,13 +206,10 @@ describe('#fadeIn', function() {
 
     it('resolves when the animation is completed', async function() {
         await exec(async _ => {
-            await dom.fadeIn(
-                '.animate',
-                {
-                    duration: 100,
-                    debug: true
-                }
-            );
+            await dom.fadeIn('.animate', {
+                duration: 100,
+                debug: true
+            });
         }).then(async _ => {
             await testNoAnimation('#test1');
             await testNoAnimation('#test2');
@@ -247,13 +226,10 @@ describe('#fadeIn', function() {
         assert.equal(
             await exec(async _ => {
                 try {
-                    const animation = dom.fadeIn(
-                        '.animate',
-                        {
-                            duration: 1000,
-                            debug: true
-                        }
-                    );
+                    const animation = dom.fadeIn('.animate', {
+                        duration: 1000,
+                        debug: true
+                    });
                     dom.stop('.animate', false);
                     await animation;
                     return false;
@@ -357,16 +333,13 @@ describe('#fadeIn', function() {
 
     it('works with array nodes', async function() {
         await exec(_ => {
-            dom.fadeIn(
-                [
-                    document.getElementById('test2'),
-                    document.getElementById('test4')
-                ],
-                {
-                    duration: 100,
-                    debug: true
-                }
-            );
+            dom.fadeIn([
+                document.getElementById('test2'),
+                document.getElementById('test4')
+            ], {
+                duration: 100,
+                debug: true
+            });
         }).then(waitFor(50)).then(async _ => {
             await testNoAnimation('#test1');
             await testNoAnimation('#test3');

@@ -33,9 +33,7 @@ describe('#put', function() {
     it('performs an AJAX PUT request with URL', async function() {
         assert.deepEqual(
             await exec(async _ => {
-                const response = await DOM.put(
-                    '/test'
-                );
+                const response = await DOM.put('/test');
                 response.xhr = response.xhr.data;
                 return response;
             }),
@@ -62,13 +60,10 @@ describe('#put', function() {
     it('performs an AJAX PUT request with data (object)', async function() {
         assert.deepEqual(
             await exec(async _ => {
-                const response = await DOM.put(
-                    null,
-                    {
-                        test1: 'Test 1',
-                        test2: 'Test 2'
-                    }
-                );
+                const response = await DOM.put(null, {
+                    test1: 'Test 1',
+                    test2: 'Test 2'
+                });
                 response.xhr = response.xhr.data;
                 return response;
             }),
@@ -95,16 +90,13 @@ describe('#put', function() {
     it('performs an AJAX PUT request with data (deep object)', async function() {
         assert.deepEqual(
             await exec(async _ => {
-                const response = await DOM.put(
-                    null,
-                    {
-                        test1: 'Test 1',
-                        test2: {
-                            a: '1',
-                            b: '2'
-                        }
+                const response = await DOM.put(null, {
+                    test1: 'Test 1',
+                    test2: {
+                        a: '1',
+                        b: '2'
                     }
-                );
+                });
                 response.xhr = response.xhr.data;
                 return response;
             }),
@@ -131,14 +123,11 @@ describe('#put', function() {
     it('performs an AJAX PUT request with data (implicit deep object)', async function() {
         assert.deepEqual(
             await exec(async _ => {
-                const response = await DOM.put(
-                    null,
-                    {
-                        test1: 'Test 1',
-                        'test2[a]': '1',
-                        'test2[b]': '2'
-                    }
-                );
+                const response = await DOM.put(null, {
+                    test1: 'Test 1',
+                    'test2[a]': '1',
+                    'test2[b]': '2'
+                });
                 response.xhr = response.xhr.data;
                 return response;
             }),
@@ -165,13 +154,10 @@ describe('#put', function() {
     it('performs an AJAX PUT request with data (object with array)', async function() {
         assert.deepEqual(
             await exec(async _ => {
-                const response = await DOM.put(
-                    null,
-                    {
-                        test1: 'Test 1',
-                        test2: ['1', '2']
-                    }
-                );
+                const response = await DOM.put(null, {
+                    test1: 'Test 1',
+                    test2: ['1', '2']
+                });
                 response.xhr = response.xhr.data;
                 return response;
             }),
@@ -198,13 +184,10 @@ describe('#put', function() {
     it('performs an AJAX PUT request with data (object with implicit array)', async function() {
         assert.deepEqual(
             await exec(async _ => {
-                const response = await DOM.put(
-                    null,
-                    {
-                        test1: 'Test 1',
-                        'test2[]': ['1', '2']
-                    }
-                );
+                const response = await DOM.put(null, {
+                    test1: 'Test 1',
+                    'test2[]': ['1', '2']
+                });
                 response.xhr = response.xhr.data;
                 return response;
             }),
@@ -231,19 +214,16 @@ describe('#put', function() {
     it('performs an AJAX PUT request with data (array)', async function() {
         assert.deepEqual(
             await exec(async _ => {
-                const response = await DOM.put(
-                    null,
-                    [
-                        {
-                            name: 'test1',
-                            value: 'Test 1'
-                        },
-                        {
-                            name: 'test2',
-                            value: 'Test 2'
-                        }
-                    ]
-                );
+                const response = await DOM.put(null, [
+                    {
+                        name: 'test1',
+                        value: 'Test 1'
+                    },
+                    {
+                        name: 'test2',
+                        value: 'Test 2'
+                    }
+                ]);
                 response.xhr = response.xhr.data;
                 return response;
             }),
@@ -270,19 +250,16 @@ describe('#put', function() {
     it('performs an AJAX PUT request with data (deep array)', async function() {
         assert.deepEqual(
             await exec(async _ => {
-                const response = await DOM.put(
-                    null,
-                    [
-                        {
-                            name: 'test1',
-                            value: 'Test 1'
-                        },
-                        {
-                            name: 'test2',
-                            value: ['1', '2']
-                        }
-                    ]
-                );
+                const response = await DOM.put(null, [
+                    {
+                        name: 'test1',
+                        value: 'Test 1'
+                    },
+                    {
+                        name: 'test2',
+                        value: ['1', '2']
+                    }
+                ]);
                 response.xhr = response.xhr.data;
                 return response;
             }),
@@ -309,19 +286,16 @@ describe('#put', function() {
     it('performs an AJAX PUT request with data (implicit deep array)', async function() {
         assert.deepEqual(
             await exec(async _ => {
-                const response = await DOM.put(
-                    null,
-                    [
-                        {
-                            name: 'test1',
-                            value: 'Test 1'
-                        },
-                        {
-                            name: 'test2[]',
-                            value: ['1', '2']
-                        }
-                    ]
-                );
+                const response = await DOM.put(null, [
+                    {
+                        name: 'test1',
+                        value: 'Test 1'
+                    },
+                    {
+                        name: 'test2[]',
+                        value: ['1', '2']
+                    }
+                ]);
                 response.xhr = response.xhr.data;
                 return response;
             }),
@@ -348,10 +322,7 @@ describe('#put', function() {
     it('performs an AJAX PUT request with data (string)', async function() {
         assert.deepEqual(
             await exec(async _ => {
-                const response = await DOM.put(
-                    null,
-                    'test1=Test%201&test2=Test%202'
-                );
+                const response = await DOM.put(null, 'test1=Test%201&test2=Test%202');
                 response.xhr = response.xhr.data;
                 return response;
             }),
@@ -378,16 +349,12 @@ describe('#put', function() {
     it('performs an AJAX PUT request with data (JSON)', async function() {
         assert.deepEqual(
             await exec(async _ => {
-                const response = await DOM.put(
-                    null,
-                    {
-                        test1: 'Test 1',
-                        test2: 'Test 2'
-                    },
-                    {
-                        contentType: 'application/json'
-                    }
-                );
+                const response = await DOM.put(null, {
+                    test1: 'Test 1',
+                    test2: 'Test 2'
+                }, {
+                    contentType: 'application/json'
+                });
                 response.xhr = response.xhr.data;
                 return response;
             }),
@@ -414,16 +381,12 @@ describe('#put', function() {
     it('performs an AJAX PUT request with FormData', async function() {
         assert.deepEqual(
             await exec(async _ => {
-                const response = await DOM.put(
-                    null,
-                    {
-                        test1: 'Test 1',
-                        test2: 'Test 2'
-                    },
-                    {
-                        contentType: null
-                    }
-                );
+                const response = await DOM.put(null, {
+                    test1: 'Test 1',
+                    test2: 'Test 2'
+                }, {
+                    contentType: null
+                });
                 response.xhr = response.xhr.data;
                 const results = [];
                 for (const [key, value] of response.xhr.body.entries()) {
@@ -463,13 +426,9 @@ describe('#put', function() {
     it('performs an AJAX PUT request with content type', async function() {
         assert.deepEqual(
             await exec(async _ => {
-                const response = await DOM.put(
-                    null,
-                    null,
-                    {
-                        contentType: 'text/plain'
-                    }
-                );
+                const response = await DOM.put(null, null, {
+                    contentType: 'text/plain'
+                });
                 response.xhr = response.xhr.data;
                 return response;
             }),
@@ -496,13 +455,10 @@ describe('#put', function() {
     it('performs an AJAX PUT request with response type', async function() {
         assert.deepEqual(
             await exec(async _ => {
-                const response = await DOM.put(
-                    null,
-                    null,
+                const response = await DOM.put(null, null,
                     {
                         responseType: 'json'
-                    }
-                );
+                    });
                 response.xhr = response.xhr.data;
                 return response;
             }),
@@ -530,13 +486,9 @@ describe('#put', function() {
     it('performs an AJAX PUT request with MIME type', async function() {
         assert.deepEqual(
             await exec(async _ => {
-                const response = await DOM.put(
-                    null,
-                    null,
-                    {
-                        mimeType: 'text/plain'
-                    }
-                );
+                const response = await DOM.put(null, null, {
+                    mimeType: 'text/plain'
+                });
                 response.xhr = response.xhr.data;
                 return response;
             }),
@@ -564,13 +516,9 @@ describe('#put', function() {
     it('performs an AJAX PUT request with username', async function() {
         assert.deepEqual(
             await exec(async _ => {
-                const response = await DOM.put(
-                    null,
-                    null,
-                    {
-                        username: 'test'
-                    }
-                );
+                const response = await DOM.put(null, null, {
+                    username: 'test'
+                });
                 response.xhr = response.xhr.data;
                 return response;
             }),
@@ -598,13 +546,9 @@ describe('#put', function() {
     it('performs an AJAX PUT request with password', async function() {
         assert.deepEqual(
             await exec(async _ => {
-                const response = await DOM.put(
-                    null,
-                    null,
-                    {
-                        password: 'test'
-                    }
-                );
+                const response = await DOM.put(null, null, {
+                    password: 'test'
+                });
                 response.xhr = response.xhr.data;
                 return response;
             }),
@@ -632,13 +576,9 @@ describe('#put', function() {
     it('performs an AJAX PUT request with timeout', async function() {
         assert.deepEqual(
             await exec(async _ => {
-                const response = await DOM.put(
-                    null,
-                    null,
-                    {
-                        timeout: 1000
-                    }
-                );
+                const response = await DOM.put(null, null, {
+                    timeout: 1000
+                });
                 response.xhr = response.xhr.data;
                 return response;
             }),
@@ -666,13 +606,9 @@ describe('#put', function() {
     it('performs an AJAX PUT request (local)', async function() {
         assert.deepEqual(
             await exec(async _ => {
-                const response = await DOM.put(
-                    null,
-                    null,
-                    {
-                        isLocal: true
-                    }
-                );
+                const response = await DOM.put(null, null, {
+                    isLocal: true
+                });
                 response.xhr = response.xhr.data;
                 return response;
             }),
@@ -698,15 +634,11 @@ describe('#put', function() {
     it('performs an AJAX PUT request with custom headers', async function() {
         assert.deepEqual(
             await exec(async _ => {
-                const response = await DOM.put(
-                    null,
-                    null,
-                    {
-                        headers: {
-                            'Test': 'Test 1'
-                        }
+                const response = await DOM.put(null, null, {
+                    headers: {
+                        'Test': 'Test 1'
                     }
-                );
+                });
                 response.xhr = response.xhr.data;
                 return response;
             }),
@@ -733,13 +665,9 @@ describe('#put', function() {
 
     it('performs an AJAX PUT request without cache', async function() {
         const response = await exec(async _ => {
-            const response = await DOM.put(
-                null,
-                null,
-                {
-                    cache: false
-                }
-            );
+            const response = await DOM.put(null, null, {
+                cache: false
+            });
             response.xhr = response.xhr.data;
             return response;
         });
@@ -751,13 +679,9 @@ describe('#put', function() {
 
     it('performs an AJAX PUT request without cache (query string)', async function() {
         const response = await exec(async _ => {
-            const response = await DOM.put(
-                '/?test=1',
-                null,
-                {
-                    cache: false
-                }
-            );
+            const response = await DOM.put('/?test=1', null, {
+                cache: false
+            });
             response.xhr = response.xhr.data;
             return response;
         });
@@ -771,17 +695,13 @@ describe('#put', function() {
         assert.deepEqual(
             await exec(async _ => {
                 let result;
-                await DOM.put(
-                    null,
-                    null,
-                    {
-                        beforeSend: xhr => {
-                            result = {
-                                ...xhr.data
-                            };
-                        }
+                await DOM.put(null, null, {
+                    beforeSend: xhr => {
+                        result = {
+                            ...xhr.data
+                        };
                     }
-                );
+                });
                 return result;
             }),
             {
@@ -800,17 +720,13 @@ describe('#put', function() {
         assert.deepEqual(
             await exec(async _ => {
                 let result;
-                await DOM.put(
-                    null,
-                    null,
-                    {
-                        afterSend: xhr => {
-                            result = {
-                                ...xhr.data
-                            };
-                        }
+                await DOM.put(null, null, {
+                    afterSend: xhr => {
+                        result = {
+                            ...xhr.data
+                        };
                     }
-                );
+                });
                 return result;
             }),
             {
@@ -830,19 +746,15 @@ describe('#put', function() {
         assert.deepEqual(
             await exec(async _ => {
                 let result;
-                await DOM.put(
-                    null,
-                    null,
-                    {
-                        onProgress: (progress, xhr, event) => {
-                            result = {
-                                progress,
-                                xhr: { ...xhr.data },
-                                event
-                            };
-                        }
+                await DOM.put(null, null, {
+                    onProgress: (progress, xhr, event) => {
+                        result = {
+                            progress,
+                            xhr: { ...xhr.data },
+                            event
+                        };
                     }
-                );
+                });
                 return result;
             }),
             {
@@ -870,19 +782,15 @@ describe('#put', function() {
         assert.deepEqual(
             await exec(async _ => {
                 let result;
-                await DOM.put(
-                    null,
-                    null,
-                    {
-                        onUploadProgress: (progress, xhr, event) => {
-                            result = {
-                                progress,
-                                xhr: { ...xhr.data },
-                                event
-                            };
-                        }
+                await DOM.put(null, null, {
+                    onUploadProgress: (progress, xhr, event) => {
+                        result = {
+                            progress,
+                            xhr: { ...xhr.data },
+                            event
+                        };
                     }
-                );
+                });
                 return result;
             }),
             {

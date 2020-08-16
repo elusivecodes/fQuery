@@ -23,10 +23,7 @@ describe('#prepend', function() {
     it('prepends each other node to each node', async function() {
         assert.equal(
             await exec(_ => {
-                dom.prepend(
-                    'div',
-                    'a'
-                );
+                dom.prepend('div', 'a');
                 return document.body.innerHTML;
             }),
             '<div id="parent1">' +
@@ -55,14 +52,8 @@ describe('#prepend', function() {
                     'click',
                     _ => { result++; }
                 );
-                dom.prepend(
-                    'div',
-                    'a'
-                );
-                dom.triggerEvent(
-                    'a',
-                    'click'
-                );
+                dom.prepend('div', 'a');
+                dom.triggerEvent('a', 'click');
                 return result;
             }),
             8
@@ -72,15 +63,8 @@ describe('#prepend', function() {
     it('preserves data for other nodes', async function() {
         assert.deepEqual(
             await exec(_ => {
-                dom.setData(
-                    'a',
-                    'test',
-                    'Test'
-                );
-                dom.append(
-                    'div',
-                    'a'
-                );
+                dom.setData('a', 'test', 'Test');
+                dom.append('div', 'a');
                 return [...document.querySelectorAll('a')]
                     .map(node =>
                         dom.getData(node, 'test')
@@ -109,10 +93,7 @@ describe('#prepend', function() {
                     debug: true
                 }
             );
-            dom.prepend(
-                'div',
-                'a'
-            );
+            dom.prepend('div', 'a');
         }).then(waitFor(50)).then(async _ => {
             await testAnimation('#parent1 > a:nth-of-type(1)', easeInOut, 100);
             await testAnimation('#parent1 > a:nth-of-type(2)', easeInOut, 100);
@@ -138,10 +119,7 @@ describe('#prepend', function() {
         assert.equal(
             await exec(_ => {
                 const nodes = [...document.querySelectorAll('a')];
-                dom.prepend(
-                    'div',
-                    'a'
-                );
+                dom.prepend('div', 'a');
                 const newNodes = [...document.querySelectorAll('a')].slice(4);
                 return nodes.every((node, i) => node.isSameNode(newNodes[i]));
             }),
@@ -230,10 +208,7 @@ describe('#prepend', function() {
                 const fragment = range.createContextualFragment(
                     '<span></span>'
                 );
-                dom.prepend(
-                    fragment,
-                    'a'
-                );
+                dom.prepend(fragment, 'a');
                 document.body.appendChild(fragment);
                 return document.body.innerHTML;
             }),
@@ -258,10 +233,7 @@ describe('#prepend', function() {
                 const shadow = div.attachShadow({ mode: 'open' });
                 const span = document.createElement('span');
                 shadow.appendChild(span);
-                dom.prepend(
-                    shadow,
-                    'a'
-                );
+                dom.prepend(shadow, 'a');
                 return shadow.innerHTML;
             }),
             '<a href="#" class="test1">Test</a>' +
@@ -289,13 +261,10 @@ describe('#prepend', function() {
     it('works with array nodes', async function() {
         assert.equal(
             await exec(_ => {
-                dom.prepend(
-                    [
-                        document.getElementById('parent1'),
-                        document.getElementById('parent2')
-                    ],
-                    'a'
-                );
+                dom.prepend([
+                    document.getElementById('parent1'),
+                    document.getElementById('parent2')
+                ], 'a');
                 return document.body.innerHTML;
             }),
             '<div id="parent1">' +
@@ -396,10 +365,7 @@ describe('#prepend', function() {
                 const fragment = range.createContextualFragment(
                     '<div><span></span></div>'
                 );
-                dom.prepend(
-                    'div',
-                    fragment
-                );
+                dom.prepend('div', fragment);
                 return document.body.innerHTML;
             }),
             '<div id="parent1">' +
@@ -420,15 +386,12 @@ describe('#prepend', function() {
     it('works with array other nodes', async function() {
         assert.equal(
             await exec(_ => {
-                dom.prepend(
-                    'div',
-                    [
-                        document.querySelector('.test1'),
-                        document.querySelector('.test2'),
-                        document.querySelector('.test3'),
-                        document.querySelector('.test4')
-                    ]
-                );
+                dom.prepend('div', [
+                    document.querySelector('.test1'),
+                    document.querySelector('.test2'),
+                    document.querySelector('.test3'),
+                    document.querySelector('.test4')
+                ]);
                 return document.body.innerHTML;
             }),
             '<div id="parent1">' +
@@ -451,10 +414,7 @@ describe('#prepend', function() {
     it('works with HTML other nodes', async function() {
         assert.equal(
             await exec(_ => {
-                dom.prepend(
-                    'div',
-                    '<div><span></span></div>'
-                );
+                dom.prepend('div', '<div><span></span></div>');
                 return document.body.innerHTML;
             }),
             '<div id="parent1">' +

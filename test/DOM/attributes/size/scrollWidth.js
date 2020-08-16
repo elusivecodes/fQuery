@@ -15,44 +15,51 @@ describe('#scrollWidth', function() {
 
     it('returns the scroll width of the first node', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.scrollWidth(
-                    'div'
-                );
-            }),
+            await exec(_ =>
+                dom.scrollWidth('div')
+            ),
             1000
         );
     });
 
     it('returns undefined for empty nodes', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.scrollWidth(
-                    '#invalid'
-                );
-            }),
+            await exec(_ =>
+                dom.scrollWidth('#invalid')
+            ),
             undefined
+        );
+    });
+
+    it('works with HTMLElement nodes', async function() {
+        assert.equal(
+            await exec(_ =>
+                dom.scrollWidth(
+                    document.getElementById('test1')
+                )
+            ),
+            1000
         );
     });
 
     it('works with NodeList nodes', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.scrollWidth(
+            await exec(_ =>
+                dom.scrollWidth(
                     document.querySelectorAll('div')
-                );
-            }),
+                )
+            ),
             1000
         );
     });
 
     it('works with HTMLCollection nodes', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.scrollWidth(
+            await exec(_ =>
+                dom.scrollWidth(
                     document.body.children
-                );
-            }),
+                )
+            ),
             1000
         );
     });
@@ -61,9 +68,7 @@ describe('#scrollWidth', function() {
         assert.equal(
             await exec(_ => {
                 document.body.innerHTML = '<div style="block; width: 1000px; height: 1000px;"></div>';
-                return dom.scrollWidth(
-                    document
-                );
+                return dom.scrollWidth(document);
             }),
             1008
         );
@@ -71,14 +76,12 @@ describe('#scrollWidth', function() {
 
     it('works with array nodes', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.scrollWidth(
-                    [
-                        document.getElementById('test1'),
-                        document.getElementById('test2')
-                    ]
-                );
-            }),
+            await exec(_ =>
+                dom.scrollWidth([
+                    document.getElementById('test1'),
+                    document.getElementById('test2')
+                ])
+            ),
             1000
         );
     });

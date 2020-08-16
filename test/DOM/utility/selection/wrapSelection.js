@@ -35,9 +35,7 @@ describe('#wrapSelection', function() {
     it('wraps selected nodes', async function() {
         assert.equal(
             await exec(_ => {
-                dom.wrapSelection(
-                    '.outer'
-                );
+                dom.wrapSelection('.outer');
                 return document.body.innerHTML;
             }),
             '<div id="select">' +
@@ -163,9 +161,7 @@ describe('#wrapSelection', function() {
                 const fragment = range.createContextualFragment(
                     '<div class="div-outer"><div class="div-inner"></div></div>'
                 );
-                dom.wrapSelection(
-                    fragment
-                );
+                dom.wrapSelection(fragment);
                 return document.body.innerHTML;
             }),
             '<div id="select">' +
@@ -198,11 +194,9 @@ describe('#wrapSelection', function() {
     it('works with array nodes', async function() {
         assert.equal(
             await exec(_ => {
-                dom.wrapSelection(
-                    [
-                        document.querySelector('.outer')
-                    ]
-                );
+                dom.wrapSelection([
+                    document.querySelector('.outer')
+                ]);
                 return document.body.innerHTML;
             }),
             '<div id="select">' +
@@ -231,9 +225,7 @@ describe('#wrapSelection', function() {
     it('works with HTML nodes', async function() {
         assert.equal(
             await exec(_ => {
-                dom.wrapSelection(
-                    '<div class="div-outer"><div class="div-inner"></div></div>'
-                );
+                dom.wrapSelection('<div class="div-outer"><div class="div-inner"></div></div>');
                 return document.body.innerHTML;
             }),
             '<div id="select">' +

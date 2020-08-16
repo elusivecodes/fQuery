@@ -16,93 +16,83 @@ describe('#isVisible', function() {
 
     it('returns true if any node is visible', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.isVisible(
-                    'div'
-                );
-            }),
+            await exec(_ =>
+                dom.isVisible('div')
+            ),
             true
         );
     });
 
     it('returns false if no nodes are visible', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.isVisible(
-                    '.test'
-                );
-            }),
+            await exec(_ =>
+                dom.isVisible('.test')
+            ),
             false
         );
     });
 
     it('works with HTMLElement nodes', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.isVisible(
+            await exec(_ =>
+                dom.isVisible(
                     document.getElementById('div1')
-                );
-            }),
+                )
+            ),
             true
         );
     });
 
     it('works with NodeList nodes', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.isVisible(
+            await exec(_ =>
+                dom.isVisible(
                     document.querySelectorAll('div')
-                );
-            }),
+                )
+            ),
             true
         );
     });
 
     it('works with HTMLCollection nodes', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.isVisible(
+            await exec(_ =>
+                dom.isVisible(
                     document.body.children
-                );
-            }),
+                )
+            ),
             true
         );
     });
 
     it('works with Document nodes', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.isVisible(
-                    document
-                );
-            }),
+            await exec(_ =>
+                dom.isVisible(document)
+            ),
             true
         );
     });
 
     it('works with Window nodes', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.isVisible(
-                    window
-                );
-            }),
+            await exec(_ =>
+                dom.isVisible(window)
+            ),
             true
         );
     });
 
     it('works with array nodes', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.isVisible(
-                    [
-                        document.getElementById('div1'),
-                        document.getElementById('div2'),
-                        document.getElementById('div3'),
-                        document.getElementById('div4')
-                    ]
-                );
-            }),
+            await exec(_ =>
+                dom.isVisible([
+                    document.getElementById('div1'),
+                    document.getElementById('div2'),
+                    document.getElementById('div3'),
+                    document.getElementById('div4')
+                ])
+            ),
             true
         );
     });

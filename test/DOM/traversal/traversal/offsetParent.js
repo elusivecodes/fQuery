@@ -25,69 +25,63 @@ describe('#offsetParent', function() {
 
     it('returns the offset parent of the first node', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.offsetParent(
-                    'a'
-                ).id;
-            }),
+            await exec(_ =>
+                dom.offsetParent('a').id
+            ),
             'child1'
         );
     });
 
     it('returns undefined for empty nodes', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.offsetParent(
-                    '#invalid'
-                );
-            }),
+            await exec(_ =>
+                dom.offsetParent('#invalid')
+            ),
             undefined
         );
     });
 
     it('works with HTMLElement nodes', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.offsetParent(
+            await exec(_ =>
+                dom.offsetParent(
                     document.getElementById('a1')
-                ).id;
-            }),
+                ).id
+            ),
             'child1'
         );
     });
 
     it('works with NodeList nodes', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.offsetParent(
+            await exec(_ =>
+                dom.offsetParent(
                     document.querySelectorAll('a')
-                ).id;
-            }),
+                ).id
+            ),
             'child1'
         );
     });
 
     it('works with HTMLCollection nodes', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.offsetParent(
+            await exec(_ =>
+                dom.offsetParent(
                     document.getElementById('span1').children
-                ).id;
-            }),
+                ).id
+            ),
             'child1'
         );
     });
 
     it('works with array nodes', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.offsetParent(
-                    [
-                        document.getElementById('a1'),
-                        document.getElementById('a2')
-                    ]
-                ).id;
-            }),
+            await exec(_ =>
+                dom.offsetParent([
+                    document.getElementById('a1'),
+                    document.getElementById('a2')
+                ]).id
+            ),
             'child1'
         );
     });

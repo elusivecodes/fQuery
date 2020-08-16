@@ -19,71 +19,65 @@ describe('#hasCSSAnimation', function() {
 
     it('returns true if any node has a CSS animation', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.hasCSSAnimation(
-                    'div'
-                );
-            }),
+            await exec(_ =>
+                dom.hasCSSAnimation('div')
+            ),
             true
         );
     });
 
     it('returns false if no nodes have a CSS animation', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.hasCSSAnimation(
-                    'div:not(.test)'
-                );
-            }),
+            await exec(_ =>
+                dom.hasCSSAnimation('div:not(.test)')
+            ),
             false
         );
     });
 
     it('works with HTMLElement nodes', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.hasCSSAnimation(
+            await exec(_ =>
+                dom.hasCSSAnimation(
                     document.getElementById('div1')
-                );
-            }),
+                )
+            ),
             true
         );
     });
 
     it('works with NodeList nodes', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.hasCSSAnimation(
+            await exec(_ =>
+                dom.hasCSSAnimation(
                     document.querySelectorAll('div')
-                );
-            }),
+                )
+            ),
             true
         );
     });
 
     it('works with HTMLCollection nodes', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.hasCSSAnimation(
+            await exec(_ =>
+                dom.hasCSSAnimation(
                     document.body.children
-                );
-            }),
+                )
+            ),
             true
         );
     });
 
     it('works with array nodes', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.hasCSSAnimation(
-                    [
-                        document.getElementById('div1'),
-                        document.getElementById('div2'),
-                        document.getElementById('div3'),
-                        document.getElementById('div4')
-                    ]
-                );
-            }),
+            await exec(_ =>
+                dom.hasCSSAnimation([
+                    document.getElementById('div1'),
+                    document.getElementById('div2'),
+                    document.getElementById('div3'),
+                    document.getElementById('div4')
+                ])
+            ),
             true
         );
     });

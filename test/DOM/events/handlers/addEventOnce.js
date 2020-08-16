@@ -118,7 +118,7 @@ describe('#addEventOnce', function() {
                 const element2 = document.getElementById('test2');
                 dom.addEventOnce(
                     'a',
-                    'click.test',
+                    'click.test.deep',
                     _ => { result++; }
                 );
                 element1.dispatchEvent(event);

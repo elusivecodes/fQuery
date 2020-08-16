@@ -25,10 +25,7 @@ describe('#replaceAll', function() {
     it('replaces each other node with nodes', async function() {
         assert.equal(
             await exec(_ => {
-                dom.replaceAll(
-                    'a',
-                    'div'
-                );
+                dom.replaceAll('a', 'div');
                 return document.body.innerHTML;
             }),
             '<a href="#">Test</a>' +
@@ -52,17 +49,11 @@ describe('#replaceAll', function() {
                     'click',
                     _ => { result++; }
                 );
-                dom.replaceAll(
-                    'a',
-                    'div'
-                );
+                dom.replaceAll('a', 'div');
                 for (const node of nodes) {
                     document.body.appendChild(node);
                 }
-                dom.triggerEvent(
-                    'div',
-                    'click'
-                );
+                dom.triggerEvent('div', 'click');
                 return result;
             }),
             0
@@ -78,14 +69,8 @@ describe('#replaceAll', function() {
                     'click',
                     _ => { result++; }
                 );
-                dom.replaceAll(
-                    'a',
-                    'div'
-                );
-                dom.triggerEvent(
-                    'a',
-                    'click'
-                );
+                dom.replaceAll('a', 'div');
+                dom.triggerEvent('a', 'click');
                 return result;
             }),
             8
@@ -96,15 +81,8 @@ describe('#replaceAll', function() {
         assert.deepEqual(
             await exec(_ => {
                 const nodes = document.querySelectorAll('div');
-                dom.setData(
-                    'div',
-                    'test',
-                    'Test'
-                );
-                dom.replaceAll(
-                    'a',
-                    'div'
-                );
+                dom.setData('div', 'test', 'Test');
+                dom.replaceAll('a', 'div');
                 for (const node of nodes) {
                     document.body.appendChild(node);
                 }
@@ -125,15 +103,8 @@ describe('#replaceAll', function() {
     it('does not remove data for nodes', async function() {
         assert.deepEqual(
             await exec(_ => {
-                dom.setData(
-                    'a',
-                    'test',
-                    'Test'
-                );
-                dom.replaceAll(
-                    'a',
-                    'div'
-                );
+                dom.setData('a', 'test', 'Test');
+                dom.replaceAll('a', 'div');
                 return [...document.querySelectorAll('a')]
                     .map(node =>
                         dom.getData(node, 'test')
@@ -165,10 +136,7 @@ describe('#replaceAll', function() {
         }).then(waitFor(50)).then(async _ => {
             await exec(_ => {
                 const nodes = document.querySelectorAll('div');
-                dom.replaceAll(
-                    'a',
-                    'div'
-                );
+                dom.replaceAll('a', 'div');
                 for (const node of nodes) {
                     document.body.appendChild(node);
                 }
@@ -193,10 +161,7 @@ describe('#replaceAll', function() {
         }).then(waitFor(50)).then(async _ => {
             await exec(_ => {
                 const nodes = document.querySelectorAll('div');
-                dom.replaceAll(
-                    'a',
-                    'div'
-                );
+                dom.replaceAll('a', 'div');
                 for (const node of nodes) {
                     document.body.appendChild(node);
                 }
@@ -232,19 +197,14 @@ describe('#replaceAll', function() {
         }).then(waitFor(50)).then(async _ => {
             await exec(_ => {
                 const nodes = document.querySelectorAll('div');
-                dom.replaceAll(
-                    'a',
-                    'div'
-                );
+                dom.replaceAll('a', 'div');
                 for (const node of nodes) {
                     document.body.appendChild(node);
                 }
             });
         }).then(waitFor(100)).then(async _ => {
             assert.equal(
-                await exec(_ => {
-                    return document.body.innerHTML;
-                }),
+                await exec(_ => document.body.innerHTML),
                 '<a href="#">Test</a>' +
                 '<a href="#">Test</a>' +
                 '<a href="#">Test</a>' +
@@ -270,10 +230,7 @@ describe('#replaceAll', function() {
                     'remove',
                     _ => { result++; }
                 );
-                dom.replaceAll(
-                    'a',
-                    'div'
-                );
+                dom.replaceAll('a', 'div');
                 return result;
             }),
             4
@@ -284,10 +241,7 @@ describe('#replaceAll', function() {
         assert.equal(
             await exec(_ => {
                 const nodes = [...document.querySelectorAll('a')];
-                dom.replaceAll(
-                    'a',
-                    'div'
-                );
+                dom.replaceAll('a', 'div');
                 const newNodes = [...document.querySelectorAll('a')].slice(4);
                 return nodes.every((node, i) => node.isSameNode(newNodes[i]));
             }),
@@ -362,10 +316,7 @@ describe('#replaceAll', function() {
                 const fragment = range.createContextualFragment(
                     '<div><span></span></div>'
                 );
-                dom.replaceAll(
-                    fragment,
-                    'a'
-                );
+                dom.replaceAll(fragment, 'a');
                 return document.body.innerHTML;
             }),
             '<div class="outer1">' +
@@ -386,12 +337,9 @@ describe('#replaceAll', function() {
     it('works with array nodes', async function() {
         assert.equal(
             await exec(_ => {
-                dom.replaceAll(
-                    [
-                        document.querySelector('.inner1')
-                    ],
-                    'div'
-                );
+                dom.replaceAll([
+                    document.querySelector('.inner1')
+                ], 'div');
                 return document.body.innerHTML;
             }),
             '<div class="inner1">' +
@@ -408,10 +356,7 @@ describe('#replaceAll', function() {
     it('works with HTML nodes', async function() {
         assert.equal(
             await exec(_ => {
-                dom.replaceAll(
-                    '<div><span class="test">Test</span></div>',
-                    'a'
-                );
+                dom.replaceAll('<div><span class="test">Test</span></div>', 'a');
                 return document.body.innerHTML;
             }),
             '<div class="outer1">' +
@@ -498,12 +443,9 @@ describe('#replaceAll', function() {
     it('works with array other nodes', async function() {
         assert.equal(
             await exec(_ => {
-                dom.replaceAll(
-                    'a',
-                    [
-                        document.querySelector('.inner2')
-                    ]
-                );
+                dom.replaceAll('a', [
+                    document.querySelector('.inner2')
+                ]);
                 return document.body.innerHTML;
             }),
             '<div class="outer1">' +

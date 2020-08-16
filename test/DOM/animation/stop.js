@@ -26,9 +26,7 @@ describe('#stop', function() {
             );
         }).then(waitFor(25)).then(async _ => {
             await exec(_ => {
-                dom.stop(
-                    '.animate'
-                );
+                dom.stop('.animate');
             });
             await testNoAnimation('#test1');
             await testNoAnimation('#test2');
@@ -50,10 +48,7 @@ describe('#stop', function() {
             );
         }).then(waitFor(25)).then(async _ => {
             testHtml = await exec(_ => {
-                dom.stop(
-                    '.animate',
-                    false
-                );
+                dom.stop('.animate', false);
                 return document.body.innerHTML;
             });
             await testNoAnimation('#test1');
@@ -61,9 +56,7 @@ describe('#stop', function() {
             await testAnimation('#test2', easeInOut, 100);
             await testAnimation('#test4', easeInOut, 100);
         }).then(waitFor(25)).then(async _ => {
-            const html = await exec(_ => {
-                return document.body.innerHTML;
-            });
+            const html = await exec(_ => document.body.innerHTML);
             assert.equal(
                 html,
                 testHtml
@@ -152,12 +145,10 @@ describe('#stop', function() {
             );
         }).then(waitFor(25)).then(async _ => {
             await exec(_ => {
-                dom.stop(
-                    [
-                        document.getElementById('test2'),
-                        document.getElementById('test4')
-                    ]
-                );
+                dom.stop([
+                    document.getElementById('test2'),
+                    document.getElementById('test4')
+                ]);
             });
             await testNoAnimation('#test1');
             await testNoAnimation('#test2');

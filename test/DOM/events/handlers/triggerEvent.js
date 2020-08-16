@@ -22,10 +22,7 @@ describe('#triggerEvent', function() {
                     'click',
                     _ => { result++; }
                 );
-                dom.triggerEvent(
-                    'a',
-                    'click'
-                );
+                dom.triggerEvent('a', 'click');
                 return result;
             }),
             2
@@ -46,10 +43,7 @@ describe('#triggerEvent', function() {
                     'hover',
                     _ => { result++; }
                 );
-                dom.triggerEvent(
-                    'a',
-                    'click hover'
-                );
+                dom.triggerEvent('a', 'click hover');
                 return result;
             }),
             4
@@ -65,10 +59,7 @@ describe('#triggerEvent', function() {
                     'click.test',
                     _ => { result++; }
                 );
-                dom.triggerEvent(
-                    'a',
-                    'click'
-                );
+                dom.triggerEvent('a', 'click');
                 return result;
             }),
             2
@@ -89,10 +80,7 @@ describe('#triggerEvent', function() {
                     'hover.test',
                     _ => { result++; }
                 );
-                dom.triggerEvent(
-                    'a',
-                    'click hover'
-                );
+                dom.triggerEvent('a', 'click hover');
                 return result;
             }),
             4
@@ -108,10 +96,7 @@ describe('#triggerEvent', function() {
                     'click.test.deep',
                     _ => { result++; }
                 );
-                dom.triggerEvent(
-                    'a',
-                    'click'
-                );
+                dom.triggerEvent('a', 'click');
                 return result;
             }),
             2
@@ -132,10 +117,7 @@ describe('#triggerEvent', function() {
                     'hover.test.deep',
                     _ => { result++; }
                 );
-                dom.triggerEvent(
-                    'a',
-                    'click hover'
-                );
+                dom.triggerEvent('a', 'click hover');
                 return result;
             }),
             4
@@ -151,10 +133,7 @@ describe('#triggerEvent', function() {
                     'click.test',
                     _ => { result++; }
                 );
-                dom.triggerEvent(
-                    'a',
-                    'click.test'
-                );
+                dom.triggerEvent('a', 'click.test');
                 return result;
             }),
             2
@@ -175,10 +154,7 @@ describe('#triggerEvent', function() {
                     'hover.test',
                     _ => { result++; }
                 );
-                dom.triggerEvent(
-                    'a',
-                    'click.test hover.test'
-                );
+                dom.triggerEvent('a', 'click.test hover.test');
                 return result;
             }),
             4
@@ -194,10 +170,7 @@ describe('#triggerEvent', function() {
                     'click.test.deep',
                     _ => { result++; }
                 );
-                dom.triggerEvent(
-                    'a',
-                    'click.test'
-                );
+                dom.triggerEvent('a', 'click.test');
                 return result;
             }),
             2
@@ -218,10 +191,7 @@ describe('#triggerEvent', function() {
                     'hover.test.deep',
                     _ => { result++; }
                 );
-                dom.triggerEvent(
-                    'a',
-                    'click.test hover.test'
-                );
+                dom.triggerEvent('a', 'click.test hover.test');
                 return result;
             }),
             4
@@ -237,10 +207,7 @@ describe('#triggerEvent', function() {
                     'click.test.deep',
                     _ => { result++; }
                 );
-                dom.triggerEvent(
-                    'a',
-                    'click.test.deep'
-                );
+                dom.triggerEvent('a', 'click.test.deep');
                 return result;
             }),
             2
@@ -261,10 +228,7 @@ describe('#triggerEvent', function() {
                     'hover.test.deep',
                     _ => { result++; }
                 );
-                dom.triggerEvent(
-                    'a',
-                    'click.test.deep hover.test.deep'
-                );
+                dom.triggerEvent('a', 'click.test.deep hover.test.deep');
                 return result;
             }),
             4
@@ -280,10 +244,7 @@ describe('#triggerEvent', function() {
                     'click',
                     _ => { result++; }
                 );
-                dom.triggerEvent(
-                    'a',
-                    'click.test'
-                );
+                dom.triggerEvent('a', 'click.test');
                 return result;
             }),
             0
@@ -304,10 +265,7 @@ describe('#triggerEvent', function() {
                     'hover',
                     _ => { result++; }
                 );
-                dom.triggerEvent(
-                    'a',
-                    'click.test hover.test'
-                );
+                dom.triggerEvent('a', 'click.test hover.test');
                 return result;
             }),
             0
@@ -323,10 +281,7 @@ describe('#triggerEvent', function() {
                     'click.test',
                     _ => { result++; }
                 );
-                dom.triggerEvent(
-                    'a',
-                    'click.test.deep'
-                );
+                dom.triggerEvent('a', 'click.test.deep');
                 return result;
             }),
             0
@@ -347,10 +302,7 @@ describe('#triggerEvent', function() {
                     'hover.test',
                     _ => { result++; }
                 );
-                dom.triggerEvent(
-                    'a',
-                    'click.test.deep hover.test.deep'
-                );
+                dom.triggerEvent('a', 'click.test.deep hover.test.deep');
                 return result;
             }),
             0
@@ -370,15 +322,8 @@ describe('#triggerEvent', function() {
                         }
                     }
                 );
-                dom.triggerEvent(
-                    'a',
-                    'click'
-                );
-                dom.triggerEvent(
-                    'a',
-                    'click',
-                    { detail: 'test' }
-                );
+                dom.triggerEvent('a', 'click');
+                dom.triggerEvent('a', 'click', { detail: 'test' });
                 return result;
             }),
             2
@@ -396,10 +341,7 @@ describe('#triggerEvent', function() {
                         result++;
                     }
                 );
-                dom.triggerEvent(
-                    'a',
-                    'click'
-                );
+                dom.triggerEvent('a', 'click');
                 return result;
             }),
             2
@@ -417,13 +359,9 @@ describe('#triggerEvent', function() {
                         result++;
                     }
                 );
-                dom.triggerEvent(
-                    'a',
-                    'click',
-                    {
-                        bubbles: false
-                    }
-                );
+                dom.triggerEvent('a', 'click', {
+                    bubbles: false
+                });
                 return result;
             }),
             0
@@ -441,10 +379,7 @@ describe('#triggerEvent', function() {
                         result = e.cancelable;
                     }
                 );
-                dom.triggerEvent(
-                    '#test1',
-                    'click'
-                );
+                dom.triggerEvent('#test1', 'click');
                 return result;
             }),
             true
@@ -462,13 +397,9 @@ describe('#triggerEvent', function() {
                         result = e.cancelable;
                     }
                 );
-                dom.triggerEvent(
-                    '#test1',
-                    'click',
-                    {
-                        cancelable: false
-                    }
-                );
+                dom.triggerEvent('#test1', 'click', {
+                    cancelable: false
+                });
                 return result;
             }),
             false
@@ -543,10 +474,7 @@ describe('#triggerEvent', function() {
                     'click',
                     _ => { result++; }
                 );
-                dom.triggerEvent(
-                    shadow,
-                    'click'
-                );
+                dom.triggerEvent(shadow, 'click');
                 return result;
             }),
             1
@@ -562,10 +490,7 @@ describe('#triggerEvent', function() {
                     'click',
                     _ => { result++; }
                 );
-                dom.triggerEvent(
-                    document,
-                    'click'
-                );
+                dom.triggerEvent(document, 'click');
                 return result;
             }),
             1
@@ -581,10 +506,7 @@ describe('#triggerEvent', function() {
                     'click',
                     _ => { result++; }
                 );
-                dom.triggerEvent(
-                    window,
-                    'click'
-                );
+                dom.triggerEvent(window, 'click');
                 return result;
             }),
             1
@@ -600,13 +522,10 @@ describe('#triggerEvent', function() {
                     'click',
                     _ => { result++; }
                 );
-                dom.triggerEvent(
-                    [
-                        document.getElementById('test1'),
-                        document.getElementById('test2')
-                    ],
-                    'click'
-                );
+                dom.triggerEvent([
+                    document.getElementById('test1'),
+                    document.getElementById('test2')
+                ], 'click');
                 return result;
             }),
             2

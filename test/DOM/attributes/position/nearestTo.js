@@ -15,11 +15,7 @@ describe('#nearestTo', function() {
     it('returns the nearest node to a position', async function() {
         assert.equal(
             await exec(_ => {
-                const nearest = dom.nearestTo(
-                    'div',
-                    1000,
-                    1000
-                );
+                const nearest = dom.nearestTo('div', 1000, 1000);
                 return nearest.id;
             }),
             'test2'
@@ -29,12 +25,7 @@ describe('#nearestTo', function() {
     it('returns the nearest node to a position with offset', async function() {
         assert.equal(
             await exec(_ => {
-                const nearest = dom.nearestTo(
-                    'div',
-                    1000,
-                    1000,
-                    true
-                );
+                const nearest = dom.nearestTo('div', 1000, 1000, true);
                 return nearest.id;
             }),
             'test1'
@@ -43,13 +34,9 @@ describe('#nearestTo', function() {
 
     it('returns undefined for empty nodes', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.nearestTo(
-                    '#invalid',
-                    1000,
-                    1000
-                );
-            }),
+            await exec(_ =>
+                dom.nearestTo('#invalid', 1000, 1000)
+            ),
             undefined
         );
     });
@@ -99,14 +86,10 @@ describe('#nearestTo', function() {
     it('works with array nodes', async function() {
         assert.equal(
             await exec(_ => {
-                const nearest = dom.nearestTo(
-                    [
-                        document.getElementById('test1'),
-                        document.getElementById('test2')
-                    ],
-                    1000,
-                    1000
-                );
+                const nearest = dom.nearestTo([
+                    document.getElementById('test1'),
+                    document.getElementById('test2')
+                ], 1000, 1000);
                 return nearest.id;
             }),
             'test2'

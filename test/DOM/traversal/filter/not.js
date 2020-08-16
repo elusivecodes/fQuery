@@ -15,12 +15,10 @@ describe('#not', function() {
 
     it('returns nodes not matching a filter', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.not(
-                    'div',
-                    '[data-filter="test"]'
-                ).map(node => node.id);
-            }),
+            await exec(_ =>
+                dom.not('div', '[data-filter="test"]')
+                    .map(node => node.id)
+            ),
             [
                 'div2',
                 'div4'
@@ -30,12 +28,12 @@ describe('#not', function() {
 
     it('works with HTMLElement nodes', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.not(
+            await exec(_ =>
+                dom.not(
                     document.getElementById('div2'),
                     '[data-filter="test"]'
-                ).map(node => node.id);
-            }),
+                ).map(node => node.id)
+            ),
             [
                 'div2'
             ]
@@ -44,12 +42,12 @@ describe('#not', function() {
 
     it('works with NodeList nodes', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.not(
+            await exec(_ =>
+                dom.not(
                     document.querySelectorAll('div'),
                     '[data-filter="test"]'
-                ).map(node => node.id);
-            }),
+                ).map(node => node.id)
+            ),
             [
                 'div2',
                 'div4'
@@ -59,12 +57,12 @@ describe('#not', function() {
 
     it('works with HTMLCollection nodes', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.not(
+            await exec(_ =>
+                dom.not(
                     document.body.children,
                     '[data-filter="test"]'
-                ).map(node => node.id);
-            }),
+                ).map(node => node.id)
+            ),
             [
                 'div2',
                 'div4'
@@ -77,10 +75,8 @@ describe('#not', function() {
             await exec(_ => {
                 const fragment = document.createDocumentFragment();
                 fragment.id = 'fragment';
-                return dom.not(
-                    fragment,
-                    '[data-filter="test"]'
-                ).map(node => node.id);
+                return dom.not(fragment, '[data-filter="test"]')
+                    .map(node => node.id);
             }),
             [
                 'fragment'
@@ -94,10 +90,8 @@ describe('#not', function() {
                 const div = document.createElement('div');
                 const shadow = div.attachShadow({ mode: 'open' });
                 shadow.id = 'shadow';
-                return dom.not(
-                    shadow,
-                    '[data-filter="test"]'
-                ).map(node => node.id);
+                return dom.not(shadow, '[data-filter="test"]')
+                    .map(node => node.id);
             }),
             [
                 'shadow'
@@ -107,17 +101,14 @@ describe('#not', function() {
 
     it('works with array nodes', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.not(
-                    [
-                        document.getElementById('div1'),
-                        document.getElementById('div2'),
-                        document.getElementById('div3'),
-                        document.getElementById('div4')
-                    ],
-                    '[data-filter="test"]'
-                ).map(node => node.id);
-            }),
+            await exec(_ =>
+                dom.not([
+                    document.getElementById('div1'),
+                    document.getElementById('div2'),
+                    document.getElementById('div3'),
+                    document.getElementById('div4')
+                ], '[data-filter="test"]').map(node => node.id)
+            ),
             [
                 'div2',
                 'div4'
@@ -127,12 +118,12 @@ describe('#not', function() {
 
     it('works with function filter', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.not(
+            await exec(_ =>
+                dom.not(
                     'div',
                     node => node.dataset.filter === 'test'
-                ).map(node => node.id);
-            }),
+                ).map(node => node.id)
+            ),
             [
                 'div2',
                 'div4'
@@ -142,12 +133,12 @@ describe('#not', function() {
 
     it('works with HTMLElement filter', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.not(
+            await exec(_ =>
+                dom.not(
                     'div',
                     document.getElementById('div1')
-                ).map(node => node.id);
-            }),
+                ).map(node => node.id)
+            ),
             [
                 'div2',
                 'div3',
@@ -158,12 +149,12 @@ describe('#not', function() {
 
     it('works with NodeList filter', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.not(
+            await exec(_ =>
+                dom.not(
                     'div',
                     document.querySelectorAll('[data-filter="test"]')
-                ).map(node => node.id);
-            }),
+                ).map(node => node.id)
+            ),
             [
                 'div2',
                 'div4'
@@ -173,12 +164,12 @@ describe('#not', function() {
 
     it('works with HTMLCollection filter', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.not(
+            await exec(_ =>
+                dom.not(
                     'div',
                     document.body.children
-                ).map(node => node.id);
-            }),
+                )
+            ),
             []
         );
     });
@@ -224,15 +215,12 @@ describe('#not', function() {
 
     it('works with array filter', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.not(
-                    'div',
-                    [
-                        document.getElementById('div1'),
-                        document.getElementById('div3')
-                    ]
-                ).map(node => node.id);
-            }),
+            await exec(_ =>
+                dom.not('div', [
+                    document.getElementById('div1'),
+                    document.getElementById('div3')
+                ]).map(node => node.id)
+            ),
             [
                 'div2',
                 'div4'

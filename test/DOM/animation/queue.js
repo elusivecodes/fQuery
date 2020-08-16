@@ -24,9 +24,7 @@ describe('#queue', function() {
             );
         }).then(waitFor(100)).then(async _ => {
             assert.equal(
-                await exec(_ => {
-                    return document.body.innerHTML;
-                }),
+                await exec(_ => document.body.innerHTML),
                 '<div id="test1"></div>' +
                 '<div id="test2" class="queue" data-test="Test"></div>' +
                 '<div id="test3"></div>' +
@@ -45,9 +43,7 @@ describe('#queue', function() {
             );
         });
         assert.equal(
-            await exec(_ => {
-                return document.body.innerHTML;
-            }),
+            await exec(_ => document.body.innerHTML),
             '<div id="test1"></div>' +
             '<div id="test2" class="queue"></div>' +
             '<div id="test3"></div>' +
@@ -73,9 +69,7 @@ describe('#queue', function() {
             );
         }).then(waitFor(50)).then(async _ => {
             assert.equal(
-                await exec(_ => {
-                    return document.body.innerHTML;
-                }),
+                await exec(_ => document.body.innerHTML),
                 '<div id="test1"></div>' +
                 '<div id="test2" class="queue"></div>' +
                 '<div id="test3"></div>' +
@@ -83,9 +77,7 @@ describe('#queue', function() {
             );
         }).then(waitFor(100)).then(async _ => {
             assert.equal(
-                await exec(_ => {
-                    return document.body.innerHTML;
-                }),
+                await exec(_ => document.body.innerHTML),
                 '<div id="test1"></div>' +
                 '<div id="test2" class="queue" data-test="Test"></div>' +
                 '<div id="test3"></div>' +
@@ -112,9 +104,7 @@ describe('#queue', function() {
             );
         }).then(waitFor(50)).then(async _ => {
             assert.equal(
-                await exec(_ => {
-                    return document.body.innerHTML;
-                }),
+                await exec(_ => document.body.innerHTML),
                 '<div id="test1"></div>' +
                 '<div id="test2" class="queue"></div>' +
                 '<div id="test3"></div>' +
@@ -122,9 +112,7 @@ describe('#queue', function() {
             );
         }).then(waitFor(100)).then(async _ => {
             assert.equal(
-                await exec(_ => {
-                    return document.body.innerHTML;
-                }),
+                await exec(_ => document.body.innerHTML),
                 '<div id="test1"></div>' +
                 '<div id="test2" class="queue"></div>' +
                 '<div id="test3"></div>' +
@@ -143,9 +131,7 @@ describe('#queue', function() {
             );
         }).then(waitFor(100)).then(async _ => {
             assert.equal(
-                await exec(_ => {
-                    return document.body.innerHTML;
-                }),
+                await exec(_ => document.body.innerHTML),
                 '<div id="test1"></div>' +
                 '<div id="test2" class="queue" data-test="Test"></div>' +
                 '<div id="test3"></div>' +
@@ -164,9 +150,7 @@ describe('#queue', function() {
             );
         }).then(waitFor(100)).then(async _ => {
             assert.equal(
-                await exec(_ => {
-                    return document.body.innerHTML;
-                }),
+                await exec(_ => document.body.innerHTML),
                 '<div id="test1"></div>' +
                 '<div id="test2" class="queue" data-test="Test"></div>' +
                 '<div id="test3"></div>' +
@@ -185,9 +169,7 @@ describe('#queue', function() {
             );
         }).then(waitFor(100)).then(async _ => {
             assert.equal(
-                await exec(_ => {
-                    return document.body.innerHTML;
-                }),
+                await exec(_ => document.body.innerHTML),
                 '<div id="test1" data-test="Test"></div>' +
                 '<div id="test2" class="queue" data-test="Test"></div>' +
                 '<div id="test3" data-test="Test"></div>' +
@@ -209,9 +191,7 @@ describe('#queue', function() {
             );
         }).then(waitFor(100)).then(async _ => {
             assert.equal(
-                await exec(_ => {
-                    return document.body.innerHTML;
-                }),
+                await exec(_ => document.body.innerHTML),
                 '<div id="test1"></div>' +
                 '<div id="test2" class="queue" data-test="Test"></div>' +
                 '<div id="test3"></div>' +

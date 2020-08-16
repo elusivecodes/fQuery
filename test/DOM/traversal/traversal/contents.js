@@ -21,11 +21,10 @@ describe('#contents', function() {
 
     it('returns all children of each node', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.contents(
-                    '.parent'
-                ).map(node => node.textContent);
-            }),
+            await exec(_ =>
+                dom.contents('.parent')
+                    .map(node => node.textContent)
+            ),
             [
                 'Test 1',
                 '',
@@ -39,22 +38,20 @@ describe('#contents', function() {
 
     it('returns an empty array for empty nodes', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.contents(
-                    '#invalid'
-                );
-            }),
+            await exec(_ =>
+                dom.contents('#invalid')
+            ),
             []
         );
     });
 
     it('works with HTMLElement nodes', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.contents(
+            await exec(_ =>
+                dom.contents(
                     document.getElementById('parent1')
-                ).map(node => node.textContent);
-            }),
+                ).map(node => node.textContent)
+            ),
             [
                 'Test 1',
                 '',
@@ -65,11 +62,11 @@ describe('#contents', function() {
 
     it('works with NodeList nodes', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.contents(
+            await exec(_ =>
+                dom.contents(
                     document.querySelectorAll('.parent')
-                ).map(node => node.textContent);
-            }),
+                ).map(node => node.textContent)
+            ),
             [
                 'Test 1',
                 '',
@@ -83,11 +80,11 @@ describe('#contents', function() {
 
     it('works with HTMLCollection nodes', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.contents(
+            await exec(_ =>
+                dom.contents(
                     document.body.children
-                ).map(node => node.textContent);
-            }),
+                ).map(node => node.textContent)
+            ),
             [
                 'Test 1',
                 '',
@@ -108,9 +105,8 @@ describe('#contents', function() {
                     '<div id="child1"></div>' +
                     'Test 2'
                 );
-                return dom.contents(
-                    fragment
-                ).map(node => node.textContent);
+                return dom.contents(fragment)
+                    .map(node => node.textContent);
             }),
             [
                 'Test 1',
@@ -132,9 +128,8 @@ describe('#contents', function() {
                     'Test 2'
                 );
                 shadow.appendChild(fragment);
-                return dom.contents(
-                    shadow
-                ).map(node => node.textContent);
+                return dom.contents(shadow)
+                    .map(node => node.textContent);
             }),
             [
                 'Test 1',
@@ -146,11 +141,10 @@ describe('#contents', function() {
 
     it('works with Document nodes', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.contents(
-                    document
-                ).map(node => node.id);
-            }),
+            await exec(_ =>
+                dom.contents(document)
+                    .map(node => node.id)
+            ),
             [
                 'html'
             ]
@@ -159,14 +153,12 @@ describe('#contents', function() {
 
     it('works with array nodes', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.contents(
-                    [
-                        document.getElementById('parent1'),
-                        document.getElementById('parent2')
-                    ]
-                ).map(node => node.textContent);
-            }),
+            await exec(_ =>
+                dom.contents([
+                    document.getElementById('parent1'),
+                    document.getElementById('parent2')
+                ]).map(node => node.textContent)
+            ),
             [
                 'Test 1',
                 '',

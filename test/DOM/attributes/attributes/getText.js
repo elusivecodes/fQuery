@@ -13,69 +13,63 @@ describe('#getText', function() {
 
     it('returns the text contents of the first node', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.getText(
-                    'div'
-                );
-            }),
+            await exec(_ =>
+                dom.getText('div')
+            ),
             'Test'
         );
     });
 
     it('returns undefined for empty nodes', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.getText(
-                    '#invalid'
-                );
-            }),
+            await exec(_ =>
+                dom.getText('#invalid')
+            ),
             undefined
         );
     });
 
     it('works with HTMLElement nodes', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.getText(
+            await exec(_ =>
+                dom.getText(
                     document.getElementById('test1')
-                );
-            }),
+                )
+            ),
             'Test'
         );
     });
 
     it('works with NodeList nodes', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.getText(
+            await exec(_ =>
+                dom.getText(
                     document.querySelectorAll('div')
-                );
-            }),
+                )
+            ),
             'Test'
         );
     });
 
     it('works with HTMLCollection nodes', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.getText(
+            await exec(_ =>
+                dom.getText(
                     document.body.children
-                );
-            }),
+                )
+            ),
             'Test'
         );
     });
 
     it('works with array nodes', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.getText(
-                    [
-                        document.getElementById('test1'),
-                        document.getElementById('test2')
-                    ]
-                );
-            }),
+            await exec(_ =>
+                dom.getText([
+                    document.getElementById('test1'),
+                    document.getElementById('test2')
+                ])
+            ),
             'Test'
         );
     });

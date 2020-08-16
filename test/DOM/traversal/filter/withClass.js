@@ -15,12 +15,10 @@ describe('#withClass', function() {
 
     it('returns nodes with a specified class', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.withClass(
-                    'div',
-                    'test'
-                ).map(node => node.id);
-            }),
+            await exec(_ =>
+                dom.withClass('div', 'test')
+                    .map(node => node.id)
+            ),
             [
                 'div1',
                 'div3'
@@ -30,12 +28,12 @@ describe('#withClass', function() {
 
     it('works with HTMLElement nodes', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.withClass(
+            await exec(_ =>
+                dom.withClass(
                     document.getElementById('div1'),
                     'test'
-                ).map(node => node.id);
-            }),
+                ).map(node => node.id)
+            ),
             [
                 'div1'
             ]
@@ -44,12 +42,12 @@ describe('#withClass', function() {
 
     it('works with NodeList nodes', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.withClass(
+            await exec(_ =>
+                dom.withClass(
                     document.querySelectorAll('div'),
                     'test'
-                ).map(node => node.id);
-            }),
+                ).map(node => node.id)
+            ),
             [
                 'div1',
                 'div3'
@@ -59,12 +57,12 @@ describe('#withClass', function() {
 
     it('works with HTMLCollection nodes', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.withClass(
+            await exec(_ =>
+                dom.withClass(
                     document.body.children,
                     'test'
-                ).map(node => node.id);
-            }),
+                ).map(node => node.id)
+            ),
             [
                 'div1',
                 'div3'
@@ -74,17 +72,14 @@ describe('#withClass', function() {
 
     it('works with array nodes', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.withClass(
-                    [
-                        document.getElementById('div1'),
-                        document.getElementById('div2'),
-                        document.getElementById('div3'),
-                        document.getElementById('div4')
-                    ],
-                    'test'
-                ).map(node => node.id);
-            }),
+            await exec(_ =>
+                dom.withClass([
+                    document.getElementById('div1'),
+                    document.getElementById('div2'),
+                    document.getElementById('div3'),
+                    document.getElementById('div4')
+                ], 'test').map(node => node.id)
+            ),
             [
                 'div1',
                 'div3'

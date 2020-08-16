@@ -15,9 +15,7 @@ describe('#css', function() {
     it('returns an object with all computed styles for the first node', async function() {
         assert.deepEqual(
             await exec(_ => {
-                const css = dom.css(
-                    '.test'
-                );
+                const css = dom.css('.test');
                 return {
                     display: css.display,
                     width: css.width
@@ -32,75 +30,66 @@ describe('#css', function() {
 
     it('returns a computed style for the first node', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.css(
-                    '.test',
-                    'width'
-                );
-            }),
+            await exec(_ =>
+                dom.css('.test', 'width')
+            ),
             '400px'
         );
     });
 
     it('returns undefined for empty nodes', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.css(
-                    '#invalid',
-                    'width'
-                );
-            }),
+            await exec(_ =>
+                dom.css('#invalid', 'width')
+            ),
             undefined
         );
     });
 
     it('works with HTMLElement nodes', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.css(
+            await exec(_ =>
+                dom.css(
                     document.getElementById('test1'),
                     'width'
-                );
-            }),
+                )
+            ),
             '400px'
         );
     });
 
     it('works with NodeList nodes', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.css(
+            await exec(_ =>
+                dom.css(
                     document.querySelectorAll('.test'),
                     'width'
-                );
-            }),
+                )
+            ),
             '400px'
         );
     });
 
     it('works with HTMLCollection nodes', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.css(
+            await exec(_ =>
+                dom.css(
                     document.body.children,
                     'width'
-                );
-            }),
+                )
+            ),
             '400px'
         );
     });
 
     it('works with array nodes', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.css(
-                    [
-                        document.getElementById('test1'),
-                        document.getElementById('test2')
-                    ],
-                    'width'
-                );
-            }),
+            await exec(_ =>
+                dom.css([
+                    document.getElementById('test1'),
+                    document.getElementById('test2')
+                ], 'width')
+            ),
             '400px'
         );
     });

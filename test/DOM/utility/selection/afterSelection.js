@@ -34,9 +34,7 @@ describe('#afterSelection', function() {
     it('inserts each node after the selected nodes', async function() {
         assert.equal(
             await exec(_ => {
-                dom.afterSelection(
-                    'a'
-                );
+                dom.afterSelection('a');
                 return document.body.innerHTML;
             }),
             '<div id="select">' +
@@ -131,9 +129,7 @@ describe('#afterSelection', function() {
                 const fragment = range.createContextualFragment(
                     '<div><span></span></div>'
                 );
-                dom.afterSelection(
-                    fragment
-                );
+                dom.afterSelection(fragment);
                 return document.body.innerHTML;
             }),
             '<div id="select">' +
@@ -156,12 +152,10 @@ describe('#afterSelection', function() {
     it('works with array nodes', async function() {
         assert.equal(
             await exec(_ => {
-                dom.afterSelection(
-                    [
-                        document.getElementById('a1'),
-                        document.getElementById('a2')
-                    ]
-                );
+                dom.afterSelection([
+                    document.getElementById('a1'),
+                    document.getElementById('a2')
+                ]);
                 return document.body.innerHTML;
             }),
             '<div id="select">' +
@@ -182,9 +176,7 @@ describe('#afterSelection', function() {
     it('works with HTML nodes', async function() {
         assert.equal(
             await exec(_ => {
-                dom.afterSelection(
-                    '<div><span></span></div>'
-                );
+                dom.afterSelection('<div><span></span></div>');
                 return document.body.innerHTML;
             }),
             '<div id="select">' +

@@ -26,60 +26,54 @@ describe('#isEqual', function() {
 
     it('returns true if any node is equal to any other node', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.isEqual(
-                    '#parent1 span',
-                    '#parent2 span'
-                );
-            }),
+            await exec(_ =>
+                dom.isEqual('#parent1 span', '#parent2 span')
+            ),
             true
         );
     });
 
-    it('returns true if no nodes are equal to any other node', async function() {
+    it('returns false if no nodes are equal to any other node', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.isEqual(
-                    '#parent1 span',
-                    '#parent3 a'
-                );
-            }),
+            await exec(_ =>
+                dom.isEqual('#parent1 span', '#parent3 a')
+            ),
             false
         );
     });
 
     it('works with HTMLElement nodes', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.isEqual(
+            await exec(_ =>
+                dom.isEqual(
                     document.querySelector('#parent1 [data-id="span2"]'),
                     '#parent2 span'
-                );
-            }),
+                )
+            ),
             true
         );
     });
 
     it('works with NodeList nodes', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.isEqual(
+            await exec(_ =>
+                dom.isEqual(
                     document.querySelectorAll('#parent1 span'),
                     '#parent2 span'
-                );
-            }),
+                )
+            ),
             true
         );
     });
 
     it('works with HTMLCollection nodes', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.isEqual(
+            await exec(_ =>
+                dom.isEqual(
                     document.getElementById('parent1').children,
                     '#parent2 span'
-                );
-            }),
+                )
+            ),
             true
         );
     });
@@ -89,10 +83,7 @@ describe('#isEqual', function() {
             await exec(_ => {
                 const fragment1 = document.createDocumentFragment();
                 const fragment2 = document.createDocumentFragment();
-                return dom.isEqual(
-                    fragment1,
-                    fragment2
-                );
+                return dom.isEqual(fragment1, fragment2);
             }),
             true
         );
@@ -105,10 +96,7 @@ describe('#isEqual', function() {
                 const div2 = document.createElement('div');
                 const shadow1 = div1.attachShadow({ mode: 'open' });
                 const shadow2 = div2.attachShadow({ mode: 'closed' });
-                return dom.isEqual(
-                    shadow1,
-                    shadow2
-                );
+                return dom.isEqual(shadow1, shadow2);
             }),
             true
         );
@@ -116,52 +104,49 @@ describe('#isEqual', function() {
 
     it('works with array nodes', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.isEqual(
-                    [
-                        document.querySelector('#parent1 > [data-id="span1"]'),
-                        document.querySelector('#parent1 > [data-id="span2"]'),
-                        document.querySelector('#parent1 > [data-id="span3"]')
-                    ],
-                    '#parent2 span'
-                );
-            }),
+            await exec(_ =>
+                dom.isEqual([
+                    document.querySelector('#parent1 > [data-id="span1"]'),
+                    document.querySelector('#parent1 > [data-id="span2"]'),
+                    document.querySelector('#parent1 > [data-id="span3"]')
+                ], '#parent2 span')
+            ),
             true
         );
     });
 
     it('works with HTMLElement other nodes', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.isEqual(
+            await exec(_ =>
+                dom.isEqual(
                     '#parent1 span',
                     document.querySelector('#parent2 > [data-id="span2"]')
-                );
-            }),
+                )
+            ),
             true
         );
     });
 
     it('works with NodeList other nodes', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.isEqual(
+            await exec(_ =>
+                dom.isEqual(
                     '#parent1 span',
                     document.querySelectorAll('#parent2 > span')
-                );
-            }),
+                )
+            ),
             true
         );
     });
 
     it('works with HTMLCollection other nodes', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.isEqual(
+            await exec(_ =>
+                dom.isEqual(
                     '#parent1 span',
                     document.getElementById('parent2').children
-                );
-            }),
+                )
+            ),
             true
         );
     });
@@ -204,15 +189,12 @@ describe('#isEqual', function() {
 
     it('works with array other nodes', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.isEqual(
-                    '#parent1 span',
-                    [
-                        document.querySelector('#parent2 > [data-id="span2"]'),
-                        document.querySelector('#parent2 > [data-id="span3"]')
-                    ]
-                );
-            }),
+            await exec(_ =>
+                dom.isEqual('#parent1 span', [
+                    document.querySelector('#parent2 > [data-id="span2"]'),
+                    document.querySelector('#parent2 > [data-id="span3"]')
+                ])
+            ),
             true
         );
     });

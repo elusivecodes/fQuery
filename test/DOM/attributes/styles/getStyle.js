@@ -13,11 +13,9 @@ describe('#getStyle', function() {
 
     it('returns an object with all style values for the first node', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.getStyle(
-                    'div'
-                );
-            }),
+            await exec(_ =>
+                dom.getStyle('div')
+            ),
             {
                 display: 'block',
                 width: '100px',
@@ -28,87 +26,75 @@ describe('#getStyle', function() {
 
     it('returns a style value for the first node', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.getStyle(
-                    'div',
-                    'display'
-                );
-            }),
+            await exec(_ =>
+                dom.getStyle('div', 'display')
+            ),
             'block'
         );
     });
 
     it('returns an empty string for an undefined style', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.getStyle(
-                    'div',
-                    'visibility'
-                );
-            }),
+            await exec(_ =>
+                dom.getStyle('div', 'visibility')
+            ),
             ''
         );
     });
 
     it('returns undefined for empty nodes', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.getStyle(
-                    '#invalid',
-                    'display'
-                );
-            }),
+            await exec(_ =>
+                dom.getStyle('#invalid', 'display')
+            ),
             undefined
         );
     });
 
     it('works with HTMLElement nodes', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.getStyle(
+            await exec(_ =>
+                dom.getStyle(
                     document.getElementById('test1'),
                     'display'
-                );
-            }),
+                )
+            ),
             'block'
         );
     });
 
     it('works with NodeList nodes', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.getStyle(
+            await exec(_ =>
+                dom.getStyle(
                     document.querySelectorAll('div'),
                     'display'
-                );
-            }),
+                )
+            ),
             'block'
         );
     });
 
     it('works with HTMLCollection nodes', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.getStyle(
+            await exec(_ =>
+                dom.getStyle(
                     document.body.children,
                     'display'
-                );
-            }),
+                )
+            ),
             'block'
         );
     });
 
     it('works with array nodes', async function() {
         assert.equal(
-            await exec(_ => {
-                return dom.getStyle(
-                    [
-                        document.getElementById('test1'),
-                        document.getElementById('test2')
-                    ],
-                    'display'
-                );
-            }),
+            await exec(_ =>
+                dom.getStyle([
+                    document.getElementById('test1'),
+                    document.getElementById('test2')
+                ], 'display')
+            ),
             'block'
         );
     });

@@ -25,11 +25,10 @@ describe('#parents', function() {
 
     it('returns the parents of each node', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.parents(
-                    'a'
-                ).map(node => node.id);
-            }),
+            await exec(_ =>
+                dom.parents('a')
+                    .map(node => node.id)
+            ),
             [
                 'html',
                 'body',
@@ -45,12 +44,10 @@ describe('#parents', function() {
 
     it('returns the parents of each node matching a filter', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.parents(
-                    'a',
-                    'div'
-                ).map(node => node.id);
-            }),
+            await exec(_ =>
+                dom.parents('a', 'div')
+                    .map(node => node.id)
+            ),
             [
                 'parent1',
                 'child1',
@@ -62,23 +59,21 @@ describe('#parents', function() {
 
     it('returns an empty array for empty nodes', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.parents(
-                    '#invalid'
-                );
-            }),
+            await exec(_ =>
+                dom.parents('#invalid')
+            ),
             []
         );
     });
 
     it('works with HTMLElement nodes', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.parents(
+            await exec(_ =>
+                dom.parents(
                     document.getElementById('a1'),
                     'div'
-                ).map(node => node.id);
-            }),
+                ).map(node => node.id)
+            ),
             [
                 'parent1',
                 'child1'
@@ -88,12 +83,12 @@ describe('#parents', function() {
 
     it('works with NodeList nodes', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.parents(
+            await exec(_ =>
+                dom.parents(
                     document.querySelectorAll('a'),
                     'div'
-                ).map(node => node.id);
-            }),
+                ).map(node => node.id)
+            ),
             [
                 'parent1',
                 'child1',
@@ -105,12 +100,12 @@ describe('#parents', function() {
 
     it('works with HTMLCollection nodes', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.parents(
+            await exec(_ =>
+                dom.parents(
                     document.getElementById('child1').children,
                     'div'
-                ).map(node => node.id);
-            }),
+                ).map(node => node.id)
+            ),
             [
                 'parent1',
                 'child1'
@@ -120,15 +115,12 @@ describe('#parents', function() {
 
     it('works with array nodes', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.parents(
-                    [
-                        document.getElementById('a1'),
-                        document.getElementById('a2')
-                    ],
-                    'div'
-                ).map(node => node.id);
-            }),
+            await exec(_ =>
+                dom.parents([
+                    document.getElementById('a1'),
+                    document.getElementById('a2')
+                ], 'div').map(node => node.id)
+            ),
             [
                 'parent1',
                 'child1',
@@ -140,12 +132,12 @@ describe('#parents', function() {
 
     it('works with function filter', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.parents(
+            await exec(_ =>
+                dom.parents(
                     'a',
                     node => node.tagName === 'DIV'
-                ).map(node => node.id);
-            }),
+                ).map(node => node.id)
+            ),
             [
                 'parent1',
                 'child1',
@@ -157,12 +149,12 @@ describe('#parents', function() {
 
     it('works with HTMLElement filter', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.parents(
+            await exec(_ =>
+                dom.parents(
                     'a',
                     document.getElementById('child1')
-                ).map(node => node.id);
-            }),
+                ).map(node => node.id)
+            ),
             [
                 'child1'
             ]
@@ -171,12 +163,12 @@ describe('#parents', function() {
 
     it('works with NodeList filter', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.parents(
+            await exec(_ =>
+                dom.parents(
                     'a',
                     document.querySelectorAll('div')
-                ).map(node => node.id);
-            }),
+                ).map(node => node.id)
+            ),
             [
                 'parent1',
                 'child1',
@@ -188,12 +180,12 @@ describe('#parents', function() {
 
     it('works with HTMLCollection filter', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.parents(
+            await exec(_ =>
+                dom.parents(
                     'a',
                     document.body.children
-                ).map(node => node.id);
-            }),
+                ).map(node => node.id)
+            ),
             [
                 'parent1',
                 'parent2'
@@ -203,17 +195,14 @@ describe('#parents', function() {
 
     it('works with array filter', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.parents(
-                    'a',
-                    [
-                        document.getElementById('parent1'),
-                        document.getElementById('child1'),
-                        document.getElementById('parent2'),
-                        document.getElementById('child2')
-                    ]
-                ).map(node => node.id);
-            }),
+            await exec(_ =>
+                dom.parents('a', [
+                    document.getElementById('parent1'),
+                    document.getElementById('child1'),
+                    document.getElementById('parent2'),
+                    document.getElementById('child2')
+                ]).map(node => node.id)
+            ),
             [
                 'parent1',
                 'child1',
@@ -225,13 +214,13 @@ describe('#parents', function() {
 
     it('works with function limit', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.parents(
+            await exec(_ =>
+                dom.parents(
                     'a',
                     null,
                     node => node.id === 'body'
-                ).map(node => node.id);
-            }),
+                ).map(node => node.id)
+            ),
             [
                 'parent1',
                 'child1',
@@ -245,13 +234,13 @@ describe('#parents', function() {
 
     it('works with HTMLElement limit', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.parents(
+            await exec(_ =>
+                dom.parents(
                     'a',
                     null,
                     document.body
-                ).map(node => node.id);
-            }),
+                ).map(node => node.id)
+            ),
             [
                 'parent1',
                 'child1',
@@ -265,13 +254,13 @@ describe('#parents', function() {
 
     it('works with NodeList limit', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.parents(
+            await exec(_ =>
+                dom.parents(
                     'a',
                     null,
                     document.querySelectorAll('div')
-                ).map(node => node.id);
-            }),
+                ).map(node => node.id)
+            ),
             [
                 'span1',
                 'span2'
@@ -281,13 +270,13 @@ describe('#parents', function() {
 
     it('works with HTMLCollection limit', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.parents(
+            await exec(_ =>
+                dom.parents(
                     'a',
                     null,
                     document.body.children
-                ).map(node => node.id);
-            }),
+                ).map(node => node.id)
+            ),
             [
                 'child1',
                 'span1',
@@ -299,16 +288,12 @@ describe('#parents', function() {
 
     it('works with array limit', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.parents(
-                    'a',
-                    null,
-                    [
-                        document.getElementById('parent1'),
-                        document.getElementById('parent2')
-                    ]
-                ).map(node => node.id);
-            }),
+            await exec(_ =>
+                dom.parents('a', null, [
+                    document.getElementById('parent1'),
+                    document.getElementById('parent2')
+                ]).map(node => node.id)
+            ),
             [
                 'child1',
                 'span1',

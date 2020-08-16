@@ -18,10 +18,7 @@ describe('#setScrollY', function() {
     it('sets the scroll Y position for all nodes', async function() {
         assert.deepEqual(
             await exec(_ => {
-                dom.setScrollY(
-                    'div',
-                    100,
-                );
+                dom.setScrollY('div', 100,);
                 return [
                     document.getElementById('test1').scrollTop,
                     document.getElementById('test2').scrollTop
@@ -38,10 +35,7 @@ describe('#setScrollY', function() {
         assert.equal(
             await exec(_ => {
                 const element = document.getElementById('test1');
-                dom.setScrollY(
-                    element,
-                    100,
-                );
+                dom.setScrollY(element, 100,);
                 return element.scrollTop;
             }),
             100
@@ -90,10 +84,7 @@ describe('#setScrollY', function() {
         assert.equal(
             await exec(_ => {
                 document.body.innerHTML = '<div style="display: block; width: 1000px; height: 1000px;"></div>';
-                dom.setScrollY(
-                    document,
-                    100
-                );
+                dom.setScrollY(document, 100);
                 return document.scrollingElement.scrollTop;
             }),
             100
@@ -104,10 +95,7 @@ describe('#setScrollY', function() {
         assert.equal(
             await exec(_ => {
                 document.body.innerHTML = '<div style="display: block; width: 1000px; height: 1000px;"></div>';
-                dom.setScrollY(
-                    window,
-                    100
-                );
+                dom.setScrollY(window, 100);
                 return window.scrollY;
             }),
             100
@@ -119,13 +107,10 @@ describe('#setScrollY', function() {
             await exec(_ => {
                 const element1 = document.getElementById('test1');
                 const element2 = document.getElementById('test2');
-                dom.setScrollY(
-                    [
-                        element1,
-                        element2
-                    ],
-                    100
-                );
+                dom.setScrollY([
+                    element1,
+                    element2
+                ], 100);
                 return [
                     element1.scrollTop,
                     element2.scrollTop

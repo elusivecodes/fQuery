@@ -34,10 +34,7 @@ describe('#unwrap', function() {
     it('unwraps each node with filter', async function() {
         assert.equal(
             await exec(_ => {
-                dom.unwrap(
-                    'a',
-                    '#parent1'
-                );
+                dom.unwrap('a', '#parent1');
                 return document.body.innerHTML;
             }),
             '<a href="#" id="test1">Test</a>' +
@@ -63,10 +60,7 @@ describe('#unwrap', function() {
                 for (const node of nodes) {
                     document.body.appendChild(node);
                 }
-                dom.triggerEvent(
-                    'div',
-                    'click'
-                );
+                dom.triggerEvent('div', 'click');
                 return result;
             }),
             0
@@ -77,11 +71,7 @@ describe('#unwrap', function() {
         assert.deepEqual(
             await exec(_ => {
                 const nodes = document.querySelectorAll('div');
-                dom.setData(
-                    'div',
-                    'test',
-                    'Test'
-                );
+                dom.setData('div', 'test', 'Test');
                 dom.unwrap('a');
                 for (const node of nodes) {
                     document.body.appendChild(node);
@@ -147,9 +137,7 @@ describe('#unwrap', function() {
             });
         }).then(waitFor(100)).then(async _ => {
             assert.equal(
-                await exec(_ => {
-                    return document.body.innerHTML;
-                }),
+                await exec(_ => document.body.innerHTML),
                 '<a href="#" id="test1">Test</a>' +
                 '<a href="#" id="test2">Test</a>' +
                 '<a href="#" id="test3">Test</a>' +
@@ -235,15 +223,12 @@ describe('#unwrap', function() {
     it('works with array nodes', async function() {
         assert.equal(
             await exec(_ => {
-                dom.unwrap(
-                    [
-                        document.getElementById('test1'),
-                        document.getElementById('test2'),
-                        document.getElementById('test3'),
-                        document.getElementById('test4')
-                    ],
-                    '#parent1'
-                );
+                dom.unwrap([
+                    document.getElementById('test1'),
+                    document.getElementById('test2'),
+                    document.getElementById('test3'),
+                    document.getElementById('test4')
+                ], '#parent1');
                 return document.body.innerHTML;
             }),
             '<a href="#" id="test1">Test</a>' +
@@ -328,12 +313,9 @@ describe('#unwrap', function() {
     it('works with array filter', async function() {
         assert.equal(
             await exec(_ => {
-                dom.unwrap(
-                    'a',
-                    [
-                        document.getElementById('parent1')
-                    ]
-                );
+                dom.unwrap('a', [
+                    document.getElementById('parent1')
+                ]);
                 return document.body.innerHTML;
             }),
             '<a href="#" id="test1">Test</a>' +

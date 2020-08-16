@@ -29,9 +29,7 @@ describe('#selectAll', function() {
     it('creates a selection on all nodes', async function() {
         assert.equal(
             await exec(_ => {
-                dom.selectAll(
-                    '.select'
-                );
+                dom.selectAll('.select');
                 const selection = document.getSelection();
                 const range = selection.getRangeAt(0);
                 return range.toString();
@@ -85,12 +83,10 @@ describe('#selectAll', function() {
     it('works with array nodes', async function() {
         assert.equal(
             await exec(_ => {
-                dom.selectAll(
-                    [
-                        document.getElementById('div4'),
-                        document.getElementById('div2')
-                    ]
-                );
+                dom.selectAll([
+                    document.getElementById('div4'),
+                    document.getElementById('div2')
+                ]);
                 const selection = document.getSelection();
                 const range = selection.getRangeAt(0);
                 return range.toString();

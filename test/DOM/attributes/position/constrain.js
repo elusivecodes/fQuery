@@ -20,10 +20,7 @@ describe('#constrain', function() {
     it('constrains each node inside another node', async function() {
         assert.equal(
             await exec(_ => {
-                dom.constrain(
-                    '[data-toggle="from"]',
-                    '[data-toggle="to"]'
-                );
+                dom.constrain('[data-toggle="from"]', '[data-toggle="to"]');
                 return document.body.innerHTML;
             }),
             '<div id="fromParent">' +
@@ -100,13 +97,10 @@ describe('#constrain', function() {
     it('works with array nodes', async function() {
         assert.equal(
             await exec(_ => {
-                dom.constrain(
-                    [
-                        document.getElementById('test1'),
-                        document.getElementById('test2')
-                    ],
-                    '[data-toggle="to"]'
-                );
+                dom.constrain([
+                    document.getElementById('test1'),
+                    document.getElementById('test2')
+                ], '[data-toggle="to"]');
                 return document.body.innerHTML;
             }),
             '<div id="fromParent">' +
@@ -183,13 +177,10 @@ describe('#constrain', function() {
     it('works with array other nodes', async function() {
         assert.equal(
             await exec(_ => {
-                dom.constrain(
-                    '[data-toggle="from"]',
-                    [
-                        document.getElementById('test3'),
-                        document.getElementById('test4')
-                    ]
-                );
+                dom.constrain('[data-toggle="from"]', [
+                    document.getElementById('test3'),
+                    document.getElementById('test4')
+                ]);
                 return document.body.innerHTML;
             }),
             '<div id="fromParent">' +

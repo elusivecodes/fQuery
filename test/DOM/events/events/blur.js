@@ -18,9 +18,7 @@ describe('#blur', function() {
                 const element = document.getElementById('test1');
                 element.addEventListener('blur', _ => { result = true; });
                 element.focus();
-                dom.blur(
-                    'input'
-                );
+                dom.blur('input');
                 return result;
             }),
             true
@@ -82,12 +80,10 @@ describe('#blur', function() {
                 const element = document.getElementById('test1');
                 element.addEventListener('blur', _ => { result = true; });
                 element.focus();
-                dom.blur(
-                    [
-                        document.getElementById('test1'),
-                        document.getElementById('test2')
-                    ]
-                );
+                dom.blur([
+                    document.getElementById('test1'),
+                    document.getElementById('test2')
+                ]);
                 return result;
             }),
             true

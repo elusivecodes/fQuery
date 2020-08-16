@@ -23,10 +23,7 @@ describe('#before', function() {
     it('inserts each other node before each node', async function() {
         assert.equal(
             await exec(_ => {
-                dom.before(
-                    'div',
-                    'a'
-                );
+                dom.before('div', 'a');
                 return document.body.innerHTML;
             }),
             '<a href="#" class="test1">Test</a>' +
@@ -55,14 +52,8 @@ describe('#before', function() {
                     'click',
                     _ => { result++; }
                 );
-                dom.before(
-                    'div',
-                    'a'
-                );
-                dom.triggerEvent(
-                    'a',
-                    'click'
-                );
+                dom.before('div', 'a');
+                dom.triggerEvent('a', 'click');
                 return result;
             }),
             8
@@ -72,15 +63,8 @@ describe('#before', function() {
     it('preserves data for other nodes', async function() {
         assert.deepEqual(
             await exec(_ => {
-                dom.setData(
-                    'a',
-                    'test',
-                    'Test'
-                );
-                dom.before(
-                    'div',
-                    'a'
-                );
+                dom.setData('a', 'test', 'Test');
+                dom.before('div', 'a');
                 return [...document.querySelectorAll('a')]
                     .map(node =>
                         dom.getData(node, 'test')
@@ -109,10 +93,7 @@ describe('#before', function() {
                     debug: true
                 }
             );
-            dom.before(
-                'div',
-                'a'
-            );
+            dom.before('div', 'a');
         }).then(waitFor(50)).then(async _ => {
             await testAnimation('body > a:nth-of-type(1)', easeInOut, 100);
             await testAnimation('body > a:nth-of-type(2)', easeInOut, 100);
@@ -138,10 +119,7 @@ describe('#before', function() {
         assert.equal(
             await exec(_ => {
                 const nodes = [...document.querySelectorAll('a')];
-                dom.before(
-                    'div',
-                    'a'
-                );
+                dom.before('div', 'a');
                 const newNodes = [...document.querySelectorAll('a')].slice(4);
                 return nodes.every((node, i) => node.isSameNode(newNodes[i]));
             }),
@@ -226,13 +204,10 @@ describe('#before', function() {
     it('works with array nodes', async function() {
         assert.equal(
             await exec(_ => {
-                dom.before(
-                    [
-                        document.getElementById('parent1'),
-                        document.getElementById('parent2')
-                    ],
-                    'a'
-                );
+                dom.before([
+                    document.getElementById('parent1'),
+                    document.getElementById('parent2')
+                ], 'a');
                 return document.body.innerHTML;
             }),
             '<a href="#" class="test1">Test</a>' +
@@ -333,10 +308,7 @@ describe('#before', function() {
                 const fragment = range.createContextualFragment(
                     '<div><span></span></div>'
                 );
-                dom.before(
-                    'div',
-                    fragment
-                );
+                dom.before('div', fragment);
                 return document.body.innerHTML;
             }),
             '<div><span></span></div>' +
@@ -357,15 +329,12 @@ describe('#before', function() {
     it('works with array other nodes', async function() {
         assert.equal(
             await exec(_ => {
-                dom.before(
-                    'div',
-                    [
-                        document.querySelector('.test1'),
-                        document.querySelector('.test2'),
-                        document.querySelector('.test3'),
-                        document.querySelector('.test4')
-                    ]
-                );
+                dom.before('div', [
+                    document.querySelector('.test1'),
+                    document.querySelector('.test2'),
+                    document.querySelector('.test3'),
+                    document.querySelector('.test4')
+                ]);
                 return document.body.innerHTML;
             }),
             '<a href="#" class="test1">Test</a>' +
@@ -388,10 +357,7 @@ describe('#before', function() {
     it('works with HTML other nodes', async function() {
         assert.equal(
             await exec(_ => {
-                dom.before(
-                    'div',
-                    '<div><span></span></div>'
-                );
+                dom.before('div', '<div><span></span></div>');
                 return document.body.innerHTML;
             }),
             '<div><span></span></div>' +

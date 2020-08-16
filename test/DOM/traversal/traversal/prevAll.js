@@ -39,11 +39,10 @@ describe('#prevAll', function() {
 
     it('returns all previous siblings of each node', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.prevAll(
-                    '.span'
-                ).map(node => node.id);
-            }),
+            await exec(_ =>
+                dom.prevAll('.span')
+                    .map(node => node.id)
+            ),
             [
                 'span1',
                 'span2',
@@ -55,12 +54,10 @@ describe('#prevAll', function() {
 
     it('returns all previous siblings of each node matching a filter', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.prevAll(
-                    '.span',
-                    '#span1, #span5'
-                ).map(node => node.id);
-            }),
+            await exec(_ =>
+                dom.prevAll('.span', '#span1, #span5')
+                    .map(node => node.id)
+            ),
             [
                 'span1',
                 'span5'
@@ -70,23 +67,21 @@ describe('#prevAll', function() {
 
     it('returns an empty array for empty nodes', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.prevAll(
-                    '#invalid'
-                );
-            }),
+            await exec(_ =>
+                dom.prevAll('#invalid')
+            ),
             []
         );
     });
 
     it('works with HTMLElement nodes', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.prevAll(
+            await exec(_ =>
+                dom.prevAll(
                     document.getElementById('span3'),
                     '#span1, #span5'
-                ).map(node => node.id);
-            }),
+                ).map(node => node.id)
+            ),
             [
                 'span1'
             ]
@@ -95,12 +90,12 @@ describe('#prevAll', function() {
 
     it('works with NodeList nodes', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.prevAll(
+            await exec(_ =>
+                dom.prevAll(
                     document.querySelectorAll('.span'),
                     '#span1, #span5'
-                ).map(node => node.id);
-            }),
+                ).map(node => node.id)
+            ),
             [
                 'span1',
                 'span5'
@@ -110,12 +105,12 @@ describe('#prevAll', function() {
 
     it('works with HTMLCollection nodes', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.prevAll(
+            await exec(_ =>
+                dom.prevAll(
                     document.getElementById('parent2').children,
                     '#span1, #span5'
-                ).map(node => node.id);
-            }),
+                ).map(node => node.id)
+            ),
             [
                 'span5'
             ]
@@ -124,15 +119,12 @@ describe('#prevAll', function() {
 
     it('works with array nodes', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.prevAll(
-                    [
-                        document.getElementById('span3'),
-                        document.getElementById('span7')
-                    ],
-                    '#span1, #span5'
-                ).map(node => node.id);
-            }),
+            await exec(_ =>
+                dom.prevAll([
+                    document.getElementById('span3'),
+                    document.getElementById('span7')
+                ], '#span1, #span5').map(node => node.id)
+            ),
             [
                 'span1',
                 'span5'
@@ -142,12 +134,12 @@ describe('#prevAll', function() {
 
     it('works with function filter', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.prevAll(
+            await exec(_ =>
+                dom.prevAll(
                     '.span',
                     node => node.id === 'span5'
-                ).map(node => node.id);
-            }),
+                ).map(node => node.id)
+            ),
             [
                 'span5'
             ]
@@ -156,12 +148,12 @@ describe('#prevAll', function() {
 
     it('works with HTMLElement filter', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.prevAll(
+            await exec(_ =>
+                dom.prevAll(
                     '.span',
                     document.getElementById('span1')
-                ).map(node => node.id);
-            }),
+                ).map(node => node.id)
+            ),
             [
                 'span1'
             ]
@@ -170,12 +162,12 @@ describe('#prevAll', function() {
 
     it('works with NodeList filter', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.prevAll(
+            await exec(_ =>
+                dom.prevAll(
                     '.span',
                     document.querySelectorAll('#span1, #span5')
-                ).map(node => node.id);
-            }),
+                ).map(node => node.id)
+            ),
             [
                 'span1',
                 'span5'
@@ -185,12 +177,12 @@ describe('#prevAll', function() {
 
     it('works with HTMLCollection filter', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.prevAll(
+            await exec(_ =>
+                dom.prevAll(
                     '.span',
                     document.getElementById('parent2').children
-                ).map(node => node.id);
-            }),
+                ).map(node => node.id)
+            ),
             [
                 'span5',
                 'span6'
@@ -200,15 +192,12 @@ describe('#prevAll', function() {
 
     it('works with array filter', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.prevAll(
-                    '.span',
-                    [
-                        document.getElementById('span1'),
-                        document.getElementById('span5')
-                    ]
-                ).map(node => node.id);
-            }),
+            await exec(_ =>
+                dom.prevAll('.span', [
+                    document.getElementById('span1'),
+                    document.getElementById('span5')
+                ]).map(node => node.id)
+            ),
             [
                 'span1',
                 'span5'
@@ -218,13 +207,13 @@ describe('#prevAll', function() {
 
     it('works with function limit', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.prevAll(
+            await exec(_ =>
+                dom.prevAll(
                     '.span',
                     null,
                     node => node.id === 'span6'
-                ).map(node => node.id);
-            }),
+                ).map(node => node.id)
+            ),
             [
                 'span1',
                 'span2'
@@ -234,13 +223,13 @@ describe('#prevAll', function() {
 
     it('works with HTMLElement limit', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.prevAll(
+            await exec(_ =>
+                dom.prevAll(
                     '.span',
                     null,
                     document.getElementById('span6')
-                ).map(node => node.id);
-            }),
+                ).map(node => node.id)
+            ),
             [
                 'span1',
                 'span2'
@@ -250,13 +239,13 @@ describe('#prevAll', function() {
 
     it('works with NodeList limit', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.prevAll(
+            await exec(_ =>
+                dom.prevAll(
                     '.span',
                     null,
                     document.querySelectorAll('#span1, #span6')
-                ).map(node => node.id);
-            }),
+                ).map(node => node.id)
+            ),
             [
                 'span2'
             ]
@@ -265,13 +254,13 @@ describe('#prevAll', function() {
 
     it('works with HTMLCollection limit', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.prevAll(
+            await exec(_ =>
+                dom.prevAll(
                     '.span',
                     null,
                     document.getElementById('parent2').children
-                ).map(node => node.id);
-            }),
+                ).map(node => node.id)
+            ),
             [
                 'span1',
                 'span2'
@@ -281,16 +270,12 @@ describe('#prevAll', function() {
 
     it('works with array limit', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.prevAll(
-                    '.span',
-                    null,
-                    [,
-                        document.getElementById('span1'),
-                        document.getElementById('span6')
-                    ]
-                ).map(node => node.id);
-            }),
+            await exec(_ =>
+                dom.prevAll('.span', null, [,
+                    document.getElementById('span1'),
+                    document.getElementById('span6')
+                ]).map(node => node.id)
+            ),
             [
                 'span2'
             ]

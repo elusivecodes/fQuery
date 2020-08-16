@@ -21,12 +21,10 @@ describe('#equal', function() {
 
     it('returns nodes equal to other nodes', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.equal(
-                    '#parent1 span',
-                    '#parent2 span'
-                ).map(node => node.dataset.id);
-            }),
+            await exec(_ =>
+                dom.equal('#parent1 span', '#parent2 span')
+                    .map(node => node.dataset.id)
+            ),
             [
                 'span2',
                 'span3'
@@ -36,12 +34,12 @@ describe('#equal', function() {
 
     it('works with HTMLElement nodes', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.equal(
+            await exec(_ =>
+                dom.equal(
                     document.querySelector('#parent1 [data-id="span2"]'),
                     '#parent2 span'
-                ).map(node => node.dataset.id);
-            }),
+                ).map(node => node.dataset.id)
+            ),
             [
                 'span2'
             ]
@@ -50,12 +48,12 @@ describe('#equal', function() {
 
     it('works with NodeList nodes', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.equal(
+            await exec(_ =>
+                dom.equal(
                     document.querySelectorAll('#parent1 span'),
                     '#parent2 span'
-                ).map(node => node.dataset.id);
-            }),
+                ).map(node => node.dataset.id)
+            ),
             [
                 'span2',
                 'span3'
@@ -65,12 +63,12 @@ describe('#equal', function() {
 
     it('works with HTMLCollection nodes', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.equal(
+            await exec(_ =>
+                dom.equal(
                     document.getElementById('parent1').children,
                     '#parent2 span'
-                ).map(node => node.dataset.id);
-            }),
+                ).map(node => node.dataset.id)
+            ),
             [
                 'span2',
                 'span3'
@@ -84,10 +82,8 @@ describe('#equal', function() {
                 const fragment1 = document.createDocumentFragment();
                 const fragment2 = document.createDocumentFragment();
                 fragment1.id = 'fragment';
-                return dom.equal(
-                    fragment1,
-                    fragment2
-                ).map(node => node.id);
+                return dom.equal(fragment1, fragment2)
+                    .map(node => node.id);
             }),
             [
                 'fragment'
@@ -103,10 +99,8 @@ describe('#equal', function() {
                 const shadow1 = div1.attachShadow({ mode: 'open' });
                 const shadow2 = div2.attachShadow({ mode: 'closed' });
                 shadow1.id = 'shadow';
-                return dom.equal(
-                    shadow1,
-                    shadow2
-                ).map(node => node.id);
+                return dom.equal(shadow1, shadow2)
+                    .map(node => node.id);
             }),
             [
                 'shadow'
@@ -116,16 +110,13 @@ describe('#equal', function() {
 
     it('works with array nodes', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.equal(
-                    [
-                        document.querySelector('#parent1 > [data-id="span1"]'),
-                        document.querySelector('#parent1 > [data-id="span2"]'),
-                        document.querySelector('#parent1 > [data-id="span3"]')
-                    ],
-                    '#parent2 span'
-                ).map(node => node.dataset.id);
-            }),
+            await exec(_ =>
+                dom.equal([
+                    document.querySelector('#parent1 > [data-id="span1"]'),
+                    document.querySelector('#parent1 > [data-id="span2"]'),
+                    document.querySelector('#parent1 > [data-id="span3"]')
+                ], '#parent2 span').map(node => node.dataset.id)
+            ),
             [
                 'span2',
                 'span3'
@@ -135,12 +126,12 @@ describe('#equal', function() {
 
     it('works with HTMLElement other nodes', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.equal(
+            await exec(_ =>
+                dom.equal(
                     '#parent1 span',
                     document.querySelector('#parent2 > [data-id="span2"]')
-                ).map(node => node.dataset.id);
-            }),
+                ).map(node => node.dataset.id)
+            ),
             [
                 'span2'
             ]
@@ -149,12 +140,12 @@ describe('#equal', function() {
 
     it('works with NodeList other nodes', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.equal(
+            await exec(_ =>
+                dom.equal(
                     '#parent1 span',
                     document.querySelectorAll('#parent2 > span')
-                ).map(node => node.dataset.id);
-            }),
+                ).map(node => node.dataset.id)
+            ),
             [
                 'span2',
                 'span3'
@@ -164,12 +155,12 @@ describe('#equal', function() {
 
     it('works with HTMLCollection other nodes', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.equal(
+            await exec(_ =>
+                dom.equal(
                     '#parent1 span',
                     document.getElementById('parent2').children
-                ).map(node => node.dataset.id);
-            }),
+                ).map(node => node.dataset.id)
+            ),
             [
                 'span2',
                 'span3'
@@ -221,15 +212,12 @@ describe('#equal', function() {
 
     it('works with array other nodes', async function() {
         assert.deepEqual(
-            await exec(_ => {
-                return dom.equal(
-                    '#parent1 span',
-                    [
-                        document.querySelector('#parent2 > [data-id="span2"]'),
-                        document.querySelector('#parent2 > [data-id="span3"]')
-                    ]
-                ).map(node => node.dataset.id);
-            }),
+            await exec(_ =>
+                dom.equal('#parent1 span', [
+                    document.querySelector('#parent2 > [data-id="span2"]'),
+                    document.querySelector('#parent2 > [data-id="span3"]')
+                ]).map(node => node.dataset.id)
+            ),
             [
                 'span2',
                 'span3'
