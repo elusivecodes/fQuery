@@ -120,9 +120,7 @@ Object.assign(DOM, {
      */
     _selfDestructFactory(node, events, delegate, callback) {
         return e => {
-            delegate ?
-                this._removeEvent(node, events, callback, delegate) :
-                this._removeEvent(node, events, callback);
+            this._removeEvent(node, events, callback, delegate);
             return callback(e);
         };
     }

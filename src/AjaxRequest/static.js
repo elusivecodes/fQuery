@@ -106,9 +106,10 @@ Object.assign(AjaxRequest, {
      * @returns {array} The parsed attributes.
      */
     _parseValues(data) {
-        const values = [];
 
         if (Core.isArray(data)) {
+            const values = [];
+
             for (const value of data) {
                 values.push(
                     ...this._parseValue(
@@ -117,7 +118,13 @@ Object.assign(AjaxRequest, {
                     )
                 )
             }
-        } else if (Core.isObject(data)) {
+
+            return values;
+        }
+
+        if (Core.isObject(data)) {
+            const values = [];
+
             for (const key in data) {
                 values.push(
                     ...this._parseValue(
@@ -126,9 +133,11 @@ Object.assign(AjaxRequest, {
                     )
                 );
             }
+
+            return values;
         }
 
-        return values;
+        return data;
     }
 
 });

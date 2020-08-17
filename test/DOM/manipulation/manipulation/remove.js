@@ -44,11 +44,9 @@ describe('#remove', function() {
             await exec(_ => {
                 let result = 0;
                 const nodes = document.querySelectorAll('a');
-                dom.addEvent(
-                    'a',
-                    'click',
-                    _ => { result++; }
-                );
+                dom.addEvent('a', 'click', _ => {
+                    result++;
+                });
                 dom.remove('a');
                 for (const node of nodes) {
                     document.body.appendChild(node);
@@ -65,11 +63,9 @@ describe('#remove', function() {
             await exec(_ => {
                 let result = 0;
                 const nodes = document.querySelectorAll('a');
-                dom.addEvent(
-                    'a',
-                    'click',
-                    _ => { result++; }
-                );
+                dom.addEvent('a', 'click', _ => {
+                    result++;
+                });
                 dom.remove('div');
                 for (const node of nodes) {
                     document.body.appendChild(node);
@@ -179,20 +175,14 @@ describe('#remove', function() {
 
     it('removes queue', async function() {
         await exec(_ => {
-            dom.queue(
-                'a',
-                _ => {
-                    return new Promise(resolve =>
-                        setTimeout(resolve, 100)
-                    );
-                }
+            dom.queue('a', _ =>
+                new Promise(resolve =>
+                    setTimeout(resolve, 100)
+                )
             );
-            dom.queue(
-                'a',
-                node => {
-                    node.dataset.test = 'Test'
-                }
-            );
+            dom.queue('a', node => {
+                node.dataset.test = 'Test'
+            });
         }).then(waitFor(50)).then(async _ => {
             await exec(_ => {
                 const nodes = document.querySelectorAll('a');
@@ -220,20 +210,15 @@ describe('#remove', function() {
 
     it('removes queue recursively', async function() {
         await exec(_ => {
-            dom.queue(
-                'a',
-                _ => {
-                    return new Promise(resolve =>
-                        setTimeout(resolve, 100)
-                    );
-                }
+            dom.queue('a', _ =>
+                new Promise(resolve =>
+                    setTimeout(resolve, 100)
+                )
             );
-            dom.queue(
-                'a',
+            dom.queue('a',
                 node => {
                     node.dataset.test = 'Test'
-                }
-            );
+                });
         }).then(waitFor(50)).then(async _ => {
             await exec(_ => {
                 const nodes = document.querySelectorAll('a');
@@ -257,11 +242,9 @@ describe('#remove', function() {
         assert.equal(
             await exec(_ => {
                 let result = 0;
-                dom.addEvent(
-                    'a',
-                    'remove',
-                    _ => { result++; }
-                );
+                dom.addEvent('a', 'remove', _ => {
+                    result++;
+                });
                 dom.remove('a');
                 return result;
             }),
@@ -273,11 +256,9 @@ describe('#remove', function() {
         assert.equal(
             await exec(_ => {
                 let result = 0;
-                dom.addEvent(
-                    'a',
-                    'remove',
-                    _ => { result++; }
-                );
+                dom.addEvent('a', 'remove', _ => {
+                    result++;
+                });
                 dom.remove('div');
                 return result;
             }),

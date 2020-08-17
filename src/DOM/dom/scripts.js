@@ -36,7 +36,7 @@ Object.assign(DOM.prototype, {
 
     /**
      * Load and executes multiple JavaScript files (in order).
-     * @param {string[]} urls An array of script URLs.
+     * @param {array} urls An array of script URLs or attribute objects.
      * @param {Boolean} [cache=true] Whether to cache the requests.
      * @returns {Promise} A new Promise that resolves when the request is completed, or rejects on failure.
      */

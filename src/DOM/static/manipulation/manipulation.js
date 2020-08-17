@@ -64,23 +64,23 @@ Object.assign(DOM, {
      * @param {Boolean} [options.animations] Whether to also clone animations.
      */
     _deepClone(node, clone, options) {
-        const children = Core.wrap(node.childNodes);
-        const cloneChildren = Core.wrap(clone.childNodes);
+        for (let i = 0; i < node.childNodes.length; i++) {
+            const child = node.childNodes.item(i);
+            const childClone = clone.childNodes.item(i);
 
-        for (let i = 0; i < children.length; i++) {
             if (options.events) {
-                this._cloneEvents(children[i], cloneChildren[i]);
+                this._cloneEvents(child, childClone);
             }
 
             if (options.data) {
-                this._cloneData(children[i], cloneChildren[i]);
+                this._cloneData(child, childClone);
             }
 
             if (options.animations) {
-                this._cloneAnimations(node, clone);
+                this._cloneAnimations(child, childClone);
             }
 
-            this._deepClone(children[i], cloneChildren[i], options);
+            this._deepClone(child, childClone, options);
         }
     },
 
@@ -99,14 +99,12 @@ Object.assign(DOM, {
 
         // Remove ShadowRoot
         if (node.shadowRoot) {
-            const shadow = node.shadowRoot;
-            this._remove(shadow);
+            this._remove(node.shadowRoot);
         }
 
         // Remove DocumentFragment
         if (node.content) {
-            const fragment = node.content;
-            this._remove(fragment);
+            this._remove(node.content);
         }
     },
 

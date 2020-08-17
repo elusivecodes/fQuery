@@ -12,7 +12,9 @@ Object.assign(DOM.prototype, {
     unwrap(nodes, filter) {
 
         // DocumentFragment and ShadowRoot nodes can not be unwrapped
-        nodes = this.parseNodes(nodes, { node: true });
+        nodes = this.parseNodes(nodes, {
+            node: true
+        });
 
         filter = this.parseFilter(filter);
 
@@ -49,10 +51,15 @@ Object.assign(DOM.prototype, {
     wrap(nodes, others) {
 
         // DocumentFragment and ShadowRoot nodes can not be wrapped
-        nodes = this.parseNodes(nodes, { node: true });
+        nodes = this.parseNodes(nodes, {
+            node: true
+        });
 
         // ShadowRoot nodes can not be cloned
-        others = this.parseNodes(others, { fragment: true, html: true });
+        others = this.parseNodes(others, {
+            fragment: true,
+            html: true
+        });
 
         for (const node of nodes) {
             this.constructor._wrap(node, others);
@@ -67,10 +74,15 @@ Object.assign(DOM.prototype, {
     wrapAll(nodes, others) {
 
         // DocumentFragment and ShadowRoot nodes can not be wrapped
-        nodes = this.parseNodes(nodes, { node: true });
+        nodes = this.parseNodes(nodes, {
+            node: true
+        });
 
         // ShadowRoot nodes can not be cloned
-        others = this.parseNodes(others, { fragment: true, html: true });
+        others = this.parseNodes(others, {
+            fragment: true,
+            html: true
+        });
 
         const clones = this.clone(others, {
             events: true,
@@ -87,10 +99,17 @@ Object.assign(DOM.prototype, {
      * @param {string|array|HTMLElement|DocumentFragment|NodeList|HTMLCollection|QuerySet} others The other node(s), or a query selector or HTML string.
      */
     wrapInner(nodes, others) {
-        nodes = this.parseNodes(nodes, { node: true, fragment: true, shadow: true });
+        nodes = this.parseNodes(nodes, {
+            node: true,
+            fragment: true,
+            shadow: true
+        });
 
         // ShadowRoot nodes can not be cloned
-        others = this.parseNodes(others, { fragment: true, html: true });
+        others = this.parseNodes(others, {
+            fragment: true,
+            html: true
+        });
 
         for (const node of nodes) {
             this.constructor._wrapInner(node, others);

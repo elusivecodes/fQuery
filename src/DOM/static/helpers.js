@@ -113,8 +113,12 @@ Object.assign(DOM, {
      */
     _prefixSelectors(selectors, prefix) {
         return selectors.split(this._splitRegExp)
-            .filter(select => !!select)
-            .map(select => `${prefix} ${select}`)
+            .filter(selector => !!selector)
+            .map(selector =>
+                this._customSelectors.includes(selector.trim().charAt(0)) ?
+                    `${prefix} ${selector}` :
+                    selector
+            )
             .join(', ');
     }
 

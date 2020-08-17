@@ -13,7 +13,11 @@ Object.assign(DOM.prototype, {
      * @param {Boolean} [selfDestruct] Whether to remove the event after triggering.
      */
     addEvent(nodes, events, callback, delegate, selfDestruct) {
-        nodes = this.parseNodes(nodes, { shadow: true, document: true, window: !delegate });
+        nodes = this.parseNodes(nodes, {
+            shadow: true,
+            document: true,
+            window: !delegate
+        });
 
         for (const node of nodes) {
             for (const event of this.constructor._parseEvents(events)) {
@@ -60,8 +64,17 @@ Object.assign(DOM.prototype, {
      * @param {string|array|HTMLElement|ShadowRoot|Document|Window|HTMLCollection|QuerySet} others The other node(s), or a query selector string.
      */
     cloneEvents(nodes, others) {
-        nodes = this.parseNodes(nodes, { shadow: true, document: true, window: true });
-        others = this.parseNodes(others, { shadow: true, document: true, window: true });
+        nodes = this.parseNodes(nodes, {
+            shadow: true,
+            document: true,
+            window: true
+        });
+
+        others = this.parseNodes(others, {
+            shadow: true,
+            document: true,
+            window: true
+        });
 
         for (const node of nodes) {
             for (const other of others) {
@@ -78,7 +91,11 @@ Object.assign(DOM.prototype, {
      * @param {string} [delegate] The delegate selector.
      */
     removeEvent(nodes, events, callback, delegate) {
-        nodes = this.parseNodes(nodes, { shadow: true, document: true, window: !delegate });
+        nodes = this.parseNodes(nodes, {
+            shadow: true,
+            document: true,
+            window: !delegate
+        });
 
         events = events ?
             this.constructor._parseEvents(events) :
@@ -121,7 +138,11 @@ Object.assign(DOM.prototype, {
      * @param {Boolean} [options.cancelable=true] Whether the event is cancelable.
      */
     triggerEvent(nodes, events, options) {
-        nodes = this.parseNodes(nodes, { shadow: true, document: true, window: true });
+        nodes = this.parseNodes(nodes, {
+            shadow: true,
+            document: true,
+            window: true
+        });
 
         events = this.constructor._parseEvents(events);
 
@@ -142,7 +163,11 @@ Object.assign(DOM.prototype, {
      * @param {Boolean} [options.cancelable=true] Whether the event is cancelable.
      */
     triggerOne(nodes, event, options) {
-        const node = this.parseNode(nodes, { shadow: true, document: true, window: true });
+        const node = this.parseNode(nodes, {
+            shadow: true,
+            document: true,
+            window: true
+        });
 
         return this.constructor._triggerEvent(node, event, options);
     }

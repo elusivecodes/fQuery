@@ -23,7 +23,9 @@ Object.assign(DOM.prototype, {
     forceShow(nodes, callback) {
 
         // DocumentFragment and ShadowRoot nodes have no parent
-        const node = this.parseNode(nodes, { node: true });
+        const node = this.parseNode(nodes, {
+            node: true
+        });
 
         if (!node) {
             return;
@@ -38,7 +40,9 @@ Object.assign(DOM.prototype, {
      * @returns {number} The index.
      */
     index(nodes) {
-        const node = this.parseNode(nodes, { node: true });
+        const node = this.parseNode(nodes, {
+            node: true
+        });
 
         if (!node) {
             return;
@@ -58,10 +62,13 @@ Object.assign(DOM.prototype, {
     indexOf(nodes, filter) {
         filter = this.parseFilter(filter);
 
-        return this.parseNodes(nodes, { node: true, fragment: true, shadow: true })
-            .findIndex(node =>
-                !filter || filter(node)
-            );
+        return this.parseNodes(nodes, {
+            node: true,
+            fragment: true,
+            shadow: true
+        }).findIndex(node =>
+            !filter || filter(node)
+        );
     },
 
     /**
@@ -69,7 +76,12 @@ Object.assign(DOM.prototype, {
      * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|Document|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
      */
     normalize(nodes) {
-        nodes = this.parseNodes(nodes, { node: true, fragment: true, shadow: true, document: true });
+        nodes = this.parseNodes(nodes, {
+            node: true,
+            fragment: true,
+            shadow: true,
+            document: true
+        });
 
         for (const node of nodes) {
             node.normalize();
@@ -111,64 +123,65 @@ Object.assign(DOM.prototype, {
      * @returns {array} The serialized array.
      */
     serializeArray(nodes) {
-        return this.parseNodes(nodes, { fragment: true, shadow: true })
-            .reduce(
-                (values, node) => {
-                    if (
-                        (
-                            Core.isElement(node) &&
-                            node.matches('form')
-                        ) ||
-                        Core.isFragment(node) ||
-                        Core.isShadow(node)
-                    ) {
-                        return values.concat(
-                            this.serializeArray(
-                                node.querySelectorAll(
-                                    'input, select, textarea'
-                                )
+        return this.parseNodes(nodes, {
+            fragment: true,
+            shadow: true
+        }).reduce(
+            (values, node) => {
+                if (
+                    (
+                        Core.isElement(node) &&
+                        node.matches('form')
+                    ) ||
+                    Core.isFragment(node) ||
+                    Core.isShadow(node)
+                ) {
+                    return values.concat(
+                        this.serializeArray(
+                            node.querySelectorAll(
+                                'input, select, textarea'
                             )
-                        );
-                    }
+                        )
+                    );
+                }
 
-                    if (
-                        Core.isElement(node) &&
-                        node.matches('[disabled], input[type=submit], input[type=reset], input[type=file], input[type=radio]:not(:checked), input[type=checkbox]:not(:checked)')
-                    ) {
-                        return values;
-                    }
+                if (
+                    Core.isElement(node) &&
+                    node.matches('[disabled], input[type=submit], input[type=reset], input[type=file], input[type=radio]:not(:checked), input[type=checkbox]:not(:checked)')
+                ) {
+                    return values;
+                }
 
-                    const name = node.getAttribute('name');
-                    if (!name) {
-                        return values;
-                    }
+                const name = node.getAttribute('name');
+                if (!name) {
+                    return values;
+                }
 
-                    if (
-                        Core.isElement(node) &&
-                        node.matches('select[multiple]')
-                    ) {
-                        const selected = Core.wrap(node.selectedOptions);
-                        for (const option of selected) {
-                            values.push(
-                                {
-                                    name,
-                                    value: option.value || ''
-                                }
-                            );
-                        }
-                    } else {
+                if (
+                    Core.isElement(node) &&
+                    node.matches('select[multiple]')
+                ) {
+                    for (const option of node.selectedOptions) {
                         values.push(
                             {
                                 name,
-                                value: node.value || ''
+                                value: option.value || ''
                             }
                         );
                     }
+                } else {
+                    values.push(
+                        {
+                            name,
+                            value: node.value || ''
+                        }
+                    );
+                }
 
-                    return values;
-                },
-                []
-            );
+                return values;
+            },
+            []
+        );
     },
 
     /**
@@ -177,7 +190,13 @@ Object.assign(DOM.prototype, {
      * @returns {array} The sorted array of nodes.
      */
     sort(nodes) {
-        nodes = this.parseNodes(nodes, { node: true, fragment: true, shadow: true, document: true, window: true });
+        nodes = this.parseNodes(nodes, {
+            node: true,
+            fragment: true,
+            shadow: true,
+            document: true,
+            window: true
+        });
 
         return this.constructor._sort(nodes);
     },

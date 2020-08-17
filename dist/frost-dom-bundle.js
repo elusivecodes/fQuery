@@ -1,5 +1,5 @@
 /**
- * FrostDOM Bundle v1.0.2
+ * FrostDOM Bundle v1.0.3
  * https://github.com/elusivecodes/FrostCore
  * https://github.com/elusivecodes/FrostDOM
  */
@@ -1047,7 +1047,7 @@
     });
 
     /**
-     * FrostDOM v1.0.2
+     * FrostDOM v1.0.3
      * https://github.com/elusivecodes/FrostDOM
      */
     (function(global, factory) {
@@ -1535,9 +1535,10 @@
              * @returns {array} The parsed attributes.
              */
             _parseValues(data) {
-                const values = [];
 
                 if (Core.isArray(data)) {
+                    const values = [];
+
                     for (const value of data) {
                         values.push(
                             ...this._parseValue(
@@ -1546,7 +1547,13 @@
                             )
                         )
                     }
-                } else if (Core.isObject(data)) {
+
+                    return values;
+                }
+
+                if (Core.isObject(data)) {
+                    const values = [];
+
                     for (const key in data) {
                         values.push(
                             ...this._parseValue(
@@ -1555,9 +1562,11 @@
                             )
                         );
                     }
+
+                    return values;
                 }
 
-                return values;
+                return data;
             }
 
         });
@@ -2419,10 +2428,7 @@
              * @returns {string} The HTML contents.
              */
             getHTML(nodes) {
-                return this.getProperty(
-                    nodes,
-                    'innerHTML'
-                );
+                return this.getProperty(nodes, 'innerHTML');
             },
 
             /**
@@ -2447,10 +2453,7 @@
              * @returns {string} The text contents.
              */
             getText(nodes) {
-                return this.getProperty(
-                    nodes,
-                    'innerText'
-                );
+                return this.getProperty(nodes, 'innerText');
             },
 
             /**
@@ -2459,10 +2462,7 @@
              * @returns {string} The value.
              */
             getValue(nodes) {
-                return this.getProperty(
-                    nodes,
-                    'value'
-                );
+                return this.getProperty(nodes, 'value');
             },
 
             /**
@@ -2544,11 +2544,7 @@
             setHTML(nodes, html) {
                 this.empty(nodes);
 
-                this.setProperty(
-                    nodes,
-                    'innerHTML',
-                    html
-                );
+                this.setProperty(nodes, 'innerHTML', html);
             },
 
             /**
@@ -2577,11 +2573,7 @@
             setText(nodes, text) {
                 this.empty(nodes);
 
-                this.setProperty(
-                    nodes,
-                    'innerText',
-                    text
-                );
+                this.setProperty(nodes, 'innerText', text);
             },
 
             /**
@@ -2590,11 +2582,7 @@
              * @param {string} value The value.
              */
             setValue(nodes, value) {
-                this.setProperty(
-                    nodes,
-                    'value',
-                    value
-                );
+                this.setProperty(nodes, 'value', value);
             }
 
         });
@@ -2611,8 +2599,19 @@
              * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|NodeList|HTMLCollection|QuerySet} others The other node(s), or a query selector string.
              */
             cloneData(nodes, others) {
-                nodes = this.parseNodes(nodes, { fragment: true, shadow: true, document: true, window: true });
-                others = this.parseNodes(others, { fragment: true, shadow: true, document: true, window: true });
+                nodes = this.parseNodes(nodes, {
+                    fragment: true,
+                    shadow: true,
+                    document: true,
+                    window: true
+                });
+
+                others = this.parseNodes(others, {
+                    fragment: true,
+                    shadow: true,
+                    document: true,
+                    window: true
+                });
 
                 for (const node of nodes) {
                     for (const other of others) {
@@ -2628,7 +2627,12 @@
              * @returns {*} The data value.
              */
             getData(nodes, key) {
-                const node = this.parseNode(nodes, { fragment: true, shadow: true, document: true, window: true });
+                const node = this.parseNode(nodes, {
+                    fragment: true,
+                    shadow: true,
+                    document: true,
+                    window: true
+                });
 
                 if (!node) {
                     return;
@@ -2643,7 +2647,12 @@
              * @param {string} [key] The data key.
              */
             removeData(nodes, key) {
-                nodes = this.parseNodes(nodes, { fragment: true, shadow: true, document: true, window: true });
+                nodes = this.parseNodes(nodes, {
+                    fragment: true,
+                    shadow: true,
+                    document: true,
+                    window: true
+                });
 
                 for (const node of nodes) {
                     this.constructor._removeData(node, key);
@@ -2657,7 +2666,12 @@
              * @param {*} [value] The data value.
              */
             setData(nodes, key, value) {
-                nodes = this.parseNodes(nodes, { fragment: true, shadow: true, document: true, window: true });
+                nodes = this.parseNodes(nodes, {
+                    fragment: true,
+                    shadow: true,
+                    document: true,
+                    window: true
+                });
 
                 const data = this.constructor._parseData(key, value);
 
@@ -2727,12 +2741,7 @@
                     return;
                 }
 
-                return Core.dist(
-                    nodeCenter.x,
-                    nodeCenter.y,
-                    x,
-                    y
-                );
+                return Core.dist(nodeCenter.x, nodeCenter.y, x, y);
             },
 
             /**
@@ -2748,11 +2757,7 @@
                     return;
                 }
 
-                return this.distTo(
-                    nodes,
-                    otherCenter.x,
-                    otherCenter.y
-                );
+                return this.distTo(nodes, otherCenter.x, otherCenter.y);
             },
 
             /**
@@ -2793,11 +2798,7 @@
                     return;
                 }
 
-                return this.nearestTo(
-                    nodes,
-                    otherCenter.x,
-                    otherCenter.y
-                );
+                return this.nearestTo(nodes, otherCenter.x, otherCenter.y);
             },
 
             /**
@@ -2894,7 +2895,10 @@
              * @returns {number} The scroll X position.
              */
             getScrollX(nodes) {
-                const node = this.parseNode(nodes, { document: true, window: true });
+                const node = this.parseNode(nodes, {
+                    document: true,
+                    window: true
+                });
 
                 if (!node) {
                     return;
@@ -2917,7 +2921,10 @@
              * @returns {number} The scroll Y position.
              */
             getScrollY(nodes) {
-                const node = this.parseNode(nodes, { document: true, window: true });
+                const node = this.parseNode(nodes, {
+                    document: true,
+                    window: true
+                });
 
                 if (!node) {
                     return;
@@ -2941,7 +2948,10 @@
              * @param {number} y The scroll Y position.
              */
             setScroll(nodes, x, y) {
-                nodes = this.parseNodes(nodes, { document: true, window: true });
+                nodes = this.parseNodes(nodes, {
+                    document: true,
+                    window: true
+                });
 
                 for (const node of nodes) {
                     if (Core.isWindow(node)) {
@@ -2962,7 +2972,10 @@
              * @param {number} x The scroll X position.
              */
             setScrollX(nodes, x) {
-                nodes = this.parseNodes(nodes, { document: true, window: true });
+                nodes = this.parseNodes(nodes, {
+                    document: true,
+                    window: true
+                });
 
                 for (const node of nodes) {
                     if (Core.isWindow(node)) {
@@ -2981,7 +2994,10 @@
              * @param {number} y The scroll Y position.
              */
             setScrollY(nodes, y) {
-                nodes = this.parseNodes(nodes, { document: true, window: true });
+                nodes = this.parseNodes(nodes, {
+                    document: true,
+                    window: true
+                });
 
                 for (const node of nodes) {
                     if (Core.isWindow(node)) {
@@ -3009,7 +3025,10 @@
              * @returns {number} The height.
              */
             height(nodes, innerOuter) {
-                const node = this.parseNode(nodes, { document: true, window: true });
+                const node = this.parseNode(nodes, {
+                    document: true,
+                    window: true
+                });
 
                 if (!node) {
                     return;
@@ -3034,7 +3053,9 @@
              * @returns {number} The scroll height.
              */
             scrollHeight(nodes) {
-                const node = this.parseNode(nodes, { document: true });
+                const node = this.parseNode(nodes, {
+                    document: true
+                });
 
                 if (!node) {
                     return;
@@ -3049,7 +3070,9 @@
              * @returns {number} The scroll width.
              */
             scrollWidth(nodes) {
-                const node = this.parseNode(nodes, { document: true });
+                const node = this.parseNode(nodes, {
+                    document: true
+                });
 
                 if (!node) {
                     return;
@@ -3065,7 +3088,10 @@
              * @returns {number} The width.
              */
             width(nodes, innerOuter) {
-                const node = this.parseNode(nodes, { document: true, window: true });
+                const node = this.parseNode(nodes, {
+                    document: true,
+                    window: true
+                });
 
                 if (!node) {
                     return;
@@ -3148,11 +3174,7 @@
              * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
              */
             hide(nodes) {
-                this.setStyle(
-                    nodes,
-                    'display',
-                    'none'
-                );
+                this.setStyle(nodes, 'display', 'none');
             },
 
             /**
@@ -3196,11 +3218,7 @@
              * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
              */
             show(nodes) {
-                this.setStyle(
-                    nodes,
-                    'display',
-                    ''
-                );
+                this.setStyle(nodes, 'display', '');
             },
 
             /**
@@ -3447,11 +3465,9 @@
                     return;
                 }
 
-                this.constructor._addEvent(
-                    window,
-                    'DOMContentLoaded',
-                    callback
-                );
+                window.addEventListener('DOMContentLoaded', callback, {
+                    once: true
+                })
             }
 
         });
@@ -3471,7 +3487,11 @@
              * @param {Boolean} [selfDestruct] Whether to remove the event after triggering.
              */
             addEvent(nodes, events, callback, delegate, selfDestruct) {
-                nodes = this.parseNodes(nodes, { shadow: true, document: true, window: !delegate });
+                nodes = this.parseNodes(nodes, {
+                    shadow: true,
+                    document: true,
+                    window: !delegate
+                });
 
                 for (const node of nodes) {
                     for (const event of this.constructor._parseEvents(events)) {
@@ -3518,8 +3538,17 @@
              * @param {string|array|HTMLElement|ShadowRoot|Document|Window|HTMLCollection|QuerySet} others The other node(s), or a query selector string.
              */
             cloneEvents(nodes, others) {
-                nodes = this.parseNodes(nodes, { shadow: true, document: true, window: true });
-                others = this.parseNodes(others, { shadow: true, document: true, window: true });
+                nodes = this.parseNodes(nodes, {
+                    shadow: true,
+                    document: true,
+                    window: true
+                });
+
+                others = this.parseNodes(others, {
+                    shadow: true,
+                    document: true,
+                    window: true
+                });
 
                 for (const node of nodes) {
                     for (const other of others) {
@@ -3536,7 +3565,11 @@
              * @param {string} [delegate] The delegate selector.
              */
             removeEvent(nodes, events, callback, delegate) {
-                nodes = this.parseNodes(nodes, { shadow: true, document: true, window: !delegate });
+                nodes = this.parseNodes(nodes, {
+                    shadow: true,
+                    document: true,
+                    window: !delegate
+                });
 
                 events = events ?
                     this.constructor._parseEvents(events) :
@@ -3579,7 +3612,11 @@
              * @param {Boolean} [options.cancelable=true] Whether the event is cancelable.
              */
             triggerEvent(nodes, events, options) {
-                nodes = this.parseNodes(nodes, { shadow: true, document: true, window: true });
+                nodes = this.parseNodes(nodes, {
+                    shadow: true,
+                    document: true,
+                    window: true
+                });
 
                 events = this.constructor._parseEvents(events);
 
@@ -3600,7 +3637,11 @@
              * @param {Boolean} [options.cancelable=true] Whether the event is cancelable.
              */
             triggerOne(nodes, event, options) {
-                const node = this.parseNode(nodes, { shadow: true, document: true, window: true });
+                const node = this.parseNode(nodes, {
+                    shadow: true,
+                    document: true,
+                    window: true
+                });
 
                 return this.constructor._triggerEvent(node, event, options);
             }
@@ -3688,7 +3729,6 @@
 
                 if ('dataset' in options) {
                     const dataset = this.constructor._parseData(options.dataset, null, true);
-
                     this.constructor._setDataset(node, dataset);
                 }
 
@@ -3767,7 +3807,10 @@
                 };
 
                 // ShadowRoot nodes can not be cloned
-                nodes = this.parseNodes(nodes, { node: true, fragment: true });
+                nodes = this.parseNodes(nodes, {
+                    node: true,
+                    fragment: true
+                });
 
                 return nodes.map(node =>
                     this.constructor._clone(node, options)
@@ -3782,7 +3825,9 @@
             detach(nodes) {
 
                 // DocumentFragment and ShadowRoot nodes can not be detached
-                nodes = this.parseNodes(nodes, { node: true });
+                nodes = this.parseNodes(nodes, {
+                    node: true
+                });
 
                 for (const node of nodes) {
                     const parent = node.parentNode;
@@ -3802,7 +3847,11 @@
              * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
              */
             empty(nodes) {
-                nodes = this.parseNodes(nodes, { fragment: true, shadow: true, document: true });
+                nodes = this.parseNodes(nodes, {
+                    fragment: true,
+                    shadow: true,
+                    document: true
+                });
 
                 for (const node of nodes) {
                     this.constructor._empty(node);
@@ -3816,7 +3865,9 @@
             remove(nodes) {
 
                 // DocumentFragment and ShadowRoot nodes can not be removed
-                nodes = this.parseNodes(nodes, { node: true });
+                nodes = this.parseNodes(nodes, {
+                    node: true
+                });
 
                 for (const node of nodes) {
                     const parent = node.parentNode;
@@ -3847,10 +3898,16 @@
             replaceWith(nodes, others) {
 
                 // DocumentFragment and ShadowRoot nodes can not be removed
-                nodes = this.parseNodes(nodes, { node: true });
+                nodes = this.parseNodes(nodes, {
+                    node: true
+                });
 
                 // ShadowRoot nodes can not be cloned
-                others = this.parseNodes(others, { node: true, fragment: true, html: true });
+                others = this.parseNodes(others, {
+                    node: true,
+                    fragment: true,
+                    html: true
+                });
 
                 // Move nodes to a fragment so they don't get removed
                 const fragment = this.createFragment();
@@ -3921,10 +3978,16 @@
             after(nodes, others) {
 
                 // DocumentFragment and ShadowRoot nodes can not have siblings
-                nodes = this.parseNodes(nodes, { node: true });
+                nodes = this.parseNodes(nodes, {
+                    node: true
+                });
 
                 // ShadowRoot nodes can not be moved
-                others = this.parseNodes(others, { node: true, fragment: true, html: true }).reverse();
+                others = this.parseNodes(others, {
+                    node: true,
+                    fragment: true,
+                    html: true
+                }).reverse();
 
                 const lastNode = nodes[nodes.length - 1];
 
@@ -3957,10 +4020,18 @@
              * @param {string|array|Node|HTMLElement|DocumentFragment|NodeList|HTMLCollection|QuerySet} others The other node(s), or a query selector or HTML string.
              */
             append(nodes, others) {
-                nodes = this.parseNodes(nodes, { fragment: true, shadow: true, document: true });
+                nodes = this.parseNodes(nodes, {
+                    fragment: true,
+                    shadow: true,
+                    document: true
+                });
 
                 // ShadowRoot nodes can not be moved
-                others = this.parseNodes(others, { node: true, fragment: true, html: true });
+                others = this.parseNodes(others, {
+                    node: true,
+                    fragment: true,
+                    html: true
+                });
 
                 const lastNode = nodes[nodes.length - 1];
 
@@ -3998,10 +4069,16 @@
             before(nodes, others) {
 
                 // DocumentFragment and ShadowRoot nodes can not have siblings
-                nodes = this.parseNodes(nodes, { node: true });
+                nodes = this.parseNodes(nodes, {
+                    node: true
+                });
 
                 // ShadowRoot nodes can not be moved
-                others = this.parseNodes(others, { node: true, fragment: true, html: true });
+                others = this.parseNodes(others, {
+                    node: true,
+                    fragment: true,
+                    html: true
+                });
 
                 const lastNode = nodes[nodes.length - 1];
 
@@ -4052,10 +4129,18 @@
              * @param {string|array|Node|HTMLElement|DocumentFragment|NodeList|HTMLCollection} others The other node(s), or a query selector or HTML string.
              */
             prepend(nodes, others) {
-                nodes = this.parseNodes(nodes, { fragment: true, shadow: true, document: true });
+                nodes = this.parseNodes(nodes, {
+                    fragment: true,
+                    shadow: true,
+                    document: true
+                });
 
                 // ShadowRoot nodes can not be moved
-                others = this.parseNodes(others, { node: true, fragment: true, html: true });
+                others = this.parseNodes(others, {
+                    node: true,
+                    fragment: true,
+                    html: true
+                });
 
                 const lastNode = nodes[nodes.length - 1];
 
@@ -4103,7 +4188,9 @@
             unwrap(nodes, filter) {
 
                 // DocumentFragment and ShadowRoot nodes can not be unwrapped
-                nodes = this.parseNodes(nodes, { node: true });
+                nodes = this.parseNodes(nodes, {
+                    node: true
+                });
 
                 filter = this.parseFilter(filter);
 
@@ -4140,10 +4227,15 @@
             wrap(nodes, others) {
 
                 // DocumentFragment and ShadowRoot nodes can not be wrapped
-                nodes = this.parseNodes(nodes, { node: true });
+                nodes = this.parseNodes(nodes, {
+                    node: true
+                });
 
                 // ShadowRoot nodes can not be cloned
-                others = this.parseNodes(others, { fragment: true, html: true });
+                others = this.parseNodes(others, {
+                    fragment: true,
+                    html: true
+                });
 
                 for (const node of nodes) {
                     this.constructor._wrap(node, others);
@@ -4158,10 +4250,15 @@
             wrapAll(nodes, others) {
 
                 // DocumentFragment and ShadowRoot nodes can not be wrapped
-                nodes = this.parseNodes(nodes, { node: true });
+                nodes = this.parseNodes(nodes, {
+                    node: true
+                });
 
                 // ShadowRoot nodes can not be cloned
-                others = this.parseNodes(others, { fragment: true, html: true });
+                others = this.parseNodes(others, {
+                    fragment: true,
+                    html: true
+                });
 
                 const clones = this.clone(others, {
                     events: true,
@@ -4178,10 +4275,17 @@
              * @param {string|array|HTMLElement|DocumentFragment|NodeList|HTMLCollection|QuerySet} others The other node(s), or a query selector or HTML string.
              */
             wrapInner(nodes, others) {
-                nodes = this.parseNodes(nodes, { node: true, fragment: true, shadow: true });
+                nodes = this.parseNodes(nodes, {
+                    node: true,
+                    fragment: true,
+                    shadow: true
+                });
 
                 // ShadowRoot nodes can not be cloned
-                others = this.parseNodes(others, { fragment: true, html: true });
+                others = this.parseNodes(others, {
+                    fragment: true,
+                    html: true
+                });
 
                 for (const node of nodes) {
                     this.constructor._wrapInner(node, others);
@@ -4228,7 +4332,7 @@
 
             /**
              * Load and executes multiple JavaScript files (in order).
-             * @param {string[]} urls An array of script URLs.
+             * @param {array} urls An array of script URLs or attribute objects.
              * @param {Boolean} [cache=true] Whether to cache the requests.
              * @returns {Promise} A new Promise that resolves when the request is completed, or rejects on failure.
              */
@@ -4282,7 +4386,7 @@
 
             /**
              * Import multiple CSS Stylesheet files.
-             * @param {string[]} urls An array of stylesheet URLs.
+             * @param {array} urls An array of stylesheet URLs or attribute objects.
              * @param {Boolean} [cache=true] Whether to cache the requests.
              * @returns {Promise} A new Promise that resolves when the request is completed, or rejects on failure.
              */
@@ -4310,8 +4414,11 @@
              * @returns {array} The filtered nodes.
              */
             connected(nodes) {
-                return this.parseNodes(nodes, { node: true, fragment: true, shadow: true })
-                    .filter(node => node.isConnected);
+                return this.parseNodes(nodes, {
+                    node: true,
+                    fragment: true,
+                    shadow: true
+                }).filter(node => node.isConnected);
             },
 
             /**
@@ -4321,12 +4428,21 @@
              * @returns {array} The filtered nodes.
              */
             equal(nodes, others) {
-                others = this.parseNodes(others, { node: true, fragment: true, shadow: true });
+                others = this.parseNodes(others, {
+                    node: true,
+                    fragment: true,
+                    shadow: true
+                });
 
-                return this.parseNodes(nodes, { node: true, fragment: true, shadow: true })
-                    .filter(node =>
-                        others.some(other => node.isEqualNode(other))
-                    );
+                return this.parseNodes(nodes, {
+                    node: true,
+                    fragment: true,
+                    shadow: true
+                }).filter(node =>
+                    others.some(other =>
+                        node.isEqualNode(other)
+                    )
+                );
             },
 
             /**
@@ -4338,8 +4454,13 @@
             filter(nodes, filter) {
                 filter = this.parseFilter(filter);
 
-                return this.parseNodes(nodes, { node: true, fragment: true, shadow: true })
-                    .filter((node, index) => !filter || filter(node, index));
+                return this.parseNodes(nodes, {
+                    node: true,
+                    fragment: true,
+                    shadow: true
+                }).filter((node, index) =>
+                    !filter || filter(node, index)
+                );
             },
 
             /**
@@ -4351,8 +4472,13 @@
             filterOne(nodes, filter) {
                 filter = this.parseFilter(filter);
 
-                return this.parseNodes(nodes, { node: true, fragment: true, shadow: true })
-                    .find((node, index) => !filter || filter(node, index)) || null;
+                return this.parseNodes(nodes, {
+                    node: true,
+                    fragment: true,
+                    shadow: true
+                }).find((node, index) =>
+                    !filter || filter(node, index)
+                ) || null;
             },
 
             /**
@@ -4361,17 +4487,22 @@
              * @returns {array} The filtered nodes.
              */
             fixed(nodes) {
-                return this.parseNodes(nodes, { node: true })
-                    .filter(node =>
-                        (Core.isElement(node) && this.constructor._css(node, 'position') === 'fixed') ||
-                        this.constructor._parents(
-                            node,
-                            parent =>
-                                Core.isElement(parent) && this.constructor._css(parent, 'position') === 'fixed',
-                            false,
-                            true
-                        ).length
-                    );
+                return this.parseNodes(nodes, {
+                    node: true
+                }).filter(node =>
+                    (
+                        Core.isElement(node) &&
+                        this.constructor._css(node, 'position') === 'fixed'
+                    ) ||
+                    this.constructor._parents(
+                        node,
+                        parent =>
+                            Core.isElement(parent) &&
+                            this.constructor._css(parent, 'position') === 'fixed',
+                        false,
+                        true
+                    ).length
+                );
             },
 
             /**
@@ -4380,8 +4511,13 @@
              * @returns {array} The filtered nodes.
              */
             hidden(nodes) {
-                return this.parseNodes(nodes, { node: true, document: true, window: true })
-                    .filter(node => !this.constructor._isVisible(node));
+                return this.parseNodes(nodes, {
+                    node: true,
+                    document: true,
+                    window: true
+                }).filter(node =>
+                    !this.constructor._isVisible(node)
+                );
             },
 
             /**
@@ -4393,8 +4529,13 @@
             not(nodes, filter) {
                 filter = this.parseFilter(filter);
 
-                return this.parseNodes(nodes, { node: true, fragment: true, shadow: true })
-                    .filter((node, index) => filter && !filter(node, index));
+                return this.parseNodes(nodes, {
+                    node: true,
+                    fragment: true,
+                    shadow: true
+                }).filter((node, index) =>
+                    filter && !filter(node, index)
+                );
             },
 
             /**
@@ -4406,8 +4547,13 @@
             notOne(nodes, filter) {
                 filter = this.parseFilter(filter);
 
-                return this.parseNodes(nodes, { node: true, fragment: true, shadow: true })
-                    .find((node, index) => filter && !filter(node, index)) || null;
+                return this.parseNodes(nodes, {
+                    node: true,
+                    fragment: true,
+                    shadow: true
+                }).find((node, index) =>
+                    filter && !filter(node, index)
+                ) || null;
             },
 
             /**
@@ -4417,12 +4563,21 @@
              * @returns {array} The filtered nodes.
              */
             same(nodes, others) {
-                others = this.parseNodes(others, { node: true, fragment: true, shadow: true });
+                others = this.parseNodes(others, {
+                    node: true,
+                    fragment: true,
+                    shadow: true
+                });
 
-                return this.parseNodes(nodes, { node: true, fragment: true, shadow: true })
-                    .filter(node =>
-                        others.some(other => node.isSameNode(other))
-                    );
+                return this.parseNodes(nodes, {
+                    node: true,
+                    fragment: true,
+                    shadow: true
+                }).filter(node =>
+                    others.some(other =>
+                        node.isSameNode(other)
+                    )
+                );
             },
 
             /**
@@ -4431,8 +4586,13 @@
              * @returns {array} The filtered nodes.
              */
             visible(nodes) {
-                return this.parseNodes(nodes, { node: true, document: true, window: true })
-                    .filter(node => this.constructor._isVisible(node));
+                return this.parseNodes(nodes, {
+                    node: true,
+                    document: true,
+                    window: true
+                }).filter(node =>
+                    this.constructor._isVisible(node)
+                );
             },
 
             /**
@@ -4466,10 +4626,13 @@
              * @returns {array} The filtered nodes.
              */
             withChildren(nodes) {
-                return this.parseNodes(nodes, { fragment: true, shadow: true, document: true })
-                    .filter(node =>
-                        !!node.childElementCount
-                    );
+                return this.parseNodes(nodes, {
+                    fragment: true,
+                    shadow: true,
+                    document: true
+                }).filter(node =>
+                    !!node.childElementCount
+                );
             },
 
             /**
@@ -4520,10 +4683,15 @@
              * @returns {array} The filtered nodes.
              */
             withData(nodes, key) {
-                return this.parseNodes(nodes, { node: true, fragment: true, shadow: true, document: true, window: true })
-                    .filter(node =>
-                        this.constructor._hasData(node, key)
-                    );
+                return this.parseNodes(nodes, {
+                    node: true,
+                    fragment: true,
+                    shadow: true,
+                    document: true,
+                    window: true
+                }).filter(node =>
+                    this.constructor._hasData(node, key)
+                );
             },
 
             /**
@@ -4535,8 +4703,13 @@
             withDescendent(nodes, filter) {
                 filter = this.parseFilterContains(filter);
 
-                return this.parseNodes(nodes, { fragment: true, shadow: true, document: true })
-                    .filter((node, index) => !filter || filter(node, index));
+                return this.parseNodes(nodes, {
+                    fragment: true,
+                    shadow: true,
+                    document: true
+                }).filter((node, index) =>
+                    !filter || filter(node, index)
+                );
             },
 
             /**
@@ -4593,7 +4766,11 @@
                     );
                 }
 
-                nodes = this.parseNodes(nodes, { fragment: true, shadow: true, document: true });
+                nodes = this.parseNodes(nodes, {
+                    fragment: true,
+                    shadow: true,
+                    document: true
+                });
 
                 return this.constructor._findBySelector(selector, nodes);
             },
@@ -4617,7 +4794,11 @@
                     );
                 }
 
-                nodes = this.parseNodes(nodes, { fragment: true, shadow: true, document: true });
+                nodes = this.parseNodes(nodes, {
+                    fragment: true,
+                    shadow: true,
+                    document: true
+                });
 
                 const results = [];
 
@@ -4642,7 +4823,17 @@
              * @returns {array} The matching nodes.
              */
             findById(id, nodes = this._context) {
-                nodes = this.parseNodes(nodes, { fragment: true, shadow: true, document: true });
+                if (Core.isDocument(nodes) || Core.isElement(nodes) || Core.isFragment(nodes) || Core.isShadow(nodes)) {
+                    return Core.wrap(
+                        nodes.querySelectorAll(`#${id}`)
+                    );
+                }
+
+                nodes = this.parseNodes(nodes, {
+                    fragment: true,
+                    shadow: true,
+                    document: true
+                });
 
                 return this.constructor._findBySelector(`#${id}`, nodes);
             },
@@ -4666,7 +4857,11 @@
                     );
                 }
 
-                nodes = this.parseNodes(nodes, { fragment: true, shadow: true, document: true });
+                nodes = this.parseNodes(nodes, {
+                    fragment: true,
+                    shadow: true,
+                    document: true
+                });
 
                 const results = [];
 
@@ -4715,7 +4910,11 @@
                     return nodes.querySelector(selector);
                 }
 
-                nodes = this.parseNodes(nodes, { fragment: true, shadow: true, document: true });
+                nodes = this.parseNodes(nodes, {
+                    fragment: true,
+                    shadow: true,
+                    document: true
+                });
 
                 if (!nodes.length) {
                     return;
@@ -4739,7 +4938,11 @@
                     return nodes.querySelector(`.${className}`);
                 }
 
-                nodes = this.parseNodes(nodes, { fragment: true, shadow: true, document: true });
+                nodes = this.parseNodes(nodes, {
+                    fragment: true,
+                    shadow: true,
+                    document: true
+                });
 
                 if (!nodes.length) {
                     return;
@@ -4768,7 +4971,15 @@
                     return nodes.getElementById(id);
                 }
 
-                nodes = this.parseNodes(nodes, { fragment: true, shadow: true, document: true });
+                if (Core.isElement(nodes) || Core.isFragment(nodes) || Core.isShadow(nodes)) {
+                    return nodes.querySelector(`#${id}`);
+                }
+
+                nodes = this.parseNodes(nodes, {
+                    fragment: true,
+                    shadow: true,
+                    document: true
+                });
 
                 if (!nodes.length) {
                     return;
@@ -4792,7 +5003,11 @@
                     return nodes.querySelector(tagName);
                 }
 
-                nodes = this.parseNodes(nodes, { fragment: true, shadow: true, document: true });
+                nodes = this.parseNodes(nodes, {
+                    fragment: true,
+                    shadow: true,
+                    document: true
+                });
 
                 if (!nodes.length) {
                     return;
@@ -4825,11 +5040,7 @@
              * @returns {array} The matching nodes.
              */
             child(nodes, filter) {
-                return this.children(
-                    nodes,
-                    filter,
-                    true
-                );
+                return this.children(nodes, filter, true);
             },
 
             /**
@@ -4847,7 +5058,11 @@
                     return this.constructor._children(nodes, filter, first, elementsOnly);
                 }
 
-                nodes = this.parseNodes(nodes, { fragment: true, shadow: true, document: true });
+                nodes = this.parseNodes(nodes, {
+                    fragment: true,
+                    shadow: true,
+                    document: true
+                });
 
                 const results = [];
 
@@ -4871,12 +5086,7 @@
              * @returns {array} The matching nodes.
              */
             closest(nodes, filter, limit) {
-                return this.parents(
-                    nodes,
-                    filter,
-                    limit,
-                    true
-                );
+                return this.parents(nodes, filter, limit, true);
             },
 
             /**
@@ -4914,12 +5124,7 @@
              * @returns {array} The matching nodes.
              */
             contents(nodes) {
-                return this.children(
-                    nodes,
-                    false,
-                    false,
-                    false
-                );
+                return this.children(nodes, false, false, false);
             },
 
             /**
@@ -4951,7 +5156,9 @@
                 }
 
                 // DocumentFragment and ShadowRoot nodes can not have siblings
-                nodes = this.parseNodes(nodes, { node: true });
+                nodes = this.parseNodes(nodes, {
+                    node: true
+                });
 
                 const results = [];
 
@@ -4984,7 +5191,9 @@
                 }
 
                 // DocumentFragment and ShadowRoot nodes can not have siblings
-                nodes = this.parseNodes(nodes, { node: true });
+                nodes = this.parseNodes(nodes, {
+                    node: true
+                });
 
                 const results = [];
 
@@ -5026,7 +5235,9 @@
                 }
 
                 // DocumentFragment and ShadowRoot nodes have no parent
-                nodes = this.parseNodes(nodes, { node: true });
+                nodes = this.parseNodes(nodes, {
+                    node: true
+                });
 
                 const results = [];
 
@@ -5059,7 +5270,9 @@
                 }
 
                 // DocumentFragment and ShadowRoot nodes have no parent
-                nodes = this.parseNodes(nodes, { node: true });
+                nodes = this.parseNodes(nodes, {
+                    node: true
+                });
 
                 const results = [];
 
@@ -5089,7 +5302,9 @@
                 }
 
                 // DocumentFragment and ShadowRoot nodes can not have siblings
-                nodes = this.parseNodes(nodes, { node: true });
+                nodes = this.parseNodes(nodes, {
+                    node: true
+                });
 
                 const results = [];
 
@@ -5122,7 +5337,9 @@
                 }
 
                 // DocumentFragment and ShadowRoot nodes can not have siblings
-                nodes = this.parseNodes(nodes, { node: true });
+                nodes = this.parseNodes(nodes, {
+                    node: true
+                });
 
                 const results = [];
 
@@ -5168,7 +5385,9 @@
                 }
 
                 // DocumentFragment and ShadowRoot nodes can not have siblings
-                nodes = this.parseNodes(nodes, { node: true });
+                nodes = this.parseNodes(nodes, {
+                    node: true
+                });
 
                 const results = [];
 
@@ -5180,9 +5399,7 @@
                 }
 
                 return nodes.length > 1 && results.length > 1 ?
-                    this.sort(
-                        Core.unique(results)
-                    ) :
+                    Core.unique(results) :
                     results;
             }
 
@@ -5216,7 +5433,11 @@
                     return node => node.isSameNode(filter);
                 }
 
-                filter = this.parseNodes(filter, { node: true, fragment: true, shadow: true });
+                filter = this.parseNodes(filter, {
+                    node: true,
+                    fragment: true,
+                    shadow: true
+                });
 
                 if (filter.length) {
                     return node => filter.includes(node);
@@ -5237,8 +5458,7 @@
 
                 if (Core.isFunction(filter)) {
                     return node =>
-                        Core.merge(
-                            [],
+                        Core.wrap(
                             node.querySelectorAll('*')
                         ).some(filter);
                 }
@@ -5251,7 +5471,11 @@
                     return node => node.contains(filter);
                 }
 
-                filter = this.parseNodes(filter, { node: true, fragment: true, shadow: true });
+                filter = this.parseNodes(filter, {
+                    node: true,
+                    fragment: true,
+                    shadow: true
+                });
 
                 if (filter.length) {
                     return node => filter.some(other => node.contains(other));
@@ -5373,8 +5597,16 @@
 
                 // Array
                 if (Core.isArray(nodes)) {
-                    const subFilter = this.constructor.parseNodesFactory({ node: true, fragment: true, shadow: true, document: true, window: true });
-                    nodes = nodes.flatMap(node => this.parseNodesDeep(node, context, subFilter, html));
+                    const subFilter = this.constructor.parseNodesFactory({
+                        node: true,
+                        fragment: true,
+                        shadow: true,
+                        document: true,
+                        window: true
+                    });
+                    nodes = nodes.flatMap(node =>
+                        this.parseNodesDeep(node, context, subFilter, html)
+                    );
                 } else {
                     nodes = Core.wrap(nodes);
                 }
@@ -5408,7 +5640,11 @@
             afterSelection(nodes) {
 
                 // ShadowRoot nodes can not be moved
-                nodes = this.parseNodes(nodes, { node: true, fragment: true, html: true }).reverse();
+                nodes = this.parseNodes(nodes, {
+                    node: true,
+                    fragment: true,
+                    html: true
+                }).reverse();
 
                 const selection = window.getSelection();
 
@@ -5433,7 +5669,11 @@
             beforeSelection(nodes) {
 
                 // ShadowRoot nodes can not be moved
-                nodes = this.parseNodes(nodes, { node: true, fragment: true, html: true }).reverse();
+                nodes = this.parseNodes(nodes, {
+                    node: true,
+                    fragment: true,
+                    html: true
+                }).reverse();
 
                 const selection = window.getSelection();
 
@@ -5527,7 +5767,9 @@
              * @param {string|array|Node|HTMLElement|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
              */
             select(nodes) {
-                const node = this.parseNode(nodes, { node: true });
+                const node = this.parseNode(nodes, {
+                    node: true
+                });
 
                 if (node && 'select' in node) {
                     return node.select();
@@ -5584,7 +5826,10 @@
             wrapSelection(nodes) {
 
                 // ShadowRoot nodes can not be cloned
-                nodes = this.parseNodes(nodes, { fragment: true, html: true });
+                nodes = this.parseNodes(nodes, {
+                    fragment: true,
+                    html: true
+                });
 
                 const selection = window.getSelection();
 
@@ -5648,10 +5893,13 @@
              * @returns {Boolean} TRUE if the any of the nodes has child nodes, otherwise FALSE.
              */
             hasChildren(nodes) {
-                return this.parseNodes(nodes, { fragment: true, shadow: true, document: true })
-                    .some(node =>
-                        !!node.childElementCount
-                    );
+                return this.parseNodes(nodes, {
+                    fragment: true,
+                    shadow: true,
+                    document: true
+                }).some(node =>
+                    !!node.childElementCount
+                );
             },
 
             /**
@@ -5702,10 +5950,14 @@
              * @returns {Boolean} TRUE if any of the nodes has custom data, otherwise FALSE.
              */
             hasData(nodes, key) {
-                return this.parseNodes(nodes, { fragment: true, shadow: true, document: true, window: true })
-                    .some(node =>
-                        this.constructor._hasData(node, key)
-                    );
+                return this.parseNodes(nodes, {
+                    fragment: true,
+                    shadow: true,
+                    document: true,
+                    window: true
+                }).some(node =>
+                    this.constructor._hasData(node, key)
+                );
             },
 
             /**
@@ -5717,11 +5969,13 @@
             hasDescendent(nodes, filter) {
                 filter = this.parseFilterContains(filter);
 
-                return this.parseNodes(nodes, { fragment: true, shadow: true, document: true })
-                    .some(node =>
-                        !filter ||
-                        filter(node)
-                    );
+                return this.parseNodes(nodes, {
+                    fragment: true,
+                    shadow: true,
+                    document: true
+                }).some(node =>
+                    !filter || filter(node)
+                );
             },
 
             /**
@@ -5770,11 +6024,13 @@
             is(nodes, filter) {
                 filter = this.parseFilter(filter);
 
-                return this.parseNodes(nodes, { node: true, fragment: true, shadow: true })
-                    .some(node =>
-                        !filter ||
-                        filter(node)
-                    );
+                return this.parseNodes(nodes, {
+                    node: true,
+                    fragment: true,
+                    shadow: true
+                }).some(node =>
+                    !filter || filter(node)
+                );
             },
 
             /**
@@ -5783,8 +6039,11 @@
              * @returns {Boolean} TRUE if any of the nodes is connected to the DOM, otherwise FALSE.
              */
             isConnected(nodes) {
-                return this.parseNodes(nodes, { node: true, fragment: true, shadow: true })
-                    .some(node => node.isConnected);
+                return this.parseNodes(nodes, {
+                    node: true,
+                    fragment: true,
+                    shadow: true
+                }).some(node => node.isConnected);
             },
 
             /**
@@ -5794,12 +6053,21 @@
              * @returns {Boolean} TRUE if any of the nodes is considered equal to any of the other nodes, otherwise FALSE.
              */
             isEqual(nodes, others) {
-                others = this.parseNodes(others, { node: true, fragment: true, shadow: true });
+                others = this.parseNodes(others, {
+                    node: true,
+                    fragment: true,
+                    shadow: true
+                });
 
-                return this.parseNodes(nodes, { node: true, fragment: true, shadow: true })
-                    .some(node =>
-                        others.some(other => node.isEqualNode(other))
-                    );
+                return this.parseNodes(nodes, {
+                    node: true,
+                    fragment: true,
+                    shadow: true
+                }).some(node =>
+                    others.some(other =>
+                        node.isEqualNode(other)
+                    )
+                );
             },
 
             /**
@@ -5808,17 +6076,22 @@
              * @returns {Boolean} TRUE if any of the nodes is "fixed", otherwise FALSE.
              */
             isFixed(nodes) {
-                return this.parseNodes(nodes, { node: true })
-                    .some(node =>
-                        (Core.isElement(node) && this.constructor._css(node, 'position') === 'fixed') ||
-                        this.constructor._parents(
-                            node,
-                            parent =>
-                                Core.isElement(parent) && this.constructor._css(parent, 'position') === 'fixed',
-                            false,
-                            true
-                        ).length
-                    );
+                return this.parseNodes(nodes, {
+                    node: true
+                }).some(node =>
+                    (
+                        Core.isElement(node) &&
+                        this.constructor._css(node, 'position') === 'fixed'
+                    ) ||
+                    this.constructor._parents(
+                        node,
+                        parent =>
+                            Core.isElement(parent) &&
+                            this.constructor._css(parent, 'position') === 'fixed',
+                        false,
+                        true
+                    ).length
+                );
             },
 
             /**
@@ -5827,10 +6100,13 @@
              * @returns {Boolean} TRUE if any of the nodes is hidden, otherwise FALSE.
              */
             isHidden(nodes) {
-                return this.parseNodes(nodes, { node: true, document: true, window: true })
-                    .some(node =>
-                        !this.constructor._isVisible(node)
-                    );
+                return this.parseNodes(nodes, {
+                    node: true,
+                    document: true,
+                    window: true
+                }).some(node =>
+                    !this.constructor._isVisible(node)
+                );
             },
 
             /**
@@ -5840,12 +6116,21 @@
              * @returns {Boolean} TRUE if any of the nodes is considered identical to any of the other nodes, otherwise FALSE.
              */
             isSame(nodes, others) {
-                others = this.parseNodes(others, { node: true, fragment: true, shadow: true });
+                others = this.parseNodes(others, {
+                    node: true,
+                    fragment: true,
+                    shadow: true
+                });
 
-                return this.parseNodes(nodes, { node: true, fragment: true, shadow: true })
-                    .some(node =>
-                        others.some(other => node.isSameNode(other))
-                    );
+                return this.parseNodes(nodes, {
+                    node: true,
+                    fragment: true,
+                    shadow: true
+                }).some(node =>
+                    others.some(other =>
+                        node.isSameNode(other)
+                    )
+                );
             },
 
             /**
@@ -5854,10 +6139,13 @@
              * @returns {Boolean} TRUE if any of the nodes is visible, otherwise FALSE.
              */
             isVisible(nodes) {
-                return this.parseNodes(nodes, { node: true, document: true, window: true })
-                    .some(node =>
-                        this.constructor._isVisible(node)
-                    );
+                return this.parseNodes(nodes, {
+                    node: true,
+                    document: true,
+                    window: true
+                }).some(node =>
+                    this.constructor._isVisible(node)
+                );
             }
 
         });
@@ -5887,7 +6175,9 @@
             forceShow(nodes, callback) {
 
                 // DocumentFragment and ShadowRoot nodes have no parent
-                const node = this.parseNode(nodes, { node: true });
+                const node = this.parseNode(nodes, {
+                    node: true
+                });
 
                 if (!node) {
                     return;
@@ -5902,7 +6192,9 @@
              * @returns {number} The index.
              */
             index(nodes) {
-                const node = this.parseNode(nodes, { node: true });
+                const node = this.parseNode(nodes, {
+                    node: true
+                });
 
                 if (!node) {
                     return;
@@ -5922,10 +6214,13 @@
             indexOf(nodes, filter) {
                 filter = this.parseFilter(filter);
 
-                return this.parseNodes(nodes, { node: true, fragment: true, shadow: true })
-                    .findIndex(node =>
-                        !filter || filter(node)
-                    );
+                return this.parseNodes(nodes, {
+                    node: true,
+                    fragment: true,
+                    shadow: true
+                }).findIndex(node =>
+                    !filter || filter(node)
+                );
             },
 
             /**
@@ -5933,7 +6228,12 @@
              * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|Document|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
              */
             normalize(nodes) {
-                nodes = this.parseNodes(nodes, { node: true, fragment: true, shadow: true, document: true });
+                nodes = this.parseNodes(nodes, {
+                    node: true,
+                    fragment: true,
+                    shadow: true,
+                    document: true
+                });
 
                 for (const node of nodes) {
                     node.normalize();
@@ -5975,64 +6275,65 @@
              * @returns {array} The serialized array.
              */
             serializeArray(nodes) {
-                return this.parseNodes(nodes, { fragment: true, shadow: true })
-                    .reduce(
-                        (values, node) => {
-                            if (
-                                (
-                                    Core.isElement(node) &&
-                                    node.matches('form')
-                                ) ||
-                                Core.isFragment(node) ||
-                                Core.isShadow(node)
-                            ) {
-                                return values.concat(
-                                    this.serializeArray(
-                                        node.querySelectorAll(
-                                            'input, select, textarea'
-                                        )
+                return this.parseNodes(nodes, {
+                    fragment: true,
+                    shadow: true
+                }).reduce(
+                    (values, node) => {
+                        if (
+                            (
+                                Core.isElement(node) &&
+                                node.matches('form')
+                            ) ||
+                            Core.isFragment(node) ||
+                            Core.isShadow(node)
+                        ) {
+                            return values.concat(
+                                this.serializeArray(
+                                    node.querySelectorAll(
+                                        'input, select, textarea'
                                     )
-                                );
-                            }
+                                )
+                            );
+                        }
 
-                            if (
-                                Core.isElement(node) &&
-                                node.matches('[disabled], input[type=submit], input[type=reset], input[type=file], input[type=radio]:not(:checked), input[type=checkbox]:not(:checked)')
-                            ) {
-                                return values;
-                            }
+                        if (
+                            Core.isElement(node) &&
+                            node.matches('[disabled], input[type=submit], input[type=reset], input[type=file], input[type=radio]:not(:checked), input[type=checkbox]:not(:checked)')
+                        ) {
+                            return values;
+                        }
 
-                            const name = node.getAttribute('name');
-                            if (!name) {
-                                return values;
-                            }
+                        const name = node.getAttribute('name');
+                        if (!name) {
+                            return values;
+                        }
 
-                            if (
-                                Core.isElement(node) &&
-                                node.matches('select[multiple]')
-                            ) {
-                                const selected = Core.wrap(node.selectedOptions);
-                                for (const option of selected) {
-                                    values.push(
-                                        {
-                                            name,
-                                            value: option.value || ''
-                                        }
-                                    );
-                                }
-                            } else {
+                        if (
+                            Core.isElement(node) &&
+                            node.matches('select[multiple]')
+                        ) {
+                            for (const option of node.selectedOptions) {
                                 values.push(
                                     {
                                         name,
-                                        value: node.value || ''
+                                        value: option.value || ''
                                     }
                                 );
                             }
+                        } else {
+                            values.push(
+                                {
+                                    name,
+                                    value: node.value || ''
+                                }
+                            );
+                        }
 
-                            return values;
-                        },
-                        []
-                    );
+                        return values;
+                    },
+                    []
+                );
             },
 
             /**
@@ -6041,7 +6342,13 @@
              * @returns {array} The sorted array of nodes.
              */
             sort(nodes) {
-                nodes = this.parseNodes(nodes, { node: true, fragment: true, shadow: true, document: true, window: true });
+                nodes = this.parseNodes(nodes, {
+                    node: true,
+                    fragment: true,
+                    shadow: true,
+                    document: true,
+                    window: true
+                });
 
                 return this.constructor._sort(nodes);
             },
@@ -6522,26 +6829,23 @@
              * @returns {object} An object with the X and Y co-ordinates.
              */
             _position(node, offset) {
-                return this._forceShow(
-                    node,
-                    node => {
-                        const result = {
-                            x: node.offsetLeft,
-                            y: node.offsetTop
-                        };
+                return this._forceShow(node, node => {
+                    const result = {
+                        x: node.offsetLeft,
+                        y: node.offsetTop
+                    };
 
-                        if (offset) {
-                            let offsetParent = node;
+                    if (offset) {
+                        let offsetParent = node;
 
-                            while (offsetParent = offsetParent.offsetParent) {
-                                result.x += offsetParent.offsetLeft;
-                                result.y += offsetParent.offsetTop;
-                            }
+                        while (offsetParent = offsetParent.offsetParent) {
+                            result.x += offsetParent.offsetLeft;
+                            result.y += offsetParent.offsetTop;
                         }
-
-                        return result;
                     }
-                );
+
+                    return result;
+                });
             },
 
             /**
@@ -6551,19 +6855,16 @@
              * @returns {DOMRect} The computed bounding rectangle.
              */
             _rect(node, offset) {
-                return this._forceShow(
-                    node,
-                    node => {
-                        const result = node.getBoundingClientRect();
+                return this._forceShow(node, node => {
+                    const result = node.getBoundingClientRect();
 
-                        if (offset) {
-                            result.x += window.scrollX;
-                            result.y += window.scrollY;
-                        }
-
-                        return result;
+                    if (offset) {
+                        result.x += window.scrollX;
+                        result.y += window.scrollY;
                     }
-                );
+
+                    return result;
+                });
             }
 
         });
@@ -6581,33 +6882,30 @@
              * @returns {number} The height.
              */
             _height(node, innerOuter = 1) {
-                return this._forceShow(
-                    node,
-                    node => {
-                        if (Core.isDocument(node)) {
-                            node = node.documentElement;
-                        }
-
-                        let result = node.clientHeight;
-
-                        if (innerOuter === this.INNER) {
-                            result -= parseInt(this._css(node, 'padding-top'))
-                                + parseInt(this._css(node, 'padding-bottom'));
-                        }
-
-                        if (innerOuter >= this.OUTER) {
-                            result += parseInt(this._css(node, 'border-top-width'))
-                                + parseInt(this._css(node, 'border-bottom-width'));
-                        }
-
-                        if (innerOuter === this.OUTER_MARGIN) {
-                            result += parseInt(this._css(node, 'margin-top'))
-                                + parseInt(this._css(node, 'margin-bottom'));
-                        }
-
-                        return result;
+                return this._forceShow(node, node => {
+                    if (Core.isDocument(node)) {
+                        node = node.documentElement;
                     }
-                );
+
+                    let result = node.clientHeight;
+
+                    if (innerOuter === this.INNER) {
+                        result -= parseInt(this._css(node, 'padding-top'))
+                            + parseInt(this._css(node, 'padding-bottom'));
+                    }
+
+                    if (innerOuter >= this.OUTER) {
+                        result += parseInt(this._css(node, 'border-top-width'))
+                            + parseInt(this._css(node, 'border-bottom-width'));
+                    }
+
+                    if (innerOuter === this.OUTER_MARGIN) {
+                        result += parseInt(this._css(node, 'margin-top'))
+                            + parseInt(this._css(node, 'margin-bottom'));
+                    }
+
+                    return result;
+                });
             },
 
             /**
@@ -6616,16 +6914,13 @@
              * @returns {number} The scroll height.
              */
             _scrollHeight(node) {
-                return this._forceShow(
-                    node,
-                    node => {
-                        if (Core.isDocument(node)) {
-                            node = node.documentElement;
-                        }
-
-                        return node.scrollHeight;
+                return this._forceShow(node, node => {
+                    if (Core.isDocument(node)) {
+                        node = node.documentElement;
                     }
-                );
+
+                    return node.scrollHeight;
+                });
             },
 
             /**
@@ -6634,16 +6929,13 @@
              * @returns {number} The scroll width.
              */
             _scrollWidth(node) {
-                return this._forceShow(
-                    node,
-                    node => {
-                        if (Core.isDocument(node)) {
-                            node = node.documentElement;
-                        }
-
-                        return node.scrollWidth;
+                return this._forceShow(node, node => {
+                    if (Core.isDocument(node)) {
+                        node = node.documentElement;
                     }
-                );
+
+                    return node.scrollWidth;
+                });
             },
 
             /**
@@ -6653,33 +6945,30 @@
              * @returns {number} The width.
              */
             _width(node, innerOuter = 1) {
-                return this._forceShow(
-                    node,
-                    node => {
-                        if (Core.isDocument(node)) {
-                            node = node.documentElement;
-                        }
-
-                        let result = node.clientWidth;
-
-                        if (innerOuter === this.INNER) {
-                            result -= parseInt(this._css(node, 'padding-left'))
-                                + parseInt(this._css(node, 'padding-right'));
-                        }
-
-                        if (innerOuter >= this.OUTER) {
-                            result += parseInt(this._css(node, 'border-left-width'))
-                                + parseInt(this._css(node, 'border-right-width'));
-                        }
-
-                        if (innerOuter === this.OUTER_MARGIN) {
-                            result += parseInt(this._css(node, 'margin-left'))
-                                + parseInt(this._css(node, 'margin-right'));
-                        }
-
-                        return result;
+                return this._forceShow(node, node => {
+                    if (Core.isDocument(node)) {
+                        node = node.documentElement;
                     }
-                );
+
+                    let result = node.clientWidth;
+
+                    if (innerOuter === this.INNER) {
+                        result -= parseInt(this._css(node, 'padding-left'))
+                            + parseInt(this._css(node, 'padding-right'));
+                    }
+
+                    if (innerOuter >= this.OUTER) {
+                        result += parseInt(this._css(node, 'border-left-width'))
+                            + parseInt(this._css(node, 'border-right-width'));
+                    }
+
+                    if (innerOuter === this.OUTER_MARGIN) {
+                        result += parseInt(this._css(node, 'margin-left'))
+                            + parseInt(this._css(node, 'margin-right'));
+                    }
+
+                    return result;
+                });
             }
 
         });
@@ -6888,9 +7177,7 @@
              */
             _selfDestructFactory(node, events, delegate, callback) {
                 return e => {
-                    delegate ?
-                        this._removeEvent(node, events, callback, delegate) :
-                        this._removeEvent(node, events, callback);
+                    this._removeEvent(node, events, callback, delegate);
                     return callback(e);
                 };
             }
@@ -7187,8 +7474,12 @@
              */
             _prefixSelectors(selectors, prefix) {
                 return selectors.split(this._splitRegExp)
-                    .filter(select => !!select)
-                    .map(select => `${prefix} ${select}`)
+                    .filter(selector => !!selector)
+                    .map(selector =>
+                        this._customSelectors.includes(selector.trim().charAt(0)) ?
+                            `${prefix} ${selector}` :
+                            selector
+                    )
                     .join(', ');
             }
 
@@ -7260,23 +7551,23 @@
              * @param {Boolean} [options.animations] Whether to also clone animations.
              */
             _deepClone(node, clone, options) {
-                const children = Core.wrap(node.childNodes);
-                const cloneChildren = Core.wrap(clone.childNodes);
+                for (let i = 0; i < node.childNodes.length; i++) {
+                    const child = node.childNodes.item(i);
+                    const childClone = clone.childNodes.item(i);
 
-                for (let i = 0; i < children.length; i++) {
                     if (options.events) {
-                        this._cloneEvents(children[i], cloneChildren[i]);
+                        this._cloneEvents(child, childClone);
                     }
 
                     if (options.data) {
-                        this._cloneData(children[i], cloneChildren[i]);
+                        this._cloneData(child, childClone);
                     }
 
                     if (options.animations) {
-                        this._cloneAnimations(node, clone);
+                        this._cloneAnimations(child, childClone);
                     }
 
-                    this._deepClone(children[i], cloneChildren[i], options);
+                    this._deepClone(child, childClone, options);
                 }
             },
 
@@ -7295,14 +7586,12 @@
 
                 // Remove ShadowRoot
                 if (node.shadowRoot) {
-                    const shadow = node.shadowRoot;
-                    this._remove(shadow);
+                    this._remove(node.shadowRoot);
                 }
 
                 // Remove DocumentFragment
                 if (node.content) {
-                    const fragment = node.content;
-                    this._remove(fragment);
+                    this._remove(node.content);
                 }
             },
 
@@ -7554,11 +7843,9 @@
              * @returns {array} The matching nodes.
              */
             _children(node, filter, first = false, elementsOnly = false) {
-                const children = Core.wrap(
-                    elementsOnly ?
-                        node.children :
-                        node.childNodes
-                );
+                const children = elementsOnly ?
+                    node.children :
+                    node.childNodes;
                 const results = [];
 
                 let child;
@@ -7912,7 +8199,8 @@
                     this._parents(
                         node,
                         parent =>
-                            Core.isElement(parent) && this._css(parent, 'display') === 'none'
+                            Core.isElement(parent) &&
+                            this._css(parent, 'display') === 'none'
                     )
                 );
 
@@ -7920,12 +8208,7 @@
 
                 for (const element of elements) {
                     hidden.set(element, element.getAttribute('style'));
-
-                    element.style.setProperty(
-                        'display',
-                        'initial',
-                        'important'
-                    );
+                    element.style.setProperty('display', 'initial', 'important');
                 }
 
                 const result = callback(node);
@@ -8135,6 +8418,9 @@
 
             // Complex selector RegExp
             _complexRegExp: /(?:^\s*[\>\+\~]|\,(?=(?:(?:[^"']*["']){2})*[^"']*$)\s*[\>\+\~])/,
+
+            // Custom selectors
+            _customSelectors: ['>', '+', '~'],
 
             // Fast selector RegExp
             _fastRegExp: /^([\#\.]?)([\w\-]+)$/,

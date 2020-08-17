@@ -16,16 +16,10 @@ const testSqueezeIn = async (selector, style = 'height', translate = false, tran
     const data = await getAnimationStyle(selector, style, translateStyle);
 
     const amount = squeezeIn(data.progress);
-    assert.equal(
-        data[style],
-        `${amount}px`
-    );
+    assert.equal(data[style], `${amount}px`);
 
     if (translate === false) {
-        assert.equal(
-            data[translateStyle],
-            ''
-        );
+        assert.equal(data[translateStyle], '');
     } else {
         const translateAmount = squeezeInOffset(amount);
         assert.equal(

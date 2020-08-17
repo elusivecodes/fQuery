@@ -16,12 +16,9 @@ describe('#clearQueue', function() {
 
     it('clears the queue for each node', async function() {
         await exec(_ => {
-            dom.queue(
-                '.queue',
-                node => {
-                    node.dataset.test = 'Test'
-                }
-            );
+            dom.queue('.queue', node => {
+                node.dataset.test = 'Test'
+            });
             dom.clearQueue('.queue');
         }).then(waitFor(100)).then(async _ => {
             assert.equal(
@@ -36,20 +33,14 @@ describe('#clearQueue', function() {
 
     it('clears future queued items', async function() {
         await exec(_ => {
-            dom.queue(
-                '.queue',
-                _ => {
-                    return new Promise(resolve =>
-                        setTimeout(resolve, 100)
-                    );
-                }
+            dom.queue('.queue', _ =>
+                new Promise(resolve =>
+                    setTimeout(resolve, 100)
+                )
             );
-            dom.queue(
-                '.queue',
-                node => {
-                    node.dataset.test = 'Test'
-                }
-            );
+            dom.queue('.queue', node => {
+                node.dataset.test = 'Test'
+            });
         }).then(waitFor(50)).then(async _ => {
             await exec(_ => {
                 dom.clearQueue('.queue');
@@ -74,12 +65,9 @@ describe('#clearQueue', function() {
 
     it('works with HTMLElement nodes', async function() {
         await exec(_ => {
-            dom.queue(
-                '.queue',
-                node => {
-                    node.dataset.test = 'Test'
-                }
-            );
+            dom.queue('.queue', node => {
+                node.dataset.test = 'Test'
+            });
             dom.clearQueue(
                 document.getElementById('test2')
             );
@@ -96,12 +84,9 @@ describe('#clearQueue', function() {
 
     it('works with NodeList nodes', async function() {
         await exec(_ => {
-            dom.queue(
-                '.queue',
-                node => {
-                    node.dataset.test = 'Test'
-                }
-            );
+            dom.queue('.queue', node => {
+                node.dataset.test = 'Test'
+            });
             dom.clearQueue(
                 document.querySelectorAll('.queue')
             );
@@ -118,12 +103,9 @@ describe('#clearQueue', function() {
 
     it('works with HTMLCollection nodes', async function() {
         await exec(_ => {
-            dom.queue(
-                '.queue',
-                node => {
-                    node.dataset.test = 'Test'
-                }
-            );
+            dom.queue('.queue', node => {
+                node.dataset.test = 'Test'
+            });
             dom.clearQueue(
                 document.body.children
             );
@@ -140,12 +122,9 @@ describe('#clearQueue', function() {
 
     it('works with array nodes', async function() {
         await exec(_ => {
-            dom.queue(
-                '.queue',
-                node => {
-                    node.dataset.test = 'Test'
-                }
-            );
+            dom.queue('.queue', node => {
+                node.dataset.test = 'Test'
+            });
             dom.clearQueue([
                 document.getElementById('test2'),
                 document.getElementById('test4')

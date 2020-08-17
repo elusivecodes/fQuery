@@ -16,7 +16,9 @@ describe('#focus', function() {
             await exec(_ => {
                 let result;
                 const element = document.getElementById('test1');
-                element.addEventListener('focus', _ => { result = true; });
+                element.addEventListener('focus', _ => {
+                    result = true;
+                });
                 dom.focus('input');
                 return result;
             }),
@@ -29,7 +31,9 @@ describe('#focus', function() {
             await exec(_ => {
                 let result;
                 const element = document.getElementById('test1');
-                element.addEventListener('focus', _ => { result = true; });
+                element.addEventListener('focus', _ => {
+                    result = true;
+                });
                 dom.focus(
                     document.getElementById('test1')
                 );
@@ -44,7 +48,9 @@ describe('#focus', function() {
             await exec(_ => {
                 let result;
                 const element = document.getElementById('test1');
-                element.addEventListener('focus', _ => { result = true; });
+                element.addEventListener('focus', _ => {
+                    result = true;
+                });
                 dom.focus(
                     document.querySelectorAll('input')
                 );
@@ -59,7 +65,9 @@ describe('#focus', function() {
             await exec(_ => {
                 let result;
                 const element = document.getElementById('test1');
-                element.addEventListener('focus', _ => { result = true; });
+                element.addEventListener('focus', _ => {
+                    result = true;
+                });
                 dom.focus(
                     document.body.children
                 );
@@ -74,7 +82,9 @@ describe('#focus', function() {
             await exec(_ => {
                 let result;
                 const element = document.getElementById('test1');
-                element.addEventListener('focus', _ => { result = true; });
+                element.addEventListener('focus', _ => {
+                    result = true;
+                });
                 dom.focus([
                     document.getElementById('test1'),
                     document.getElementById('test2')

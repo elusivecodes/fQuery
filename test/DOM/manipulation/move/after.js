@@ -47,11 +47,9 @@ describe('#after', function() {
         assert.equal(
             await exec(_ => {
                 let result = 0;
-                dom.addEvent(
-                    'a',
-                    'click',
-                    _ => { result++; }
-                );
+                dom.addEvent('a', 'click', _ => {
+                    result++;
+                });
                 dom.after('div', 'a');
                 dom.triggerEvent('a', 'click');
                 return result;

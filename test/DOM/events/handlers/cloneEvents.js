@@ -14,20 +14,12 @@ describe('#cloneEvents', function() {
                 '<div id="test3" data-toggle="noEvent"></div>' +
                 '<div id="test4" data-toggle="noEvent"></div>' +
                 '</div>';
-            dom.addEvent(
-                '#test1',
-                'click',
-                e => {
-                    e.currentTarget.dataset.test1 = 'Test 1';
-                }
-            );
-            dom.addEvent(
-                '#test2',
-                'click',
-                e => {
-                    e.currentTarget.dataset.test2 = 'Test 2';
-                }
-            );
+            dom.addEvent('#test1', 'click', e => {
+                e.currentTarget.dataset.test1 = 'Test 1';
+            });
+            dom.addEvent('#test2', 'click', e => {
+                e.currentTarget.dataset.test2 = 'Test 2';
+            });
         });
     });
 
@@ -133,11 +125,9 @@ describe('#cloneEvents', function() {
                 const event = new Event('click');
                 const div = document.createElement('div');
                 const shadow = div.attachShadow({ mode: 'open' });
-                dom.addEvent(
-                    shadow,
-                    'click',
-                    _ => { result++; }
-                );
+                dom.addEvent(shadow, 'click', _ => {
+                    result++;
+                });
                 dom.cloneEvents(shadow, '[data-toggle="noEvent"]');
                 shadow.dispatchEvent(event);
                 document.getElementById('test3').dispatchEvent(event);
@@ -153,11 +143,9 @@ describe('#cloneEvents', function() {
             await exec(_ => {
                 let result = 0;
                 const event = new Event('click');
-                dom.addEvent(
-                    document,
-                    'click',
-                    _ => { result++; }
-                );
+                dom.addEvent(document, 'click', _ => {
+                    result++;
+                });
                 dom.cloneEvents(document, '[data-toggle="noEvent"]');
                 document.dispatchEvent(event);
                 document.getElementById('test3').dispatchEvent(event);
@@ -173,11 +161,9 @@ describe('#cloneEvents', function() {
             await exec(_ => {
                 let result = 0;
                 const event = new Event('click');
-                dom.addEvent(
-                    window,
-                    'click',
-                    _ => { result++; }
-                );
+                dom.addEvent(window, 'click', _ => {
+                    result++;
+                });
                 dom.cloneEvents(window, '[data-toggle="noEvent"]');
                 window.dispatchEvent(event);
                 document.getElementById('test3').dispatchEvent(event);
@@ -296,11 +282,9 @@ describe('#cloneEvents', function() {
                 const a = document.createElement('a');
                 const div = document.createElement('div');
                 const shadow = div.attachShadow({ mode: 'open' });
-                dom.addEvent(
-                    a,
-                    'click',
-                    _ => { result++; }
-                );
+                dom.addEvent(a, 'click', _ => {
+                    result++;
+                });
                 dom.cloneEvents(a, shadow);
                 a.dispatchEvent(event);
                 shadow.dispatchEvent(event);
@@ -316,11 +300,9 @@ describe('#cloneEvents', function() {
                 let result = 0;
                 const event = new Event('click');
                 const a = document.createElement('a');
-                dom.addEvent(
-                    a,
-                    'click',
-                    _ => { result++; }
-                );
+                dom.addEvent(a, 'click', _ => {
+                    result++;
+                });
                 dom.cloneEvents(a, document);
                 a.dispatchEvent(event);
                 document.dispatchEvent(event);
@@ -336,11 +318,9 @@ describe('#cloneEvents', function() {
                 let result = 0;
                 const event = new Event('click');
                 const a = document.createElement('a');
-                dom.addEvent(
-                    a,
-                    'click',
-                    _ => { result++; }
-                );
+                dom.addEvent(a, 'click', _ => {
+                    result++;
+                });
                 dom.cloneEvents(a, window);
                 a.dispatchEvent(event);
                 window.dispatchEvent(event);

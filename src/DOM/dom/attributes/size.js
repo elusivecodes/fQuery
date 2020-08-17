@@ -11,7 +11,10 @@ Object.assign(DOM.prototype, {
      * @returns {number} The height.
      */
     height(nodes, innerOuter) {
-        const node = this.parseNode(nodes, { document: true, window: true });
+        const node = this.parseNode(nodes, {
+            document: true,
+            window: true
+        });
 
         if (!node) {
             return;
@@ -36,7 +39,9 @@ Object.assign(DOM.prototype, {
      * @returns {number} The scroll height.
      */
     scrollHeight(nodes) {
-        const node = this.parseNode(nodes, { document: true });
+        const node = this.parseNode(nodes, {
+            document: true
+        });
 
         if (!node) {
             return;
@@ -51,7 +56,9 @@ Object.assign(DOM.prototype, {
      * @returns {number} The scroll width.
      */
     scrollWidth(nodes) {
-        const node = this.parseNode(nodes, { document: true });
+        const node = this.parseNode(nodes, {
+            document: true
+        });
 
         if (!node) {
             return;
@@ -67,7 +74,10 @@ Object.assign(DOM.prototype, {
      * @returns {number} The width.
      */
     width(nodes, innerOuter) {
-        const node = this.parseNode(nodes, { document: true, window: true });
+        const node = this.parseNode(nodes, {
+            document: true,
+            window: true
+        });
 
         if (!node) {
             return;

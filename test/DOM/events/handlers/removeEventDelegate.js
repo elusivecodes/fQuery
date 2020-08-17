@@ -21,8 +21,12 @@ describe('#removeEventDelegate', function() {
         assert.equal(
             await exec(_ => {
                 let result = 0;
-                const callback1 = _ => { result++; };
-                const callback2 = _ => { result++; };
+                const callback1 = _ => {
+                    result++;
+                };
+                const callback2 = _ => {
+                    result++;
+                };
                 const event1 = new Event('click', {
                     bubbles: true
                 });
@@ -55,8 +59,12 @@ describe('#removeEventDelegate', function() {
         assert.equal(
             await exec(_ => {
                 let result = 0;
-                const callback1 = _ => { result++; };
-                const callback2 = _ => { result++; };
+                const callback1 = _ => {
+                    result++;
+                };
+                const callback2 = _ => {
+                    result++;
+                };
                 const event1 = new Event('click', {
                     bubbles: true
                 });
@@ -89,8 +97,12 @@ describe('#removeEventDelegate', function() {
         assert.equal(
             await exec(_ => {
                 let result = 0;
-                const callback1 = _ => { result++; };
-                const callback2 = _ => { result++; };
+                const callback1 = _ => {
+                    result++;
+                };
+                const callback2 = _ => {
+                    result++;
+                };
                 const event1 = new Event('click', {
                     bubbles: true
                 });
@@ -123,8 +135,12 @@ describe('#removeEventDelegate', function() {
         assert.equal(
             await exec(_ => {
                 let result = 0;
-                const callback1 = _ => { result++; };
-                const callback2 = _ => { result++; };
+                const callback1 = _ => {
+                    result++;
+                };
+                const callback2 = _ => {
+                    result++;
+                };
                 const event = new Event('click', {
                     bubbles: true
                 });
@@ -149,7 +165,9 @@ describe('#removeEventDelegate', function() {
         assert.equal(
             await exec(_ => {
                 let result = 0;
-                const callback = _ => { result++; };
+                const callback = _ => {
+                    result++;
+                };
                 const event = new Event('click', {
                     bubbles: true
                 });
@@ -173,7 +191,9 @@ describe('#removeEventDelegate', function() {
         assert.equal(
             await exec(_ => {
                 let result = 0;
-                const callback = _ => { result++; };
+                const callback = _ => {
+                    result++;
+                };
                 const event1 = new Event('click', {
                     bubbles: true
                 });
@@ -205,7 +225,9 @@ describe('#removeEventDelegate', function() {
         assert.equal(
             await exec(_ => {
                 let result = 0;
-                const callback = _ => { result++; };
+                const callback = _ => {
+                    result++;
+                };
                 const event = new Event('click', {
                     bubbles: true
                 });
@@ -229,7 +251,9 @@ describe('#removeEventDelegate', function() {
         assert.equal(
             await exec(_ => {
                 let result = 0;
-                const callback = _ => { result++; };
+                const callback = _ => {
+                    result++;
+                };
                 const event1 = new Event('click', {
                     bubbles: true
                 });
@@ -261,7 +285,9 @@ describe('#removeEventDelegate', function() {
         assert.equal(
             await exec(_ => {
                 let result = 0;
-                const callback = _ => { result++; };
+                const callback = _ => {
+                    result++;
+                };
                 const event = new Event('click', {
                     bubbles: true
                 });
@@ -285,7 +311,9 @@ describe('#removeEventDelegate', function() {
         assert.equal(
             await exec(_ => {
                 let result = 0;
-                const callback = _ => { result++; };
+                const callback = _ => {
+                    result++;
+                };
                 const event1 = new Event('click', {
                     bubbles: true
                 });
@@ -317,7 +345,9 @@ describe('#removeEventDelegate', function() {
         assert.equal(
             await exec(_ => {
                 let result = 0;
-                const callback = _ => { result++; };
+                const callback = _ => {
+                    result++;
+                };
                 const event = new Event('click', {
                     bubbles: true
                 });
@@ -341,7 +371,9 @@ describe('#removeEventDelegate', function() {
         assert.equal(
             await exec(_ => {
                 let result = 0;
-                const callback = _ => { result++; };
+                const callback = _ => {
+                    result++;
+                };
                 const event1 = new Event('click', {
                     bubbles: true
                 });
@@ -373,7 +405,9 @@ describe('#removeEventDelegate', function() {
         assert.equal(
             await exec(_ => {
                 let result = 0;
-                const callback = _ => { result++; };
+                const callback = _ => {
+                    result++;
+                };
                 const event = new Event('click', {
                     bubbles: true
                 });
@@ -397,7 +431,9 @@ describe('#removeEventDelegate', function() {
         assert.equal(
             await exec(_ => {
                 let result = 0;
-                const callback = _ => { result++; };
+                const callback = _ => {
+                    result++;
+                };
                 const event1 = new Event('click', {
                     bubbles: true
                 });
@@ -429,8 +465,12 @@ describe('#removeEventDelegate', function() {
         assert.equal(
             await exec(_ => {
                 let result = 0;
-                const callback1 = _ => { result++; };
-                const callback2 = _ => { result++; };
+                const callback1 = _ => {
+                    result++;
+                };
+                const callback2 = _ => {
+                    result++;
+                };
                 const event = new Event('click', {
                     bubbles: true
                 });
@@ -455,7 +495,9 @@ describe('#removeEventDelegate', function() {
         assert.equal(
             await exec(_ => {
                 let result = 0;
-                const callback = _ => { result++; };
+                const callback = _ => {
+                    result++;
+                };
                 const event = new Event('click', {
                     bubbles: true
                 });
@@ -479,7 +521,9 @@ describe('#removeEventDelegate', function() {
         assert.equal(
             await exec(_ => {
                 let result = 0;
-                const callback = _ => { result++; };
+                const callback = _ => {
+                    result++;
+                };
                 const event1 = new Event('click', {
                     bubbles: true
                 });
@@ -511,7 +555,9 @@ describe('#removeEventDelegate', function() {
         assert.equal(
             await exec(_ => {
                 let result = 0;
-                const callback = _ => { result++; };
+                const callback = _ => {
+                    result++;
+                };
                 const event = new Event('click', {
                     bubbles: true
                 });
@@ -535,7 +581,9 @@ describe('#removeEventDelegate', function() {
         assert.equal(
             await exec(_ => {
                 let result = 0;
-                const callback = _ => { result++; };
+                const callback = _ => {
+                    result++;
+                };
                 const event1 = new Event('click', {
                     bubbles: true
                 });
@@ -567,8 +615,12 @@ describe('#removeEventDelegate', function() {
         assert.equal(
             await exec(_ => {
                 let result = 0;
-                const callback1 = _ => { result++; };
-                const callback2 = _ => { result++; };
+                const callback1 = _ => {
+                    result++;
+                };
+                const callback2 = _ => {
+                    result++;
+                };
                 const event = new Event('click', {
                     bubbles: true
                 });
@@ -598,8 +650,12 @@ describe('#removeEventDelegate', function() {
         assert.equal(
             await exec(_ => {
                 let result = 0;
-                const callback1 = _ => { result++; };
-                const callback2 = _ => { result++; };
+                const callback1 = _ => {
+                    result++;
+                };
+                const callback2 = _ => {
+                    result++;
+                };
                 const event = new Event('click', {
                     bubbles: true
                 });
@@ -629,8 +685,12 @@ describe('#removeEventDelegate', function() {
         assert.equal(
             await exec(_ => {
                 let result = 0;
-                const callback1 = _ => { result++; };
-                const callback2 = _ => { result++; };
+                const callback1 = _ => {
+                    result++;
+                };
+                const callback2 = _ => {
+                    result++;
+                };
                 const event = new Event('click', {
                     bubbles: true
                 });
@@ -639,12 +699,7 @@ describe('#removeEventDelegate', function() {
                 const element3 = document.getElementById('test3');
                 const element4 = document.getElementById('test4');
                 dom.addEventDelegate('div', 'click', 'a', callback1);
-                dom.addEventDelegate(
-                    'div',
-                    'click',
-                    'a',
-                    callback2
-                );
+                dom.addEventDelegate('div', 'click', 'a', callback2);
                 dom.removeEventDelegate(
                     document.body.children,
                     'click',
@@ -665,8 +720,12 @@ describe('#removeEventDelegate', function() {
         assert.equal(
             await exec(_ => {
                 let result = 0;
-                const callback1 = _ => { result++; };
-                const callback2 = _ => { result++; };
+                const callback1 = _ => {
+                    result++;
+                };
+                const callback2 = _ => {
+                    result++;
+                };
                 const event = new Event('click', {
                     bubbles: true
                 });
@@ -688,8 +747,12 @@ describe('#removeEventDelegate', function() {
         assert.equal(
             await exec(_ => {
                 let result = 0;
-                const callback1 = _ => { result++; };
-                const callback2 = _ => { result++; };
+                const callback1 = _ => {
+                    result++;
+                };
+                const callback2 = _ => {
+                    result++;
+                };
                 const event = new Event('click', {
                     bubbles: true
                 });
@@ -714,8 +777,12 @@ describe('#removeEventDelegate', function() {
         assert.equal(
             await exec(_ => {
                 let result = 0;
-                const callback1 = _ => { result++; };
-                const callback2 = _ => { result++; };
+                const callback1 = _ => {
+                    result++;
+                };
+                const callback2 = _ => {
+                    result++;
+                };
                 const event = new Event('click', {
                     bubbles: true
                 });

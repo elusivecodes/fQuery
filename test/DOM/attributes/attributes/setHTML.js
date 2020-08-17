@@ -30,11 +30,9 @@ describe('#setHTML', function() {
             await exec(_ => {
                 let result = 0;
                 const node = document.getElementById('inner');
-                dom.addEvent(
-                    node,
-                    'click',
-                    _ => { result++; }
-                );
+                dom.addEvent(node, 'click', _ => {
+                    result++;
+                });
                 dom.setHTML('div', '<span>Test 2</span>');
                 document.body.appendChild(node);
                 dom.triggerEvent(node, 'click');
@@ -79,20 +77,14 @@ describe('#setHTML', function() {
 
     it('removes queue recursively', async function() {
         await exec(_ => {
-            dom.queue(
-                '#inner',
-                _ => {
-                    return new Promise(resolve =>
-                        setTimeout(resolve, 100)
-                    );
-                }
+            dom.queue('#inner', _ =>
+                new Promise(resolve =>
+                    setTimeout(resolve, 100)
+                )
             );
-            dom.queue(
-                '#inner',
-                node => {
-                    node.dataset.test = 'Test'
-                }
-            );
+            dom.queue('#inner', node => {
+                node.dataset.test = 'Test'
+            });
         }).then(waitFor(50)).then(async _ => {
             await exec(_ => {
                 const node = document.getElementById('inner');
@@ -113,11 +105,9 @@ describe('#setHTML', function() {
         assert.equal(
             await exec(_ => {
                 let result = 0;
-                dom.addEvent(
-                    '#inner',
-                    'remove',
-                    _ => { result++; }
-                );
+                dom.addEvent('#inner', 'remove', _ => {
+                    result++;
+                });
                 dom.setHTML('div', '<span>Test 2</span>');
                 return result;
             }),

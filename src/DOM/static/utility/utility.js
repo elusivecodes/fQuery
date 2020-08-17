@@ -26,7 +26,8 @@ Object.assign(DOM, {
             this._parents(
                 node,
                 parent =>
-                    Core.isElement(parent) && this._css(parent, 'display') === 'none'
+                    Core.isElement(parent) &&
+                    this._css(parent, 'display') === 'none'
             )
         );
 
@@ -34,12 +35,7 @@ Object.assign(DOM, {
 
         for (const element of elements) {
             hidden.set(element, element.getAttribute('style'));
-
-            element.style.setProperty(
-                'display',
-                'initial',
-                'important'
-            );
+            element.style.setProperty('display', 'initial', 'important');
         }
 
         const result = callback(node);

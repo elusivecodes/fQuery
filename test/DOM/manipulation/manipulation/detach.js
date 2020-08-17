@@ -48,11 +48,9 @@ describe('#detach', function() {
         assert.equal(
             await exec(_ => {
                 let result = 0;
-                dom.addEvent(
-                    'a',
-                    'click',
-                    _ => { result++; }
-                );
+                dom.addEvent('a', 'click', _ => {
+                    result++;
+                });
                 const nodes = dom.detach('a');
                 for (const node of nodes) {
                     document.body.appendChild(node);
@@ -67,11 +65,7 @@ describe('#detach', function() {
     it('does not remove data', async function() {
         assert.deepEqual(
             await exec(_ => {
-                dom.setData(
-                    'a',
-                    'test',
-                    'Test'
-                );
+                dom.setData('a', 'test', 'Test');
                 const nodes = dom.detach('a');
                 for (const node of nodes) {
                     document.body.appendChild(node);
@@ -120,20 +114,14 @@ describe('#detach', function() {
 
     it('does not remove queue', async function() {
         await exec(_ => {
-            dom.queue(
-                'a',
-                _ => {
-                    return new Promise(resolve =>
-                        setTimeout(resolve, 100)
-                    );
-                }
+            dom.queue('a', _ =>
+                new Promise(resolve =>
+                    setTimeout(resolve, 100)
+                )
             );
-            dom.queue(
-                'a',
-                node => {
-                    node.dataset.test = 'Test'
-                }
-            );
+            dom.queue('a', node => {
+                node.dataset.test = 'Test'
+            });
         }).then(waitFor(50)).then(async _ => {
             await exec(_ => {
                 const nodes = dom.detach('a');

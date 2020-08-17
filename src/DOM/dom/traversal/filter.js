@@ -10,8 +10,11 @@ Object.assign(DOM.prototype, {
      * @returns {array} The filtered nodes.
      */
     connected(nodes) {
-        return this.parseNodes(nodes, { node: true, fragment: true, shadow: true })
-            .filter(node => node.isConnected);
+        return this.parseNodes(nodes, {
+            node: true,
+            fragment: true,
+            shadow: true
+        }).filter(node => node.isConnected);
     },
 
     /**
@@ -21,12 +24,21 @@ Object.assign(DOM.prototype, {
      * @returns {array} The filtered nodes.
      */
     equal(nodes, others) {
-        others = this.parseNodes(others, { node: true, fragment: true, shadow: true });
+        others = this.parseNodes(others, {
+            node: true,
+            fragment: true,
+            shadow: true
+        });
 
-        return this.parseNodes(nodes, { node: true, fragment: true, shadow: true })
-            .filter(node =>
-                others.some(other => node.isEqualNode(other))
-            );
+        return this.parseNodes(nodes, {
+            node: true,
+            fragment: true,
+            shadow: true
+        }).filter(node =>
+            others.some(other =>
+                node.isEqualNode(other)
+            )
+        );
     },
 
     /**
@@ -38,8 +50,13 @@ Object.assign(DOM.prototype, {
     filter(nodes, filter) {
         filter = this.parseFilter(filter);
 
-        return this.parseNodes(nodes, { node: true, fragment: true, shadow: true })
-            .filter((node, index) => !filter || filter(node, index));
+        return this.parseNodes(nodes, {
+            node: true,
+            fragment: true,
+            shadow: true
+        }).filter((node, index) =>
+            !filter || filter(node, index)
+        );
     },
 
     /**
@@ -51,8 +68,13 @@ Object.assign(DOM.prototype, {
     filterOne(nodes, filter) {
         filter = this.parseFilter(filter);
 
-        return this.parseNodes(nodes, { node: true, fragment: true, shadow: true })
-            .find((node, index) => !filter || filter(node, index)) || null;
+        return this.parseNodes(nodes, {
+            node: true,
+            fragment: true,
+            shadow: true
+        }).find((node, index) =>
+            !filter || filter(node, index)
+        ) || null;
     },
 
     /**
@@ -61,17 +83,22 @@ Object.assign(DOM.prototype, {
      * @returns {array} The filtered nodes.
      */
     fixed(nodes) {
-        return this.parseNodes(nodes, { node: true })
-            .filter(node =>
-                (Core.isElement(node) && this.constructor._css(node, 'position') === 'fixed') ||
-                this.constructor._parents(
-                    node,
-                    parent =>
-                        Core.isElement(parent) && this.constructor._css(parent, 'position') === 'fixed',
-                    false,
-                    true
-                ).length
-            );
+        return this.parseNodes(nodes, {
+            node: true
+        }).filter(node =>
+            (
+                Core.isElement(node) &&
+                this.constructor._css(node, 'position') === 'fixed'
+            ) ||
+            this.constructor._parents(
+                node,
+                parent =>
+                    Core.isElement(parent) &&
+                    this.constructor._css(parent, 'position') === 'fixed',
+                false,
+                true
+            ).length
+        );
     },
 
     /**
@@ -80,8 +107,13 @@ Object.assign(DOM.prototype, {
      * @returns {array} The filtered nodes.
      */
     hidden(nodes) {
-        return this.parseNodes(nodes, { node: true, document: true, window: true })
-            .filter(node => !this.constructor._isVisible(node));
+        return this.parseNodes(nodes, {
+            node: true,
+            document: true,
+            window: true
+        }).filter(node =>
+            !this.constructor._isVisible(node)
+        );
     },
 
     /**
@@ -93,8 +125,13 @@ Object.assign(DOM.prototype, {
     not(nodes, filter) {
         filter = this.parseFilter(filter);
 
-        return this.parseNodes(nodes, { node: true, fragment: true, shadow: true })
-            .filter((node, index) => filter && !filter(node, index));
+        return this.parseNodes(nodes, {
+            node: true,
+            fragment: true,
+            shadow: true
+        }).filter((node, index) =>
+            filter && !filter(node, index)
+        );
     },
 
     /**
@@ -106,8 +143,13 @@ Object.assign(DOM.prototype, {
     notOne(nodes, filter) {
         filter = this.parseFilter(filter);
 
-        return this.parseNodes(nodes, { node: true, fragment: true, shadow: true })
-            .find((node, index) => filter && !filter(node, index)) || null;
+        return this.parseNodes(nodes, {
+            node: true,
+            fragment: true,
+            shadow: true
+        }).find((node, index) =>
+            filter && !filter(node, index)
+        ) || null;
     },
 
     /**
@@ -117,12 +159,21 @@ Object.assign(DOM.prototype, {
      * @returns {array} The filtered nodes.
      */
     same(nodes, others) {
-        others = this.parseNodes(others, { node: true, fragment: true, shadow: true });
+        others = this.parseNodes(others, {
+            node: true,
+            fragment: true,
+            shadow: true
+        });
 
-        return this.parseNodes(nodes, { node: true, fragment: true, shadow: true })
-            .filter(node =>
-                others.some(other => node.isSameNode(other))
-            );
+        return this.parseNodes(nodes, {
+            node: true,
+            fragment: true,
+            shadow: true
+        }).filter(node =>
+            others.some(other =>
+                node.isSameNode(other)
+            )
+        );
     },
 
     /**
@@ -131,8 +182,13 @@ Object.assign(DOM.prototype, {
      * @returns {array} The filtered nodes.
      */
     visible(nodes) {
-        return this.parseNodes(nodes, { node: true, document: true, window: true })
-            .filter(node => this.constructor._isVisible(node));
+        return this.parseNodes(nodes, {
+            node: true,
+            document: true,
+            window: true
+        }).filter(node =>
+            this.constructor._isVisible(node)
+        );
     },
 
     /**
@@ -166,10 +222,13 @@ Object.assign(DOM.prototype, {
      * @returns {array} The filtered nodes.
      */
     withChildren(nodes) {
-        return this.parseNodes(nodes, { fragment: true, shadow: true, document: true })
-            .filter(node =>
-                !!node.childElementCount
-            );
+        return this.parseNodes(nodes, {
+            fragment: true,
+            shadow: true,
+            document: true
+        }).filter(node =>
+            !!node.childElementCount
+        );
     },
 
     /**
@@ -220,10 +279,15 @@ Object.assign(DOM.prototype, {
      * @returns {array} The filtered nodes.
      */
     withData(nodes, key) {
-        return this.parseNodes(nodes, { node: true, fragment: true, shadow: true, document: true, window: true })
-            .filter(node =>
-                this.constructor._hasData(node, key)
-            );
+        return this.parseNodes(nodes, {
+            node: true,
+            fragment: true,
+            shadow: true,
+            document: true,
+            window: true
+        }).filter(node =>
+            this.constructor._hasData(node, key)
+        );
     },
 
     /**
@@ -235,8 +299,13 @@ Object.assign(DOM.prototype, {
     withDescendent(nodes, filter) {
         filter = this.parseFilterContains(filter);
 
-        return this.parseNodes(nodes, { fragment: true, shadow: true, document: true })
-            .filter((node, index) => !filter || filter(node, index));
+        return this.parseNodes(nodes, {
+            fragment: true,
+            shadow: true,
+            document: true
+        }).filter((node, index) =>
+            !filter || filter(node, index)
+        );
     },
 
     /**

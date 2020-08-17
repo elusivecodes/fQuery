@@ -60,11 +60,7 @@ Object.assign(DOM.prototype, {
      * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
      */
     hide(nodes) {
-        this.setStyle(
-            nodes,
-            'display',
-            'none'
-        );
+        this.setStyle(nodes, 'display', 'none');
     },
 
     /**
@@ -108,11 +104,7 @@ Object.assign(DOM.prototype, {
      * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
      */
     show(nodes) {
-        this.setStyle(
-            nodes,
-            'display',
-            ''
-        );
+        this.setStyle(nodes, 'display', '');
     },
 
     /**

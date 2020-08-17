@@ -21,7 +21,10 @@ Object.assign(DOM.prototype, {
         };
 
         // ShadowRoot nodes can not be cloned
-        nodes = this.parseNodes(nodes, { node: true, fragment: true });
+        nodes = this.parseNodes(nodes, {
+            node: true,
+            fragment: true
+        });
 
         return nodes.map(node =>
             this.constructor._clone(node, options)
@@ -36,7 +39,9 @@ Object.assign(DOM.prototype, {
     detach(nodes) {
 
         // DocumentFragment and ShadowRoot nodes can not be detached
-        nodes = this.parseNodes(nodes, { node: true });
+        nodes = this.parseNodes(nodes, {
+            node: true
+        });
 
         for (const node of nodes) {
             const parent = node.parentNode;
@@ -56,7 +61,11 @@ Object.assign(DOM.prototype, {
      * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
      */
     empty(nodes) {
-        nodes = this.parseNodes(nodes, { fragment: true, shadow: true, document: true });
+        nodes = this.parseNodes(nodes, {
+            fragment: true,
+            shadow: true,
+            document: true
+        });
 
         for (const node of nodes) {
             this.constructor._empty(node);
@@ -70,7 +79,9 @@ Object.assign(DOM.prototype, {
     remove(nodes) {
 
         // DocumentFragment and ShadowRoot nodes can not be removed
-        nodes = this.parseNodes(nodes, { node: true });
+        nodes = this.parseNodes(nodes, {
+            node: true
+        });
 
         for (const node of nodes) {
             const parent = node.parentNode;
@@ -101,10 +112,16 @@ Object.assign(DOM.prototype, {
     replaceWith(nodes, others) {
 
         // DocumentFragment and ShadowRoot nodes can not be removed
-        nodes = this.parseNodes(nodes, { node: true });
+        nodes = this.parseNodes(nodes, {
+            node: true
+        });
 
         // ShadowRoot nodes can not be cloned
-        others = this.parseNodes(others, { node: true, fragment: true, html: true });
+        others = this.parseNodes(others, {
+            node: true,
+            fragment: true,
+            html: true
+        });
 
         // Move nodes to a fragment so they don't get removed
         const fragment = this.createFragment();

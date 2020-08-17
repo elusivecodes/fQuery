@@ -37,7 +37,11 @@ Object.assign(DOM.prototype, {
             );
         }
 
-        nodes = this.parseNodes(nodes, { fragment: true, shadow: true, document: true });
+        nodes = this.parseNodes(nodes, {
+            fragment: true,
+            shadow: true,
+            document: true
+        });
 
         return this.constructor._findBySelector(selector, nodes);
     },
@@ -61,7 +65,11 @@ Object.assign(DOM.prototype, {
             );
         }
 
-        nodes = this.parseNodes(nodes, { fragment: true, shadow: true, document: true });
+        nodes = this.parseNodes(nodes, {
+            fragment: true,
+            shadow: true,
+            document: true
+        });
 
         const results = [];
 
@@ -86,7 +94,17 @@ Object.assign(DOM.prototype, {
      * @returns {array} The matching nodes.
      */
     findById(id, nodes = this._context) {
-        nodes = this.parseNodes(nodes, { fragment: true, shadow: true, document: true });
+        if (Core.isDocument(nodes) || Core.isElement(nodes) || Core.isFragment(nodes) || Core.isShadow(nodes)) {
+            return Core.wrap(
+                nodes.querySelectorAll(`#${id}`)
+            );
+        }
+
+        nodes = this.parseNodes(nodes, {
+            fragment: true,
+            shadow: true,
+            document: true
+        });
 
         return this.constructor._findBySelector(`#${id}`, nodes);
     },
@@ -110,7 +128,11 @@ Object.assign(DOM.prototype, {
             );
         }
 
-        nodes = this.parseNodes(nodes, { fragment: true, shadow: true, document: true });
+        nodes = this.parseNodes(nodes, {
+            fragment: true,
+            shadow: true,
+            document: true
+        });
 
         const results = [];
 
@@ -159,7 +181,11 @@ Object.assign(DOM.prototype, {
             return nodes.querySelector(selector);
         }
 
-        nodes = this.parseNodes(nodes, { fragment: true, shadow: true, document: true });
+        nodes = this.parseNodes(nodes, {
+            fragment: true,
+            shadow: true,
+            document: true
+        });
 
         if (!nodes.length) {
             return;
@@ -183,7 +209,11 @@ Object.assign(DOM.prototype, {
             return nodes.querySelector(`.${className}`);
         }
 
-        nodes = this.parseNodes(nodes, { fragment: true, shadow: true, document: true });
+        nodes = this.parseNodes(nodes, {
+            fragment: true,
+            shadow: true,
+            document: true
+        });
 
         if (!nodes.length) {
             return;
@@ -212,7 +242,15 @@ Object.assign(DOM.prototype, {
             return nodes.getElementById(id);
         }
 
-        nodes = this.parseNodes(nodes, { fragment: true, shadow: true, document: true });
+        if (Core.isElement(nodes) || Core.isFragment(nodes) || Core.isShadow(nodes)) {
+            return nodes.querySelector(`#${id}`);
+        }
+
+        nodes = this.parseNodes(nodes, {
+            fragment: true,
+            shadow: true,
+            document: true
+        });
 
         if (!nodes.length) {
             return;
@@ -236,7 +274,11 @@ Object.assign(DOM.prototype, {
             return nodes.querySelector(tagName);
         }
 
-        nodes = this.parseNodes(nodes, { fragment: true, shadow: true, document: true });
+        nodes = this.parseNodes(nodes, {
+            fragment: true,
+            shadow: true,
+            document: true
+        });
 
         if (!nodes.length) {
             return;

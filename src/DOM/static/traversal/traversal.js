@@ -13,11 +13,9 @@ Object.assign(DOM, {
      * @returns {array} The matching nodes.
      */
     _children(node, filter, first = false, elementsOnly = false) {
-        const children = Core.wrap(
-            elementsOnly ?
-                node.children :
-                node.childNodes
-        );
+        const children = elementsOnly ?
+            node.children :
+            node.childNodes;
         const results = [];
 
         let child;

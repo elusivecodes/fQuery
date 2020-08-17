@@ -10,7 +10,10 @@ Object.assign(DOM.prototype, {
      * @returns {number} The scroll X position.
      */
     getScrollX(nodes) {
-        const node = this.parseNode(nodes, { document: true, window: true });
+        const node = this.parseNode(nodes, {
+            document: true,
+            window: true
+        });
 
         if (!node) {
             return;
@@ -33,7 +36,10 @@ Object.assign(DOM.prototype, {
      * @returns {number} The scroll Y position.
      */
     getScrollY(nodes) {
-        const node = this.parseNode(nodes, { document: true, window: true });
+        const node = this.parseNode(nodes, {
+            document: true,
+            window: true
+        });
 
         if (!node) {
             return;
@@ -57,7 +63,10 @@ Object.assign(DOM.prototype, {
      * @param {number} y The scroll Y position.
      */
     setScroll(nodes, x, y) {
-        nodes = this.parseNodes(nodes, { document: true, window: true });
+        nodes = this.parseNodes(nodes, {
+            document: true,
+            window: true
+        });
 
         for (const node of nodes) {
             if (Core.isWindow(node)) {
@@ -78,7 +87,10 @@ Object.assign(DOM.prototype, {
      * @param {number} x The scroll X position.
      */
     setScrollX(nodes, x) {
-        nodes = this.parseNodes(nodes, { document: true, window: true });
+        nodes = this.parseNodes(nodes, {
+            document: true,
+            window: true
+        });
 
         for (const node of nodes) {
             if (Core.isWindow(node)) {
@@ -97,7 +109,10 @@ Object.assign(DOM.prototype, {
      * @param {number} y The scroll Y position.
      */
     setScrollY(nodes, y) {
-        nodes = this.parseNodes(nodes, { document: true, window: true });
+        nodes = this.parseNodes(nodes, {
+            document: true,
+            window: true
+        });
 
         for (const node of nodes) {
             if (Core.isWindow(node)) {

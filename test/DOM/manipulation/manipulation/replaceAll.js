@@ -44,11 +44,9 @@ describe('#replaceAll', function() {
             await exec(_ => {
                 let result = 0;
                 const nodes = document.querySelectorAll('div');
-                dom.addEvent(
-                    'div',
-                    'click',
-                    _ => { result++; }
-                );
+                dom.addEvent('div', 'click', _ => {
+                    result++;
+                });
                 dom.replaceAll('a', 'div');
                 for (const node of nodes) {
                     document.body.appendChild(node);
@@ -64,11 +62,9 @@ describe('#replaceAll', function() {
         assert.equal(
             await exec(_ => {
                 let result = 0;
-                dom.addEvent(
-                    'a',
-                    'click',
-                    _ => { result++; }
-                );
+                dom.addEvent('a', 'click', _ => {
+                    result++;
+                });
                 dom.replaceAll('a', 'div');
                 dom.triggerEvent('a', 'click');
                 return result;
@@ -180,20 +176,14 @@ describe('#replaceAll', function() {
 
     it('removes queue from other nodes', async function() {
         await exec(_ => {
-            dom.queue(
-                'div',
-                _ => {
-                    return new Promise(resolve =>
-                        setTimeout(resolve, 100)
-                    );
-                }
+            dom.queue('div', _ =>
+                new Promise(resolve =>
+                    setTimeout(resolve, 100)
+                )
             );
-            dom.queue(
-                'div',
-                node => {
-                    node.dataset.test = 'Test'
-                }
-            );
+            dom.queue('div', node => {
+                node.dataset.test = 'Test'
+            });
         }).then(waitFor(50)).then(async _ => {
             await exec(_ => {
                 const nodes = document.querySelectorAll('div');
@@ -225,11 +215,9 @@ describe('#replaceAll', function() {
         assert.equal(
             await exec(_ => {
                 let result = 0;
-                dom.addEvent(
-                    'div',
-                    'remove',
-                    _ => { result++; }
-                );
+                dom.addEvent('div', 'remove', _ => {
+                    result++;
+                });
                 dom.replaceAll('a', 'div');
                 return result;
             }),

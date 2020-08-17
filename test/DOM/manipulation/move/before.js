@@ -47,11 +47,9 @@ describe('#before', function() {
         assert.equal(
             await exec(_ => {
                 let result = 0;
-                dom.addEvent(
-                    'a',
-                    'click',
-                    _ => { result++; }
-                );
+                dom.addEvent('a', 'click', _ => {
+                    result++;
+                });
                 dom.before('div', 'a');
                 dom.triggerEvent('a', 'click');
                 return result;

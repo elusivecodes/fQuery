@@ -16,7 +16,9 @@ describe('#blur', function() {
             await exec(_ => {
                 let result;
                 const element = document.getElementById('test1');
-                element.addEventListener('blur', _ => { result = true; });
+                element.addEventListener('blur', _ => {
+                    result = true;
+                });
                 element.focus();
                 dom.blur('input');
                 return result;
@@ -30,7 +32,9 @@ describe('#blur', function() {
             await exec(_ => {
                 let result;
                 const element = document.getElementById('test1');
-                element.addEventListener('blur', _ => { result = true; });
+                element.addEventListener('blur', _ => {
+                    result = true;
+                });
                 element.focus();
                 dom.blur(
                     document.getElementById('test1')
@@ -46,7 +50,9 @@ describe('#blur', function() {
             await exec(_ => {
                 let result;
                 const element = document.getElementById('test1');
-                element.addEventListener('blur', _ => { result = true; });
+                element.addEventListener('blur', _ => {
+                    result = true;
+                });
                 element.focus();
                 dom.blur(
                     document.querySelectorAll('input')
@@ -62,7 +68,9 @@ describe('#blur', function() {
             await exec(_ => {
                 let result;
                 const element = document.getElementById('test1');
-                element.addEventListener('blur', _ => { result = true; });
+                element.addEventListener('blur', _ => {
+                    result = true;
+                });
                 element.focus();
                 dom.blur(
                     document.body.children
@@ -78,7 +86,9 @@ describe('#blur', function() {
             await exec(_ => {
                 let result;
                 const element = document.getElementById('test1');
-                element.addEventListener('blur', _ => { result = true; });
+                element.addEventListener('blur', _ => {
+                    result = true;
+                });
                 element.focus();
                 dom.blur([
                     document.getElementById('test1'),

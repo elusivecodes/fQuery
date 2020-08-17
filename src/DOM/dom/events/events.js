@@ -56,11 +56,9 @@ Object.assign(DOM.prototype, {
             return;
         }
 
-        this.constructor._addEvent(
-            window,
-            'DOMContentLoaded',
-            callback
-        );
+        window.addEventListener('DOMContentLoaded', callback, {
+            once: true
+        })
     }
 
 });

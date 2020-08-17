@@ -11,10 +11,7 @@ const testFadeIn = async selector => {
     const data = await getAnimationStyle(selector, 'opacity');
 
     const amount = fadeIn(data.progress);
-    assert.equal(
-        data.opacity,
-        `${amount}`
-    );
+    assert.equal(data.opacity, `${amount}`);
 };
 
 describe('#fadeIn', function() {

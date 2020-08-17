@@ -57,12 +57,7 @@ Object.assign(DOM.prototype, {
             return;
         }
 
-        return Core.dist(
-            nodeCenter.x,
-            nodeCenter.y,
-            x,
-            y
-        );
+        return Core.dist(nodeCenter.x, nodeCenter.y, x, y);
     },
 
     /**
@@ -78,11 +73,7 @@ Object.assign(DOM.prototype, {
             return;
         }
 
-        return this.distTo(
-            nodes,
-            otherCenter.x,
-            otherCenter.y
-        );
+        return this.distTo(nodes, otherCenter.x, otherCenter.y);
     },
 
     /**
@@ -123,11 +114,7 @@ Object.assign(DOM.prototype, {
             return;
         }
 
-        return this.nearestTo(
-            nodes,
-            otherCenter.x,
-            otherCenter.y
-        );
+        return this.nearestTo(nodes, otherCenter.x, otherCenter.y);
     },
 
     /**

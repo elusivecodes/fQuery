@@ -88,6 +88,9 @@ Object.assign(DOM, {
     // Complex selector RegExp
     _complexRegExp: /(?:^\s*[\>\+\~]|\,(?=(?:(?:[^"']*["']){2})*[^"']*$)\s*[\>\+\~])/,
 
+    // Custom selectors
+    _customSelectors: ['>', '+', '~'],
+
     // Fast selector RegExp
     _fastRegExp: /^([\#\.]?)([\w\-]+)$/,
 

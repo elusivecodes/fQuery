@@ -11,11 +11,7 @@ Object.assign(DOM.prototype, {
      * @returns {array} The matching nodes.
      */
     child(nodes, filter) {
-        return this.children(
-            nodes,
-            filter,
-            true
-        );
+        return this.children(nodes, filter, true);
     },
 
     /**
@@ -33,7 +29,11 @@ Object.assign(DOM.prototype, {
             return this.constructor._children(nodes, filter, first, elementsOnly);
         }
 
-        nodes = this.parseNodes(nodes, { fragment: true, shadow: true, document: true });
+        nodes = this.parseNodes(nodes, {
+            fragment: true,
+            shadow: true,
+            document: true
+        });
 
         const results = [];
 
@@ -57,12 +57,7 @@ Object.assign(DOM.prototype, {
      * @returns {array} The matching nodes.
      */
     closest(nodes, filter, limit) {
-        return this.parents(
-            nodes,
-            filter,
-            limit,
-            true
-        );
+        return this.parents(nodes, filter, limit, true);
     },
 
     /**
@@ -100,12 +95,7 @@ Object.assign(DOM.prototype, {
      * @returns {array} The matching nodes.
      */
     contents(nodes) {
-        return this.children(
-            nodes,
-            false,
-            false,
-            false
-        );
+        return this.children(nodes, false, false, false);
     },
 
     /**
@@ -137,7 +127,9 @@ Object.assign(DOM.prototype, {
         }
 
         // DocumentFragment and ShadowRoot nodes can not have siblings
-        nodes = this.parseNodes(nodes, { node: true });
+        nodes = this.parseNodes(nodes, {
+            node: true
+        });
 
         const results = [];
 
@@ -170,7 +162,9 @@ Object.assign(DOM.prototype, {
         }
 
         // DocumentFragment and ShadowRoot nodes can not have siblings
-        nodes = this.parseNodes(nodes, { node: true });
+        nodes = this.parseNodes(nodes, {
+            node: true
+        });
 
         const results = [];
 
@@ -212,7 +206,9 @@ Object.assign(DOM.prototype, {
         }
 
         // DocumentFragment and ShadowRoot nodes have no parent
-        nodes = this.parseNodes(nodes, { node: true });
+        nodes = this.parseNodes(nodes, {
+            node: true
+        });
 
         const results = [];
 
@@ -245,7 +241,9 @@ Object.assign(DOM.prototype, {
         }
 
         // DocumentFragment and ShadowRoot nodes have no parent
-        nodes = this.parseNodes(nodes, { node: true });
+        nodes = this.parseNodes(nodes, {
+            node: true
+        });
 
         const results = [];
 
@@ -275,7 +273,9 @@ Object.assign(DOM.prototype, {
         }
 
         // DocumentFragment and ShadowRoot nodes can not have siblings
-        nodes = this.parseNodes(nodes, { node: true });
+        nodes = this.parseNodes(nodes, {
+            node: true
+        });
 
         const results = [];
 
@@ -308,7 +308,9 @@ Object.assign(DOM.prototype, {
         }
 
         // DocumentFragment and ShadowRoot nodes can not have siblings
-        nodes = this.parseNodes(nodes, { node: true });
+        nodes = this.parseNodes(nodes, {
+            node: true
+        });
 
         const results = [];
 
@@ -354,7 +356,9 @@ Object.assign(DOM.prototype, {
         }
 
         // DocumentFragment and ShadowRoot nodes can not have siblings
-        nodes = this.parseNodes(nodes, { node: true });
+        nodes = this.parseNodes(nodes, {
+            node: true
+        });
 
         const results = [];
 
@@ -366,9 +370,7 @@ Object.assign(DOM.prototype, {
         }
 
         return nodes.length > 1 && results.length > 1 ?
-            this.sort(
-                Core.unique(results)
-            ) :
+            Core.unique(results) :
             results;
     }
 

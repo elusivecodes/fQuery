@@ -37,7 +37,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 /**
- * FrostDOM Bundle v1.0.2
+ * FrostDOM Bundle v1.0.3
  * https://github.com/elusivecodes/FrostCore
  * https://github.com/elusivecodes/FrostDOM
  */
@@ -1058,7 +1058,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
     return Core;
   });
   /**
-   * FrostDOM v1.0.2
+   * FrostDOM v1.0.3
    * https://github.com/elusivecodes/FrostDOM
    */
 
@@ -1601,9 +1601,9 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
        * @returns {array} The parsed attributes.
        */
       _parseValues: function _parseValues(data) {
-        var values = [];
-
         if (Core.isArray(data)) {
+          var values = [];
+
           var _iterator3 = _createForOfIteratorHelper(data),
               _step3;
 
@@ -1617,13 +1617,21 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
           } finally {
             _iterator3.f();
           }
-        } else if (Core.isObject(data)) {
-          for (var key in data) {
-            values.push.apply(values, _toConsumableArray(this._parseValue(key, data[key])));
-          }
+
+          return values;
         }
 
-        return values;
+        if (Core.isObject(data)) {
+          var _values2 = [];
+
+          for (var key in data) {
+            _values2.push.apply(_values2, _toConsumableArray(this._parseValue(key, data[key])));
+          }
+
+          return _values2;
+        }
+
+        return data;
       }
     });
     /**
@@ -3692,7 +3700,9 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
           return;
         }
 
-        this.constructor._addEvent(window, 'DOMContentLoaded', callback);
+        window.addEventListener('DOMContentLoaded', callback, {
+          once: true
+        });
       }
     });
     /**
@@ -4760,7 +4770,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
 
       /**
        * Load and executes multiple JavaScript files (in order).
-       * @param {string[]} urls An array of script URLs.
+       * @param {array} urls An array of script URLs or attribute objects.
        * @param {Boolean} [cache=true] Whether to cache the requests.
        * @returns {Promise} A new Promise that resolves when the request is completed, or rejects on failure.
        */
@@ -4817,7 +4827,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
 
       /**
        * Import multiple CSS Stylesheet files.
-       * @param {string[]} urls An array of stylesheet URLs.
+       * @param {array} urls An array of stylesheet URLs or attribute objects.
        * @param {Boolean} [cache=true] Whether to cache the requests.
        * @returns {Promise} A new Promise that resolves when the request is completed, or rejects on failure.
        */
@@ -5242,6 +5252,11 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
        */
       findById: function findById(id) {
         var nodes = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : this._context;
+
+        if (Core.isDocument(nodes) || Core.isElement(nodes) || Core.isFragment(nodes) || Core.isShadow(nodes)) {
+          return Core.wrap(nodes.querySelectorAll("#".concat(id)));
+        }
+
         nodes = this.parseNodes(nodes, {
           fragment: true,
           shadow: true,
@@ -5396,6 +5411,10 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
 
         if (Core.isDocument(nodes)) {
           return nodes.getElementById(id);
+        }
+
+        if (Core.isElement(nodes) || Core.isFragment(nodes) || Core.isShadow(nodes)) {
+          return nodes.querySelector("#".concat(id));
         }
 
         nodes = this.parseNodes(nodes, {
@@ -5870,7 +5889,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
           _iterator67.f();
         }
 
-        return nodes.length > 1 && results.length > 1 ? this.sort(Core.unique(results)) : results;
+        return nodes.length > 1 && results.length > 1 ? Core.unique(results) : results;
       }
     });
     /**
@@ -5933,7 +5952,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
 
         if (Core.isFunction(filter)) {
           return function (node) {
-            return Core.merge([], node.querySelectorAll('*')).some(filter);
+            return Core.wrap(node.querySelectorAll('*')).some(filter);
           };
         }
 
@@ -6809,9 +6828,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
           }
 
           if (Core.isElement(node) && node.matches('select[multiple]')) {
-            var selected = Core.wrap(node.selectedOptions);
-
-            var _iterator75 = _createForOfIteratorHelper(selected),
+            var _iterator75 = _createForOfIteratorHelper(node.selectedOptions),
                 _step75;
 
             try {
@@ -7650,7 +7667,8 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
         var _this34 = this;
 
         return function (e) {
-          delegate ? _this34._removeEvent(node, events, callback, delegate) : _this34._removeEvent(node, events, callback);
+          _this34._removeEvent(node, events, callback, delegate);
+
           return callback(e);
         };
       }
@@ -7932,10 +7950,12 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
        * @returns {string} The prefixed selector.
        */
       _prefixSelectors: function _prefixSelectors(selectors, prefix) {
-        return selectors.split(this._splitRegExp).filter(function (select) {
-          return !!select;
-        }).map(function (select) {
-          return "".concat(prefix, " ").concat(select);
+        var _this36 = this;
+
+        return selectors.split(this._splitRegExp).filter(function (selector) {
+          return !!selector;
+        }).map(function (selector) {
+          return _this36._customSelectors.includes(selector.trim().charAt(0)) ? "".concat(prefix, " ").concat(selector) : selector;
         }).join(', ');
       }
     });
@@ -8003,23 +8023,23 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
        * @param {Boolean} [options.animations] Whether to also clone animations.
        */
       _deepClone: function _deepClone(node, clone, options) {
-        var children = Core.wrap(node.childNodes);
-        var cloneChildren = Core.wrap(clone.childNodes);
+        for (var i = 0; i < node.childNodes.length; i++) {
+          var child = node.childNodes.item(i);
+          var childClone = clone.childNodes.item(i);
 
-        for (var i = 0; i < children.length; i++) {
           if (options.events) {
-            this._cloneEvents(children[i], cloneChildren[i]);
+            this._cloneEvents(child, childClone);
           }
 
           if (options.data) {
-            this._cloneData(children[i], cloneChildren[i]);
+            this._cloneData(child, childClone);
           }
 
           if (options.animations) {
-            this._cloneAnimations(node, clone);
+            this._cloneAnimations(child, childClone);
           }
 
-          this._deepClone(children[i], cloneChildren[i], options);
+          this._deepClone(child, childClone, options);
         }
       },
 
@@ -8050,16 +8070,12 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
         }
 
         if (node.shadowRoot) {
-          var shadow = node.shadowRoot;
-
-          this._remove(shadow);
+          this._remove(node.shadowRoot);
         } // Remove DocumentFragment
 
 
         if (node.content) {
-          var fragment = node.content;
-
-          this._remove(fragment);
+          this._remove(node.content);
         }
       },
 
@@ -8131,7 +8147,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
        * @param {array} others The other node(s).
        */
       _wrap: function _wrap(node, others) {
-        var _this36 = this;
+        var _this37 = this;
 
         var parent = node.parentNode;
 
@@ -8140,7 +8156,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
         }
 
         var clones = others.map(function (other) {
-          return _this36._clone(other, {
+          return _this37._clone(other, {
             deep: true,
             events: true,
             data: true,
@@ -8225,11 +8241,11 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
        * @param {array} others The other node(s).
        */
       _wrapInner: function _wrapInner(node, others) {
-        var _this37 = this;
+        var _this38 = this;
 
         var children = Core.wrap(node.childNodes);
         var clones = others.map(function (other) {
-          return _this37._clone(other, {
+          return _this38._clone(other, {
             deep: true,
             events: true,
             data: true,
@@ -8367,7 +8383,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
       _children: function _children(node, filter) {
         var first = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
         var elementsOnly = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : false;
-        var children = Core.wrap(elementsOnly ? node.children : node.childNodes);
+        var children = elementsOnly ? node.children : node.childNodes;
         var results = [];
         var child;
 
@@ -8699,7 +8715,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
        * @returns {*} The result of the callback.
        */
       _forceShow: function _forceShow(node, callback) {
-        var _this38 = this;
+        var _this39 = this;
 
         if (this._isVisible(node)) {
           return callback(node);
@@ -8712,7 +8728,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
         }
 
         Core.merge(elements, this._parents(node, function (parent) {
-          return Core.isElement(parent) && _this38._css(parent, 'display') === 'none';
+          return Core.isElement(parent) && _this39._css(parent, 'display') === 'none';
         }));
         var hidden = new Map();
 
@@ -8946,6 +8962,8 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
       OUTER_MARGIN: 3,
       // Complex selector RegExp
       _complexRegExp: /(?:^\s*[\>\+\~]|\,(?=(?:(?:[^"']*["']){2})*[^"']*$)\s*[\>\+\~])/,
+      // Custom selectors
+      _customSelectors: ['>', '+', '~'],
       // Fast selector RegExp
       _fastRegExp: /^([\#\.]?)([\w\-]+)$/,
       // Comma seperated selector RegExp

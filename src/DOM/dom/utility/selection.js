@@ -11,7 +11,11 @@ Object.assign(DOM.prototype, {
     afterSelection(nodes) {
 
         // ShadowRoot nodes can not be moved
-        nodes = this.parseNodes(nodes, { node: true, fragment: true, html: true }).reverse();
+        nodes = this.parseNodes(nodes, {
+            node: true,
+            fragment: true,
+            html: true
+        }).reverse();
 
         const selection = window.getSelection();
 
@@ -36,7 +40,11 @@ Object.assign(DOM.prototype, {
     beforeSelection(nodes) {
 
         // ShadowRoot nodes can not be moved
-        nodes = this.parseNodes(nodes, { node: true, fragment: true, html: true }).reverse();
+        nodes = this.parseNodes(nodes, {
+            node: true,
+            fragment: true,
+            html: true
+        }).reverse();
 
         const selection = window.getSelection();
 
@@ -130,7 +138,9 @@ Object.assign(DOM.prototype, {
      * @param {string|array|Node|HTMLElement|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
      */
     select(nodes) {
-        const node = this.parseNode(nodes, { node: true });
+        const node = this.parseNode(nodes, {
+            node: true
+        });
 
         if (node && 'select' in node) {
             return node.select();
@@ -187,7 +197,10 @@ Object.assign(DOM.prototype, {
     wrapSelection(nodes) {
 
         // ShadowRoot nodes can not be cloned
-        nodes = this.parseNodes(nodes, { fragment: true, html: true });
+        nodes = this.parseNodes(nodes, {
+            fragment: true,
+            html: true
+        });
 
         const selection = window.getSelection();
 

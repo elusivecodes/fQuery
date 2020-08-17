@@ -10,8 +10,19 @@ Object.assign(DOM.prototype, {
      * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|NodeList|HTMLCollection|QuerySet} others The other node(s), or a query selector string.
      */
     cloneData(nodes, others) {
-        nodes = this.parseNodes(nodes, { fragment: true, shadow: true, document: true, window: true });
-        others = this.parseNodes(others, { fragment: true, shadow: true, document: true, window: true });
+        nodes = this.parseNodes(nodes, {
+            fragment: true,
+            shadow: true,
+            document: true,
+            window: true
+        });
+
+        others = this.parseNodes(others, {
+            fragment: true,
+            shadow: true,
+            document: true,
+            window: true
+        });
 
         for (const node of nodes) {
             for (const other of others) {
@@ -27,7 +38,12 @@ Object.assign(DOM.prototype, {
      * @returns {*} The data value.
      */
     getData(nodes, key) {
-        const node = this.parseNode(nodes, { fragment: true, shadow: true, document: true, window: true });
+        const node = this.parseNode(nodes, {
+            fragment: true,
+            shadow: true,
+            document: true,
+            window: true
+        });
 
         if (!node) {
             return;
@@ -42,7 +58,12 @@ Object.assign(DOM.prototype, {
      * @param {string} [key] The data key.
      */
     removeData(nodes, key) {
-        nodes = this.parseNodes(nodes, { fragment: true, shadow: true, document: true, window: true });
+        nodes = this.parseNodes(nodes, {
+            fragment: true,
+            shadow: true,
+            document: true,
+            window: true
+        });
 
         for (const node of nodes) {
             this.constructor._removeData(node, key);
@@ -56,7 +77,12 @@ Object.assign(DOM.prototype, {
      * @param {*} [value] The data value.
      */
     setData(nodes, key, value) {
-        nodes = this.parseNodes(nodes, { fragment: true, shadow: true, document: true, window: true });
+        nodes = this.parseNodes(nodes, {
+            fragment: true,
+            shadow: true,
+            document: true,
+            window: true
+        });
 
         const data = this.constructor._parseData(key, value);
 

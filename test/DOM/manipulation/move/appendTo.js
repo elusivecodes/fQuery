@@ -47,11 +47,9 @@ describe('#appendTo', function() {
         assert.equal(
             await exec(_ => {
                 let result = 0;
-                dom.addEvent(
-                    'a',
-                    'click',
-                    _ => { result++; }
-                );
+                dom.addEvent('a', 'click', _ => {
+                    result++;
+                });
                 dom.appendTo('a', 'div');
                 dom.triggerEvent('a', 'click');
                 return result;

@@ -47,11 +47,9 @@ describe('#insertBefore', function() {
         assert.equal(
             await exec(_ => {
                 let result = 0;
-                dom.addEvent(
-                    'a',
-                    'click',
-                    _ => { result++; }
-                );
+                dom.addEvent('a', 'click', _ => {
+                    result++;
+                });
                 dom.insertBefore('a', 'div');
                 dom.triggerEvent('a', 'click');
                 return result;

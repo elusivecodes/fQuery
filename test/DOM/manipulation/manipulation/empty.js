@@ -38,11 +38,9 @@ describe('#empty', function() {
             await exec(_ => {
                 let result = 0;
                 const nodes = document.querySelectorAll('a');
-                dom.addEvent(
-                    'a',
-                    'click',
-                    _ => { result++; }
-                );
+                dom.addEvent('a', 'click', _ => {
+                    result++;
+                });
                 dom.empty('div');
                 for (const node of nodes) {
                     document.body.appendChild(node);
@@ -104,20 +102,14 @@ describe('#empty', function() {
 
     it('removes queue recursively', async function() {
         await exec(_ => {
-            dom.queue(
-                'a',
-                _ => {
-                    return new Promise(resolve =>
-                        setTimeout(resolve, 100)
-                    );
-                }
+            dom.queue('a', _ =>
+                new Promise(resolve =>
+                    setTimeout(resolve, 100)
+                )
             );
-            dom.queue(
-                'a',
-                node => {
-                    node.dataset.test = 'Test'
-                }
-            );
+            dom.queue('a', node => {
+                node.dataset.test = 'Test'
+            });
         }).then(waitFor(50)).then(async _ => {
             await exec(_ => {
                 const nodes = document.querySelectorAll('a');
@@ -145,11 +137,9 @@ describe('#empty', function() {
         assert.equal(
             await exec(_ => {
                 let result = 0;
-                dom.addEvent(
-                    'a',
-                    'remove',
-                    _ => { result++; }
-                );
+                dom.addEvent('a', 'remove', _ => {
+                    result++;
+                });
                 dom.empty('div');
                 return result;
             }),

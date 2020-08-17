@@ -42,10 +42,7 @@ Object.assign(DOM.prototype, {
      * @returns {string} The HTML contents.
      */
     getHTML(nodes) {
-        return this.getProperty(
-            nodes,
-            'innerHTML'
-        );
+        return this.getProperty(nodes, 'innerHTML');
     },
 
     /**
@@ -70,10 +67,7 @@ Object.assign(DOM.prototype, {
      * @returns {string} The text contents.
      */
     getText(nodes) {
-        return this.getProperty(
-            nodes,
-            'innerText'
-        );
+        return this.getProperty(nodes, 'innerText');
     },
 
     /**
@@ -82,10 +76,7 @@ Object.assign(DOM.prototype, {
      * @returns {string} The value.
      */
     getValue(nodes) {
-        return this.getProperty(
-            nodes,
-            'value'
-        );
+        return this.getProperty(nodes, 'value');
     },
 
     /**
@@ -167,11 +158,7 @@ Object.assign(DOM.prototype, {
     setHTML(nodes, html) {
         this.empty(nodes);
 
-        this.setProperty(
-            nodes,
-            'innerHTML',
-            html
-        );
+        this.setProperty(nodes, 'innerHTML', html);
     },
 
     /**
@@ -200,11 +187,7 @@ Object.assign(DOM.prototype, {
     setText(nodes, text) {
         this.empty(nodes);
 
-        this.setProperty(
-            nodes,
-            'innerText',
-            text
-        );
+        this.setProperty(nodes, 'innerText', text);
     },
 
     /**
@@ -213,11 +196,7 @@ Object.assign(DOM.prototype, {
      * @param {string} value The value.
      */
     setValue(nodes, value) {
-        this.setProperty(
-            nodes,
-            'value',
-            value
-        );
+        this.setProperty(nodes, 'value', value);
     }
 
 });

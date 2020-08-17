@@ -35,10 +35,13 @@ Object.assign(DOM.prototype, {
      * @returns {Boolean} TRUE if the any of the nodes has child nodes, otherwise FALSE.
      */
     hasChildren(nodes) {
-        return this.parseNodes(nodes, { fragment: true, shadow: true, document: true })
-            .some(node =>
-                !!node.childElementCount
-            );
+        return this.parseNodes(nodes, {
+            fragment: true,
+            shadow: true,
+            document: true
+        }).some(node =>
+            !!node.childElementCount
+        );
     },
 
     /**
@@ -89,10 +92,14 @@ Object.assign(DOM.prototype, {
      * @returns {Boolean} TRUE if any of the nodes has custom data, otherwise FALSE.
      */
     hasData(nodes, key) {
-        return this.parseNodes(nodes, { fragment: true, shadow: true, document: true, window: true })
-            .some(node =>
-                this.constructor._hasData(node, key)
-            );
+        return this.parseNodes(nodes, {
+            fragment: true,
+            shadow: true,
+            document: true,
+            window: true
+        }).some(node =>
+            this.constructor._hasData(node, key)
+        );
     },
 
     /**
@@ -104,11 +111,13 @@ Object.assign(DOM.prototype, {
     hasDescendent(nodes, filter) {
         filter = this.parseFilterContains(filter);
 
-        return this.parseNodes(nodes, { fragment: true, shadow: true, document: true })
-            .some(node =>
-                !filter ||
-                filter(node)
-            );
+        return this.parseNodes(nodes, {
+            fragment: true,
+            shadow: true,
+            document: true
+        }).some(node =>
+            !filter || filter(node)
+        );
     },
 
     /**
@@ -157,11 +166,13 @@ Object.assign(DOM.prototype, {
     is(nodes, filter) {
         filter = this.parseFilter(filter);
 
-        return this.parseNodes(nodes, { node: true, fragment: true, shadow: true })
-            .some(node =>
-                !filter ||
-                filter(node)
-            );
+        return this.parseNodes(nodes, {
+            node: true,
+            fragment: true,
+            shadow: true
+        }).some(node =>
+            !filter || filter(node)
+        );
     },
 
     /**
@@ -170,8 +181,11 @@ Object.assign(DOM.prototype, {
      * @returns {Boolean} TRUE if any of the nodes is connected to the DOM, otherwise FALSE.
      */
     isConnected(nodes) {
-        return this.parseNodes(nodes, { node: true, fragment: true, shadow: true })
-            .some(node => node.isConnected);
+        return this.parseNodes(nodes, {
+            node: true,
+            fragment: true,
+            shadow: true
+        }).some(node => node.isConnected);
     },
 
     /**
@@ -181,12 +195,21 @@ Object.assign(DOM.prototype, {
      * @returns {Boolean} TRUE if any of the nodes is considered equal to any of the other nodes, otherwise FALSE.
      */
     isEqual(nodes, others) {
-        others = this.parseNodes(others, { node: true, fragment: true, shadow: true });
+        others = this.parseNodes(others, {
+            node: true,
+            fragment: true,
+            shadow: true
+        });
 
-        return this.parseNodes(nodes, { node: true, fragment: true, shadow: true })
-            .some(node =>
-                others.some(other => node.isEqualNode(other))
-            );
+        return this.parseNodes(nodes, {
+            node: true,
+            fragment: true,
+            shadow: true
+        }).some(node =>
+            others.some(other =>
+                node.isEqualNode(other)
+            )
+        );
     },
 
     /**
@@ -195,17 +218,22 @@ Object.assign(DOM.prototype, {
      * @returns {Boolean} TRUE if any of the nodes is "fixed", otherwise FALSE.
      */
     isFixed(nodes) {
-        return this.parseNodes(nodes, { node: true })
-            .some(node =>
-                (Core.isElement(node) && this.constructor._css(node, 'position') === 'fixed') ||
-                this.constructor._parents(
-                    node,
-                    parent =>
-                        Core.isElement(parent) && this.constructor._css(parent, 'position') === 'fixed',
-                    false,
-                    true
-                ).length
-            );
+        return this.parseNodes(nodes, {
+            node: true
+        }).some(node =>
+            (
+                Core.isElement(node) &&
+                this.constructor._css(node, 'position') === 'fixed'
+            ) ||
+            this.constructor._parents(
+                node,
+                parent =>
+                    Core.isElement(parent) &&
+                    this.constructor._css(parent, 'position') === 'fixed',
+                false,
+                true
+            ).length
+        );
     },
 
     /**
@@ -214,10 +242,13 @@ Object.assign(DOM.prototype, {
      * @returns {Boolean} TRUE if any of the nodes is hidden, otherwise FALSE.
      */
     isHidden(nodes) {
-        return this.parseNodes(nodes, { node: true, document: true, window: true })
-            .some(node =>
-                !this.constructor._isVisible(node)
-            );
+        return this.parseNodes(nodes, {
+            node: true,
+            document: true,
+            window: true
+        }).some(node =>
+            !this.constructor._isVisible(node)
+        );
     },
 
     /**
@@ -227,12 +258,21 @@ Object.assign(DOM.prototype, {
      * @returns {Boolean} TRUE if any of the nodes is considered identical to any of the other nodes, otherwise FALSE.
      */
     isSame(nodes, others) {
-        others = this.parseNodes(others, { node: true, fragment: true, shadow: true });
+        others = this.parseNodes(others, {
+            node: true,
+            fragment: true,
+            shadow: true
+        });
 
-        return this.parseNodes(nodes, { node: true, fragment: true, shadow: true })
-            .some(node =>
-                others.some(other => node.isSameNode(other))
-            );
+        return this.parseNodes(nodes, {
+            node: true,
+            fragment: true,
+            shadow: true
+        }).some(node =>
+            others.some(other =>
+                node.isSameNode(other)
+            )
+        );
     },
 
     /**
@@ -241,10 +281,13 @@ Object.assign(DOM.prototype, {
      * @returns {Boolean} TRUE if any of the nodes is visible, otherwise FALSE.
      */
     isVisible(nodes) {
-        return this.parseNodes(nodes, { node: true, document: true, window: true })
-            .some(node =>
-                this.constructor._isVisible(node)
-            );
+        return this.parseNodes(nodes, {
+            node: true,
+            document: true,
+            window: true
+        }).some(node =>
+            this.constructor._isVisible(node)
+        );
     }
 
 });

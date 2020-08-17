@@ -7,7 +7,9 @@ describe('#ready', function() {
         assert.equal(
             await exec(_ => {
                 let result;
-                dom.ready(_ => { result = true; });
+                dom.ready(_ => {
+                    result = true;
+                });
                 return result;
             }),
             true

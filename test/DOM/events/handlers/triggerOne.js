@@ -17,11 +17,9 @@ describe('#triggerOne', function() {
         assert.equal(
             await exec(_ => {
                 let result = 0;
-                dom.addEvent(
-                    'a',
-                    'click',
-                    _ => { result++; }
-                );
+                dom.addEvent('a', 'click', _ => {
+                    result++;
+                });
                 dom.triggerOne('a', 'click');
                 return result;
             }),
@@ -33,11 +31,9 @@ describe('#triggerOne', function() {
         assert.equal(
             await exec(_ => {
                 let result = 0;
-                dom.addEvent(
-                    'a',
-                    'click.test',
-                    _ => { result++; }
-                );
+                dom.addEvent('a', 'click.test', _ => {
+                    result++;
+                });
                 dom.triggerOne('a', 'click');
                 return result;
             }),
@@ -49,11 +45,9 @@ describe('#triggerOne', function() {
         assert.equal(
             await exec(_ => {
                 let result = 0;
-                dom.addEvent(
-                    'a',
-                    'click.test.deep',
-                    _ => { result++; }
-                );
+                dom.addEvent('a', 'click.test.deep', _ => {
+                    result++;
+                });
                 dom.triggerOne('a', 'click');
                 return result;
             }),
@@ -65,11 +59,9 @@ describe('#triggerOne', function() {
         assert.equal(
             await exec(_ => {
                 let result = 0;
-                dom.addEvent(
-                    'a',
-                    'click.test',
-                    _ => { result++; }
-                );
+                dom.addEvent('a', 'click.test', _ => {
+                    result++;
+                });
                 dom.triggerOne('a', 'click.test');
                 return result;
             }),
@@ -81,11 +73,9 @@ describe('#triggerOne', function() {
         assert.equal(
             await exec(_ => {
                 let result = 0;
-                dom.addEvent(
-                    'a',
-                    'click.test.deep',
-                    _ => { result++; }
-                );
+                dom.addEvent('a', 'click.test.deep', _ => {
+                    result++;
+                });
                 dom.triggerOne('a', 'click.test');
                 return result;
             }),
@@ -97,11 +87,9 @@ describe('#triggerOne', function() {
         assert.equal(
             await exec(_ => {
                 let result = 0;
-                dom.addEvent(
-                    'a',
-                    'click.test.deep',
-                    _ => { result++; }
-                );
+                dom.addEvent('a', 'click.test.deep', _ => {
+                    result++;
+                });
                 dom.triggerOne('a', 'click.test.deep');
                 return result;
             }),
@@ -113,11 +101,9 @@ describe('#triggerOne', function() {
         assert.equal(
             await exec(_ => {
                 let result = 0;
-                dom.addEvent(
-                    'a',
-                    'click',
-                    _ => { result++; }
-                );
+                dom.addEvent('a', 'click', _ => {
+                    result++;
+                });
                 dom.triggerOne('a', 'click.test');
                 return result;
             }),
@@ -129,11 +115,9 @@ describe('#triggerOne', function() {
         assert.equal(
             await exec(_ => {
                 let result = 0;
-                dom.addEvent(
-                    'a',
-                    'click.test',
-                    _ => { result++; }
-                );
+                dom.addEvent('a', 'click.test', _ => {
+                    result++;
+                });
                 dom.triggerOne('a', 'click.test.deep');
                 return result;
             }),
@@ -145,17 +129,15 @@ describe('#triggerOne', function() {
         assert.equal(
             await exec(_ => {
                 let result = 0;
-                dom.addEvent(
-                    'a',
-                    'click',
-                    e => {
-                        if (e.detail === 'test') {
-                            result++;
-                        }
+                dom.addEvent('a', 'click', e => {
+                    if (e.detail === 'test') {
+                        result++;
                     }
-                );
+                });
                 dom.triggerOne('a', 'click');
-                dom.triggerOne('a', 'click', { detail: 'test' });
+                dom.triggerOne('a', 'click', {
+                    detail: 'test'
+                });
                 return result;
             }),
             1
@@ -166,13 +148,9 @@ describe('#triggerOne', function() {
         assert.equal(
             await exec(_ => {
                 let result = 0;
-                dom.addEvent(
-                    '#div1',
-                    'click',
-                    _ => {
-                        result++;
-                    }
-                );
+                dom.addEvent('#div1', 'click', _ => {
+                    result++;
+                });
                 dom.triggerOne('a', 'click');
                 return result;
             }),
@@ -184,13 +162,9 @@ describe('#triggerOne', function() {
         assert.equal(
             await exec(_ => {
                 let result = 0;
-                dom.addEvent(
-                    '#div1',
-                    'click',
-                    _ => {
-                        result++;
-                    }
-                );
+                dom.addEvent('#div1', 'click', _ => {
+                    result++;
+                });
                 dom.triggerOne('a', 'click', {
                     bubbles: false
                 });
@@ -203,13 +177,9 @@ describe('#triggerOne', function() {
     it('returns false if the event is cancelled', async function() {
         assert.equal(
             await exec(_ => {
-                dom.addEvent(
-                    '#test1',
-                    'click',
-                    e => {
-                        e.preventDefault();
-                    }
-                );
+                dom.addEvent('#test1', 'click', e => {
+                    e.preventDefault();
+                });
                 return dom.triggerOne('#test1', 'click');
             }),
             false
@@ -219,11 +189,7 @@ describe('#triggerOne', function() {
     it('returns true if the event is not cancelled', async function() {
         assert.equal(
             await exec(_ => {
-                dom.addEvent(
-                    '#test1',
-                    'click',
-                    e => { }
-                );
+                dom.addEvent('#test1', 'click', _ => { });
                 return dom.triggerOne('#test1', 'click');
             }),
             true
@@ -233,13 +199,9 @@ describe('#triggerOne', function() {
     it('can be prevented from being cancelled', async function() {
         assert.equal(
             await exec(_ => {
-                dom.addEvent(
-                    '#test1',
-                    'click',
-                    e => {
-                        e.preventDefault();
-                    }
-                );
+                dom.addEvent('#test1', 'click', e => {
+                    e.preventDefault();
+                });
                 return dom.triggerOne('#test1', 'click', {
                     cancelable: false
                 });
@@ -252,11 +214,9 @@ describe('#triggerOne', function() {
         assert.equal(
             await exec(_ => {
                 let result = 0;
-                dom.addEvent(
-                    'a',
-                    'click',
-                    _ => { result++; }
-                );
+                dom.addEvent('a', 'click', _ => {
+                    result++;
+                });
                 dom.triggerOne(
                     document.getElementById('test1'),
                     'click'
@@ -271,11 +231,9 @@ describe('#triggerOne', function() {
         assert.equal(
             await exec(_ => {
                 let result = 0;
-                dom.addEvent(
-                    'a',
-                    'click',
-                    _ => { result++; }
-                );
+                dom.addEvent('a', 'click', _ => {
+                    result++;
+                });
                 dom.triggerOne(
                     document.querySelectorAll('a'),
                     'click'
@@ -290,11 +248,9 @@ describe('#triggerOne', function() {
         assert.equal(
             await exec(_ => {
                 let result = 0;
-                dom.addEvent(
-                    'a',
-                    'click',
-                    _ => { result++; }
-                );
+                dom.addEvent('a', 'click', _ => {
+                    result++;
+                });
                 dom.triggerOne(
                     document.getElementById('div1').children,
                     'click'
@@ -311,11 +267,9 @@ describe('#triggerOne', function() {
                 let result = 0;
                 const div = document.createElement('div');
                 const shadow = div.attachShadow({ mode: 'open' });
-                dom.addEvent(
-                    shadow,
-                    'click',
-                    _ => { result++; }
-                );
+                dom.addEvent(shadow, 'click', _ => {
+                    result++;
+                });
                 dom.triggerOne(shadow, 'click');
                 return result;
             }),
@@ -327,11 +281,9 @@ describe('#triggerOne', function() {
         assert.equal(
             await exec(_ => {
                 let result = 0;
-                dom.addEvent(
-                    document,
-                    'click',
-                    _ => { result++; }
-                );
+                dom.addEvent(document, 'click', _ => {
+                    result++;
+                });
                 dom.triggerOne(document, 'click');
                 return result;
             }),
@@ -343,11 +295,9 @@ describe('#triggerOne', function() {
         assert.equal(
             await exec(_ => {
                 let result = 0;
-                dom.addEvent(
-                    window,
-                    'click',
-                    _ => { result++; }
-                );
+                dom.addEvent(window, 'click', _ => {
+                    result++;
+                });
                 dom.triggerOne(window, 'click');
                 return result;
             }),
@@ -359,11 +309,9 @@ describe('#triggerOne', function() {
         assert.equal(
             await exec(_ => {
                 let result = 0;
-                dom.addEvent(
-                    'a',
-                    'click',
-                    _ => { result++; }
-                );
+                dom.addEvent('a', 'click', _ => {
+                    result++;
+                });
                 dom.triggerOne([
                     document.getElementById('test1'),
                     document.getElementById('test2')

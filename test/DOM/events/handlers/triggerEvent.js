@@ -17,11 +17,9 @@ describe('#triggerEvent', function() {
         assert.equal(
             await exec(_ => {
                 let result = 0;
-                dom.addEvent(
-                    'a',
-                    'click',
-                    _ => { result++; }
-                );
+                dom.addEvent('a', 'click', _ => {
+                    result++;
+                });
                 dom.triggerEvent('a', 'click');
                 return result;
             }),
@@ -33,16 +31,12 @@ describe('#triggerEvent', function() {
         assert.equal(
             await exec(_ => {
                 let result = 0;
-                dom.addEvent(
-                    'a',
-                    'click',
-                    _ => { result++; }
-                );
-                dom.addEvent(
-                    'a',
-                    'hover',
-                    _ => { result++; }
-                );
+                dom.addEvent('a', 'click', _ => {
+                    result++;
+                });
+                dom.addEvent('a', 'hover', _ => {
+                    result++;
+                });
                 dom.triggerEvent('a', 'click hover');
                 return result;
             }),
@@ -54,11 +48,9 @@ describe('#triggerEvent', function() {
         assert.equal(
             await exec(_ => {
                 let result = 0;
-                dom.addEvent(
-                    'a',
-                    'click.test',
-                    _ => { result++; }
-                );
+                dom.addEvent('a', 'click.test', _ => {
+                    result++;
+                });
                 dom.triggerEvent('a', 'click');
                 return result;
             }),
@@ -70,16 +62,12 @@ describe('#triggerEvent', function() {
         assert.equal(
             await exec(_ => {
                 let result = 0;
-                dom.addEvent(
-                    'a',
-                    'click.test',
-                    _ => { result++; }
-                );
-                dom.addEvent(
-                    'a',
-                    'hover.test',
-                    _ => { result++; }
-                );
+                dom.addEvent('a', 'click.test', _ => {
+                    result++;
+                });
+                dom.addEvent('a', 'hover.test', _ => {
+                    result++;
+                });
                 dom.triggerEvent('a', 'click hover');
                 return result;
             }),
@@ -91,11 +79,9 @@ describe('#triggerEvent', function() {
         assert.equal(
             await exec(_ => {
                 let result = 0;
-                dom.addEvent(
-                    'a',
-                    'click.test.deep',
-                    _ => { result++; }
-                );
+                dom.addEvent('a', 'click.test.deep', _ => {
+                    result++;
+                });
                 dom.triggerEvent('a', 'click');
                 return result;
             }),
@@ -107,16 +93,12 @@ describe('#triggerEvent', function() {
         assert.equal(
             await exec(_ => {
                 let result = 0;
-                dom.addEvent(
-                    'a',
-                    'click.test.deep',
-                    _ => { result++; }
-                );
-                dom.addEvent(
-                    'a',
-                    'hover.test.deep',
-                    _ => { result++; }
-                );
+                dom.addEvent('a', 'click.test.deep', _ => {
+                    result++;
+                });
+                dom.addEvent('a', 'hover.test.deep', _ => {
+                    result++;
+                });
                 dom.triggerEvent('a', 'click hover');
                 return result;
             }),
@@ -128,11 +110,9 @@ describe('#triggerEvent', function() {
         assert.equal(
             await exec(_ => {
                 let result = 0;
-                dom.addEvent(
-                    'a',
-                    'click.test',
-                    _ => { result++; }
-                );
+                dom.addEvent('a', 'click.test', _ => {
+                    result++;
+                });
                 dom.triggerEvent('a', 'click.test');
                 return result;
             }),
@@ -144,16 +124,12 @@ describe('#triggerEvent', function() {
         assert.equal(
             await exec(_ => {
                 let result = 0;
-                dom.addEvent(
-                    'a',
-                    'click.test',
-                    _ => { result++; }
-                );
-                dom.addEvent(
-                    'a',
-                    'hover.test',
-                    _ => { result++; }
-                );
+                dom.addEvent('a', 'click.test', _ => {
+                    result++;
+                });
+                dom.addEvent('a', 'hover.test', _ => {
+                    result++;
+                });
                 dom.triggerEvent('a', 'click.test hover.test');
                 return result;
             }),
@@ -165,11 +141,9 @@ describe('#triggerEvent', function() {
         assert.equal(
             await exec(_ => {
                 let result = 0;
-                dom.addEvent(
-                    'a',
-                    'click.test.deep',
-                    _ => { result++; }
-                );
+                dom.addEvent('a', 'click.test.deep', _ => {
+                    result++;
+                });
                 dom.triggerEvent('a', 'click.test');
                 return result;
             }),
@@ -181,16 +155,12 @@ describe('#triggerEvent', function() {
         assert.equal(
             await exec(_ => {
                 let result = 0;
-                dom.addEvent(
-                    'a',
-                    'click.test.deep',
-                    _ => { result++; }
-                );
-                dom.addEvent(
-                    'a',
-                    'hover.test.deep',
-                    _ => { result++; }
-                );
+                dom.addEvent('a', 'click.test.deep', _ => {
+                    result++;
+                });
+                dom.addEvent('a', 'hover.test.deep', _ => {
+                    result++;
+                });
                 dom.triggerEvent('a', 'click.test hover.test');
                 return result;
             }),
@@ -202,11 +172,9 @@ describe('#triggerEvent', function() {
         assert.equal(
             await exec(_ => {
                 let result = 0;
-                dom.addEvent(
-                    'a',
-                    'click.test.deep',
-                    _ => { result++; }
-                );
+                dom.addEvent('a', 'click.test.deep', _ => {
+                    result++;
+                });
                 dom.triggerEvent('a', 'click.test.deep');
                 return result;
             }),
@@ -218,16 +186,12 @@ describe('#triggerEvent', function() {
         assert.equal(
             await exec(_ => {
                 let result = 0;
-                dom.addEvent(
-                    'a',
-                    'click.test.deep',
-                    _ => { result++; }
-                );
-                dom.addEvent(
-                    'a',
-                    'hover.test.deep',
-                    _ => { result++; }
-                );
+                dom.addEvent('a', 'click.test.deep', _ => {
+                    result++;
+                });
+                dom.addEvent('a', 'hover.test.deep', _ => {
+                    result++;
+                });
                 dom.triggerEvent('a', 'click.test.deep hover.test.deep');
                 return result;
             }),
@@ -239,11 +203,9 @@ describe('#triggerEvent', function() {
         assert.equal(
             await exec(_ => {
                 let result = 0;
-                dom.addEvent(
-                    'a',
-                    'click',
-                    _ => { result++; }
-                );
+                dom.addEvent('a', 'click', _ => {
+                    result++;
+                });
                 dom.triggerEvent('a', 'click.test');
                 return result;
             }),
@@ -255,16 +217,12 @@ describe('#triggerEvent', function() {
         assert.equal(
             await exec(_ => {
                 let result = 0;
-                dom.addEvent(
-                    'a',
-                    'click',
-                    _ => { result++; }
-                );
-                dom.addEvent(
-                    'a',
-                    'hover',
-                    _ => { result++; }
-                );
+                dom.addEvent('a', 'click', _ => {
+                    result++;
+                });
+                dom.addEvent('a', 'hover', _ => {
+                    result++;
+                });
                 dom.triggerEvent('a', 'click.test hover.test');
                 return result;
             }),
@@ -276,11 +234,9 @@ describe('#triggerEvent', function() {
         assert.equal(
             await exec(_ => {
                 let result = 0;
-                dom.addEvent(
-                    'a',
-                    'click.test',
-                    _ => { result++; }
-                );
+                dom.addEvent('a', 'click.test', _ => {
+                    result++;
+                });
                 dom.triggerEvent('a', 'click.test.deep');
                 return result;
             }),
@@ -292,16 +248,12 @@ describe('#triggerEvent', function() {
         assert.equal(
             await exec(_ => {
                 let result = 0;
-                dom.addEvent(
-                    'a',
-                    'click.test',
-                    _ => { result++; }
-                );
-                dom.addEvent(
-                    'a',
-                    'hover.test',
-                    _ => { result++; }
-                );
+                dom.addEvent('a', 'click.test', _ => {
+                    result++;
+                });
+                dom.addEvent('a', 'hover.test', _ => {
+                    result++;
+                });
                 dom.triggerEvent('a', 'click.test.deep hover.test.deep');
                 return result;
             }),
@@ -313,17 +265,15 @@ describe('#triggerEvent', function() {
         assert.equal(
             await exec(_ => {
                 let result = 0;
-                dom.addEvent(
-                    'a',
-                    'click',
-                    e => {
-                        if (e.detail === 'test') {
-                            result++;
-                        }
+                dom.addEvent('a', 'click', e => {
+                    if (e.detail === 'test') {
+                        result++;
                     }
-                );
+                });
                 dom.triggerEvent('a', 'click');
-                dom.triggerEvent('a', 'click', { detail: 'test' });
+                dom.triggerEvent('a', 'click', {
+                    detail: 'test'
+                });
                 return result;
             }),
             2
@@ -334,13 +284,9 @@ describe('#triggerEvent', function() {
         assert.equal(
             await exec(_ => {
                 let result = 0;
-                dom.addEvent(
-                    '#div1',
-                    'click',
-                    _ => {
-                        result++;
-                    }
-                );
+                dom.addEvent('#div1', 'click', _ => {
+                    result++;
+                });
                 dom.triggerEvent('a', 'click');
                 return result;
             }),
@@ -352,13 +298,9 @@ describe('#triggerEvent', function() {
         assert.equal(
             await exec(_ => {
                 let result = 0;
-                dom.addEvent(
-                    '#div1',
-                    'click',
-                    _ => {
-                        result++;
-                    }
-                );
+                dom.addEvent('#div1', 'click', _ => {
+                    result++;
+                });
                 dom.triggerEvent('a', 'click', {
                     bubbles: false
                 });
@@ -372,13 +314,9 @@ describe('#triggerEvent', function() {
         assert.equal(
             await exec(_ => {
                 let result;
-                dom.addEvent(
-                    '#test1',
-                    'click',
-                    e => {
-                        result = e.cancelable;
-                    }
-                );
+                dom.addEvent('#test1', 'click', e => {
+                    result = e.cancelable;
+                });
                 dom.triggerEvent('#test1', 'click');
                 return result;
             }),
@@ -390,13 +328,9 @@ describe('#triggerEvent', function() {
         assert.equal(
             await exec(_ => {
                 let result;
-                dom.addEvent(
-                    '#test1',
-                    'click',
-                    e => {
-                        result = e.cancelable;
-                    }
-                );
+                dom.addEvent('#test1', 'click', e => {
+                    result = e.cancelable;
+                });
                 dom.triggerEvent('#test1', 'click', {
                     cancelable: false
                 });
@@ -410,11 +344,9 @@ describe('#triggerEvent', function() {
         assert.equal(
             await exec(_ => {
                 let result = 0;
-                dom.addEvent(
-                    'a',
-                    'click',
-                    _ => { result++; }
-                );
+                dom.addEvent('a', 'click', _ => {
+                    result++;
+                });
                 dom.triggerEvent(
                     document.getElementById('test1'),
                     'click'
@@ -429,11 +361,9 @@ describe('#triggerEvent', function() {
         assert.equal(
             await exec(_ => {
                 let result = 0;
-                dom.addEvent(
-                    'a',
-                    'click',
-                    _ => { result++; }
-                );
+                dom.addEvent('a', 'click', _ => {
+                    result++;
+                });
                 dom.triggerEvent(
                     document.querySelectorAll('a'),
                     'click'
@@ -448,11 +378,9 @@ describe('#triggerEvent', function() {
         assert.equal(
             await exec(_ => {
                 let result = 0;
-                dom.addEvent(
-                    'a',
-                    'click',
-                    _ => { result++; }
-                );
+                dom.addEvent('a', 'click', _ => {
+                    result++;
+                });
                 dom.triggerEvent(
                     document.getElementById('div1').children,
                     'click'
@@ -469,11 +397,9 @@ describe('#triggerEvent', function() {
                 let result = 0;
                 const div = document.createElement('div');
                 const shadow = div.attachShadow({ mode: 'open' });
-                dom.addEvent(
-                    shadow,
-                    'click',
-                    _ => { result++; }
-                );
+                dom.addEvent(shadow, 'click', _ => {
+                    result++;
+                });
                 dom.triggerEvent(shadow, 'click');
                 return result;
             }),
@@ -485,11 +411,9 @@ describe('#triggerEvent', function() {
         assert.equal(
             await exec(_ => {
                 let result = 0;
-                dom.addEvent(
-                    document,
-                    'click',
-                    _ => { result++; }
-                );
+                dom.addEvent(document, 'click', _ => {
+                    result++;
+                });
                 dom.triggerEvent(document, 'click');
                 return result;
             }),
@@ -501,11 +425,9 @@ describe('#triggerEvent', function() {
         assert.equal(
             await exec(_ => {
                 let result = 0;
-                dom.addEvent(
-                    window,
-                    'click',
-                    _ => { result++; }
-                );
+                dom.addEvent(window, 'click', _ => {
+                    result++;
+                });
                 dom.triggerEvent(window, 'click');
                 return result;
             }),
@@ -517,11 +439,9 @@ describe('#triggerEvent', function() {
         assert.equal(
             await exec(_ => {
                 let result = 0;
-                dom.addEvent(
-                    'a',
-                    'click',
-                    _ => { result++; }
-                );
+                dom.addEvent('a', 'click', _ => {
+                    result++;
+                });
                 dom.triggerEvent([
                     document.getElementById('test1'),
                     document.getElementById('test2')

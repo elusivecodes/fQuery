@@ -11,10 +11,7 @@ const testRotateOut = async (selector, x = 0, y = 1, z = 0, inverse = 1) => {
     const data = await getAnimationStyle(selector, 'transform');
 
     const amount = rotateOut(data.progress, inverse);
-    assert.equal(
-        data.transform,
-        `rotate3d(${x}, ${y}, ${z}, ${amount}deg)`
-    );
+    assert.equal(data.transform, `rotate3d(${x}, ${y}, ${z}, ${amount}deg)`);
 };
 
 describe('#rotateOut', function() {

@@ -15,8 +15,12 @@ describe('#removeEvent', function() {
         assert.equal(
             await exec(_ => {
                 let result = 0;
-                const callback1 = _ => { result++; };
-                const callback2 = _ => { result++; };
+                const callback1 = _ => {
+                    result++;
+                };
+                const callback2 = _ => {
+                    result++;
+                };
                 const event1 = new Event('click');
                 const event2 = new Event('hover');
                 const element1 = document.getElementById('test1');
@@ -38,8 +42,12 @@ describe('#removeEvent', function() {
         assert.equal(
             await exec(_ => {
                 let result = 0;
-                const callback1 = _ => { result++; };
-                const callback2 = _ => { result++; };
+                const callback1 = _ => {
+                    result++;
+                };
+                const callback2 = _ => {
+                    result++;
+                };
                 const event1 = new Event('click');
                 const event2 = new Event('hover');
                 const element1 = document.getElementById('test1');
@@ -62,8 +70,12 @@ describe('#removeEvent', function() {
         assert.equal(
             await exec(_ => {
                 let result = 0;
-                const callback1 = _ => { result++; };
-                const callback2 = _ => { result++; };
+                const callback1 = _ => {
+                    result++;
+                };
+                const callback2 = _ => {
+                    result++;
+                };
                 const event1 = new Event('click');
                 const event2 = new Event('hover');
                 const element1 = document.getElementById('test1');
@@ -86,8 +98,12 @@ describe('#removeEvent', function() {
         assert.equal(
             await exec(_ => {
                 let result = 0;
-                const callback1 = _ => { result++; };
-                const callback2 = _ => { result++; };
+                const callback1 = _ => {
+                    result++;
+                };
+                const callback2 = _ => {
+                    result++;
+                };
                 const event = new Event('click');
                 const element1 = document.getElementById('test1');
                 const element2 = document.getElementById('test2');
@@ -106,7 +122,9 @@ describe('#removeEvent', function() {
         assert.equal(
             await exec(_ => {
                 let result = 0;
-                const callback = _ => { result++; };
+                const callback = _ => {
+                    result++;
+                };
                 const event = new Event('click');
                 const element1 = document.getElementById('test1');
                 const element2 = document.getElementById('test2');
@@ -124,7 +142,9 @@ describe('#removeEvent', function() {
         assert.equal(
             await exec(_ => {
                 let result = 0;
-                const callback = _ => { result++; };
+                const callback = _ => {
+                    result++;
+                };
                 const event1 = new Event('click');
                 const event2 = new Event('hover');
                 const element1 = document.getElementById('test1');
@@ -146,7 +166,9 @@ describe('#removeEvent', function() {
         assert.equal(
             await exec(_ => {
                 let result = 0;
-                const callback = _ => { result++; };
+                const callback = _ => {
+                    result++;
+                };
                 const event = new Event('click');
                 const element1 = document.getElementById('test1');
                 const element2 = document.getElementById('test2');
@@ -164,7 +186,9 @@ describe('#removeEvent', function() {
         assert.equal(
             await exec(_ => {
                 let result = 0;
-                const callback = _ => { result++; };
+                const callback = _ => {
+                    result++;
+                };
                 const event1 = new Event('click');
                 const event2 = new Event('hover');
                 const element1 = document.getElementById('test1');
@@ -186,7 +210,9 @@ describe('#removeEvent', function() {
         assert.equal(
             await exec(_ => {
                 let result = 0;
-                const callback = _ => { result++; };
+                const callback = _ => {
+                    result++;
+                };
                 const event = new Event('click');
                 const element1 = document.getElementById('test1');
                 const element2 = document.getElementById('test2');
@@ -204,7 +230,9 @@ describe('#removeEvent', function() {
         assert.equal(
             await exec(_ => {
                 let result = 0;
-                const callback = _ => { result++; };
+                const callback = _ => {
+                    result++;
+                };
                 const event1 = new Event('click');
                 const event2 = new Event('hover');
                 const element1 = document.getElementById('test1');
@@ -226,7 +254,9 @@ describe('#removeEvent', function() {
         assert.equal(
             await exec(_ => {
                 let result = 0;
-                const callback = _ => { result++; };
+                const callback = _ => {
+                    result++;
+                };
                 const event = new Event('click');
                 const element1 = document.getElementById('test1');
                 const element2 = document.getElementById('test2');
@@ -244,7 +274,9 @@ describe('#removeEvent', function() {
         assert.equal(
             await exec(_ => {
                 let result = 0;
-                const callback = _ => { result++; };
+                const callback = _ => {
+                    result++;
+                };
                 const event1 = new Event('click');
                 const event2 = new Event('hover');
                 const element1 = document.getElementById('test1');
@@ -266,7 +298,9 @@ describe('#removeEvent', function() {
         assert.equal(
             await exec(_ => {
                 let result = 0;
-                const callback = _ => { result++; };
+                const callback = _ => {
+                    result++;
+                };
                 const event = new Event('click');
                 const element1 = document.getElementById('test1');
                 const element2 = document.getElementById('test2');
@@ -284,7 +318,9 @@ describe('#removeEvent', function() {
         assert.equal(
             await exec(_ => {
                 let result = 0;
-                const callback = _ => { result++; };
+                const callback = _ => {
+                    result++;
+                };
                 const event1 = new Event('click');
                 const event2 = new Event('hover');
                 const element1 = document.getElementById('test1');
@@ -306,8 +342,12 @@ describe('#removeEvent', function() {
         assert.equal(
             await exec(_ => {
                 let result = 0;
-                const callback1 = _ => { result++; };
-                const callback2 = _ => { result++; };
+                const callback1 = _ => {
+                    result++;
+                };
+                const callback2 = _ => {
+                    result++;
+                };
                 const event = new Event('click');
                 const element1 = document.getElementById('test1');
                 const element2 = document.getElementById('test2');
@@ -326,7 +366,9 @@ describe('#removeEvent', function() {
         assert.equal(
             await exec(_ => {
                 let result = 0;
-                const callback = _ => { result++; };
+                const callback = _ => {
+                    result++;
+                };
                 const event = new Event('click');
                 const element1 = document.getElementById('test1');
                 const element2 = document.getElementById('test2');
@@ -344,7 +386,9 @@ describe('#removeEvent', function() {
         assert.equal(
             await exec(_ => {
                 let result = 0;
-                const callback = _ => { result++; };
+                const callback = _ => {
+                    result++;
+                };
                 const event1 = new Event('click');
                 const event2 = new Event('hover');
                 const element1 = document.getElementById('test1');
@@ -366,7 +410,9 @@ describe('#removeEvent', function() {
         assert.equal(
             await exec(_ => {
                 let result = 0;
-                const callback = _ => { result++; };
+                const callback = _ => {
+                    result++;
+                };
                 const event = new Event('click');
                 const element1 = document.getElementById('test1');
                 const element2 = document.getElementById('test2');
@@ -384,7 +430,9 @@ describe('#removeEvent', function() {
         assert.equal(
             await exec(_ => {
                 let result = 0;
-                const callback = _ => { result++; };
+                const callback = _ => {
+                    result++;
+                };
                 const event1 = new Event('click');
                 const event2 = new Event('hover');
                 const element1 = document.getElementById('test1');
@@ -406,8 +454,12 @@ describe('#removeEvent', function() {
         assert.equal(
             await exec(_ => {
                 let result = 0;
-                const callback1 = _ => { result++; };
-                const callback2 = _ => { result++; };
+                const callback1 = _ => {
+                    result++;
+                };
+                const callback2 = _ => {
+                    result++;
+                };
                 const event = new Event('click');
                 const element1 = document.getElementById('test1');
                 const element2 = document.getElementById('test2');
@@ -426,8 +478,12 @@ describe('#removeEvent', function() {
         assert.equal(
             await exec(_ => {
                 let result = 0;
-                const callback1 = _ => { result++; };
-                const callback2 = _ => { result++; };
+                const callback1 = _ => {
+                    result++;
+                };
+                const callback2 = _ => {
+                    result++;
+                };
                 const event = new Event('click');
                 const element1 = document.getElementById('test1');
                 const element2 = document.getElementById('test2');
@@ -450,8 +506,12 @@ describe('#removeEvent', function() {
         assert.equal(
             await exec(_ => {
                 let result = 0;
-                const callback1 = _ => { result++; };
-                const callback2 = _ => { result++; };
+                const callback1 = _ => {
+                    result++;
+                };
+                const callback2 = _ => {
+                    result++;
+                };
                 const event = new Event('click');
                 const element1 = document.getElementById('test1');
                 const element2 = document.getElementById('test2');
@@ -474,8 +534,12 @@ describe('#removeEvent', function() {
         assert.equal(
             await exec(_ => {
                 let result = 0;
-                const callback1 = _ => { result++; };
-                const callback2 = _ => { result++; };
+                const callback1 = _ => {
+                    result++;
+                };
+                const callback2 = _ => {
+                    result++;
+                };
                 const event = new Event('click');
                 const div = document.createElement('div');
                 const shadow = div.attachShadow({ mode: 'open' });
@@ -493,8 +557,12 @@ describe('#removeEvent', function() {
         assert.equal(
             await exec(_ => {
                 let result = 0;
-                const callback1 = _ => { result++; };
-                const callback2 = _ => { result++; };
+                const callback1 = _ => {
+                    result++;
+                };
+                const callback2 = _ => {
+                    result++;
+                };
                 const event = new Event('click');
                 dom.addEvent(document, 'click', callback1);
                 dom.addEvent(document, 'click', callback2);
@@ -510,8 +578,12 @@ describe('#removeEvent', function() {
         assert.equal(
             await exec(_ => {
                 let result = 0;
-                const callback1 = _ => { result++; };
-                const callback2 = _ => { result++; };
+                const callback1 = _ => {
+                    result++;
+                };
+                const callback2 = _ => {
+                    result++;
+                };
                 const event = new Event('click');
                 dom.addEvent(window, 'click', callback1);
                 dom.addEvent(window, 'click', callback2);
@@ -527,8 +599,12 @@ describe('#removeEvent', function() {
         assert.equal(
             await exec(_ => {
                 let result = 0;
-                const callback1 = _ => { result++; };
-                const callback2 = _ => { result++; };
+                const callback1 = _ => {
+                    result++;
+                };
+                const callback2 = _ => {
+                    result++;
+                };
                 const event = new Event('click');
                 const element1 = document.getElementById('test1');
                 const element2 = document.getElementById('test2');

@@ -11,33 +11,30 @@ Object.assign(DOM, {
      * @returns {number} The height.
      */
     _height(node, innerOuter = 1) {
-        return this._forceShow(
-            node,
-            node => {
-                if (Core.isDocument(node)) {
-                    node = node.documentElement;
-                }
-
-                let result = node.clientHeight;
-
-                if (innerOuter === this.INNER) {
-                    result -= parseInt(this._css(node, 'padding-top'))
-                        + parseInt(this._css(node, 'padding-bottom'));
-                }
-
-                if (innerOuter >= this.OUTER) {
-                    result += parseInt(this._css(node, 'border-top-width'))
-                        + parseInt(this._css(node, 'border-bottom-width'));
-                }
-
-                if (innerOuter === this.OUTER_MARGIN) {
-                    result += parseInt(this._css(node, 'margin-top'))
-                        + parseInt(this._css(node, 'margin-bottom'));
-                }
-
-                return result;
+        return this._forceShow(node, node => {
+            if (Core.isDocument(node)) {
+                node = node.documentElement;
             }
-        );
+
+            let result = node.clientHeight;
+
+            if (innerOuter === this.INNER) {
+                result -= parseInt(this._css(node, 'padding-top'))
+                    + parseInt(this._css(node, 'padding-bottom'));
+            }
+
+            if (innerOuter >= this.OUTER) {
+                result += parseInt(this._css(node, 'border-top-width'))
+                    + parseInt(this._css(node, 'border-bottom-width'));
+            }
+
+            if (innerOuter === this.OUTER_MARGIN) {
+                result += parseInt(this._css(node, 'margin-top'))
+                    + parseInt(this._css(node, 'margin-bottom'));
+            }
+
+            return result;
+        });
     },
 
     /**
@@ -46,16 +43,13 @@ Object.assign(DOM, {
      * @returns {number} The scroll height.
      */
     _scrollHeight(node) {
-        return this._forceShow(
-            node,
-            node => {
-                if (Core.isDocument(node)) {
-                    node = node.documentElement;
-                }
-
-                return node.scrollHeight;
+        return this._forceShow(node, node => {
+            if (Core.isDocument(node)) {
+                node = node.documentElement;
             }
-        );
+
+            return node.scrollHeight;
+        });
     },
 
     /**
@@ -64,16 +58,13 @@ Object.assign(DOM, {
      * @returns {number} The scroll width.
      */
     _scrollWidth(node) {
-        return this._forceShow(
-            node,
-            node => {
-                if (Core.isDocument(node)) {
-                    node = node.documentElement;
-                }
-
-                return node.scrollWidth;
+        return this._forceShow(node, node => {
+            if (Core.isDocument(node)) {
+                node = node.documentElement;
             }
-        );
+
+            return node.scrollWidth;
+        });
     },
 
     /**
@@ -83,33 +74,30 @@ Object.assign(DOM, {
      * @returns {number} The width.
      */
     _width(node, innerOuter = 1) {
-        return this._forceShow(
-            node,
-            node => {
-                if (Core.isDocument(node)) {
-                    node = node.documentElement;
-                }
-
-                let result = node.clientWidth;
-
-                if (innerOuter === this.INNER) {
-                    result -= parseInt(this._css(node, 'padding-left'))
-                        + parseInt(this._css(node, 'padding-right'));
-                }
-
-                if (innerOuter >= this.OUTER) {
-                    result += parseInt(this._css(node, 'border-left-width'))
-                        + parseInt(this._css(node, 'border-right-width'));
-                }
-
-                if (innerOuter === this.OUTER_MARGIN) {
-                    result += parseInt(this._css(node, 'margin-left'))
-                        + parseInt(this._css(node, 'margin-right'));
-                }
-
-                return result;
+        return this._forceShow(node, node => {
+            if (Core.isDocument(node)) {
+                node = node.documentElement;
             }
-        );
+
+            let result = node.clientWidth;
+
+            if (innerOuter === this.INNER) {
+                result -= parseInt(this._css(node, 'padding-left'))
+                    + parseInt(this._css(node, 'padding-right'));
+            }
+
+            if (innerOuter >= this.OUTER) {
+                result += parseInt(this._css(node, 'border-left-width'))
+                    + parseInt(this._css(node, 'border-right-width'));
+            }
+
+            if (innerOuter === this.OUTER_MARGIN) {
+                result += parseInt(this._css(node, 'margin-left'))
+                    + parseInt(this._css(node, 'margin-right'));
+            }
+
+            return result;
+        });
     }
 
 });

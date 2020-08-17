@@ -36,7 +36,7 @@ Object.assign(DOM.prototype, {
 
     /**
      * Import multiple CSS Stylesheet files.
-     * @param {string[]} urls An array of stylesheet URLs.
+     * @param {array} urls An array of stylesheet URLs or attribute objects.
      * @param {Boolean} [cache=true] Whether to cache the requests.
      * @returns {Promise} A new Promise that resolves when the request is completed, or rejects on failure.
      */

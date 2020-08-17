@@ -11,9 +11,9 @@ describe('#mouseDragFactory', function() {
                 dom.addEvent(
                     document.body,
                     'mousedown',
-                    dom.mouseDragFactory(
-                        _ => { result++; }
-                    )
+                    dom.mouseDragFactory(_ => {
+                        result++;
+                    })
                 );
                 document.body.dispatchEvent(downEvent);
                 return result;
@@ -38,7 +38,9 @@ describe('#mouseDragFactory', function() {
                     'mousedown',
                     dom.mouseDragFactory(
                         null,
-                        _ => { result++; },
+                        _ => {
+                            result++;
+                        },
                         null,
                         false
                     )
@@ -70,7 +72,9 @@ describe('#mouseDragFactory', function() {
                     dom.mouseDragFactory(
                         null,
                         null,
-                        _ => { result++; },
+                        _ => {
+                            result++;
+                        },
                         false
                     )
                 );
@@ -99,8 +103,12 @@ describe('#mouseDragFactory', function() {
                     'mousedown',
                     dom.mouseDragFactory(
                         _ => false,
-                        _ => { result++; },
-                        _ => { result++; },
+                        _ => {
+                            result++;
+                        },
+                        _ => {
+                            result++;
+                        },
                         false
                     )
                 );
@@ -130,7 +138,9 @@ describe('#mouseDragFactory', function() {
                     'mousedown',
                     dom.mouseDragFactory(
                         null,
-                        _ => { result++; },
+                        _ => {
+                            result++;
+                        },
                         null,
                         false
                     )
@@ -159,7 +169,9 @@ describe('#mouseDragFactory', function() {
                     dom.mouseDragFactory(
                         null,
                         null,
-                        _ => { result++; },
+                        _ => {
+                            result++;
+                        },
                         false
                     )
                 );

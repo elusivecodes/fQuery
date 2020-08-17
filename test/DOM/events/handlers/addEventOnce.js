@@ -18,11 +18,9 @@ describe('#addEventOnce', function() {
                 const event = new Event('click');
                 const element1 = document.getElementById('test1');
                 const element2 = document.getElementById('test2');
-                dom.addEventOnce(
-                    'a',
-                    'click',
-                    _ => { result++; }
-                );
+                dom.addEventOnce('a', 'click', _ => {
+                    result++;
+                });
                 element1.dispatchEvent(event);
                 element1.dispatchEvent(event);
                 element2.dispatchEvent(event);
@@ -41,11 +39,9 @@ describe('#addEventOnce', function() {
                 const event2 = new Event('hover');
                 const element1 = document.getElementById('test1');
                 const element2 = document.getElementById('test2');
-                dom.addEventOnce(
-                    'a',
-                    'click hover',
-                    _ => { result++; }
-                );
+                dom.addEventOnce('a', 'click hover', _ => {
+                    result++;
+                });
                 element1.dispatchEvent(event1);
                 element1.dispatchEvent(event1);
                 element1.dispatchEvent(event2);
@@ -67,11 +63,9 @@ describe('#addEventOnce', function() {
                 const event = new Event('click');
                 const element1 = document.getElementById('test1');
                 const element2 = document.getElementById('test2');
-                dom.addEventOnce(
-                    'a',
-                    'click.test',
-                    _ => { result++; }
-                );
+                dom.addEventOnce('a', 'click.test', _ => {
+                    result++;
+                });
                 element1.dispatchEvent(event);
                 element1.dispatchEvent(event);
                 element2.dispatchEvent(event);
@@ -90,11 +84,9 @@ describe('#addEventOnce', function() {
                 const event2 = new Event('hover');
                 const element1 = document.getElementById('test1');
                 const element2 = document.getElementById('test2');
-                dom.addEventOnce(
-                    'a',
-                    'click.test hover.test',
-                    _ => { result++; }
-                );
+                dom.addEventOnce('a', 'click.test hover.test', _ => {
+                    result++;
+                });
                 element1.dispatchEvent(event1);
                 element1.dispatchEvent(event1);
                 element1.dispatchEvent(event2);
@@ -116,11 +108,9 @@ describe('#addEventOnce', function() {
                 const event = new Event('click');
                 const element1 = document.getElementById('test1');
                 const element2 = document.getElementById('test2');
-                dom.addEventOnce(
-                    'a',
-                    'click.test.deep',
-                    _ => { result++; }
-                );
+                dom.addEventOnce('a', 'click.test.deep', _ => {
+                    result++;
+                });
                 element1.dispatchEvent(event);
                 element1.dispatchEvent(event);
                 element2.dispatchEvent(event);
@@ -139,11 +129,9 @@ describe('#addEventOnce', function() {
                 const event2 = new Event('hover');
                 const element1 = document.getElementById('test1');
                 const element2 = document.getElementById('test2');
-                dom.addEventOnce(
-                    'a',
-                    'click.test.deep hover.test.deep',
-                    _ => { result++; }
-                );
+                dom.addEventOnce('a', 'click.test.deep hover.test.deep', _ => {
+                    result++;
+                });
                 element1.dispatchEvent(event1);
                 element1.dispatchEvent(event1);
                 element1.dispatchEvent(event2);
@@ -165,11 +153,9 @@ describe('#addEventOnce', function() {
                 const event = new Event('click');
                 const element1 = document.getElementById('test1');
                 const element2 = document.getElementById('test2');
-                dom.addEventOnce(
-                    element1,
-                    'click',
-                    _ => { result++; }
-                );
+                dom.addEventOnce(element1, 'click', _ => {
+                    result++;
+                });
                 element1.dispatchEvent(event);
                 element1.dispatchEvent(event);
                 element2.dispatchEvent(event);
@@ -190,7 +176,9 @@ describe('#addEventOnce', function() {
                 dom.addEventOnce(
                     document.querySelectorAll('a'),
                     'click',
-                    _ => { result++; }
+                    _ => {
+                        result++;
+                    }
                 );
                 element1.dispatchEvent(event);
                 element1.dispatchEvent(event);
@@ -212,7 +200,9 @@ describe('#addEventOnce', function() {
                 dom.addEventOnce(
                     document.body.children,
                     'click',
-                    _ => { result++; }
+                    _ => {
+                        result++;
+                    }
                 );
                 element1.dispatchEvent(event);
                 element1.dispatchEvent(event);
@@ -231,11 +221,9 @@ describe('#addEventOnce', function() {
                 const event = new Event('click');
                 const div = document.createElement('div');
                 const shadow = div.attachShadow({ mode: 'open' });
-                dom.addEventOnce(
-                    shadow,
-                    'click',
-                    _ => { result++; }
-                );
+                dom.addEventOnce(shadow, 'click', _ => {
+                    result++;
+                });
                 shadow.dispatchEvent(event);
                 shadow.dispatchEvent(event);
                 return result;
@@ -249,11 +237,9 @@ describe('#addEventOnce', function() {
             await exec(_ => {
                 let result = 0;
                 const event = new Event('click');
-                dom.addEventOnce(
-                    document,
-                    'click',
-                    _ => { result++; }
-                );
+                dom.addEventOnce(document, 'click', _ => {
+                    result++;
+                });
                 document.dispatchEvent(event);
                 document.dispatchEvent(event);
                 return result;
@@ -267,11 +253,9 @@ describe('#addEventOnce', function() {
             await exec(_ => {
                 let result = 0;
                 const event = new Event('click');
-                dom.addEventOnce(
-                    window,
-                    'click',
-                    _ => { result++; }
-                );
+                dom.addEventOnce(window, 'click', _ => {
+                    result++;
+                });
                 window.dispatchEvent(event);
                 window.dispatchEvent(event);
                 return result;
@@ -293,7 +277,9 @@ describe('#addEventOnce', function() {
                         element2
                     ],
                     'click',
-                    _ => { result++; }
+                    _ => {
+                        result++;
+                    }
                 );
                 element1.dispatchEvent(event);
                 element1.dispatchEvent(event);

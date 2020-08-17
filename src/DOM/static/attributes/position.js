@@ -62,26 +62,23 @@ Object.assign(DOM, {
      * @returns {object} An object with the X and Y co-ordinates.
      */
     _position(node, offset) {
-        return this._forceShow(
-            node,
-            node => {
-                const result = {
-                    x: node.offsetLeft,
-                    y: node.offsetTop
-                };
+        return this._forceShow(node, node => {
+            const result = {
+                x: node.offsetLeft,
+                y: node.offsetTop
+            };
 
-                if (offset) {
-                    let offsetParent = node;
+            if (offset) {
+                let offsetParent = node;
 
-                    while (offsetParent = offsetParent.offsetParent) {
-                        result.x += offsetParent.offsetLeft;
-                        result.y += offsetParent.offsetTop;
-                    }
+                while (offsetParent = offsetParent.offsetParent) {
+                    result.x += offsetParent.offsetLeft;
+                    result.y += offsetParent.offsetTop;
                 }
-
-                return result;
             }
-        );
+
+            return result;
+        });
     },
 
     /**
@@ -91,19 +88,16 @@ Object.assign(DOM, {
      * @returns {DOMRect} The computed bounding rectangle.
      */
     _rect(node, offset) {
-        return this._forceShow(
-            node,
-            node => {
-                const result = node.getBoundingClientRect();
+        return this._forceShow(node, node => {
+            const result = node.getBoundingClientRect();
 
-                if (offset) {
-                    result.x += window.scrollX;
-                    result.y += window.scrollY;
-                }
-
-                return result;
+            if (offset) {
+                result.x += window.scrollX;
+                result.y += window.scrollY;
             }
-        );
+
+            return result;
+        });
     }
 
 });

@@ -51,11 +51,9 @@ describe('#unwrap', function() {
             await exec(_ => {
                 let result = 0;
                 const nodes = document.querySelectorAll('div');
-                dom.addEvent(
-                    'div',
-                    'click',
-                    _ => { result++; }
-                );
+                dom.addEvent('div', 'click', _ => {
+                    result++;
+                });
                 dom.unwrap('a');
                 for (const node of nodes) {
                     document.body.appendChild(node);
@@ -113,20 +111,14 @@ describe('#unwrap', function() {
 
     it('removes queue', async function() {
         await exec(_ => {
-            dom.queue(
-                'div',
-                _ => {
-                    return new Promise(resolve =>
-                        setTimeout(resolve, 100)
-                    );
-                }
+            dom.queue('div', _ =>
+                new Promise(resolve =>
+                    setTimeout(resolve, 100)
+                )
             );
-            dom.queue(
-                'div',
-                node => {
-                    node.dataset.test = 'Test'
-                }
-            );
+            dom.queue('div', node => {
+                node.dataset.test = 'Test'
+            });
         }).then(waitFor(50)).then(async _ => {
             await exec(_ => {
                 const nodes = document.querySelectorAll('div');
@@ -154,11 +146,9 @@ describe('#unwrap', function() {
         assert.equal(
             await exec(_ => {
                 let result = 0;
-                dom.addEvent(
-                    'div',
-                    'remove',
-                    _ => { result++; }
-                );
+                dom.addEvent('div', 'remove', _ => {
+                    result++;
+                });
                 dom.unwrap('a');
                 return result;
             }),

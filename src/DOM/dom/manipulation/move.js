@@ -12,10 +12,16 @@ Object.assign(DOM.prototype, {
     after(nodes, others) {
 
         // DocumentFragment and ShadowRoot nodes can not have siblings
-        nodes = this.parseNodes(nodes, { node: true });
+        nodes = this.parseNodes(nodes, {
+            node: true
+        });
 
         // ShadowRoot nodes can not be moved
-        others = this.parseNodes(others, { node: true, fragment: true, html: true }).reverse();
+        others = this.parseNodes(others, {
+            node: true,
+            fragment: true,
+            html: true
+        }).reverse();
 
         const lastNode = nodes[nodes.length - 1];
 
@@ -48,10 +54,18 @@ Object.assign(DOM.prototype, {
      * @param {string|array|Node|HTMLElement|DocumentFragment|NodeList|HTMLCollection|QuerySet} others The other node(s), or a query selector or HTML string.
      */
     append(nodes, others) {
-        nodes = this.parseNodes(nodes, { fragment: true, shadow: true, document: true });
+        nodes = this.parseNodes(nodes, {
+            fragment: true,
+            shadow: true,
+            document: true
+        });
 
         // ShadowRoot nodes can not be moved
-        others = this.parseNodes(others, { node: true, fragment: true, html: true });
+        others = this.parseNodes(others, {
+            node: true,
+            fragment: true,
+            html: true
+        });
 
         const lastNode = nodes[nodes.length - 1];
 
@@ -89,10 +103,16 @@ Object.assign(DOM.prototype, {
     before(nodes, others) {
 
         // DocumentFragment and ShadowRoot nodes can not have siblings
-        nodes = this.parseNodes(nodes, { node: true });
+        nodes = this.parseNodes(nodes, {
+            node: true
+        });
 
         // ShadowRoot nodes can not be moved
-        others = this.parseNodes(others, { node: true, fragment: true, html: true });
+        others = this.parseNodes(others, {
+            node: true,
+            fragment: true,
+            html: true
+        });
 
         const lastNode = nodes[nodes.length - 1];
 
@@ -143,10 +163,18 @@ Object.assign(DOM.prototype, {
      * @param {string|array|Node|HTMLElement|DocumentFragment|NodeList|HTMLCollection} others The other node(s), or a query selector or HTML string.
      */
     prepend(nodes, others) {
-        nodes = this.parseNodes(nodes, { fragment: true, shadow: true, document: true });
+        nodes = this.parseNodes(nodes, {
+            fragment: true,
+            shadow: true,
+            document: true
+        });
 
         // ShadowRoot nodes can not be moved
-        others = this.parseNodes(others, { node: true, fragment: true, html: true });
+        others = this.parseNodes(others, {
+            node: true,
+            fragment: true,
+            html: true
+        });
 
         const lastNode = nodes[nodes.length - 1];
 

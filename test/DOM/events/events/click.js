@@ -16,7 +16,9 @@ describe('#click', function() {
             await exec(_ => {
                 let result;
                 const element = document.getElementById('test1');
-                element.addEventListener('click', _ => { result = true; });
+                element.addEventListener('click', _ => {
+                    result = true;
+                });
                 dom.click('a');
                 return result;
             }),
@@ -29,7 +31,9 @@ describe('#click', function() {
             await exec(_ => {
                 let result;
                 const element = document.getElementById('test1');
-                element.addEventListener('click', _ => { result = true; });
+                element.addEventListener('click', _ => {
+                    result = true;
+                });
                 dom.click(
                     document.getElementById('test1')
                 );
@@ -44,7 +48,9 @@ describe('#click', function() {
             await exec(_ => {
                 let result;
                 const element = document.getElementById('test1');
-                element.addEventListener('click', _ => { result = true; });
+                element.addEventListener('click', _ => {
+                    result = true;
+                });
                 dom.click(
                     document.querySelectorAll('a')
                 );
@@ -59,7 +65,9 @@ describe('#click', function() {
             await exec(_ => {
                 let result;
                 const element = document.getElementById('test1');
-                element.addEventListener('click', _ => { result = true; });
+                element.addEventListener('click', _ => {
+                    result = true;
+                });
                 dom.click(
                     document.body.children
                 );
@@ -74,7 +82,9 @@ describe('#click', function() {
             await exec(_ => {
                 let result;
                 const element = document.getElementById('test1');
-                element.addEventListener('click', _ => { result = true; });
+                element.addEventListener('click', _ => {
+                    result = true;
+                });
                 dom.click([
                     document.getElementById('test1'),
                     document.getElementById('test2')

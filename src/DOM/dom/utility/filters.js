@@ -26,7 +26,11 @@ Object.assign(DOM.prototype, {
             return node => node.isSameNode(filter);
         }
 
-        filter = this.parseNodes(filter, { node: true, fragment: true, shadow: true });
+        filter = this.parseNodes(filter, {
+            node: true,
+            fragment: true,
+            shadow: true
+        });
 
         if (filter.length) {
             return node => filter.includes(node);
@@ -47,8 +51,7 @@ Object.assign(DOM.prototype, {
 
         if (Core.isFunction(filter)) {
             return node =>
-                Core.merge(
-                    [],
+                Core.wrap(
                     node.querySelectorAll('*')
                 ).some(filter);
         }
@@ -61,7 +64,11 @@ Object.assign(DOM.prototype, {
             return node => node.contains(filter);
         }
 
-        filter = this.parseNodes(filter, { node: true, fragment: true, shadow: true });
+        filter = this.parseNodes(filter, {
+            node: true,
+            fragment: true,
+            shadow: true
+        });
 
         if (filter.length) {
             return node => filter.some(other => node.contains(other));
@@ -183,8 +190,16 @@ Object.assign(DOM.prototype, {
 
         // Array
         if (Core.isArray(nodes)) {
-            const subFilter = this.constructor.parseNodesFactory({ node: true, fragment: true, shadow: true, document: true, window: true });
-            nodes = nodes.flatMap(node => this.parseNodesDeep(node, context, subFilter, html));
+            const subFilter = this.constructor.parseNodesFactory({
+                node: true,
+                fragment: true,
+                shadow: true,
+                document: true,
+                window: true
+            });
+            nodes = nodes.flatMap(node =>
+                this.parseNodesDeep(node, context, subFilter, html)
+            );
         } else {
             nodes = Core.wrap(nodes);
         }

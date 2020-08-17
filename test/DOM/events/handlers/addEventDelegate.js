@@ -32,12 +32,9 @@ describe('#addEventDelegate', function() {
                 const element2 = document.getElementById('test2');
                 const element3 = document.getElementById('test3');
                 const element4 = document.getElementById('test4');
-                dom.addEventDelegate(
-                    'div',
-                    'click',
-                    'a',
-                    _ => { result++; }
-                );
+                dom.addEventDelegate('div', 'click', 'a', _ => {
+                    result++;
+                });
                 element1.dispatchEvent(event);
                 element1.dispatchEvent(event);
                 element2.dispatchEvent(event);
@@ -66,12 +63,9 @@ describe('#addEventDelegate', function() {
                 const element2 = document.getElementById('test2');
                 const element3 = document.getElementById('test3');
                 const element4 = document.getElementById('test4');
-                dom.addEventDelegate(
-                    'div',
-                    'click hover',
-                    'a',
-                    _ => { result++; }
-                );
+                dom.addEventDelegate('div', 'click hover', 'a', _ => {
+                    result++;
+                });
                 element1.dispatchEvent(event1);
                 element1.dispatchEvent(event1);
                 element1.dispatchEvent(event2);
@@ -105,12 +99,9 @@ describe('#addEventDelegate', function() {
                 const element2 = document.getElementById('test2');
                 const element3 = document.getElementById('test3');
                 const element4 = document.getElementById('test4');
-                dom.addEventDelegate(
-                    'div',
-                    'click',
-                    '> a',
-                    _ => { result++; }
-                );
+                dom.addEventDelegate('div', 'click', '> a', _ => {
+                    result++;
+                });
                 element1.dispatchEvent(event);
                 element1.dispatchEvent(event);
                 element2.dispatchEvent(event);
@@ -139,12 +130,9 @@ describe('#addEventDelegate', function() {
                 const element2 = document.getElementById('test2');
                 const element3 = document.getElementById('test3');
                 const element4 = document.getElementById('test4');
-                dom.addEventDelegate(
-                    'div',
-                    'click hover',
-                    '> a',
-                    _ => { result++; }
-                );
+                dom.addEventDelegate('div', 'click hover', '> a', _ => {
+                    result++;
+                });
                 element1.dispatchEvent(event1);
                 element1.dispatchEvent(event1);
                 element1.dispatchEvent(event2);
@@ -178,12 +166,9 @@ describe('#addEventDelegate', function() {
                 const element2 = document.getElementById('test2');
                 const element3 = document.getElementById('test3');
                 const element4 = document.getElementById('test4');
-                dom.addEventDelegate(
-                    'div',
-                    'click.test',
-                    'a',
-                    _ => { result++; }
-                );
+                dom.addEventDelegate('div', 'click.test', 'a', _ => {
+                    result++;
+                });
                 element1.dispatchEvent(event);
                 element1.dispatchEvent(event);
                 element2.dispatchEvent(event);
@@ -212,12 +197,9 @@ describe('#addEventDelegate', function() {
                 const element2 = document.getElementById('test2');
                 const element3 = document.getElementById('test3');
                 const element4 = document.getElementById('test4');
-                dom.addEventDelegate(
-                    'div',
-                    'click.test hover.test',
-                    'a',
-                    _ => { result++; }
-                );
+                dom.addEventDelegate('div', 'click.test hover.test', 'a', _ => {
+                    result++;
+                });
                 element1.dispatchEvent(event1);
                 element1.dispatchEvent(event1);
                 element1.dispatchEvent(event2);
@@ -251,12 +233,9 @@ describe('#addEventDelegate', function() {
                 const element2 = document.getElementById('test2');
                 const element3 = document.getElementById('test3');
                 const element4 = document.getElementById('test4');
-                dom.addEventDelegate(
-                    'div',
-                    'click.test.deep',
-                    'a',
-                    _ => { result++; }
-                );
+                dom.addEventDelegate('div', 'click.test.deep', 'a', _ => {
+                    result++;
+                });
                 element1.dispatchEvent(event);
                 element1.dispatchEvent(event);
                 element2.dispatchEvent(event);
@@ -285,12 +264,9 @@ describe('#addEventDelegate', function() {
                 const element2 = document.getElementById('test2');
                 const element3 = document.getElementById('test3');
                 const element4 = document.getElementById('test4');
-                dom.addEventDelegate(
-                    'div',
-                    'click.test.deep hover.test.deep',
-                    'a',
-                    _ => { result++; }
-                );
+                dom.addEventDelegate('div', 'click.test.deep hover.test.deep', 'a', _ => {
+                    result++;
+                });
                 element1.dispatchEvent(event1);
                 element1.dispatchEvent(event1);
                 element1.dispatchEvent(event2);
@@ -328,7 +304,9 @@ describe('#addEventDelegate', function() {
                     document.getElementById('parent1'),
                     'click',
                     'a',
-                    _ => { result++; }
+                    _ => {
+                        result++;
+                    }
                 );
                 element1.dispatchEvent(event);
                 element1.dispatchEvent(event);
@@ -359,7 +337,9 @@ describe('#addEventDelegate', function() {
                     document.querySelectorAll('div'),
                     'click',
                     'a',
-                    _ => { result++; }
+                    _ => {
+                        result++;
+                    }
                 );
                 element1.dispatchEvent(event);
                 element1.dispatchEvent(event);
@@ -390,7 +370,9 @@ describe('#addEventDelegate', function() {
                     document.body.children,
                     'click',
                     'a',
-                    _ => { result++; }
+                    _ => {
+                        result++;
+                    }
                 );
                 element1.dispatchEvent(event);
                 element1.dispatchEvent(event);
@@ -417,12 +399,9 @@ describe('#addEventDelegate', function() {
                 const shadow = div.attachShadow({ mode: 'open' });
                 const a = document.createElement('a');
                 shadow.appendChild(a);
-                dom.addEventDelegate(
-                    shadow,
-                    'click',
-                    'a',
-                    _ => { result++; }
-                );
+                dom.addEventDelegate(shadow, 'click', 'a', _ => {
+                    result++;
+                });
                 a.dispatchEvent(event);
                 a.dispatchEvent(event);
                 return result;
@@ -442,12 +421,9 @@ describe('#addEventDelegate', function() {
                 const element2 = document.getElementById('test2');
                 const element3 = document.getElementById('test3');
                 const element4 = document.getElementById('test4');
-                dom.addEventDelegate(
-                    document,
-                    'click',
-                    'a',
-                    _ => { result++; }
-                );
+                dom.addEventDelegate(document, 'click', 'a', _ => {
+                    result++;
+                });
                 element1.dispatchEvent(event);
                 element1.dispatchEvent(event);
                 element2.dispatchEvent(event);
@@ -480,7 +456,9 @@ describe('#addEventDelegate', function() {
                     ],
                     'click',
                     'a',
-                    _ => { result++; }
+                    _ => {
+                        result++;
+                    }
                 );
                 element1.dispatchEvent(event);
                 element1.dispatchEvent(event);

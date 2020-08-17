@@ -79,7 +79,6 @@ Object.assign(DOM.prototype, {
 
         if ('dataset' in options) {
             const dataset = this.constructor._parseData(options.dataset, null, true);
-
             this.constructor._setDataset(node, dataset);
         }
 
