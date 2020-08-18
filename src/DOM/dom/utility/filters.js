@@ -93,11 +93,13 @@ Object.assign(DOM.prototype, {
     parseNode(nodes, options = {}) {
         const filter = this.constructor.parseNodesFactory(options);
 
-        if (!('context' in options)) {
-            options.context = this._context;
-        }
-
-        return this.parseNodesDeep(nodes, options.context, filter, options.html, true);
+        return this.parseNodesDeep(
+            nodes,
+            options.context || this._context,
+            filter,
+            options.html,
+            true
+        );
     },
 
     /**
@@ -116,11 +118,12 @@ Object.assign(DOM.prototype, {
     parseNodes(nodes, options = {}) {
         const filter = this.constructor.parseNodesFactory(options);
 
-        if (!('context' in options)) {
-            options.context = this._context;
-        }
-
-        return this.parseNodesDeep(nodes, options.context, filter, options.html);
+        return this.parseNodesDeep(
+            nodes,
+            options.context || this._context,
+            filter,
+            options.html
+        );
     },
 
     /**

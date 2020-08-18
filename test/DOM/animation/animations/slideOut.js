@@ -491,6 +491,131 @@ describe('#slideOut', function() {
         });
     });
 
+    it('can be stopped', async function() {
+        await exec(async _ => {
+            const animation = dom.slideOut('.animate', {
+                duration: 100,
+                debug: true
+            });
+            await new Promise(resolve => {
+                setTimeout(
+                    _ => {
+                        animation.stop();
+                        resolve();
+                    },
+                    50
+                );
+            });
+        }).then(async _ => {
+            await testNoAnimation('#test1');
+            await testNoAnimation('#test2');
+            await testNoAnimation('#test3');
+            await testNoAnimation('#test4');
+        });
+    });
+
+    it('can be stopped (without finishing)', async function() {
+        await exec(async _ => {
+            const animation = dom.slideOut('.animate', {
+                duration: 100,
+                debug: true
+            });
+            await new Promise(resolve => {
+                setTimeout(
+                    _ => {
+                        animation.stop(false);
+                        resolve();
+                    },
+                    50
+                );
+            });
+        }).then(async _ => {
+            await testNoAnimation('#test1');
+            await testNoAnimation('#test3');
+            await testNoStyle('#test1');
+            await testNoStyle('#test3');
+            await testAnimation('#test2', easeInOut, 100);
+            await testAnimation('#test4', easeInOut, 100);
+            await testSlideOut('#test2');
+            await testSlideOut('#test4');
+        }).then(waitFor(100)).then(async _ => {
+            await testNoAnimation('#test1');
+            await testNoAnimation('#test3');
+            await testNoStyle('#test1');
+            await testNoStyle('#test3');
+            await testAnimation('#test2', easeInOut, 100);
+            await testAnimation('#test4', easeInOut, 100);
+            await testSlideOut('#test2');
+            await testSlideOut('#test4');
+        });
+    });
+
+    it('resolves when the animation is stopped', async function() {
+        await exec(async _ => {
+            const animation = dom.slideOut('.animate', {
+                duration: 100,
+                debug: true
+            });
+            dom.stop();
+            await animation;
+        }).then(async _ => {
+            await testNoAnimation('#test1');
+            await testNoAnimation('#test2');
+            await testNoAnimation('#test3');
+            await testNoAnimation('#test4');
+        });
+    });
+
+    it('throws when the animation is stopped (without finishing)', async function() {
+        assert.equal(
+            await exec(async _ => {
+                try {
+                    const animation = dom.slideOut('.animate', {
+                        duration: 100,
+                        debug: true
+                    });
+                    animation.stop(false);
+                    await animation;
+                    return false;
+                } catch (e) {
+                    return true;
+                }
+            }),
+            true
+        );
+    });
+
+    it('does not stop all animations', async function() {
+        await exec(async _ => {
+            const animation = dom.slideOut('.animate', {
+                duration: 100,
+                debug: true
+            });
+            dom.animate(
+                '.animate',
+                _ => { },
+                {
+                    duration: 100,
+                    debug: true
+                }
+            );
+            await new Promise(resolve => {
+                setTimeout(
+                    _ => {
+                        animation.stop();
+                        resolve();
+                    },
+                    50
+                );
+            });
+        }).then(async _ => {
+            await testNoAnimation('#test1');
+            await testNoAnimation('#test3');
+            await testAnimation('#test2', easeInOut, 100);
+            await testAnimation('#test4', easeInOut, 100);
+        });
+    });
+
     it('resolves when the animation is completed', async function() {
         await exec(async _ => {
             await dom.slideOut('.animate', {
@@ -509,7 +634,7 @@ describe('#slideOut', function() {
         });
     });
 
-    it('throws when the animation is stopped', async function() {
+    it('throws when all animations are stopped (without finishing)', async function() {
         assert.equal(
             await exec(async _ => {
                 try {

@@ -1,5 +1,5 @@
 /**
- * FrostDOM v1.0.3
+ * FrostDOM v1.0.4
  * https://github.com/elusivecodes/FrostDOM
  */
 (function(global, factory) {
@@ -29,6 +29,7 @@
     return {
         AjaxRequest,
         Animation,
+        AnimationSet,
         DOM,
         dom: new DOM
     };

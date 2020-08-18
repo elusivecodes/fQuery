@@ -100,7 +100,7 @@ class AjaxRequest {
     /**
      * Execute a callback if the request is rejected.
      * @param {function} [onRejected] The callback to execute if the request is rejected.
-     * @returns {Promise} A new pending Promise.
+     * @returns {Promise} The promise.
      */
     catch(onRejected) {
         return this.promise.catch(onRejected);
@@ -109,7 +109,7 @@ class AjaxRequest {
     /**
      * Execute a callback once the request is settled (resolved or rejected).
      * @param {function} [onRejected] The callback to execute once the request is settled.
-     * @returns {Promise} A new pending Promise.
+     * @returns {Promise} The promise.
      */
     finally(onFinally) {
         return this.promise.finally(onFinally);
@@ -119,7 +119,7 @@ class AjaxRequest {
      * Execute a callback once the request is resolved (or optionally rejected).
      * @param {function} onFulfilled The callback to execute if the request is resolved.
      * @param {function} [onRejected] The callback to execute if the request is rejected.
-     * @returns {Promise} A new pending Promise.
+     * @returns {Promise} The promise.
      */
     then(onFulfilled, onRejected) {
         return this.promise.then(onFulfilled, onRejected);

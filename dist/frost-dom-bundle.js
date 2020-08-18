@@ -1,5 +1,5 @@
 /**
- * FrostDOM Bundle v1.0.3
+ * FrostDOM Bundle v1.0.4
  * https://github.com/elusivecodes/FrostCore
  * https://github.com/elusivecodes/FrostDOM
  */
@@ -1047,7 +1047,7 @@
     });
 
     /**
-     * FrostDOM v1.0.3
+     * FrostDOM v1.0.4
      * https://github.com/elusivecodes/FrostDOM
      */
     (function(global, factory) {
@@ -1175,7 +1175,7 @@
             /**
              * Execute a callback if the request is rejected.
              * @param {function} [onRejected] The callback to execute if the request is rejected.
-             * @returns {Promise} A new pending Promise.
+             * @returns {Promise} The promise.
              */
             catch(onRejected) {
                 return this.promise.catch(onRejected);
@@ -1184,7 +1184,7 @@
             /**
              * Execute a callback once the request is settled (resolved or rejected).
              * @param {function} [onRejected] The callback to execute once the request is settled.
-             * @returns {Promise} A new pending Promise.
+             * @returns {Promise} The promise.
              */
             finally(onFinally) {
                 return this.promise.finally(onFinally);
@@ -1194,7 +1194,7 @@
              * Execute a callback once the request is resolved (or optionally rejected).
              * @param {function} onFulfilled The callback to execute if the request is resolved.
              * @param {function} [onRejected] The callback to execute if the request is rejected.
-             * @returns {Promise} A new pending Promise.
+             * @returns {Promise} The promise.
              */
             then(onFulfilled, onRejected) {
                 return this.promise.then(onFulfilled, onRejected);
@@ -1613,7 +1613,7 @@
         class Animation {
 
             /**
-             * New AjaxRequest constructor.
+             * New Animation constructor.
              * @param {HTMLElement} node The input node.
              * @param {DOM~animationCallback} callback The animation callback.
              * @param {object} [options] The options to use for the animation.
@@ -1654,7 +1654,7 @@
             /**
              * Execute a callback if the animation is rejected.
              * @param {function} [onRejected] The callback to execute if the animation is rejected.
-             * @returns {Promise} A new pending Promise.
+             * @returns {Promise} The promise.
              */
             catch(onRejected) {
                 return this.promise.catch(onRejected);
@@ -1663,17 +1663,34 @@
             /**
              * Execute a callback once the animation is settled (resolved or rejected).
              * @param {function} [onRejected] The callback to execute once the animation is settled.
-             * @returns {Promise} A new pending Promise.
+             * @returns {Promise} The promise.
              */
             finally(onFinally) {
                 return this.promise.finally(onFinally);
             }
 
             /**
+             * Stop the animation.
+             * @param {Boolean} [finish=true] Whether to finish the animation.
+            */
+            stop(finish = true) {
+                const animations = this.constructor._animations.get(this._node)
+                    .filter(animation => animation !== this);
+
+                if (!animations.length) {
+                    this.constructor._animations.delete(this._node)
+                } else {
+                    this.constructor._animations.set(this._node, animations);
+                }
+
+                this.update(true, finish);
+            }
+
+            /**
              * Execute a callback once the animation is resolved (or optionally rejected).
              * @param {function} onFulfilled The callback to execute if the animation is resolved.
              * @param {function} [onRejected] The callback to execute if the animation is rejected.
-             * @returns {Promise} A new pending Promise.
+             * @returns {Promise} The promise.
              */
             then(onFulfilled, onRejected) {
                 return this.promise.then(onFulfilled, onRejected);
@@ -1736,6 +1753,61 @@
 
                 this._resolve(this._node);
                 return true;
+            }
+
+        }
+
+        /**
+        * AnimationSet Class
+        * @class
+        */
+        class AnimationSet {
+
+            /**
+             * New AnimationSet constructor.
+             * @param {array} animations The animations.
+             */
+            constructor(animations) {
+                this._animations = animations;
+                this.promise = Promise.all(animations);
+            }
+
+            /**
+             * Execute a callback if any of the animations is rejected.
+             * @param {function} [onRejected] The callback to execute if an animation is rejected.
+             * @returns {Promise} The promise.
+             */
+            catch(onRejected) {
+                return this.promise.catch(onRejected);
+            }
+
+            /**
+             * Execute a callback once the animation is settled (resolved or rejected).
+             * @param {function} [onRejected] The callback to execute once the animation is settled.
+             * @returns {Promise} The promise.
+             */
+            finally(onFinally) {
+                return this.promise.finally(onFinally);
+            }
+
+            /**
+             * Stop the animations.
+             * @param {Boolean} [finish=true] Whether to finish the animations.
+            */
+            stop(finish = true) {
+                for (const animation of this._animations) {
+                    animation.stop(finish);
+                }
+            }
+
+            /**
+             * Execute a callback once the animation is resolved (or optionally rejected).
+             * @param {function} onFulfilled The callback to execute if the animation is resolved.
+             * @param {function} [onRejected] The callback to execute if the animation is rejected.
+             * @returns {Promise} The promise.
+             */
+            then(onFulfilled, onRejected) {
+                return this.promise.then(onFulfilled, onRejected);
             }
 
         }
@@ -1832,6 +1904,9 @@
         // Set the Animation prototype
         Object.setPrototypeOf(Animation.prototype, Promise.prototype);
 
+        // Set the AnimationSet prototype
+        Object.setPrototypeOf(AnimationSet.prototype, Promise.prototype);
+
         /**
          * DOM Class
          * @class
@@ -1844,6 +1919,10 @@
              * @returns {DOM} A new DOM object.
              */
             constructor(context = document) {
+                if (!(Core.isDocument(context))) {
+                    throw new Error('Invalid document');
+                }
+
                 this._context = context;
             }
 
@@ -1864,18 +1943,18 @@
              * @param {string} [options.type=ease-in-out] The type of animation.
              * @param {Boolean} [options.infinite] Whether the animation should run forever.
              * @param {Boolean} [options.debug] Whether to set debugging info on the node.
-             * @returns {Promise} A new Promise that resolves when the animation has completed.
+             * @returns {AnimationSet} A new AnimationSet that resolves when the animation has completed.
              */
             animate(nodes, callback, options) {
                 nodes = this.parseNodes(nodes);
 
-                const promises = nodes.map(node =>
+                const animations = nodes.map(node =>
                     new Animation(node, callback, options)
                 );
 
                 Animation.start();
 
-                return Promise.all(promises);
+                return new AnimationSet(animations);
             },
 
             /**
@@ -1909,7 +1988,7 @@
              * @param {Boolean} [options.infinite] Whether the animation should run forever.
              * @param {Boolean} [options.useGpu=true] Whether the animation should use GPU acceleration.
              * @param {Boolean} [options.debug] Whether to set debugging info on the node.
-             * @returns {Promise} A new Promise that resolves when the animation has completed.
+             * @returns {AnimationSet} A new AnimationSet that resolves when the animation has completed.
              */
             dropIn(nodes, options) {
                 return this.slideIn(
@@ -1931,7 +2010,7 @@
              * @param {Boolean} [options.infinite] Whether the animation should run forever.
              * @param {Boolean} [options.useGpu=true] Whether the animation should use GPU acceleration.
              * @param {Boolean} [options.debug] Whether to set debugging info on the node.
-             * @returns {Promise} A new Promise that resolves when the animation has completed.
+             * @returns {AnimationSet} A new AnimationSet that resolves when the animation has completed.
              */
             dropOut(nodes, options) {
                 return this.slideOut(
@@ -1951,7 +2030,7 @@
              * @param {string} [options.type=ease-in-out] The type of animation.
              * @param {Boolean} [options.infinite] Whether the animation should run forever.
              * @param {Boolean} [options.debug] Whether to set debugging info on the node.
-             * @returns {Promise} A new Promise that resolves when the animation has completed.
+             * @returns {AnimationSet} A new AnimationSet that resolves when the animation has completed.
              */
             fadeIn(nodes, options) {
                 return this.animate(
@@ -1975,7 +2054,7 @@
              * @param {string} [options.type=ease-in-out] The type of animation.
              * @param {Boolean} [options.infinite] Whether the animation should run forever.
              * @param {Boolean} [options.debug] Whether to set debugging info on the node.
-             * @returns {Promise} A new Promise that resolves when the animation has completed.
+             * @returns {AnimationSet} A new AnimationSet that resolves when the animation has completed.
              */
             fadeOut(nodes, options) {
                 return this.animate(
@@ -2003,7 +2082,7 @@
              * @param {string} [options.type=ease-in-out] The type of animation.
              * @param {Boolean} [options.infinite] Whether the animation should run forever.
              * @param {Boolean} [options.debug] Whether to set debugging info on the node.
-             * @returns {Promise} A new Promise that resolves when the animation has completed.
+             * @returns {AnimationSet} A new AnimationSet that resolves when the animation has completed.
              */
             rotateIn(nodes, options) {
                 return this.animate(
@@ -2038,7 +2117,7 @@
              * @param {string} [options.type=ease-in-out] The type of animation.
              * @param {Boolean} [options.infinite] Whether the animation should run forever.
              * @param {Boolean} [options.debug] Whether to set debugging info on the node.
-             * @returns {Promise} A new Promise that resolves when the animation has completed.
+             * @returns {AnimationSet} A new AnimationSet that resolves when the animation has completed.
              */
             rotateOut(nodes, options) {
                 return this.animate(
@@ -2071,7 +2150,7 @@
              * @param {Boolean} [options.infinite] Whether the animation should run forever.
              * @param {Boolean} [options.useGpu=true] Whether the animation should use GPU acceleration.
              * @param {Boolean} [options.debug] Whether to set debugging info on the node.
-             * @returns {Promise} A new Promise that resolves when the animation has completed.
+             * @returns {AnimationSet} A new AnimationSet that resolves when the animation has completed.
              */
             slideIn(nodes, options) {
                 return this.animate(
@@ -2130,7 +2209,7 @@
              * @param {Boolean} [options.infinite] Whether the animation should run forever.
              * @param {Boolean} [options.useGpu=true] Whether the animation should use GPU acceleration.
              * @param {Boolean} [options.debug] Whether to set debugging info on the node.
-             * @returns {Promise} A new Promise that resolves when the animation has completed.
+             * @returns {AnimationSet} A new AnimationSet that resolves when the animation has completed.
              */
             slideOut(nodes, options) {
                 return this.animate(
@@ -2189,7 +2268,7 @@
              * @param {Boolean} [options.infinite] Whether the animation should run forever.
              * @param {Boolean} [options.useGpu=true] Whether the animation should use GPU acceleration.
              * @param {Boolean} [options.debug] Whether to set debugging info on the node.
-             * @returns {Promise} A new Promise that resolves when the animation has completed.
+             * @returns {AnimationSet} A new AnimationSet that resolves when the animation has completed.
              */
             squeezeIn(nodes, options) {
                 nodes = this.parseNodes(nodes);
@@ -2200,7 +2279,7 @@
                     ...options
                 };
 
-                const promises = nodes.map(node => {
+                const animations = nodes.map(node => {
                     const initialHeight = node.style.height;
                     const initialWidth = node.style.width;
                     node.style.setProperty('overflow', 'hidden');
@@ -2261,7 +2340,7 @@
 
                 Animation.start();
 
-                return Promise.all(promises);
+                return new AnimationSet(animations);
             },
 
             /**
@@ -2274,7 +2353,7 @@
              * @param {Boolean} [options.infinite] Whether the animation should run forever.
              * @param {Boolean} [options.useGpu=true] Whether the animation should use GPU acceleration.
              * @param {Boolean} [options.debug] Whether to set debugging info on the node.
-             * @returns {Promise} A new Promise that resolves when the animation has completed.
+             * @returns {AnimationSet} A new AnimationSet that resolves when the animation has completed.
              */
             squeezeOut(nodes, options) {
                 nodes = this.parseNodes(nodes);
@@ -2285,7 +2364,7 @@
                     ...options
                 };
 
-                const promises = nodes.map(node => {
+                const animations = nodes.map(node => {
                     const initialHeight = node.style.height;
                     const initialWidth = node.style.width;
                     node.style.setProperty('overflow', 'hidden');
@@ -2346,7 +2425,7 @@
 
                 Animation.start();
 
-                return Promise.all(promises);
+                return new AnimationSet(animations);
             }
 
         });
@@ -5500,11 +5579,13 @@
             parseNode(nodes, options = {}) {
                 const filter = this.constructor.parseNodesFactory(options);
 
-                if (!('context' in options)) {
-                    options.context = this._context;
-                }
-
-                return this.parseNodesDeep(nodes, options.context, filter, options.html, true);
+                return this.parseNodesDeep(
+                    nodes,
+                    options.context || this._context,
+                    filter,
+                    options.html,
+                    true
+                );
             },
 
             /**
@@ -5523,11 +5604,12 @@
             parseNodes(nodes, options = {}) {
                 const filter = this.constructor.parseNodesFactory(options);
 
-                if (!('context' in options)) {
-                    options.context = this._context;
-                }
-
-                return this.parseNodesDeep(nodes, options.context, filter, options.html);
+                return this.parseNodesDeep(
+                    nodes,
+                    options.context || this._context,
+                    filter,
+                    options.html
+                );
             },
 
             /**
@@ -8433,6 +8515,7 @@
         return {
             AjaxRequest,
             Animation,
+            AnimationSet,
             DOM,
             dom: new DOM
         };
@@ -8441,6 +8524,7 @@
     return {
         AjaxRequest: window.AjaxRequest,
         Animation: window.Animation,
+        AnimationSet: window.AnimationSet,
         Core: window.Core,
         DOM: window.DOM,
         dom: new window.DOM

@@ -14,7 +14,7 @@ Object.assign(DOM.prototype, {
      * @param {Boolean} [options.infinite] Whether the animation should run forever.
      * @param {Boolean} [options.useGpu=true] Whether the animation should use GPU acceleration.
      * @param {Boolean} [options.debug] Whether to set debugging info on the node.
-     * @returns {Promise} A new Promise that resolves when the animation has completed.
+     * @returns {AnimationSet} A new AnimationSet that resolves when the animation has completed.
      */
     dropIn(nodes, options) {
         return this.slideIn(
@@ -36,7 +36,7 @@ Object.assign(DOM.prototype, {
      * @param {Boolean} [options.infinite] Whether the animation should run forever.
      * @param {Boolean} [options.useGpu=true] Whether the animation should use GPU acceleration.
      * @param {Boolean} [options.debug] Whether to set debugging info on the node.
-     * @returns {Promise} A new Promise that resolves when the animation has completed.
+     * @returns {AnimationSet} A new AnimationSet that resolves when the animation has completed.
      */
     dropOut(nodes, options) {
         return this.slideOut(
@@ -56,7 +56,7 @@ Object.assign(DOM.prototype, {
      * @param {string} [options.type=ease-in-out] The type of animation.
      * @param {Boolean} [options.infinite] Whether the animation should run forever.
      * @param {Boolean} [options.debug] Whether to set debugging info on the node.
-     * @returns {Promise} A new Promise that resolves when the animation has completed.
+     * @returns {AnimationSet} A new AnimationSet that resolves when the animation has completed.
      */
     fadeIn(nodes, options) {
         return this.animate(
@@ -80,7 +80,7 @@ Object.assign(DOM.prototype, {
      * @param {string} [options.type=ease-in-out] The type of animation.
      * @param {Boolean} [options.infinite] Whether the animation should run forever.
      * @param {Boolean} [options.debug] Whether to set debugging info on the node.
-     * @returns {Promise} A new Promise that resolves when the animation has completed.
+     * @returns {AnimationSet} A new AnimationSet that resolves when the animation has completed.
      */
     fadeOut(nodes, options) {
         return this.animate(
@@ -108,7 +108,7 @@ Object.assign(DOM.prototype, {
      * @param {string} [options.type=ease-in-out] The type of animation.
      * @param {Boolean} [options.infinite] Whether the animation should run forever.
      * @param {Boolean} [options.debug] Whether to set debugging info on the node.
-     * @returns {Promise} A new Promise that resolves when the animation has completed.
+     * @returns {AnimationSet} A new AnimationSet that resolves when the animation has completed.
      */
     rotateIn(nodes, options) {
         return this.animate(
@@ -143,7 +143,7 @@ Object.assign(DOM.prototype, {
      * @param {string} [options.type=ease-in-out] The type of animation.
      * @param {Boolean} [options.infinite] Whether the animation should run forever.
      * @param {Boolean} [options.debug] Whether to set debugging info on the node.
-     * @returns {Promise} A new Promise that resolves when the animation has completed.
+     * @returns {AnimationSet} A new AnimationSet that resolves when the animation has completed.
      */
     rotateOut(nodes, options) {
         return this.animate(
@@ -176,7 +176,7 @@ Object.assign(DOM.prototype, {
      * @param {Boolean} [options.infinite] Whether the animation should run forever.
      * @param {Boolean} [options.useGpu=true] Whether the animation should use GPU acceleration.
      * @param {Boolean} [options.debug] Whether to set debugging info on the node.
-     * @returns {Promise} A new Promise that resolves when the animation has completed.
+     * @returns {AnimationSet} A new AnimationSet that resolves when the animation has completed.
      */
     slideIn(nodes, options) {
         return this.animate(
@@ -235,7 +235,7 @@ Object.assign(DOM.prototype, {
      * @param {Boolean} [options.infinite] Whether the animation should run forever.
      * @param {Boolean} [options.useGpu=true] Whether the animation should use GPU acceleration.
      * @param {Boolean} [options.debug] Whether to set debugging info on the node.
-     * @returns {Promise} A new Promise that resolves when the animation has completed.
+     * @returns {AnimationSet} A new AnimationSet that resolves when the animation has completed.
      */
     slideOut(nodes, options) {
         return this.animate(
@@ -294,7 +294,7 @@ Object.assign(DOM.prototype, {
      * @param {Boolean} [options.infinite] Whether the animation should run forever.
      * @param {Boolean} [options.useGpu=true] Whether the animation should use GPU acceleration.
      * @param {Boolean} [options.debug] Whether to set debugging info on the node.
-     * @returns {Promise} A new Promise that resolves when the animation has completed.
+     * @returns {AnimationSet} A new AnimationSet that resolves when the animation has completed.
      */
     squeezeIn(nodes, options) {
         nodes = this.parseNodes(nodes);
@@ -305,7 +305,7 @@ Object.assign(DOM.prototype, {
             ...options
         };
 
-        const promises = nodes.map(node => {
+        const animations = nodes.map(node => {
             const initialHeight = node.style.height;
             const initialWidth = node.style.width;
             node.style.setProperty('overflow', 'hidden');
@@ -366,7 +366,7 @@ Object.assign(DOM.prototype, {
 
         Animation.start();
 
-        return Promise.all(promises);
+        return new AnimationSet(animations);
     },
 
     /**
@@ -379,7 +379,7 @@ Object.assign(DOM.prototype, {
      * @param {Boolean} [options.infinite] Whether the animation should run forever.
      * @param {Boolean} [options.useGpu=true] Whether the animation should use GPU acceleration.
      * @param {Boolean} [options.debug] Whether to set debugging info on the node.
-     * @returns {Promise} A new Promise that resolves when the animation has completed.
+     * @returns {AnimationSet} A new AnimationSet that resolves when the animation has completed.
      */
     squeezeOut(nodes, options) {
         nodes = this.parseNodes(nodes);
@@ -390,7 +390,7 @@ Object.assign(DOM.prototype, {
             ...options
         };
 
-        const promises = nodes.map(node => {
+        const animations = nodes.map(node => {
             const initialHeight = node.style.height;
             const initialWidth = node.style.width;
             node.style.setProperty('overflow', 'hidden');
@@ -451,7 +451,7 @@ Object.assign(DOM.prototype, {
 
         Animation.start();
 
-        return Promise.all(promises);
+        return new AnimationSet(animations);
     }
 
 });

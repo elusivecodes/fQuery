@@ -13,18 +13,18 @@ Object.assign(DOM.prototype, {
      * @param {string} [options.type=ease-in-out] The type of animation.
      * @param {Boolean} [options.infinite] Whether the animation should run forever.
      * @param {Boolean} [options.debug] Whether to set debugging info on the node.
-     * @returns {Promise} A new Promise that resolves when the animation has completed.
+     * @returns {AnimationSet} A new AnimationSet that resolves when the animation has completed.
      */
     animate(nodes, callback, options) {
         nodes = this.parseNodes(nodes);
 
-        const promises = nodes.map(node =>
+        const animations = nodes.map(node =>
             new Animation(node, callback, options)
         );
 
         Animation.start();
 
-        return Promise.all(promises);
+        return new AnimationSet(animations);
     },
 
     /**

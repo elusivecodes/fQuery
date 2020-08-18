@@ -6,8 +6,10 @@ describe('#removeCookie', function() {
     it('removes a cookie', async function() {
         assert.equal(
             await exec(_ => {
-                const myDoc = {};
-                myDoc.cookie = 'test=Test';
+                const myDoc = {
+                    cookie: 'test=Test',
+                    nodeType: Core.DOCUMENT_NODE
+                };
                 const myDom = new DOM(myDoc);
                 myDom.removeCookie('test');
                 return myDoc.cookie;
@@ -19,8 +21,10 @@ describe('#removeCookie', function() {
     it('removes a cookie with path', async function() {
         assert.equal(
             await exec(_ => {
-                const myDoc = {};
-                myDoc.cookie = 'test=Test';
+                const myDoc = {
+                    cookie: 'test=Test',
+                    nodeType: Core.DOCUMENT_NODE
+                };
                 const myDom = new DOM(myDoc);
                 myDom.removeCookie('test', { path: '/test' });
                 return myDoc.cookie;
@@ -32,8 +36,10 @@ describe('#removeCookie', function() {
     it('removes a cookie with secure', async function() {
         assert.equal(
             await exec(_ => {
-                const myDoc = {};
-                myDoc.cookie = 'test=Test';
+                const myDoc = {
+                    cookie: 'test=Test',
+                    nodeType: Core.DOCUMENT_NODE
+                };
                 const myDom = new DOM(myDoc);
                 myDom.removeCookie('test', { secure: true });
                 return myDoc.cookie;

@@ -5,7 +5,7 @@
 class Animation {
 
     /**
-     * New AjaxRequest constructor.
+     * New Animation constructor.
      * @param {HTMLElement} node The input node.
      * @param {DOM~animationCallback} callback The animation callback.
      * @param {object} [options] The options to use for the animation.
@@ -46,7 +46,7 @@ class Animation {
     /**
      * Execute a callback if the animation is rejected.
      * @param {function} [onRejected] The callback to execute if the animation is rejected.
-     * @returns {Promise} A new pending Promise.
+     * @returns {Promise} The promise.
      */
     catch(onRejected) {
         return this.promise.catch(onRejected);
@@ -55,17 +55,34 @@ class Animation {
     /**
      * Execute a callback once the animation is settled (resolved or rejected).
      * @param {function} [onRejected] The callback to execute once the animation is settled.
-     * @returns {Promise} A new pending Promise.
+     * @returns {Promise} The promise.
      */
     finally(onFinally) {
         return this.promise.finally(onFinally);
     }
 
     /**
+     * Stop the animation.
+     * @param {Boolean} [finish=true] Whether to finish the animation.
+    */
+    stop(finish = true) {
+        const animations = this.constructor._animations.get(this._node)
+            .filter(animation => animation !== this);
+
+        if (!animations.length) {
+            this.constructor._animations.delete(this._node)
+        } else {
+            this.constructor._animations.set(this._node, animations);
+        }
+
+        this.update(true, finish);
+    }
+
+    /**
      * Execute a callback once the animation is resolved (or optionally rejected).
      * @param {function} onFulfilled The callback to execute if the animation is resolved.
      * @param {function} [onRejected] The callback to execute if the animation is rejected.
-     * @returns {Promise} A new pending Promise.
+     * @returns {Promise} The promise.
      */
     then(onFulfilled, onRejected) {
         return this.promise.then(onFulfilled, onRejected);

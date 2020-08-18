@@ -10,6 +10,10 @@ class DOM {
      * @returns {DOM} A new DOM object.
      */
     constructor(context = document) {
+        if (!(Core.isDocument(context))) {
+            throw new Error('Invalid document');
+        }
+
         this._context = context;
     }
 

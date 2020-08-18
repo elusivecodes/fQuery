@@ -1,5 +1,5 @@
 /**
- * FrostDOM Bundle v1.0.3
+ * FrostDOM Bundle v1.0.4
  * https://github.com/elusivecodes/FrostCore
  * https://github.com/elusivecodes/FrostDOM
  */
@@ -23,6 +23,7 @@
     return {
         AjaxRequest: window.AjaxRequest,
         Animation: window.Animation,
+        AnimationSet: window.AnimationSet,
         Core: window.Core,
         DOM: window.DOM,
         dom: new window.DOM

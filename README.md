@@ -10,7 +10,7 @@ For a fully OOP implementation, also check out my [fQuery](https://github.com/el
 ## Table Of Contents
 - [Installation](#installation)
 - [DOM](#dom)
-    - [Animation](#animation)
+    - [Animate](#animate)
         - [Animations](#animations)
         - [Queue](#queue)
     - [Attributes](#attributes)
@@ -40,6 +40,10 @@ For a fully OOP implementation, also check out my [fQuery](https://github.com/el
     - [Parsing](#parsing)
 - [Ajax Request](#ajax-request)
     - [Cancelling A Request](#cancelling-a-request)
+- [Animation](#animation)
+    - [Cancelling An Animation](#cancelling-an-animation)
+- [AnimationSet](#animation-set)
+    - [Cancelling Animations](#cancelling-animations)
 
 
 
@@ -90,7 +94,7 @@ const myDOM = new DOM(context);
 ```
 
 
-### Animation
+### Animate
 
 **Animate**
 
@@ -103,7 +107,7 @@ Add an animation to each node.
     - `type` is a string of either *ease-in*, *ease-out*, *ease-in-out* or *linear* indicating the type of animation to run, and will default to *ease-in-out*.
     - `infinite` is a boolean indicating whether the animation should continue forever, and will default to *false*.
 
-This method returns a *Promise* that will resolve after the animation has completed.
+This method returns an *AnimationSet* that will resolve after the animation has completed.
 
 ```javascript
 dom.animate(nodes, callback, options);
@@ -134,7 +138,7 @@ Drop each node into place.
     - `infinite` is a boolean indicating whether the animation should continue forever, and will default to *false*.
     - `useGpu` is a boolean indicating whether the animation should use GPU acceleration (CSS transform) and will default to *true*.
 
-This method returns a *Promise*, that will resolve after the animation has completed.
+This method returns an *AnimationSet* that will resolve after the animation has completed.
 
 ```javascript
 dom.dropIn(nodes, options);
@@ -152,7 +156,7 @@ Drop each node out of place.
     - `infinite` is a boolean indicating whether the animation should continue forever, and will default to *false*.
     - `useGpu` is a boolean indicating whether the animation should use GPU acceleration (CSS transform) and will default to *true*.
 
-This method returns a *Promise*, that will resolve after the animation has completed.
+This method returns an *AnimationSet* that will resolve after the animation has completed.
 
 ```javascript
 dom.dropOut(nodes, options);
@@ -168,7 +172,7 @@ Fade the opacity of each node in.
     - `type` is a string of either "*ease-in*", "*ease-out*", "*ease-in-out*" or "*linear*" indicating the type of animation to run, and will default to "*ease-in-out*".
     - `infinite` is a boolean indicating whether the animation should continue forever, and will default to *false*.
 
-This method returns a *Promise*, that will resolve after the animation has completed.
+This method returns an *AnimationSet* that will resolve after the animation has completed.
 
 ```javascript
 dom.fadeIn(nodes, options);
@@ -184,7 +188,7 @@ Fade the opacity of each node out.
     - `type` is a string of either "*ease-in*", "*ease-out*", "*ease-in-out*" or "*linear*" indicating the type of animation to run, and will default to "*ease-in-out*".
     - `infinite` is a boolean indicating whether the animation should continue forever, and will default to *false*.
 
-This method returns a *Promise*, that will resolve after the animation has completed.
+This method returns an *AnimationSet* that will resolve after the animation has completed.
 
 ```javascript
 dom.fadeOut(nodes, options);
@@ -204,7 +208,7 @@ Rotate each node in on an X, Y or Z.
     - `type` is a string of either "*ease-in*", "*ease-out*", "*ease-in-out*" or "*linear*" indicating the type of animation to run, and will default to "*ease-in-out*".
     - `infinite` is a boolean indicating whether the animation should continue forever, and will default to *false*.
 
-This method returns a *Promise*, that will resolve after the animation has completed.
+This method returns an *AnimationSet* that will resolve after the animation has completed.
 
 ```javascript
 dom.rotateIn(nodes, options);
@@ -224,7 +228,7 @@ Rotate each node out on an X, Y or Z.
     - `type` is a string of either "*ease-in*", "*ease-out*", "*ease-in-out*" or "*linear*" indicating the type of animation to run, and will default to "*ease-in-out*".
     - `infinite` is a boolean indicating whether the animation should continue forever, and will default to *false*.
 
-This method returns a *Promise*, that will resolve after the animation has completed.
+This method returns an *AnimationSet* that will resolve after the animation has completed.
 
 ```javascript
 dom.rotateOut(nodes, options);
@@ -242,7 +246,7 @@ Slide each node into place to a direction.
     - `infinite` is a boolean indicating whether the animation should continue forever, and will default to *false*.
     - `useGpu` is a boolean indicating whether the animation should use GPU acceleration (CSS transform) and will default to *true*.
 
-This method returns a *Promise*, that will resolve after the animation has completed.
+This method returns an *AnimationSet* that will resolve after the animation has completed.
 
 ```javascript
 dom.slideIn(nodes, options);
@@ -260,7 +264,7 @@ Slide each node out of place from a direction.
     - `infinite` is a boolean indicating whether the animation should continue forever, and will default to *false*.
     - `useGpu` is a boolean indicating whether the animation should use GPU acceleration (CSS transform) and will default to *true*.
 
-This method returns a *Promise*, that will resolve after the animation has completed.
+This method returns an *AnimationSet* that will resolve after the animation has completed.
 
 ```javascript
 dom.slideOut(nodes, options);
@@ -278,7 +282,7 @@ Squeeze each node into place to a direction.
     - `infinite` is a boolean indicating whether the animation should continue forever, and will default to *false*.
     - `useGpu` is a boolean indicating whether the animation should use GPU acceleration (CSS transform) and will default to *true*.
 
-This method returns a *Promise*, that will resolve after the animation has completed.
+This method returns an *AnimationSet* that will resolve after the animation has completed.
 
 ```javascript
 dom.squeezeIn(nodes, options);
@@ -296,7 +300,7 @@ Squeeze each node out of place from a direction.
     - `infinite` is a boolean indicating whether the animation should continue forever, and will default to *false*.
     - `useGpu` is a boolean indicating whether the animation should use GPU acceleration (CSS transform) and will default to *true*.
 
-This method returns a *Promise*, that will resolve after the animation has completed.
+This method returns an *AnimationSet* that will resolve after the animation has completed.
 
 ```javascript
 dom.squeezeOut(nodes, options);
@@ -2424,7 +2428,7 @@ Perform an XHR request.
 This method returns an *AjaxRequest* that resolves when the request is completed, or rejects on failure.
 
 ```javascript
-dom.ajax(options);
+DOM.ajax(options);
 ```
 
 **Delete**
@@ -2453,7 +2457,7 @@ Perform an XHR DELETE request.
 This method returns an *AjaxRequest* that resolves when the request is completed, or rejects on failure.
 
 ```javascript
-dom.delete(url, options);
+DOM.delete(url, options);
 ```
 
 **Get**
@@ -2483,7 +2487,7 @@ Perform an XHR GET request.
 This method returns an *AjaxRequest* that resolves when the request is completed, or rejects on failure.
 
 ```javascript
-dom.get(url, data, options);
+DOM.get(url, data, options);
 ```
 
 **Patch**
@@ -2513,7 +2517,7 @@ Perform an XHR PATCH request.
 This method returns an *AjaxRequest* that resolves when the request is completed, or rejects on failure.
 
 ```javascript
-dom.patch(url, data, options);
+DOM.patch(url, data, options);
 ```
 
 **Post**
@@ -2543,7 +2547,7 @@ Perform an XHR POST request.
 This method returns an *AjaxRequest* that resolves when the request is completed, or rejects on failure.
 
 ```javascript
-dom.post(url, data, options);
+DOM.post(url, data, options);
 ```
 
 **Put**
@@ -2573,7 +2577,7 @@ Perform an XHR PUT request.
 This method returns an *AjaxRequest* that resolves when the request is completed, or rejects on failure.
 
 ```javascript
-dom.put(url, data, options);
+DOM.put(url, data, options);
 ```
 
 ### Parsing
@@ -2632,4 +2636,55 @@ It is also possible to cancel a pending *AjaxRequest*.
 
 ```javascript
 request.cancel(reason);
+```
+
+
+## Animation
+
+The *Animation* class provides a Promise-based wrapper for performing animations.
+
+- `node` is a *HTMLElement*
+- `callback` is a function that accepts `node`, `progress` and `options` as arguments, where `node` is a *HTMLElement*, `progress` is a value between *0* and *1* and `options` is the `options` object passed to this method.
+- `options` is an object containing properties to define how the animation should be handled.
+    - `duration` is the number of milliseconds that the animation should last, and will default to *1000*.
+    - `type` is a string of either *ease-in*, *ease-out*, *ease-in-out* or *linear* indicating the type of animation to run, and will default to *ease-in-out*.
+    - `infinite` is a boolean indicating whether the animation should continue forever, and will default to *false*.
+
+```javascript
+const animation = new Animation(node, callback, options);
+```
+
+The *Animation* object resolves when the animation is completed, or rejects if it is stopped without finishing.
+
+### Stopping An Animation
+
+It is also possible to stop a running *Animation*.
+
+- `finish` is a boolean indicating whether to immediately finish the animation, and will default to *true*.
+
+```javascript
+animation.stop(finish);
+```
+
+
+## Animation Set
+
+The *AnimationSet* class provides a Promise-based wrapper for performing a set of animations.
+
+- `animations` is an array of *Animation* objects.
+
+```javascript
+const animationSet = new AnimationSet(animations);
+```
+
+The *AnimationSet* object resolves when the animations are completed, or rejects if it is stopped without finishing.
+
+### Stopping Animations
+
+It is also possible to stop a running *AnimationSet*.
+
+- `finish` is a boolean indicating whether to immediately finish the animation, and will default to *true*.
+
+```javascript
+animationSet.stop(finish);
 ```

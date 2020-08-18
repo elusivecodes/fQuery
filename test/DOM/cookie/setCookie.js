@@ -6,8 +6,10 @@ describe('#setCookie', function() {
     it('sets a cookie', async function() {
         assert.equal(
             await exec(_ => {
-                const myDoc = {};
-                myDoc.cookie = '';
+                const myDoc = {
+                    cookie: '',
+                    nodeType: Core.DOCUMENT_NODE
+                };
                 const myDom = new DOM(myDoc);
                 myDom.setCookie('test', 'Test');
                 return myDoc.cookie;
@@ -18,8 +20,10 @@ describe('#setCookie', function() {
 
     it('sets a cookie with expiration', async function() {
         const cookie = await exec(_ => {
-            const myDoc = {};
-            myDoc.cookie = '';
+            const myDoc = {
+                cookie: '',
+                nodeType: Core.DOCUMENT_NODE
+            };
             const myDom = new DOM(myDoc);
             myDom.setCookie('test', 'Test', { expires: 3600 });
             return myDoc.cookie;
@@ -39,8 +43,10 @@ describe('#setCookie', function() {
     it('sets a cookie with path', async function() {
         assert.equal(
             await exec(_ => {
-                const myDoc = {};
-                myDoc.cookie = '';
+                const myDoc = {
+                    cookie: '',
+                    nodeType: Core.DOCUMENT_NODE
+                };
                 const myDom = new DOM(myDoc);
                 myDom.setCookie('test', 'Test', { path: '/test' });
                 return myDoc.cookie;
@@ -52,8 +58,10 @@ describe('#setCookie', function() {
     it('sets a cookie with secure', async function() {
         assert.equal(
             await exec(_ => {
-                const myDoc = {};
-                myDoc.cookie = '';
+                const myDoc = {
+                    cookie: '',
+                    nodeType: Core.DOCUMENT_NODE
+                };
                 const myDom = new DOM(myDoc);
                 myDom.setCookie('test', 'Test', { secure: true });
                 return myDoc.cookie;

@@ -25,3 +25,6 @@ Object.assign(Animation, {
 
 // Set the Animation prototype
 Object.setPrototypeOf(Animation.prototype, Promise.prototype);
+
+// Set the AnimationSet prototype
+Object.setPrototypeOf(AnimationSet.prototype, Promise.prototype);
