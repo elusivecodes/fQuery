@@ -15,18 +15,13 @@ describe('#removeEvent', function() {
         assert.equal(
             await exec(_ => {
                 let result = 0;
-                const callback1 = _ => {
-                    result++;
-                };
-                const callback2 = _ => {
-                    result++;
-                };
                 const event1 = new Event('click');
                 const event2 = new Event('hover');
                 const element1 = document.getElementById('test1');
                 const element2 = document.getElementById('test2');
-                dom.addEvent('a', 'click', callback1);
-                dom.addEvent('a', 'hover', callback2);
+                dom.addEvent('a', 'click hover', _ => {
+                    result++;
+                });
                 dom.removeEvent('a');
                 element1.dispatchEvent(event1);
                 element1.dispatchEvent(event2);
@@ -42,19 +37,16 @@ describe('#removeEvent', function() {
         assert.equal(
             await exec(_ => {
                 let result = 0;
-                const callback1 = _ => {
-                    result++;
-                };
-                const callback2 = _ => {
-                    result++;
-                };
                 const event1 = new Event('click');
                 const event2 = new Event('hover');
                 const element1 = document.getElementById('test1');
                 const element2 = document.getElementById('test2');
-                dom.addEvent('a', 'click', callback1);
-                dom.addEvent('a', 'click', callback2);
-                dom.addEvent('a', 'hover', callback1);
+                dom.addEvent('a', 'click', _ => {
+                    result++;
+                });
+                dom.addEvent('a', 'click hover', _ => {
+                    result++;
+                });
                 dom.removeEvent('a', 'click');
                 element1.dispatchEvent(event1);
                 element1.dispatchEvent(event2);
@@ -70,19 +62,16 @@ describe('#removeEvent', function() {
         assert.equal(
             await exec(_ => {
                 let result = 0;
-                const callback1 = _ => {
-                    result++;
-                };
-                const callback2 = _ => {
-                    result++;
-                };
                 const event1 = new Event('click');
                 const event2 = new Event('hover');
                 const element1 = document.getElementById('test1');
                 const element2 = document.getElementById('test2');
-                dom.addEvent('a', 'click', callback1);
-                dom.addEvent('a', 'click', callback2);
-                dom.addEvent('a', 'hover', callback1);
+                dom.addEvent('a', 'click', _ => {
+                    result++;
+                });
+                dom.addEvent('a', 'click hover', _ => {
+                    result++;
+                });
                 dom.removeEvent('a', 'click hover');
                 element1.dispatchEvent(event1);
                 element1.dispatchEvent(event2);
@@ -98,18 +87,17 @@ describe('#removeEvent', function() {
         assert.equal(
             await exec(_ => {
                 let result = 0;
-                const callback1 = _ => {
-                    result++;
-                };
-                const callback2 = _ => {
+                const callback = _ => {
                     result++;
                 };
                 const event = new Event('click');
                 const element1 = document.getElementById('test1');
                 const element2 = document.getElementById('test2');
-                dom.addEvent('a', 'click', callback1);
-                dom.addEvent('a', 'click', callback2);
-                dom.removeEvent('a', 'click', callback1);
+                dom.addEvent('a', 'click', callback);
+                dom.addEvent('a', 'click', _ => {
+                    result++;
+                });
+                dom.removeEvent('a', 'click', callback);
                 element1.dispatchEvent(event);
                 element2.dispatchEvent(event);
                 return result;
@@ -122,13 +110,12 @@ describe('#removeEvent', function() {
         assert.equal(
             await exec(_ => {
                 let result = 0;
-                const callback = _ => {
-                    result++;
-                };
                 const event = new Event('click');
                 const element1 = document.getElementById('test1');
                 const element2 = document.getElementById('test2');
-                dom.addEvent('a', 'click.test', callback);
+                dom.addEvent('a', 'click.test', _ => {
+                    result++;
+                });
                 dom.removeEvent('a', 'click');
                 element1.dispatchEvent(event);
                 element2.dispatchEvent(event);
@@ -142,15 +129,13 @@ describe('#removeEvent', function() {
         assert.equal(
             await exec(_ => {
                 let result = 0;
-                const callback = _ => {
-                    result++;
-                };
                 const event1 = new Event('click');
                 const event2 = new Event('hover');
                 const element1 = document.getElementById('test1');
                 const element2 = document.getElementById('test2');
-                dom.addEvent('a', 'click.test', callback);
-                dom.addEvent('a', 'hover.test', callback);
+                dom.addEvent('a', 'click.test hover.test', _ => {
+                    result++;
+                });
                 dom.removeEvent('a', 'click hover');
                 element1.dispatchEvent(event1);
                 element1.dispatchEvent(event2);
@@ -166,13 +151,12 @@ describe('#removeEvent', function() {
         assert.equal(
             await exec(_ => {
                 let result = 0;
-                const callback = _ => {
-                    result++;
-                };
                 const event = new Event('click');
                 const element1 = document.getElementById('test1');
                 const element2 = document.getElementById('test2');
-                dom.addEvent('a', 'click.test.deep', callback);
+                dom.addEvent('a', 'click.test.deep', _ => {
+                    result++;
+                });
                 dom.removeEvent('a', 'click');
                 element1.dispatchEvent(event);
                 element2.dispatchEvent(event);
@@ -186,15 +170,13 @@ describe('#removeEvent', function() {
         assert.equal(
             await exec(_ => {
                 let result = 0;
-                const callback = _ => {
-                    result++;
-                };
                 const event1 = new Event('click');
                 const event2 = new Event('hover');
                 const element1 = document.getElementById('test1');
                 const element2 = document.getElementById('test2');
-                dom.addEvent('a', 'click.test.deep', callback);
-                dom.addEvent('a', 'hover.test.deep', callback);
+                dom.addEvent('a', 'click.test.deep hover.test.deep', _ => {
+                    result++;
+                });
                 dom.removeEvent('a', 'click hover');
                 element1.dispatchEvent(event1);
                 element1.dispatchEvent(event2);
@@ -210,13 +192,12 @@ describe('#removeEvent', function() {
         assert.equal(
             await exec(_ => {
                 let result = 0;
-                const callback = _ => {
-                    result++;
-                };
                 const event = new Event('click');
                 const element1 = document.getElementById('test1');
                 const element2 = document.getElementById('test2');
-                dom.addEvent('a', 'click.test', callback);
+                dom.addEvent('a', 'click.test', _ => {
+                    result++;
+                });
                 dom.removeEvent('a', 'click.test');
                 element1.dispatchEvent(event);
                 element2.dispatchEvent(event);
@@ -230,15 +211,13 @@ describe('#removeEvent', function() {
         assert.equal(
             await exec(_ => {
                 let result = 0;
-                const callback = _ => {
-                    result++;
-                };
                 const event1 = new Event('click');
                 const event2 = new Event('hover');
                 const element1 = document.getElementById('test1');
                 const element2 = document.getElementById('test2');
-                dom.addEvent('a', 'click.test', callback);
-                dom.addEvent('a', 'hover.test', callback);
+                dom.addEvent('a', 'click.test hover.test', _ => {
+                    result++;
+                });
                 dom.removeEvent('a', 'click.test hover.test');
                 element1.dispatchEvent(event1);
                 element1.dispatchEvent(event2);
@@ -254,13 +233,12 @@ describe('#removeEvent', function() {
         assert.equal(
             await exec(_ => {
                 let result = 0;
-                const callback = _ => {
-                    result++;
-                };
                 const event = new Event('click');
                 const element1 = document.getElementById('test1');
                 const element2 = document.getElementById('test2');
-                dom.addEvent('a', 'click.test.deep', callback);
+                dom.addEvent('a', 'click.test.deep', _ => {
+                    result++;
+                });
                 dom.removeEvent('a', 'click.test');
                 element1.dispatchEvent(event);
                 element2.dispatchEvent(event);
@@ -274,15 +252,13 @@ describe('#removeEvent', function() {
         assert.equal(
             await exec(_ => {
                 let result = 0;
-                const callback = _ => {
-                    result++;
-                };
                 const event1 = new Event('click');
                 const event2 = new Event('hover');
                 const element1 = document.getElementById('test1');
                 const element2 = document.getElementById('test2');
-                dom.addEvent('a', 'click.test.deep', callback);
-                dom.addEvent('a', 'hover.test.deep', callback);
+                dom.addEvent('a', 'click.test.deep hover.test.deep', _ => {
+                    result++;
+                });
                 dom.removeEvent('a', 'click.test hover.test');
                 element1.dispatchEvent(event1);
                 element1.dispatchEvent(event2);
@@ -298,13 +274,12 @@ describe('#removeEvent', function() {
         assert.equal(
             await exec(_ => {
                 let result = 0;
-                const callback = _ => {
-                    result++;
-                };
                 const event = new Event('click');
                 const element1 = document.getElementById('test1');
                 const element2 = document.getElementById('test2');
-                dom.addEvent('a', 'click.test.deep', callback);
+                dom.addEvent('a', 'click.test.deep', _ => {
+                    result++;
+                });
                 dom.removeEvent('a', 'click.test.deep');
                 element1.dispatchEvent(event);
                 element2.dispatchEvent(event);
@@ -318,15 +293,13 @@ describe('#removeEvent', function() {
         assert.equal(
             await exec(_ => {
                 let result = 0;
-                const callback = _ => {
-                    result++;
-                };
                 const event1 = new Event('click');
                 const event2 = new Event('hover');
                 const element1 = document.getElementById('test1');
                 const element2 = document.getElementById('test2');
-                dom.addEvent('a', 'click.test.deep', callback);
-                dom.addEvent('a', 'hover.test.deep', callback);
+                dom.addEvent('a', 'click.test.deep hover.test.deep', _ => {
+                    result++;
+                });
                 dom.removeEvent('a', 'click.test.deep hover.test.deep');
                 element1.dispatchEvent(event1);
                 element1.dispatchEvent(event2);
@@ -342,18 +315,17 @@ describe('#removeEvent', function() {
         assert.equal(
             await exec(_ => {
                 let result = 0;
-                const callback1 = _ => {
-                    result++;
-                };
-                const callback2 = _ => {
+                const callback = _ => {
                     result++;
                 };
                 const event = new Event('click');
                 const element1 = document.getElementById('test1');
                 const element2 = document.getElementById('test2');
-                dom.addEvent('a', 'click', callback1);
-                dom.addEvent('a', 'click', callback2);
-                dom.removeEvent('a', 'hover', callback1);
+                dom.addEvent('a', 'click', callback);
+                dom.addEvent('a', 'click', _ => {
+                    result++;
+                });
+                dom.removeEvent('a', 'hover', callback);
                 element1.dispatchEvent(event);
                 element2.dispatchEvent(event);
                 return result;
@@ -366,13 +338,12 @@ describe('#removeEvent', function() {
         assert.equal(
             await exec(_ => {
                 let result = 0;
-                const callback = _ => {
-                    result++;
-                };
                 const event = new Event('click');
                 const element1 = document.getElementById('test1');
                 const element2 = document.getElementById('test2');
-                dom.addEvent('a', 'click', callback);
+                dom.addEvent('a', 'click', _ => {
+                    result++;
+                });
                 dom.removeEvent('a', 'click.test');
                 element1.dispatchEvent(event);
                 element2.dispatchEvent(event);
@@ -386,15 +357,13 @@ describe('#removeEvent', function() {
         assert.equal(
             await exec(_ => {
                 let result = 0;
-                const callback = _ => {
-                    result++;
-                };
                 const event1 = new Event('click');
                 const event2 = new Event('hover');
                 const element1 = document.getElementById('test1');
                 const element2 = document.getElementById('test2');
-                dom.addEvent('a', 'click', callback);
-                dom.addEvent('a', 'hover', callback);
+                dom.addEvent('a', 'click hover', _ => {
+                    result++;
+                });
                 dom.removeEvent('a', 'click.test hover.test');
                 element1.dispatchEvent(event1);
                 element1.dispatchEvent(event2);
@@ -410,13 +379,12 @@ describe('#removeEvent', function() {
         assert.equal(
             await exec(_ => {
                 let result = 0;
-                const callback = _ => {
-                    result++;
-                };
                 const event = new Event('click');
                 const element1 = document.getElementById('test1');
                 const element2 = document.getElementById('test2');
-                dom.addEvent('a', 'click.test', callback);
+                dom.addEvent('a', 'click.test', _ => {
+                    result++;
+                });
                 dom.removeEvent('a', 'click.test.deep');
                 element1.dispatchEvent(event);
                 element2.dispatchEvent(event);
@@ -430,15 +398,13 @@ describe('#removeEvent', function() {
         assert.equal(
             await exec(_ => {
                 let result = 0;
-                const callback = _ => {
-                    result++;
-                };
                 const event1 = new Event('click');
                 const event2 = new Event('hover');
                 const element1 = document.getElementById('test1');
                 const element2 = document.getElementById('test2');
-                dom.addEvent('a', 'click.test', callback);
-                dom.addEvent('a', 'hover.test', callback);
+                dom.addEvent('a', 'click.test hover.test', _ => {
+                    result++;
+                });
                 dom.removeEvent('a', 'click.test.deep hover.test.deep');
                 element1.dispatchEvent(event1);
                 element1.dispatchEvent(event2);
@@ -454,18 +420,17 @@ describe('#removeEvent', function() {
         assert.equal(
             await exec(_ => {
                 let result = 0;
-                const callback1 = _ => {
-                    result++;
-                };
-                const callback2 = _ => {
+                const callback = _ => {
                     result++;
                 };
                 const event = new Event('click');
                 const element1 = document.getElementById('test1');
                 const element2 = document.getElementById('test2');
-                dom.addEvent('a', 'click', callback1);
-                dom.addEvent('a', 'click', callback2);
-                dom.removeEvent(element1, 'click', callback1);
+                dom.addEvent('a', 'click', callback);
+                dom.addEvent('a', 'click', _ => {
+                    result++;
+                });
+                dom.removeEvent(element1, 'click', callback);
                 element1.dispatchEvent(event);
                 element2.dispatchEvent(event);
                 return result;
@@ -478,21 +443,20 @@ describe('#removeEvent', function() {
         assert.equal(
             await exec(_ => {
                 let result = 0;
-                const callback1 = _ => {
-                    result++;
-                };
-                const callback2 = _ => {
+                const callback = _ => {
                     result++;
                 };
                 const event = new Event('click');
                 const element1 = document.getElementById('test1');
                 const element2 = document.getElementById('test2');
-                dom.addEvent('a', 'click', callback1);
-                dom.addEvent('a', 'click', callback2);
+                dom.addEvent('a', 'click', callback);
+                dom.addEvent('a', 'click', _ => {
+                    result++;
+                });
                 dom.removeEvent(
                     document.querySelectorAll('a'),
                     'click',
-                    callback1
+                    callback
                 );
                 element1.dispatchEvent(event);
                 element2.dispatchEvent(event);
@@ -506,21 +470,20 @@ describe('#removeEvent', function() {
         assert.equal(
             await exec(_ => {
                 let result = 0;
-                const callback1 = _ => {
-                    result++;
-                };
-                const callback2 = _ => {
+                const callback = _ => {
                     result++;
                 };
                 const event = new Event('click');
                 const element1 = document.getElementById('test1');
                 const element2 = document.getElementById('test2');
-                dom.addEvent('a', 'click', callback1);
-                dom.addEvent('a', 'click', callback2);
+                dom.addEvent('a', 'click', callback);
+                dom.addEvent('a', 'click', _ => {
+                    result++;
+                });
                 dom.removeEvent(
                     document.body.children,
                     'click',
-                    callback1
+                    callback
                 );
                 element1.dispatchEvent(event);
                 element2.dispatchEvent(event);
@@ -534,18 +497,17 @@ describe('#removeEvent', function() {
         assert.equal(
             await exec(_ => {
                 let result = 0;
-                const callback1 = _ => {
-                    result++;
-                };
-                const callback2 = _ => {
+                const callback = _ => {
                     result++;
                 };
                 const event = new Event('click');
                 const div = document.createElement('div');
                 const shadow = div.attachShadow({ mode: 'open' });
-                dom.addEvent(shadow, 'click', callback1);
-                dom.addEvent(shadow, 'click', callback2);
-                dom.removeEvent(shadow, 'click', callback1);
+                dom.addEvent(shadow, 'click', callback);
+                dom.addEvent(shadow, 'click', _ => {
+                    result++;
+                });
+                dom.removeEvent(shadow, 'click', callback);
                 shadow.dispatchEvent(event);
                 return result;
             }),
@@ -557,16 +519,15 @@ describe('#removeEvent', function() {
         assert.equal(
             await exec(_ => {
                 let result = 0;
-                const callback1 = _ => {
-                    result++;
-                };
-                const callback2 = _ => {
+                const callback = _ => {
                     result++;
                 };
                 const event = new Event('click');
-                dom.addEvent(document, 'click', callback1);
-                dom.addEvent(document, 'click', callback2);
-                dom.removeEvent(document, 'click', callback1);
+                dom.addEvent(document, 'click', callback);
+                dom.addEvent(document, 'click', _ => {
+                    result++;
+                });
+                dom.removeEvent(document, 'click', callback);
                 document.dispatchEvent(event);
                 return result;
             }),
@@ -578,16 +539,15 @@ describe('#removeEvent', function() {
         assert.equal(
             await exec(_ => {
                 let result = 0;
-                const callback1 = _ => {
-                    result++;
-                };
-                const callback2 = _ => {
+                const callback = _ => {
                     result++;
                 };
                 const event = new Event('click');
-                dom.addEvent(window, 'click', callback1);
-                dom.addEvent(window, 'click', callback2);
-                dom.removeEvent(window, 'click', callback1);
+                dom.addEvent(window, 'click', callback);
+                dom.addEvent(window, 'click', _ => {
+                    result++;
+                });
+                dom.removeEvent(window, 'click', callback);
                 window.dispatchEvent(event);
                 return result;
             }),
@@ -599,21 +559,20 @@ describe('#removeEvent', function() {
         assert.equal(
             await exec(_ => {
                 let result = 0;
-                const callback1 = _ => {
-                    result++;
-                };
-                const callback2 = _ => {
+                const callback = _ => {
                     result++;
                 };
                 const event = new Event('click');
                 const element1 = document.getElementById('test1');
                 const element2 = document.getElementById('test2');
-                dom.addEvent('a', 'click', callback1);
-                dom.addEvent('a', 'click', callback2);
+                dom.addEvent('a', 'click', callback);
+                dom.addEvent('a', 'click', _ => {
+                    result++;
+                });
                 dom.removeEvent([
                     element1,
                     element2
-                ], 'click', callback1);
+                ], 'click', callback);
                 element1.dispatchEvent(event);
                 element2.dispatchEvent(event);
                 return result;

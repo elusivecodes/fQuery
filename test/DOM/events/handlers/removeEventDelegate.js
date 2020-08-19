@@ -21,12 +21,6 @@ describe('#removeEventDelegate', function() {
         assert.equal(
             await exec(_ => {
                 let result = 0;
-                const callback1 = _ => {
-                    result++;
-                };
-                const callback2 = _ => {
-                    result++;
-                };
                 const event1 = new Event('click', {
                     bubbles: true
                 });
@@ -37,9 +31,12 @@ describe('#removeEventDelegate', function() {
                 const element2 = document.getElementById('test2');
                 const element3 = document.getElementById('test3');
                 const element4 = document.getElementById('test4');
-                dom.addEventDelegate('div', 'click', 'a', callback1);
-                dom.addEventDelegate('div', 'click', 'a', callback2);
-                dom.addEventDelegate('div', 'hover', 'a', callback1);
+                dom.addEventDelegate('div', 'click', 'a', _ => {
+                    result++;
+                });
+                dom.addEventDelegate('div', 'click hover', 'a', _ => {
+                    result++;
+                });
                 dom.removeEventDelegate('div', null, 'a');
                 element1.dispatchEvent(event1);
                 element1.dispatchEvent(event2);
@@ -59,12 +56,6 @@ describe('#removeEventDelegate', function() {
         assert.equal(
             await exec(_ => {
                 let result = 0;
-                const callback1 = _ => {
-                    result++;
-                };
-                const callback2 = _ => {
-                    result++;
-                };
                 const event1 = new Event('click', {
                     bubbles: true
                 });
@@ -75,9 +66,12 @@ describe('#removeEventDelegate', function() {
                 const element2 = document.getElementById('test2');
                 const element3 = document.getElementById('test3');
                 const element4 = document.getElementById('test4');
-                dom.addEventDelegate('div', 'click', 'a', callback1);
-                dom.addEventDelegate('div', 'click', 'a', callback2);
-                dom.addEventDelegate('div', 'hover', 'a', callback1);
+                dom.addEventDelegate('div', 'click', 'a', _ => {
+                    result++;
+                });
+                dom.addEventDelegate('div', 'click hover', 'a', _ => {
+                    result++;
+                });
                 dom.removeEventDelegate('div', 'click', 'a');
                 element1.dispatchEvent(event1);
                 element1.dispatchEvent(event2);
@@ -97,12 +91,6 @@ describe('#removeEventDelegate', function() {
         assert.equal(
             await exec(_ => {
                 let result = 0;
-                const callback1 = _ => {
-                    result++;
-                };
-                const callback2 = _ => {
-                    result++;
-                };
                 const event1 = new Event('click', {
                     bubbles: true
                 });
@@ -113,9 +101,12 @@ describe('#removeEventDelegate', function() {
                 const element2 = document.getElementById('test2');
                 const element3 = document.getElementById('test3');
                 const element4 = document.getElementById('test4');
-                dom.addEventDelegate('div', 'click', 'a', callback1);
-                dom.addEventDelegate('div', 'click', 'a', callback2);
-                dom.addEventDelegate('div', 'hover', 'a', callback1);
+                dom.addEventDelegate('div', 'click', 'a', _ => {
+                    result++;
+                });
+                dom.addEventDelegate('div', 'click hover', 'a', _ => {
+                    result++;
+                });
                 dom.removeEventDelegate('div', 'click hover', 'a');
                 element1.dispatchEvent(event1);
                 element1.dispatchEvent(event2);
@@ -135,10 +126,7 @@ describe('#removeEventDelegate', function() {
         assert.equal(
             await exec(_ => {
                 let result = 0;
-                const callback1 = _ => {
-                    result++;
-                };
-                const callback2 = _ => {
+                const callback = _ => {
                     result++;
                 };
                 const event = new Event('click', {
@@ -148,9 +136,11 @@ describe('#removeEventDelegate', function() {
                 const element2 = document.getElementById('test2');
                 const element3 = document.getElementById('test3');
                 const element4 = document.getElementById('test4');
-                dom.addEventDelegate('div', 'click', 'a', callback1);
-                dom.addEventDelegate('div', 'click', 'a', callback2);
-                dom.removeEventDelegate('div', 'click', 'a', callback1);
+                dom.addEventDelegate('div', 'click', 'a', callback);
+                dom.addEventDelegate('div', 'click', 'a', _ => {
+                    result++;
+                });
+                dom.removeEventDelegate('div', 'click', 'a', callback);
                 element1.dispatchEvent(event);
                 element2.dispatchEvent(event);
                 element3.dispatchEvent(event);
@@ -165,9 +155,6 @@ describe('#removeEventDelegate', function() {
         assert.equal(
             await exec(_ => {
                 let result = 0;
-                const callback = _ => {
-                    result++;
-                };
                 const event = new Event('click', {
                     bubbles: true
                 });
@@ -175,7 +162,9 @@ describe('#removeEventDelegate', function() {
                 const element2 = document.getElementById('test2');
                 const element3 = document.getElementById('test3');
                 const element4 = document.getElementById('test4');
-                dom.addEventDelegate('div', 'click.test', 'a', callback);
+                dom.addEventDelegate('div', 'click.test', 'a', _ => {
+                    result++;
+                });
                 dom.removeEventDelegate('div', 'click', 'a');
                 element1.dispatchEvent(event);
                 element2.dispatchEvent(event);
@@ -191,9 +180,6 @@ describe('#removeEventDelegate', function() {
         assert.equal(
             await exec(_ => {
                 let result = 0;
-                const callback = _ => {
-                    result++;
-                };
                 const event1 = new Event('click', {
                     bubbles: true
                 });
@@ -204,8 +190,9 @@ describe('#removeEventDelegate', function() {
                 const element2 = document.getElementById('test2');
                 const element3 = document.getElementById('test3');
                 const element4 = document.getElementById('test4');
-                dom.addEventDelegate('div', 'click.test', 'a', callback);
-                dom.addEventDelegate('div', 'hover.test', 'a', callback);
+                dom.addEventDelegate('div', 'click.test hover.test', 'a', _ => {
+                    result++;
+                });
                 dom.removeEventDelegate('div', 'click hover', 'a');
                 element1.dispatchEvent(event1);
                 element1.dispatchEvent(event2);
@@ -225,9 +212,6 @@ describe('#removeEventDelegate', function() {
         assert.equal(
             await exec(_ => {
                 let result = 0;
-                const callback = _ => {
-                    result++;
-                };
                 const event = new Event('click', {
                     bubbles: true
                 });
@@ -235,7 +219,9 @@ describe('#removeEventDelegate', function() {
                 const element2 = document.getElementById('test2');
                 const element3 = document.getElementById('test3');
                 const element4 = document.getElementById('test4');
-                dom.addEventDelegate('div', 'click.test.deep', 'a', callback);
+                dom.addEventDelegate('div', 'click.test.deep', 'a', _ => {
+                    result++;
+                });
                 dom.removeEventDelegate('div', 'click', 'a');
                 element1.dispatchEvent(event);
                 element2.dispatchEvent(event);
@@ -251,9 +237,6 @@ describe('#removeEventDelegate', function() {
         assert.equal(
             await exec(_ => {
                 let result = 0;
-                const callback = _ => {
-                    result++;
-                };
                 const event1 = new Event('click', {
                     bubbles: true
                 });
@@ -264,8 +247,9 @@ describe('#removeEventDelegate', function() {
                 const element2 = document.getElementById('test2');
                 const element3 = document.getElementById('test3');
                 const element4 = document.getElementById('test4');
-                dom.addEventDelegate('div', 'click.test.deep', 'a', callback);
-                dom.addEventDelegate('div', 'hover.test.deep', 'a', callback);
+                dom.addEventDelegate('div', 'click.test.deep hover.test.deep', 'a', _ => {
+                    result++;
+                });
                 dom.removeEventDelegate('div', 'click hover', 'a');
                 element1.dispatchEvent(event1);
                 element1.dispatchEvent(event2);
@@ -285,9 +269,6 @@ describe('#removeEventDelegate', function() {
         assert.equal(
             await exec(_ => {
                 let result = 0;
-                const callback = _ => {
-                    result++;
-                };
                 const event = new Event('click', {
                     bubbles: true
                 });
@@ -295,7 +276,9 @@ describe('#removeEventDelegate', function() {
                 const element2 = document.getElementById('test2');
                 const element3 = document.getElementById('test3');
                 const element4 = document.getElementById('test4');
-                dom.addEventDelegate('div', 'click.test', 'a', callback);
+                dom.addEventDelegate('div', 'click.test', 'a', _ => {
+                    result++;
+                });
                 dom.removeEventDelegate('div', 'click.test', 'a');
                 element1.dispatchEvent(event);
                 element2.dispatchEvent(event);
@@ -311,9 +294,6 @@ describe('#removeEventDelegate', function() {
         assert.equal(
             await exec(_ => {
                 let result = 0;
-                const callback = _ => {
-                    result++;
-                };
                 const event1 = new Event('click', {
                     bubbles: true
                 });
@@ -324,8 +304,9 @@ describe('#removeEventDelegate', function() {
                 const element2 = document.getElementById('test2');
                 const element3 = document.getElementById('test3');
                 const element4 = document.getElementById('test4');
-                dom.addEventDelegate('div', 'click.test', 'a', callback);
-                dom.addEventDelegate('div', 'hover.test', 'a', callback);
+                dom.addEventDelegate('div', 'click.test hover.test', 'a', _ => {
+                    result++;
+                });
                 dom.removeEventDelegate('div', 'click.test hover.test', 'a');
                 element1.dispatchEvent(event1);
                 element1.dispatchEvent(event2);
@@ -345,9 +326,6 @@ describe('#removeEventDelegate', function() {
         assert.equal(
             await exec(_ => {
                 let result = 0;
-                const callback = _ => {
-                    result++;
-                };
                 const event = new Event('click', {
                     bubbles: true
                 });
@@ -355,7 +333,9 @@ describe('#removeEventDelegate', function() {
                 const element2 = document.getElementById('test2');
                 const element3 = document.getElementById('test3');
                 const element4 = document.getElementById('test4');
-                dom.addEventDelegate('div', 'click.test.deep', 'a', callback);
+                dom.addEventDelegate('div', 'click.test.deep', 'a', _ => {
+                    result++;
+                });
                 dom.removeEventDelegate('div', 'click.test', 'a');
                 element1.dispatchEvent(event);
                 element2.dispatchEvent(event);
@@ -371,9 +351,6 @@ describe('#removeEventDelegate', function() {
         assert.equal(
             await exec(_ => {
                 let result = 0;
-                const callback = _ => {
-                    result++;
-                };
                 const event1 = new Event('click', {
                     bubbles: true
                 });
@@ -384,8 +361,9 @@ describe('#removeEventDelegate', function() {
                 const element2 = document.getElementById('test2');
                 const element3 = document.getElementById('test3');
                 const element4 = document.getElementById('test4');
-                dom.addEventDelegate('div', 'click.test.deep', 'a', callback);
-                dom.addEventDelegate('div', 'hover.test.deep', 'a', callback);
+                dom.addEventDelegate('div', 'click.test.deep hover.test.deep', 'a', _ => {
+                    result++;
+                });
                 dom.removeEventDelegate('div', 'click.test hover.test', 'a');
                 element1.dispatchEvent(event1);
                 element1.dispatchEvent(event2);
@@ -405,9 +383,6 @@ describe('#removeEventDelegate', function() {
         assert.equal(
             await exec(_ => {
                 let result = 0;
-                const callback = _ => {
-                    result++;
-                };
                 const event = new Event('click', {
                     bubbles: true
                 });
@@ -415,7 +390,9 @@ describe('#removeEventDelegate', function() {
                 const element2 = document.getElementById('test2');
                 const element3 = document.getElementById('test3');
                 const element4 = document.getElementById('test4');
-                dom.addEventDelegate('div', 'click.test.deep', 'a', callback);
+                dom.addEventDelegate('div', 'click.test.deep', 'a', _ => {
+                    result++;
+                });
                 dom.removeEventDelegate('div', 'click.test.deep', 'a');
                 element1.dispatchEvent(event);
                 element2.dispatchEvent(event);
@@ -431,9 +408,6 @@ describe('#removeEventDelegate', function() {
         assert.equal(
             await exec(_ => {
                 let result = 0;
-                const callback = _ => {
-                    result++;
-                };
                 const event1 = new Event('click', {
                     bubbles: true
                 });
@@ -444,8 +418,9 @@ describe('#removeEventDelegate', function() {
                 const element2 = document.getElementById('test2');
                 const element3 = document.getElementById('test2');
                 const element4 = document.getElementById('test2');
-                dom.addEventDelegate('div', 'click.test.deep', 'a', callback);
-                dom.addEventDelegate('div', 'hover.test.deep', 'a', callback);
+                dom.addEventDelegate('div', 'click.test.deep hover.test.deep', 'a', _ => {
+                    result++;
+                });
                 dom.removeEventDelegate('div', 'click.test.deep hover.test.deep', 'a');
                 element1.dispatchEvent(event1);
                 element1.dispatchEvent(event2);
@@ -465,10 +440,7 @@ describe('#removeEventDelegate', function() {
         assert.equal(
             await exec(_ => {
                 let result = 0;
-                const callback1 = _ => {
-                    result++;
-                };
-                const callback2 = _ => {
+                const callback = _ => {
                     result++;
                 };
                 const event = new Event('click', {
@@ -478,9 +450,11 @@ describe('#removeEventDelegate', function() {
                 const element2 = document.getElementById('test2');
                 const element3 = document.getElementById('test3');
                 const element4 = document.getElementById('test4');
-                dom.addEventDelegate('div', 'click', 'a', callback1);
-                dom.addEventDelegate('div', 'click', 'a', callback2);
-                dom.removeEventDelegate('div', 'hover', 'a', callback1);
+                dom.addEventDelegate('div', 'click', 'a', callback);
+                dom.addEventDelegate('div', 'click', 'a', _ => {
+                    result++;
+                });
+                dom.removeEventDelegate('div', 'hover', 'a', callback);
                 element1.dispatchEvent(event);
                 element2.dispatchEvent(event);
                 element3.dispatchEvent(event);
@@ -495,9 +469,6 @@ describe('#removeEventDelegate', function() {
         assert.equal(
             await exec(_ => {
                 let result = 0;
-                const callback = _ => {
-                    result++;
-                };
                 const event = new Event('click', {
                     bubbles: true
                 });
@@ -505,7 +476,9 @@ describe('#removeEventDelegate', function() {
                 const element2 = document.getElementById('test2');
                 const element3 = document.getElementById('test3');
                 const element4 = document.getElementById('test4');
-                dom.addEventDelegate('div', 'click', 'a', callback);
+                dom.addEventDelegate('div', 'click', 'a', _ => {
+                    result++;
+                });
                 dom.removeEventDelegate('div', 'click.test', 'a');
                 element1.dispatchEvent(event);
                 element2.dispatchEvent(event);
@@ -521,9 +494,6 @@ describe('#removeEventDelegate', function() {
         assert.equal(
             await exec(_ => {
                 let result = 0;
-                const callback = _ => {
-                    result++;
-                };
                 const event1 = new Event('click', {
                     bubbles: true
                 });
@@ -534,8 +504,9 @@ describe('#removeEventDelegate', function() {
                 const element2 = document.getElementById('test2');
                 const element3 = document.getElementById('test3');
                 const element4 = document.getElementById('test4');
-                dom.addEventDelegate('div', 'click', 'a', callback);
-                dom.addEventDelegate('div', 'hover', 'a', callback);
+                dom.addEventDelegate('div', 'click hover', 'a', _ => {
+                    result++;
+                });
                 dom.removeEventDelegate('div', 'click.test hover.test', 'a');
                 element1.dispatchEvent(event1);
                 element1.dispatchEvent(event2);
@@ -555,9 +526,6 @@ describe('#removeEventDelegate', function() {
         assert.equal(
             await exec(_ => {
                 let result = 0;
-                const callback = _ => {
-                    result++;
-                };
                 const event = new Event('click', {
                     bubbles: true
                 });
@@ -565,7 +533,9 @@ describe('#removeEventDelegate', function() {
                 const element2 = document.getElementById('test2');
                 const element3 = document.getElementById('test3');
                 const element4 = document.getElementById('test4');
-                dom.addEventDelegate('div', 'click.test', 'a', callback);
+                dom.addEventDelegate('div', 'click.test', 'a', _ => {
+                    result++;
+                });
                 dom.removeEventDelegate('div', 'click.test.deep', 'a');
                 element1.dispatchEvent(event);
                 element2.dispatchEvent(event);
@@ -581,9 +551,6 @@ describe('#removeEventDelegate', function() {
         assert.equal(
             await exec(_ => {
                 let result = 0;
-                const callback = _ => {
-                    result++;
-                };
                 const event1 = new Event('click', {
                     bubbles: true
                 });
@@ -594,8 +561,9 @@ describe('#removeEventDelegate', function() {
                 const element2 = document.getElementById('test2');
                 const element3 = document.getElementById('test3');
                 const element4 = document.getElementById('test4');
-                dom.addEventDelegate('div', 'click.test', 'a', callback);
-                dom.addEventDelegate('div', 'hover.test', 'a', callback);
+                dom.addEventDelegate('div', 'click.test hover.test', 'a', _ => {
+                    result++;
+                });
                 dom.removeEventDelegate('div', 'click.test.deep hover.test.deep', 'a');
                 element1.dispatchEvent(event1);
                 element1.dispatchEvent(event2);
@@ -615,10 +583,7 @@ describe('#removeEventDelegate', function() {
         assert.equal(
             await exec(_ => {
                 let result = 0;
-                const callback1 = _ => {
-                    result++;
-                };
-                const callback2 = _ => {
+                const callback = _ => {
                     result++;
                 };
                 const event = new Event('click', {
@@ -628,13 +593,15 @@ describe('#removeEventDelegate', function() {
                 const element2 = document.getElementById('test2');
                 const element3 = document.getElementById('test3');
                 const element4 = document.getElementById('test4');
-                dom.addEventDelegate('div', 'click', 'a', callback1);
-                dom.addEventDelegate('div', 'click', 'a', callback2);
+                dom.addEventDelegate('div', 'click', 'a', callback);
+                dom.addEventDelegate('div', 'click', 'a', _ => {
+                    result++;
+                });
                 dom.removeEventDelegate(
                     document.getElementById('parent1'),
                     'click',
                     'a',
-                    callback1
+                    callback
                 );
                 element1.dispatchEvent(event);
                 element2.dispatchEvent(event);
@@ -650,10 +617,7 @@ describe('#removeEventDelegate', function() {
         assert.equal(
             await exec(_ => {
                 let result = 0;
-                const callback1 = _ => {
-                    result++;
-                };
-                const callback2 = _ => {
+                const callback = _ => {
                     result++;
                 };
                 const event = new Event('click', {
@@ -663,13 +627,15 @@ describe('#removeEventDelegate', function() {
                 const element2 = document.getElementById('test2');
                 const element3 = document.getElementById('test3');
                 const element4 = document.getElementById('test4');
-                dom.addEventDelegate('div', 'click', 'a', callback1);
-                dom.addEventDelegate('div', 'click', 'a', callback2);
+                dom.addEventDelegate('div', 'click', 'a', callback);
+                dom.addEventDelegate('div', 'click', 'a', _ => {
+                    result++;
+                });
                 dom.removeEventDelegate(
                     document.querySelectorAll('div'),
                     'click',
                     'a',
-                    callback1
+                    callback
                 );
                 element1.dispatchEvent(event);
                 element2.dispatchEvent(event);
@@ -685,10 +651,7 @@ describe('#removeEventDelegate', function() {
         assert.equal(
             await exec(_ => {
                 let result = 0;
-                const callback1 = _ => {
-                    result++;
-                };
-                const callback2 = _ => {
+                const callback = _ => {
                     result++;
                 };
                 const event = new Event('click', {
@@ -698,13 +661,15 @@ describe('#removeEventDelegate', function() {
                 const element2 = document.getElementById('test2');
                 const element3 = document.getElementById('test3');
                 const element4 = document.getElementById('test4');
-                dom.addEventDelegate('div', 'click', 'a', callback1);
-                dom.addEventDelegate('div', 'click', 'a', callback2);
+                dom.addEventDelegate('div', 'click', 'a', callback);
+                dom.addEventDelegate('div', 'click', 'a', _ => {
+                    result++;
+                });
                 dom.removeEventDelegate(
                     document.body.children,
                     'click',
                     'a',
-                    callback1
+                    callback
                 );
                 element1.dispatchEvent(event);
                 element2.dispatchEvent(event);
@@ -720,10 +685,7 @@ describe('#removeEventDelegate', function() {
         assert.equal(
             await exec(_ => {
                 let result = 0;
-                const callback1 = _ => {
-                    result++;
-                };
-                const callback2 = _ => {
+                const callback = _ => {
                     result++;
                 };
                 const event = new Event('click', {
@@ -733,9 +695,11 @@ describe('#removeEventDelegate', function() {
                 const shadow = div.attachShadow({ mode: 'open' });
                 const a = document.createElement('a');
                 shadow.appendChild(a);
-                dom.addEventDelegate(shadow, 'click', 'a', callback1);
-                dom.addEventDelegate(shadow, 'click', 'a', callback2);
-                dom.removeEventDelegate(shadow, 'click', 'a', callback1);
+                dom.addEventDelegate(shadow, 'click', 'a', callback);
+                dom.addEventDelegate(shadow, 'click', 'a', _ => {
+                    result++;
+                });
+                dom.removeEventDelegate(shadow, 'click', 'a', callback);
                 a.dispatchEvent(event);
                 return result;
             }),
@@ -747,10 +711,7 @@ describe('#removeEventDelegate', function() {
         assert.equal(
             await exec(_ => {
                 let result = 0;
-                const callback1 = _ => {
-                    result++;
-                };
-                const callback2 = _ => {
+                const callback = _ => {
                     result++;
                 };
                 const event = new Event('click', {
@@ -760,9 +721,11 @@ describe('#removeEventDelegate', function() {
                 const element2 = document.getElementById('test2');
                 const element3 = document.getElementById('test3');
                 const element4 = document.getElementById('test4');
-                dom.addEventDelegate(document, 'click', 'a', callback1);
-                dom.addEventDelegate(document, 'click', 'a', callback2);
-                dom.removeEventDelegate(document, 'click', 'a', callback1);
+                dom.addEventDelegate(document, 'click', 'a', callback);
+                dom.addEventDelegate(document, 'click', 'a', _ => {
+                    result++;
+                });
+                dom.removeEventDelegate(document, 'click', 'a', callback);
                 element1.dispatchEvent(event);
                 element2.dispatchEvent(event);
                 element3.dispatchEvent(event);
@@ -777,10 +740,7 @@ describe('#removeEventDelegate', function() {
         assert.equal(
             await exec(_ => {
                 let result = 0;
-                const callback1 = _ => {
-                    result++;
-                };
-                const callback2 = _ => {
+                const callback = _ => {
                     result++;
                 };
                 const event = new Event('click', {
@@ -790,12 +750,14 @@ describe('#removeEventDelegate', function() {
                 const element2 = document.getElementById('test2');
                 const element3 = document.getElementById('test3');
                 const element4 = document.getElementById('test4');
-                dom.addEventDelegate('div', 'click', 'a', callback1);
-                dom.addEventDelegate('div', 'click', 'a', callback2);
+                dom.addEventDelegate('div', 'click', 'a', callback);
+                dom.addEventDelegate('div', 'click', 'a', _ => {
+                    result++;
+                });
                 dom.removeEventDelegate([
                     document.getElementById('parent1'),
                     document.getElementById('parent2')
-                ], 'click', 'a', callback1);
+                ], 'click', 'a', callback);
                 element1.dispatchEvent(event);
                 element2.dispatchEvent(event);
                 element3.dispatchEvent(event);

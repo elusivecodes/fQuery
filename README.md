@@ -110,7 +110,7 @@ Add an animation to each node.
 This method returns an *AnimationSet* that will resolve after the animation has completed.
 
 ```javascript
-dom.animate(nodes, callback, options);
+const animation = dom.animate(nodes, callback, options);
 ```
 
 **Stop Animations**
@@ -141,7 +141,7 @@ Drop each node into place.
 This method returns an *AnimationSet* that will resolve after the animation has completed.
 
 ```javascript
-dom.dropIn(nodes, options);
+const animation = dom.dropIn(nodes, options);
 ```
 
 **Drop Out**
@@ -159,7 +159,7 @@ Drop each node out of place.
 This method returns an *AnimationSet* that will resolve after the animation has completed.
 
 ```javascript
-dom.dropOut(nodes, options);
+const animation = dom.dropOut(nodes, options);
 ```
 
 **Fade In**
@@ -175,7 +175,7 @@ Fade the opacity of each node in.
 This method returns an *AnimationSet* that will resolve after the animation has completed.
 
 ```javascript
-dom.fadeIn(nodes, options);
+const animation = dom.fadeIn(nodes, options);
 ```
 
 **Fade Out**
@@ -191,7 +191,7 @@ Fade the opacity of each node out.
 This method returns an *AnimationSet* that will resolve after the animation has completed.
 
 ```javascript
-dom.fadeOut(nodes, options);
+const animation = dom.fadeOut(nodes, options);
 ```
 
 **Rotate In**
@@ -211,7 +211,7 @@ Rotate each node in on an X, Y or Z.
 This method returns an *AnimationSet* that will resolve after the animation has completed.
 
 ```javascript
-dom.rotateIn(nodes, options);
+const animation = dom.rotateIn(nodes, options);
 ```
 
 **Rotate Out**
@@ -231,7 +231,7 @@ Rotate each node out on an X, Y or Z.
 This method returns an *AnimationSet* that will resolve after the animation has completed.
 
 ```javascript
-dom.rotateOut(nodes, options);
+const animation = dom.rotateOut(nodes, options);
 ```
 
 **Slide In**
@@ -249,7 +249,7 @@ Slide each node into place to a direction.
 This method returns an *AnimationSet* that will resolve after the animation has completed.
 
 ```javascript
-dom.slideIn(nodes, options);
+const animation = dom.slideIn(nodes, options);
 ```
 
 **Slide Out**
@@ -267,7 +267,7 @@ Slide each node out of place from a direction.
 This method returns an *AnimationSet* that will resolve after the animation has completed.
 
 ```javascript
-dom.slideOut(nodes, options);
+const animation = dom.slideOut(nodes, options);
 ```
 
 **Squeeze In**
@@ -285,7 +285,7 @@ Squeeze each node into place to a direction.
 This method returns an *AnimationSet* that will resolve after the animation has completed.
 
 ```javascript
-dom.squeezeIn(nodes, options);
+const animation = dom.squeezeIn(nodes, options);
 ```
 
 **Squeeze Out**
@@ -303,7 +303,7 @@ Squeeze each node out of place from a direction.
 This method returns an *AnimationSet* that will resolve after the animation has completed.
 
 ```javascript
-dom.squeezeOut(nodes, options);
+const animation = dom.squeezeOut(nodes, options);
 ```
 
 #### Queue
@@ -2428,7 +2428,7 @@ Perform an XHR request.
 This method returns an *AjaxRequest* that resolves when the request is completed, or rejects on failure.
 
 ```javascript
-DOM.ajax(options);
+const request = DOM.ajax(options);
 ```
 
 **Delete**
@@ -2457,7 +2457,7 @@ Perform an XHR DELETE request.
 This method returns an *AjaxRequest* that resolves when the request is completed, or rejects on failure.
 
 ```javascript
-DOM.delete(url, options);
+const request = DOM.delete(url, options);
 ```
 
 **Get**
@@ -2487,7 +2487,7 @@ Perform an XHR GET request.
 This method returns an *AjaxRequest* that resolves when the request is completed, or rejects on failure.
 
 ```javascript
-DOM.get(url, data, options);
+const request = DOM.get(url, data, options);
 ```
 
 **Patch**
@@ -2517,7 +2517,7 @@ Perform an XHR PATCH request.
 This method returns an *AjaxRequest* that resolves when the request is completed, or rejects on failure.
 
 ```javascript
-DOM.patch(url, data, options);
+const request = DOM.patch(url, data, options);
 ```
 
 **Post**
@@ -2547,7 +2547,7 @@ Perform an XHR POST request.
 This method returns an *AjaxRequest* that resolves when the request is completed, or rejects on failure.
 
 ```javascript
-DOM.post(url, data, options);
+const request = DOM.post(url, data, options);
 ```
 
 **Put**
@@ -2577,7 +2577,7 @@ Perform an XHR PUT request.
 This method returns an *AjaxRequest* that resolves when the request is completed, or rejects on failure.
 
 ```javascript
-DOM.put(url, data, options);
+const request = DOM.put(url, data, options);
 ```
 
 ### Parsing
