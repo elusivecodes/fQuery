@@ -41,9 +41,9 @@ For a fully OOP implementation, also check out my [fQuery](https://github.com/el
 - [Ajax Request](#ajax-request)
     - [Cancelling A Request](#cancelling-a-request)
 - [Animation](#animation)
-    - [Cancelling An Animation](#cancelling-an-animation)
+    - [Stopping An Animation](#stopping-an-animation)
 - [AnimationSet](#animation-set)
-    - [Cancelling Animations](#cancelling-animations)
+    - [Stopping Animations](#stopping-animations)
 
 
 

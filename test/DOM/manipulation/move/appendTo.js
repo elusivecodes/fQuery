@@ -204,55 +204,23 @@ describe('#appendTo', function() {
             await exec(_ => {
                 const range = document.createRange();
                 const fragment = range.createContextualFragment(
-                    '<span></span>'
+                    '<div><span></span></div>'
                 );
-                dom.appendTo('a', fragment);
-                document.body.appendChild(fragment);
+                dom.appendTo(fragment, 'div');
                 return document.body.innerHTML;
             }),
             '<div id="parent1">' +
+            '<a href="#" class="test1">Test</a>' +
+            '<a href="#" class="test2">Test</a>' +
             '<span></span>' +
+            '<div><span></span></div>' +
             '</div>' +
             '<div id="parent2">' +
-            '<span></span>' +
-            '</div>' +
-            '<span></span>' +
-            '<a href="#" class="test1">Test</a>' +
-            '<a href="#" class="test2">Test</a>' +
             '<a href="#" class="test3">Test</a>' +
-            '<a href="#" class="test4">Test</a>'
-        );
-    });
-
-    it('works with ShadowRoot nodes', async function() {
-        assert.equal(
-            await exec(_ => {
-                const div = document.createElement('div');
-                const shadow = div.attachShadow({ mode: 'open' });
-                const span = document.createElement('span');
-                shadow.appendChild(span);
-                dom.appendTo('a', shadow);
-                return shadow.innerHTML;
-            }),
+            '<a href="#" class="test4">Test</a>' +
             '<span></span>' +
-            '<a href="#" class="test1">Test</a>' +
-            '<a href="#" class="test2">Test</a>' +
-            '<a href="#" class="test3">Test</a>' +
-            '<a href="#" class="test4">Test</a>'
-        );
-    });
-
-    it('works with Document nodes', async function() {
-        assert.equal(
-            await exec(_ => {
-                const myDoc = new Document();
-                dom.appendTo(
-                    myDoc.createElement('html'),
-                    myDoc
-                );
-                return myDoc.childNodes.length;
-            }),
-            1
+            '<div><span></span></div>' +
+            '</div>'
         );
     });
 
@@ -280,6 +248,27 @@ describe('#appendTo', function() {
             '<a href="#" class="test2">Test</a>' +
             '<a href="#" class="test3">Test</a>' +
             '<a href="#" class="test4">Test</a>' +
+            '</div>'
+        );
+    });
+
+    it('works with HTML nodes', async function() {
+        assert.equal(
+            await exec(_ => {
+                dom.append('div', '<div><span></span></div>');
+                return document.body.innerHTML;
+            }),
+            '<div id="parent1">' +
+            '<a href="#" class="test1">Test</a>' +
+            '<a href="#" class="test2">Test</a>' +
+            '<span></span>' +
+            '<div><span></span></div>' +
+            '</div>' +
+            '<div id="parent2">' +
+            '<a href="#" class="test3">Test</a>' +
+            '<a href="#" class="test4">Test</a>' +
+            '<span></span>' +
+            '<div><span></span></div>' +
             '</div>'
         );
     });
@@ -363,23 +352,55 @@ describe('#appendTo', function() {
             await exec(_ => {
                 const range = document.createRange();
                 const fragment = range.createContextualFragment(
-                    '<div><span></span></div>'
+                    '<span></span>'
                 );
-                dom.appendTo(fragment, 'div');
+                dom.appendTo('a', fragment);
+                document.body.appendChild(fragment);
                 return document.body.innerHTML;
             }),
             '<div id="parent1">' +
-            '<a href="#" class="test1">Test</a>' +
-            '<a href="#" class="test2">Test</a>' +
             '<span></span>' +
-            '<div><span></span></div>' +
             '</div>' +
             '<div id="parent2">' +
-            '<a href="#" class="test3">Test</a>' +
-            '<a href="#" class="test4">Test</a>' +
             '<span></span>' +
-            '<div><span></span></div>' +
-            '</div>'
+            '</div>' +
+            '<span></span>' +
+            '<a href="#" class="test1">Test</a>' +
+            '<a href="#" class="test2">Test</a>' +
+            '<a href="#" class="test3">Test</a>' +
+            '<a href="#" class="test4">Test</a>'
+        );
+    });
+
+    it('works with ShadowRoot other nodes', async function() {
+        assert.equal(
+            await exec(_ => {
+                const div = document.createElement('div');
+                const shadow = div.attachShadow({ mode: 'open' });
+                const span = document.createElement('span');
+                shadow.appendChild(span);
+                dom.appendTo('a', shadow);
+                return shadow.innerHTML;
+            }),
+            '<span></span>' +
+            '<a href="#" class="test1">Test</a>' +
+            '<a href="#" class="test2">Test</a>' +
+            '<a href="#" class="test3">Test</a>' +
+            '<a href="#" class="test4">Test</a>'
+        );
+    });
+
+    it('works with Document other nodes', async function() {
+        assert.equal(
+            await exec(_ => {
+                const myDoc = new Document();
+                dom.appendTo(
+                    myDoc.createElement('html'),
+                    myDoc
+                );
+                return myDoc.childNodes.length;
+            }),
+            1
         );
     });
 
@@ -405,27 +426,6 @@ describe('#appendTo', function() {
             '<a href="#" class="test2">Test</a>' +
             '<a href="#" class="test3">Test</a>' +
             '<a href="#" class="test4">Test</a>' +
-            '</div>'
-        );
-    });
-
-    it('works with HTML other nodes', async function() {
-        assert.equal(
-            await exec(_ => {
-                dom.appendTo('<div><span></span></div>', 'div');
-                return document.body.innerHTML;
-            }),
-            '<div id="parent1">' +
-            '<a href="#" class="test1">Test</a>' +
-            '<a href="#" class="test2">Test</a>' +
-            '<span></span>' +
-            '<div><span></span></div>' +
-            '</div>' +
-            '<div id="parent2">' +
-            '<a href="#" class="test3">Test</a>' +
-            '<a href="#" class="test4">Test</a>' +
-            '<span></span>' +
-            '<div><span></span></div>' +
             '</div>'
         );
     });
