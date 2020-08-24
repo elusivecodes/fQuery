@@ -7,10 +7,18 @@ describe('#isVisible', function() {
         await setStyle('.test { display: none; }');
         await exec(_ => {
             document.body.innerHTML =
-                '<div id="div1"></div>' +
-                '<div id="div2" class="test"></div>' +
-                '<div id="div3"></div>' +
-                '<div id="div4" class="test"></div>';
+                '<div id="div1">' +
+                '<span></span>' +
+                '</div>' +
+                '<div id="div2" class="test">' +
+                '<span></span>' +
+                '</div>' +
+                '<div id="div3">' +
+                '<span></span>' +
+                '</div>' +
+                '<div id="div4" class="test">' +
+                '<span></span>' +
+                '</div>';
         });
     });
 
@@ -29,6 +37,15 @@ describe('#isVisible', function() {
                 dom.isVisible('.test')
             ),
             false
+        );
+    });
+
+    it('returns true if any node is a descendent of a visible node', async function() {
+        assert.equal(
+            await exec(_ =>
+                dom.isVisible('span')
+            ),
+            true
         );
     });
 

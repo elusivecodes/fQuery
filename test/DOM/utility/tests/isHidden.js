@@ -7,10 +7,18 @@ describe('#isHidden', function() {
         await setStyle('.test { display: none; }');
         await exec(_ => {
             document.body.innerHTML =
-                '<div id="div1" class="test"></div>' +
-                '<div id="div1"></div>' +
-                '<div id="div3" class="test"></div>' +
-                '<div id="div4"></div>';
+                '<div id="div1" class="test">' +
+                '<span></span>' +
+                '</div>' +
+                '<div id="div2">' +
+                '<span></span>' +
+                '</div>' +
+                '<div id="div3" class="test">' +
+                '<span></span>' +
+                '</div>' +
+                '<div id="div4">' +
+                '<span></span>' +
+                '</div>';
         });
     });
 
@@ -29,6 +37,15 @@ describe('#isHidden', function() {
                 dom.isHidden('div:not(.test)')
             ),
             false
+        );
+    });
+
+    it('returns true if any node is a descendent of a hidden node', async function() {
+        assert.equal(
+            await exec(_ =>
+                dom.isHidden('span')
+            ),
+            true
         );
     });
 

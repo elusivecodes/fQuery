@@ -40,7 +40,7 @@ describe('#isFixed', function() {
         );
     });
 
-    it('returns true if any node is a descdent of a fixed node', async function() {
+    it('returns true if any node is a descendent of a fixed node', async function() {
         assert.equal(
             await exec(_ =>
                 dom.isFixed('span')

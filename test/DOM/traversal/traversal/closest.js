@@ -49,6 +49,18 @@ describe('#closest', function() {
         );
     });
 
+    it('returns the closest ancestor of each node before a limit', async function() {
+        assert.deepEqual(
+            await exec(_ =>
+                dom.closest('a', 'div', '#span2')
+                    .map(node => node.id)
+            ),
+            [
+                'child1'
+            ]
+        );
+    });
+
     it('returns an empty array for empty nodes', async function() {
         assert.deepEqual(
             await exec(_ =>

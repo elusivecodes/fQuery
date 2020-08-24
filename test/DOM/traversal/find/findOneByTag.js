@@ -90,7 +90,7 @@ describe('#findOneByTag', function() {
         );
     });
 
-    it('works with HTMLElement nodes', async function() {
+    it('works with HTMLCollection nodes', async function() {
         assert.equal(
             await exec(_ =>
                 dom.findOneByTag(

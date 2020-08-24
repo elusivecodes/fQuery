@@ -1,5 +1,5 @@
 /**
- * FrostDOM Bundle v1.0.6
+ * FrostDOM Bundle v1.0.7
  * https://github.com/elusivecodes/FrostCore
  * https://github.com/elusivecodes/FrostDOM
  */
@@ -1047,7 +1047,7 @@
     });
 
     /**
-     * FrostDOM v1.0.6
+     * FrostDOM v1.0.7
      * https://github.com/elusivecodes/FrostDOM
      */
     (function(global, factory) {
@@ -8527,7 +8527,7 @@
         AnimationSet: window.AnimationSet,
         Core: window.Core,
         DOM: window.DOM,
-        dom: new window.DOM
+        dom: window.dom
     };
 
 });

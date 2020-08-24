@@ -65,6 +65,18 @@ describe('#nextAll', function() {
         );
     });
 
+    it('returns all next siblings of each node before a limit', async function() {
+        assert.deepEqual(
+            await exec(_ =>
+                dom.nextAll('.span', null, '#span4, #span7')
+                    .map(node => node.id)
+            ),
+            [
+                'span3'
+            ]
+        );
+    });
+
     it('returns an empty array for empty nodes', async function() {
         assert.deepEqual(
             await exec(_ =>
@@ -271,11 +283,10 @@ describe('#nextAll', function() {
     it('works with array limit', async function() {
         assert.deepEqual(
             await exec(_ =>
-                dom.nextAll('.span', null,
-                    [,
-                        document.getElementById('span4'),
-                        document.getElementById('span7')
-                    ]).map(node => node.id)
+                dom.nextAll('.span', null, [
+                    document.getElementById('span4'),
+                    document.getElementById('span7')
+                ]).map(node => node.id)
             ),
             [
                 'span3'

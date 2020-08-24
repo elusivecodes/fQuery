@@ -179,17 +179,9 @@ describe('#not', function() {
             await exec(_ => {
                 const fragment = document.createDocumentFragment();
                 fragment.id = 'fragment';
-                return dom.not(
-                    [
-                        document.getElementById('div1'),
-                        fragment
-                    ],
-                    fragment,
-                ).map(node => node.id);
+                return dom.not(fragment, fragment);
             }),
-            [
-                'div1'
-            ]
+            []
         );
     });
 
@@ -199,17 +191,9 @@ describe('#not', function() {
                 const div = document.createElement('div');
                 const shadow = div.attachShadow({ mode: 'open' });
                 shadow.id = 'shadow';
-                return dom.not(
-                    [
-                        document.getElementById('div1'),
-                        shadow
-                    ],
-                    shadow
-                ).map(node => node.id);
+                return dom.not(shadow, shadow);
             }),
-            [
-                'div1'
-            ]
+            []
         );
     });
 

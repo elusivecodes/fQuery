@@ -57,6 +57,19 @@ describe('#parents', function() {
         );
     });
 
+    it('returns the parents of each node before a limit', async function() {
+        assert.deepEqual(
+            await exec(_ =>
+                dom.parents('a', null, 'div')
+                    .map(node => node.id)
+            ),
+            [
+                'span1',
+                'span2'
+            ]
+        );
+    });
+
     it('returns an empty array for empty nodes', async function() {
         assert.deepEqual(
             await exec(_ =>

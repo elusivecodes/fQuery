@@ -65,6 +65,18 @@ describe('#prevAll', function() {
         );
     });
 
+    it('returns all previous siblings of each node before a limit', async function() {
+        assert.deepEqual(
+            await exec(_ =>
+                dom.prevAll('.span', null, '#span1, #span6')
+                    .map(node => node.id)
+            ),
+            [
+                'span2'
+            ]
+        );
+    });
+
     it('returns an empty array for empty nodes', async function() {
         assert.deepEqual(
             await exec(_ =>

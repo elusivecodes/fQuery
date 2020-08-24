@@ -37,7 +37,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 /**
- * FrostDOM Bundle v1.0.6
+ * FrostDOM Bundle v1.0.7
  * https://github.com/elusivecodes/FrostCore
  * https://github.com/elusivecodes/FrostDOM
  */
@@ -1058,7 +1058,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
     return Core;
   });
   /**
-   * FrostDOM v1.0.6
+   * FrostDOM v1.0.7
    * https://github.com/elusivecodes/FrostDOM
    */
 
@@ -9084,6 +9084,6 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
     AnimationSet: window.AnimationSet,
     Core: window.Core,
     DOM: window.DOM,
-    dom: new window.DOM()
+    dom: window.dom
   };
 });

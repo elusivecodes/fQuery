@@ -116,7 +116,7 @@ describe('#findByTag', function() {
         );
     });
 
-    it('works with HTMLElement nodes', async function() {
+    it('works with HTMLCollection nodes', async function() {
         assert.deepEqual(
             await exec(_ =>
                 dom.findByTag(
