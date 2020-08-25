@@ -13,21 +13,21 @@ describe('#indexOf', function() {
         });
     });
 
+    it('returns the index of the first node', async function() {
+        assert.equal(
+            await exec(_ =>
+                dom.indexOf('div')
+            ),
+            0
+        );
+    });
+
     it('returns the index of the first node matching a filter', async function() {
         assert.equal(
             await exec(_ =>
                 dom.indexOf('div', '.test')
             ),
             1
-        );
-    });
-
-    it('returns the index of the first node without a filter', async function() {
-        assert.equal(
-            await exec(_ =>
-                dom.indexOf('div')
-            ),
-            0
         );
     });
 
