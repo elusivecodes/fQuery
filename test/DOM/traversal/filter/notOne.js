@@ -150,13 +150,12 @@ describe('#notOne', function() {
                 fragment.id = 'fragment';
                 return dom.notOne(
                     [
-                        document.getElementById('div1'),
                         fragment
                     ],
                     fragment,
-                ).id;
+                );
             }),
-            'div1'
+            null
         );
     });
 
@@ -168,13 +167,12 @@ describe('#notOne', function() {
                 shadow.id = 'shadow';
                 return dom.notOne(
                     [
-                        document.getElementById('div1'),
                         shadow
                     ],
                     shadow
-                ).id;
+                );
             }),
-            'div1'
+            null
         );
     });
 

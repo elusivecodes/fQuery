@@ -150,7 +150,6 @@ describe('#filterOne', function() {
                 fragment.id = 'fragment';
                 return dom.filterOne(
                     [
-                        document.getElementById('div1'),
                         fragment
                     ],
                     fragment,
@@ -168,7 +167,6 @@ describe('#filterOne', function() {
                 shadow.id = 'shadow';
                 return dom.filterOne(
                     [
-                        document.getElementById('div1'),
                         shadow
                     ],
                     shadow

@@ -156,10 +156,9 @@ describe('#is', function() {
                 const fragment = document.createDocumentFragment();
                 return dom.is(
                     [
-                        document.getElementById('div1'),
                         fragment
                     ],
-                    fragment,
+                    fragment
                 );
             }),
             true
@@ -173,7 +172,6 @@ describe('#is', function() {
                 const shadow = div.attachShadow({ mode: 'open' });
                 return dom.is(
                     [
-                        document.getElementById('div1'),
                         shadow
                     ],
                     shadow

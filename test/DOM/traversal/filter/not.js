@@ -179,7 +179,12 @@ describe('#not', function() {
             await exec(_ => {
                 const fragment = document.createDocumentFragment();
                 fragment.id = 'fragment';
-                return dom.not(fragment, fragment);
+                return dom.not(
+                    [
+                        fragment
+                    ],
+                    fragment
+                );
             }),
             []
         );
@@ -191,7 +196,12 @@ describe('#not', function() {
                 const div = document.createElement('div');
                 const shadow = div.attachShadow({ mode: 'open' });
                 shadow.id = 'shadow';
-                return dom.not(shadow, shadow);
+                return dom.not(
+                    [
+                        shadow
+                    ],
+                    shadow
+                );
             }),
             []
         );

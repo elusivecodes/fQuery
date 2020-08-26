@@ -184,7 +184,6 @@ describe('#filter', function() {
                 fragment.id = 'fragment';
                 return dom.filter(
                     [
-                        document.getElementById('div1'),
                         fragment
                     ],
                     fragment,
@@ -204,7 +203,6 @@ describe('#filter', function() {
                 shadow.id = 'shadow';
                 return dom.filter(
                     [
-                        document.getElementById('div1'),
                         shadow
                     ],
                     shadow

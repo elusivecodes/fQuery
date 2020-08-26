@@ -71,7 +71,12 @@ describe('#isSame', function() {
         assert.equal(
             await exec(_ => {
                 const fragment = document.createDocumentFragment();
-                return dom.isSame(fragment, fragment);
+                return dom.isSame(
+                    fragment,
+                    [
+                        fragment
+                    ]
+                );
             }),
             true
         );
@@ -82,7 +87,12 @@ describe('#isSame', function() {
             await exec(_ => {
                 const div = document.createElement('div');
                 const shadow = div.attachShadow({ mode: 'open' });
-                return dom.isSame(shadow, shadow);
+                return dom.isSame(
+                    shadow,
+                    [
+                        shadow
+                    ]
+                );
             }),
             true
         );
@@ -144,8 +154,7 @@ describe('#isSame', function() {
                 const fragment = document.createDocumentFragment();
                 return dom.isSame(
                     [
-                        document.querySelector('#div1'),
-                        fragment,
+                        fragment
                     ],
                     fragment
                 );
@@ -161,8 +170,7 @@ describe('#isSame', function() {
                 const shadow = div.attachShadow({ mode: 'open' });
                 return dom.isSame(
                     [
-                        document.querySelector('#div1'),
-                        shadow,
+                        shadow
                     ],
                     shadow
                 );

@@ -82,8 +82,12 @@ describe('#equal', function() {
                 const fragment1 = document.createDocumentFragment();
                 const fragment2 = document.createDocumentFragment();
                 fragment1.id = 'fragment';
-                return dom.equal(fragment1, fragment2)
-                    .map(node => node.id);
+                return dom.equal(
+                    fragment1,
+                    [
+                        fragment2
+                    ]
+                ).map(node => node.id);
             }),
             [
                 'fragment'
@@ -99,8 +103,12 @@ describe('#equal', function() {
                 const shadow1 = div1.attachShadow({ mode: 'open' });
                 const shadow2 = div2.attachShadow({ mode: 'closed' });
                 shadow1.id = 'shadow';
-                return dom.equal(shadow1, shadow2)
-                    .map(node => node.id);
+                return dom.equal(
+                    shadow1,
+                    [
+                        shadow2
+                    ]
+                ).map(node => node.id);
             }),
             [
                 'shadow'
@@ -175,7 +183,9 @@ describe('#equal', function() {
                 const fragment2 = document.createDocumentFragment();
                 fragment1.id = 'fragment';
                 return dom.equal(
-                    fragment1,
+                    [
+                        fragment1
+                    ],
                     fragment2
                 ).map(node => node.id);
             }),
@@ -194,7 +204,9 @@ describe('#equal', function() {
                 const shadow2 = div2.attachShadow({ mode: 'closed' });
                 shadow1.id = 'shadow';
                 return dom.equal(
-                    shadow1,
+                    [
+                        shadow1
+                    ],
                     shadow2
                 ).map(node => node.id);
             }),

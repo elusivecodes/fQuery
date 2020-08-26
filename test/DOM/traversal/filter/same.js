@@ -75,8 +75,12 @@ describe('#same', function() {
             await exec(_ => {
                 const fragment = document.createDocumentFragment();
                 fragment.id = 'fragment';
-                return dom.same(fragment, fragment)
-                    .map(node => node.id);
+                return dom.same(
+                    fragment,
+                    [
+                        fragment
+                    ]
+                ).map(node => node.id);
             }),
             [
                 'fragment'
@@ -169,7 +173,6 @@ describe('#same', function() {
                 fragment.id = 'fragment';
                 return dom.same(
                     [
-                        document.querySelector('#div1'),
                         fragment,
                     ],
                     fragment

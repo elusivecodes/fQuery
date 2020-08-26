@@ -83,7 +83,12 @@ describe('#isEqual', function() {
             await exec(_ => {
                 const fragment1 = document.createDocumentFragment();
                 const fragment2 = document.createDocumentFragment();
-                return dom.isEqual(fragment1, fragment2);
+                return dom.isEqual(
+                    fragment1,
+                    [
+                        fragment2
+                    ]
+                );
             }),
             true
         );
@@ -96,7 +101,12 @@ describe('#isEqual', function() {
                 const div2 = document.createElement('div');
                 const shadow1 = div1.attachShadow({ mode: 'open' });
                 const shadow2 = div2.attachShadow({ mode: 'closed' });
-                return dom.isEqual(shadow1, shadow2);
+                return dom.isEqual(
+                    shadow1,
+                    [
+                        shadow2
+                    ]
+                );
             }),
             true
         );
@@ -158,7 +168,6 @@ describe('#isEqual', function() {
                 const fragment2 = document.createDocumentFragment();
                 return dom.isEqual(
                     [
-                        document.querySelector('#parent1 [data-id="span2"]'),
                         fragment1,
                     ],
                     fragment2
@@ -177,7 +186,6 @@ describe('#isEqual', function() {
                 const shadow2 = div2.attachShadow({ mode: 'closed' });
                 return dom.isEqual(
                     [
-                        document.querySelector('#parent1 [data-id="span2"]'),
                         shadow1,
                     ],
                     shadow2
