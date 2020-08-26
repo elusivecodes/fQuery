@@ -52,7 +52,19 @@ Object.assign(DOM.prototype, {
             return;
         }
 
-        return this.constructor._getStyle(node, style);
+        if (style) {
+            style = Core.kebabCase(style);
+
+            return node.style[style];
+        }
+
+        const styles = {};
+
+        for (const style of node.style) {
+            styles[style] = node.style[style];
+        }
+
+        return styles;
     },
 
     /**
@@ -95,7 +107,7 @@ Object.assign(DOM.prototype, {
         const styles = this.constructor._parseData(style, value);
 
         for (const node of nodes) {
-            this.constructor._setStyle(node, styles, important);
+            this.constructor._setStyles(node, styles, important);
         }
     },
 

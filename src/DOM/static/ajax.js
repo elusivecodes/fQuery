@@ -12,6 +12,11 @@ Object.assign(DOM, {
      * @param {Boolean|string|array|object|FormData} [options.data=null] The data to send with the request.
      * @param {Boolean|string} [options.contentType=application/x-www-form-urlencoded] The content type of the request.
      * @param {Boolean|string} [options.responseType] The content type of the response.
+     * @param {string} [options.mimeType] The MIME type to use.
+     * @param {string} [options.username] The username to authenticate with.
+     * @param {string} [options.password] The password to authenticate with.
+     * @param {number} [options.timeout] The number of milliseconds before the request will be terminated.
+     * @param {Boolean} [options.isLocal] Whether to treat the request as a local request.
      * @param {Boolean} [options.cache=true] Whether to cache the request.
      * @param {Boolean} [options.processData=true] Whether to process the data based on the content type.
      * @param {Boolean} [options.rejectOnCancel=true] Whether to reject the promise if the request is cancelled.
@@ -33,6 +38,11 @@ Object.assign(DOM, {
      * @param {string} [options.method=DELETE] The HTTP method of the request.
      * @param {Boolean|string} [options.contentType=application/x-www-form-urlencoded] The content type of the request.
      * @param {Boolean|string} [options.responseType] The content type of the response.
+     * @param {string} [options.mimeType] The MIME type to use.
+     * @param {string} [options.username] The username to authenticate with.
+     * @param {string} [options.password] The password to authenticate with.
+     * @param {number} [options.timeout] The number of milliseconds before the request will be terminated.
+     * @param {Boolean} [options.isLocal] Whether to treat the request as a local request.
      * @param {Boolean} [options.cache=true] Whether to cache the request.
      * @param {Boolean} [options.processData=true] Whether to process the data based on the content type.
      * @param {Boolean} [options.rejectOnCancel=true] Whether to reject the promise if the request is cancelled.
@@ -59,6 +69,11 @@ Object.assign(DOM, {
      * @param {string} [options.method=GET] The HTTP method of the request.
      * @param {Boolean|string} [options.contentType=application/x-www-form-urlencoded] The content type of the request.
      * @param {Boolean|string} [options.responseType] The content type of the response.
+     * @param {string} [options.mimeType] The MIME type to use.
+     * @param {string} [options.username] The username to authenticate with.
+     * @param {string} [options.password] The password to authenticate with.
+     * @param {number} [options.timeout] The number of milliseconds before the request will be terminated.
+     * @param {Boolean} [options.isLocal] Whether to treat the request as a local request.
      * @param {Boolean} [options.cache=true] Whether to cache the request.
      * @param {Boolean} [options.processData=true] Whether to process the data based on the content type.
      * @param {Boolean} [options.rejectOnCancel=true] Whether to reject the promise if the request is cancelled.
@@ -85,6 +100,11 @@ Object.assign(DOM, {
      * @param {string} [options.method=PATCH] The HTTP method of the request.
      * @param {Boolean|string} [options.contentType=application/x-www-form-urlencoded] The content type of the request.
      * @param {Boolean|string} [options.responseType] The content type of the response.
+     * @param {string} [options.mimeType] The MIME type to use.
+     * @param {string} [options.username] The username to authenticate with.
+     * @param {string} [options.password] The password to authenticate with.
+     * @param {number} [options.timeout] The number of milliseconds before the request will be terminated.
+     * @param {Boolean} [options.isLocal] Whether to treat the request as a local request.
      * @param {Boolean} [options.cache=true] Whether to cache the request.
      * @param {Boolean} [options.processData=true] Whether to process the data based on the content type.
      * @param {Boolean} [options.rejectOnCancel=true] Whether to reject the promise if the request is cancelled.
@@ -112,6 +132,11 @@ Object.assign(DOM, {
      * @param {string} [options.method=POST] The HTTP method of the request.
      * @param {Boolean|string} [options.contentType=application/x-www-form-urlencoded] The content type of the request.
      * @param {Boolean|string} [options.responseType] The content type of the response.
+     * @param {string} [options.mimeType] The MIME type to use.
+     * @param {string} [options.username] The username to authenticate with.
+     * @param {string} [options.password] The password to authenticate with.
+     * @param {number} [options.timeout] The number of milliseconds before the request will be terminated.
+     * @param {Boolean} [options.isLocal] Whether to treat the request as a local request.
      * @param {Boolean} [options.cache=true] Whether to cache the request.
      * @param {Boolean} [options.processData=true] Whether to process the data based on the content type.
      * @param {Boolean} [options.rejectOnCancel=true] Whether to reject the promise if the request is cancelled.
@@ -139,6 +164,11 @@ Object.assign(DOM, {
      * @param {string} [options.method=PUT] The HTTP method of the request.
      * @param {Boolean|string} [options.contentType=application/x-www-form-urlencoded] The content type of the request.
      * @param {Boolean|string} [options.responseType] The content type of the response.
+     * @param {string} [options.mimeType] The MIME type to use.
+     * @param {string} [options.username] The username to authenticate with.
+     * @param {string} [options.password] The password to authenticate with.
+     * @param {number} [options.timeout] The number of milliseconds before the request will be terminated.
+     * @param {Boolean} [options.isLocal] Whether to treat the request as a local request.
      * @param {Boolean} [options.cache=true] Whether to cache the request.
      * @param {Boolean} [options.processData=true] Whether to process the data based on the content type.
      * @param {Boolean} [options.rejectOnCancel=true] Whether to reject the promise if the request is cancelled.

@@ -5,6 +5,24 @@
 Object.assign(Animation, {
 
     /**
+     * Clone animations for a single node.
+     * @param {Node|HTMLElement|DocumentFragment} node The input node.
+     * @param {Node|HTMLElement|DocumentFragment} clone The cloned node.
+     */
+    clone(node, clone) {
+        if (!this._animations.has(node)) {
+            return;
+        }
+
+        const animations = this._animations.get(node)
+            .map(animation =>
+                new Animation(clone, animation._callback, animation._options)
+            );
+
+        this._animations.set(clone, animations);
+    },
+
+    /**
      * Start the animation loop (if not already started).
      */
     start() {

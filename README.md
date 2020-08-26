@@ -342,7 +342,7 @@ Get an attribute value for the first node.
 - `attribute` is a string indicating the attribute value to return.
 
 ```javascript
-const attr = dom.getAttribute(nodes, attribute);
+const value = dom.getAttribute(nodes, attribute);
 ```
 
 If the `attribute` argument is omitted, an object containing all attribute values will be returned instead.
@@ -388,7 +388,7 @@ Get a property value for the first node.
 - `property` is a string indicating the property value to return.
 
 ```javascript
-const property = dom.getProperty(nodes, property);
+const value = dom.getProperty(nodes, property);
 ```
 
 **Get Text**
@@ -674,7 +674,7 @@ Get the percentage of an X co-ordinate relative to the first node.
 - `clamp` is a boolean indicating whether to clamp the percent betwen *0* and *100*, and will default to *true*.
 
 ```javascript
-const pX = dom.percentX(nodes, x, offset, clamp);
+const percentX = dom.percentX(nodes, x, offset, clamp);
 ```
 
 **Percent Y**
@@ -687,7 +687,7 @@ Get the percentage of a Y co-ordinate relative to the first node.
 - `clamp` is a boolean indicating whether to clamp the percent betwen *0* and *100*, and will default to *true*.
 
 ```javascript
-const pY = dom.percentY(nodes, y, offset, clamp);
+const percentY = dom.percentY(nodes, y, offset, clamp);
 ```
 
 **Position**
@@ -698,7 +698,7 @@ Get the X,Y position for the top/left of the first node.
 - `offset` is a boolean indicating whether the co-ordinates should be offset from the top left of the document, and will default to *false*.
 
 ```javascript
-const pos = dom.position(nodes, offset);
+const position = dom.position(nodes, offset);
 ```
 
 **Rectangle**
@@ -1125,7 +1125,7 @@ Create a mouse drag event (optionally limited by animation frame).
 - `animated` is a boolean indicating whether to limit the move event to once per animation frame, and will default to *true*.
 
 ```javascript
-const event = dom.mouseDragFactory(down, move, up, animated);
+const drag = dom.mouseDragFactory(down, move, up, animated);
 ```
 
 
@@ -1249,7 +1249,7 @@ Create a new comment node.
 - `comment` is a string indicating the comment.
 
 ```javascript
-const node = dom.createComment(comment);
+const commentNode = dom.createComment(comment);
 ```
 
 **Create Fragment**
@@ -1275,7 +1275,7 @@ Create a new text node.
 - `text` is a string indicating the text.
 
 ```javascript
-const node = dom.createText(text);
+const textNode = dom.createText(text);
 ```
 
 **Parse HTML**
@@ -2306,10 +2306,10 @@ Load and execute a JavaScript file.
 - `attributes` is an object containing additional attributes on the `script` tag.
 - `cache` is a boolean indicating whether to cache the request, and will default to *true*.
 
-This method returns an *Promise* that resolves when the script is loaded, or rejects on failure.
+This method returns a *Promise* that resolves when the script is loaded, or rejects on failure.
 
 ```javascript
-dom.loadScript(script, attributes, cache);
+const promise = dom.loadScript(script, attributes, cache);
 ```
 
 **Load Scripts**
@@ -2322,7 +2322,7 @@ Load and execute multiple JavaScript files (in order).
 This method returns a *Promise* that resolves when the scripts are loaded, or rejects on failure.
 
 ```javascript
-dom.loadScripts(scripts, attributes, cache);
+const promise = dom.loadScripts(scripts, attributes, cache);
 ```
 
 ### Stylesheets
@@ -2335,10 +2335,10 @@ Import A CSS Stylesheet file.
 - `attributes` is an object containing additional attributes on the `link` tag.
 - `cache` is a boolean indicating whether to cache the request, and will default to *true*.
 
-This method returns an *Promise* that resolves when the stylesheet is loaded, or rejects on failure.
+This method returns a *Promise* that resolves when the stylesheet is loaded, or rejects on failure.
 
 ```javascript
-dom.loadStyle(stylesheet, attributes, cache);
+const promise = dom.loadStyle(stylesheet, attributes, cache);
 ```
 
 **Load Stylesheets**
@@ -2351,7 +2351,7 @@ Import multiple CSS Stylesheet files.
 This method returns a *Promise* that resolves when the stylesheets are loaded, or rejects on failure.
 
 ```javascript
-dom.loadStyles(stylesheets, cache);
+const promise = dom.loadStyles(stylesheets, cache);
 ```
 
 

@@ -47,6 +47,16 @@ describe('#width', function() {
         );
     });
 
+    it('returns the width of the first node (hidden)', async function() {
+        assert.equal(
+            await exec(_ => {
+                document.body.style.display = 'none';
+                return dom.width('div');
+            }),
+            1250
+        );
+    });
+
     it('returns undefined for empty nodes', async function() {
         assert.equal(
             await exec(_ =>

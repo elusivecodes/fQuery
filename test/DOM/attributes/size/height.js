@@ -47,6 +47,16 @@ describe('#height', function() {
         );
     });
 
+    it('returns the height of the first node (hidden)', async function() {
+        assert.equal(
+            await exec(_ => {
+                document.body.style.display = 'none';
+                return dom.height('div');
+            }),
+            1050
+        );
+    });
+
     it('returns undefined for empty nodes', async function() {
         assert.equal(
             await exec(_ =>

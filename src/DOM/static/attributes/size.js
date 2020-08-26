@@ -38,36 +38,6 @@ Object.assign(DOM, {
     },
 
     /**
-     * Get the scroll height of a single node.
-     * @param {HTMLElement} node The input node.
-     * @returns {number} The scroll height.
-     */
-    _scrollHeight(node) {
-        return this._forceShow(node, node => {
-            if (Core.isDocument(node)) {
-                node = node.documentElement;
-            }
-
-            return node.scrollHeight;
-        });
-    },
-
-    /**
-     * Get the scroll width of a single node.
-     * @param {HTMLElement} node The input node.
-     * @returns {number} The scroll width.
-     */
-    _scrollWidth(node) {
-        return this._forceShow(node, node => {
-            if (Core.isDocument(node)) {
-                node = node.documentElement;
-            }
-
-            return node.scrollWidth;
-        });
-    },
-
-    /**
      * Get the computed width of a single node.
      * @param {HTMLElement} node The input node.
      * @param {number} [innerOuter] Whether to include padding, border and margin widths.

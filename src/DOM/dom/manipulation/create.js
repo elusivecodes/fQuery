@@ -60,7 +60,7 @@ Object.assign(DOM.prototype, {
         }
 
         if ('style' in options) {
-            this.constructor._setStyle(node, options.style);
+            this.constructor._setStyles(node, options.style);
         }
 
         if ('value' in options) {
@@ -68,7 +68,7 @@ Object.assign(DOM.prototype, {
         }
 
         if ('attributes' in options) {
-            this.constructor._setAttribute(node, options.attributes);
+            this.constructor._setAttributes(node, options.attributes);
         }
 
         if ('properties' in options) {

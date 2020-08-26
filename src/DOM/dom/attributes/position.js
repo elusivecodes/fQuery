@@ -38,7 +38,49 @@ Object.assign(DOM.prototype, {
         nodes = this.parseNodes(nodes);
 
         for (const node of nodes) {
-            this.constructor._constrain(node, containerBox);
+            const nodeBox = this.constructor._rect(node);
+
+            const style = {};
+
+            if (nodeBox.height > containerBox.height) {
+                style.height = containerBox.height;
+            }
+
+            if (nodeBox.width > containerBox.width) {
+                style.width = containerBox.width;
+            }
+
+            let leftOffset;
+            if (nodeBox.left - containerBox.left < 0) {
+                leftOffset = nodeBox.left - containerBox.left
+            } else if (nodeBox.right - containerBox.right > 0) {
+                leftOffset = nodeBox.right - containerBox.right;
+            }
+
+            if (leftOffset) {
+                const oldLeft = this.constructor._css(node, 'left');
+                const trueLeft = oldLeft && oldLeft !== 'auto' ? parseFloat(oldLeft) : 0;
+                style.left = `${trueLeft - leftOffset}px`;
+            }
+
+            let topOffset;
+            if (nodeBox.top - containerBox.top < 0) {
+                topOffset = nodeBox.top - containerBox.top;
+            } else if (nodeBox.bottom - containerBox.bottom > 0) {
+                topOffset = nodeBox.bottom - containerBox.bottom;
+            }
+
+            if (topOffset) {
+                const oldTop = this.constructor._css(node, 'top');
+                const trueTop = oldTop && oldTop !== 'auto' ? parseFloat(oldTop) : 0;
+                style.top = `${trueTop - topOffset}px`;
+            }
+
+            if (this.constructor._css(node, 'position') === 'static') {
+                style.position = 'relative';
+            }
+
+            this.constructor._setStyles(node, style);
         }
     },
 
@@ -178,7 +220,23 @@ Object.assign(DOM.prototype, {
             return;
         }
 
-        return this.constructor._position(node, offset);
+        return this.constructor._forceShow(node, node => {
+            const result = {
+                x: node.offsetLeft,
+                y: node.offsetTop
+            };
+
+            if (offset) {
+                let offsetParent = node;
+
+                while (offsetParent = offsetParent.offsetParent) {
+                    result.x += offsetParent.offsetLeft;
+                    result.y += offsetParent.offsetTop;
+                }
+            }
+
+            return result;
+        });
     },
 
     /**

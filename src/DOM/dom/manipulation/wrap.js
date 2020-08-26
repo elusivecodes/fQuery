@@ -39,7 +39,20 @@ Object.assign(DOM.prototype, {
         }
 
         for (const parent of parents) {
-            this.constructor._unwrap(parent);
+            const outerParent = parent.parentNode;
+
+            if (!outerParent) {
+                continue;
+            }
+
+            const children = Core.wrap(parent.childNodes);
+
+            for (const child of children) {
+                outerParent.insertBefore(child, parent);
+            }
+
+            this.constructor._remove(parent);
+            outerParent.removeChild(parent);
         }
     },
 
@@ -62,7 +75,34 @@ Object.assign(DOM.prototype, {
         });
 
         for (const node of nodes) {
-            this.constructor._wrap(node, others);
+            const parent = node.parentNode;
+
+            if (!parent) {
+                continue;
+            }
+
+            const clones = others.map(other =>
+                this.constructor._clone(other, {
+                    deep: true,
+                    events: true,
+                    data: true,
+                    animations: true
+                })
+            );
+
+            const firstClone = clones.slice().shift();
+
+            const deepest = this.constructor._deepest(
+                Core.isFragment(firstClone) ?
+                    firstClone.firstChild :
+                    firstClone
+            );
+
+            for (const clone of clones) {
+                parent.insertBefore(clone, node);
+            }
+
+            deepest.insertBefore(node, null);
         }
     },
 
@@ -90,7 +130,33 @@ Object.assign(DOM.prototype, {
             animations: true
         });
 
-        this.constructor._wrapAll(nodes, clones);
+        const firstNode = nodes[0];
+
+        if (!firstNode) {
+            return;
+        }
+
+        const parent = firstNode.parentNode;
+
+        if (!parent) {
+            return;
+        }
+
+        const firstClone = clones[0];
+
+        const deepest = this.constructor._deepest(
+            Core.isFragment(firstClone) ?
+                firstClone.firstChild :
+                firstClone
+        );
+
+        for (const clone of clones) {
+            parent.insertBefore(clone, firstNode);
+        }
+
+        for (const node of nodes) {
+            deepest.insertBefore(node, null);
+        }
     },
 
     /**
@@ -112,7 +178,32 @@ Object.assign(DOM.prototype, {
         });
 
         for (const node of nodes) {
-            this.constructor._wrapInner(node, others);
+            const children = Core.wrap(node.childNodes);
+
+            const clones = others.map(other =>
+                this.constructor._clone(other, {
+                    deep: true,
+                    events: true,
+                    data: true,
+                    animatinos: true
+                })
+            );
+
+            const firstClone = clones.slice().shift();
+
+            const deepest = this.constructor._deepest(
+                Core.isFragment(firstClone) ?
+                    firstClone.firstChild :
+                    firstClone
+            );
+
+            for (const clone of clones) {
+                node.insertBefore(clone, null);
+            }
+
+            for (const child of children) {
+                deepest.insertBefore(child, null);
+            }
         }
     }
 

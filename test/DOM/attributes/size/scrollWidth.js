@@ -22,6 +22,16 @@ describe('#scrollWidth', function() {
         );
     });
 
+    it('returns the scroll width of the first node (hidden)', async function() {
+        assert.equal(
+            await exec(_ => {
+                document.body.style.display = 'none';
+                return dom.scrollWidth('div');
+            }),
+            1000
+        );
+    });
+
     it('returns undefined for empty nodes', async function() {
         assert.equal(
             await exec(_ =>

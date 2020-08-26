@@ -198,7 +198,57 @@ Object.assign(DOM.prototype, {
             window: true
         });
 
-        return this.constructor._sort(nodes);
+        return nodes.sort((node, other) => {
+            if (Core.isWindow(node)) {
+                return 1;
+            }
+
+            if (Core.isWindow(other)) {
+                return -1;
+            }
+
+            if (Core.isDocument(node)) {
+                return 1;
+            }
+
+            if (Core.isDocument(other)) {
+                return -1;
+            }
+
+            if (Core.isFragment(other)) {
+                return 1;
+            }
+
+            if (Core.isFragment(node)) {
+                return -1;
+            }
+
+            if (Core.isShadow(node)) {
+                node = node.host;
+            }
+
+            if (Core.isShadow(other)) {
+                other = other.host;
+            }
+
+            if (node.isSameNode(other)) {
+                return 0;
+            }
+
+            const pos = node.compareDocumentPosition(other);
+
+            if (pos & Node.DOCUMENT_POSITION_FOLLOWING ||
+                pos & Node.DOCUMENT_POSITION_CONTAINED_BY) {
+                return -1;
+            }
+
+            if (pos & Node.DOCUMENT_POSITION_PRECEDING ||
+                pos & Node.DOCUMENT_POSITION_CONTAINS) {
+                return 1;
+            }
+
+            return 0;
+        });
     },
 
     /**

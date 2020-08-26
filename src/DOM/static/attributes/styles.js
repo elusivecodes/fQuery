@@ -31,34 +31,12 @@ Object.assign(DOM, {
     },
 
     /**
-     * Get style properties for a single node.
-     * @param {HTMLElement} node The input node.
-     * @param {string} [style] The style name.
-     * @returns {string|object} The style value, or an object containing the style properties.
-     */
-    _getStyle(node, style) {
-        if (style) {
-            style = Core.kebabCase(style);
-
-            return node.style[style];
-        }
-
-        const styles = {};
-
-        for (const style of node.style) {
-            styles[style] = node.style[style];
-        }
-
-        return styles;
-    },
-
-    /**
      * Set style properties for a single node.
      * @param {HTMLElement} node The input node.
      * @param {object} styles An object containing styles.
      * @param {Boolean} [important] Whether the style should be !important.
      */
-    _setStyle(node, styles, important) {
+    _setStyles(node, styles, important) {
         for (let style in styles) {
             let value = styles[style];
             style = Core.kebabCase(style);

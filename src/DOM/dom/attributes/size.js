@@ -47,7 +47,13 @@ Object.assign(DOM.prototype, {
             return;
         }
 
-        return this.constructor._scrollHeight(node);
+        return this.constructor._forceShow(node, node => {
+            if (Core.isDocument(node)) {
+                node = node.documentElement;
+            }
+
+            return node.scrollHeight;
+        });
     },
 
     /**
@@ -64,7 +70,13 @@ Object.assign(DOM.prototype, {
             return;
         }
 
-        return this.constructor._scrollWidth(node);
+        return this.constructor._forceShow(node, node => {
+            if (Core.isDocument(node)) {
+                node = node.documentElement;
+            }
+
+            return node.scrollWidth;
+        });
     },
 
     /**

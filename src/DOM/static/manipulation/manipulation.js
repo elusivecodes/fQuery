@@ -26,7 +26,7 @@ Object.assign(DOM, {
         }
 
         if (options.animations) {
-            this._cloneAnimations(node, clone);
+            Animation.clone(node, clone);
         }
 
         if (options.deep) {
@@ -34,24 +34,6 @@ Object.assign(DOM, {
         }
 
         return clone;
-    },
-
-    /**
-     * Clone animations for a single node.
-     * @param {Node|HTMLElement|DocumentFragment} node The input node.
-     * @param {Node|HTMLElement|DocumentFragment} clone The cloned node.
-     */
-    _cloneAnimations(node, clone) {
-        if (!Animation._animations.has(node)) {
-            return;
-        }
-
-        const animations = Animation._animations.get(node)
-            .map(animation =>
-                new Animation(clone, animation._callback, animation._options)
-            );
-
-        Animation._animations.set(clone, animations);
     },
 
     /**
@@ -77,7 +59,7 @@ Object.assign(DOM, {
             }
 
             if (options.animations) {
-                this._cloneAnimations(child, childClone);
+                Animation.clone(child, childClone);
             }
 
             this._deepClone(child, childClone, options);

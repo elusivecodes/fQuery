@@ -1819,6 +1819,24 @@
         Object.assign(Animation, {
 
             /**
+             * Clone animations for a single node.
+             * @param {Node|HTMLElement|DocumentFragment} node The input node.
+             * @param {Node|HTMLElement|DocumentFragment} clone The cloned node.
+             */
+            clone(node, clone) {
+                if (!this._animations.has(node)) {
+                    return;
+                }
+
+                const animations = this._animations.get(node)
+                    .map(animation =>
+                        new Animation(clone, animation._callback, animation._options)
+                    );
+
+                this._animations.set(clone, animations);
+            },
+
+            /**
              * Start the animation loop (if not already started).
              */
             start() {
@@ -2482,7 +2500,11 @@
                     return;
                 }
 
-                return this.constructor._getAttribute(node, attribute);
+                if (attribute) {
+                    return node.getAttribute(attribute);
+                }
+
+                return this.constructor._getAttributes(node, attribute);
             },
 
             /**
@@ -2498,7 +2520,19 @@
                     return;
                 }
 
-                return this.constructor._getDataset(node, key);
+                if (key) {
+                    key = Core.camelCase(key);
+
+                    return this.constructor._parseDataset(node.dataset[key]);
+                }
+
+                const dataset = {};
+
+                for (const k in node.dataset) {
+                    dataset[k] = this.constructor._parseDataset(node.dataset[k]);
+                }
+
+                return dataset;
             },
 
             /**
@@ -2566,7 +2600,9 @@
                 nodes = this.parseNodes(nodes);
 
                 for (const node of nodes) {
-                    this.constructor._removeDataset(node, key);
+                    key = Core.camelCase(key);
+
+                    delete node.dataset[key];
                 }
             },
 
@@ -2595,7 +2631,7 @@
                 const attributes = this.constructor._parseData(attribute, value);
 
                 for (const node of nodes) {
-                    this.constructor._setAttribute(node, attributes);
+                    this.constructor._setAttributes(node, attributes);
                 }
             },
 
@@ -2801,7 +2837,49 @@
                 nodes = this.parseNodes(nodes);
 
                 for (const node of nodes) {
-                    this.constructor._constrain(node, containerBox);
+                    const nodeBox = this.constructor._rect(node);
+
+                    const style = {};
+
+                    if (nodeBox.height > containerBox.height) {
+                        style.height = containerBox.height;
+                    }
+
+                    if (nodeBox.width > containerBox.width) {
+                        style.width = containerBox.width;
+                    }
+
+                    let leftOffset;
+                    if (nodeBox.left - containerBox.left < 0) {
+                        leftOffset = nodeBox.left - containerBox.left
+                    } else if (nodeBox.right - containerBox.right > 0) {
+                        leftOffset = nodeBox.right - containerBox.right;
+                    }
+
+                    if (leftOffset) {
+                        const oldLeft = this.constructor._css(node, 'left');
+                        const trueLeft = oldLeft && oldLeft !== 'auto' ? parseFloat(oldLeft) : 0;
+                        style.left = `${trueLeft - leftOffset}px`;
+                    }
+
+                    let topOffset;
+                    if (nodeBox.top - containerBox.top < 0) {
+                        topOffset = nodeBox.top - containerBox.top;
+                    } else if (nodeBox.bottom - containerBox.bottom > 0) {
+                        topOffset = nodeBox.bottom - containerBox.bottom;
+                    }
+
+                    if (topOffset) {
+                        const oldTop = this.constructor._css(node, 'top');
+                        const trueTop = oldTop && oldTop !== 'auto' ? parseFloat(oldTop) : 0;
+                        style.top = `${trueTop - topOffset}px`;
+                    }
+
+                    if (this.constructor._css(node, 'position') === 'static') {
+                        style.position = 'relative';
+                    }
+
+                    this.constructor._setStyles(node, style);
                 }
             },
 
@@ -2941,7 +3019,23 @@
                     return;
                 }
 
-                return this.constructor._position(node, offset);
+                return this.constructor._forceShow(node, node => {
+                    const result = {
+                        x: node.offsetLeft,
+                        y: node.offsetTop
+                    };
+
+                    if (offset) {
+                        let offsetParent = node;
+
+                        while (offsetParent = offsetParent.offsetParent) {
+                            result.x += offsetParent.offsetLeft;
+                            result.y += offsetParent.offsetTop;
+                        }
+                    }
+
+                    return result;
+                });
             },
 
             /**
@@ -3140,7 +3234,13 @@
                     return;
                 }
 
-                return this.constructor._scrollHeight(node);
+                return this.constructor._forceShow(node, node => {
+                    if (Core.isDocument(node)) {
+                        node = node.documentElement;
+                    }
+
+                    return node.scrollHeight;
+                });
             },
 
             /**
@@ -3157,7 +3257,13 @@
                     return;
                 }
 
-                return this.constructor._scrollWidth(node);
+                return this.constructor._forceShow(node, node => {
+                    if (Core.isDocument(node)) {
+                        node = node.documentElement;
+                    }
+
+                    return node.scrollWidth;
+                });
             },
 
             /**
@@ -3245,7 +3351,19 @@
                     return;
                 }
 
-                return this.constructor._getStyle(node, style);
+                if (style) {
+                    style = Core.kebabCase(style);
+
+                    return node.style[style];
+                }
+
+                const styles = {};
+
+                for (const style of node.style) {
+                    styles[style] = node.style[style];
+                }
+
+                return styles;
             },
 
             /**
@@ -3288,7 +3406,7 @@
                 const styles = this.constructor._parseData(style, value);
 
                 for (const node of nodes) {
-                    this.constructor._setStyle(node, styles, important);
+                    this.constructor._setStyles(node, styles, important);
                 }
             },
 
@@ -3789,7 +3907,7 @@
                 }
 
                 if ('style' in options) {
-                    this.constructor._setStyle(node, options.style);
+                    this.constructor._setStyles(node, options.style);
                 }
 
                 if ('value' in options) {
@@ -3797,7 +3915,7 @@
                 }
 
                 if ('attributes' in options) {
-                    this.constructor._setAttribute(node, options.attributes);
+                    this.constructor._setAttributes(node, options.attributes);
                 }
 
                 if ('properties' in options) {
@@ -4294,7 +4412,20 @@
                 }
 
                 for (const parent of parents) {
-                    this.constructor._unwrap(parent);
+                    const outerParent = parent.parentNode;
+
+                    if (!outerParent) {
+                        continue;
+                    }
+
+                    const children = Core.wrap(parent.childNodes);
+
+                    for (const child of children) {
+                        outerParent.insertBefore(child, parent);
+                    }
+
+                    this.constructor._remove(parent);
+                    outerParent.removeChild(parent);
                 }
             },
 
@@ -4317,7 +4448,34 @@
                 });
 
                 for (const node of nodes) {
-                    this.constructor._wrap(node, others);
+                    const parent = node.parentNode;
+
+                    if (!parent) {
+                        continue;
+                    }
+
+                    const clones = others.map(other =>
+                        this.constructor._clone(other, {
+                            deep: true,
+                            events: true,
+                            data: true,
+                            animations: true
+                        })
+                    );
+
+                    const firstClone = clones.slice().shift();
+
+                    const deepest = this.constructor._deepest(
+                        Core.isFragment(firstClone) ?
+                            firstClone.firstChild :
+                            firstClone
+                    );
+
+                    for (const clone of clones) {
+                        parent.insertBefore(clone, node);
+                    }
+
+                    deepest.insertBefore(node, null);
                 }
             },
 
@@ -4345,7 +4503,33 @@
                     animations: true
                 });
 
-                this.constructor._wrapAll(nodes, clones);
+                const firstNode = nodes[0];
+
+                if (!firstNode) {
+                    return;
+                }
+
+                const parent = firstNode.parentNode;
+
+                if (!parent) {
+                    return;
+                }
+
+                const firstClone = clones[0];
+
+                const deepest = this.constructor._deepest(
+                    Core.isFragment(firstClone) ?
+                        firstClone.firstChild :
+                        firstClone
+                );
+
+                for (const clone of clones) {
+                    parent.insertBefore(clone, firstNode);
+                }
+
+                for (const node of nodes) {
+                    deepest.insertBefore(node, null);
+                }
             },
 
             /**
@@ -4367,7 +4551,32 @@
                 });
 
                 for (const node of nodes) {
-                    this.constructor._wrapInner(node, others);
+                    const children = Core.wrap(node.childNodes);
+
+                    const clones = others.map(other =>
+                        this.constructor._clone(other, {
+                            deep: true,
+                            events: true,
+                            data: true,
+                            animatinos: true
+                        })
+                    );
+
+                    const firstClone = clones.slice().shift();
+
+                    const deepest = this.constructor._deepest(
+                        Core.isFragment(firstClone) ?
+                            firstClone.firstChild :
+                            firstClone
+                    );
+
+                    for (const clone of clones) {
+                        node.insertBefore(clone, null);
+                    }
+
+                    for (const child of children) {
+                        deepest.insertBefore(child, null);
+                    }
                 }
             }
 
@@ -6432,7 +6641,57 @@
                     window: true
                 });
 
-                return this.constructor._sort(nodes);
+                return nodes.sort((node, other) => {
+                    if (Core.isWindow(node)) {
+                        return 1;
+                    }
+
+                    if (Core.isWindow(other)) {
+                        return -1;
+                    }
+
+                    if (Core.isDocument(node)) {
+                        return 1;
+                    }
+
+                    if (Core.isDocument(other)) {
+                        return -1;
+                    }
+
+                    if (Core.isFragment(other)) {
+                        return 1;
+                    }
+
+                    if (Core.isFragment(node)) {
+                        return -1;
+                    }
+
+                    if (Core.isShadow(node)) {
+                        node = node.host;
+                    }
+
+                    if (Core.isShadow(other)) {
+                        other = other.host;
+                    }
+
+                    if (node.isSameNode(other)) {
+                        return 0;
+                    }
+
+                    const pos = node.compareDocumentPosition(other);
+
+                    if (pos & Node.DOCUMENT_POSITION_FOLLOWING ||
+                        pos & Node.DOCUMENT_POSITION_CONTAINED_BY) {
+                        return -1;
+                    }
+
+                    if (pos & Node.DOCUMENT_POSITION_PRECEDING ||
+                        pos & Node.DOCUMENT_POSITION_CONTAINS) {
+                        return 1;
+                    }
+
+                    return 0;
+                });
             },
 
             /**
@@ -6466,6 +6725,11 @@
              * @param {Boolean|string|array|object|FormData} [options.data=null] The data to send with the request.
              * @param {Boolean|string} [options.contentType=application/x-www-form-urlencoded] The content type of the request.
              * @param {Boolean|string} [options.responseType] The content type of the response.
+             * @param {string} [options.mimeType] The MIME type to use.
+             * @param {string} [options.username] The username to authenticate with.
+             * @param {string} [options.password] The password to authenticate with.
+             * @param {number} [options.timeout] The number of milliseconds before the request will be terminated.
+             * @param {Boolean} [options.isLocal] Whether to treat the request as a local request.
              * @param {Boolean} [options.cache=true] Whether to cache the request.
              * @param {Boolean} [options.processData=true] Whether to process the data based on the content type.
              * @param {Boolean} [options.rejectOnCancel=true] Whether to reject the promise if the request is cancelled.
@@ -6487,6 +6751,11 @@
              * @param {string} [options.method=DELETE] The HTTP method of the request.
              * @param {Boolean|string} [options.contentType=application/x-www-form-urlencoded] The content type of the request.
              * @param {Boolean|string} [options.responseType] The content type of the response.
+             * @param {string} [options.mimeType] The MIME type to use.
+             * @param {string} [options.username] The username to authenticate with.
+             * @param {string} [options.password] The password to authenticate with.
+             * @param {number} [options.timeout] The number of milliseconds before the request will be terminated.
+             * @param {Boolean} [options.isLocal] Whether to treat the request as a local request.
              * @param {Boolean} [options.cache=true] Whether to cache the request.
              * @param {Boolean} [options.processData=true] Whether to process the data based on the content type.
              * @param {Boolean} [options.rejectOnCancel=true] Whether to reject the promise if the request is cancelled.
@@ -6513,6 +6782,11 @@
              * @param {string} [options.method=GET] The HTTP method of the request.
              * @param {Boolean|string} [options.contentType=application/x-www-form-urlencoded] The content type of the request.
              * @param {Boolean|string} [options.responseType] The content type of the response.
+             * @param {string} [options.mimeType] The MIME type to use.
+             * @param {string} [options.username] The username to authenticate with.
+             * @param {string} [options.password] The password to authenticate with.
+             * @param {number} [options.timeout] The number of milliseconds before the request will be terminated.
+             * @param {Boolean} [options.isLocal] Whether to treat the request as a local request.
              * @param {Boolean} [options.cache=true] Whether to cache the request.
              * @param {Boolean} [options.processData=true] Whether to process the data based on the content type.
              * @param {Boolean} [options.rejectOnCancel=true] Whether to reject the promise if the request is cancelled.
@@ -6539,6 +6813,11 @@
              * @param {string} [options.method=PATCH] The HTTP method of the request.
              * @param {Boolean|string} [options.contentType=application/x-www-form-urlencoded] The content type of the request.
              * @param {Boolean|string} [options.responseType] The content type of the response.
+             * @param {string} [options.mimeType] The MIME type to use.
+             * @param {string} [options.username] The username to authenticate with.
+             * @param {string} [options.password] The password to authenticate with.
+             * @param {number} [options.timeout] The number of milliseconds before the request will be terminated.
+             * @param {Boolean} [options.isLocal] Whether to treat the request as a local request.
              * @param {Boolean} [options.cache=true] Whether to cache the request.
              * @param {Boolean} [options.processData=true] Whether to process the data based on the content type.
              * @param {Boolean} [options.rejectOnCancel=true] Whether to reject the promise if the request is cancelled.
@@ -6566,6 +6845,11 @@
              * @param {string} [options.method=POST] The HTTP method of the request.
              * @param {Boolean|string} [options.contentType=application/x-www-form-urlencoded] The content type of the request.
              * @param {Boolean|string} [options.responseType] The content type of the response.
+             * @param {string} [options.mimeType] The MIME type to use.
+             * @param {string} [options.username] The username to authenticate with.
+             * @param {string} [options.password] The password to authenticate with.
+             * @param {number} [options.timeout] The number of milliseconds before the request will be terminated.
+             * @param {Boolean} [options.isLocal] Whether to treat the request as a local request.
              * @param {Boolean} [options.cache=true] Whether to cache the request.
              * @param {Boolean} [options.processData=true] Whether to process the data based on the content type.
              * @param {Boolean} [options.rejectOnCancel=true] Whether to reject the promise if the request is cancelled.
@@ -6593,6 +6877,11 @@
              * @param {string} [options.method=PUT] The HTTP method of the request.
              * @param {Boolean|string} [options.contentType=application/x-www-form-urlencoded] The content type of the request.
              * @param {Boolean|string} [options.responseType] The content type of the response.
+             * @param {string} [options.mimeType] The MIME type to use.
+             * @param {string} [options.username] The username to authenticate with.
+             * @param {string} [options.password] The password to authenticate with.
+             * @param {number} [options.timeout] The number of milliseconds before the request will be terminated.
+             * @param {Boolean} [options.isLocal] Whether to treat the request as a local request.
              * @param {Boolean} [options.cache=true] Whether to cache the request.
              * @param {Boolean} [options.processData=true] Whether to process the data based on the content type.
              * @param {Boolean} [options.rejectOnCancel=true] Whether to reject the promise if the request is cancelled.
@@ -6690,14 +6979,9 @@
             /**
              * Get attribute value(s) for a single node.
              * @param {HTMLElement} node The input node.
-             * @param {string} [attribute] The attribute name.
-             * @returns {string|object} The attribute value, or an object containing attributes.
+             * @returns {object} An object containing attributes.
              */
-            _getAttribute(node, attribute) {
-                if (attribute) {
-                    return node.getAttribute(attribute);
-                }
-
+            _getAttributes(node) {
                 const attributes = {};
 
                 for (const attr of node.attributes) {
@@ -6708,46 +6992,11 @@
             },
 
             /**
-             * Get dataset value(s) for a single node.
-             * @param {HTMLElement} node The input node.
-             * @param {string} [key] The dataset key.
-             * @returns {string|object} The dataset value, or an object containing the dataset.
-             */
-            _getDataset(node, key) {
-                if (key) {
-                    key = Core.camelCase(key);
-
-                    return this._parseDataset(
-                        node.dataset[key]
-                    );
-                }
-
-                const dataset = {};
-
-                for (const k in node.dataset) {
-                    dataset[k] = this._parseDataset(node.dataset[k]);
-                }
-
-                return dataset;
-            },
-
-            /**
-             * Remove a dataset value from a single node.
-             * @param {HTMLElement} node The input node.
-             * @param {string} key The dataset key.
-             */
-            _removeDataset(node, key) {
-                key = Core.camelCase(key);
-
-                delete node.dataset[key];
-            },
-
-            /**
              * Set an attribute value for a single node.
              * @param {HTMLElement} node The input node.
              * @param {object} attributes An object containing attributes.
              */
-            _setAttribute(node, attributes) {
+            _setAttributes(node, attributes) {
                 for (const key in attributes) {
                     node.setAttribute(key, attributes[key]);
                 }
@@ -6854,83 +7103,6 @@
         Object.assign(DOM, {
 
             /**
-             * Constrain a single node to a container box.
-             * @param {HTMLElement} node The input node.
-             * @param {DOMRect} containerBox The container box.
-             */
-            _constrain(node, containerBox) {
-                const nodeBox = this._rect(node);
-
-                const style = {};
-
-                if (nodeBox.height > containerBox.height) {
-                    style.height = containerBox.height;
-                }
-
-                if (nodeBox.width > containerBox.width) {
-                    style.width = containerBox.width;
-                }
-
-                let leftOffset;
-                if (nodeBox.left - containerBox.left < 0) {
-                    leftOffset = nodeBox.left - containerBox.left
-                } else if (nodeBox.right - containerBox.right > 0) {
-                    leftOffset = nodeBox.right - containerBox.right;
-                }
-
-                if (leftOffset) {
-                    const oldLeft = this._css(node, 'left');
-                    const trueLeft = oldLeft && oldLeft !== 'auto' ? parseFloat(oldLeft) : 0;
-                    style.left = `${trueLeft - leftOffset}px`;
-                }
-
-                let topOffset;
-                if (nodeBox.top - containerBox.top < 0) {
-                    topOffset = nodeBox.top - containerBox.top;
-                } else if (nodeBox.bottom - containerBox.bottom > 0) {
-                    topOffset = nodeBox.bottom - containerBox.bottom;
-                }
-
-                if (topOffset) {
-                    const oldTop = this._css(node, 'top');
-                    const trueTop = oldTop && oldTop !== 'auto' ? parseFloat(oldTop) : 0;
-                    style.top = `${trueTop - topOffset}px`;
-                }
-
-                if (this._css(node, 'position') === 'static') {
-                    style.position = 'relative';
-                }
-
-                this._setStyle(node, style);
-            },
-
-            /**
-             * Get the position of the a single node relative to the Window or Document.
-             * @param {HTMLElement} node The input node.
-             * @param {Boolean} [offset] Whether to offset from the top-left of the Document.
-             * @returns {object} An object with the X and Y co-ordinates.
-             */
-            _position(node, offset) {
-                return this._forceShow(node, node => {
-                    const result = {
-                        x: node.offsetLeft,
-                        y: node.offsetTop
-                    };
-
-                    if (offset) {
-                        let offsetParent = node;
-
-                        while (offsetParent = offsetParent.offsetParent) {
-                            result.x += offsetParent.offsetLeft;
-                            result.y += offsetParent.offsetTop;
-                        }
-                    }
-
-                    return result;
-                });
-            },
-
-            /**
              * Get the computed bounding rectangle of a single node.
              * @param {HTMLElement} node The input node.
              * @param {Boolean} [offset] Whether to offset from the top-left of the Document.
@@ -6987,36 +7159,6 @@
                     }
 
                     return result;
-                });
-            },
-
-            /**
-             * Get the scroll height of a single node.
-             * @param {HTMLElement} node The input node.
-             * @returns {number} The scroll height.
-             */
-            _scrollHeight(node) {
-                return this._forceShow(node, node => {
-                    if (Core.isDocument(node)) {
-                        node = node.documentElement;
-                    }
-
-                    return node.scrollHeight;
-                });
-            },
-
-            /**
-             * Get the scroll width of a single node.
-             * @param {HTMLElement} node The input node.
-             * @returns {number} The scroll width.
-             */
-            _scrollWidth(node) {
-                return this._forceShow(node, node => {
-                    if (Core.isDocument(node)) {
-                        node = node.documentElement;
-                    }
-
-                    return node.scrollWidth;
                 });
             },
 
@@ -7088,34 +7230,12 @@
             },
 
             /**
-             * Get style properties for a single node.
-             * @param {HTMLElement} node The input node.
-             * @param {string} [style] The style name.
-             * @returns {string|object} The style value, or an object containing the style properties.
-             */
-            _getStyle(node, style) {
-                if (style) {
-                    style = Core.kebabCase(style);
-
-                    return node.style[style];
-                }
-
-                const styles = {};
-
-                for (const style of node.style) {
-                    styles[style] = node.style[style];
-                }
-
-                return styles;
-            },
-
-            /**
              * Set style properties for a single node.
              * @param {HTMLElement} node The input node.
              * @param {object} styles An object containing styles.
              * @param {Boolean} [important] Whether the style should be !important.
              */
-            _setStyle(node, styles, important) {
+            _setStyles(node, styles, important) {
                 for (let style in styles) {
                     let value = styles[style];
                     style = Core.kebabCase(style);
@@ -7595,7 +7715,7 @@
                 }
 
                 if (options.animations) {
-                    this._cloneAnimations(node, clone);
+                    Animation.clone(node, clone);
                 }
 
                 if (options.deep) {
@@ -7603,24 +7723,6 @@
                 }
 
                 return clone;
-            },
-
-            /**
-             * Clone animations for a single node.
-             * @param {Node|HTMLElement|DocumentFragment} node The input node.
-             * @param {Node|HTMLElement|DocumentFragment} clone The cloned node.
-             */
-            _cloneAnimations(node, clone) {
-                if (!Animation._animations.has(node)) {
-                    return;
-                }
-
-                const animations = Animation._animations.get(node)
-                    .map(animation =>
-                        new Animation(clone, animation._callback, animation._options)
-                    );
-
-                Animation._animations.set(clone, animations);
             },
 
             /**
@@ -7646,7 +7748,7 @@
                     }
 
                     if (options.animations) {
-                        this._cloneAnimations(child, childClone);
+                        Animation.clone(child, childClone);
                     }
 
                     this._deepClone(child, childClone, options);
@@ -7698,140 +7800,6 @@
 
                 this._removeEvent(node);
                 this._removeData(node);
-            }
-
-        });
-
-        /**
-         * DOM (Static) Wrap
-         */
-
-        Object.assign(DOM, {
-
-            /**
-             * Unwrap a single node.
-             * @param {Node|HTMLElement} parent The input node.
-             */
-            _unwrap(parent) {
-                const outerParent = parent.parentNode;
-
-                if (!outerParent) {
-                    return;
-                }
-
-                const children = Core.wrap(parent.childNodes);
-
-                for (const child of children) {
-                    outerParent.insertBefore(child, parent);
-                }
-
-                this._remove(parent);
-                outerParent.removeChild(parent);
-            },
-
-            /**
-             * Wrap a single node with other nodes.
-             * @param {Node|HTMLElement} node The input node.
-             * @param {array} others The other node(s).
-             */
-            _wrap(node, others) {
-                const parent = node.parentNode;
-
-                if (!parent) {
-                    return;
-                }
-
-                const clones = others.map(other =>
-                    this._clone(other, {
-                        deep: true,
-                        events: true,
-                        data: true,
-                        animations: true
-                    })
-                );
-
-                const firstClone = clones.slice().shift();
-
-                const deepest = this._deepest(
-                    Core.isFragment(firstClone) ?
-                        firstClone.firstChild :
-                        firstClone
-                );
-
-                for (const clone of clones) {
-                    parent.insertBefore(clone, node);
-                }
-
-                deepest.insertBefore(node, null);
-            },
-
-            /**
-             * Wrap all nodes with other nodes.
-             * @param {array} nodes The input node(s).
-             * @param {array} others The other node(s).
-             */
-            _wrapAll(nodes, others) {
-                const firstNode = nodes[0];
-
-                if (!firstNode) {
-                    return;
-                }
-
-                const parent = firstNode.parentNode;
-
-                if (!parent) {
-                    return;
-                }
-
-                const firstOther = others[0];
-
-                const deepest = this._deepest(
-                    Core.isFragment(firstOther) ?
-                        firstOther.firstChild :
-                        firstOther
-                );
-
-                for (const other of others) {
-                    parent.insertBefore(other, firstNode);
-                }
-
-                for (const node of nodes) {
-                    deepest.insertBefore(node, null);
-                }
-            },
-
-            /**
-             * Wrap the contents of a single node with other nodes.
-             * @param {HTMLElement|DocumentFragment|ShadowRoot} node The input node.
-             * @param {array} others The other node(s).
-             */
-            _wrapInner(node, others) {
-                const children = Core.wrap(node.childNodes);
-
-                const clones = others.map(other =>
-                    this._clone(other, {
-                        deep: true,
-                        events: true,
-                        data: true,
-                        animatinos: true
-                    })
-                );
-
-                const firstClone = clones.slice().shift();
-
-                const deepest = this._deepest(
-                    Core.isFragment(firstClone) ?
-                        firstClone.firstChild :
-                        firstClone
-                );
-
-                for (const clone of clones) {
-                    node.insertBefore(clone, null);
-                }
-
-                for (const child of children) {
-                    deepest.insertBefore(child, null);
-                }
             }
 
         });
@@ -8334,7 +8302,7 @@
                     allowedAttributes.push(...allowedTags[name]);
                 }
 
-                const attributes = this._getAttribute(node);
+                const attributes = this._getAttributes(node);
                 for (const attribute in attributes) {
                     const valid = !!allowedAttributes.find(test => attribute.match(test));
 
@@ -8348,65 +8316,6 @@
                 for (const child of children) {
                     this._sanitize(child, node, allowedTags);
                 }
-            },
-
-            /**
-             * Sort nodes by their position in the document.
-             * @param {array} nodes The input nodes.
-             * @returns {array} The sorted array of nodes.
-             */
-            _sort(nodes) {
-                return nodes.sort((node, other) => {
-                    if (Core.isWindow(node)) {
-                        return 1;
-                    }
-
-                    if (Core.isWindow(other)) {
-                        return -1;
-                    }
-
-                    if (Core.isDocument(node)) {
-                        return 1;
-                    }
-
-                    if (Core.isDocument(other)) {
-                        return -1;
-                    }
-
-                    if (Core.isFragment(other)) {
-                        return 1;
-                    }
-
-                    if (Core.isFragment(node)) {
-                        return -1;
-                    }
-
-                    if (Core.isShadow(node)) {
-                        node = node.host;
-                    }
-
-                    if (Core.isShadow(other)) {
-                        other = other.host;
-                    }
-
-                    if (node.isSameNode(other)) {
-                        return 0;
-                    }
-
-                    const pos = node.compareDocumentPosition(other);
-
-                    if (pos & Node.DOCUMENT_POSITION_FOLLOWING ||
-                        pos & Node.DOCUMENT_POSITION_CONTAINED_BY) {
-                        return -1;
-                    }
-
-                    if (pos & Node.DOCUMENT_POSITION_PRECEDING ||
-                        pos & Node.DOCUMENT_POSITION_CONTAINS) {
-                        return 1;
-                    }
-
-                    return 0;
-                });
             }
 
         });

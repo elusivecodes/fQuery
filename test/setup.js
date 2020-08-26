@@ -71,6 +71,7 @@ beforeEach(async function() {
         document.id = 'document';
         document.head.innerHTML = '';
         document.body.innerHTML = '';
+        document.body.style.display = '';
     });
 });
 

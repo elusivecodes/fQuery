@@ -17,7 +17,11 @@ Object.assign(DOM.prototype, {
             return;
         }
 
-        return this.constructor._getAttribute(node, attribute);
+        if (attribute) {
+            return node.getAttribute(attribute);
+        }
+
+        return this.constructor._getAttributes(node, attribute);
     },
 
     /**
@@ -33,7 +37,19 @@ Object.assign(DOM.prototype, {
             return;
         }
 
-        return this.constructor._getDataset(node, key);
+        if (key) {
+            key = Core.camelCase(key);
+
+            return this.constructor._parseDataset(node.dataset[key]);
+        }
+
+        const dataset = {};
+
+        for (const k in node.dataset) {
+            dataset[k] = this.constructor._parseDataset(node.dataset[k]);
+        }
+
+        return dataset;
     },
 
     /**
@@ -101,7 +117,9 @@ Object.assign(DOM.prototype, {
         nodes = this.parseNodes(nodes);
 
         for (const node of nodes) {
-            this.constructor._removeDataset(node, key);
+            key = Core.camelCase(key);
+
+            delete node.dataset[key];
         }
     },
 
@@ -130,7 +148,7 @@ Object.assign(DOM.prototype, {
         const attributes = this.constructor._parseData(attribute, value);
 
         for (const node of nodes) {
-            this.constructor._setAttribute(node, attributes);
+            this.constructor._setAttributes(node, attributes);
         }
     },
 
