@@ -30,7 +30,7 @@ describe('#distToNode', function() {
     it('returns undefined for empty nodes', async function() {
         assert.equal(
             await exec(_ =>
-                dom.distToNode('[data-toggle="from"]', '#invalid')
+                dom.distToNode('#invalid', '[data-toggle="to"]')
             ),
             undefined
         );
@@ -39,7 +39,7 @@ describe('#distToNode', function() {
     it('returns undefined for empty other nodes', async function() {
         assert.equal(
             await exec(_ =>
-                dom.distToNode('#invalid', '[data-toggle="to"]')
+                dom.distToNode('[data-toggle="from"]', '#invalid')
             ),
             undefined
         );

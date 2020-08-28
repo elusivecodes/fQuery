@@ -1,5 +1,6 @@
 const assert = require('assert').strict;
 const { exec } = require('../../../setup');
+
 describe('#toggle', function() {
 
     beforeEach(async function() {
