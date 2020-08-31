@@ -31,6 +31,8 @@ Object.assign(DOM, {
             realCallback = this._selfDestructFactory(node, event, delegate, realCallback);
         }
 
+        realCallback = this._preventFactory(realCallback);
+
         if (delegate) {
             realCallback = this._delegateFactory(node, delegate, realCallback);
         }
@@ -43,8 +45,6 @@ Object.assign(DOM, {
 
         if (!nodeEvents[realEvent]) {
             nodeEvents[realEvent] = [];
-        } else if (nodeEvents[realEvent].includes(eventData)) {
-            return;
         }
 
         nodeEvents[realEvent].push(eventData);

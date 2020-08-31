@@ -37,7 +37,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 /**
- * FrostDOM v1.0.9
+ * FrostDOM v1.0.10
  * https://github.com/elusivecodes/FrostDOM
  */
 (function (global, factory) {
@@ -6881,7 +6881,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
     },
 
     /**
-     * Return a wrapped event callback that check for a namespace match.
+     * Return a wrapped event callback that checks for a namespace match.
      * @param {string} event The namespaced event name.
      * @param {DOM~eventCallback} callback The callback to execute.
      * @returns {DOM~eventCallback} The wrapped event callback.
@@ -6893,6 +6893,19 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
         }
 
         return callback(e);
+      };
+    },
+
+    /**
+     * Return a wrapped event callback that checks for a return false for preventing default.
+     * @param {DOM~eventCallback} callback The callback to execute.
+     * @returns {DOM~eventCallback} The wrapped event callback.
+     */
+    _preventFactory: function _preventFactory(callback) {
+      return function (e) {
+        if (callback(e) === false) {
+          e.preventDefault();
+        }
       };
     },
 
@@ -6946,6 +6959,8 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
         realCallback = this._selfDestructFactory(node, event, delegate, realCallback);
       }
 
+      realCallback = this._preventFactory(realCallback);
+
       if (delegate) {
         realCallback = this._delegateFactory(node, delegate, realCallback);
       }
@@ -6957,8 +6972,6 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
 
       if (!nodeEvents[realEvent]) {
         nodeEvents[realEvent] = [];
-      } else if (nodeEvents[realEvent].includes(eventData)) {
-        return;
       }
 
       nodeEvents[realEvent].push(eventData);

@@ -1662,7 +1662,7 @@ Return all nodes matching a filter.
 - `filter` is either a function that accepts a `node` argument, a query selector string, a *Node*, *HTMLElement*, *DocumentFragment*, *ShadowRoot*, *NodeList*, *HTMLCollection*, [*QuerySet*](https://github.com/elusivecodes/fQuery) or an array of nodes that the nodes will be filtered by.
 
 ```javascript
-const filter = dom.filter(nodes, filter);
+const filtered = dom.filter(nodes, filter);
 ```
 
 **Filter One**
@@ -1673,7 +1673,7 @@ Return the first node matching a filter.
 - `filter` is either a function that accepts a `node` argument, a query selector string, a *Node*, *HTMLElement*, *DocumentFragment*, *ShadowRoot*, *NodeList*, *HTMLCollection*, [*QuerySet*](https://github.com/elusivecodes/fQuery) or an array of nodes that the nodes will be filtered by.
 
 ```javascript
-const filterOne = dom.filterOne(nodes, filter);
+const filteredOne = dom.filterOne(nodes, filter);
 ```
 
 **Fixed**

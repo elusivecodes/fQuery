@@ -186,6 +186,26 @@ describe('#triggerOne', function() {
         );
     });
 
+    it('returns false if the event returns false', async function() {
+        assert.equal(
+            await exec(_ => {
+                dom.addEvent('#test1', 'click', _ => false);
+                return dom.triggerOne('#test1', 'click');
+            }),
+            false
+        );
+    });
+
+    it('returns false if a delegated event returns false', async function() {
+        assert.equal(
+            await exec(_ => {
+                dom.addEventDelegate('#div1', 'click', 'a', _ => false);
+                return dom.triggerOne('#test1', 'click');
+            }),
+            false
+        );
+    });
+
     it('returns true if the event is not cancelled', async function() {
         assert.equal(
             await exec(_ => {
@@ -196,10 +216,34 @@ describe('#triggerOne', function() {
         );
     });
 
+    it('returns true if a delegated event is not cancelled', async function() {
+        assert.equal(
+            await exec(_ => {
+                dom.addEventDelegate('#div1', 'click', 'a', _ => { });
+                return dom.triggerOne('#test1', 'click');
+            }),
+            true
+        );
+    });
+
     it('can be prevented from being cancelled', async function() {
         assert.equal(
             await exec(_ => {
                 dom.addEvent('#test1', 'click', e => {
+                    e.preventDefault();
+                });
+                return dom.triggerOne('#test1', 'click', {
+                    cancelable: false
+                });
+            }),
+            true
+        );
+    });
+
+    it('can be prevented from being cancelled with delegate', async function() {
+        assert.equal(
+            await exec(_ => {
+                dom.addEventDelegate('#div1', 'click', 'a', e => {
                     e.preventDefault();
                 });
                 return dom.triggerOne('#test1', 'click', {

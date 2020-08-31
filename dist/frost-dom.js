@@ -1,5 +1,5 @@
 /**
- * FrostDOM v1.0.9
+ * FrostDOM v1.0.10
  * https://github.com/elusivecodes/FrostDOM
  */
 (function(global, factory) {
@@ -6306,7 +6306,7 @@
         },
 
         /**
-         * Return a wrapped event callback that check for a namespace match.
+         * Return a wrapped event callback that checks for a namespace match.
          * @param {string} event The namespaced event name.
          * @param {DOM~eventCallback} callback The callback to execute.
          * @returns {DOM~eventCallback} The wrapped event callback.
@@ -6318,6 +6318,19 @@
                 }
 
                 return callback(e);
+            };
+        },
+
+        /**
+         * Return a wrapped event callback that checks for a return false for preventing default.
+         * @param {DOM~eventCallback} callback The callback to execute.
+         * @returns {DOM~eventCallback} The wrapped event callback.
+         */
+        _preventFactory(callback) {
+            return e => {
+                if (callback(e) === false) {
+                    e.preventDefault();
+                }
             };
         },
 
@@ -6371,6 +6384,8 @@
                 realCallback = this._selfDestructFactory(node, event, delegate, realCallback);
             }
 
+            realCallback = this._preventFactory(realCallback);
+
             if (delegate) {
                 realCallback = this._delegateFactory(node, delegate, realCallback);
             }
@@ -6383,8 +6398,6 @@
 
             if (!nodeEvents[realEvent]) {
                 nodeEvents[realEvent] = [];
-            } else if (nodeEvents[realEvent].includes(eventData)) {
-                return;
             }
 
             nodeEvents[realEvent].push(eventData);
