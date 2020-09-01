@@ -37,7 +37,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 /**
- * FrostDOM v1.0.10
+ * FrostDOM v1.0.11
  * https://github.com/elusivecodes/FrostDOM
  */
 (function (global, factory) {
@@ -4849,7 +4849,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
      * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
      * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
      * @param {Boolean} [first=false] Whether to only return the first matching node for each node.
-     * @param {Boolean} [elementsOnly=false] Whether to only return element nodes.
+     * @param {Boolean} [elementsOnly=true] Whether to only return element nodes.
      * @returns {array} The matching nodes.
      */
     children: function children(nodes, filter) {
@@ -4976,7 +4976,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
       try {
         for (_iterator69.s(); !(_step69 = _iterator69.n()).done;) {
           var node = _step69.value;
-          Core.merge(results, this.constructor._next(node, filter));
+          Core.merge(results, this.constructor._nextAll(node, filter, null, true));
         }
       } catch (err) {
         _iterator69.e(err);
@@ -7433,12 +7433,12 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
      * @param {HTMLElement|DocumentFragment|ShadowRoot|Document} node The input node.
      * @param {DOM~filterCallback} [filter] The filter function.
      * @param {Boolean} [first=false] Whether to only return the first matching node for each node.
-     * @param {Boolean} [elementsOnly=false] Whether to only return element nodes.
+     * @param {Boolean} [elementsOnly=true] Whether to only return element nodes.
      * @returns {array} The matching nodes.
      */
     _children: function _children(node, filter) {
       var first = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
-      var elementsOnly = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : false;
+      var elementsOnly = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : true;
       var children = elementsOnly ? node.children : node.childNodes;
       var results = [];
       var child;
@@ -7488,17 +7488,19 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
      */
     _next: function _next(node, filter) {
       var results = [];
-      node = node.nextSibling;
 
-      if (!node) {
-        return results;
+      while (node = node.nextSibling) {
+        if (!Core.isElement(node)) {
+          continue;
+        }
+
+        if (!filter || filter(node)) {
+          results.push(node);
+        }
+
+        break;
       }
 
-      if (filter && !filter(node)) {
-        return results;
-      }
-
-      results.push(node);
       return results;
     },
 
@@ -7515,6 +7517,10 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
       var results = [];
 
       while (node = node.nextSibling) {
+        if (!Core.isElement(node)) {
+          continue;
+        }
+
         if (limit && limit(node)) {
           break;
         }
@@ -7598,17 +7604,19 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
      */
     _prev: function _prev(node, filter) {
       var results = [];
-      node = node.previousSibling;
 
-      if (!node) {
-        return results;
+      while (node = node.previousSibling) {
+        if (!Core.isElement(node)) {
+          continue;
+        }
+
+        if (!filter || filter(node)) {
+          results.push(node);
+        }
+
+        break;
       }
 
-      if (filter && !filter(node)) {
-        return results;
-      }
-
-      results.push(node);
       return results;
     },
 
@@ -7625,6 +7633,10 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
       var results = [];
 
       while (node = node.previousSibling) {
+        if (!Core.isElement(node)) {
+          continue;
+        }
+
         if (limit && limit(node)) {
           break;
         }

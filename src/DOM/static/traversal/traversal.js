@@ -9,10 +9,10 @@ Object.assign(DOM, {
      * @param {HTMLElement|DocumentFragment|ShadowRoot|Document} node The input node.
      * @param {DOM~filterCallback} [filter] The filter function.
      * @param {Boolean} [first=false] Whether to only return the first matching node for each node.
-     * @param {Boolean} [elementsOnly=false] Whether to only return element nodes.
+     * @param {Boolean} [elementsOnly=true] Whether to only return element nodes.
      * @returns {array} The matching nodes.
      */
-    _children(node, filter, first = false, elementsOnly = false) {
+    _children(node, filter, first = false, elementsOnly = true) {
         const children = elementsOnly ?
             node.children :
             node.childNodes;
@@ -55,17 +55,17 @@ Object.assign(DOM, {
     _next(node, filter) {
         const results = [];
 
-        node = node.nextSibling;
+        while (node = node.nextSibling) {
+            if (!Core.isElement(node)) {
+                continue;
+            }
 
-        if (!node) {
-            return results;
+            if (!filter || filter(node)) {
+                results.push(node);
+            }
+
+            break;
         }
-
-        if (filter && !filter(node)) {
-            return results;
-        }
-
-        results.push(node);
 
         return results;
     },
@@ -82,6 +82,10 @@ Object.assign(DOM, {
         const results = [];
 
         while (node = node.nextSibling) {
+            if (!Core.isElement(node)) {
+                continue;
+            }
+
             if (limit && limit(node)) {
                 break;
             }
@@ -167,17 +171,17 @@ Object.assign(DOM, {
     _prev(node, filter) {
         const results = [];
 
-        node = node.previousSibling;
+        while (node = node.previousSibling) {
+            if (!Core.isElement(node)) {
+                continue;
+            }
 
-        if (!node) {
-            return results;
+            if (!filter || filter(node)) {
+                results.push(node);
+            }
+
+            break;
         }
-
-        if (filter && !filter(node)) {
-            return results;
-        }
-
-        results.push(node);
 
         return results;
     },
@@ -194,6 +198,10 @@ Object.assign(DOM, {
         const results = [];
 
         while (node = node.previousSibling) {
+            if (!Core.isElement(node)) {
+                continue;
+            }
+
             if (limit && limit(node)) {
                 break;
             }

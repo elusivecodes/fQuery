@@ -1,5 +1,5 @@
 /**
- * FrostDOM v1.0.10
+ * FrostDOM v1.0.11
  * https://github.com/elusivecodes/FrostDOM
  */
 (function(global, factory) {
@@ -4288,7 +4288,7 @@
          * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
          * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
          * @param {Boolean} [first=false] Whether to only return the first matching node for each node.
-         * @param {Boolean} [elementsOnly=false] Whether to only return element nodes.
+         * @param {Boolean} [elementsOnly=true] Whether to only return element nodes.
          * @returns {array} The matching nodes.
          */
         children(nodes, filter, first = false, elementsOnly = true) {
@@ -4405,7 +4405,7 @@
             for (const node of nodes) {
                 Core.merge(
                     results,
-                    this.constructor._next(node, filter)
+                    this.constructor._nextAll(node, filter, null, true)
                 )
             }
 
@@ -6854,10 +6854,10 @@
          * @param {HTMLElement|DocumentFragment|ShadowRoot|Document} node The input node.
          * @param {DOM~filterCallback} [filter] The filter function.
          * @param {Boolean} [first=false] Whether to only return the first matching node for each node.
-         * @param {Boolean} [elementsOnly=false] Whether to only return element nodes.
+         * @param {Boolean} [elementsOnly=true] Whether to only return element nodes.
          * @returns {array} The matching nodes.
          */
-        _children(node, filter, first = false, elementsOnly = false) {
+        _children(node, filter, first = false, elementsOnly = true) {
             const children = elementsOnly ?
                 node.children :
                 node.childNodes;
@@ -6900,17 +6900,17 @@
         _next(node, filter) {
             const results = [];
 
-            node = node.nextSibling;
+            while (node = node.nextSibling) {
+                if (!Core.isElement(node)) {
+                    continue;
+                }
 
-            if (!node) {
-                return results;
+                if (!filter || filter(node)) {
+                    results.push(node);
+                }
+
+                break;
             }
-
-            if (filter && !filter(node)) {
-                return results;
-            }
-
-            results.push(node);
 
             return results;
         },
@@ -6927,6 +6927,10 @@
             const results = [];
 
             while (node = node.nextSibling) {
+                if (!Core.isElement(node)) {
+                    continue;
+                }
+
                 if (limit && limit(node)) {
                     break;
                 }
@@ -7012,17 +7016,17 @@
         _prev(node, filter) {
             const results = [];
 
-            node = node.previousSibling;
+            while (node = node.previousSibling) {
+                if (!Core.isElement(node)) {
+                    continue;
+                }
 
-            if (!node) {
-                return results;
+                if (!filter || filter(node)) {
+                    results.push(node);
+                }
+
+                break;
             }
-
-            if (filter && !filter(node)) {
-                return results;
-            }
-
-            results.push(node);
 
             return results;
         },
@@ -7039,6 +7043,10 @@
             const results = [];
 
             while (node = node.previousSibling) {
+                if (!Core.isElement(node)) {
+                    continue;
+                }
+
                 if (limit && limit(node)) {
                     break;
                 }

@@ -19,7 +19,7 @@ Object.assign(DOM.prototype, {
      * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
      * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
      * @param {Boolean} [first=false] Whether to only return the first matching node for each node.
-     * @param {Boolean} [elementsOnly=false] Whether to only return element nodes.
+     * @param {Boolean} [elementsOnly=true] Whether to only return element nodes.
      * @returns {array} The matching nodes.
      */
     children(nodes, filter, first = false, elementsOnly = true) {
@@ -136,7 +136,7 @@ Object.assign(DOM.prototype, {
         for (const node of nodes) {
             Core.merge(
                 results,
-                this.constructor._next(node, filter)
+                this.constructor._nextAll(node, filter, null, true)
             )
         }
 
