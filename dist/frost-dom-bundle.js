@@ -1,5 +1,5 @@
 /**
- * FrostDOM Bundle v1.1.0
+ * FrostDOM Bundle v1.1.1
  * https://github.com/elusivecodes/FrostCore
  * https://github.com/elusivecodes/FrostDOM
  */
@@ -1047,7 +1047,7 @@
     });
 
     /**
-     * FrostDOM v1.1.0
+     * FrostDOM v1.1.1
      * https://github.com/elusivecodes/FrostDOM
      */
     (function(global, factory) {
