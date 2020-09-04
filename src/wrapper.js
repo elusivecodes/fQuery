@@ -1,5 +1,5 @@
 /**
- * FrostDOM v1.0.12
+ * FrostDOM v1.0.13
  * https://github.com/elusivecodes/FrostDOM
  */
 (function(global, factory) {

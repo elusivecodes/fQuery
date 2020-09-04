@@ -58,9 +58,10 @@ For a fully OOP implementation, also check out my [fQuery](https://github.com/el
 ```html
 <script type="text/javascript" src="/path/to/frost-core.min.js"></script>
 <script type="text/javascript" src="/path/to/frost-dom.min.js"></script>
+<script type="text/javascript" src="/path/to/fquery.min.js"></script> <!-- optional -->
 ```
 
-Alternatively, a bundle version is supplied which includes the *FrostCore* library in a single JS file.
+Alternatively, a bundle version is supplied which includes the *FrostCore* and *fQuery* libraries in a single JS file.
 
 ```html
 <script type="text/javascript" src="/path/to/frost-core-bundle.min.js"></script>
@@ -77,7 +78,9 @@ In Node.js:
 ```javascript
 const { JSDOM } = require('jsdom');
 const { window } = new JSDOM('');
+window.Core = require('frostcore');
 const { dom } = require('frostdom')(window);
+require('frostquery')(window); // optional
 ```
 
 
