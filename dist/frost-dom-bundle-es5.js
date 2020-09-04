@@ -51,7 +51,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 /**
- * FrostDOM Bundle v1.0.13
+ * FrostDOM Bundle v1.1.0
  * https://github.com/elusivecodes/FrostCore
  * https://github.com/elusivecodes/FrostDOM
  */
@@ -1072,7 +1072,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
     return Core;
   });
   /**
-   * FrostDOM v1.0.13
+   * FrostDOM v1.1.0
    * https://github.com/elusivecodes/FrostDOM
    */
 
@@ -1098,6 +1098,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
 
     var Core = window.Core;
     var document = window.document;
+    var dom;
     /**
      * AjaxRequest Class
      * @class
@@ -5115,6 +5116,85 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
       }
     });
     /**
+     * DOM Query
+     */
+
+    Object.assign(DOM.prototype, {
+      /**
+       * Add a function to the ready queue or return a QuerySetImmutable.
+       * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|NodeList|HTMLCollection|QuerySet|function} query The input query.
+       * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|NodeList|HTMLCollection|QuerySet} [context] The context to search in.
+       * @param {Boolean} [mutable=false] Whether to create a mutable QuerySet.
+       * @returns {QuerySet} The new QuerySet object.
+       */
+      query: function query(_query) {
+        var context = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+        var mutable = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
+
+        if (Core.isFunction(_query)) {
+          return this.ready(_query);
+        }
+
+        var nodes = this.parseNodes(_query, {
+          node: true,
+          fragment: true,
+          shadow: true,
+          document: true,
+          window: true,
+          html: true,
+          context: context ? context : this._context
+        });
+        return mutable ? new QuerySet(nodes, this) : new QuerySetImmutable(nodes, this);
+      },
+
+      /**
+       * Add a function to the ready queue or return a QuerySet.
+       * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|NodeList|HTMLCollection|QuerySet|function} query The input query.
+       * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|NodeList|HTMLCollection|QuerySet} [context] The context to search in.
+       * @returns {QuerySet} The new QuerySet object.
+       */
+      queryMutable: function queryMutable(query) {
+        var context = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+        return this.query(query, context, true);
+      },
+
+      /**
+       * Return a QuerySetImmutable for the first node.
+       * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|NodeList|HTMLCollection|QuerySet} query The input query.
+       * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|NodeList|HTMLCollection|QuerySet} [context] The context to search in.
+       * @param {Boolean} [mutable=false] Whether to create a mutable QuerySet.
+       * @returns {QuerySet} The new QuerySet object.
+       */
+      queryOne: function queryOne(query) {
+        var context = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+        var mutable = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
+        var node = this.parseNode(query, {
+          node: true,
+          fragment: true,
+          shadow: true,
+          document: true,
+          window: true,
+          html: true,
+          context: context ? context : this._context
+        });
+        var nodes = [node].filter(function (v) {
+          return v;
+        });
+        return mutable ? new QuerySet(nodes, this) : new QuerySetImmutable(nodes, this);
+      },
+
+      /**
+       * Return a QuerySet for the first node.
+       * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|NodeList|HTMLCollection|QuerySet} query The input query.
+       * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|NodeList|HTMLCollection|QuerySet} [context] The context to search in.
+       * @returns {QuerySet} The new QuerySet object.
+       */
+      queryOneMutable: function queryOneMutable(query) {
+        var context = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+        return this.queryOne(query, context, true);
+      }
+    });
+    /**
      * DOM AJAX Scripts
      */
 
@@ -9017,41 +9097,6 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
       // Comma seperated selector RegExp
       _splitRegExp: /\,(?=(?:(?:[^"]*"){2})*[^"]*$)\s*/
     });
-    return {
-      AjaxRequest: AjaxRequest,
-      Animation: Animation,
-      AnimationSet: AnimationSet,
-      DOM: DOM,
-      dom: new DOM()
-    };
-  });
-  /**
-   * fQuery v1.0.3
-   * https://github.com/elusivecodes/fQuery
-   */
-
-
-  (function (global, factory) {
-    'use strict';
-
-    if ((typeof module === "undefined" ? "undefined" : _typeof(module)) === 'object' && _typeof(module.exports) === 'object') {
-      module.exports = factory;
-    } else {
-      Object.assign(global, factory(global));
-    }
-  })(this || window, function (window) {
-    'use strict';
-
-    if (!window) {
-      throw new Error('fQuery requires a Window.');
-    }
-
-    if (!('DOM' in window)) {
-      throw new Error('fQuery requires FrostDOM.');
-    }
-
-    var DOM = window.DOM;
-    var dom = window.dom;
     /**
      * QuerySet Class
      * @class
@@ -10947,8 +10992,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
        */
       add: function add(query) {
         var context = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
-        var nodes = Core.unique(Core.merge([], this._nodes, this._dom.query(query, context).get()));
-        return this.pushStack(this._dom.sort(nodes));
+        return this.pushStack(Core.unique(Core.merge([], this._nodes, this._dom.query(query, context).get()))).sort();
       },
 
       /**
@@ -11121,86 +11165,13 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
      * @param {HTMLElement} node The input node.
      */
 
-    /**
-     * DOM Query
-     */
-
-    Object.assign(DOM.prototype, {
-      /**
-       * Add a function to the ready queue or return a QuerySetImmutable.
-       * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|NodeList|HTMLCollection|QuerySet|function} query The input query.
-       * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|NodeList|HTMLCollection|QuerySet} [context] The context to search in.
-       * @param {Boolean} [mutable=false] Whether to create a mutable QuerySet.
-       * @returns {QuerySet} The new QuerySet object.
-       */
-      query: function query(_query) {
-        var context = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
-        var mutable = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
-
-        if (Core.isFunction(_query)) {
-          return this.ready(_query);
-        }
-
-        var nodes = this.parseNodes(_query, {
-          node: true,
-          fragment: true,
-          shadow: true,
-          document: true,
-          window: true,
-          html: true,
-          context: context ? context : this._context
-        });
-        return mutable ? new QuerySet(nodes, this) : new QuerySetImmutable(nodes, this);
-      },
-
-      /**
-       * Add a function to the ready queue or return a QuerySet.
-       * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|NodeList|HTMLCollection|QuerySet|function} query The input query.
-       * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|NodeList|HTMLCollection|QuerySet} [context] The context to search in.
-       * @returns {QuerySet} The new QuerySet object.
-       */
-      queryMutable: function queryMutable(query) {
-        var context = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
-        return this.query(query, context, true);
-      },
-
-      /**
-       * Return a QuerySetImmutable for the first node.
-       * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|NodeList|HTMLCollection|QuerySet} query The input query.
-       * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|NodeList|HTMLCollection|QuerySet} [context] The context to search in.
-       * @param {Boolean} [mutable=false] Whether to create a mutable QuerySet.
-       * @returns {QuerySet} The new QuerySet object.
-       */
-      queryOne: function queryOne(query) {
-        var context = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
-        var mutable = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
-        var node = this.parseNode(query, {
-          node: true,
-          fragment: true,
-          shadow: true,
-          document: true,
-          window: true,
-          html: true,
-          context: context ? context : this._context
-        });
-        var nodes = [node].filter(function (v) {
-          return v;
-        });
-        return mutable ? new QuerySet(nodes, this) : new QuerySetImmutable(nodes, this);
-      },
-
-      /**
-       * Return a QuerySet for the first node.
-       * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|NodeList|HTMLCollection|QuerySet} query The input query.
-       * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|NodeList|HTMLCollection|QuerySet} [context] The context to search in.
-       * @returns {QuerySet} The new QuerySet object.
-       */
-      queryOneMutable: function queryOneMutable(query) {
-        var context = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
-        return this.queryOne(query, context, true);
-      }
-    });
+    dom = new DOM();
     return {
+      AjaxRequest: AjaxRequest,
+      Animation: Animation,
+      AnimationSet: AnimationSet,
+      DOM: DOM,
+      dom: dom,
       QuerySet: QuerySet,
       QuerySetImmutable: QuerySetImmutable
     };
@@ -11212,6 +11183,8 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
     AnimationSet: window.AnimationSet,
     Core: window.Core,
     DOM: window.DOM,
-    dom: window.dom
+    dom: window.dom,
+    QuerySet: QuerySet,
+    QuerySetImmutable: QuerySetImmutable
   };
 });

@@ -1,0 +1,36 @@
+const assert = require('assert').strict;
+const { exec } = require('../../../setup');
+
+describe('QuerySet #removeAttribute', function() {
+
+    beforeEach(async function() {
+        await exec(_ => {
+            document.body.innerHTML =
+                '<input type="text" id="test1" disabled>' +
+                '<input type="number" id="test2" disabled>';
+        });
+    });
+
+    it('removes an attribute for all nodes', async function() {
+        assert.equal(
+            await exec(_ => {
+                dom.queryMutable('input')
+                    .removeAttribute('disabled');
+                return document.body.innerHTML;
+            }),
+            '<input type="text" id="test1">' +
+            '<input type="number" id="test2">'
+        );
+    });
+
+    it('returns the QuerySet', async function() {
+        assert.equal(
+            await exec(_ => {
+                const query = dom.queryMutable('input');
+                return query === query.removeAttribute('disabled');
+            }),
+            true
+        );
+    });
+
+});

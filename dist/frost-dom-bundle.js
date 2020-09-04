@@ -1,5 +1,5 @@
 /**
- * FrostDOM Bundle v1.0.13
+ * FrostDOM Bundle v1.1.0
  * https://github.com/elusivecodes/FrostCore
  * https://github.com/elusivecodes/FrostDOM
  */
@@ -1047,7 +1047,7 @@
     });
 
     /**
-     * FrostDOM v1.0.13
+     * FrostDOM v1.1.0
      * https://github.com/elusivecodes/FrostDOM
      */
     (function(global, factory) {
@@ -1072,6 +1072,7 @@
 
         const Core = window.Core;
         const document = window.document;
+        let dom;
 
         /**
          * AjaxRequest Class
@@ -4578,6 +4579,90 @@
                         deepest.insertBefore(child, null);
                     }
                 }
+            }
+
+        });
+
+        /**
+         * DOM Query
+         */
+
+        Object.assign(DOM.prototype, {
+
+            /**
+             * Add a function to the ready queue or return a QuerySetImmutable.
+             * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|NodeList|HTMLCollection|QuerySet|function} query The input query.
+             * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|NodeList|HTMLCollection|QuerySet} [context] The context to search in.
+             * @param {Boolean} [mutable=false] Whether to create a mutable QuerySet.
+             * @returns {QuerySet} The new QuerySet object.
+             */
+            query(query, context = null, mutable = false) {
+                if (Core.isFunction(query)) {
+                    return this.ready(query);
+                }
+
+                const nodes = this.parseNodes(query, {
+                    node: true,
+                    fragment: true,
+                    shadow: true,
+                    document: true,
+                    window: true,
+                    html: true,
+                    context: context ?
+                        context :
+                        this._context
+                });
+
+                return mutable ?
+                    new QuerySet(nodes, this) :
+                    new QuerySetImmutable(nodes, this);
+            },
+
+            /**
+             * Add a function to the ready queue or return a QuerySet.
+             * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|NodeList|HTMLCollection|QuerySet|function} query The input query.
+             * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|NodeList|HTMLCollection|QuerySet} [context] The context to search in.
+             * @returns {QuerySet} The new QuerySet object.
+             */
+            queryMutable(query, context = null) {
+                return this.query(query, context, true);
+            },
+
+            /**
+             * Return a QuerySetImmutable for the first node.
+             * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|NodeList|HTMLCollection|QuerySet} query The input query.
+             * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|NodeList|HTMLCollection|QuerySet} [context] The context to search in.
+             * @param {Boolean} [mutable=false] Whether to create a mutable QuerySet.
+             * @returns {QuerySet} The new QuerySet object.
+             */
+            queryOne(query, context = null, mutable = false) {
+                const node = this.parseNode(query, {
+                    node: true,
+                    fragment: true,
+                    shadow: true,
+                    document: true,
+                    window: true,
+                    html: true,
+                    context: context ?
+                        context :
+                        this._context
+                });
+
+                const nodes = [node].filter(v => v);
+
+                return mutable ?
+                    new QuerySet(nodes, this) :
+                    new QuerySetImmutable(nodes, this);
+            },
+
+            /**
+             * Return a QuerySet for the first node.
+             * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|NodeList|HTMLCollection|QuerySet} query The input query.
+             * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|NodeList|HTMLCollection|QuerySet} [context] The context to search in.
+             * @returns {QuerySet} The new QuerySet object.
+             */
+            queryOneMutable(query, context = null) {
+                return this.queryOne(query, context, true);
             }
 
         });
@@ -8442,43 +8527,6 @@
 
         });
 
-        return {
-            AjaxRequest,
-            Animation,
-            AnimationSet,
-            DOM,
-            dom: new DOM
-        };
-
-    });
-
-    /**
-     * fQuery v1.0.3
-     * https://github.com/elusivecodes/fQuery
-     */
-    (function(global, factory) {
-        'use strict';
-
-        if (typeof module === 'object' && typeof module.exports === 'object') {
-            module.exports = factory;
-        } else {
-            Object.assign(global, factory(global));
-        }
-
-    })(this || window, function(window) {
-        'use strict';
-
-        if (!window) {
-            throw new Error('fQuery requires a Window.');
-        }
-
-        if (!('DOM' in window)) {
-            throw new Error('fQuery requires FrostDOM.');
-        }
-
-        const DOM = window.DOM;
-        const dom = window.dom;
-
         /**
          * QuerySet Class
          * @class
@@ -10437,17 +10485,15 @@
              * @returns {QuerySet} The QuerySet object.
              */
             add(query, context = null) {
-                const nodes = Core.unique(
-                    Core.merge(
-                        [],
-                        this._nodes,
-                        this._dom.query(query, context).get()
-                    )
-                );
-
                 return this.pushStack(
-                    this._dom.sort(nodes)
-                );
+                    Core.unique(
+                        Core.merge(
+                            [],
+                            this._nodes,
+                            this._dom.query(query, context).get()
+                        )
+                    )
+                ).sort();
             },
 
             /**
@@ -10636,103 +10682,29 @@
          * @param {HTMLElement} node The input node.
          */
 
-        /**
-         * DOM Query
-         */
-
-        Object.assign(DOM.prototype, {
-
-            /**
-             * Add a function to the ready queue or return a QuerySetImmutable.
-             * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|NodeList|HTMLCollection|QuerySet|function} query The input query.
-             * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|NodeList|HTMLCollection|QuerySet} [context] The context to search in.
-             * @param {Boolean} [mutable=false] Whether to create a mutable QuerySet.
-             * @returns {QuerySet} The new QuerySet object.
-             */
-            query(query, context = null, mutable = false) {
-                if (Core.isFunction(query)) {
-                    return this.ready(query);
-                }
-
-                const nodes = this.parseNodes(query, {
-                    node: true,
-                    fragment: true,
-                    shadow: true,
-                    document: true,
-                    window: true,
-                    html: true,
-                    context: context ?
-                        context :
-                        this._context
-                });
-
-                return mutable ?
-                    new QuerySet(nodes, this) :
-                    new QuerySetImmutable(nodes, this);
-            },
-
-            /**
-             * Add a function to the ready queue or return a QuerySet.
-             * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|NodeList|HTMLCollection|QuerySet|function} query The input query.
-             * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|NodeList|HTMLCollection|QuerySet} [context] The context to search in.
-             * @returns {QuerySet} The new QuerySet object.
-             */
-            queryMutable(query, context = null) {
-                return this.query(query, context, true);
-            },
-
-            /**
-             * Return a QuerySetImmutable for the first node.
-             * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|NodeList|HTMLCollection|QuerySet} query The input query.
-             * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|NodeList|HTMLCollection|QuerySet} [context] The context to search in.
-             * @param {Boolean} [mutable=false] Whether to create a mutable QuerySet.
-             * @returns {QuerySet} The new QuerySet object.
-             */
-            queryOne(query, context = null, mutable = false) {
-                const node = this.parseNode(query, {
-                    node: true,
-                    fragment: true,
-                    shadow: true,
-                    document: true,
-                    window: true,
-                    html: true,
-                    context: context ?
-                        context :
-                        this._context
-                });
-
-                const nodes = [node].filter(v => v);
-
-                return mutable ?
-                    new QuerySet(nodes, this) :
-                    new QuerySetImmutable(nodes, this);
-            },
-
-            /**
-             * Return a QuerySet for the first node.
-             * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|NodeList|HTMLCollection|QuerySet} query The input query.
-             * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|NodeList|HTMLCollection|QuerySet} [context] The context to search in.
-             * @returns {QuerySet} The new QuerySet object.
-             */
-            queryOneMutable(query, context = null) {
-                return this.queryOne(query, context, true);
-            }
-
-        });
+        dom = new DOM;
 
         return {
+            AjaxRequest,
+            Animation,
+            AnimationSet,
+            DOM,
+            dom,
             QuerySet,
             QuerySetImmutable
         };
 
     });
+
     return {
         AjaxRequest: window.AjaxRequest,
         Animation: window.Animation,
         AnimationSet: window.AnimationSet,
         Core: window.Core,
         DOM: window.DOM,
-        dom: window.dom
+        dom: window.dom,
+        QuerySet,
+        QuerySetImmutable
     };
 
 });

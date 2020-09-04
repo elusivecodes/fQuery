@@ -1,5 +1,5 @@
 /**
- * FrostDOM Bundle v1.0.13
+ * FrostDOM Bundle v1.1.0
  * https://github.com/elusivecodes/FrostCore
  * https://github.com/elusivecodes/FrostDOM
  */
@@ -20,13 +20,16 @@
     }
 
     // {{code}}
+
     return {
         AjaxRequest: window.AjaxRequest,
         Animation: window.Animation,
         AnimationSet: window.AnimationSet,
         Core: window.Core,
         DOM: window.DOM,
-        dom: window.dom
+        dom: window.dom,
+        QuerySet,
+        QuerySetImmutable
     };
 
 });

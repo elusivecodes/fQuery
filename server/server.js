@@ -19,10 +19,8 @@ const server = http.createServer((request, response) => {
                 contentType = 'text/css';
                 break;
         }
-        if (filePath === '/assets/frost-core.js') {
-            filePath = './node_modules/frostcore/dist/frost-core.js';
-        } else if (filePath === '/assets/frost-dom.js') {
-            filePath = './dist/frost-dom.js';
+        if (filePath === '/assets/frost-dom-bundle.js') {
+            filePath = './dist/frost-dom-bundle.js';
         } else {
             filePath = './public/' + filePath;
         }

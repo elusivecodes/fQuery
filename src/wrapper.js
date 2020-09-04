@@ -1,5 +1,5 @@
 /**
- * FrostDOM v1.0.13
+ * FrostDOM v1.1.0
  * https://github.com/elusivecodes/FrostDOM
  */
 (function(global, factory) {
@@ -24,14 +24,19 @@
 
     const Core = window.Core;
     const document = window.document;
+    let dom;
 
     // {{code}}
+    dom = new DOM;
+
     return {
         AjaxRequest,
         Animation,
         AnimationSet,
         DOM,
-        dom: new DOM
+        dom,
+        QuerySet,
+        QuerySetImmutable
     };
 
 });

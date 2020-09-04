@@ -18,7 +18,6 @@ if (!fs.existsSync(distFolder)) {
 let bundleWrapper, wrapper;
 const files = [];
 const core = fs.readFileSync('./node_modules/frostcore/dist/frost-core.js');
-const query = fs.readFileSync('./node_modules/frostquery/dist/fquery.js');
 
 filepath.create(srcFolder).recurse(fullPath => {
     if (!fullPath.isFile()) {
@@ -51,7 +50,7 @@ const code = wrapper.replace(
 
 const bundle = bundleWrapper.replace(
     '    // {{code}}',
-    _ => [core, code, query].join('\r\n\r\n')
+    _ => [core, code].join('\r\n\r\n')
         .replace(
             /^(?!\s*$)/mg,
             ' '.repeat(4)

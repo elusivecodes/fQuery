@@ -1,5 +1,19 @@
 "use strict";
 
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
@@ -37,7 +51,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 /**
- * FrostDOM v1.0.13
+ * FrostDOM v1.1.0
  * https://github.com/elusivecodes/FrostDOM
  */
 (function (global, factory) {
@@ -61,6 +75,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
 
   var Core = window.Core;
   var document = window.document;
+  var dom;
   /**
    * AjaxRequest Class
    * @class
@@ -4078,6 +4093,85 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
     }
   });
   /**
+   * DOM Query
+   */
+
+  Object.assign(DOM.prototype, {
+    /**
+     * Add a function to the ready queue or return a QuerySetImmutable.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|NodeList|HTMLCollection|QuerySet|function} query The input query.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|NodeList|HTMLCollection|QuerySet} [context] The context to search in.
+     * @param {Boolean} [mutable=false] Whether to create a mutable QuerySet.
+     * @returns {QuerySet} The new QuerySet object.
+     */
+    query: function query(_query) {
+      var context = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+      var mutable = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
+
+      if (Core.isFunction(_query)) {
+        return this.ready(_query);
+      }
+
+      var nodes = this.parseNodes(_query, {
+        node: true,
+        fragment: true,
+        shadow: true,
+        document: true,
+        window: true,
+        html: true,
+        context: context ? context : this._context
+      });
+      return mutable ? new QuerySet(nodes, this) : new QuerySetImmutable(nodes, this);
+    },
+
+    /**
+     * Add a function to the ready queue or return a QuerySet.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|NodeList|HTMLCollection|QuerySet|function} query The input query.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|NodeList|HTMLCollection|QuerySet} [context] The context to search in.
+     * @returns {QuerySet} The new QuerySet object.
+     */
+    queryMutable: function queryMutable(query) {
+      var context = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+      return this.query(query, context, true);
+    },
+
+    /**
+     * Return a QuerySetImmutable for the first node.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|NodeList|HTMLCollection|QuerySet} query The input query.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|NodeList|HTMLCollection|QuerySet} [context] The context to search in.
+     * @param {Boolean} [mutable=false] Whether to create a mutable QuerySet.
+     * @returns {QuerySet} The new QuerySet object.
+     */
+    queryOne: function queryOne(query) {
+      var context = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+      var mutable = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
+      var node = this.parseNode(query, {
+        node: true,
+        fragment: true,
+        shadow: true,
+        document: true,
+        window: true,
+        html: true,
+        context: context ? context : this._context
+      });
+      var nodes = [node].filter(function (v) {
+        return v;
+      });
+      return mutable ? new QuerySet(nodes, this) : new QuerySetImmutable(nodes, this);
+    },
+
+    /**
+     * Return a QuerySet for the first node.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|NodeList|HTMLCollection|QuerySet} query The input query.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|NodeList|HTMLCollection|QuerySet} [context] The context to search in.
+     * @returns {QuerySet} The new QuerySet object.
+     */
+    queryOneMutable: function queryOneMutable(query) {
+      var context = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+      return this.queryOne(query, context, true);
+    }
+  });
+  /**
    * DOM AJAX Scripts
    */
 
@@ -7980,11 +8074,2082 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
     // Comma seperated selector RegExp
     _splitRegExp: /\,(?=(?:(?:[^"]*"){2})*[^"]*$)\s*/
   });
+  /**
+   * QuerySet Class
+   * @class
+   */
+
+  var QuerySet = /*#__PURE__*/function () {
+    /**
+     * New DOM constructor.
+     * @param {array} nodes The input nodes.
+     * @param {DOM} [context=dom] The DOM context.
+     * @returns {QuerySet} A new QuerySet object.
+     */
+    function QuerySet(nodes) {
+      var context = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : dom;
+
+      _classCallCheck(this, QuerySet);
+
+      this._dom = context;
+      this._nodes = nodes;
+    }
+
+    _createClass(QuerySet, [{
+      key: "pushNode",
+
+      /**
+       * Push a single node to the stack.
+       * @param {Node|DocumentFragment|ShadowRoot|Document|Window} [node] The node to push.
+       * @returns {QuerySet} The QuerySet object.
+       */
+      value: function pushNode(node) {
+        return this.pushStack([node].filter(function (v) {
+          return v;
+        }));
+      }
+      /**
+       * Push a new set of nodes to the stack.
+       * @param {array} nodes The nodes to push.
+       * @returns {QuerySet} The QuerySet object.
+       */
+
+    }, {
+      key: "pushStack",
+      value: function pushStack(nodes) {
+        this._nodes = nodes;
+        return this;
+      }
+    }, {
+      key: "length",
+      get: function get() {
+        return this._nodes.length;
+      }
+    }]);
+
+    return QuerySet;
+  }();
+  /**
+   * QuerySetImmutable Class
+   * @class
+   */
+
+
+  var QuerySetImmutable = /*#__PURE__*/function (_QuerySet) {
+    _inherits(QuerySetImmutable, _QuerySet);
+
+    var _super = _createSuper(QuerySetImmutable);
+
+    function QuerySetImmutable() {
+      _classCallCheck(this, QuerySetImmutable);
+
+      return _super.apply(this, arguments);
+    }
+
+    _createClass(QuerySetImmutable, [{
+      key: "pushStack",
+
+      /**
+       * Push a new set of nodes to the stack.
+       * @param {array} nodes The nodes to push.
+       * @returns {QuerySet} The QuerySet object.
+       */
+      value: function pushStack(nodes) {
+        return new QuerySetImmutable(nodes);
+      }
+    }]);
+
+    return QuerySetImmutable;
+  }(QuerySet);
+  /**
+   * QuerySet Animate
+   */
+
+
+  Object.assign(QuerySet.prototype, {
+    /**
+     * Add an animation to the queue for each node.
+     * @param {DOM~animationCallback} callback The animation callback.
+     * @param {object} [options] The options to use for animating.
+     * @param {number} [options.duration=1000] The duration of the animation.
+     * @param {string} [options.type=ease-in-out] The type of animation.
+     * @param {Boolean} [options.infinite] Whether the animation should run forever.
+     * @param {Boolean} [options.debug] Whether to set debugging info on the node.
+     * @returns {QuerySet} The QuerySet object.
+     */
+    animate: function animate(callback, options) {
+      var _this41 = this;
+
+      return this.queue(function (node) {
+        return _this41._dom.animate(node, callback, options);
+      });
+    },
+
+    /**
+     * Stop all animations and clear the queue of each node.
+     * @param {Boolean} [finish=true] Whether to complete all current animations.
+     * @returns {QuerySet} The QuerySet object.
+     */
+    stop: function stop() {
+      var finish = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : true;
+      this.clearQueue();
+
+      this._dom.stop(this, finish);
+
+      return this;
+    }
+  });
+  /**
+   * QuerySet Animations
+   */
+
+  Object.assign(QuerySet.prototype, {
+    /**
+     * Add a drop in animation to the queue for each node.
+     * @param {object} [options] The options to use for animating.
+     * @param {string|function} [options.direction=top] The direction to drop the node from.
+     * @param {number} [options.duration=1000] The duration of the animation.
+     * @param {string} [options.type=ease-in-out] The type of animation.
+     * @param {Boolean} [options.infinite] Whether the animation should run forever.
+     * @param {Boolean} [options.useGpu=true] Whether the animation should use GPU acceleration.
+     * @param {Boolean} [options.debug] Whether to set debugging info on the node.
+     * @returns {QuerySet} The QuerySet object.
+     */
+    dropIn: function dropIn(options) {
+      var _this42 = this;
+
+      return this.queue(function (node) {
+        return _this42._dom.dropIn(node, options);
+      });
+    },
+
+    /**
+     * Add a drop out animation to the queue for each node.
+     * @param {object} [options] The options to use for animating.
+     * @param {string|function} [options.direction=top] The direction to drop the node to.
+     * @param {number} [options.duration=1000] The duration of the animation.
+     * @param {string} [options.type=ease-in-out] The type of animation.
+     * @param {Boolean} [options.infinite] Whether the animation should run forever.
+     * @param {Boolean} [options.useGpu=true] Whether the animation should use GPU acceleration.
+     * @param {Boolean} [options.debug] Whether to set debugging info on the node.
+     * @returns {QuerySet} The QuerySet object.
+     */
+    dropOut: function dropOut(options) {
+      var _this43 = this;
+
+      return this.queue(function (node) {
+        return _this43._dom.dropOut(node, options);
+      });
+    },
+
+    /**
+     * Add a fade in animation to the queue for each node.
+     * @param {object} [options] The options to use for animating.
+     * @param {number} [options.duration=1000] The duration of the animation.
+     * @param {string} [options.type=ease-in-out] The type of animation.
+     * @param {Boolean} [options.infinite] Whether the animation should run forever.
+     * @param {Boolean} [options.debug] Whether to set debugging info on the node.
+     * @returns {QuerySet} The QuerySet object.
+     */
+    fadeIn: function fadeIn(options) {
+      var _this44 = this;
+
+      return this.queue(function (node) {
+        return _this44._dom.fadeIn(node, options);
+      });
+    },
+
+    /**
+     * Add a fade out animation to the queue for each node.
+     * @param {object} [options] The options to use for animating.
+     * @param {number} [options.duration=1000] The duration of the animation.
+     * @param {string} [options.type=ease-in-out] The type of animation.
+     * @param {Boolean} [options.infinite] Whether the animation should run forever.
+     * @param {Boolean} [options.debug] Whether to set debugging info on the node.
+     * @returns {QuerySet} The QuerySet object.
+     */
+    fadeOut: function fadeOut(options) {
+      var _this45 = this;
+
+      return this.queue(function (node) {
+        return _this45._dom.fadeOut(node, options);
+      });
+    },
+
+    /**
+     * Add a rotate in animation to the queue for each node.
+     * @param {object} [options] The options to use for animating.
+     * @param {number} [options.x=0] The amount to rotate on the X-axis.
+     * @param {number} [options.y=1] The amount to rotate on the Y-axis.
+     * @param {number} [options.z=0] The amount to rotate on the Z-axis.
+     * @param {Boolean} [options.inverse] Whether to invert the rotation.
+     * @param {number} [options.duration=1000] The duration of the animation.
+     * @param {string} [options.type=ease-in-out] The type of animation.
+     * @param {Boolean} [options.infinite] Whether the animation should run forever.
+     * @param {Boolean} [options.debug] Whether to set debugging info on the node.
+     * @returns {QuerySet} The QuerySet object.
+     */
+    rotateIn: function rotateIn(options) {
+      var _this46 = this;
+
+      return this.queue(function (node) {
+        return _this46._dom.rotateIn(node, options);
+      });
+    },
+
+    /**
+     * Add a rotate out animation to the queue for each node.
+     * @param {object} [options] The options to use for animating.
+     * @param {number} [options.x=0] The amount to rotate on the X-axis.
+     * @param {number} [options.y=1] The amount to rotate on the Y-axis.
+     * @param {number} [options.z=0] The amount to rotate on the Z-axis.
+     * @param {Boolean} [options.inverse] Whether to invert the rotation.
+     * @param {number} [options.duration=1000] The duration of the animation.
+     * @param {string} [options.type=ease-in-out] The type of animation.
+     * @param {Boolean} [options.infinite] Whether the animation should run forever.
+     * @param {Boolean} [options.debug] Whether to set debugging info on the node.
+     * @returns {QuerySet} The QuerySet object.
+     */
+    rotateOut: function rotateOut(options) {
+      var _this47 = this;
+
+      return this.queue(function (node) {
+        return _this47._dom.rotateOut(node, options);
+      });
+    },
+
+    /**
+     * Add a slide in animation to the queue for each node.
+     * @param {object} [options] The options to use for animating.
+     * @param {string|function} [options.direction=bottom] The direction to slide from.
+     * @param {number} [options.duration=1000] The duration of the animation.
+     * @param {string} [options.type=ease-in-out] The type of animation.
+     * @param {Boolean} [options.infinite] Whether the animation should run forever.
+     * @param {Boolean} [options.useGpu=true] Whether the animation should use GPU acceleration.
+     * @param {Boolean} [options.debug] Whether to set debugging info on the node.
+     * @returns {QuerySet} The QuerySet object.
+     */
+    slideIn: function slideIn(options) {
+      var _this48 = this;
+
+      return this.queue(function (node) {
+        return _this48._dom.slideIn(node, options);
+      });
+    },
+
+    /**
+     * Add a slide out animation to the queue for each node.
+     * @param {object} [options] The options to use for animating.
+     * @param {string|function} [options.direction=bottom] The direction to slide to.
+     * @param {number} [options.duration=1000] The duration of the animation.
+     * @param {string} [options.type=ease-in-out] The type of animation.
+     * @param {Boolean} [options.infinite] Whether the animation should run forever.
+     * @param {Boolean} [options.useGpu=true] Whether the animation should use GPU acceleration.
+     * @param {Boolean} [options.debug] Whether to set debugging info on the node.
+     * @returns {QuerySet} The QuerySet object.
+     */
+    slideOut: function slideOut(options) {
+      var _this49 = this;
+
+      return this.queue(function (node) {
+        return _this49._dom.slideOut(node, options);
+      });
+    },
+
+    /**
+     * Add a squeeze in animation to the queue for each node.
+     * @param {object} [options] The options to use for animating.
+     * @param {string|function} [options.direction=bottom] The direction to squeeze from.
+     * @param {number} [options.duration=1000] The duration of the animation.
+     * @param {string} [options.type=ease-in-out] The type of animation.
+     * @param {Boolean} [options.infinite] Whether the animation should run forever.
+     * @param {Boolean} [options.useGpu=true] Whether the animation should use GPU acceleration.
+     * @param {Boolean} [options.debug] Whether to set debugging info on the node.
+     * @returns {QuerySet} The QuerySet object.
+     */
+    squeezeIn: function squeezeIn(options) {
+      var _this50 = this;
+
+      return this.queue(function (node) {
+        return _this50._dom.squeezeIn(node, options);
+      });
+    },
+
+    /**
+     * Add a squeeze out animation to the queue for each node.
+     * @param {object} [options] The options to use for animating.
+     * @param {string|function} [options.direction=bottom] The direction to squeeze to.
+     * @param {number} [options.duration=1000] The duration of the animation.
+     * @param {string} [options.type=ease-in-out] The type of animation.
+     * @param {Boolean} [options.infinite] Whether the animation should run forever.
+     * @param {Boolean} [options.useGpu=true] Whether the animation should use GPU acceleration.
+     * @param {Boolean} [options.debug] Whether to set debugging info on the node.
+     * @returns {QuerySet} The QuerySet object.
+     */
+    squeezeOut: function squeezeOut(options) {
+      var _this51 = this;
+
+      return this.queue(function (node) {
+        return _this51._dom.squeezeOut(node, options);
+      });
+    }
+  });
+  /**
+   * QuerySet Queue
+   */
+
+  Object.assign(QuerySet.prototype, {
+    /**
+     * Clear the queue of each node.
+     * @returns {QuerySet} The QuerySet object.
+     */
+    clearQueue: function clearQueue() {
+      this._dom.clearQueue(this);
+
+      return this;
+    },
+
+    /**
+     * Delay execution of subsequent items in the queue for each node.
+     * @param {number} duration The number of milliseconds to delay execution by.
+     * @returns {QuerySet} The QuerySet object.
+     */
+    delay: function delay(duration) {
+      return this.queue(function (_) {
+        return new Promise(function (resolve) {
+          return setTimeout(resolve, duration);
+        });
+      });
+    },
+
+    /**
+     * Queue a callback on each node.
+     * @param {DOM~queueCallback} callback The callback to queue.
+     * @returns {QuerySet} The QuerySet object.
+     */
+    queue: function queue(callback) {
+      this._dom.queue(this, callback);
+
+      return this;
+    }
+  });
+  /**
+   * QuerySet Attributes
+   */
+
+  Object.assign(QuerySet.prototype, {
+    /**
+     * Get attribute value(s) for the first node.
+     * @param {string} [attribute] The attribute name.
+     * @returns {string} The attribute value.
+     */
+    getAttribute: function getAttribute(attribute) {
+      return this._dom.getAttribute(this, attribute);
+    },
+
+    /**
+     * Get dataset value(s) for the first node.
+     * @param {string} [key] The dataset key.
+     * @returns {*} The dataset value, or an object containing the dataset.
+     */
+    getDataset: function getDataset(key) {
+      return this._dom.getDataset(this, key);
+    },
+
+    /**
+     * Get the HTML contents of the first node.
+     * @returns {string} The HTML contents.
+     */
+    getHTML: function getHTML() {
+      return this._dom.getHTML(this);
+    },
+
+    /**
+     * Get a property value for the first node.
+     * @param {string} property The property name.
+     * @returns {string} The property value.
+     */
+    getProperty: function getProperty(property) {
+      return this._dom.getProperty(this, property);
+    },
+
+    /**
+     * Get the text contents of the first node.
+     * @returns {string} The text contents.
+     */
+    getText: function getText() {
+      return this._dom.getText(this);
+    },
+
+    /**
+     * Get the value property of the first node.
+     * @returns {string} The value.
+     */
+    getValue: function getValue() {
+      return this._dom.getValue(this);
+    },
+
+    /**
+     * Remove an attribute from each node.
+     * @param {string} attribute The attribute name.
+     * @returns {QuerySet} The QuerySet object.
+     */
+    removeAttribute: function removeAttribute(attribute) {
+      this._dom.removeAttribute(this, attribute);
+
+      return this;
+    },
+
+    /**
+     * Remove a dataset value from each node.
+     * @param {string} key The dataset key.
+     * @returns {QuerySet} The QuerySet object.
+     */
+    removeDataset: function removeDataset(key) {
+      this._dom.removeDataset(this, key);
+
+      return this;
+    },
+
+    /**
+     * Remove a property from each node.
+     * @param {string} property The property name.
+     * @returns {QuerySet} The QuerySet object.
+     */
+    removeProperty: function removeProperty(property) {
+      this._dom.removeProperty(this, property);
+
+      return this;
+    },
+
+    /**
+     * Set an attribute value for each node.
+     * @param {string|object} attribute The attribute name, or an object containing attributes.
+     * @param {string} [value] The attribute value.
+     * @returns {QuerySet} The QuerySet object.
+     */
+    setAttribute: function setAttribute(attribute, value) {
+      this._dom.setAttribute(this, attribute, value);
+
+      return this;
+    },
+
+    /**
+     * Set a dataset value for each node.
+     * @param {string|object} key The dataset key, or an object containing dataset values.
+     * @param {*} [value] The dataset value.
+     * @returns {QuerySet} The QuerySet object.
+     */
+    setDataset: function setDataset(key, value) {
+      this._dom.setDataset(this, key, value);
+
+      return this;
+    },
+
+    /**
+     * Set the HTML contents of each node.
+     * @param {string} html The HTML contents.
+     * @returns {QuerySet} The QuerySet object.
+     */
+    setHTML: function setHTML(html) {
+      this._dom.setHTML(this, html);
+
+      return this;
+    },
+
+    /**
+     * Set a property value for each node.
+     * @param {string|object} property The property name, or an object containing properties.
+     * @param {string} [value] The property value.
+     * @returns {QuerySet} The QuerySet object.
+     */
+    setProperty: function setProperty(property, value) {
+      this._dom.setProperty(this, property, value);
+
+      return this;
+    },
+
+    /**
+     * Set the text contents of each node.
+     * @param {string} text The text contents.
+     * @returns {QuerySet} The QuerySet object.
+     */
+    setText: function setText(text) {
+      this._dom.setText(this, text);
+
+      return this;
+    },
+
+    /**
+     * Set the value property of each node.
+     * @param {string} value The value.
+     * @returns {QuerySet} The QuerySet object.
+     */
+    setValue: function setValue(value) {
+      this._dom.setValue(this, value);
+
+      return this;
+    }
+  });
+  /**
+   * QuerySet Data
+   */
+
+  Object.assign(QuerySet.prototype, {
+    /**
+     * Clone custom data from each node to each other node.
+     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|NodeList|HTMLCollection|QuerySet} others The other node(s), or a query selector string.
+     * @returns {QuerySet} The QuerySet object.
+     */
+    cloneData: function cloneData(others) {
+      this._dom.cloneData(this, others);
+
+      return this;
+    },
+
+    /**
+     * Get custom data for the first node.
+     * @param {string} [key] The data key.
+     * @returns {*} The data value.
+     */
+    getData: function getData(key) {
+      return this._dom.getData(this, key);
+    },
+
+    /**
+     * Remove custom data from each node.
+     * @param {string} [key] The data key.
+     * @returns {QuerySet} The QuerySet object.
+     */
+    removeData: function removeData(key) {
+      this._dom.removeData(this, key);
+
+      return this;
+    },
+
+    /**
+     * Set custom data for each node.
+     * @param {string|object} key The data key, or an object containing data.
+     * @param {*} [value] The data value.
+     * @returns {QuerySet} The QuerySet object.
+     */
+    setData: function setData(key, value) {
+      this._dom.setData(this, key, value);
+
+      return this;
+    }
+  });
+  /**
+   * QuerySet Position
+   */
+
+  Object.assign(QuerySet.prototype, {
+    /**
+     * Get the X,Y co-ordinates for the center of the first node.
+     * @param {Boolean} [offset] Whether to offset from the top-left of the Document.
+     * @returns {object} An object with the x and y co-ordinates.
+     */
+    center: function center(offset) {
+      return this._dom.center(this, offset);
+    },
+
+    /**
+     * Contrain each node to a container node.
+     * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} container The container node, or a query selector string.
+     * @returns {QuerySet} The QuerySet object.
+     */
+    constrain: function constrain(container) {
+      this._dom.constrain(this, container);
+
+      return this;
+    },
+
+    /**
+     * Get the distance of a node to an X,Y position in the Window.
+     * @param {number} x The X co-ordinate.
+     * @param {number} y The Y co-ordinate.
+     * @param {Boolean} [offset] Whether to offset from the top-left of the Document.
+     * @returns {number} The distance to the node.
+     */
+    distTo: function distTo(x, y, offset) {
+      return this._dom.distTo(this, x, y, offset);
+    },
+
+    /**
+     * Get the distance between two nodes.
+     * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} others The node to compare, or a query selector string.
+     * @returns {number} The distance between the nodes.
+     */
+    distToNode: function distToNode(others) {
+      return this._dom.distToNode(this, others);
+    },
+
+    /**
+     * Get the nearest node to an X,Y position in the Window.
+     * @param {number} x The X co-ordinate.
+     * @param {number} y The Y co-ordinate.
+     * @param {Boolean} [offset] Whether to offset from the top-left of the Document.
+     * @returns {QuerySet} A new QuerySet object.
+     */
+    nearestTo: function nearestTo(x, y, offset) {
+      var node = this._dom.nearestTo(this, x, y, offset);
+
+      return new this.constructor([node].filter(function (v) {
+        return v;
+      }));
+    },
+
+    /**
+     * Get the nearest node to another node.
+     * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} others The node to compare, or a query selector string.
+     * @returns {QuerySet} A new QuerySet object.
+     */
+    nearestToNode: function nearestToNode(others) {
+      var node = this._dom.nearestToNode(this, others);
+
+      return new this.constructor([node].filter(function (v) {
+        return v;
+      }));
+    },
+
+    /**
+     * Get the percentage of an X co-ordinate relative to a node's width.
+     * @param {number} x The X co-ordinate.
+     * @param {Boolean} [offset] Whether to offset from the top-left of the Document.
+     * @param {Boolean} [clamp=true] Whether to clamp the percent between 0 and 100.
+     * @returns {number} The percent.
+     */
+    percentX: function percentX(x, offset) {
+      var clamp = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : true;
+      return this._dom.percentX(this, x, offset, clamp);
+    },
+
+    /**
+     * Get the percentage of a Y co-ordinate relative to a node's height.
+     * @param {number} y The Y co-ordinate.
+     * @param {Boolean} [offset] Whether to offset from the top-left of the Document.
+     * @param {Boolean} [clamp=true] Whether to clamp the percent between 0 and 100.
+     * @returns {number} The percent.
+     */
+    percentY: function percentY(y, offset) {
+      var clamp = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : true;
+      return this._dom.percentY(this, y, offset, clamp);
+    },
+
+    /**
+     * Get the position of the first node relative to the Window or Document.
+     * @param {Boolean} [offset] Whether to offset from the top-left of the Document.
+     * @returns {object} An object with the x and y co-ordinates.
+     */
+    position: function position(offset) {
+      return this._dom.position(this, offset);
+    },
+
+    /**
+     * Get the computed bounding rectangle of the first node.
+     * @param {Boolean} [offset] Whether to offset from the top-left of the Document.
+     * @returns {DOMRect} The computed bounding rectangle.
+     */
+    rect: function rect(offset) {
+      return this._dom.rect(this, offset);
+    }
+  });
+  /**
+   * QuerySet Scroll
+   */
+
+  Object.assign(QuerySet.prototype, {
+    /**
+     * Get the scroll X position of the first node.
+     * @returns {number} The scroll X position.
+     */
+    getScrollX: function getScrollX() {
+      return this._dom.getScrollX(this);
+    },
+
+    /**
+     * Get the scroll Y position of the first node.
+     * @returns {number} The scroll Y position.
+     */
+    getScrollY: function getScrollY() {
+      return this._dom.getScrollY(this);
+    },
+
+    /**
+     * Scroll each node to an X,Y position.
+     * @param {number} x The scroll X position.
+     * @param {number} y The scroll Y position.
+     * @returns {QuerySet} The QuerySet object.
+     */
+    setScroll: function setScroll(x, y) {
+      this._dom.setScroll(this, x, y);
+
+      return this;
+    },
+
+    /**
+     * Scroll each node to an X position.
+     * @param {number} x The scroll X position.
+     * @returns {QuerySet} The QuerySet object.
+     */
+    setScrollX: function setScrollX(x) {
+      this._dom.setScrollX(this, x);
+
+      return this;
+    },
+
+    /**
+     * Scroll each node to a Y position.
+     * @param {number} y The scroll Y position.
+     * @returns {QuerySet} The QuerySet object.
+     */
+    setScrollY: function setScrollY(y) {
+      this._dom.setScrollY(this, y);
+
+      return this;
+    }
+  });
+  /**
+   * QuerySet Size
+   */
+
+  Object.assign(QuerySet.prototype, {
+    /**
+     * Get the computed height of the first node.
+     * @param {number} [innerOuter] Whether to include padding, border and margin heights.
+     * @returns {number} The height.
+     */
+    height: function height(innerOuter) {
+      return this._dom.height(this, innerOuter);
+    },
+
+    /**
+     * Get the scroll height of the first node.
+     * @returns {number} The scroll height.
+     */
+    scrollHeight: function scrollHeight() {
+      return this._dom.scrollHeight(this);
+    },
+
+    /**
+     * Get the scroll width of the first node.
+     * @returns {number} The scroll width.
+     */
+    scrollWidth: function scrollWidth() {
+      return this._dom.scrollWidth(this);
+    },
+
+    /**
+     * Get the computed width of the first node.
+     * @param {number} [innerOuter] Whether to include padding, border and margin heights.
+     * @returns {number} The width.
+     */
+    width: function width(innerOuter) {
+      return this._dom.width(this, innerOuter);
+    }
+  });
+  /**
+   * QuerySet Styles
+   */
+
+  Object.assign(QuerySet.prototype, {
+    /**
+     * Add classes to each node.
+     * @param {...string|string[]} classes The classes.
+     * @returns {QuerySet} The QuerySet object.
+     */
+    addClass: function addClass() {
+      var _this$_dom;
+
+      for (var _len6 = arguments.length, classes = new Array(_len6), _key6 = 0; _key6 < _len6; _key6++) {
+        classes[_key6] = arguments[_key6];
+      }
+
+      (_this$_dom = this._dom).addClass.apply(_this$_dom, [this].concat(classes));
+
+      return this;
+    },
+
+    /**
+     * Get computed CSS style values for the first node.
+     * @param {string} [style] The CSS style name.
+     * @returns {string|object} The CSS style value, or an object containing the computed CSS style properties.
+     */
+    css: function css(style) {
+      return this._dom.css(this, style);
+    },
+
+    /**
+     * Get style properties for the first node.
+     * @param {string} [style] The style name.
+     * @returns {string|object} The style value, or an object containing the style properties.
+     */
+    getStyle: function getStyle(style) {
+      return this._dom.getStyle(this, style);
+    },
+
+    /**
+     * Hide each node from display.
+     * @returns {QuerySet} The QuerySet object.
+     */
+    hide: function hide() {
+      this._dom.hide(this);
+
+      return this;
+    },
+
+    /**
+     * Remove classes from each node.
+     * @param {...string|string[]} classes The classes.
+     * @returns {QuerySet} The QuerySet object.
+     */
+    removeClass: function removeClass() {
+      var _this$_dom2;
+
+      for (var _len7 = arguments.length, classes = new Array(_len7), _key7 = 0; _key7 < _len7; _key7++) {
+        classes[_key7] = arguments[_key7];
+      }
+
+      (_this$_dom2 = this._dom).removeClass.apply(_this$_dom2, [this].concat(classes));
+
+      return this;
+    },
+
+    /**
+     * Set style properties for each node.
+     * @param {string|object} style The style name, or an object containing styles.
+     * @param {string} [value] The style value.
+     * @param {Boolean} [important] Whether the style should be !important.
+     * @returns {QuerySet} The QuerySet object.
+     */
+    setStyle: function setStyle(style, value, important) {
+      this._dom.setStyle(this, style, value, important);
+
+      return this;
+    },
+
+    /**
+     * Display each hidden node.
+     * @returns {QuerySet} The QuerySet object.
+     */
+    show: function show() {
+      this._dom.show(this);
+
+      return this;
+    },
+
+    /**
+     * Toggle the visibility of each node.
+     * @returns {QuerySet} The QuerySet object.
+     */
+    toggle: function toggle() {
+      this._dom.toggle(this);
+
+      return this;
+    },
+
+    /**
+     * Toggle classes for each node.
+     * @param {...string|string[]} classes The classes.
+     * @returns {QuerySet} The QuerySet object.
+     */
+    toggleClass: function toggleClass() {
+      var _this$_dom3;
+
+      for (var _len8 = arguments.length, classes = new Array(_len8), _key8 = 0; _key8 < _len8; _key8++) {
+        classes[_key8] = arguments[_key8];
+      }
+
+      (_this$_dom3 = this._dom).toggleClass.apply(_this$_dom3, [this].concat(classes));
+
+      return this;
+    }
+  });
+  /**
+   * QuerySet Events
+   */
+
+  Object.assign(QuerySet.prototype, {
+    /**
+     * Trigger a blur event on the first node.
+     * @returns {QuerySet} The QuerySet object.
+     */
+    blur: function blur() {
+      this._dom.blur(this);
+
+      return this;
+    },
+
+    /**
+     * Trigger a click event on the first node.
+     * @returns {QuerySet} The QuerySet object.
+     */
+    click: function click() {
+      this._dom.click(this);
+
+      return this;
+    },
+
+    /**
+     * Trigger a focus event on the first node.
+     * @returns {QuerySet} The QuerySet object.
+     */
+    focus: function focus() {
+      this._dom.focus(this);
+
+      return this;
+    }
+  });
+  /**
+   * QuerySet Event Handlers
+   */
+
+  Object.assign(QuerySet.prototype, {
+    /**
+     * Add an event to each node.
+     * @param {string} events The event names.
+     * @param {DOM~eventCallback} callback The callback to execute.
+     * @returns {QuerySet} The QuerySet object.
+     */
+    addEvent: function addEvent(events, callback) {
+      this._dom.addEvent(this, events, callback);
+
+      return this;
+    },
+
+    /**
+     * Add a delegated event to each node.
+     * @param {string} events The event names.
+     * @param {string} delegate The delegate selector.
+     * @param {DOM~eventCallback} callback The callback to execute.
+     * @returns {QuerySet} The QuerySet object.
+     */
+    addEventDelegate: function addEventDelegate(events, delegate, callback) {
+      this._dom.addEventDelegate(this, events, delegate, callback);
+
+      return this;
+    },
+
+    /**
+     * Add a self-destructing delegated event to each node.
+     * @param {string} events The event names.
+     * @param {string} delegate The delegate selector.
+     * @param {DOM~eventCallback} callback The callback to execute.
+     * @returns {QuerySet} The QuerySet object.
+     */
+    addEventDelegateOnce: function addEventDelegateOnce(events, delegate, callback) {
+      this._dom.addEventDelegateOnce(this, events, delegate, callback);
+
+      return this;
+    },
+
+    /**
+     * Add a self-destructing event to each node.
+     * @param {string} events The event names.
+     * @param {DOM~eventCallback} callback The callback to execute.
+     * @returns {QuerySet} The QuerySet object.
+     */
+    addEventOnce: function addEventOnce(events, callback) {
+      this._dom.addEventOnce(this, events, callback);
+
+      return this;
+    },
+
+    /**
+     * Clone all events from each node to other nodes.
+     * @param {string|array|HTMLElement|ShadowRoot|Document|Window|HTMLCollection|QuerySet} others The other node(s), or a query selector string.
+     * @returns {QuerySet} The QuerySet object.
+     */
+    cloneEvents: function cloneEvents(others) {
+      this._dom.cloneEvents(this, others);
+
+      return this;
+    },
+
+    /**
+     * Remove events from each node.
+     * @param {string} [events] The event names.
+     * @param {DOM~eventCallback} [callback] The callback to remove.
+     * @returns {QuerySet} The QuerySet object.
+     */
+    removeEvent: function removeEvent(events, callback) {
+      this._dom.removeEvent(this, events, callback);
+
+      return this;
+    },
+
+    /**
+     * Remove delegated events from each node.
+     * @param {string} [events] The event names.
+     * @param {string} [delegate] The delegate selector.
+     * @param {DOM~eventCallback} [callback] The callback to remove.
+     * @returns {QuerySet} The QuerySet object.
+     */
+    removeEventDelegate: function removeEventDelegate(events, delegate, callback) {
+      this._dom.removeEventDelegate(this, events, delegate, callback);
+
+      return this;
+    },
+
+    /**
+     * Trigger events on each node.
+     * @param {string} events The event names.
+     * @param {object} [options] The options to use for the Event.
+     * @param {*} [options.detail] Additional data to attach to the event.
+     * @param {Boolean} [options.bubbles=true] Whether the event will bubble.
+     * @param {Boolean} [options.cancelable=true] Whether the event is cancelable.
+     * @returns {QuerySet} The QuerySet object.
+     */
+    triggerEvent: function triggerEvent(events, options) {
+      this._dom.triggerEvent(this, events, options);
+
+      return this;
+    },
+
+    /**
+     * Trigger an event for the first node.
+     * @param {string} event The event name.
+     * @param {object} [options] The options to use for the Event.
+     * @param {*} [options.detail] Additional data to attach to the event.
+     * @param {Boolean} [options.bubbles=true] Whether the event will bubble.
+     * @param {Boolean} [options.cancelable=true] Whether the event is cancelable.
+     */
+    triggerOne: function triggerOne(event, options) {
+      return this._dom.triggerOne(this, event, options);
+    }
+  });
+  /**
+   * QuerySet Create
+   */
+
+  Object.assign(QuerySet.prototype, {
+    /**
+     * Attach a shadow DOM tree to the first node.
+     * @param {Boolean} [open=true] Whether the elements are accessible from JavaScript outside the root.
+     * @returns {QuerySet} A new QuerySet object.
+     */
+    attachShadow: function attachShadow() {
+      var open = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : true;
+
+      var nodes = [],
+          shadow = this._dom.attachShadow(this, open);
+
+      if (shadow) {
+        nodes.push(shadow);
+      }
+
+      return new this.constructor(nodes, this._dom);
+    }
+  });
+  /**
+   * QuerySet Manipulation
+   */
+
+  Object.assign(QuerySet.prototype, {
+    /**
+     * Clone each node.
+     * @param {object} options Options for cloning the node.
+     * @param {Boolean} [options.deep=true] Whether to also clone all descendent nodes.
+     * @param {Boolean} [options.events] Whether to also clone events.
+     * @param {Boolean} [options.data] Whether to also clone custom data.
+     * @param {Boolean} [options.animations] Whether to also clone animations.
+     * @returns {QuerySet} A new QuerySet object.
+     */
+    clone: function clone(options) {
+      return new this.constructor(this._dom.clone(this, options));
+    },
+
+    /**
+     * Detach each node from the DOM.
+     * @returns {QuerySet} The QuerySet object.
+     */
+    detach: function detach() {
+      this._dom.detach(this);
+
+      return this;
+    },
+
+    /**
+     * Remove all children of each node from the DOM.
+     * @returns {QuerySet} The QuerySet object.
+     */
+    empty: function empty() {
+      this._dom.empty(this);
+
+      return this;
+    },
+
+    /**
+     * Remove each node from the DOM.
+     * @returns {QuerySet} The QuerySet object.
+     */
+    remove: function remove() {
+      this._dom.remove(this);
+
+      return this.pushStack([]);
+    },
+
+    /**
+     * Replace each other node with nodes.
+     * @param {string|array|Node|HTMLElement|NodeList|HTMLCollection|QuerySet} others The input node(s), or a query selector string.
+     * @returns {QuerySet} The QuerySet object.
+     */
+    replaceAll: function replaceAll(others) {
+      this._dom.replaceAll(this, others);
+
+      return this;
+    },
+
+    /**
+     * Replace each node with other nodes.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|NodeList|HTMLCollection|QuerySet} others The input node(s), or a query selector or HTML string.
+     * @returns {QuerySet} The QuerySet object.
+     */
+    replaceWith: function replaceWith(others) {
+      this._dom.replaceWith(this, others);
+
+      return this;
+    }
+  });
+  /**
+   * QuerySet Move
+   */
+
+  Object.assign(QuerySet.prototype, {
+    /**
+     * Insert each other node after the first node.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|NodeList|HTMLCollection|QuerySet} others The other node(s), or a query selector or HTML string.
+     * @returns {QuerySet} The QuerySet object.
+     */
+    after: function after(others) {
+      this._dom.after(this, others);
+
+      return this;
+    },
+
+    /**
+     * Append each other node to the first node.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|NodeList|HTMLCollection|QuerySet} others The other node(s), or a query selector or HTML string.
+     * @returns {QuerySet} The QuerySet object.
+     */
+    append: function append(others) {
+      this._dom.append(this, others);
+
+      return this;
+    },
+
+    /**
+     * Append each node to the first other node.
+     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|NodeList|HTMLCollection|QuerySet} others The other node(s), or a query selector string.
+     * @returns {QuerySet} The QuerySet object.
+     */
+    appendTo: function appendTo(others) {
+      this._dom.appendTo(this, others);
+
+      return this;
+    },
+
+    /**
+     * Insert each other node before the first node.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|NodeList|HTMLCollection|QuerySet} others The other node(s), or a query selector or HTML string.
+     * @returns {QuerySet} The QuerySet object.
+     */
+    before: function before(others) {
+      this._dom.before(this, others);
+
+      return this;
+    },
+
+    /**
+     * Insert each node after the first other node.
+     * @param {string|array|Node|HTMLElement|NodeList|HTMLCollection|QuerySet} others The other node(s), or a query selector string.
+     * @returns {QuerySet} The QuerySet object.
+     */
+    insertAfter: function insertAfter(others) {
+      this._dom.insertAfter(this, others);
+
+      return this;
+    },
+
+    /**
+     * Insert each node before the first other node.
+     * @param {string|array|Node|HTMLElement|NodeList|HTMLCollection|QuerySet} others The other node(s), or a query selector string.
+     * @returns {QuerySet} The QuerySet object.
+     */
+    insertBefore: function insertBefore(others) {
+      this._dom.insertBefore(this, others);
+
+      return this;
+    },
+
+    /**
+     * Prepend each other node to the first node.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|NodeList|HTMLCollection|QuerySet} others The other node(s), or a query selector or HTML string.
+     * @returns {QuerySet} The QuerySet object.
+     */
+    prepend: function prepend(others) {
+      this._dom.prepend(this, others);
+
+      return this;
+    },
+
+    /**
+     * Prepend each node to the first other node.
+     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|NodeList|HTMLCollection|QuerySet} others The other node(s), or a query selector string.
+     * @returns {QuerySet} The QuerySet object.
+     */
+    prependTo: function prependTo(others) {
+      this._dom.prependTo(this, others);
+
+      return this;
+    }
+  });
+  /**
+   * QuerySet Wrap
+   */
+
+  Object.assign(QuerySet.prototype, {
+    /**
+     * Unwrap each node.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
+     * @returns {QuerySet} The QuerySet object.
+     */
+    unwrap: function unwrap(filter) {
+      this._dom.unwrap(this, filter);
+
+      return this;
+    },
+
+    /**
+     * Wrap each nodes with other nodes.
+     * @param {string|array|HTMLElement|DocumentFragment|NodeList|HTMLCollection|QuerySet} others The other node(s), or a query selector or HTML string.
+     * @returns {QuerySet} The QuerySet object.
+     */
+    wrap: function wrap(others) {
+      this._dom.wrap(this, others);
+
+      return this;
+    },
+
+    /**
+     * Wrap all nodes with other nodes.
+     * @param {string|array|HTMLElement|DocumentFragment|NodeList|HTMLCollection|QuerySet} others The other node(s), or a query selector or HTML string.
+     * @returns {QuerySet} The QuerySet object.
+     */
+    wrapAll: function wrapAll(others) {
+      this._dom.wrapAll(this, others);
+
+      return this;
+    },
+
+    /**
+     * Wrap the contents of each node with other nodes.
+     * @param {string|array|HTMLElement|DocumentFragment|NodeList|HTMLCollection|QuerySet} others The other node(s), or a query selector or HTML string.
+     * @returns {QuerySet} The QuerySet object.
+     */
+    wrapInner: function wrapInner(others) {
+      this._dom.wrapInner(this, others);
+
+      return this;
+    }
+  });
+  /**
+   * QuerySet Filter
+   */
+
+  Object.assign(QuerySet.prototype, {
+    /**
+     * Return all nodes connected to the DOM.
+     * @returns {QuerySet} The QuerySet object.
+     */
+    connected: function connected() {
+      return this.pushStack(this._dom.connected(this));
+    },
+
+    /**
+     * Return all nodes considered equal to any of the other nodes.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet} others The other node(s), or a query selector string.
+     * @returns {QuerySet} The QuerySet object.
+     */
+    equal: function equal(others) {
+      return this.pushStack(this._dom.equal(this, others));
+    },
+
+    /**
+     * Return all nodes matching a filter.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
+     * @returns {QuerySet} The QuerySet object.
+     */
+    filter: function filter(_filter2) {
+      return this.pushStack(this._dom.filter(this, _filter2));
+    },
+
+    /**
+     * Return the first node matching a filter.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
+     * @returns {QuerySet} The QuerySet object.
+     */
+    filterOne: function filterOne(filter) {
+      return this.pushNode(this._dom.filterOne(this, filter));
+    },
+
+    /**
+     * Return all "fixed" nodes.
+     * @returns {QuerySet} The QuerySet object.
+     */
+    fixed: function fixed() {
+      return this.pushStack(this._dom.fixed(this));
+    },
+
+    /**
+     * Return all hidden nodes.
+     * @returns {QuerySet} The QuerySet object.
+     */
+    hidden: function hidden() {
+      return this.pushStack(this._dom.hidden(this));
+    },
+
+    /**
+     * Return all nodes not matching a filter.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
+     * @returns {QuerySet} The QuerySet object.
+     */
+    not: function not(filter) {
+      return this.pushStack(this._dom.not(this, filter));
+    },
+
+    /**
+     * Return the first node not matching a filter.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
+     * @returns {QuerySet} The QuerySet object.
+     */
+    notOne: function notOne(filter) {
+      return this.pushNode(this._dom.notOne(this, filter));
+    },
+
+    /**
+     * Return all nodes considered identical to any of the other nodes.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet} others The other node(s), or a query selector string.
+     * @returns {QuerySet} The QuerySet object.
+     */
+    same: function same(others) {
+      return this.pushStack(this._dom.same(this, others));
+    },
+
+    /**
+     * Return all visible nodes.
+     * @returns {QuerySet} The QuerySet object.
+     */
+    visible: function visible() {
+      return this.pushStack(this._dom.visible(this));
+    },
+
+    /**
+     * Return all nodes with an animation.
+     * @returns {QuerySet} The QuerySet object.
+    */
+    withAnimation: function withAnimation() {
+      return this.pushStack(this._dom.withAnimation(this));
+    },
+
+    /**
+     * Return all nodes with a specified attribute.
+     * @param {string} attribute The attribute name.
+     * @returns {QuerySet} The QuerySet object.
+     */
+    withAttribute: function withAttribute(attribute) {
+      return this.pushStack(this._dom.withAttribute(this, attribute));
+    },
+
+    /**
+     * Return all nodes with child elements.
+     * @returns {QuerySet} The QuerySet object.
+     */
+    withChildren: function withChildren() {
+      return this.pushStack(this._dom.withChildren(this));
+    },
+
+    /**
+     * Return all nodes with any of the specified classes.
+     * @param {...string|string[]} classes The classes.
+     * @returns {QuerySet} The QuerySet object.
+     */
+    withClass: function withClass(classes) {
+      return this.pushStack(this._dom.withClass(this, classes));
+    },
+
+    /**
+     * Return all nodes with a CSS animation.
+     * @returns {QuerySet} The QuerySet object.
+    */
+    withCSSAnimation: function withCSSAnimation() {
+      return this.pushStack(this._dom.withCSSAnimation(this));
+    },
+
+    /**
+     * Return all nodes with a CSS transition.
+     * @returns {QuerySet} The QuerySet object.
+     */
+    withCSSTransition: function withCSSTransition() {
+      return this.pushStack(this._dom.withCSSTransition(this));
+    },
+
+    /**
+     * Return all nodes with custom data.
+     * @param {string} [key] The data key.
+     * @returns {QuerySet} The QuerySet object.
+     */
+    withData: function withData(key) {
+      return this.pushStack(this._dom.withData(this, key));
+    },
+
+    /**
+     * Return all elements with a descendent matching a filter.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
+     * @returns {QuerySet} The QuerySet object.
+     */
+    withDescendent: function withDescendent(filter) {
+      return this.pushStack(this._dom.withDescendent(this, filter));
+    },
+
+    /**
+     * Return all nodes with a specified property.
+     * @param {string} property The property name.
+     * @returns {QuerySet} The QuerySet object.
+     */
+    withProperty: function withProperty(property) {
+      return this.pushStack(this._dom.withProperty(this, property));
+    }
+  });
+  /**
+   * QuerySet Find
+   */
+
+  Object.assign(QuerySet.prototype, {
+    /**
+     * Return all descendent nodes matching a selector.
+     * @param {string} selector The query selector.
+     * @returns {QuerySet} The QuerySet object.
+     */
+    find: function find(selector) {
+      return this.pushStack(this._dom.find(selector, this));
+    },
+
+    /**
+     * Return all descendent nodes with a specific class.
+     * @param {string} className The class name.
+     * @returns {QuerySet} The QuerySet object.
+     */
+    findByClass: function findByClass(className) {
+      return this.pushStack(this._dom.findByClass(className, this));
+    },
+
+    /**
+     * Return all descendent nodes with a specific ID.
+     * @param {string} id The id.
+     * @returns {QuerySet} The QuerySet object.
+     */
+    findById: function findById(id) {
+      return this.pushStack(this._dom.findById(id, this));
+    },
+
+    /**
+     * Return all descendent nodes with a specific tag.
+     * @param {string} tagName The tag name.
+     * @returns {QuerySet} The QuerySet object.
+     */
+    findByTag: function findByTag(tagName) {
+      return this.pushStack(this._dom.findByTag(tagName, this));
+    },
+
+    /**
+     * Return a single descendent node matching a selector.
+     * @param {string} selector The query selector.
+     * @returns {QuerySet} The QuerySet object.
+     */
+    findOne: function findOne(selector) {
+      return this.pushNode(this._dom.findOne(selector, this));
+    },
+
+    /**
+     * Return a single descendent node with a specific class.
+     * @param {string} className The class name.
+     * @returns {QuerySet} The QuerySet object.
+     */
+    findOneByClass: function findOneByClass(className) {
+      return this.pushNode(this._dom.findOneByClass(className, this));
+    },
+
+    /**
+     * Return a single descendent node with a specific ID.
+     * @param {string} id The id.
+     * @returns {QuerySet} The QuerySet object.
+     */
+    findOneById: function findOneById(id) {
+      return this.pushNode(this._dom.findOneById(id, this));
+    },
+
+    /**
+     * Return a single descendent node with a specific tag.
+     * @param {string} tagName The tag name.
+     * @returns {QuerySet} The QuerySet object.
+     */
+    findOneByTag: function findOneByTag(tagName) {
+      return this.pushNode(this._dom.findOneByTag(tagName, this));
+    }
+  });
+  /**
+   * QuerySet Traversal
+   */
+
+  Object.assign(QuerySet.prototype, {
+    /**
+     * Return the first child of each node (optionally matching a filter).
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
+     * @returns {QuerySet} The QuerySet object.
+     */
+    child: function child(filter) {
+      return this.pushStack(this._dom.child(this, filter));
+    },
+
+    /**
+     * Return all children of each node (optionally matching a filter).
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
+     * @returns {QuerySet} The QuerySet object.
+     */
+    children: function children(filter) {
+      return this.pushStack(this._dom.children(this, filter));
+    },
+
+    /**
+     * Return the closest ancestor to each node (optionally matching a filter, and before a limit).
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet|DOM~filterCallback} [limit] The limit node(s), a query selector string or custom filter function.
+     * @returns {QuerySet} The QuerySet object.
+     */
+    closest: function closest(filter, limit) {
+      return this.pushStack(this._dom.closest(this, filter, limit));
+    },
+
+    /**
+     * Return the common ancestor of all nodes.
+     * @returns {QuerySet} The QuerySet object.
+     */
+    commonAncestor: function commonAncestor() {
+      return this.pushNode(this._dom.commonAncestor(this));
+    },
+
+    /**
+     * Return all children of each node (including text and comment nodes).
+     * @returns {QuerySet} The QuerySet object.
+     */
+    contents: function contents() {
+      return this.pushStack(this._dom.contents(this));
+    },
+
+    /**
+     * Return the DocumentFragment of the first node.
+     * @returns {QuerySet} The QuerySet object.
+     */
+    fragment: function fragment() {
+      return this.pushNode(this._dom.fragment(this));
+    },
+
+    /**
+     * Return the next sibling for each node (optionally matching a filter).
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
+     * @returns {QuerySet} The QuerySet object.
+     */
+    next: function next(filter) {
+      return this.pushStack(this._dom.next(this, filter));
+    },
+
+    /**
+     * Return all next siblings for each node (optionally matching a filter, and before a limit).
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet|DOM~filterCallback} [limit] The limit node(s), a query selector string or custom filter function.
+     * @returns {QuerySet} The QuerySet object.
+     */
+    nextAll: function nextAll(filter, limit) {
+      return this.pushStack(this._dom.nextAll(this, filter, limit));
+    },
+
+    /**
+     * Return the offset parent (relatively positioned) of the first node.
+     * @returns {QuerySet} The QuerySet object.
+     */
+    offsetParent: function offsetParent() {
+      return this.pushNode(this._dom.offsetParent(this));
+    },
+
+    /**
+     * Return the parent of each node (optionally matching a filter).
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
+     * @returns {QuerySet} The QuerySet object.
+     */
+    parent: function parent(filter) {
+      return this.pushStack(this._dom.parent(this, filter));
+    },
+
+    /**
+     * Return all parents of each node (optionally matching a filter, and before a limit).
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet|DOM~filterCallback} [limit] The limit node(s), a query selector string or custom filter function.
+     * @returns {QuerySet} The QuerySet object.
+     */
+    parents: function parents(filter, limit) {
+      return this.pushStack(this._dom.parents(this, filter, limit));
+    },
+
+    /**
+     * Return the previous sibling for each node (optionally matching a filter).
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
+     * @returns {QuerySet} The QuerySet object.
+     */
+    prev: function prev(filter) {
+      return this.pushStack(this._dom.prev(this, filter));
+    },
+
+    /**
+     * Return all previous siblings for each node (optionally matching a filter, and before a limit).
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet|DOM~filterCallback} [limit] The limit node(s), a query selector string or custom filter function.
+     * @returns {QuerySet} The QuerySet object.
+     */
+    prevAll: function prevAll(filter, limit) {
+      return this.pushStack(this._dom.prevAll(this, filter, limit));
+    },
+
+    /**
+     * Return the ShadowRoot of the first node.
+     * @returns {QuerySet} The QuerySet object.
+     */
+    shadow: function shadow() {
+      return this.pushNode(this._dom.shadow(this));
+    },
+
+    /**
+     * Return all siblings for each node (optionally matching a filter).
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
+     * @param {Boolean} [elementsOnly=true] Whether to only return element nodes.
+     * @returns {QuerySet} The QuerySet object.
+     */
+    siblings: function siblings(filter) {
+      return this.pushStack(this._dom.siblings(this, filter));
+    }
+  });
+  /**
+   * QuerySet Selection
+   */
+
+  Object.assign(QuerySet.prototype, {
+    /**
+     * Insert each node after the selection.
+     * @returns {QuerySet} The QuerySet object.
+     */
+    afterSelection: function afterSelection() {
+      this._dom.afterSelection(this);
+
+      return this;
+    },
+
+    /**
+     * Insert each node before the selection.
+     * @returns {QuerySet} The QuerySet object.
+     */
+    beforeSelection: function beforeSelection() {
+      this._dom.beforeSelection(this);
+
+      return this;
+    },
+
+    /**
+     * Create a selection on the first node.
+     * @returns {QuerySet} The QuerySet object.
+     */
+    select: function select() {
+      this._dom.select(this);
+
+      return this;
+    },
+
+    /**
+     * Create a selection containing all of the nodes.
+     * @returns {QuerySet} The QuerySet object.
+     */
+    selectAll: function selectAll() {
+      this._dom.selectAll(this);
+
+      return this;
+    },
+
+    /**
+     * Wrap selected nodes with other nodes.
+     * @returns {QuerySet} The QuerySet object.
+     */
+    wrapSelection: function wrapSelection() {
+      this._dom.wrapSelection(this);
+
+      return this;
+    }
+  });
+  /**
+   * QuerySet Tests
+   */
+
+  Object.assign(QuerySet.prototype, {
+    /**
+     * Returns true if any of the nodes has an animation.
+     * @returns {Boolean} TRUE if any of the nodes has an animation, otherwise FALSE.
+     */
+    hasAnimation: function hasAnimation() {
+      return this._dom.hasAnimation(this);
+    },
+
+    /**
+     * Returns true if any of the nodes has a specified attribute.
+     * @param {string} attribute The attribute name.
+     * @returns {Boolean} TRUE if any of the nodes has the attribute, otherwise FALSE.
+     */
+    hasAttribute: function hasAttribute(attribute) {
+      return this._dom.hasAttribute(this, attribute);
+    },
+
+    /**
+     * Returns true if any of the nodes has child nodes.
+     * @returns {Boolean} TRUE if the any of the nodes has child nodes, otherwise FALSE.
+     */
+    hasChildren: function hasChildren() {
+      return this._dom.hasChildren(this);
+    },
+
+    /**
+     * Returns true if any of the nodes has any of the specified classes.
+     * @param {...string|string[]} classes The classes.
+     * @returns {Boolean} TRUE if any of the nodes has any of the classes, otherwise FALSE.
+     */
+    hasClass: function hasClass() {
+      var _this$_dom4;
+
+      for (var _len9 = arguments.length, classes = new Array(_len9), _key9 = 0; _key9 < _len9; _key9++) {
+        classes[_key9] = arguments[_key9];
+      }
+
+      return (_this$_dom4 = this._dom).hasClass.apply(_this$_dom4, [this].concat(classes));
+    },
+
+    /**
+     * Returns true if any of the nodes has a CSS animation.
+     * @returns {Boolean} TRUE if any of the nodes has a CSS animation, otherwise FALSE.
+     */
+    hasCSSAnimation: function hasCSSAnimation() {
+      return this._dom.hasCSSAnimation(this);
+    },
+
+    /**
+     * Returns true if any of the nodes has a CSS transition.
+     * @returns {Boolean} TRUE if any of the nodes has a CSS transition, otherwise FALSE.
+     */
+    hasCSSTransition: function hasCSSTransition() {
+      return this._dom.hasCSSTransition(this);
+    },
+
+    /**
+     * Returns true if any of the nodes has custom data.
+     * @param {string} [key] The data key.
+     * @returns {Boolean} TRUE if any of the nodes has custom data, otherwise FALSE.
+     */
+    hasData: function hasData(key) {
+      return this._dom.hasData(this, key);
+    },
+
+    /**
+     * Returns true if any of the nodes contains a descendent matching a filter.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
+     * @returns {Boolean} TRUE if any of the nodes contains a descendent matching the filter, otherwise FALSE.
+     */
+    hasDescendent: function hasDescendent(filter) {
+      return this._dom.hasDescendent(this, filter);
+    },
+
+    /**
+     * Returns true if any of the nodes has a DocumentFragment.
+     * @returns {Boolean} TRUE if any of the nodes has a DocumentFragment, otherwise FALSE.
+     */
+    hasFragment: function hasFragment() {
+      return this._dom.hasFragment(this);
+    },
+
+    /**
+     * Returns true if any of the nodes has a specified property.
+     * @param {string} property The property name.
+     * @returns {Boolean} TRUE if any of the nodes has the property, otherwise FALSE.
+     */
+    hasProperty: function hasProperty(property) {
+      return this._dom.hasProperty(this, property);
+    },
+
+    /**
+     * Returns true if any of the nodes has a ShadowRoot.
+     * @returns {Boolean} TRUE if any of the nodes has a ShadowRoot, otherwise FALSE.
+     */
+    hasShadow: function hasShadow() {
+      return this._dom.hasShadow(this);
+    },
+
+    /**
+     * Returns true if any of the nodes matches a filter.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
+     * @returns {Boolean} TRUE if any of the nodes matches the filter, otherwise FALSE.
+     */
+    is: function is(filter) {
+      return this._dom.is(this, filter);
+    },
+
+    /**
+     * Returns true if any of the nodes is connected to the DOM.
+     * @returns {Boolean} TRUE if any of the nodes is connected to the DOM, otherwise FALSE.
+     */
+    isConnected: function isConnected() {
+      return this._dom.isConnected(this);
+    },
+
+    /**
+     * Returns true if any of the nodes is considered equal to any of the other nodes.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet} others The other node(s), or a query selector string.
+     * @returns {Boolean} TRUE if any of the nodes is considered equal to any of the other nodes, otherwise FALSE.
+     */
+    isEqual: function isEqual(others) {
+      return this._dom.isEqual(this, others);
+    },
+
+    /**
+     * Returns true if any of the elements or a parent of any of the elements is "fixed".
+     * @returns {Boolean} TRUE if any of the nodes is "fixed", otherwise FALSE.
+     */
+    isFixed: function isFixed() {
+      return this._dom.isFixed(this);
+    },
+
+    /**
+     * Returns true if any of the nodes is hidden.
+     * @returns {Boolean} TRUE if any of the nodes is hidden, otherwise FALSE.
+     */
+    isHidden: function isHidden() {
+      return this._dom.isHidden(this);
+    },
+
+    /**
+     * Returns true if any of the nodes is considered identical to any of the other nodes.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet} others The other node(s), or a query selector string.
+     * @returns {Boolean} TRUE if any of the nodes is considered identical to any of the other nodes, otherwise FALSE.
+     */
+    isSame: function isSame(others) {
+      return this._dom.isSame(this, others);
+    },
+
+    /**
+     * Returns true if any of the nodes is visible.
+     * @returns {Boolean} TRUE if any of the nodes is visible, otherwise FALSE.
+     */
+    isVisible: function isVisible() {
+      return this._dom.isVisible(this);
+    }
+  });
+  /**
+   * QuerySet Utility
+   */
+
+  Object.assign(QuerySet.prototype, _defineProperty({
+    /**
+     * Push new nodes to the stack and sort the results.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|NodeList|HTMLCollection|QuerySet} query The input query.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|NodeList|HTMLCollection|QuerySet} [context] The context to search in.
+     * @returns {QuerySet} The QuerySet object.
+     */
+    add: function add(query) {
+      var context = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+      return this.pushStack(Core.unique(Core.merge([], this._nodes, this._dom.query(query, context).get()))).sort();
+    },
+
+    /**
+     * Execute a function for each node in the set.
+     * @param {function} callback The callback to execute
+     * @returns {QuerySet} The QuerySet object.
+     */
+    each: function each(callback) {
+      this._nodes.forEach(function (v, i) {
+        return callback(v, i);
+      });
+
+      return this;
+    },
+
+    /**
+     * Reduce the set of nodes to the one at the specified index.
+     * @param {number} index The index of the node.
+     * @returns {QuerySet} The QuerySet object.
+     */
+    eq: function eq(index) {
+      return this.pushNode(this.get(index));
+    },
+
+    /**
+     * Reduce the set of nodes to the first.
+     * @returns {QuerySet} The QuerySet object.
+     */
+    first: function first() {
+      return this.eq(0);
+    },
+
+    /**
+     * Force a node to be shown, and then execute a callback.
+     * @param {DOM~nodeCallback} callback The callback to execute.
+     * @returns {*} The result of the callback.
+     */
+    forceShow: function forceShow(callback) {
+      return this._dom.forceShow(this, callback);
+    },
+
+    /**
+     * Retrieve the DOM node(s) contained in the QuerySet.
+     * @param {number} [index=null] The index of the node.
+     * @returns {array|Node|Document|Window} The node(s).
+     */
+    get: function get() {
+      var index = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
+
+      if (index === null) {
+        return this._nodes;
+      }
+
+      return index < 0 ? this._nodes[index + this._nodes.length] : this._nodes[index];
+    },
+
+    /**
+     * Get the index of the first node relative to it's parent node.
+     * @returns {number} The index.
+     */
+    index: function index() {
+      return this._dom.index(this);
+    },
+
+    /**
+     * Get the index of the first node matching a filter.
+     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
+     * @returns {number} The index.
+     */
+    indexOf: function indexOf(filter) {
+      return this._dom.indexOf(this, filter);
+    },
+
+    /**
+     * Reduce the set of nodes to the last.
+     * @returns {QuerySet} The QuerySet object.
+     */
+    last: function last() {
+      return this.eq(-1);
+    },
+
+    /**
+     * Execute a function for each node in the set.
+     * @param {function} callback The callback to execute
+     * @returns {QuerySet} A new QuerySet object.
+     */
+    map: function map(callback) {
+      return new this.constructor(this._nodes.map(function (v, i) {
+        return callback(v, i);
+      }));
+    },
+
+    /**
+     * Normalize nodes (remove empty text nodes, and join adjacent text nodes).
+     * @returns {QuerySet} The QuerySet object.
+     */
+    normalize: function normalize() {
+      this._dom.normalize(this);
+
+      return this;
+    },
+
+    /**
+     * Return a serialized string containing names and values of all form nodes.
+     * @returns {string} The serialized string.
+     */
+    serialize: function serialize() {
+      return this._dom.serialize(this);
+    },
+
+    /**
+     * Return a serialized array containing names and values of all form nodes.
+     * @returns {array} The serialized array.
+     */
+    serializeArray: function serializeArray() {
+      return this._dom.serializeArray(this);
+    },
+
+    /**
+     * Reduce the set of matched nodes to a subset specified by a range of indices.
+     * @param {number} [begin] The index to slice from.
+     * @param {number} [end]  The index to slice to.
+     * @returns {QuerySet} A new QuerySet object.
+     */
+    slice: function slice(begin, end) {
+      return new this.constructor(this._nodes.slice(begin, end));
+    },
+
+    /**
+     * Sort nodes by their position in the document.
+     * @returns {QuerySet} The QuerySet object.
+     */
+    sort: function sort() {
+      return this.pushStack(this._dom.sort(this));
+    },
+
+    /**
+     * Return the tag name (lowercase) of the first node.
+     * @returns {string} The nodes tag name (lowercase).
+     */
+    tagName: function tagName() {
+      return this._dom.tagName(this);
+    }
+  }, Symbol.iterator, function () {
+    return this._nodes.values();
+  }));
+  /**
+   * QuerySet (Static) Properties
+   */
+
+  /**
+   * @callback DOM~animationCallback
+   * @param {HTMLElement} node The input node.
+   * @param {number} progress The animation progress.
+   * @param {object} options The options to use for animating.
+   */
+
+  /**
+   * @callback DOM~eventCallback
+   * @param {Event} event The event object.
+   */
+
+  /**
+   * @callback DOM~nodeCallback
+   * @param {Node|HTMLElement|DocumentFragment|ShadowRoot|Document|Window} node The input node.
+   */
+
+  /**
+   * @callback DOM~queueCallback
+   * @param {HTMLElement} node The input node.
+   */
+
+  dom = new DOM();
   return {
     AjaxRequest: AjaxRequest,
     Animation: Animation,
     AnimationSet: AnimationSet,
     DOM: DOM,
-    dom: new DOM()
+    dom: dom,
+    QuerySet: QuerySet,
+    QuerySetImmutable: QuerySetImmutable
   };
 });
