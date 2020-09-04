@@ -2300,7 +2300,7 @@ const isVisible = dom.isVisible(nodes);
 const query = dom.query(selector, context);
 ```
 
-This method returns an [*QuerySetImmutable*](docs/QuerySet.md).
+This method returns a [*QuerySetImmutable*](docs/QuerySet.md).
 
 **Query One**
 
@@ -2313,7 +2313,7 @@ You can also query for a single node using the `queryOne` method.
 const query = dom.queryOne(selector, context);
 ```
 
-This method returns an [*QuerySetImmutable*](docs/QuerySet.md).
+This method returns a [*QuerySetImmutable*](docs/QuerySet.md).
 
 **Query Mutable**
 
@@ -2324,7 +2324,7 @@ This method returns an [*QuerySetImmutable*](docs/QuerySet.md).
 const query = dom.queryMutable(selector, context);
 ```
 
-This method returns an [*QuerySet*](docs/QuerySet.md).
+This method returns a [*QuerySet*](docs/QuerySet.md).
 
 **Query One Mutable**
 
@@ -2334,7 +2334,7 @@ You can also query for a single node using the `queryOneMutable` method.
 const query = dom.queryOneMutable(selector, context);
 ```
 
-This method returns an [*QuerySet*](docs/QuerySet.md).
+This method returns a [*QuerySet*](docs/QuerySet.md).
 
 **Query Binding**
 
