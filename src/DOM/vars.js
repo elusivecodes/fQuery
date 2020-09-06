@@ -77,6 +77,7 @@ Object.assign(DOM, {
         'line-height',
         'opacity',
         'orphans',
+        'scale',
         'widows',
         'z-index'
     ],

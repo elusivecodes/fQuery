@@ -51,7 +51,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 /**
- * FrostDOM Bundle v1.1.1
+ * FrostDOM Bundle v1.1.2
  * https://github.com/elusivecodes/FrostCore
  * https://github.com/elusivecodes/FrostDOM
  */
@@ -1072,7 +1072,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
     return Core;
   });
   /**
-   * FrostDOM v1.1.1
+   * FrostDOM v1.1.2
    * https://github.com/elusivecodes/FrostDOM
    */
 
@@ -6469,7 +6469,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
       parseNode: function parseNode(nodes) {
         var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
         var filter = this.constructor.parseNodesFactory(options);
-        return this.parseNodesDeep(nodes, options.context || this._context, filter, options.html, true);
+        return this._parseNodesDeep(nodes, options.context || this._context, filter, options.html, true);
       },
 
       /**
@@ -6488,7 +6488,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
       parseNodes: function parseNodes(nodes) {
         var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
         var filter = this.constructor.parseNodesFactory(options);
-        return this.parseNodesDeep(nodes, options.context || this._context, filter, options.html);
+        return this._parseNodesDeep(nodes, options.context || this._context, filter, options.html);
       },
 
       /**
@@ -6499,7 +6499,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
        * @param {Boolean} [first=false] Whether to only return the first result.
        * @returns {array|Node|DocumentFragment|ShadowRoot|Document|Window} The parsed node(s).
        */
-      parseNodesDeep: function parseNodesDeep(nodes, context, filter) {
+      _parseNodesDeep: function _parseNodesDeep(nodes, context, filter) {
         var _this24 = this;
 
         var html = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : false;
@@ -6533,7 +6533,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
         } // QuerySet
 
 
-        if ('QuerySet' in window && nodes instanceof QuerySet) {
+        if (nodes instanceof QuerySet) {
           if (!first) {
             return nodes.get().filter(filter);
           }
@@ -6562,7 +6562,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
             window: true
           });
           nodes = nodes.flatMap(function (node) {
-            return _this24.parseNodesDeep(node, context, subFilter, html);
+            return _this24._parseNodesDeep(node, context, subFilter, html);
           });
         } else {
           nodes = Core.wrap(nodes);
@@ -9084,7 +9084,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
         ul: []
       },
       // CSS properties that can have number-only values
-      cssNumberProperties: ['font-weight', 'line-height', 'opacity', 'orphans', 'widows', 'z-index'],
+      cssNumberProperties: ['font-weight', 'line-height', 'opacity', 'orphans', 'scale', 'widows', 'z-index'],
       INNER: 0,
       OUTER: 2,
       OUTER_MARGIN: 3,

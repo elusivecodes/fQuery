@@ -4,8 +4,6 @@
 
 It is a lightweight (~18kb gzipped) and modern library, utilizing ES6 syntax and features including Promises.
 
-For a fully OOP implementation, also check out my [fQuery](docs/QuerySet.md) library.
-
 
 ## Table Of Contents
 - [Installation](#installation)

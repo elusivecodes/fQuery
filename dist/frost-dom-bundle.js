@@ -1,5 +1,5 @@
 /**
- * FrostDOM Bundle v1.1.1
+ * FrostDOM Bundle v1.1.2
  * https://github.com/elusivecodes/FrostCore
  * https://github.com/elusivecodes/FrostDOM
  */
@@ -1047,7 +1047,7 @@
     });
 
     /**
-     * FrostDOM v1.1.1
+     * FrostDOM v1.1.2
      * https://github.com/elusivecodes/FrostDOM
      */
     (function(global, factory) {
@@ -5873,7 +5873,7 @@
             parseNode(nodes, options = {}) {
                 const filter = this.constructor.parseNodesFactory(options);
 
-                return this.parseNodesDeep(
+                return this._parseNodesDeep(
                     nodes,
                     options.context || this._context,
                     filter,
@@ -5898,7 +5898,7 @@
             parseNodes(nodes, options = {}) {
                 const filter = this.constructor.parseNodesFactory(options);
 
-                return this.parseNodesDeep(
+                return this._parseNodesDeep(
                     nodes,
                     options.context || this._context,
                     filter,
@@ -5914,7 +5914,7 @@
              * @param {Boolean} [first=false] Whether to only return the first result.
              * @returns {array|Node|DocumentFragment|ShadowRoot|Document|Window} The parsed node(s).
              */
-            parseNodesDeep(nodes, context, filter, html = false, first = false) {
+            _parseNodesDeep(nodes, context, filter, html = false, first = false) {
 
                 // check nodes
                 if (!nodes) {
@@ -5949,7 +5949,7 @@
                 }
 
                 // QuerySet
-                if ('QuerySet' in window && nodes instanceof QuerySet) {
+                if (nodes instanceof QuerySet) {
                     if (!first) {
                         return nodes.get().filter(filter);
                     }
@@ -5981,7 +5981,7 @@
                         window: true
                     });
                     nodes = nodes.flatMap(node =>
-                        this.parseNodesDeep(node, context, subFilter, html)
+                        this._parseNodesDeep(node, context, subFilter, html)
                     );
                 } else {
                     nodes = Core.wrap(nodes);
@@ -8505,6 +8505,7 @@
                 'line-height',
                 'opacity',
                 'orphans',
+                'scale',
                 'widows',
                 'z-index'
             ],
