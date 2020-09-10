@@ -1,6 +1,6 @@
 {
     "name": "frostdom",
-    "version": "1.1.2",
+    "version": "1.1.3",
     "description": "FrostDOM is a free, open-source DOM manipulation library for JavaScript.",
     "keywords": [
         "dom",
@@ -16,8 +16,6 @@
     },
     "main": "./dist/frost-dom-bundle.js",
     "files": [
-        "/dist/frost-dom.js",
-        "/dist/frost-dom-bundle.js",
         "/LICENSE",
         "/README.md"
     ],
@@ -36,13 +34,13 @@
     "license": "MIT",
     "private": false,
     "devDependencies": {
-        "@babel/core": "^7.11.6",
-        "@babel/preset-env": "^7.11.5",
         "filepath": "^1.1.0",
-        "frostcore": "^1.0.6",
         "minimist": "^1.2.5",
         "mocha": "^7.2.0",
         "puppeteer": "^2.1.1",
         "terser": "^4.8.0"
+    },
+    "dependencies": {
+        "frostcore": "^1.0.7"
     }
 }

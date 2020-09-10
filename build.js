@@ -2,7 +2,6 @@ const path = require('path');
 const fs = require('fs');
 const filepath = require('filepath');
 const terser = require('terser');
-const babel = require('@babel/core');
 
 const srcFolder = 'src';
 const distFolder = 'dist';
@@ -98,46 +97,5 @@ if (minifiedBundle.error) {
     fs.writeFileSync(
         path.join(distFolder, name + '-bundle.min.js'),
         minifiedBundle.code
-    );
-}
-
-// es5 transpile
-const es5 = babel.transformSync(code, { presets: ['@babel/env'] });
-
-const es5Bundle = babel.transformSync(bundle, { presets: ['@babel/env'] });
-
-const minifiedes5 = terser.minify(es5.code, {
-    ecma: 5
-});
-
-const minifiedes5Bundle = terser.minify(es5Bundle.code, {
-    ecma: 5
-});
-
-if (minifiedes5.error) {
-    console.error(minifiedes5.error);
-} else {
-    fs.writeFileSync(
-        path.join(distFolder, name + '-es5.js'),
-        es5.code
-    );
-
-    fs.writeFileSync(
-        path.join(distFolder, name + '-es5.min.js'),
-        minifiedes5.code
-    );
-}
-
-if (minifiedes5Bundle.error) {
-    console.error(minifiedes5Bundle.error);
-} else {
-    fs.writeFileSync(
-        path.join(distFolder, name + '-bundle-es5.js'),
-        es5Bundle.code
-    );
-
-    fs.writeFileSync(
-        path.join(distFolder, name + '-bundle-es5.min.js'),
-        minifiedes5Bundle.code
     );
 }
