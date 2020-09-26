@@ -1,5 +1,5 @@
 /**
- * FrostDOM Bundle v1.1.3
+ * FrostDOM Bundle v1.1.4
  * https://github.com/elusivecodes/FrostCore
  * https://github.com/elusivecodes/FrostDOM
  */
@@ -20,7 +20,7 @@
     }
 
     /**
-     * FrostCore v1.0.7
+     * FrostCore v1.0.8
      * https://github.com/elusivecodes/FrostCore
      */
     (function(global, factory) {
@@ -256,16 +256,15 @@
          * Create a wrapped version of a function that executes once per wait period
          * (using the most recent arguments passed to it).
          * @param {function} callback Callback function to execute.
-         * @param {number} wait The number of milliseconds to wait until next execution.
-         * @param {Boolean} [leading] Whether to execute on the leading edge of the wait period.
+         * @param {number} [wait=0] The number of milliseconds to wait until next execution.
+         * @param {Boolean} [leading=false] Whether to execute on the leading edge of the wait period.
          * @param {Boolean} [trailing=true] Whether to execute on the trailing edge of the wait period.
          * @returns {function} The wrapped function.
          */
-        Core.debounce = (callback, wait, leading, trailing = true) => {
+        Core.debounce = (callback, wait = 0, leading = false, trailing = true) => {
             let debounceReference,
                 lastRan,
-                newArgs,
-                running;
+                newArgs;
 
             const debounced = (...args) => {
                 const now = Date.now();
@@ -280,20 +279,22 @@
                 }
 
                 newArgs = args;
-                if (running || !trailing) {
+                if (!trailing) {
                     return;
                 }
 
-                running = true;
+                if (debounceReference) {
+                    clearTimeout(debounceReference);
+                }
+
                 debounceReference = setTimeout(
                     _ => {
                         lastRan = Date.now();
                         callback(...newArgs);
 
-                        running = false;
                         debounceReference = null;
                     },
-                    delta
+                    wait
                 );
             };
 
@@ -304,7 +305,6 @@
 
                 clearTimeout(debounceReference);
 
-                running = false;
                 debounceReference = null;
             };
 
@@ -380,13 +380,62 @@
          * Create a wrapped version of a function that executes at most once per wait period.
          * (using the most recent arguments passed to it).
          * @param {function} callback Callback function to execute.
-         * @param {number} wait The number of milliseconds to wait until next execution.
+         * @param {number} [wait=0] The number of milliseconds to wait until next execution.
          * @param {Boolean} [leading=true] Whether to execute on the leading edge of the wait period.
          * @param {Boolean} [trailing=true] Whether to execute on the trailing edge of the wait period.
          * @returns {function} The wrapped function.
          */
-        Core.throttle = (callback, wait, leading = true, trailing = true) =>
-            Core.debounce(callback, wait, leading, trailing);
+        Core.throttle = (callback, wait = 0, leading = true, trailing = true) => {
+            let throttleReference,
+                lastRan,
+                newArgs,
+                running;
+
+            const throttled = (...args) => {
+                const now = Date.now();
+                const delta = lastRan ?
+                    lastRan - now :
+                    null;
+
+                if (leading && (delta === null || delta >= wait)) {
+                    lastRan = now;
+                    callback(...args);
+                    return;
+                }
+
+                newArgs = args;
+                if (running || !trailing) {
+                    return;
+                }
+
+                running = true;
+                throttleReference = setTimeout(
+                    _ => {
+                        lastRan = Date.now();
+                        callback(...newArgs);
+
+                        running = false;
+                        throttleReference = null;
+                    },
+                    delta === null ?
+                        wait :
+                        delta
+                );
+            };
+
+            throttled.cancel = _ => {
+                if (!throttleReference) {
+                    return;
+                }
+
+                clearTimeout(throttleReference);
+
+                running = false;
+                throttleReference = null;
+            };
+
+            return throttled;
+        };
 
         /**
          * Execute a function a specified number of times.
@@ -1047,7 +1096,7 @@
     });
 
     /**
-     * FrostDOM v1.1.3
+     * FrostDOM v1.1.4
      * https://github.com/elusivecodes/FrostDOM
      */
     (function(global, factory) {
