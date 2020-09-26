@@ -5,6 +5,28 @@
 Object.assign(DOM, {
 
     /**
+     * Create a wrapped version of a function that executes once per tick.
+     * @param {function} callback Callback function to debounce.
+     * @returns {function} The wrapped function.
+     */
+    debounce(callback) {
+        let running;
+
+        return (...args) => {
+            if (running) {
+                return;
+            }
+
+            running = true;
+
+            Promise.resolve().then(_ => {
+                callback(...args);
+                running = false;
+            });
+        };
+    },
+
+    /**
      * Return a RegExp for testing a namespaced event.
      * @param {string} event The namespaced event.
      * @returns {RegExp} The namespaced event RegExp.

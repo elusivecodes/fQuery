@@ -5,20 +5,20 @@
 Object.assign(DOM.prototype, {
 
     /** 
-     * Return a wrapped mouse drag event (optionally limited by animation frame).
+     * Return a wrapped mouse drag event (optionally debounced).
      * @param {DOM~eventCallback} down The callback to execute on mousedown.
      * @param {DOM~eventCallback} move The callback to execute on mousemove.
      * @param {DOM~eventCallback} up The callback to execute on mouseup.
-     * @param {Boolean} [animated=true] Whether to limit the move event by animation frame.
+     * @param {Boolean} [debounce=true] Whether to debounce the move event.
      * @returns {DOM~eventCallback} The mouse drag event callback.
      */
-    mouseDragFactory(down, move, up, animated = true) {
-        if (move && animated) {
-            move = Core.animation(move);
+    mouseDragFactory(down, move, up, debounce = true) {
+        if (move && debounce) {
+            move = this.constructor.debounce(move);
 
             // needed to make sure up callback executes after final move callback
             if (up) {
-                up = Core.animation(up);
+                up = this.constructor.debounce(up);
             }
         }
 

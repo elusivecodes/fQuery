@@ -1,5 +1,5 @@
 /**
- * FrostDOM v1.1.4
+ * FrostDOM v1.1.5
  * https://github.com/elusivecodes/FrostDOM
  */
 (function(global, factory) {
@@ -2515,20 +2515,20 @@
     Object.assign(DOM.prototype, {
 
         /** 
-         * Return a wrapped mouse drag event (optionally limited by animation frame).
+         * Return a wrapped mouse drag event (optionally debounced).
          * @param {DOM~eventCallback} down The callback to execute on mousedown.
          * @param {DOM~eventCallback} move The callback to execute on mousemove.
          * @param {DOM~eventCallback} up The callback to execute on mouseup.
-         * @param {Boolean} [animated=true] Whether to limit the move event by animation frame.
+         * @param {Boolean} [debounce=true] Whether to debounce the move event.
          * @returns {DOM~eventCallback} The mouse drag event callback.
          */
-        mouseDragFactory(down, move, up, animated = true) {
-            if (move && animated) {
-                move = Core.animation(move);
+        mouseDragFactory(down, move, up, debounce = true) {
+            if (move && debounce) {
+                move = this.constructor.debounce(move);
 
                 // needed to make sure up callback executes after final move callback
                 if (up) {
-                    up = Core.animation(up);
+                    up = this.constructor.debounce(up);
                 }
             }
 
@@ -6616,6 +6616,28 @@
      */
 
     Object.assign(DOM, {
+
+        /**
+         * Create a wrapped version of a function that executes once per tick.
+         * @param {function} callback Callback function to debounce.
+         * @returns {function} The wrapped function.
+         */
+        debounce(callback) {
+            let running;
+
+            return (...args) => {
+                if (running) {
+                    return;
+                }
+
+                running = true;
+
+                Promise.resolve().then(_ => {
+                    callback(...args);
+                    running = false;
+                });
+            };
+        },
 
         /**
          * Return a RegExp for testing a namespaced event.
