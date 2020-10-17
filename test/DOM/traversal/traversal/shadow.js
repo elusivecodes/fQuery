@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../../setup');
 
 describe('#shadow', function() {
@@ -15,7 +15,7 @@ describe('#shadow', function() {
     });
 
     it('returns the shadow root of the first node', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const shadow = dom.shadow('div');
                 return shadow instanceof ShadowRoot;
@@ -25,7 +25,7 @@ describe('#shadow', function() {
     });
 
     it('returns null for closed shadow roots', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.shadow('#div2')
             ),
@@ -34,7 +34,7 @@ describe('#shadow', function() {
     });
 
     it('returns null for nodes without a shadow root', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.shadow('#div3')
             ),
@@ -43,7 +43,7 @@ describe('#shadow', function() {
     });
 
     it('returns undefined for empty nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.shadow('#invalid')
             ),
@@ -52,7 +52,7 @@ describe('#shadow', function() {
     });
 
     it('works with HTMLElement nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const shadow = dom.shadow(
                     document.getElementById('div1')
@@ -64,7 +64,7 @@ describe('#shadow', function() {
     });
 
     it('works with NodeList nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const shadow = dom.shadow(
                     document.querySelectorAll('div')
@@ -76,7 +76,7 @@ describe('#shadow', function() {
     });
 
     it('works with HTMLCollection nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const shadow = dom.shadow(
                     document.body.children
@@ -88,7 +88,7 @@ describe('#shadow', function() {
     });
 
     it('works with array nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const shadow = dom.shadow([
                     document.getElementById('div1'),

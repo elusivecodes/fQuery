@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../../setup');
 
 describe('QuerySet #getScrollX', function() {
@@ -15,7 +15,7 @@ describe('QuerySet #getScrollX', function() {
     });
 
     it('returns the scroll X position of the first node', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.queryMutable('div')
                     .getScrollX()
@@ -25,7 +25,7 @@ describe('QuerySet #getScrollX', function() {
     });
 
     it('returns undefined for empty nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.queryMutable('#invalid')
                     .getScrollX()
@@ -35,7 +35,7 @@ describe('QuerySet #getScrollX', function() {
     });
 
     it('works with Document nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 document.body.innerHTML = '<div style="block; width: 1000px; height: 1000px;"></div>';
                 document.scrollingElement.scrollLeft = 100;
@@ -47,7 +47,7 @@ describe('QuerySet #getScrollX', function() {
     });
 
     it('works with Window nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 document.body.innerHTML = '<div style="block; width: 1000px; height: 1000px;"></div>';
                 window.scrollTo(100, 0);

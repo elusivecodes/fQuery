@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../setup');
 const { waitFor } = require('../../helpers');
 
@@ -21,7 +21,7 @@ describe('QuerySet #queue', function() {
                     node.dataset.test = 'Test'
                 });
         }).then(waitFor(100)).then(async _ => {
-            assert.equal(
+            assert.strictEqual(
                 await exec(_ => document.body.innerHTML),
                 '<div id="test1"></div>' +
                 '<div id="test2" class="queue" data-test="Test"></div>' +
@@ -38,7 +38,7 @@ describe('QuerySet #queue', function() {
                     node.dataset.test = 'Test'
                 });
         });
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => document.body.innerHTML),
             '<div id="test1"></div>' +
             '<div id="test2" class="queue"></div>' +
@@ -60,7 +60,7 @@ describe('QuerySet #queue', function() {
                     node.dataset.test = 'Test'
                 });
         }).then(waitFor(50)).then(async _ => {
-            assert.equal(
+            assert.strictEqual(
                 await exec(_ => document.body.innerHTML),
                 '<div id="test1"></div>' +
                 '<div id="test2" class="queue"></div>' +
@@ -68,7 +68,7 @@ describe('QuerySet #queue', function() {
                 '<div id="test4" class="queue"></div>'
             );
         }).then(waitFor(100)).then(async _ => {
-            assert.equal(
+            assert.strictEqual(
                 await exec(_ => document.body.innerHTML),
                 '<div id="test1"></div>' +
                 '<div id="test2" class="queue" data-test="Test"></div>' +
@@ -91,7 +91,7 @@ describe('QuerySet #queue', function() {
                     node.dataset.test = 'Test'
                 });
         }).then(waitFor(50)).then(async _ => {
-            assert.equal(
+            assert.strictEqual(
                 await exec(_ => document.body.innerHTML),
                 '<div id="test1"></div>' +
                 '<div id="test2" class="queue"></div>' +
@@ -99,7 +99,7 @@ describe('QuerySet #queue', function() {
                 '<div id="test4" class="queue"></div>'
             );
         }).then(waitFor(100)).then(async _ => {
-            assert.equal(
+            assert.strictEqual(
                 await exec(_ => document.body.innerHTML),
                 '<div id="test1"></div>' +
                 '<div id="test2" class="queue"></div>' +
@@ -110,7 +110,7 @@ describe('QuerySet #queue', function() {
     });
 
     it('returns the QuerySet', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const query = dom.queryMutable('.queue');
                 return query === query.queue(_ => { });

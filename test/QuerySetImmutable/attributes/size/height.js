@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../../setup');
 
 describe('QuerySetImmutable #height', function() {
@@ -12,7 +12,7 @@ describe('QuerySetImmutable #height', function() {
     });
 
     it('returns the height of the first node', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.query('div')
                     .height()
@@ -22,7 +22,7 @@ describe('QuerySetImmutable #height', function() {
     });
 
     it('returns the inner height of the first node', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.query('div')
                     .height(DOM.INNER)
@@ -32,7 +32,7 @@ describe('QuerySetImmutable #height', function() {
     });
 
     it('returns the outer height of the first node', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.query('div')
                     .height(DOM.OUTER)
@@ -42,7 +42,7 @@ describe('QuerySetImmutable #height', function() {
     });
 
     it('returns the outer height of the first node with margin', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.query('div')
                     .height(DOM.OUTER_MARGIN)
@@ -52,7 +52,7 @@ describe('QuerySetImmutable #height', function() {
     });
 
     it('returns the height of the first node (hidden)', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 document.body.style.display = 'none';
                 return dom.query('div')
@@ -63,7 +63,7 @@ describe('QuerySetImmutable #height', function() {
     });
 
     it('returns undefined for empty nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.query('#invalid')
                     .height()
@@ -73,7 +73,7 @@ describe('QuerySetImmutable #height', function() {
     });
 
     it('works with Document nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.query(document)
                     .height()
@@ -83,7 +83,7 @@ describe('QuerySetImmutable #height', function() {
     });
 
     it('works with Window nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.query(window)
                     .height()

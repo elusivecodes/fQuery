@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../../setup');
 
 describe('#connected', function() {
@@ -12,7 +12,7 @@ describe('#connected', function() {
     });
 
     it('returns nodes connected to the DOM', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.connected('div')
                     .map(node => node.id)
@@ -25,7 +25,7 @@ describe('#connected', function() {
     });
 
     it('filters out nodes not connected to the DOM', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.connected(
                     document.createElement('div')
@@ -36,7 +36,7 @@ describe('#connected', function() {
     });
 
     it('works with HTMLElement nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.connected(
                     document.getElementById('div1')
@@ -49,7 +49,7 @@ describe('#connected', function() {
     });
 
     it('works with NodeList nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.connected(
                     document.querySelectorAll('div')
@@ -63,7 +63,7 @@ describe('#connected', function() {
     });
 
     it('works with HTMLCollection nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.connected(
                     document.body.children
@@ -77,7 +77,7 @@ describe('#connected', function() {
     });
 
     it('works with DocumentFragment nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ => {
                 const fragment = document.createDocumentFragment();
                 return dom.connected(fragment);
@@ -87,7 +87,7 @@ describe('#connected', function() {
     });
 
     it('works with ShadowRoot nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ => {
                 const div = document.getElementById('div1');
                 const shadow = div.attachShadow({ mode: 'open' });
@@ -102,7 +102,7 @@ describe('#connected', function() {
     });
 
     it('works with array nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.connected([
                     document.getElementById('div1'),

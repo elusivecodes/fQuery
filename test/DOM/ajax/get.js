@@ -1,10 +1,10 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../setup');
 
 describe('#get', function() {
 
     it('performs an AJAX GET request', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(async _ => {
                 const response = await DOM.get();
                 response.xhr = response.xhr.data;
@@ -31,7 +31,7 @@ describe('#get', function() {
     });
 
     it('performs an AJAX GET request with URL', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(async _ => {
                 const response = await DOM.get('/test');
                 response.xhr = response.xhr.data;
@@ -58,7 +58,7 @@ describe('#get', function() {
     });
 
     it('performs an AJAX GET request with data (object)', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(async _ => {
                 const response = await DOM.get(null, {
                     test1: 'Test 1',
@@ -88,7 +88,7 @@ describe('#get', function() {
     });
 
     it('performs an AJAX GET request with data (deep object)', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(async _ => {
                 const response = await DOM.get(null, {
                     test1: 'Test 1',
@@ -121,7 +121,7 @@ describe('#get', function() {
     });
 
     it('performs an AJAX GET request with data (implicit deep object)', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(async _ => {
                 const response = await DOM.get(null, {
                     test1: 'Test 1',
@@ -152,7 +152,7 @@ describe('#get', function() {
     });
 
     it('performs an AJAX GET request with data (object with array)', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(async _ => {
                 const response = await DOM.get(null, {
                     test1: 'Test 1',
@@ -182,7 +182,7 @@ describe('#get', function() {
     });
 
     it('performs an AJAX GET request with data (object with implicit array)', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(async _ => {
                 const response = await DOM.get(null, {
                     test1: 'Test 1',
@@ -212,7 +212,7 @@ describe('#get', function() {
     });
 
     it('performs an AJAX GET request with data (array)', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(async _ => {
                 const response = await DOM.get(null, [
                     {
@@ -248,7 +248,7 @@ describe('#get', function() {
     });
 
     it('performs an AJAX GET request with data (deep array)', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(async _ => {
                 const response = await DOM.get(null, [
                     {
@@ -284,7 +284,7 @@ describe('#get', function() {
     });
 
     it('performs an AJAX GET request with data (implicit deep array)', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(async _ => {
                 const response = await DOM.get(null, [
                     {
@@ -320,7 +320,7 @@ describe('#get', function() {
     });
 
     it('performs an AJAX GET request with data (string)', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(async _ => {
                 const response = await DOM.get(null, 'test1=Test%201&test2=Test%202');
                 response.xhr = response.xhr.data;
@@ -347,7 +347,7 @@ describe('#get', function() {
     });
 
     it('performs an AJAX GET request with data (JSON)', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(async _ => {
                 const response = await DOM.get(null, {
                     test1: 'Test 1',
@@ -379,7 +379,7 @@ describe('#get', function() {
     });
 
     it('performs an AJAX GET request with FormData', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(async _ => {
                 const response = await DOM.get(null, {
                     test1: 'Test 1',
@@ -424,7 +424,7 @@ describe('#get', function() {
     });
 
     it('performs an AJAX GET request with content type', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(async _ => {
                 const response = await DOM.get(null, null, {
                     contentType: 'text/plain'
@@ -453,7 +453,7 @@ describe('#get', function() {
     });
 
     it('performs an AJAX GET request with response type', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(async _ => {
                 const response = await DOM.get(null, null, {
                     responseType: 'json'
@@ -483,7 +483,7 @@ describe('#get', function() {
     });
 
     it('performs an AJAX GET request with MIME type', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(async _ => {
                 const response = await DOM.get(null, null, {
                     mimeType: 'text/plain'
@@ -513,7 +513,7 @@ describe('#get', function() {
     });
 
     it('performs an AJAX GET request with username', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(async _ => {
                 const response = await DOM.get(null, null, {
                     username: 'test'
@@ -543,7 +543,7 @@ describe('#get', function() {
     });
 
     it('performs an AJAX GET request with password', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(async _ => {
                 const response = await DOM.get(null, null, {
                     password: 'test'
@@ -573,7 +573,7 @@ describe('#get', function() {
     });
 
     it('performs an AJAX GET request with timeout', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(async _ => {
                 const response = await DOM.get(null, null, {
                     timeout: 1000
@@ -603,7 +603,7 @@ describe('#get', function() {
     });
 
     it('performs an AJAX GET request (local)', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(async _ => {
                 const response = await DOM.get(null, null, {
                     isLocal: true
@@ -631,7 +631,7 @@ describe('#get', function() {
     });
 
     it('performs an AJAX GET request with custom headers', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(async _ => {
                 const response = await DOM.get(null, null, {
                     headers: {
@@ -691,7 +691,7 @@ describe('#get', function() {
     });
 
     it('works with beforeSend callback', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(async _ => {
                 let result;
                 await DOM.get(null, null, {
@@ -716,7 +716,7 @@ describe('#get', function() {
     });
 
     it('works with afterSend callback', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(async _ => {
                 let result;
                 await DOM.get(null, null, {
@@ -742,7 +742,7 @@ describe('#get', function() {
     });
 
     it('works with onProgress callback', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(async _ => {
                 let result;
                 await DOM.get(null, null, {
@@ -778,7 +778,7 @@ describe('#get', function() {
     });
 
     it('works with onUploadProgress callback', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(async _ => {
                 let result;
                 await DOM.get(null, null, {
@@ -814,7 +814,7 @@ describe('#get', function() {
     });
 
     it('can be cancelled', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(async _ => {
                 try {
                     const ajax = DOM.get();
@@ -844,7 +844,7 @@ describe('#get', function() {
     });
 
     it('throws on XHR error', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(async _ => {
                 try {
                     const ajax = DOM.get();
@@ -877,7 +877,7 @@ describe('#get', function() {
     });
 
     it('throws on status error', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(async _ => {
                 try {
                     const ajax = DOM.get();

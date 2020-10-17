@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../../setup');
 
 describe('QuerySet #nearestToNode', function() {
@@ -19,7 +19,7 @@ describe('QuerySet #nearestToNode', function() {
     });
 
     it('returns the nearest node to another node', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.queryMutable('[data-toggle="from"]')
                     .nearestToNode('[data-toggle="to"]')
@@ -33,7 +33,7 @@ describe('QuerySet #nearestToNode', function() {
     });
 
     it('returns an empty QuerySet for empty nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.queryMutable('#invalid')
                     .nearestToNode('[data-toggle="to"]')
@@ -44,7 +44,7 @@ describe('QuerySet #nearestToNode', function() {
     });
 
     it('returns an empty QuerySet for empty other nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.queryMutable('[data-toggle="from"]')
                     .nearestToNode('#invalid')
@@ -55,7 +55,7 @@ describe('QuerySet #nearestToNode', function() {
     });
 
     it('returns a new QuerySet', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const query1 = dom.queryMutable('div');
                 const query2 = query1.nearestToNode('[data-toggle="to"]');
@@ -66,7 +66,7 @@ describe('QuerySet #nearestToNode', function() {
     });
 
     it('works with HTMLElement other nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.queryMutable('[data-toggle="from"]')
                     .nearestToNode(
@@ -82,7 +82,7 @@ describe('QuerySet #nearestToNode', function() {
     });
 
     it('works with NodeList other nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.queryMutable('[data-toggle="from"]')
                     .nearestToNode(
@@ -98,7 +98,7 @@ describe('QuerySet #nearestToNode', function() {
     });
 
     it('works with HTMLCollection other nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.queryMutable('[data-toggle="from"]')
                     .nearestToNode(
@@ -114,7 +114,7 @@ describe('QuerySet #nearestToNode', function() {
     });
 
     it('works with array other nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.queryMutable('[data-toggle="from"]')
                     .nearestToNode([
@@ -131,7 +131,7 @@ describe('QuerySet #nearestToNode', function() {
     });
 
     it('works with QuerySet other nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ => {
                 const query = dom.queryMutable('[data-toggle="to"]');
                 return dom.queryMutable('[data-toggle="from"]')

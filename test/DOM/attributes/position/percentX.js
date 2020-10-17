@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../../setup');
 
 describe('#percentX', function() {
@@ -13,7 +13,7 @@ describe('#percentX', function() {
     });
 
     it('returns the percent of a position along the X-axis for the first node', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.percentX('div', 700)
             ),
@@ -22,7 +22,7 @@ describe('#percentX', function() {
     });
 
     it('returns the percent of a position along the X-axis for the first node with offset', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.percentX('div', 1158, true)
             ),
@@ -31,7 +31,7 @@ describe('#percentX', function() {
     });
 
     it('clamps the returned value between 0 and 100', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ => [
                 dom.percentX('div', 0),
                 dom.percentX('div', 2000)
@@ -44,7 +44,7 @@ describe('#percentX', function() {
     });
 
     it('returns undefined for empty nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.percentX('#invalid', 700)
             ),
@@ -53,7 +53,7 @@ describe('#percentX', function() {
     });
 
     it('works with HTMLElement nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.percentX(
                     document.getElementById('test1'),
@@ -65,7 +65,7 @@ describe('#percentX', function() {
     });
 
     it('works with NodeList nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.percentX(
                     document.querySelectorAll('div'),
@@ -77,7 +77,7 @@ describe('#percentX', function() {
     });
 
     it('works with HTMLCollection nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.percentX(
                     document.body.children,
@@ -89,7 +89,7 @@ describe('#percentX', function() {
     });
 
     it('works with array nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.percentX([
                     document.getElementById('test1'),

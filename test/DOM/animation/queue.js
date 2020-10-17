@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../setup');
 const { waitFor } = require('../../helpers');
 
@@ -20,7 +20,7 @@ describe('#queue', function() {
                 node.dataset.test = 'Test'
             });
         }).then(waitFor(100)).then(async _ => {
-            assert.equal(
+            assert.strictEqual(
                 await exec(_ => document.body.innerHTML),
                 '<div id="test1"></div>' +
                 '<div id="test2" class="queue" data-test="Test"></div>' +
@@ -36,7 +36,7 @@ describe('#queue', function() {
                 node.dataset.test = 'Test'
             });
         });
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => document.body.innerHTML),
             '<div id="test1"></div>' +
             '<div id="test2" class="queue"></div>' +
@@ -56,7 +56,7 @@ describe('#queue', function() {
                 node.dataset.test = 'Test'
             });
         }).then(waitFor(50)).then(async _ => {
-            assert.equal(
+            assert.strictEqual(
                 await exec(_ => document.body.innerHTML),
                 '<div id="test1"></div>' +
                 '<div id="test2" class="queue"></div>' +
@@ -64,7 +64,7 @@ describe('#queue', function() {
                 '<div id="test4" class="queue"></div>'
             );
         }).then(waitFor(100)).then(async _ => {
-            assert.equal(
+            assert.strictEqual(
                 await exec(_ => document.body.innerHTML),
                 '<div id="test1"></div>' +
                 '<div id="test2" class="queue" data-test="Test"></div>' +
@@ -85,7 +85,7 @@ describe('#queue', function() {
                 node.dataset.test = 'Test'
             });
         }).then(waitFor(50)).then(async _ => {
-            assert.equal(
+            assert.strictEqual(
                 await exec(_ => document.body.innerHTML),
                 '<div id="test1"></div>' +
                 '<div id="test2" class="queue"></div>' +
@@ -93,7 +93,7 @@ describe('#queue', function() {
                 '<div id="test4" class="queue"></div>'
             );
         }).then(waitFor(100)).then(async _ => {
-            assert.equal(
+            assert.strictEqual(
                 await exec(_ => document.body.innerHTML),
                 '<div id="test1"></div>' +
                 '<div id="test2" class="queue"></div>' +
@@ -112,7 +112,7 @@ describe('#queue', function() {
                 }
             );
         }).then(waitFor(100)).then(async _ => {
-            assert.equal(
+            assert.strictEqual(
                 await exec(_ => document.body.innerHTML),
                 '<div id="test1"></div>' +
                 '<div id="test2" class="queue" data-test="Test"></div>' +
@@ -131,7 +131,7 @@ describe('#queue', function() {
                 }
             );
         }).then(waitFor(100)).then(async _ => {
-            assert.equal(
+            assert.strictEqual(
                 await exec(_ => document.body.innerHTML),
                 '<div id="test1"></div>' +
                 '<div id="test2" class="queue" data-test="Test"></div>' +
@@ -150,7 +150,7 @@ describe('#queue', function() {
                 }
             );
         }).then(waitFor(100)).then(async _ => {
-            assert.equal(
+            assert.strictEqual(
                 await exec(_ => document.body.innerHTML),
                 '<div id="test1" data-test="Test"></div>' +
                 '<div id="test2" class="queue" data-test="Test"></div>' +
@@ -169,7 +169,7 @@ describe('#queue', function() {
                 node.dataset.test = 'Test'
             });
         }).then(waitFor(100)).then(async _ => {
-            assert.equal(
+            assert.strictEqual(
                 await exec(_ => document.body.innerHTML),
                 '<div id="test1"></div>' +
                 '<div id="test2" class="queue" data-test="Test"></div>' +

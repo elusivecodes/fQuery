@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec, setStyle } = require('../../../setup');
 
 describe('#visible', function() {
@@ -23,7 +23,7 @@ describe('#visible', function() {
     });
 
     it('returns visible nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.visible('div')
                     .map(node => node.id)
@@ -36,7 +36,7 @@ describe('#visible', function() {
     });
 
     it('returns descendents of visible nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.visible('span')
                     .map(node => node.id)
@@ -49,7 +49,7 @@ describe('#visible', function() {
     });
 
     it('works with HTMLElement nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.visible(
                     document.getElementById('div1')
@@ -62,7 +62,7 @@ describe('#visible', function() {
     });
 
     it('works with NodeList nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.visible(
                     document.querySelectorAll('div')
@@ -76,7 +76,7 @@ describe('#visible', function() {
     });
 
     it('works with HTMLCollection nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.visible(
                     document.body.children
@@ -90,7 +90,7 @@ describe('#visible', function() {
     });
 
     it('works with Document nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.visible(document)
                     .map(node => node.id)
@@ -102,7 +102,7 @@ describe('#visible', function() {
     });
 
     it('works with Window nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.visible(window)
                     .map(node => node.id)
@@ -114,7 +114,7 @@ describe('#visible', function() {
     });
 
     it('works with array nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.visible([
                     document.getElementById('div1'),

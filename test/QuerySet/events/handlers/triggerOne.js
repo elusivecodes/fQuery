@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../../setup');
 
 describe('QuerySet #triggerOne', function() {
@@ -14,7 +14,7 @@ describe('QuerySet #triggerOne', function() {
     });
 
     it('triggers an event for the first node', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 let result = 0;
                 dom.addEvent('a', 'click', _ => {
@@ -29,7 +29,7 @@ describe('QuerySet #triggerOne', function() {
     });
 
     it('triggers a namespaced event for the first node', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 let result = 0;
                 dom.addEvent('a', 'click.test', _ => {
@@ -44,7 +44,7 @@ describe('QuerySet #triggerOne', function() {
     });
 
     it('triggers a deep namespaced event for the first node', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 let result = 0;
                 dom.addEvent('a', 'click.test.deep', _ => {
@@ -59,7 +59,7 @@ describe('QuerySet #triggerOne', function() {
     });
 
     it('triggers a namespaced event with namespacing for the first node', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 let result = 0;
                 dom.addEvent('a', 'click.test', _ => {
@@ -74,7 +74,7 @@ describe('QuerySet #triggerOne', function() {
     });
 
     it('triggers a deep namespaced event with namespacing for the first node', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 let result = 0;
                 dom.addEvent('a', 'click.test.deep', _ => {
@@ -89,7 +89,7 @@ describe('QuerySet #triggerOne', function() {
     });
 
     it('triggers a deep namespaced event with deep namespacing for the first node', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 let result = 0;
                 dom.addEvent('a', 'click.test.deep', _ => {
@@ -104,7 +104,7 @@ describe('QuerySet #triggerOne', function() {
     });
 
     it('does not trigger an event without namespacing for the first node', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 let result = 0;
                 dom.addEvent('a', 'click', _ => {
@@ -119,7 +119,7 @@ describe('QuerySet #triggerOne', function() {
     });
 
     it('does not trigger a namespaced event with deep namespacing for the first node', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 let result = 0;
                 dom.addEvent('a', 'click.test', _ => {
@@ -134,7 +134,7 @@ describe('QuerySet #triggerOne', function() {
     });
 
     it('triggers an event for the first node with custom data', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 let result = 0;
                 dom.addEvent('a', 'click', e => {
@@ -155,7 +155,7 @@ describe('QuerySet #triggerOne', function() {
     });
 
     it('bubbles to other event listeners', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 let result = 0;
                 dom.addEvent('#div1', 'click', _ => {
@@ -170,7 +170,7 @@ describe('QuerySet #triggerOne', function() {
     });
 
     it('can be prevented from bubbling', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 let result = 0;
                 dom.addEvent('#div1', 'click',
@@ -188,7 +188,7 @@ describe('QuerySet #triggerOne', function() {
     });
 
     it('returns false if the event is cancelled', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.addEvent('#test1', 'click', e => {
                     e.preventDefault();
@@ -201,7 +201,7 @@ describe('QuerySet #triggerOne', function() {
     });
 
     it('returns false if the event returns false', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.addEvent('#test1', 'click', _ => false);
                 return dom.queryMutable('#test1')
@@ -212,7 +212,7 @@ describe('QuerySet #triggerOne', function() {
     });
 
     it('returns false if a delegated event returns false', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.addEventDelegate('#div1', 'click', 'a', _ => false);
                 return dom.queryMutable('#test1')
@@ -223,7 +223,7 @@ describe('QuerySet #triggerOne', function() {
     });
 
     it('returns true if the event is not cancelled', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.addEvent('#test1', 'click', _ => { });
                 return dom.queryMutable('#test1')
@@ -234,7 +234,7 @@ describe('QuerySet #triggerOne', function() {
     });
 
     it('returns true if a delegated event is not cancelled', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.addEventDelegate('#div1', 'click', 'a', _ => { });
                 return dom.queryMutable('#test1')
@@ -245,7 +245,7 @@ describe('QuerySet #triggerOne', function() {
     });
 
     it('can be prevented from being cancelled', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.addEvent('#test1', 'click', e => {
                     e.preventDefault();
@@ -260,7 +260,7 @@ describe('QuerySet #triggerOne', function() {
     });
 
     it('can be prevented from being cancelled with delegate', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.addEventDelegate('#div1', 'click', 'a', e => {
                     e.preventDefault();
@@ -275,7 +275,7 @@ describe('QuerySet #triggerOne', function() {
     });
 
     it('works with ShadowRoot nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 let result = 0;
                 const div = document.createElement('div');
@@ -292,7 +292,7 @@ describe('QuerySet #triggerOne', function() {
     });
 
     it('works with Document nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 let result = 0;
                 dom.addEvent(document, 'click', _ => {
@@ -307,7 +307,7 @@ describe('QuerySet #triggerOne', function() {
     });
 
     it('works with Window nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 let result = 0;
                 dom.addEvent(window, 'click', _ => {

@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../../setup');
 
 describe('#setData', function() {
@@ -12,7 +12,7 @@ describe('#setData', function() {
     });
 
     it('sets a data object for all nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ => {
                 dom.setData('div', {
                     testA: 'Test 1',
@@ -37,7 +37,7 @@ describe('#setData', function() {
     });
 
     it('sets data for all nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ => {
                 dom.setData('div', 'test', 'Test 1');
                 return [
@@ -57,7 +57,7 @@ describe('#setData', function() {
     });
 
     it('works with HTMLElement nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ => {
                 dom.setData(
                     document.getElementById('test1'),
@@ -73,7 +73,7 @@ describe('#setData', function() {
     });
 
     it('works with NodeList nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ => {
                 dom.setData(
                     document.querySelectorAll('div'),
@@ -97,7 +97,7 @@ describe('#setData', function() {
     });
 
     it('works with HTMLCollection nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ => {
                 dom.setData(
                     document.body.children,
@@ -121,7 +121,7 @@ describe('#setData', function() {
     });
 
     it('works with DocumentFragment nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ => {
                 const fragment = document.createDocumentFragment();
                 dom.setData(fragment, 'test', 'Test 1');
@@ -134,7 +134,7 @@ describe('#setData', function() {
     });
 
     it('works with ShadowRoot nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ => {
                 const div = document.createElement('div');
                 const shadow = div.attachShadow({ mode: 'open' });
@@ -148,7 +148,7 @@ describe('#setData', function() {
     });
 
     it('works with Document nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ => {
                 dom.setData(document, 'test', 'Test 1');
                 return dom.getData(document);
@@ -160,7 +160,7 @@ describe('#setData', function() {
     });
 
     it('works with Window nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ => {
                 dom.setData(window, 'test', 'Test 1');
                 return dom.getData(window);
@@ -172,7 +172,7 @@ describe('#setData', function() {
     });
 
     it('works with array nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ => {
                 dom.setData([
                     document.getElementById('test1'),

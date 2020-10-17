@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../../setup');
 
 describe('QuerySet #serializeArray', function() {
@@ -41,7 +41,7 @@ describe('QuerySet #serializeArray', function() {
     });
 
     it('returns a serialized string of all form elements', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.queryMutable('form')
                     .serializeArray()
@@ -92,7 +92,7 @@ describe('QuerySet #serializeArray', function() {
     });
 
     it('works with DocumentFragment nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ => {
                 const range = document.createRange();
                 const fragment = range.createContextualFragment(
@@ -147,7 +147,7 @@ describe('QuerySet #serializeArray', function() {
     });
 
     it('works with ShadowRoot nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ => {
                 const div = document.createElement('div');
                 const shadow = div.attachShadow({ mode: 'open' });

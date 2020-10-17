@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../../setup');
 
 describe('QuerySet #hasShadow', function() {
@@ -16,7 +16,7 @@ describe('QuerySet #hasShadow', function() {
     });
 
     it('returns true if any node has a shadow root', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.queryMutable('div')
                     .hasShadow()
@@ -26,7 +26,7 @@ describe('QuerySet #hasShadow', function() {
     });
 
     it('returns false if no nodes have a shadow root', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.queryMutable('div:not(.test)')
                     .hasShadow()
@@ -36,7 +36,7 @@ describe('QuerySet #hasShadow', function() {
     });
 
     it('returns false for closed shadow roots', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.queryMutable('#div3')
                     .hasShadow()

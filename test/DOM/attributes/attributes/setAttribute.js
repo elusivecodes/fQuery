@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../../setup');
 
 describe('#setAttribute', function() {
@@ -12,7 +12,7 @@ describe('#setAttribute', function() {
     });
 
     it('sets an attributes object for all nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.setAttribute('input', {
                     min: '1',
@@ -26,7 +26,7 @@ describe('#setAttribute', function() {
     });
 
     it('sets an attribute for all nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.setAttribute('input', 'placeholder', '123');
                 return document.body.innerHTML;
@@ -37,7 +37,7 @@ describe('#setAttribute', function() {
     });
 
     it('works with HTMLElement nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.setAttribute(
                     document.getElementById('test1'),
@@ -52,7 +52,7 @@ describe('#setAttribute', function() {
     });
 
     it('works with NodeList nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.setAttribute(
                     document.querySelectorAll('input'),
@@ -67,7 +67,7 @@ describe('#setAttribute', function() {
     });
 
     it('works with HTMLCollection nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.setAttribute(
                     document.body.children,
@@ -82,7 +82,7 @@ describe('#setAttribute', function() {
     });
 
     it('works with array nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.setAttribute([
                     document.getElementById('test1'),

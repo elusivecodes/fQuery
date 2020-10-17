@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../../setup');
 
 describe('QuerySetImmutable #hasProperty', function() {
@@ -16,7 +16,7 @@ describe('QuerySetImmutable #hasProperty', function() {
     });
 
     it('returns true if any node has a specified property', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.query('div')
                     .hasProperty('test')
@@ -26,7 +26,7 @@ describe('QuerySetImmutable #hasProperty', function() {
     });
 
     it('returns false if no nodes have a specified property', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.query('div:not(.test)')
                     .hasProperty('test')

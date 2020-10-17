@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec, setStyle } = require('../../../setup');
 
 describe('QuerySetImmutable #hasCSSTransition', function() {
@@ -15,7 +15,7 @@ describe('QuerySetImmutable #hasCSSTransition', function() {
     });
 
     it('returns true if any node has a CSS transition', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.query('div')
                     .hasCSSTransition()
@@ -25,7 +25,7 @@ describe('QuerySetImmutable #hasCSSTransition', function() {
     });
 
     it('returns false if no nodes have a CSS transition', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.query('div:not(.test)')
                     .hasCSSTransition()

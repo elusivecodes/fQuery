@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../../setup');
 
 describe('QuerySetImmutable #wrapInner', function() {
@@ -25,7 +25,7 @@ describe('QuerySetImmutable #wrapInner', function() {
     });
 
     it('wraps contents of each node', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.query('#wrap > div')
                     .wrapInner('.outer');
@@ -59,7 +59,7 @@ describe('QuerySetImmutable #wrapInner', function() {
     });
 
     it('returns the QuerySet', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const query = dom.query('#wrap > div');
                 return query === query.wrapInner('.outer');
@@ -69,7 +69,7 @@ describe('QuerySetImmutable #wrapInner', function() {
     });
 
     it('works with DocumentFragment nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const range = document.createRange();
                 const fragment = range.createContextualFragment(
@@ -107,7 +107,7 @@ describe('QuerySetImmutable #wrapInner', function() {
     });
 
     it('works with ShadowRoot nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const div = document.createElement('div');
                 const shadow = div.attachShadow({ mode: 'open' });
@@ -131,7 +131,7 @@ describe('QuerySetImmutable #wrapInner', function() {
     });
 
     it('works with HTMLElement other nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.query('#wrap > div')
                     .wrapInner(
@@ -167,7 +167,7 @@ describe('QuerySetImmutable #wrapInner', function() {
     });
 
     it('works with NodeList other nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.query('#wrap > div')
                     .wrapInner(
@@ -203,7 +203,7 @@ describe('QuerySetImmutable #wrapInner', function() {
     });
 
     it('works with HTMLCollection other nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.query('#wrap > div')
                     .wrapInner(
@@ -239,7 +239,7 @@ describe('QuerySetImmutable #wrapInner', function() {
     });
 
     it('works with DocumentFragment other nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const range = document.createRange();
                 const fragment = range.createContextualFragment(
@@ -277,7 +277,7 @@ describe('QuerySetImmutable #wrapInner', function() {
     });
 
     it('works with array other nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.query('#wrap > div')
                     .wrapInner([
@@ -313,7 +313,7 @@ describe('QuerySetImmutable #wrapInner', function() {
     });
 
     it('works with HTML other nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.query('#wrap > div')
                     .wrapInner('<div class="div-outer"><span class="span-inner"></span></div>');
@@ -347,7 +347,7 @@ describe('QuerySetImmutable #wrapInner', function() {
     });
 
     it('works with QuerySet other nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const query = dom.query('.outer');
                 dom.query('#wrap > div')

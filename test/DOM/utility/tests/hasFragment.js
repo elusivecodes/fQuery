@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../../setup');
 
 describe('#hasFragment', function() {
@@ -18,7 +18,7 @@ describe('#hasFragment', function() {
     });
 
     it('returns true if any node has a document fragment', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.hasFragment('template')
             ),
@@ -27,7 +27,7 @@ describe('#hasFragment', function() {
     });
 
     it('returns false if no nodes have a document fragment', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.hasFragment('div')
             ),
@@ -36,7 +36,7 @@ describe('#hasFragment', function() {
     });
 
     it('works with HTMLElement nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.hasFragment(
                     document.getElementById('template1')
@@ -47,7 +47,7 @@ describe('#hasFragment', function() {
     });
 
     it('works with NodeList nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.hasFragment(
                     document.querySelectorAll('template')
@@ -58,7 +58,7 @@ describe('#hasFragment', function() {
     });
 
     it('works with HTMLCollection nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.hasFragment(
                     document.body.children
@@ -69,7 +69,7 @@ describe('#hasFragment', function() {
     });
 
     it('works with array nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.hasFragment([
                     document.getElementById('template1'),

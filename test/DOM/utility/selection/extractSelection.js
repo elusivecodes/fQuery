@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../../setup');
 
 describe('#extractSelection', function() {
@@ -28,7 +28,7 @@ describe('#extractSelection', function() {
     });
 
     it('returns the extracted nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const extracted = dom.extractSelection();
                 document.body.innerHTML = '';
@@ -42,7 +42,7 @@ describe('#extractSelection', function() {
     });
 
     it('extracts the selected nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.extractSelection();
                 return document.body.innerHTML;

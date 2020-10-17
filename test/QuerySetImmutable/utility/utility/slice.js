@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../../setup');
 
 describe('QuerySetImmutable #slice', function() {
@@ -14,7 +14,7 @@ describe('QuerySetImmutable #slice', function() {
     });
 
     it('reduces the nodes to a subset of indexes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.query('div')
                     .slice(1, 3)
@@ -29,7 +29,7 @@ describe('QuerySetImmutable #slice', function() {
     });
 
     it('reduces the nodes to a subset of indexes (without end)', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.query('div')
                     .slice(1)
@@ -45,7 +45,7 @@ describe('QuerySetImmutable #slice', function() {
     });
 
     it('reduces the nodes to a subset of indexes (without start)', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.query('div')
                     .slice()
@@ -62,7 +62,7 @@ describe('QuerySetImmutable #slice', function() {
     });
 
     it('returns a new QuerySetImmutable', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ => {
                 const query1 = dom.query('div');
                 const query2 = query1.slice();

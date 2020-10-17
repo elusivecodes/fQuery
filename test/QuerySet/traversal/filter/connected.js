@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../../setup');
 
 describe('QuerySet #connected', function() {
@@ -12,7 +12,7 @@ describe('QuerySet #connected', function() {
     });
 
     it('returns nodes connected to the DOM', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.queryMutable('div')
                     .connected()
@@ -27,7 +27,7 @@ describe('QuerySet #connected', function() {
     });
 
     it('filters out nodes not connected to the DOM', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.queryMutable(
                     document.createElement('div')
@@ -38,7 +38,7 @@ describe('QuerySet #connected', function() {
     });
 
     it('returns the QuerySet', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const query = dom.queryMutable('div');
                 return query === query.connected();
@@ -48,7 +48,7 @@ describe('QuerySet #connected', function() {
     });
 
     it('works with DocumentFragment nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ => {
                 const fragment = document.createDocumentFragment();
                 return dom.queryMutable(fragment)
@@ -60,7 +60,7 @@ describe('QuerySet #connected', function() {
     });
 
     it('works with ShadowRoot nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ => {
                 const div = document.getElementById('div1');
                 const shadow = div.attachShadow({ mode: 'open' });

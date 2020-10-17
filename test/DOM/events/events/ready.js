@@ -1,10 +1,10 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../../setup');
 
 describe('#ready', function() {
 
     it('executes a callback when ready', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 let result;
                 dom.ready(_ => {

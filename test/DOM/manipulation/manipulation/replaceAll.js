@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../../setup');
 const { easeInOut, testAnimation, testNoAnimation, waitFor } = require('../../../helpers');
 
@@ -23,7 +23,7 @@ describe('#replaceAll', function() {
     });
 
     it('replaces each other node with nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.replaceAll('a', 'div');
                 return document.body.innerHTML;
@@ -40,7 +40,7 @@ describe('#replaceAll', function() {
     });
 
     it('removes events from other nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 let result = 0;
                 const nodes = document.querySelectorAll('div');
@@ -59,7 +59,7 @@ describe('#replaceAll', function() {
     });
 
     it('does not remove events for nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 let result = 0;
                 dom.addEvent('a', 'click', _ => {
@@ -74,7 +74,7 @@ describe('#replaceAll', function() {
     });
 
     it('removes data from other nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ => {
                 const nodes = document.querySelectorAll('div');
                 dom.setData('div', 'test', 'Test');
@@ -97,7 +97,7 @@ describe('#replaceAll', function() {
     });
 
     it('does not remove data for nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ => {
                 dom.setData('a', 'test', 'Test');
                 dom.replaceAll('a', 'div');
@@ -193,7 +193,7 @@ describe('#replaceAll', function() {
                 }
             });
         }).then(waitFor(100)).then(async _ => {
-            assert.equal(
+            assert.strictEqual(
                 await exec(_ => document.body.innerHTML),
                 '<a href="#">Test</a>' +
                 '<a href="#">Test</a>' +
@@ -212,7 +212,7 @@ describe('#replaceAll', function() {
     });
 
     it('triggers a remove event for other nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 let result = 0;
                 dom.addEvent('div', 'remove', _ => {
@@ -226,7 +226,7 @@ describe('#replaceAll', function() {
     });
 
     it('does not clone for the last nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const nodes = [...document.querySelectorAll('a')];
                 dom.replaceAll('a', 'div');
@@ -238,7 +238,7 @@ describe('#replaceAll', function() {
     });
 
     it('works with HTMLElement nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.replaceAll(
                     document.querySelector('.inner1'),
@@ -258,7 +258,7 @@ describe('#replaceAll', function() {
     });
 
     it('works with HTMLCollection nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.replaceAll(
                     document.querySelector('.outer1').children,
@@ -278,7 +278,7 @@ describe('#replaceAll', function() {
     });
 
     it('works with NodeList nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.replaceAll(
                     document.querySelectorAll('.inner1'),
@@ -298,7 +298,7 @@ describe('#replaceAll', function() {
     });
 
     it('works with DocumentFragment nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const range = document.createRange();
                 const fragment = range.createContextualFragment(
@@ -323,7 +323,7 @@ describe('#replaceAll', function() {
     });
 
     it('works with array nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.replaceAll([
                     document.querySelector('.inner1')
@@ -342,7 +342,7 @@ describe('#replaceAll', function() {
     });
 
     it('works with HTML nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.replaceAll('<div><span class="test">Test</span></div>', 'a');
                 return document.body.innerHTML;
@@ -363,7 +363,7 @@ describe('#replaceAll', function() {
     });
 
     it('works with HTMLElement other nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.replaceAll(
                     'a',
@@ -385,7 +385,7 @@ describe('#replaceAll', function() {
     });
 
     it('works with NodeList other nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.replaceAll(
                     'a',
@@ -407,7 +407,7 @@ describe('#replaceAll', function() {
     });
 
     it('works with HTMLCollection other nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.replaceAll(
                     'a',
@@ -429,7 +429,7 @@ describe('#replaceAll', function() {
     });
 
     it('works with array other nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.replaceAll('a', [
                     document.querySelector('.inner2')

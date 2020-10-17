@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../../setup');
 
 describe('#hasData', function() {
@@ -16,7 +16,7 @@ describe('#hasData', function() {
     });
 
     it('returns true if any node has data', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.hasData('div')
             ),
@@ -25,7 +25,7 @@ describe('#hasData', function() {
     });
 
     it('returns false if no nodes have data', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.hasData('div:not(.test)')
             ),
@@ -34,7 +34,7 @@ describe('#hasData', function() {
     });
 
     it('returns true if any node has data for a key', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.hasData('#div1', 'test1')
             ),
@@ -43,7 +43,7 @@ describe('#hasData', function() {
     });
 
     it('returns false if no nodes have data for a key', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.hasData('#div1', 'test2')
             ),
@@ -52,7 +52,7 @@ describe('#hasData', function() {
     });
 
     it('works with HTMLElement nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.hasData(
                     document.getElementById('div1')
@@ -63,7 +63,7 @@ describe('#hasData', function() {
     });
 
     it('works with NodeList nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.hasData(
                     document.querySelectorAll('div')
@@ -74,7 +74,7 @@ describe('#hasData', function() {
     });
 
     it('works with HTMLCollection nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.hasData(
                     document.body.children
@@ -85,7 +85,7 @@ describe('#hasData', function() {
     });
 
     it('works with DocumentFragment nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const fragment = document.createDocumentFragment();
                 dom.setData(fragment, 'test', 'Test');
@@ -96,7 +96,7 @@ describe('#hasData', function() {
     });
 
     it('works with ShadowRoot nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const div = document.createElement('div');
                 const shadow = div.attachShadow({ mode: 'open' });
@@ -108,7 +108,7 @@ describe('#hasData', function() {
     });
 
     it('works with Document nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.setData(document, 'test', 'Test');
                 return dom.hasData(document);
@@ -118,7 +118,7 @@ describe('#hasData', function() {
     });
 
     it('works with Window nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.setData(window, 'test', 'Test');
                 return dom.hasData(window);
@@ -128,7 +128,7 @@ describe('#hasData', function() {
     });
 
     it('works with array nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.hasData([
                     document.getElementById('div1'),

@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../../setup');
 
 describe('#is', function() {
@@ -14,7 +14,7 @@ describe('#is', function() {
     });
 
     it('returns true if any node matches a filter', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.is('div', '.test')
             ),
@@ -23,7 +23,7 @@ describe('#is', function() {
     });
 
     it('returns false if no nodes match a filter', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.is('div:not(.test)', '.test')
             ),
@@ -32,7 +32,7 @@ describe('#is', function() {
     });
 
     it('works with HTMLElement nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.is(
                     document.getElementById('div1'),
@@ -44,7 +44,7 @@ describe('#is', function() {
     });
 
     it('works with NodeList nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.is(
                     document.querySelectorAll('div'),
@@ -56,7 +56,7 @@ describe('#is', function() {
     });
 
     it('works with HTMLCollection nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.is(
                     document.body.children,
@@ -68,7 +68,7 @@ describe('#is', function() {
     });
 
     it('works with DocumentFragment nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const fragment = document.createDocumentFragment();
                 return dom.is(fragment);
@@ -78,7 +78,7 @@ describe('#is', function() {
     });
 
     it('works with ShadowRoot nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const div = document.createElement('div');
                 const shadow = div.attachShadow({ mode: 'open' });
@@ -89,7 +89,7 @@ describe('#is', function() {
     });
 
     it('works with array nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.is([
                     document.getElementById('div1'),
@@ -103,7 +103,7 @@ describe('#is', function() {
     });
 
     it('works with function filter', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.is(
                     'div',
@@ -115,7 +115,7 @@ describe('#is', function() {
     });
 
     it('works with HTMLElement filter', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.is(
                     'div',
@@ -127,7 +127,7 @@ describe('#is', function() {
     });
 
     it('works with NodeList filter', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.is(
                     'div',
@@ -139,7 +139,7 @@ describe('#is', function() {
     });
 
     it('works with HTMLCollection filter', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.is(
                     'div',
@@ -151,7 +151,7 @@ describe('#is', function() {
     });
 
     it('works with DocumentFragment filter', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const fragment = document.createDocumentFragment();
                 return dom.is(
@@ -166,7 +166,7 @@ describe('#is', function() {
     });
 
     it('works with ShadowRoot filter', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const div = document.createElement('div');
                 const shadow = div.attachShadow({ mode: 'open' });
@@ -182,7 +182,7 @@ describe('#is', function() {
     });
 
     it('works with array filter', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.is('div', [
                     document.getElementById('div1'),

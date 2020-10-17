@@ -1,10 +1,10 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../../setup');
 
 describe('#sanitize', function() {
 
     it('returns a sanitized HTML string', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.sanitize(
                     '<script>' +
@@ -22,7 +22,7 @@ describe('#sanitize', function() {
     });
 
     it('sanitizes a HTML string with allowed tags', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.sanitize(
                     '<div id="div" class="test">' +
@@ -39,7 +39,7 @@ describe('#sanitize', function() {
     });
 
     it('sanitizes a HTML string with allowed attributes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.sanitize(
                     '<div id="div" class="test">' +
@@ -59,7 +59,7 @@ describe('#sanitize', function() {
     });
 
     it('sanitizes a HTML string with allowed wildcard attributes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.sanitize(
                     '<div id="div" class="test">' +

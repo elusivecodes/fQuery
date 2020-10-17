@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../../setup');
 
 describe('QuerySet #blur', function() {
@@ -12,7 +12,7 @@ describe('QuerySet #blur', function() {
     });
 
     it('triggers a blur event on the first node', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 let result;
                 const element = document.getElementById('test1');
@@ -27,7 +27,7 @@ describe('QuerySet #blur', function() {
     });
 
     it('returns the QuerySet', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 document.getElementById('test1').focus();
                 const query = dom.queryMutable('input');

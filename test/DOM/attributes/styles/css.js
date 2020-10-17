@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec, setStyle } = require('../../../setup');
 
 describe('#css', function() {
@@ -13,7 +13,7 @@ describe('#css', function() {
     });
 
     it('returns an object with all computed styles for the first node', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ => {
                 const css = dom.css('.test');
                 return {
@@ -29,7 +29,7 @@ describe('#css', function() {
     });
 
     it('returns a computed style for the first node', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.css('.test', 'width')
             ),
@@ -38,7 +38,7 @@ describe('#css', function() {
     });
 
     it('returns undefined for empty nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.css('#invalid', 'width')
             ),
@@ -47,7 +47,7 @@ describe('#css', function() {
     });
 
     it('works with HTMLElement nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.css(
                     document.getElementById('test1'),
@@ -59,7 +59,7 @@ describe('#css', function() {
     });
 
     it('works with NodeList nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.css(
                     document.querySelectorAll('.test'),
@@ -71,7 +71,7 @@ describe('#css', function() {
     });
 
     it('works with HTMLCollection nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.css(
                     document.body.children,
@@ -83,7 +83,7 @@ describe('#css', function() {
     });
 
     it('works with array nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.css([
                     document.getElementById('test1'),

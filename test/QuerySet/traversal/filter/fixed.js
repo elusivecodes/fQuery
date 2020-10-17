@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec, setStyle } = require('../../../setup');
 
 describe('QuerySet #fixed', function() {
@@ -23,7 +23,7 @@ describe('QuerySet #fixed', function() {
     });
 
     it('returns fixed nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.queryMutable('div')
                     .fixed()
@@ -38,7 +38,7 @@ describe('QuerySet #fixed', function() {
     });
 
     it('returns descendents of fixed nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.queryMutable('span')
                     .fixed()
@@ -53,7 +53,7 @@ describe('QuerySet #fixed', function() {
     });
 
     it('returns the QuerySet', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const query = dom.queryMutable('div');
                 return query === query.fixed();

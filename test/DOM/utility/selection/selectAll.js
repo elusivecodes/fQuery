@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../../setup');
 
 describe('#selectAll', function() {
@@ -27,7 +27,7 @@ describe('#selectAll', function() {
     });
 
     it('creates a selection on all nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.selectAll('.select');
                 const selection = document.getSelection();
@@ -39,7 +39,7 @@ describe('#selectAll', function() {
     });
 
     it('works with HTMLElement nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.selectAll(
                     document.getElementById('div3')
@@ -53,7 +53,7 @@ describe('#selectAll', function() {
     });
 
     it('works with NodeList nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.selectAll(
                     document.querySelectorAll('.select')
@@ -67,7 +67,7 @@ describe('#selectAll', function() {
     });
 
     it('works with HTMLCollection nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.selectAll(
                     document.getElementById('select').children
@@ -81,7 +81,7 @@ describe('#selectAll', function() {
     });
 
     it('works with array nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.selectAll([
                     document.getElementById('div4'),

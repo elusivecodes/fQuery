@@ -1,10 +1,10 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../setup');
 
 describe('#parseXML', function() {
 
     it('parses an XML string', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const myDoc = DOM.parseXML(
                     '<?xml version="1.0" encoding="UTF-8" ?>' +

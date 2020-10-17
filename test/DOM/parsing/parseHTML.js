@@ -1,10 +1,10 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../setup');
 
 describe('#parseHTML', function() {
 
     it('parses a HTML string', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const myDoc = DOM.parseHTML(
                     '<html>' +

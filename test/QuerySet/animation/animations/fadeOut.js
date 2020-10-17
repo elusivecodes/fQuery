@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../../setup');
 const { easeIn, easeInOut, easeOut, getAnimationStyle, linear, testAnimation, testNoAnimation, testNoStyle, waitFor } = require('../../../helpers');
 
@@ -11,7 +11,7 @@ const testFadeOut = async selector => {
     const data = await getAnimationStyle(selector, 'opacity');
 
     const amount = fadeOut(data.progress);
-    assert.equal(data.opacity, `${amount}`);
+    assert.strictEqual(data.opacity, `${amount}`);
 };
 
 describe('QuerySet #fadeOut', function() {
@@ -223,7 +223,7 @@ describe('QuerySet #fadeOut', function() {
                     }
                 );
         }).then(waitFor(50)).then(async _ => {
-            assert.equal(
+            assert.strictEqual(
                 await exec(_ => document.body.innerHTML),
                 '<div id="test1"></div>' +
                 '<div id="test2" class="animate"></div>' +
@@ -243,7 +243,7 @@ describe('QuerySet #fadeOut', function() {
     });
 
     it('returns the QuerySet', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const query = dom.queryMutable('.animate');
                 return query === query.fadeOut(

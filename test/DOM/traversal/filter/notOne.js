@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../../setup');
 
 describe('#notOne', function() {
@@ -14,7 +14,7 @@ describe('#notOne', function() {
     });
 
     it('returns the first node not matching a filter', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.notOne('div', '[data-filter="test"]').id
             ),
@@ -23,7 +23,7 @@ describe('#notOne', function() {
     });
 
     it('works with HTMLElement nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.notOne(
                     document.getElementById('div2'),
@@ -35,7 +35,7 @@ describe('#notOne', function() {
     });
 
     it('works with NodeList nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.notOne(
                     document.querySelectorAll('div'),
@@ -47,7 +47,7 @@ describe('#notOne', function() {
     });
 
     it('works with HTMLCollection nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.notOne(
                     document.body.children,
@@ -59,7 +59,7 @@ describe('#notOne', function() {
     });
 
     it('works with DocumentFragment nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const fragment = document.createDocumentFragment();
                 fragment.id = 'fragment';
@@ -70,7 +70,7 @@ describe('#notOne', function() {
     });
 
     it('works with ShadowRoot nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const div = document.createElement('div');
                 const shadow = div.attachShadow({ mode: 'open' });
@@ -82,7 +82,7 @@ describe('#notOne', function() {
     });
 
     it('works with array nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.notOne([
                     document.getElementById('div1'),
@@ -96,7 +96,7 @@ describe('#notOne', function() {
     });
 
     it('works with function filter', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.notOne(
                     'div',
@@ -108,7 +108,7 @@ describe('#notOne', function() {
     });
 
     it('works with HTMLElement filter', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.notOne(
                     'div',
@@ -120,7 +120,7 @@ describe('#notOne', function() {
     });
 
     it('works with NodeList filter', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.notOne(
                     'div',
@@ -132,7 +132,7 @@ describe('#notOne', function() {
     });
 
     it('works with HTMLCollection filter', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.notOne(
                     'div',
@@ -144,7 +144,7 @@ describe('#notOne', function() {
     });
 
     it('works with DocumentFragment filter', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const fragment = document.createDocumentFragment();
                 fragment.id = 'fragment';
@@ -160,7 +160,7 @@ describe('#notOne', function() {
     });
 
     it('works with ShadowRoot filter', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const div = document.createElement('div');
                 const shadow = div.attachShadow({ mode: 'open' });
@@ -177,7 +177,7 @@ describe('#notOne', function() {
     });
 
     it('works with array filter', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.notOne('div', [
                     document.getElementById('div1'),

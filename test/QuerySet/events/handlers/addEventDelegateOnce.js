@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../../setup');
 
 describe('QuerySet #addEventDelegateOnce', function() {
@@ -22,7 +22,7 @@ describe('QuerySet #addEventDelegateOnce', function() {
     });
 
     it('adds a self-destructing delegated event to each node', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 let result = 0;
                 const event = new Event('click', {
@@ -51,7 +51,7 @@ describe('QuerySet #addEventDelegateOnce', function() {
     });
 
     it('adds self-destructing delegated events to each node', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 let result = 0;
                 const event1 = new Event('click', {
@@ -91,7 +91,7 @@ describe('QuerySet #addEventDelegateOnce', function() {
     });
 
     it('adds a self-destructing delegated event to each node with custom child selector', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 let result = 0;
                 const event = new Event('click', {
@@ -114,7 +114,7 @@ describe('QuerySet #addEventDelegateOnce', function() {
     });
 
     it('adds self-destructing delegated events to each node with custom child selector', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 let result = 0;
                 const event1 = new Event('click', {
@@ -154,7 +154,7 @@ describe('QuerySet #addEventDelegateOnce', function() {
     });
 
     it('adds a namespaced self-destructing delegated event to each node', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 let result = 0;
                 const event = new Event('click', {
@@ -183,7 +183,7 @@ describe('QuerySet #addEventDelegateOnce', function() {
     });
 
     it('adds namespaced self-destructing delegated events to each node', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 let result = 0;
                 const event1 = new Event('click', {
@@ -223,7 +223,7 @@ describe('QuerySet #addEventDelegateOnce', function() {
     });
 
     it('adds a deep namespaced self-destructing delegated event to each node', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 let result = 0;
                 const event = new Event('click', {
@@ -252,7 +252,7 @@ describe('QuerySet #addEventDelegateOnce', function() {
     });
 
     it('adds deep namespaced self-destructing delegated events to each node', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 let result = 0;
                 const event1 = new Event('click', {
@@ -292,7 +292,7 @@ describe('QuerySet #addEventDelegateOnce', function() {
     });
 
     it('returns the QuerySet', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const query = dom.queryMutable('div');
                 return query === query.addEventDelegateOnce('click', 'a', _ => {
@@ -304,7 +304,7 @@ describe('QuerySet #addEventDelegateOnce', function() {
     });
 
     it('works with ShadowRoot nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 let result = 0;
                 const event = new Event('click', {
@@ -327,7 +327,7 @@ describe('QuerySet #addEventDelegateOnce', function() {
     });
 
     it('works with Document nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 let result = 0;
                 const event = new Event('click', {

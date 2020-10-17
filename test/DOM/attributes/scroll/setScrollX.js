@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../../setup');
 
 describe('#setScrollX', function() {
@@ -16,7 +16,7 @@ describe('#setScrollX', function() {
     });
 
     it('sets the scroll X position for all nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ => {
                 dom.setScrollX('div', 100,);
                 return [
@@ -32,7 +32,7 @@ describe('#setScrollX', function() {
     });
 
     it('works with HTMLElement nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const element = document.getElementById('test1');
                 dom.setScrollX(element, 100,);
@@ -43,7 +43,7 @@ describe('#setScrollX', function() {
     });
 
     it('works with NodeList nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ => {
                 dom.setScrollX(
                     document.querySelectorAll('div'),
@@ -62,7 +62,7 @@ describe('#setScrollX', function() {
     });
 
     it('works with HTMLCollection nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ => {
                 dom.setScrollX(
                     document.body.children,
@@ -81,7 +81,7 @@ describe('#setScrollX', function() {
     });
 
     it('works with Document nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 document.body.innerHTML = '<div style="display: block; width: 1000px; height: 1000px;"></div>';
                 dom.setScrollX(document, 100);
@@ -92,7 +92,7 @@ describe('#setScrollX', function() {
     });
 
     it('works with Window nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 document.body.innerHTML = '<div style="display: block; width: 1000px; height: 1000px;"></div>';
                 dom.setScrollX(window, 100);
@@ -103,7 +103,7 @@ describe('#setScrollX', function() {
     });
 
     it('works with array nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ => {
                 const element1 = document.getElementById('test1');
                 const element2 = document.getElementById('test2');

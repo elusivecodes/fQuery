@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../../setup');
 
 describe('#withChildren', function() {
@@ -18,7 +18,7 @@ describe('#withChildren', function() {
     });
 
     it('returns nodes with children', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.withChildren('div')
                     .map(node => node.id)
@@ -31,7 +31,7 @@ describe('#withChildren', function() {
     });
 
     it('works with HTMLElement nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.withChildren(
                     document.getElementById('div1')
@@ -44,7 +44,7 @@ describe('#withChildren', function() {
     });
 
     it('works with NodeList nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.withChildren(
                     document.querySelectorAll('div')
@@ -58,7 +58,7 @@ describe('#withChildren', function() {
     });
 
     it('works with HTMLCollection nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.withChildren(
                     document.body.children
@@ -72,7 +72,7 @@ describe('#withChildren', function() {
     });
 
     it('works with DocumentFragment nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ => {
                 const range = document.createRange();
                 const fragment = range.createContextualFragment(
@@ -89,7 +89,7 @@ describe('#withChildren', function() {
     });
 
     it('works with ShadowRoot nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ => {
                 const div = document.createElement('div');
                 const shadow = div.attachShadow({ mode: 'open' });
@@ -109,7 +109,7 @@ describe('#withChildren', function() {
     });
 
     it('works with Document nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.withChildren(document)
                     .map(node => node.id)
@@ -121,7 +121,7 @@ describe('#withChildren', function() {
     });
 
     it('works with array nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.withChildren([
                     document.getElementById('div1'),

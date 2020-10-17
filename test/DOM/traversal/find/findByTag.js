@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../../setup');
 
 describe('#findByTag', function() {
@@ -31,7 +31,7 @@ describe('#findByTag', function() {
     });
 
     it('finds elements by tag name', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.findByTag('span')
                     .map(node => node.id)
@@ -50,7 +50,7 @@ describe('#findByTag', function() {
     });
 
     it('returns an empty array for non-matching tag', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.findByTag('invalid')
             ),
@@ -59,7 +59,7 @@ describe('#findByTag', function() {
     });
 
     it('returns an empty array for empty nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.findByTag('test', '#invalid')
             ),
@@ -68,7 +68,7 @@ describe('#findByTag', function() {
     });
 
     it('works with query selector nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.findByTag('span', '#parent1')
                     .map(node => node.id)
@@ -83,7 +83,7 @@ describe('#findByTag', function() {
     });
 
     it('works with HTMLElement nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.findByTag(
                     'span',
@@ -100,7 +100,7 @@ describe('#findByTag', function() {
     });
 
     it('works with NodeList nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.findByTag(
                     'span',
@@ -117,7 +117,7 @@ describe('#findByTag', function() {
     });
 
     it('works with HTMLCollection nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.findByTag(
                     'span',
@@ -134,7 +134,7 @@ describe('#findByTag', function() {
     });
 
     it('works with DocumentFragment nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ => {
                 const range = document.createRange();
                 const fragment = range.createContextualFragment(
@@ -154,7 +154,7 @@ describe('#findByTag', function() {
     });
 
     it('works with ShadowRoot nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ => {
                 const div = document.createElement('div');
                 const shadow = div.attachShadow({ mode: 'open' });
@@ -177,7 +177,7 @@ describe('#findByTag', function() {
     });
 
     it('works with Document nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ => {
                 const parser = new DOMParser();
                 const myDoc = parser.parseFromString(
@@ -204,7 +204,7 @@ describe('#findByTag', function() {
     });
 
     it('works with array nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.findByTag('span', [
                     document.getElementById('child1'),

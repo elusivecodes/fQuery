@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../../setup');
 
 describe('#parents', function() {
@@ -24,7 +24,7 @@ describe('#parents', function() {
     });
 
     it('returns the parents of each node', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.parents('a')
                     .map(node => node.id)
@@ -43,7 +43,7 @@ describe('#parents', function() {
     });
 
     it('returns the parents of each node matching a filter', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.parents('a', 'div')
                     .map(node => node.id)
@@ -58,7 +58,7 @@ describe('#parents', function() {
     });
 
     it('returns the parents of each node before a limit', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.parents('a', null, 'div')
                     .map(node => node.id)
@@ -71,7 +71,7 @@ describe('#parents', function() {
     });
 
     it('returns an empty array for empty nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.parents('#invalid')
             ),
@@ -80,7 +80,7 @@ describe('#parents', function() {
     });
 
     it('works with HTMLElement nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.parents(
                     document.getElementById('a1'),
@@ -95,7 +95,7 @@ describe('#parents', function() {
     });
 
     it('works with NodeList nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.parents(
                     document.querySelectorAll('a'),
@@ -112,7 +112,7 @@ describe('#parents', function() {
     });
 
     it('works with HTMLCollection nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.parents(
                     document.getElementById('child1').children,
@@ -127,7 +127,7 @@ describe('#parents', function() {
     });
 
     it('works with array nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.parents([
                     document.getElementById('a1'),
@@ -144,7 +144,7 @@ describe('#parents', function() {
     });
 
     it('works with function filter', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.parents(
                     'a',
@@ -161,7 +161,7 @@ describe('#parents', function() {
     });
 
     it('works with HTMLElement filter', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.parents(
                     'a',
@@ -175,7 +175,7 @@ describe('#parents', function() {
     });
 
     it('works with NodeList filter', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.parents(
                     'a',
@@ -192,7 +192,7 @@ describe('#parents', function() {
     });
 
     it('works with HTMLCollection filter', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.parents(
                     'a',
@@ -207,7 +207,7 @@ describe('#parents', function() {
     });
 
     it('works with array filter', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.parents('a', [
                     document.getElementById('parent1'),
@@ -226,7 +226,7 @@ describe('#parents', function() {
     });
 
     it('works with function limit', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.parents(
                     'a',
@@ -246,7 +246,7 @@ describe('#parents', function() {
     });
 
     it('works with HTMLElement limit', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.parents(
                     'a',
@@ -266,7 +266,7 @@ describe('#parents', function() {
     });
 
     it('works with NodeList limit', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.parents(
                     'a',
@@ -282,7 +282,7 @@ describe('#parents', function() {
     });
 
     it('works with HTMLCollection limit', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.parents(
                     'a',
@@ -300,7 +300,7 @@ describe('#parents', function() {
     });
 
     it('works with array limit', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.parents('a', null, [
                     document.getElementById('parent1'),

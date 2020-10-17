@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../../setup');
 
 describe('#withProperty', function() {
@@ -16,7 +16,7 @@ describe('#withProperty', function() {
     });
 
     it('returns nodes with a specified property', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.withProperty('div', 'test')
                     .map(node => node.id)
@@ -29,7 +29,7 @@ describe('#withProperty', function() {
     });
 
     it('works with HTMLElement nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.withProperty(
                     document.getElementById('div1'),
@@ -43,7 +43,7 @@ describe('#withProperty', function() {
     });
 
     it('works with NodeList nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.withProperty(
                     document.querySelectorAll('div'),
@@ -58,7 +58,7 @@ describe('#withProperty', function() {
     });
 
     it('works with HTMLCollection nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.withProperty(
                     document.body.children,
@@ -73,7 +73,7 @@ describe('#withProperty', function() {
     });
 
     it('works with array nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.withProperty([
                     document.getElementById('div1'),

@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../../setup');
 
 describe('#afterSelection', function() {
@@ -32,7 +32,7 @@ describe('#afterSelection', function() {
     });
 
     it('inserts each node after the selected nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.afterSelection('a');
                 return document.body.innerHTML;
@@ -53,7 +53,7 @@ describe('#afterSelection', function() {
     });
 
     it('works with HTMLElement nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.afterSelection(
                     document.getElementById('a1')
@@ -77,7 +77,7 @@ describe('#afterSelection', function() {
     });
 
     it('works with NodeList nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.afterSelection(
                     document.querySelectorAll('a')
@@ -100,7 +100,7 @@ describe('#afterSelection', function() {
     });
 
     it('works with HTMLCollection nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.afterSelection(
                     document.getElementById('parent').children
@@ -123,7 +123,7 @@ describe('#afterSelection', function() {
     });
 
     it('works with DocumentFragment nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const range = document.createRange();
                 const fragment = range.createContextualFragment(
@@ -150,7 +150,7 @@ describe('#afterSelection', function() {
     });
 
     it('works with array nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.afterSelection([
                     document.getElementById('a1'),
@@ -174,7 +174,7 @@ describe('#afterSelection', function() {
     });
 
     it('works with HTML nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.afterSelection('<div><span></span></div>');
                 return document.body.innerHTML;

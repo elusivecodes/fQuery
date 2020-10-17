@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../../setup');
 
 describe('#filter', function() {
@@ -14,7 +14,7 @@ describe('#filter', function() {
     });
 
     it('returns filtered nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.filter('div', '[data-filter="test"]')
                     .map(node => node.id)
@@ -27,7 +27,7 @@ describe('#filter', function() {
     });
 
     it('works with HTMLElement nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.filter(
                     document.getElementById('div2'),
@@ -41,7 +41,7 @@ describe('#filter', function() {
     });
 
     it('works with NodeList nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.filter(
                     document.querySelectorAll('div'),
@@ -56,7 +56,7 @@ describe('#filter', function() {
     });
 
     it('works with HTMLCollection nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.filter(
                     document.body.children,
@@ -71,7 +71,7 @@ describe('#filter', function() {
     });
 
     it('works with DocumentFragment nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ => {
                 const fragment = document.createDocumentFragment();
                 fragment.id = 'fragment';
@@ -85,7 +85,7 @@ describe('#filter', function() {
     });
 
     it('works with ShadowRoot nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ => {
                 const div = document.createElement('div');
                 const shadow = div.attachShadow({ mode: 'open' });
@@ -100,7 +100,7 @@ describe('#filter', function() {
     });
 
     it('works with array nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.filter([
                     document.getElementById('div1'),
@@ -117,7 +117,7 @@ describe('#filter', function() {
     });
 
     it('works with function filter', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.filter(
                     'div',
@@ -132,7 +132,7 @@ describe('#filter', function() {
     });
 
     it('works with HTMLElement filter', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.filter(
                     'div',
@@ -146,7 +146,7 @@ describe('#filter', function() {
     });
 
     it('works with NodeList filter', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.filter(
                     'div',
@@ -161,7 +161,7 @@ describe('#filter', function() {
     });
 
     it('works with HTMLCollection filter', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.filter(
                     'div',
@@ -178,7 +178,7 @@ describe('#filter', function() {
     });
 
     it('works with DocumentFragment filter', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ => {
                 const fragment = document.createDocumentFragment();
                 fragment.id = 'fragment';
@@ -196,7 +196,7 @@ describe('#filter', function() {
     });
 
     it('works with ShadowRoot filter', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ => {
                 const div = document.createElement('div');
                 const shadow = div.attachShadow({ mode: 'open' });
@@ -215,7 +215,7 @@ describe('#filter', function() {
     });
 
     it('works with array filter', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.filter('div', [
                     document.getElementById('div2'),

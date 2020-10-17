@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../../setup');
 
 describe('QuerySet #getStyle', function() {
@@ -12,7 +12,7 @@ describe('QuerySet #getStyle', function() {
     });
 
     it('returns an object with all style values for the first node', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.queryMutable('div')
                     .getStyle()
@@ -26,7 +26,7 @@ describe('QuerySet #getStyle', function() {
     });
 
     it('returns a style value for the first node', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.queryMutable('div')
                     .getStyle('display')
@@ -36,7 +36,7 @@ describe('QuerySet #getStyle', function() {
     });
 
     it('returns an empty string for an undefined style', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.queryMutable('div')
                     .getStyle('visibility')
@@ -46,7 +46,7 @@ describe('QuerySet #getStyle', function() {
     });
 
     it('returns undefined for empty nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.queryMutable('#invalid')
                     .getStyle('display')

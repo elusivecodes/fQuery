@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../../setup');
 
 describe('QuerySet #hasFragment', function() {
@@ -18,7 +18,7 @@ describe('QuerySet #hasFragment', function() {
     });
 
     it('returns true if any node has a document fragment', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.queryMutable('template')
                     .hasFragment()
@@ -28,7 +28,7 @@ describe('QuerySet #hasFragment', function() {
     });
 
     it('returns false if no nodes have a document fragment', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.queryMutable('div')
                     .hasFragment()

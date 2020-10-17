@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../../setup');
 
 describe('#setStyle', function() {
@@ -12,7 +12,7 @@ describe('#setStyle', function() {
     });
 
     it('sets a styles object for all nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.setStyle('div', {
                     display: 'block',
@@ -28,7 +28,7 @@ describe('#setStyle', function() {
     });
 
     it('sets a style value for all nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.setStyle('div', 'display', 'block');
                 return document.body.innerHTML;
@@ -39,7 +39,7 @@ describe('#setStyle', function() {
     });
 
     it('converts number values to pixels', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.setStyle('div', 'width', '100');
                 return document.body.innerHTML;
@@ -50,7 +50,7 @@ describe('#setStyle', function() {
     });
 
     it('converts style object number values to pixels', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.setStyle('div', {
                     width: 100,
@@ -64,7 +64,7 @@ describe('#setStyle', function() {
     });
 
     it('does not convert number values with units to pixels', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.setStyle('div', 'width', '100%');
                 return document.body.innerHTML;
@@ -75,7 +75,7 @@ describe('#setStyle', function() {
     });
 
     it('does not convert number values for CSS number properties', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.setStyle('div', 'font-weight', '500');
                 return document.body.innerHTML;
@@ -86,7 +86,7 @@ describe('#setStyle', function() {
     });
 
     it('sets a style object for all nodes with important', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.setStyle('div', {
                     display: 'block',
@@ -100,7 +100,7 @@ describe('#setStyle', function() {
     });
 
     it('sets a style value for all nodes with important', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.setStyle('div', 'display', 'block', true);
                 return document.body.innerHTML;
@@ -111,7 +111,7 @@ describe('#setStyle', function() {
     });
 
     it('works with HTMLElement nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.setStyle(
                     document.getElementById('test1'),
@@ -126,7 +126,7 @@ describe('#setStyle', function() {
     });
 
     it('works with NodeList nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.setStyle(
                     document.querySelectorAll('div'),
@@ -141,7 +141,7 @@ describe('#setStyle', function() {
     });
 
     it('works with HTMLCollection nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.setStyle(
                     document.body.children,
@@ -156,7 +156,7 @@ describe('#setStyle', function() {
     });
 
     it('works with array nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.setStyle([
                     document.getElementById('test1'),

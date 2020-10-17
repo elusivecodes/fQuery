@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../../setup');
 
 describe('#hasAnimation', function() {
@@ -17,7 +17,7 @@ describe('#hasAnimation', function() {
     });
 
     it('returns true if any node has an animation', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.hasAnimation('div')
             ),
@@ -26,7 +26,7 @@ describe('#hasAnimation', function() {
     });
 
     it('returns false if no nodes have an animation', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.hasAnimation('div:not(.test)')
             ),
@@ -35,7 +35,7 @@ describe('#hasAnimation', function() {
     });
 
     it('works with HTMLElement nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.hasAnimation(
                     document.getElementById('div1')
@@ -46,7 +46,7 @@ describe('#hasAnimation', function() {
     });
 
     it('works with NodeList nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.hasAnimation(
                     document.querySelectorAll('div')
@@ -57,7 +57,7 @@ describe('#hasAnimation', function() {
     });
 
     it('works with HTMLCollection nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.hasAnimation(
                     document.body.children
@@ -68,7 +68,7 @@ describe('#hasAnimation', function() {
     });
 
     it('works with array nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.hasAnimation([
                     document.getElementById('div1'),

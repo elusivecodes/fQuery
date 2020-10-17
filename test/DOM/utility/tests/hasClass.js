@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../../setup');
 
 describe('#hasClass', function() {
@@ -14,7 +14,7 @@ describe('#hasClass', function() {
     });
 
     it('returns true if any node has a specified class', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.hasClass('div', 'test')
             ),
@@ -23,7 +23,7 @@ describe('#hasClass', function() {
     });
 
     it('returns false if no nodes have a specified class', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.hasClass('div:not(.test)', 'test')
             ),
@@ -32,7 +32,7 @@ describe('#hasClass', function() {
     });
 
     it('works with HTMLElement nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.hasClass(
                     document.getElementById('div1'),
@@ -44,7 +44,7 @@ describe('#hasClass', function() {
     });
 
     it('works with NodeList nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.hasClass(
                     document.querySelectorAll('div'),
@@ -56,7 +56,7 @@ describe('#hasClass', function() {
     });
 
     it('works with HTMLCollection nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.hasClass(
                     document.body.children,
@@ -68,7 +68,7 @@ describe('#hasClass', function() {
     });
 
     it('works with array nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.hasClass([
                     document.getElementById('div1'),

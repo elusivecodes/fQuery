@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec, setStyle } = require('../../../setup');
 
 describe('#isFixed', function() {
@@ -23,7 +23,7 @@ describe('#isFixed', function() {
     });
 
     it('returns true if any node is fixed', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.isFixed('div')
             ),
@@ -32,7 +32,7 @@ describe('#isFixed', function() {
     });
 
     it('returns false if no nodes are fixed', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.isFixed('div:not(.test)')
             ),
@@ -41,7 +41,7 @@ describe('#isFixed', function() {
     });
 
     it('returns true if any node is a descendent of a fixed node', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.isFixed('span')
             ),
@@ -50,7 +50,7 @@ describe('#isFixed', function() {
     });
 
     it('works with HTMLElement nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.isFixed(
                     document.getElementById('div2')
@@ -61,7 +61,7 @@ describe('#isFixed', function() {
     });
 
     it('works with NodeList nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.isFixed(
                     document.querySelectorAll('div')
@@ -72,7 +72,7 @@ describe('#isFixed', function() {
     });
 
     it('works with HTMLCollection nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.isFixed(
                     document.body.children
@@ -83,7 +83,7 @@ describe('#isFixed', function() {
     });
 
     it('works with array nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.isFixed([
                     document.getElementById('div1'),

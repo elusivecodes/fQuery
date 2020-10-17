@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../../setup');
 
 describe('#toggle', function() {
@@ -12,7 +12,7 @@ describe('#toggle', function() {
     });
 
     it('toggles the visibility of all nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.toggle('div');
                 return document.body.innerHTML;
@@ -23,7 +23,7 @@ describe('#toggle', function() {
     });
 
     it('works with HTMLElement nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.toggle(
                     document.getElementById('test1')
@@ -36,7 +36,7 @@ describe('#toggle', function() {
     });
 
     it('works with NodeList nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.toggle(
                     document.querySelectorAll('div')
@@ -49,7 +49,7 @@ describe('#toggle', function() {
     });
 
     it('works with HTMLCollection nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.toggle(
                     document.body.children
@@ -62,7 +62,7 @@ describe('#toggle', function() {
     });
 
     it('works with array nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.toggle([
                     document.getElementById('test1'),

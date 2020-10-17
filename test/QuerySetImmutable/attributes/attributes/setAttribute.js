@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../../setup');
 
 describe('QuerySetImmutable #setAttribute', function() {
@@ -12,7 +12,7 @@ describe('QuerySetImmutable #setAttribute', function() {
     });
 
     it('sets an attributes object for all nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.query('input')
                     .setAttribute({
@@ -27,7 +27,7 @@ describe('QuerySetImmutable #setAttribute', function() {
     });
 
     it('sets an attribute for all nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.query('input')
                     .setAttribute('placeholder', '123');
@@ -39,7 +39,7 @@ describe('QuerySetImmutable #setAttribute', function() {
     });
 
     it('returns the QuerySet', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const query = dom.query('input');
                 return query === query.setAttribute('placeholder', '123');

@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../../setup');
 
 describe('#getData', function() {
@@ -13,7 +13,7 @@ describe('#getData', function() {
     });
 
     it('returns an object with all data for the first node', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.getData('div')
             ),
@@ -24,7 +24,7 @@ describe('#getData', function() {
     });
 
     it('returns data for the first node', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.getData('div', 'test')
             ),
@@ -33,7 +33,7 @@ describe('#getData', function() {
     });
 
     it('returns undefined for an undefined key', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.getData('div', 'invalid')
             ),
@@ -42,7 +42,7 @@ describe('#getData', function() {
     });
 
     it('returns undefined for empty nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.getData('#invalid', 'test')
             ),
@@ -51,7 +51,7 @@ describe('#getData', function() {
     });
 
     it('works with HTMLElement nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.getData(
                     document.getElementById('test1'),
@@ -63,7 +63,7 @@ describe('#getData', function() {
     });
 
     it('works with NodeList nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.getData(
                     document.querySelectorAll('div'),
@@ -75,7 +75,7 @@ describe('#getData', function() {
     });
 
     it('works with HTMLCollection nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.getData(
                     document.body.children,
@@ -87,7 +87,7 @@ describe('#getData', function() {
     });
 
     it('works with DocumentFragment nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const fragment = document.createDocumentFragment();
                 dom.setData(fragment, 'test', 'Test 2');
@@ -98,7 +98,7 @@ describe('#getData', function() {
     });
 
     it('works with ShadowRoot nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const div = document.createElement('div');
                 const shadow = div.attachShadow({ mode: 'open' });
@@ -110,7 +110,7 @@ describe('#getData', function() {
     });
 
     it('works with Document nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.setData(document, 'test', 'Test 2');
                 return dom.getData(document, 'test');
@@ -120,7 +120,7 @@ describe('#getData', function() {
     });
 
     it('works with Window nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.setData(window, 'test', 'Test 2');
                 return dom.getData(window, 'test');
@@ -130,7 +130,7 @@ describe('#getData', function() {
     });
 
     it('works with array nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.getData([
                     document.getElementById('test1'),

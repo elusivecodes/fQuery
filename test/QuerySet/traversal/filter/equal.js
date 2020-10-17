@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../../setup');
 
 describe('QuerySet #equal', function() {
@@ -20,7 +20,7 @@ describe('QuerySet #equal', function() {
     });
 
     it('returns nodes equal to other nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.queryMutable('#parent1 span')
                     .equal('#parent2 span')
@@ -35,7 +35,7 @@ describe('QuerySet #equal', function() {
     });
 
     it('returns the QuerySet', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const query = dom.queryMutable('#parent1 span');
                 return query === query.equal('#parent2 span');
@@ -45,7 +45,7 @@ describe('QuerySet #equal', function() {
     });
 
     it('works with DocumentFragment nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ => {
                 const fragment1 = document.createDocumentFragment();
                 const fragment2 = document.createDocumentFragment();
@@ -62,7 +62,7 @@ describe('QuerySet #equal', function() {
     });
 
     it('works with ShadowRoot nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ => {
                 const div1 = document.createElement('div');
                 const div2 = document.createElement('div');
@@ -81,7 +81,7 @@ describe('QuerySet #equal', function() {
     });
 
     it('works with HTMLElement other nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.queryMutable('#parent1 span')
                     .equal(
@@ -95,7 +95,7 @@ describe('QuerySet #equal', function() {
     });
 
     it('works with NodeList other nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.queryMutable('#parent1 span')
                     .equal(
@@ -110,7 +110,7 @@ describe('QuerySet #equal', function() {
     });
 
     it('works with HTMLCollection other nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.queryMutable('#parent1 span')
                     .equal(
@@ -125,7 +125,7 @@ describe('QuerySet #equal', function() {
     });
 
     it('works with DocumentFragment other nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ => {
                 const fragment1 = document.createDocumentFragment();
                 const fragment2 = document.createDocumentFragment();
@@ -142,7 +142,7 @@ describe('QuerySet #equal', function() {
     });
 
     it('works with ShadowRoot other nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ => {
                 const div1 = document.createElement('div');
                 const div2 = document.createElement('div');
@@ -161,7 +161,7 @@ describe('QuerySet #equal', function() {
     });
 
     it('works with array other nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.queryMutable('#parent1 span')
                     .equal([
@@ -177,7 +177,7 @@ describe('QuerySet #equal', function() {
     });
 
     it('works with QuerySet other nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ => {
                 const query = dom.queryMutable('#parent2 > [data-id="span2"]');
                 return dom.queryMutable('#parent1 span')

@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec, setStyle } = require('../../../setup');
 
 describe('#fixed', function() {
@@ -23,7 +23,7 @@ describe('#fixed', function() {
     });
 
     it('returns fixed nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.fixed('div')
                     .map(node => node.id)
@@ -36,7 +36,7 @@ describe('#fixed', function() {
     });
 
     it('returns descendents of fixed nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.fixed('span')
                     .map(node => node.id)
@@ -49,7 +49,7 @@ describe('#fixed', function() {
     });
 
     it('works with HTMLElement nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.fixed(
                     document.getElementById('div2')
@@ -62,7 +62,7 @@ describe('#fixed', function() {
     });
 
     it('works with NodeList nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.fixed(
                     document.querySelectorAll('div')
@@ -76,7 +76,7 @@ describe('#fixed', function() {
     });
 
     it('works with HTMLCollection nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.fixed(
                     document.body.children
@@ -90,7 +90,7 @@ describe('#fixed', function() {
     });
 
     it('works with array nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.fixed([
                     document.getElementById('div1'),

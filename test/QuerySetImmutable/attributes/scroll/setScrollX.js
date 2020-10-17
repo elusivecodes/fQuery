@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../../setup');
 
 describe('QuerySetImmutable #setScrollX', function() {
@@ -16,7 +16,7 @@ describe('QuerySetImmutable #setScrollX', function() {
     });
 
     it('sets the scroll X position for all nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ => {
                 dom.query('div')
                     .setScrollX(100);
@@ -33,7 +33,7 @@ describe('QuerySetImmutable #setScrollX', function() {
     });
 
     it('returns the QuerySet', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const query = dom.query('div');
                 return query === query.setScrollX(100);
@@ -43,7 +43,7 @@ describe('QuerySetImmutable #setScrollX', function() {
     });
 
     it('works with Document nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 document.body.innerHTML = '<div style="display: block; width: 1000px; height: 1000px;"></div>';
                 dom.query(document)
@@ -55,7 +55,7 @@ describe('QuerySetImmutable #setScrollX', function() {
     });
 
     it('works with Window nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 document.body.innerHTML = '<div style="display: block; width: 1000px; height: 1000px;"></div>';
                 dom.query(window)

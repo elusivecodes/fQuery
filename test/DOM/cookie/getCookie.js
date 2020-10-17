@@ -1,11 +1,11 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../setup');
 const { _isPuppeteerCore } = require('puppeteer');
 
 describe('#getCookie', function() {
 
     it('returns a cookie value', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const myDoc = {
                     cookie: 'test=Test',
@@ -19,7 +19,7 @@ describe('#getCookie', function() {
     });
 
     it('returns a cookie value from multiple cookie values', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ => {
                 const myDoc = {
                     cookie: 'test1=Test 1;test2=Test 2;test3=Test 3',

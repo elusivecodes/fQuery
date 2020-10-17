@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../../setup');
 
 describe('#rect', function() {
@@ -13,7 +13,7 @@ describe('#rect', function() {
     });
 
     it('returns the bounding rectangle of the first node', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.rect('div').toJSON()
             ),
@@ -31,7 +31,7 @@ describe('#rect', function() {
     });
 
     it('returns the bounding rectangle of the first node with offset', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.rect('div', true).toJSON()
             ),
@@ -49,7 +49,7 @@ describe('#rect', function() {
     });
 
     it('returns undefined for empty nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.rect('#invalid')
             ),
@@ -58,7 +58,7 @@ describe('#rect', function() {
     });
 
     it('works with HTMLElement nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.rect(
                     document.getElementById('test1')
@@ -78,7 +78,7 @@ describe('#rect', function() {
     });
 
     it('works with NodeList nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.rect(
                     document.querySelectorAll('div')
@@ -98,7 +98,7 @@ describe('#rect', function() {
     });
 
     it('works with HTMLCollection nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.rect(
                     document.body.children
@@ -118,7 +118,7 @@ describe('#rect', function() {
     });
 
     it('works with array nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.rect([
                     document.getElementById('test1'),

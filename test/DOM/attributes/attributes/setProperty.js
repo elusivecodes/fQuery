@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../../setup');
 
 describe('#setProperty', function() {
@@ -12,7 +12,7 @@ describe('#setProperty', function() {
     });
 
     it('sets a properties object for all nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ => {
                 const element1 = document.getElementById('test1');
                 const element2 = document.getElementById('test2');
@@ -37,7 +37,7 @@ describe('#setProperty', function() {
     });
 
     it('sets a property for all nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ => {
                 dom.setProperty('input', 'test', 'Test');
                 return [
@@ -53,7 +53,7 @@ describe('#setProperty', function() {
     });
 
     it('works with HTMLElement nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ => {
                 const element = document.getElementById('test1');
                 dom.setProperty(
@@ -74,7 +74,7 @@ describe('#setProperty', function() {
     });
 
     it('works with NodeList nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ => {
                 dom.setProperty(
                     document.querySelectorAll('input'),
@@ -94,7 +94,7 @@ describe('#setProperty', function() {
     });
 
     it('works with HTMLCollection nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ => {
                 dom.setProperty(
                     document.body.children,
@@ -114,7 +114,7 @@ describe('#setProperty', function() {
     });
 
     it('works with array nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ => {
                 const element1 = document.getElementById('test1');
                 const element2 = document.getElementById('test2');

@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../../setup');
 
 describe('QuerySetImmutable #withAttribute', function() {
@@ -14,7 +14,7 @@ describe('QuerySetImmutable #withAttribute', function() {
     });
 
     it('returns nodes with a specified attribute', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.query('div')
                     .withAttribute('title')
@@ -29,7 +29,7 @@ describe('QuerySetImmutable #withAttribute', function() {
     });
 
     it('returns a new QuerySetImmutable', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const query1 = dom.query('div');
                 const query2 = query1.withAttribute('title');

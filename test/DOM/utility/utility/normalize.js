@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../../setup');
 
 describe('#normalize', function() {
@@ -40,7 +40,7 @@ describe('#normalize', function() {
     });
 
     it('normalizes all text nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ => {
                 dom.normalize('.test');
                 return [
@@ -56,7 +56,7 @@ describe('#normalize', function() {
     });
 
     it('retains HTML contents', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.normalize('.test');
                 return document.body.innerHTML;
@@ -75,7 +75,7 @@ describe('#normalize', function() {
     });
 
     it('works with HTMLElement nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ => {
                 dom.normalize(
                     document.getElementById('parent1')
@@ -93,7 +93,7 @@ describe('#normalize', function() {
     });
 
     it('works with NodeList nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ => {
                 dom.normalize(
                     document.querySelectorAll('.test')
@@ -111,7 +111,7 @@ describe('#normalize', function() {
     });
 
     it('works with HTMLCollection nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ => {
                 dom.normalize(
                     document.body.children
@@ -129,7 +129,7 @@ describe('#normalize', function() {
     });
 
     it('works with DocumentFragment nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const fragment = document.createDocumentFragment();
                 const text1 = document.createTextNode('Test 1');
@@ -153,7 +153,7 @@ describe('#normalize', function() {
     });
 
     it('works with ShadowRoot nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const div = document.createElement('div');
                 const shadow = div.attachShadow({ mode: 'open' });
@@ -178,7 +178,7 @@ describe('#normalize', function() {
     });
 
     it('works with array nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ => {
                 dom.normalize([
                     document.getElementById('parent1'),

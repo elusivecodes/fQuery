@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../../setup');
 
 describe('QuerySet #setStyle', function() {
@@ -12,7 +12,7 @@ describe('QuerySet #setStyle', function() {
     });
 
     it('sets a styles object for all nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.queryMutable('div')
                     .setStyle({
@@ -29,7 +29,7 @@ describe('QuerySet #setStyle', function() {
     });
 
     it('sets a style value for all nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.queryMutable('div')
                     .setStyle('display', 'block');
@@ -41,7 +41,7 @@ describe('QuerySet #setStyle', function() {
     });
 
     it('converts number values to pixels', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.queryMutable('div')
                     .setStyle('width', '100');
@@ -53,7 +53,7 @@ describe('QuerySet #setStyle', function() {
     });
 
     it('converts style object number values to pixels', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.queryMutable('div')
                     .setStyle({
@@ -68,7 +68,7 @@ describe('QuerySet #setStyle', function() {
     });
 
     it('does not convert number values with units to pixels', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.queryMutable('div')
                     .setStyle('width', '100%');
@@ -80,7 +80,7 @@ describe('QuerySet #setStyle', function() {
     });
 
     it('does not convert number values for CSS number properties', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.queryMutable('div')
                     .setStyle('font-weight', '500');
@@ -92,7 +92,7 @@ describe('QuerySet #setStyle', function() {
     });
 
     it('sets a style object for all nodes with important', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.queryMutable('div')
                     .setStyle({
@@ -107,7 +107,7 @@ describe('QuerySet #setStyle', function() {
     });
 
     it('sets a style value for all nodes with important', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.queryMutable('div')
                     .setStyle('display', 'block', true);
@@ -119,7 +119,7 @@ describe('QuerySet #setStyle', function() {
     });
 
     it('returns the QuerySet', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const query = dom.queryMutable('div');
                 return query === query.setStyle('display', 'block');

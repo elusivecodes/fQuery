@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec, setStyle } = require('../../../setup');
 
 describe('QuerySet #forceShow', function() {
@@ -17,7 +17,7 @@ describe('QuerySet #forceShow', function() {
     });
 
     it('forces the first node to be visible', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.queryMutable('.test')
                     .forceShow(_ => document.body.innerHTML)
@@ -32,7 +32,7 @@ describe('QuerySet #forceShow', function() {
     });
 
     it('forces hidden parent nodes to be visible', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 document.getElementById('outer').style.setProperty('display', 'none');
                 return dom.queryMutable('.test')
@@ -48,7 +48,7 @@ describe('QuerySet #forceShow', function() {
     });
 
     it('restores the original markup', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.queryMutable('.test')
                     .forceShow(_ => { });
@@ -64,7 +64,7 @@ describe('QuerySet #forceShow', function() {
     });
 
     it('restores the original markup with hidden parent', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 document.getElementById('outer').style.setProperty('display', 'none');
                 dom.queryMutable('.test')
@@ -81,7 +81,7 @@ describe('QuerySet #forceShow', function() {
     });
 
     it('executes the callback for visible nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.queryMutable('#div2')
                     .forceShow(_ => document.body.innerHTML)
@@ -96,7 +96,7 @@ describe('QuerySet #forceShow', function() {
     });
 
     it('sends the node as an argument', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.queryMutable('.test')
                     .forceShow(node => node.id)

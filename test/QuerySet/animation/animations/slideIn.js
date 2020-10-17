@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec, setStyle } = require('../../../setup');
 const { easeIn, easeInOut, easeOut, getAnimationStyle, linear, testAnimation, testNoAnimation, testNoStyle, waitFor } = require('../../../helpers');
 
@@ -11,7 +11,7 @@ const testSlideIn = async (selector, translate = 'Y', inverse = 1, style = 'tran
     const data = await getAnimationStyle(selector, style);
 
     const amount = slideIn(data.progress, inverse);
-    assert.equal(
+    assert.strictEqual(
         data[style],
         translate ?
             `translate${translate}(${amount}px)` :
@@ -523,7 +523,7 @@ describe('QuerySet #slideIn', function() {
                     }
                 );
         }).then(waitFor(50)).then(async _ => {
-            assert.equal(
+            assert.strictEqual(
                 await exec(_ => document.body.innerHTML),
                 '<div id="test1"></div>' +
                 '<div id="test2" class="animate"></div>' +
@@ -543,7 +543,7 @@ describe('QuerySet #slideIn', function() {
     });
 
     it('returns the QuerySet', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const query = dom.queryMutable('.animate');
                 return query === query.slideIn(

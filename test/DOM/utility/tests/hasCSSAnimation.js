@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec, setStyle } = require('../../../setup');
 
 describe('#hasCSSAnimation', function() {
@@ -18,7 +18,7 @@ describe('#hasCSSAnimation', function() {
     });
 
     it('returns true if any node has a CSS animation', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.hasCSSAnimation('div')
             ),
@@ -27,7 +27,7 @@ describe('#hasCSSAnimation', function() {
     });
 
     it('returns false if no nodes have a CSS animation', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.hasCSSAnimation('div:not(.test)')
             ),
@@ -36,7 +36,7 @@ describe('#hasCSSAnimation', function() {
     });
 
     it('works with HTMLElement nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.hasCSSAnimation(
                     document.getElementById('div1')
@@ -47,7 +47,7 @@ describe('#hasCSSAnimation', function() {
     });
 
     it('works with NodeList nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.hasCSSAnimation(
                     document.querySelectorAll('div')
@@ -58,7 +58,7 @@ describe('#hasCSSAnimation', function() {
     });
 
     it('works with HTMLCollection nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.hasCSSAnimation(
                     document.body.children
@@ -69,7 +69,7 @@ describe('#hasCSSAnimation', function() {
     });
 
     it('works with array nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.hasCSSAnimation([
                     document.getElementById('div1'),

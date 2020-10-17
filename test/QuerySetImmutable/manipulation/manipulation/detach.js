@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../../setup');
 const { easeInOut, testAnimation, testNoAnimation, waitFor } = require('../../../helpers');
 
@@ -19,7 +19,7 @@ describe('QuerySetImmutable #detach', function() {
     });
 
     it('detaches all nodes from the DOM', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.query('a')
                     .detach();
@@ -31,7 +31,7 @@ describe('QuerySetImmutable #detach', function() {
     });
 
     it('returns detached nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ => {
                 return dom.query('a')
                     .detach()
@@ -48,7 +48,7 @@ describe('QuerySetImmutable #detach', function() {
     });
 
     it('does not remove events', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 let result = 0;
                 dom.addEvent('a', 'click', _ => {
@@ -71,7 +71,7 @@ describe('QuerySetImmutable #detach', function() {
     });
 
     it('does not remove data', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ => {
                 dom.setData('a', 'test', 'Test');
                 const nodes = dom.query('a')
@@ -144,7 +144,7 @@ describe('QuerySetImmutable #detach', function() {
                 }
             });
         }).then(waitFor(100)).then(async _ => {
-            assert.equal(
+            assert.strictEqual(
                 await exec(_ => document.body.innerHTML),
                 '<div id="parent1"></div>' +
                 '<div id="parent2"></div>' +
@@ -157,7 +157,7 @@ describe('QuerySetImmutable #detach', function() {
     });
 
     it('returns the QuerySet', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const query = dom.query('a');
                 return query === query.detach();

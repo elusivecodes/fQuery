@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../../setup');
 
 describe('QuerySetImmutable #removeEventDelegate', function() {
@@ -18,7 +18,7 @@ describe('QuerySetImmutable #removeEventDelegate', function() {
     });
 
     it('removes all delegated events from each node', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 let result = 0;
                 const event1 = new Event('click', {
@@ -54,7 +54,7 @@ describe('QuerySetImmutable #removeEventDelegate', function() {
     });
 
     it('removes all delegated events of a type from each node', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 let result = 0;
                 const event1 = new Event('click', {
@@ -90,7 +90,7 @@ describe('QuerySetImmutable #removeEventDelegate', function() {
     });
 
     it('removes all delegated events of types from each node', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 let result = 0;
                 const event1 = new Event('click', {
@@ -126,7 +126,7 @@ describe('QuerySetImmutable #removeEventDelegate', function() {
     });
 
     it('removes a specific delegated event from each node', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 let result = 0;
                 const callback = _ => {
@@ -156,7 +156,7 @@ describe('QuerySetImmutable #removeEventDelegate', function() {
     });
 
     it('removes a namespaced delegated event from each node', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 let result = 0;
                 const event = new Event('click', {
@@ -182,7 +182,7 @@ describe('QuerySetImmutable #removeEventDelegate', function() {
     });
 
     it('removes namespaced delegated events from each node', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 let result = 0;
                 const event1 = new Event('click', {
@@ -215,7 +215,7 @@ describe('QuerySetImmutable #removeEventDelegate', function() {
     });
 
     it('removes a deep namespaced delegated event from each node', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 let result = 0;
                 const event = new Event('click', {
@@ -241,7 +241,7 @@ describe('QuerySetImmutable #removeEventDelegate', function() {
     });
 
     it('removes deep namespaced delegated events from each node', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 let result = 0;
                 const event1 = new Event('click', {
@@ -274,7 +274,7 @@ describe('QuerySetImmutable #removeEventDelegate', function() {
     });
 
     it('removes a namespaced delegated event with namespacing from each node', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 let result = 0;
                 const event = new Event('click', {
@@ -300,7 +300,7 @@ describe('QuerySetImmutable #removeEventDelegate', function() {
     });
 
     it('removes namespaced delegated events with namespacing from each node', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 let result = 0;
                 const event1 = new Event('click', {
@@ -333,7 +333,7 @@ describe('QuerySetImmutable #removeEventDelegate', function() {
     });
 
     it('removes a deep namespaced delegated event with namespacing from each node', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 let result = 0;
                 const event = new Event('click', {
@@ -359,7 +359,7 @@ describe('QuerySetImmutable #removeEventDelegate', function() {
     });
 
     it('removes deep namespaced delegated events with namespacing from each node', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 let result = 0;
                 const event1 = new Event('click', {
@@ -392,7 +392,7 @@ describe('QuerySetImmutable #removeEventDelegate', function() {
     });
 
     it('removes a deep namespaced delegated event with deep namespacing from each node', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 let result = 0;
                 const event = new Event('click', {
@@ -418,7 +418,7 @@ describe('QuerySetImmutable #removeEventDelegate', function() {
     });
 
     it('removes deep namespaced delegated events with deep namespacing from each node', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 let result = 0;
                 const event1 = new Event('click', {
@@ -451,7 +451,7 @@ describe('QuerySetImmutable #removeEventDelegate', function() {
     });
 
     it('does not remove a specific delegated event of the wrong type from each node', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 let result = 0;
                 const callback = _ => {
@@ -481,7 +481,7 @@ describe('QuerySetImmutable #removeEventDelegate', function() {
     });
 
     it('does not remove a delegated event without namespacing from each node', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 let result = 0;
                 const event = new Event('click', {
@@ -507,7 +507,7 @@ describe('QuerySetImmutable #removeEventDelegate', function() {
     });
 
     it('does not remove delegated events without namespacing from each node', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 let result = 0;
                 const event1 = new Event('click', {
@@ -540,7 +540,7 @@ describe('QuerySetImmutable #removeEventDelegate', function() {
     });
 
     it('does not remove a namespaced delegated event with deep namespacing from each node', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 let result = 0;
                 const event = new Event('click', {
@@ -565,7 +565,7 @@ describe('QuerySetImmutable #removeEventDelegate', function() {
     });
 
     it('does not remove namespaced delegated events with deep namespacing from each node', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 let result = 0;
                 const event1 = new Event('click', {
@@ -597,7 +597,7 @@ describe('QuerySetImmutable #removeEventDelegate', function() {
     });
 
     it('returns the QuerySet', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const query = dom.query('a');
                 return query === query.removeEventDelegate(null, 'a');
@@ -607,7 +607,7 @@ describe('QuerySetImmutable #removeEventDelegate', function() {
     });
 
     it('works with ShadowRoot nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 let result = 0;
                 const callback = _ => {
@@ -634,7 +634,7 @@ describe('QuerySetImmutable #removeEventDelegate', function() {
     });
 
     it('works with Document nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 let result = 0;
                 const callback = _ => {

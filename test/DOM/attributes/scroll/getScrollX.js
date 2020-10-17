@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../../setup');
 
 describe('#getScrollX', function() {
@@ -15,7 +15,7 @@ describe('#getScrollX', function() {
     });
 
     it('returns the scroll X position of the first node', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.getScrollX('div')
             ),
@@ -24,7 +24,7 @@ describe('#getScrollX', function() {
     });
 
     it('returns undefined for empty nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.getScrollX('#invalid')
             ),
@@ -33,7 +33,7 @@ describe('#getScrollX', function() {
     });
 
     it('works with HTMLElement nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.getScrollX(
                     document.getElementById('test1')
@@ -44,7 +44,7 @@ describe('#getScrollX', function() {
     });
 
     it('works with NodeList nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.getScrollX(
                     document.querySelectorAll('div')
@@ -55,7 +55,7 @@ describe('#getScrollX', function() {
     });
 
     it('works with HTMLCollection nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.getScrollX(
                     document.body.children
@@ -66,7 +66,7 @@ describe('#getScrollX', function() {
     });
 
     it('works with Document nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 document.body.innerHTML = '<div style="block; width: 1000px; height: 1000px;"></div>';
                 document.scrollingElement.scrollLeft = 100;
@@ -77,7 +77,7 @@ describe('#getScrollX', function() {
     });
 
     it('works with Window nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 document.body.innerHTML = '<div style="block; width: 1000px; height: 1000px;"></div>';
                 window.scrollTo(100, 0);
@@ -88,7 +88,7 @@ describe('#getScrollX', function() {
     });
 
     it('works with array nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.getScrollX([
                     document.getElementById('test1'),

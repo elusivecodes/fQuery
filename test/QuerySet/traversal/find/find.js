@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../../setup');
 
 describe('QuerySet #find', function() {
@@ -98,7 +98,7 @@ describe('QuerySet #find', function() {
     });
 
     it('finds elements by query selector', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.queryMutable(document.body)
                     .find('#parent1 > #child1 > span, #parent1 > #child2 > span')
@@ -115,7 +115,7 @@ describe('QuerySet #find', function() {
     });
 
     it('finds elements by custom child selector', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.queryMutable('#child1, #child4')
                     .find('> .group1 > .group1, > .group2 > .group2')
@@ -140,7 +140,7 @@ describe('QuerySet #find', function() {
     });
 
     it('finds elements by ID', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.queryMutable(document.body)
                     .find('#parent1')
@@ -154,7 +154,7 @@ describe('QuerySet #find', function() {
     });
 
     it('finds elements by class name', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.queryMutable(document.body)
                     .find('.span1')
@@ -173,7 +173,7 @@ describe('QuerySet #find', function() {
     });
 
     it('finds elements by tag name', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.queryMutable(document.body)
                     .find('span')
@@ -198,7 +198,7 @@ describe('QuerySet #find', function() {
     });
 
     it('returns the QuerySet', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const query = dom.queryMutable(document.body);
                 return query === query.find('#parent1 > #child1 > span, #parent1 > #child2 > span');
@@ -208,7 +208,7 @@ describe('QuerySet #find', function() {
     });
 
     it('works with DocumentFragment nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ => {
                 const range = document.createRange();
                 const fragment = range.createContextualFragment(
@@ -228,7 +228,7 @@ describe('QuerySet #find', function() {
     });
 
     it('works with ShadowRoot nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ => {
                 const div = document.createElement('div');
                 const shadow = div.attachShadow({ mode: 'open' });
@@ -251,7 +251,7 @@ describe('QuerySet #find', function() {
     });
 
     it('works with Document nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ => {
                 const parser = new DOMParser();
                 const myDoc = parser.parseFromString(

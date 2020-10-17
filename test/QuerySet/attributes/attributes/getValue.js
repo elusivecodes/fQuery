@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../../setup');
 
 describe('QuerySet #getValue', function() {
@@ -15,7 +15,7 @@ describe('QuerySet #getValue', function() {
     });
 
     it('returns the input value of the first node', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.queryMutable('input')
                     .getValue()
@@ -25,7 +25,7 @@ describe('QuerySet #getValue', function() {
     });
 
     it('returns undefined for empty nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.queryMutable('#invalid')
                     .getValue()
@@ -35,7 +35,7 @@ describe('QuerySet #getValue', function() {
     });
 
     it('works with textarea input nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.queryMutable('textarea')
                     .getValue()
@@ -45,7 +45,7 @@ describe('QuerySet #getValue', function() {
     });
 
     it('works with select input nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.queryMutable('select')
                     .getValue()

@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../../setup');
 
 describe('QuerySetImmutable #constrain', function() {
@@ -18,7 +18,7 @@ describe('QuerySetImmutable #constrain', function() {
     });
 
     it('constrains each node inside another node', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.query('[data-toggle="from"]')
                     .constrain('[data-toggle="to"]');
@@ -36,7 +36,7 @@ describe('QuerySetImmutable #constrain', function() {
     });
 
     it('returns the QuerySet', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const query = dom.query('[data-toggle="from"]');
                 return query === query.constrain('[data-toggle="to"]');
@@ -46,7 +46,7 @@ describe('QuerySetImmutable #constrain', function() {
     });
 
     it('works with HTMLElement other nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.query('[data-toggle="from"]')
                     .constrain(
@@ -66,7 +66,7 @@ describe('QuerySetImmutable #constrain', function() {
     });
 
     it('works with NodeList other nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.query('[data-toggle="from"]')
                     .constrain(
@@ -86,7 +86,7 @@ describe('QuerySetImmutable #constrain', function() {
     });
 
     it('works with HTMLCollection other nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.query('[data-toggle="from"]')
                     .constrain(
@@ -106,7 +106,7 @@ describe('QuerySetImmutable #constrain', function() {
     });
 
     it('works with array other nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.query('[data-toggle="from"]')
                     .constrain([
@@ -127,7 +127,7 @@ describe('QuerySetImmutable #constrain', function() {
     });
 
     it('works with QuerySet other nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const query = dom.query('[data-toggle="to"]');
                 dom.query('[data-toggle="from"]')

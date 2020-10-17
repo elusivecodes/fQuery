@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../../setup');
 
 describe('#prev', function() {
@@ -38,7 +38,7 @@ describe('#prev', function() {
     });
 
     it('returns the previous sibling of each node', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.prev('.span')
                     .map(node => node.id)
@@ -51,7 +51,7 @@ describe('#prev', function() {
     });
 
     it('returns the previous sibling of each node matching a filter', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.prev('.span', '#span6')
                     .map(node => node.id)
@@ -63,7 +63,7 @@ describe('#prev', function() {
     });
 
     it('returns an empty array for empty nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.prev('#invalid')
             ),
@@ -72,7 +72,7 @@ describe('#prev', function() {
     });
 
     it('works with HTMLElement nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.prev(
                     document.getElementById('span7'),
@@ -86,7 +86,7 @@ describe('#prev', function() {
     });
 
     it('works with NodeList nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.prev(
                     document.querySelectorAll('.span'),
@@ -100,7 +100,7 @@ describe('#prev', function() {
     });
 
     it('works with HTMLCollection nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.prev(
                     document.getElementById('parent2').children,
@@ -114,7 +114,7 @@ describe('#prev', function() {
     });
 
     it('works with array nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.prev([
                     document.getElementById('span3'),
@@ -128,7 +128,7 @@ describe('#prev', function() {
     });
 
     it('works with function filter', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.prev(
                     '.span',
@@ -142,7 +142,7 @@ describe('#prev', function() {
     });
 
     it('works with HTMLElement filter', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.prev(
                     '.span',
@@ -156,7 +156,7 @@ describe('#prev', function() {
     });
 
     it('works with NodeList filter', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.prev(
                     '.span',
@@ -170,7 +170,7 @@ describe('#prev', function() {
     });
 
     it('works with HTMLCollection filter', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.prev(
                     '.span',
@@ -184,7 +184,7 @@ describe('#prev', function() {
     });
 
     it('works with array filter', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.prev('.span', [
                     document.getElementById('span2'),

@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../setup');
 const { waitFor } = require('../../helpers');
 
@@ -21,7 +21,7 @@ describe('#clearQueue', function() {
             });
             dom.clearQueue('.queue');
         }).then(waitFor(100)).then(async _ => {
-            assert.equal(
+            assert.strictEqual(
                 await exec(_ => document.body.innerHTML),
                 '<div id="test1"></div>' +
                 '<div id="test2" class="queue"></div>' +
@@ -45,7 +45,7 @@ describe('#clearQueue', function() {
             await exec(_ => {
                 dom.clearQueue('.queue');
             });
-            assert.equal(
+            assert.strictEqual(
                 await exec(_ => document.body.innerHTML),
                 '<div id="test1"></div>' +
                 '<div id="test2" class="queue"></div>' +
@@ -53,7 +53,7 @@ describe('#clearQueue', function() {
                 '<div id="test4" class="queue"></div>'
             );
         }).then(waitFor(100)).then(async _ => {
-            assert.equal(
+            assert.strictEqual(
                 await exec(_ => document.body.innerHTML),
                 '<div id="test1"></div>' +
                 '<div id="test2" class="queue"></div>' +
@@ -72,7 +72,7 @@ describe('#clearQueue', function() {
                 document.getElementById('test2')
             );
         }).then(waitFor(100)).then(async _ => {
-            assert.equal(
+            assert.strictEqual(
                 await exec(_ => document.body.innerHTML),
                 '<div id="test1"></div>' +
                 '<div id="test2" class="queue"></div>' +
@@ -91,7 +91,7 @@ describe('#clearQueue', function() {
                 document.querySelectorAll('.queue')
             );
         }).then(waitFor(100)).then(async _ => {
-            assert.equal(
+            assert.strictEqual(
                 await exec(_ => document.body.innerHTML),
                 '<div id="test1"></div>' +
                 '<div id="test2" class="queue"></div>' +
@@ -110,7 +110,7 @@ describe('#clearQueue', function() {
                 document.body.children
             );
         }).then(waitFor(100)).then(async _ => {
-            assert.equal(
+            assert.strictEqual(
                 await exec(_ => document.body.innerHTML),
                 '<div id="test1"></div>' +
                 '<div id="test2" class="queue"></div>' +
@@ -130,7 +130,7 @@ describe('#clearQueue', function() {
                 document.getElementById('test4')
             ]);
         }).then(waitFor(100)).then(async _ => {
-            assert.equal(
+            assert.strictEqual(
                 await exec(_ => document.body.innerHTML),
                 '<div id="test1"></div>' +
                 '<div id="test2" class="queue"></div>' +

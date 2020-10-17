@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../../setup');
 
 describe('QuerySetImmutable #position', function() {
@@ -14,7 +14,7 @@ describe('QuerySetImmutable #position', function() {
     });
 
     it('returns the position of the first node', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.query('[data-toggle="child"]')
                     .position()
@@ -27,7 +27,7 @@ describe('QuerySetImmutable #position', function() {
     });
 
     it('returns the position of the first node with offset', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.query('[data-toggle="child"]')
                     .position(true)
@@ -40,7 +40,7 @@ describe('QuerySetImmutable #position', function() {
     });
 
     it('returns undefined for empty nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.query('#invalid')
                     .position()

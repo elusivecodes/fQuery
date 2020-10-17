@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../../setup');
 
 describe('#distToNode', function() {
@@ -19,7 +19,7 @@ describe('#distToNode', function() {
     });
 
     it('returns the distance from the first node to another node', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.distToNode('[data-toggle="from"]', '[data-toggle="to"]')
             ),
@@ -28,7 +28,7 @@ describe('#distToNode', function() {
     });
 
     it('returns undefined for empty nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.distToNode('#invalid', '[data-toggle="to"]')
             ),
@@ -37,7 +37,7 @@ describe('#distToNode', function() {
     });
 
     it('returns undefined for empty other nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.distToNode('[data-toggle="from"]', '#invalid')
             ),
@@ -46,7 +46,7 @@ describe('#distToNode', function() {
     });
 
     it('works with HTMLElement nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.distToNode(
                     document.getElementById('test1'),
@@ -58,7 +58,7 @@ describe('#distToNode', function() {
     });
 
     it('works with NodeList nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.distToNode(
                     document.querySelectorAll('[data-toggle="from"]'),
@@ -70,7 +70,7 @@ describe('#distToNode', function() {
     });
 
     it('works with HTMLCollection nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.distToNode(
                     document.getElementById('fromParent').children,
@@ -82,7 +82,7 @@ describe('#distToNode', function() {
     });
 
     it('works with array nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.distToNode([
                     document.getElementById('test1'),
@@ -94,7 +94,7 @@ describe('#distToNode', function() {
     });
 
     it('works with HTMLElement other nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.distToNode(
                     '[data-toggle="from"]',
@@ -106,7 +106,7 @@ describe('#distToNode', function() {
     });
 
     it('works with NodeList other nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.distToNode(
                     '[data-toggle="from"]',
@@ -118,7 +118,7 @@ describe('#distToNode', function() {
     });
 
     it('works with HTMLCollection other nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.distToNode(
                     '[data-toggle="from"]',
@@ -130,7 +130,7 @@ describe('#distToNode', function() {
     });
 
     it('works with array other nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.distToNode('[data-toggle="from"]', [
                     document.getElementById('test3'),

@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../../setup');
 
 describe('#wrapAll', function() {
@@ -25,7 +25,7 @@ describe('#wrapAll', function() {
     });
 
     it('wraps all nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.wrapAll('a', '.outer');
                 return document.body.innerHTML;
@@ -53,7 +53,7 @@ describe('#wrapAll', function() {
     });
 
     it('works with HTMLElement nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.wrapAll(
                     document.getElementById('test1'),
@@ -84,7 +84,7 @@ describe('#wrapAll', function() {
     });
 
     it('works with NodeList nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.wrapAll(
                     document.querySelectorAll('a'),
@@ -115,7 +115,7 @@ describe('#wrapAll', function() {
     });
 
     it('works with HTMLCollection nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.wrapAll(
                     document.getElementById('parent1').children,
@@ -146,7 +146,7 @@ describe('#wrapAll', function() {
     });
 
     it('works with array nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.wrapAll([
                     document.getElementById('test1'),
@@ -179,7 +179,7 @@ describe('#wrapAll', function() {
     });
 
     it('works with HTMLElement other nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.wrapAll(
                     'a',
@@ -210,7 +210,7 @@ describe('#wrapAll', function() {
     });
 
     it('works with NodeList other nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.wrapAll(
                     'a',
@@ -241,7 +241,7 @@ describe('#wrapAll', function() {
     });
 
     it('works with HTMLCollection other nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.wrapAll(
                     'a',
@@ -272,7 +272,7 @@ describe('#wrapAll', function() {
     });
 
     it('works with DocumentFragment other nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const range = document.createRange();
                 const fragment = range.createContextualFragment(
@@ -304,7 +304,7 @@ describe('#wrapAll', function() {
     });
 
     it('works with array other nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.wrapAll('a', [
                     document.querySelector('.outer')
@@ -334,7 +334,7 @@ describe('#wrapAll', function() {
     });
 
     it('works with HTML other nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.wrapAll('a', '<div class="div-outer"><span class="span-inner"></span></div>');
                 return document.body.innerHTML;

@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../../setup');
 
 describe('QuerySetImmutable #getAttribute', function() {
@@ -12,7 +12,7 @@ describe('QuerySetImmutable #getAttribute', function() {
     });
 
     it('returns an object with all attributes for the first node', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.query('input')
                     .getAttribute()
@@ -26,7 +26,7 @@ describe('QuerySetImmutable #getAttribute', function() {
     });
 
     it('returns an attribute value for the first node', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.query('input')
                     .getAttribute('type')
@@ -36,7 +36,7 @@ describe('QuerySetImmutable #getAttribute', function() {
     });
 
     it('returns null for an undefined property', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.query('input')
                     .getAttribute('disabled')
@@ -46,7 +46,7 @@ describe('QuerySetImmutable #getAttribute', function() {
     });
 
     it('returns undefined for empty nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.query('#invalid')
                     .getAttribute('type')

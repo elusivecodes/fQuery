@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../../setup');
 
 describe('QuerySet #hasChildren', function() {
@@ -18,7 +18,7 @@ describe('QuerySet #hasChildren', function() {
     });
 
     it('returns true if any node has children', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.queryMutable('div')
                     .hasChildren()
@@ -28,7 +28,7 @@ describe('QuerySet #hasChildren', function() {
     });
 
     it('returns false if no nodes have children', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.queryMutable('div:not(.test)')
                     .hasChildren()
@@ -38,7 +38,7 @@ describe('QuerySet #hasChildren', function() {
     });
 
     it('works with DocumentFragment nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const range = document.createRange();
                 const fragment = range.createContextualFragment(
@@ -52,7 +52,7 @@ describe('QuerySet #hasChildren', function() {
     });
 
     it('works with ShadowRoot nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const div = document.createElement('div');
                 const shadow = div.attachShadow({ mode: 'open' });
@@ -69,7 +69,7 @@ describe('QuerySet #hasChildren', function() {
     });
 
     it('works with Document nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.queryMutable(document)
                     .hasChildren()

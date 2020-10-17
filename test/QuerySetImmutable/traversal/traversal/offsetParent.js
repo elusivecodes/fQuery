@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../../setup');
 
 describe('QuerySetImmutable #offsetParent', function() {
@@ -24,7 +24,7 @@ describe('QuerySetImmutable #offsetParent', function() {
     });
 
     it('returns the offset parent of the first node', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.query('a')
                     .offsetParent()
@@ -38,7 +38,7 @@ describe('QuerySetImmutable #offsetParent', function() {
     });
 
     it('returns a new QuerySetImmutable', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const query1 = dom.query('a');
                 const query2 = query1.offsetParent();

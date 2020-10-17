@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec, setStyle } = require('../../../setup');
 const { easeIn, easeInOut, easeOut, getAnimationStyle, linear, testAnimation, testNoAnimation, testNoStyle, waitFor } = require('../../../helpers');
 
@@ -11,7 +11,7 @@ const testRotateIn = async (selector, x = 0, y = 1, z = 0, inverse = 1) => {
     const data = await getAnimationStyle(selector, 'transform');
 
     const amount = rotateIn(data.progress, inverse);
-    assert.equal(data.transform, `rotate3d(${x}, ${y}, ${z}, ${amount}deg)`);
+    assert.strictEqual(data.transform, `rotate3d(${x}, ${y}, ${z}, ${amount}deg)`);
 };
 
 describe('QuerySet #rotateIn', function() {
@@ -373,7 +373,7 @@ describe('QuerySet #rotateIn', function() {
                     }
                 );
         }).then(waitFor(50)).then(async _ => {
-            assert.equal(
+            assert.strictEqual(
                 await exec(_ => document.body.innerHTML),
                 '<div id="test1"></div>' +
                 '<div id="test2" class="animate"></div>' +
@@ -393,7 +393,7 @@ describe('QuerySet #rotateIn', function() {
     });
 
     it('returns the QuerySet', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const query = dom.queryMutable('.animate');
                 return query === query.rotateIn(

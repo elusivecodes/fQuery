@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../../setup');
 const { easeInOut, testAnimation, testNoAnimation, waitFor } = require('../../../helpers');
 
@@ -21,7 +21,7 @@ describe('QuerySet #appendTo', function() {
     });
 
     it('appends each node to each other node', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.queryMutable('a')
                     .appendTo('div');
@@ -45,7 +45,7 @@ describe('QuerySet #appendTo', function() {
     });
 
     it('preserves events for nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 let result = 0;
                 dom.addEvent('a', 'click', _ => {
@@ -61,7 +61,7 @@ describe('QuerySet #appendTo', function() {
     });
 
     it('preserves data for nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ => {
                 dom.setData('a', 'test', 'Test');
                 dom.queryMutable('a')
@@ -118,7 +118,7 @@ describe('QuerySet #appendTo', function() {
     });
 
     it('does not clone for the last nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const nodes = [...document.querySelectorAll('a')];
                 dom.queryMutable('a')
@@ -131,7 +131,7 @@ describe('QuerySet #appendTo', function() {
     });
 
     it('returns the QuerySet', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const query = dom.queryMutable('a');
                 return query === query.appendTo('div');
@@ -141,7 +141,7 @@ describe('QuerySet #appendTo', function() {
     });
 
     it('works with DocumentFragment nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const range = document.createRange();
                 const fragment = range.createContextualFragment(
@@ -167,7 +167,7 @@ describe('QuerySet #appendTo', function() {
     });
 
     it('works with HTMLElement other nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.queryMutable('a')
                     .appendTo(
@@ -189,7 +189,7 @@ describe('QuerySet #appendTo', function() {
     });
 
     it('works with NodeList other nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.queryMutable('a')
                     .appendTo(
@@ -215,7 +215,7 @@ describe('QuerySet #appendTo', function() {
     });
 
     it('works with HTMLCollection other nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.queryMutable('a')
                     .appendTo(
@@ -241,7 +241,7 @@ describe('QuerySet #appendTo', function() {
     });
 
     it('works with DocumentFragment other nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const range = document.createRange();
                 const fragment = range.createContextualFragment(
@@ -267,7 +267,7 @@ describe('QuerySet #appendTo', function() {
     });
 
     it('works with ShadowRoot other nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const div = document.createElement('div');
                 const shadow = div.attachShadow({ mode: 'open' });
@@ -286,7 +286,7 @@ describe('QuerySet #appendTo', function() {
     });
 
     it('works with Document other nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const myDoc = new Document();
                 dom.queryMutable(
@@ -299,7 +299,7 @@ describe('QuerySet #appendTo', function() {
     });
 
     it('works with array other nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.queryMutable('a')
                     .appendTo([
@@ -326,7 +326,7 @@ describe('QuerySet #appendTo', function() {
     });
 
     it('works with QuerySet other nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const query = dom.queryMutable('div');
                 dom.queryMutable('a')

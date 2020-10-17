@@ -1,10 +1,10 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../../setup');
 
 describe('#createComment', function() {
 
     it('creates a new comment node', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const comment = dom.createComment('Test');
                 document.body.appendChild(comment);

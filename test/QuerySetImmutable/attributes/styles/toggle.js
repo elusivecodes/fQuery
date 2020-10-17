@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../../setup');
 
 describe('QuerySetImmutable #toggle', function() {
@@ -12,7 +12,7 @@ describe('QuerySetImmutable #toggle', function() {
     });
 
     it('toggles the visibility of all nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.query('div')
                     .toggle();
@@ -24,7 +24,7 @@ describe('QuerySetImmutable #toggle', function() {
     });
 
     it('returns the QuerySet', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const query = dom.query('div');
                 return query === query.toggle();

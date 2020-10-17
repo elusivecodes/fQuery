@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec, setStyle } = require('../../../setup');
 
 describe('QuerySetImmutable #css', function() {
@@ -13,7 +13,7 @@ describe('QuerySetImmutable #css', function() {
     });
 
     it('returns an object with all computed styles for the first node', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ => {
                 const css = dom.query('.test')
                     .css();
@@ -30,7 +30,7 @@ describe('QuerySetImmutable #css', function() {
     });
 
     it('returns a computed style for the first node', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.query('.test')
                     .css('width')
@@ -40,7 +40,7 @@ describe('QuerySetImmutable #css', function() {
     });
 
     it('returns undefined for empty nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.query('#invalid')
                     .css('width')

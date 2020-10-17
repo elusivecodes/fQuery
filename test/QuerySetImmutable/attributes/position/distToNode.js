@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../../setup');
 
 describe('QuerySetImmutable #distToNode', function() {
@@ -19,7 +19,7 @@ describe('QuerySetImmutable #distToNode', function() {
     });
 
     it('returns the distance from the first node to another node', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.query('[data-toggle="from"]')
                     .distToNode('[data-toggle="to"]')
@@ -29,7 +29,7 @@ describe('QuerySetImmutable #distToNode', function() {
     });
 
     it('returns undefined for empty nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.query('#invalid')
                     .distToNode('[data-toggle="to"]')
@@ -39,7 +39,7 @@ describe('QuerySetImmutable #distToNode', function() {
     });
 
     it('returns undefined for empty other nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.query('[data-toggle="from"]')
                     .distToNode('#invalid')
@@ -49,7 +49,7 @@ describe('QuerySetImmutable #distToNode', function() {
     });
 
     it('works with HTMLElement other nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.query('[data-toggle="from"]')
                     .distToNode(
@@ -61,7 +61,7 @@ describe('QuerySetImmutable #distToNode', function() {
     });
 
     it('works with NodeList other nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.query('[data-toggle="from"]')
                     .distToNode(
@@ -73,7 +73,7 @@ describe('QuerySetImmutable #distToNode', function() {
     });
 
     it('works with HTMLCollection other nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.query('[data-toggle="from"]')
                     .distToNode(
@@ -85,7 +85,7 @@ describe('QuerySetImmutable #distToNode', function() {
     });
 
     it('works with array other nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.query('[data-toggle="from"]')
                     .distToNode([
@@ -98,7 +98,7 @@ describe('QuerySetImmutable #distToNode', function() {
     });
 
     it('works with QuerySet other nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const query = dom.query('[data-toggle="to"]');
                 return dom.query('[data-toggle="from"]')

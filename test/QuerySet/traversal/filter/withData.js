@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../../setup');
 
 describe('QuerySet #withData', function() {
@@ -16,7 +16,7 @@ describe('QuerySet #withData', function() {
     });
 
     it('returns nodes with data', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.queryMutable('div')
                     .withData()
@@ -31,7 +31,7 @@ describe('QuerySet #withData', function() {
     });
 
     it('returns nodes with data for a key', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.queryMutable('div')
                     .withData('test1')
@@ -45,7 +45,7 @@ describe('QuerySet #withData', function() {
     });
 
     it('returns the QuerySet', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const query = dom.queryMutable('div');
                 return query === query.withData();
@@ -55,7 +55,7 @@ describe('QuerySet #withData', function() {
     });
 
     it('works with DocumentFragment nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ => {
                 const fragment = document.createDocumentFragment();
                 dom.setData(fragment, 'test', 'Test');
@@ -72,7 +72,7 @@ describe('QuerySet #withData', function() {
     });
 
     it('works with ShadowRoot nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ => {
                 const div = document.createElement('div');
                 const shadow = div.attachShadow({ mode: 'open' });
@@ -90,7 +90,7 @@ describe('QuerySet #withData', function() {
     });
 
     it('works with Document nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ => {
                 dom.setData(document, 'test', 'Test');
                 return dom.queryMutable(document)
@@ -105,7 +105,7 @@ describe('QuerySet #withData', function() {
     });
 
     it('works with Window nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ => {
                 dom.setData(window, 'test', 'Test');
                 return dom.queryMutable(window)

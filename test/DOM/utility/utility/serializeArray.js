@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../../setup');
 
 describe('#serializeArray', function() {
@@ -41,7 +41,7 @@ describe('#serializeArray', function() {
     });
 
     it('returns a serialized string of all form elements', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.serializeArray('form')
             ),
@@ -91,7 +91,7 @@ describe('#serializeArray', function() {
     });
 
     it('works with HTMLElement nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.serializeArray(
                     document.getElementById('form')
@@ -143,7 +143,7 @@ describe('#serializeArray', function() {
     });
 
     it('works with NodeList nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.serializeArray(
                     document.querySelectorAll('input, textarea, select')
@@ -195,7 +195,7 @@ describe('#serializeArray', function() {
     });
 
     it('works with HTMLCollection nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.serializeArray(
                     document.body.children
@@ -247,7 +247,7 @@ describe('#serializeArray', function() {
     });
 
     it('works with DocumentFragment nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ => {
                 const range = document.createRange();
                 const fragment = range.createContextualFragment(
@@ -301,7 +301,7 @@ describe('#serializeArray', function() {
     });
 
     it('works with ShadowRoot nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ => {
                 const div = document.createElement('div');
                 const shadow = div.attachShadow({ mode: 'open' });
@@ -358,7 +358,7 @@ describe('#serializeArray', function() {
     });
 
     it('works with array nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.serializeArray([
                     document.getElementById('test1'),

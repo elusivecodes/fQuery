@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../../setup');
 
 describe('QuerySetImmutable #percentY', function() {
@@ -13,7 +13,7 @@ describe('QuerySetImmutable #percentY', function() {
     });
 
     it('returns the percent of a position along the Y-axis for the first node', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.query('div')
                     .percentY(150)
@@ -23,7 +23,7 @@ describe('QuerySetImmutable #percentY', function() {
     });
 
     it('returns the percent of a position along the Y-axis for the first node with offset', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.query('div')
                     .percentY(1150, true)
@@ -33,7 +33,7 @@ describe('QuerySetImmutable #percentY', function() {
     });
 
     it('clamps the returned value between 0 and 100', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ => {
                 const query = dom.query('div');
                 return [
@@ -49,7 +49,7 @@ describe('QuerySetImmutable #percentY', function() {
     });
 
     it('returns undefined for empty nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.query('#invalid')
                     .percentY(150)

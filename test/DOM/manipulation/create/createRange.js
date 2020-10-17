@@ -1,10 +1,10 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../../setup');
 
 describe('#createRange', function() {
 
     it('creates a new range', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.createRange() instanceof Range
             ),

@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../../setup');
 
 describe('QuerySet #isConnected', function() {
@@ -14,7 +14,7 @@ describe('QuerySet #isConnected', function() {
     });
 
     it('returns true if any node is connected to the DOM', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.queryMutable('div')
                     .isConnected()
@@ -24,7 +24,7 @@ describe('QuerySet #isConnected', function() {
     });
 
     it('returns false if no nodes are connected to the DOM', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.queryMutable(
                     document.createElement('div')
@@ -35,7 +35,7 @@ describe('QuerySet #isConnected', function() {
     });
 
     it('works with DocumentFragment nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const fragment = document.createDocumentFragment();
                 return dom.queryMutable(fragment)
@@ -46,7 +46,7 @@ describe('QuerySet #isConnected', function() {
     });
 
     it('works with ShadowRoot nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const div = document.getElementById('div1');
                 const shadow = div.attachShadow({ mode: 'open' });

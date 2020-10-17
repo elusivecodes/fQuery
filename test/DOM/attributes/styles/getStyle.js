@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../../setup');
 
 describe('#getStyle', function() {
@@ -12,7 +12,7 @@ describe('#getStyle', function() {
     });
 
     it('returns an object with all style values for the first node', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.getStyle('div')
             ),
@@ -25,7 +25,7 @@ describe('#getStyle', function() {
     });
 
     it('returns a style value for the first node', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.getStyle('div', 'display')
             ),
@@ -34,7 +34,7 @@ describe('#getStyle', function() {
     });
 
     it('returns an empty string for an undefined style', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.getStyle('div', 'visibility')
             ),
@@ -43,7 +43,7 @@ describe('#getStyle', function() {
     });
 
     it('returns undefined for empty nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.getStyle('#invalid', 'display')
             ),
@@ -52,7 +52,7 @@ describe('#getStyle', function() {
     });
 
     it('works with HTMLElement nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.getStyle(
                     document.getElementById('test1'),
@@ -64,7 +64,7 @@ describe('#getStyle', function() {
     });
 
     it('works with NodeList nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.getStyle(
                     document.querySelectorAll('div'),
@@ -76,7 +76,7 @@ describe('#getStyle', function() {
     });
 
     it('works with HTMLCollection nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.getStyle(
                     document.body.children,
@@ -88,7 +88,7 @@ describe('#getStyle', function() {
     });
 
     it('works with array nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.getStyle([
                     document.getElementById('test1'),

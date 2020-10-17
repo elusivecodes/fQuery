@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../../setup');
 
 describe('#withClass', function() {
@@ -14,7 +14,7 @@ describe('#withClass', function() {
     });
 
     it('returns nodes with a specified class', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.withClass('div', 'test')
                     .map(node => node.id)
@@ -27,7 +27,7 @@ describe('#withClass', function() {
     });
 
     it('works with HTMLElement nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.withClass(
                     document.getElementById('div1'),
@@ -41,7 +41,7 @@ describe('#withClass', function() {
     });
 
     it('works with NodeList nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.withClass(
                     document.querySelectorAll('div'),
@@ -56,7 +56,7 @@ describe('#withClass', function() {
     });
 
     it('works with HTMLCollection nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.withClass(
                     document.body.children,
@@ -71,7 +71,7 @@ describe('#withClass', function() {
     });
 
     it('works with array nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.withClass([
                     document.getElementById('div1'),

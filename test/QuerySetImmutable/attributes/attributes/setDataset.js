@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../../setup');
 
 describe('QuerySetImmutable #setDataset', function() {
@@ -12,7 +12,7 @@ describe('QuerySetImmutable #setDataset', function() {
     });
 
     it('sets a dataset object for all nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.query('div')
                     .setDataset({
@@ -27,7 +27,7 @@ describe('QuerySetImmutable #setDataset', function() {
     });
 
     it('sets a dataset value for all nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.query('div')
                     .setDataset({
@@ -41,7 +41,7 @@ describe('QuerySetImmutable #setDataset', function() {
     });
 
     it('formats boolean true values', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.query('#test1')
                     .setDataset({
@@ -55,7 +55,7 @@ describe('QuerySetImmutable #setDataset', function() {
     });
 
     it('formats boolean false values', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.query('#test1')
                     .setDataset({
@@ -69,7 +69,7 @@ describe('QuerySetImmutable #setDataset', function() {
     });
 
     it('formats boolean null values', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.query('#test1')
                     .setDataset({
@@ -83,7 +83,7 @@ describe('QuerySetImmutable #setDataset', function() {
     });
 
     it('formats array values', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.query('#test1')
                     .setDataset({
@@ -97,7 +97,7 @@ describe('QuerySetImmutable #setDataset', function() {
     });
 
     it('formats object values', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.query('#test1')
                     .setDataset({
@@ -111,7 +111,7 @@ describe('QuerySetImmutable #setDataset', function() {
     });
 
     it('returns the QuerySet', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const query = dom.query('input');
                 return query === query.setDataset('text', 'Test');

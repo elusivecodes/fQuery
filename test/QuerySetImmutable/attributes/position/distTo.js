@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../../setup');
 
 describe('QuerySetImmutable #distTo', function() {
@@ -13,7 +13,7 @@ describe('QuerySetImmutable #distTo', function() {
     });
 
     it('returns the distance to the first node', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.query('div')
                     .distTo(580, 128)
@@ -23,7 +23,7 @@ describe('QuerySetImmutable #distTo', function() {
     });
 
     it('returns the distance to the first node with offset', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.query('div')
                     .distTo(1180, 1270, true)
@@ -33,7 +33,7 @@ describe('QuerySetImmutable #distTo', function() {
     });
 
     it('returns undefined for empty nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.query('#invalid')
                     .distTo(580, 128)

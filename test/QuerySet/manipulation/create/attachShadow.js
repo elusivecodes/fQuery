@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../../setup');
 
 describe('QuerySet #attachShadow', function() {
@@ -10,7 +10,7 @@ describe('QuerySet #attachShadow', function() {
     });
 
     it('attaches a shadow root to the first node', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ => {
                 const shadow = dom.queryMutable('#test')
                     .attachShadow()
@@ -28,7 +28,7 @@ describe('QuerySet #attachShadow', function() {
     });
 
     it('attaches a closed shadow root to the first node', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ => {
                 const shadow = dom.queryMutable('#test')
                     .attachShadow(false)
@@ -46,7 +46,7 @@ describe('QuerySet #attachShadow', function() {
     });
 
     it('returns a new QuerySet', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const query1 = dom.queryMutable('#test');
                 const query2 = query1.attachShadow();

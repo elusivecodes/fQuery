@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../../setup');
 const { testNoAnimation, waitFor } = require('../../../helpers');
 
@@ -23,7 +23,7 @@ describe('QuerySet #empty', function() {
     });
 
     it('removes contents of all nodes from the DOM', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.queryMutable('div')
                     .empty();
@@ -35,7 +35,7 @@ describe('QuerySet #empty', function() {
     });
 
     it('removes events recursively', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 let result = 0;
                 const nodes = document.querySelectorAll('a');
@@ -58,7 +58,7 @@ describe('QuerySet #empty', function() {
     });
 
     it('removes data recursively', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ => {
                 const nodes = document.querySelectorAll('a');
                 dom.setData('a', 'test', 'Test');
@@ -127,7 +127,7 @@ describe('QuerySet #empty', function() {
                 }
             });
         }).then(waitFor(100)).then(async _ => {
-            assert.equal(
+            assert.strictEqual(
                 await exec(_ => document.body.innerHTML),
                 '<div id="outer1">' +
                 '</div>' +
@@ -142,7 +142,7 @@ describe('QuerySet #empty', function() {
     });
 
     it('triggers a remove event recursively', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 let result = 0;
                 dom.addEvent('a', 'remove', _ => {
@@ -157,7 +157,7 @@ describe('QuerySet #empty', function() {
     });
 
     it('returns the QuerySet', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const query = dom.queryMutable('a');
                 return query === query.empty();
@@ -167,7 +167,7 @@ describe('QuerySet #empty', function() {
     });
 
     it('works with DocumentFragment nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const range = document.createRange();
                 const fragment = range.createContextualFragment(
@@ -184,7 +184,7 @@ describe('QuerySet #empty', function() {
     });
 
     it('works with ShadowRoot nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const div = document.createElement('div');
                 const shadow = div.attachShadow({ mode: 'open' });
@@ -202,7 +202,7 @@ describe('QuerySet #empty', function() {
     });
 
     it('works with Document nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const parser = new DOMParser();
                 const myDoc = parser.parseFromString(

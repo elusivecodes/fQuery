@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../../setup');
 
 describe('#cloneData', function() {
@@ -20,7 +20,7 @@ describe('#cloneData', function() {
     });
 
     it('clones data from all nodes to all other nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ => {
                 dom.cloneData('[data-toggle="data"]', '[data-toggle="noData"]');
                 return [
@@ -42,7 +42,7 @@ describe('#cloneData', function() {
     });
 
     it('works with HTMLElement nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ => {
                 dom.cloneData(
                     document.getElementById('test1'),
@@ -65,7 +65,7 @@ describe('#cloneData', function() {
     });
 
     it('works with NodeList nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ => {
                 dom.cloneData(
                     document.querySelectorAll('[data-toggle="data"]'),
@@ -90,7 +90,7 @@ describe('#cloneData', function() {
     });
 
     it('works with HTMLCollection nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ => {
                 dom.cloneData(
                     document.getElementById('dataParent').children,
@@ -115,7 +115,7 @@ describe('#cloneData', function() {
     });
 
     it('works with DocumentFragment nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ => {
                 const fragment = document.createDocumentFragment();
                 dom.setData(fragment, 'test', 'Test 1');
@@ -137,7 +137,7 @@ describe('#cloneData', function() {
     });
 
     it('works with ShadowRoot nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ => {
                 const div = document.createElement('div');
                 const shadow = div.attachShadow({ mode: 'open' });
@@ -160,7 +160,7 @@ describe('#cloneData', function() {
     });
 
     it('works with Document nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ => {
                 dom.setData(document, 'test', 'Test 1');
                 dom.cloneData(document, '[data-toggle="noData"]');
@@ -181,7 +181,7 @@ describe('#cloneData', function() {
     });
 
     it('works with Window nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ => {
                 dom.setData(window, 'test', 'Test 1');
                 dom.cloneData(window, '[data-toggle="noData"]');
@@ -202,7 +202,7 @@ describe('#cloneData', function() {
     });
 
     it('works with array nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ => {
                 dom.cloneData([
                     document.getElementById('test1'),
@@ -227,7 +227,7 @@ describe('#cloneData', function() {
     });
 
     it('works with HTMLElement other nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ => {
                 dom.cloneData(
                     '[data-toggle="data"]',
@@ -243,7 +243,7 @@ describe('#cloneData', function() {
     });
 
     it('works with NodeList other nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ => {
                 dom.cloneData(
                     '[data-toggle="data"]',
@@ -268,7 +268,7 @@ describe('#cloneData', function() {
     });
 
     it('works with HTMLCollection other nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ => {
                 dom.cloneData(
                     '[data-toggle="data"]',
@@ -293,7 +293,7 @@ describe('#cloneData', function() {
     });
 
     it('works with DocumentFragment other nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ => {
                 const fragment = document.createDocumentFragment();
                 dom.cloneData('[data-toggle="data"]', fragment);
@@ -307,7 +307,7 @@ describe('#cloneData', function() {
     });
 
     it('works with ShadowRoot other nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ => {
                 const div = document.createElement('div');
                 const shadow = div.attachShadow({ mode: 'open' });
@@ -322,7 +322,7 @@ describe('#cloneData', function() {
     });
 
     it('works with Document other nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ => {
                 dom.cloneData('[data-toggle="data"]', document);
                 return dom.getData(document);
@@ -335,7 +335,7 @@ describe('#cloneData', function() {
     });
 
     it('works with Window other nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ => {
                 dom.cloneData('[data-toggle="data"]', window);
                 return dom.getData(window);
@@ -348,7 +348,7 @@ describe('#cloneData', function() {
     });
 
     it('works with array other nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ => {
                 dom.cloneData('[data-toggle="data"]', [
                     document.getElementById('test3'),

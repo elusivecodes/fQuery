@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../../setup');
 
 describe('QuerySet #removeProperty', function() {
@@ -14,7 +14,7 @@ describe('QuerySet #removeProperty', function() {
     });
 
     it('removes a property for all nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ => {
                 dom.queryMutable('input')
                     .removeProperty('test');
@@ -31,7 +31,7 @@ describe('QuerySet #removeProperty', function() {
     });
 
     it('returns the QuerySet', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const query = dom.queryMutable('input');
                 return query === query.removeProperty('test');

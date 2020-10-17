@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../../setup');
 
 describe('#contents', function() {
@@ -20,7 +20,7 @@ describe('#contents', function() {
     });
 
     it('returns all children of each node', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.contents('.parent')
                     .map(node => node.textContent)
@@ -37,7 +37,7 @@ describe('#contents', function() {
     });
 
     it('returns an empty array for empty nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.contents('#invalid')
             ),
@@ -46,7 +46,7 @@ describe('#contents', function() {
     });
 
     it('works with HTMLElement nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.contents(
                     document.getElementById('parent1')
@@ -61,7 +61,7 @@ describe('#contents', function() {
     });
 
     it('works with NodeList nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.contents(
                     document.querySelectorAll('.parent')
@@ -79,7 +79,7 @@ describe('#contents', function() {
     });
 
     it('works with HTMLCollection nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.contents(
                     document.body.children
@@ -97,7 +97,7 @@ describe('#contents', function() {
     });
 
     it('works with DocumentFragment nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ => {
                 const range = document.createRange();
                 const fragment = range.createContextualFragment(
@@ -117,7 +117,7 @@ describe('#contents', function() {
     });
 
     it('works with ShadowRoot nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ => {
                 const div = document.createElement('div');
                 const shadow = div.attachShadow({ mode: 'open' });
@@ -140,7 +140,7 @@ describe('#contents', function() {
     });
 
     it('works with Document nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.contents(document)
                     .map(node => node.id)
@@ -152,7 +152,7 @@ describe('#contents', function() {
     });
 
     it('works with array nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.contents([
                     document.getElementById('parent1'),

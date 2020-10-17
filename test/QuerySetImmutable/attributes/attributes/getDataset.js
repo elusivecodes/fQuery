@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../../setup');
 
 describe('QuerySetImmutable #getDataset', function() {
@@ -12,7 +12,7 @@ describe('QuerySetImmutable #getDataset', function() {
     });
 
     it('returns an object with all dataset values for the first node', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.query('div')
                     .getDataset()
@@ -30,7 +30,7 @@ describe('QuerySetImmutable #getDataset', function() {
     });
 
     it('returns a dataset value for the first node', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.query('div')
                     .getDataset('text')
@@ -40,7 +40,7 @@ describe('QuerySetImmutable #getDataset', function() {
     });
 
     it('parses number values', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.query('div')
                     .getDataset('number')
@@ -50,7 +50,7 @@ describe('QuerySetImmutable #getDataset', function() {
     });
 
     it('parses boolean true values', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.query('div')
                     .getDataset('true')
@@ -60,7 +60,7 @@ describe('QuerySetImmutable #getDataset', function() {
     });
 
     it('parses boolean false values', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.query('div')
                     .getDataset('false')
@@ -70,7 +70,7 @@ describe('QuerySetImmutable #getDataset', function() {
     });
 
     it('parses null values', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.query('div')
                     .getDataset('null')
@@ -80,7 +80,7 @@ describe('QuerySetImmutable #getDataset', function() {
     });
 
     it('parses JSON array values', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.query('div')
                     .getDataset('array')
@@ -90,7 +90,7 @@ describe('QuerySetImmutable #getDataset', function() {
     });
 
     it('parses JSON object values', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.query('div')
                     .getDataset('object')
@@ -100,7 +100,7 @@ describe('QuerySetImmutable #getDataset', function() {
     });
 
     it('returns undefined for empty nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.query('#invalid')
                     .getDataset('text')

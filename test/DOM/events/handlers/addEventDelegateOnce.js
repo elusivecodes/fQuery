@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../../setup');
 
 describe('#addEventDelegateOnce', function() {
@@ -22,7 +22,7 @@ describe('#addEventDelegateOnce', function() {
     });
 
     it('adds a self-destructing delegated event to each node', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 let result = 0;
                 const event = new Event('click', {
@@ -50,7 +50,7 @@ describe('#addEventDelegateOnce', function() {
     });
 
     it('adds self-destructing delegated events to each node', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 let result = 0;
                 const event1 = new Event('click', {
@@ -89,7 +89,7 @@ describe('#addEventDelegateOnce', function() {
     });
 
     it('adds a self-destructing delegated event to each node with custom child selector', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 let result = 0;
                 const event = new Event('click', {
@@ -111,7 +111,7 @@ describe('#addEventDelegateOnce', function() {
     });
 
     it('adds self-destructing delegated events to each node with custom child selector', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 let result = 0;
                 const event1 = new Event('click', {
@@ -150,7 +150,7 @@ describe('#addEventDelegateOnce', function() {
     });
 
     it('adds a namespaced self-destructing delegated event to each node', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 let result = 0;
                 const event = new Event('click', {
@@ -178,7 +178,7 @@ describe('#addEventDelegateOnce', function() {
     });
 
     it('adds namespaced self-destructing delegated events to each node', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 let result = 0;
                 const event1 = new Event('click', {
@@ -217,7 +217,7 @@ describe('#addEventDelegateOnce', function() {
     });
 
     it('adds a deep namespaced self-destructing delegated event to each node', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 let result = 0;
                 const event = new Event('click', {
@@ -245,7 +245,7 @@ describe('#addEventDelegateOnce', function() {
     });
 
     it('adds deep namespaced self-destructing delegated events to each node', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 let result = 0;
                 const event1 = new Event('click', {
@@ -284,7 +284,7 @@ describe('#addEventDelegateOnce', function() {
     });
 
     it('works with HTMLElement nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 let result = 0;
                 const event = new Event('click', {
@@ -317,7 +317,7 @@ describe('#addEventDelegateOnce', function() {
     });
 
     it('works with NodeList nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 let result = 0;
                 const event = new Event('click', {
@@ -350,7 +350,7 @@ describe('#addEventDelegateOnce', function() {
     });
 
     it('works with HTMLCollection nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 let result = 0;
                 const event = new Event('click', {
@@ -383,7 +383,7 @@ describe('#addEventDelegateOnce', function() {
     });
 
     it('works with ShadowRoot nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 let result = 0;
                 const event = new Event('click', {
@@ -405,7 +405,7 @@ describe('#addEventDelegateOnce', function() {
     });
 
     it('works with Document nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 let result = 0;
                 const event = new Event('click', {
@@ -433,7 +433,7 @@ describe('#addEventDelegateOnce', function() {
     });
 
     it('works with array nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 let result = 0;
                 const event = new Event('click', {

@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../../setup');
 
 describe('#isConnected', function() {
@@ -14,7 +14,7 @@ describe('#isConnected', function() {
     });
 
     it('returns true if any node is connected to the DOM', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.isConnected('div')
             ),
@@ -23,7 +23,7 @@ describe('#isConnected', function() {
     });
 
     it('returns false if no nodes are connected to the DOM', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.isConnected(
                     document.createElement('div')
@@ -34,7 +34,7 @@ describe('#isConnected', function() {
     });
 
     it('works with HTMLElement nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.isConnected(
                     document.getElementById('div1')
@@ -45,7 +45,7 @@ describe('#isConnected', function() {
     });
 
     it('works with NodeList nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.isConnected(
                     document.querySelectorAll('div')
@@ -56,7 +56,7 @@ describe('#isConnected', function() {
     });
 
     it('works with HTMLCollection nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.isConnected(
                     document.body.children
@@ -67,7 +67,7 @@ describe('#isConnected', function() {
     });
 
     it('works with DocumentFragment nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const fragment = document.createDocumentFragment();
                 return dom.isConnected(fragment);
@@ -77,7 +77,7 @@ describe('#isConnected', function() {
     });
 
     it('works with ShadowRoot nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const div = document.getElementById('div1');
                 const shadow = div.attachShadow({ mode: 'open' });
@@ -88,7 +88,7 @@ describe('#isConnected', function() {
     });
 
     it('works with array nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.isConnected([
                     document.getElementById('div1'),

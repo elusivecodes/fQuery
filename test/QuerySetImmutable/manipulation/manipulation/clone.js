@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../../setup');
 const { easeInOut, testAnimation, testNoAnimation, waitFor } = require('../../../helpers');
 
@@ -19,7 +19,7 @@ describe('QuerySetImmutable #clone', function() {
     });
 
     it('clones all nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const clones = dom.query('div')
                     .clone()
@@ -49,7 +49,7 @@ describe('QuerySetImmutable #clone', function() {
     });
 
     it('shallow clones all nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const clones = dom.query('div')
                     .clone({
@@ -75,7 +75,7 @@ describe('QuerySetImmutable #clone', function() {
     });
 
     it('clones all nodes with events', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 let result = 0;
                 dom.addEvent('a', 'click', _ => {
@@ -100,7 +100,7 @@ describe('QuerySetImmutable #clone', function() {
     });
 
     it('clones all nodes with data', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ => {
                 dom.setData('a', 'test', 'Test');
                 const clones = dom.query('div')
@@ -168,7 +168,7 @@ describe('QuerySetImmutable #clone', function() {
     });
 
     it('returns a new QuerySetImmutable', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const query1 = dom.query('div');
                 const query2 = query1.clone();
@@ -179,7 +179,7 @@ describe('QuerySetImmutable #clone', function() {
     });
 
     it('works with DocumentFragment nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const range = document.createRange();
                 const fragment = range.createContextualFragment(

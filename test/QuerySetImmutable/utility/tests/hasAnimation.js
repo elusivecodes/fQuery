@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../../setup');
 
 describe('QuerySetImmutable #hasAnimation', function() {
@@ -17,7 +17,7 @@ describe('QuerySetImmutable #hasAnimation', function() {
     });
 
     it('returns true if any node has an animation', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.query('div')
                     .hasAnimation()
@@ -27,7 +27,7 @@ describe('QuerySetImmutable #hasAnimation', function() {
     });
 
     it('returns false if no nodes have an animation', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.query('div:not(.test)')
                     .hasAnimation()

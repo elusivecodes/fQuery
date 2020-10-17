@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../setup');
 const { easeIn, easeInOut, easeOut, linear, testAnimation, testNoAnimation, waitFor } = require('../../helpers');
 
@@ -178,7 +178,7 @@ describe('QuerySet #animate', function() {
                     }
                 );
         }).then(waitFor(50)).then(async _ => {
-            assert.equal(
+            assert.strictEqual(
                 await exec(_ => document.body.innerHTML),
                 '<div id="test1"></div>' +
                 '<div id="test2" class="animate"></div>' +
@@ -194,7 +194,7 @@ describe('QuerySet #animate', function() {
     });
 
     it('returns the QuerySet', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const query = dom.queryMutable('.animate');
                 return query === query.animate(

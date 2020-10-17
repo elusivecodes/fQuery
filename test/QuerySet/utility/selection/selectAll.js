@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../../setup');
 
 describe('QuerySet #selectAll', function() {
@@ -27,7 +27,7 @@ describe('QuerySet #selectAll', function() {
     });
 
     it('creates a selection on all nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.queryMutable('.select')
                     .selectAll();
@@ -40,7 +40,7 @@ describe('QuerySet #selectAll', function() {
     });
 
     it('returns the QuerySet', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const query = dom.queryMutable('.select');
                 return query === query.selectAll();

@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../../setup');
 
 describe('QuerySetImmutable #withDescendent', function() {
@@ -22,7 +22,7 @@ describe('QuerySetImmutable #withDescendent', function() {
     });
 
     it('returns nodes with a descendent matching a filter', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.query('div')
                     .withDescendent('a')
@@ -37,7 +37,7 @@ describe('QuerySetImmutable #withDescendent', function() {
     });
 
     it('returns nodes with a descendent matching a custom selector filter', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.query('div')
                     .withDescendent('> span > a')
@@ -52,7 +52,7 @@ describe('QuerySetImmutable #withDescendent', function() {
     });
 
     it('returns a new QuerySetImmutable', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const query1 = dom.query('div');
                 const query2 = query1.withDescendent('a');
@@ -63,7 +63,7 @@ describe('QuerySetImmutable #withDescendent', function() {
     });
 
     it('works with DocumentFragment nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ => {
                 const range = document.createRange();
                 const fragment = range.createContextualFragment(
@@ -82,7 +82,7 @@ describe('QuerySetImmutable #withDescendent', function() {
     });
 
     it('works with ShadowRoot nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ => {
                 const div = document.createElement('div');
                 const shadow = div.attachShadow({ mode: 'open' });
@@ -104,7 +104,7 @@ describe('QuerySetImmutable #withDescendent', function() {
     });
 
     it('works with Document nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.query(document)
                     .withDescendent('div')
@@ -118,7 +118,7 @@ describe('QuerySetImmutable #withDescendent', function() {
     });
 
     it('works with function filter', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.query('div')
                     .withDescendent(node => node.id === 'a1')
@@ -132,7 +132,7 @@ describe('QuerySetImmutable #withDescendent', function() {
     });
 
     it('works with HTMLElement filter', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.query('div')
                     .withDescendent(
@@ -148,7 +148,7 @@ describe('QuerySetImmutable #withDescendent', function() {
     });
 
     it('works with NodeList filter', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.query('div')
                     .withDescendent(
@@ -165,7 +165,7 @@ describe('QuerySetImmutable #withDescendent', function() {
     });
 
     it('works with HTMLCollection filter', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.query('div')
                     .withDescendent(
@@ -181,7 +181,7 @@ describe('QuerySetImmutable #withDescendent', function() {
     });
 
     it('works with array filter', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.query('div')
                     .withDescendent([
@@ -199,7 +199,7 @@ describe('QuerySetImmutable #withDescendent', function() {
     });
 
     it('works with QuerySet filter', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ => {
                 const query = dom.query('a');
                 return dom.query('div')

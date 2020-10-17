@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../../setup');
 
 describe('#scrollWidth', function() {
@@ -14,7 +14,7 @@ describe('#scrollWidth', function() {
     });
 
     it('returns the scroll width of the first node', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.scrollWidth('div')
             ),
@@ -23,7 +23,7 @@ describe('#scrollWidth', function() {
     });
 
     it('returns the scroll width of the first node (hidden)', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 document.body.style.display = 'none';
                 return dom.scrollWidth('div');
@@ -33,7 +33,7 @@ describe('#scrollWidth', function() {
     });
 
     it('returns undefined for empty nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.scrollWidth('#invalid')
             ),
@@ -42,7 +42,7 @@ describe('#scrollWidth', function() {
     });
 
     it('works with HTMLElement nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.scrollWidth(
                     document.getElementById('test1')
@@ -53,7 +53,7 @@ describe('#scrollWidth', function() {
     });
 
     it('works with NodeList nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.scrollWidth(
                     document.querySelectorAll('div')
@@ -64,7 +64,7 @@ describe('#scrollWidth', function() {
     });
 
     it('works with HTMLCollection nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.scrollWidth(
                     document.body.children
@@ -75,7 +75,7 @@ describe('#scrollWidth', function() {
     });
 
     it('works with Document nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 document.body.innerHTML = '<div style="block; width: 1000px; height: 1000px;"></div>';
                 return dom.scrollWidth(document);
@@ -85,7 +85,7 @@ describe('#scrollWidth', function() {
     });
 
     it('works with array nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.scrollWidth([
                     document.getElementById('test1'),

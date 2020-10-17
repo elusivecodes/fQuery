@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec, setStyle } = require('../../../setup');
 
 describe('#hasCSSTransition', function() {
@@ -15,7 +15,7 @@ describe('#hasCSSTransition', function() {
     });
 
     it('returns true if any node has a CSS transition', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.hasCSSTransition('div')
             ),
@@ -24,7 +24,7 @@ describe('#hasCSSTransition', function() {
     });
 
     it('returns false if no nodes have a CSS transition', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.hasCSSTransition('div:not(.test)')
             ),
@@ -33,7 +33,7 @@ describe('#hasCSSTransition', function() {
     });
 
     it('works with HTMLElement nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.hasCSSTransition(
                     document.getElementById('div1')
@@ -44,7 +44,7 @@ describe('#hasCSSTransition', function() {
     });
 
     it('works with NodeList nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.hasCSSTransition(
                     document.querySelectorAll('div')
@@ -55,7 +55,7 @@ describe('#hasCSSTransition', function() {
     });
 
     it('works with HTMLCollection nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.hasCSSTransition(
                     document.body.children
@@ -66,7 +66,7 @@ describe('#hasCSSTransition', function() {
     });
 
     it('works with array nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.hasCSSTransition([
                     document.getElementById('div1'),

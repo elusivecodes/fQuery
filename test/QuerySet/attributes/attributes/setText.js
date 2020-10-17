@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../../setup');
 const { testNoAnimation, waitFor } = require('../../../helpers');
 
@@ -15,7 +15,7 @@ describe('QuerySet #setText', function() {
     });
 
     it('sets the text contents for all nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.queryMutable('div')
                     .setText('Test 2');
@@ -27,7 +27,7 @@ describe('QuerySet #setText', function() {
     });
 
     it('escapes HTML strings', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.queryMutable('#test1')
                     .setText('<span>Test 2</span>');
@@ -39,7 +39,7 @@ describe('QuerySet #setText', function() {
     });
 
     it('removes events recursively', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 let result = 0;
                 const node = document.getElementById('inner');
@@ -60,7 +60,7 @@ describe('QuerySet #setText', function() {
     });
 
     it('removes data recursively', async function() {
-        assert.equal; (
+        assert.strictEqual; (
             await exec(_ => {
                 const node = document.getElementById('inner');
                 dom.setData(node, 'test', 'Test');
@@ -112,7 +112,7 @@ describe('QuerySet #setText', function() {
                 document.body.appendChild(node);
             });
         }).then(waitFor(100)).then(async _ => {
-            assert.equal(
+            assert.strictEqual(
                 await exec(_ => document.body.innerHTML),
                 '<div id="test1">Test 2</div>' +
                 '<div id="test2">Test 2</div>' +
@@ -122,7 +122,7 @@ describe('QuerySet #setText', function() {
     });
 
     it('triggers a remove event recursively', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 let result = 0;
                 dom.addEvent('#inner', 'remove', _ => {
@@ -137,7 +137,7 @@ describe('QuerySet #setText', function() {
     });
 
     it('returns the QuerySet', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const query = dom.queryMutable('div');
                 return query === query.setText('Test 2');

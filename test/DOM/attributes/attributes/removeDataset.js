@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../../setup');
 
 describe('#removeDataset', function() {
@@ -12,7 +12,7 @@ describe('#removeDataset', function() {
     });
 
     it('removes a dataset value for all nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.removeDataset('div', 'text');
                 return document.body.innerHTML;
@@ -23,7 +23,7 @@ describe('#removeDataset', function() {
     });
 
     it('works with HTMLElement nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.removeDataset(
                     document.getElementById('test1'),
@@ -37,7 +37,7 @@ describe('#removeDataset', function() {
     });
 
     it('works with NodeList nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.removeDataset(
                     document.querySelectorAll('div'),
@@ -51,7 +51,7 @@ describe('#removeDataset', function() {
     });
 
     it('works with HTMLCollection nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.removeDataset(
                     document.body.children,
@@ -65,7 +65,7 @@ describe('#removeDataset', function() {
     });
 
     it('works with array nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.removeDataset([
                     document.getElementById('test1'),

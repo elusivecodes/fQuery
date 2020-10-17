@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../../setup');
 
 describe('#distTo', function() {
@@ -13,7 +13,7 @@ describe('#distTo', function() {
     });
 
     it('returns the distance to the first node', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.distTo('div', 580, 128)
             ),
@@ -22,7 +22,7 @@ describe('#distTo', function() {
     });
 
     it('returns the distance to the first node with offset', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.distTo('div', 1180, 1270, true)
             ),
@@ -31,7 +31,7 @@ describe('#distTo', function() {
     });
 
     it('returns undefined for empty nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.distTo('#invalid', 580, 128)
             ),
@@ -40,7 +40,7 @@ describe('#distTo', function() {
     });
 
     it('works with HTMLElement nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.distTo(
                     document.getElementById('test1'),
@@ -53,7 +53,7 @@ describe('#distTo', function() {
     });
 
     it('works with NodeList nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.distTo(
                     document.querySelectorAll('div'),
@@ -66,7 +66,7 @@ describe('#distTo', function() {
     });
 
     it('works with HTMLCollection nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.distTo(
                     document.body.children,
@@ -79,7 +79,7 @@ describe('#distTo', function() {
     });
 
     it('works with array nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.distTo([
                     document.getElementById('test1'),

@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec, setStyle } = require('../../../setup');
 
 describe('QuerySetImmutable #isVisible', function() {
@@ -23,7 +23,7 @@ describe('QuerySetImmutable #isVisible', function() {
     });
 
     it('returns true if any node is visible', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.query('div')
                     .isVisible()
@@ -33,7 +33,7 @@ describe('QuerySetImmutable #isVisible', function() {
     });
 
     it('returns false if no nodes are visible', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.query('.test')
                     .isVisible()
@@ -43,7 +43,7 @@ describe('QuerySetImmutable #isVisible', function() {
     });
 
     it('returns true if any node is a descendent of a visible node', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.query('span')
                     .isVisible()
@@ -53,7 +53,7 @@ describe('QuerySetImmutable #isVisible', function() {
     });
 
     it('works with Document nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.query(document)
                     .isVisible()
@@ -63,7 +63,7 @@ describe('QuerySetImmutable #isVisible', function() {
     });
 
     it('works with Window nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.query(window)
                     .isVisible()

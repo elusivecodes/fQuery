@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../../setup');
 
 describe('QuerySet #toggleClass', function() {
@@ -12,7 +12,7 @@ describe('QuerySet #toggleClass', function() {
     });
 
     it('toggles a class for all nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.queryMutable('div')
                     .toggleClass('test1');
@@ -24,7 +24,7 @@ describe('QuerySet #toggleClass', function() {
     });
 
     it('parses classes from string', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.queryMutable('div')
                     .toggleClass('test1 test2');
@@ -36,7 +36,7 @@ describe('QuerySet #toggleClass', function() {
     });
 
     it('parses classes from array', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.queryMutable('div')
                     .toggleClass([
@@ -51,7 +51,7 @@ describe('QuerySet #toggleClass', function() {
     });
 
     it('parses classes from multiple arguments', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.queryMutable('div')
                     .toggleClass('test1', ['test2']);
@@ -63,7 +63,7 @@ describe('QuerySet #toggleClass', function() {
     });
 
     it('returns the QuerySet', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const query = dom.queryMutable('div');
                 return query === query.toggleClass('test1');

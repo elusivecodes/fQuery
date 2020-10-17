@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../../setup');
 
 describe('#hide', function() {
@@ -12,7 +12,7 @@ describe('#hide', function() {
     });
 
     it('hides all nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.hide('div');
                 return document.body.innerHTML;
@@ -23,7 +23,7 @@ describe('#hide', function() {
     });
 
     it('works with HTMLElement nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.hide(
                     document.getElementById('test1')
@@ -36,7 +36,7 @@ describe('#hide', function() {
     });
 
     it('works with NodeList nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.hide(
                     document.querySelectorAll('div')
@@ -49,7 +49,7 @@ describe('#hide', function() {
     });
 
     it('works with HTMLCollection nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.hide(
                     document.body.children
@@ -62,7 +62,7 @@ describe('#hide', function() {
     });
 
     it('works with array nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.hide([
                     document.getElementById('test1'),

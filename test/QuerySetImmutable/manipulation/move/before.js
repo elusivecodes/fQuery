@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../../setup');
 const { easeInOut, testAnimation, testNoAnimation, waitFor } = require('../../../helpers');
 
@@ -21,7 +21,7 @@ describe('QuerySetImmutable #before', function() {
     });
 
     it('inserts each other node before each node', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.query('div')
                     .before('a');
@@ -45,7 +45,7 @@ describe('QuerySetImmutable #before', function() {
     });
 
     it('preserves events for other nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 let result = 0;
                 dom.addEvent('a', 'click', _ => {
@@ -61,7 +61,7 @@ describe('QuerySetImmutable #before', function() {
     });
 
     it('preserves data for other nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ => {
                 dom.setData('a', 'test', 'Test');
                 dom.query('div')
@@ -118,7 +118,7 @@ describe('QuerySetImmutable #before', function() {
     });
 
     it('does not clone for the last other nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const nodes = [...document.querySelectorAll('a')];
                 dom.query('div')
@@ -131,7 +131,7 @@ describe('QuerySetImmutable #before', function() {
     });
 
     it('returns the QuerySet', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const query = dom.query('div');
                 return query === query.before('a');
@@ -141,7 +141,7 @@ describe('QuerySetImmutable #before', function() {
     });
 
     it('works with HTMLElement other nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.query('div')
                     .before(
@@ -164,7 +164,7 @@ describe('QuerySetImmutable #before', function() {
     });
 
     it('works with NodeList other nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.query('div')
                     .before(
@@ -190,7 +190,7 @@ describe('QuerySetImmutable #before', function() {
     });
 
     it('works with HTMLCollection other nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.query('div')
                     .before(
@@ -215,7 +215,7 @@ describe('QuerySetImmutable #before', function() {
     });
 
     it('works with DocumentFragment other nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const range = document.createRange();
                 const fragment = range.createContextualFragment(
@@ -241,7 +241,7 @@ describe('QuerySetImmutable #before', function() {
     });
 
     it('works with array other nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.query('div')
                     .before([
@@ -270,7 +270,7 @@ describe('QuerySetImmutable #before', function() {
     });
 
     it('works with HTML other nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.query('div')
                     .before('<div><span></span></div>');
@@ -292,7 +292,7 @@ describe('QuerySetImmutable #before', function() {
     });
 
     it('works with QuerySet other nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const query = dom.query('a');
                 dom.query('div')

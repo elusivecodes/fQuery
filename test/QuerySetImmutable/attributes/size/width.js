@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../../setup');
 
 describe('QuerySetImmutable #width', function() {
@@ -12,7 +12,7 @@ describe('QuerySetImmutable #width', function() {
     });
 
     it('returns the width of the first node', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.query('div')
                     .width()
@@ -22,7 +22,7 @@ describe('QuerySetImmutable #width', function() {
     });
 
     it('returns the inner width of the first node', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.query('div')
                     .width(DOM.INNER)
@@ -32,7 +32,7 @@ describe('QuerySetImmutable #width', function() {
     });
 
     it('returns the outer width of the first node', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.query('div')
                     .width(DOM.OUTER)
@@ -42,7 +42,7 @@ describe('QuerySetImmutable #width', function() {
     });
 
     it('returns the outer width of the first node with margin', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.query('div')
                     .width(DOM.OUTER_MARGIN)
@@ -52,7 +52,7 @@ describe('QuerySetImmutable #width', function() {
     });
 
     it('returns the width of the first node (hidden)', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 document.body.style.display = 'none';
                 return dom.query('div')
@@ -63,7 +63,7 @@ describe('QuerySetImmutable #width', function() {
     });
 
     it('returns undefined for empty nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.query('#invalid')
                     .width()
@@ -73,7 +73,7 @@ describe('QuerySetImmutable #width', function() {
     });
 
     it('works with Document nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.query(document)
                     .width()
@@ -83,7 +83,7 @@ describe('QuerySetImmutable #width', function() {
     });
 
     it('works with Window nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.query(window)
                     .width()

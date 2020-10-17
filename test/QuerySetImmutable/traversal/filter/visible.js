@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec, setStyle } = require('../../../setup');
 
 describe('QuerySetImmutable #visible', function() {
@@ -23,7 +23,7 @@ describe('QuerySetImmutable #visible', function() {
     });
 
     it('returns visible nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.query('div')
                     .visible()
@@ -38,7 +38,7 @@ describe('QuerySetImmutable #visible', function() {
     });
 
     it('returns descendents of visible nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.query('span')
                     .visible()
@@ -53,7 +53,7 @@ describe('QuerySetImmutable #visible', function() {
     });
 
     it('returns a new QuerySetImmutable', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const query1 = dom.query('div');
                 const query2 = query1.visible();
@@ -64,7 +64,7 @@ describe('QuerySetImmutable #visible', function() {
     });
 
     it('works with Document nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.query(document)
                     .visible()
@@ -78,7 +78,7 @@ describe('QuerySetImmutable #visible', function() {
     });
 
     it('works with Window nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.query(window)
                     .visible()

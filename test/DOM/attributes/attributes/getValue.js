@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../../setup');
 
 describe('#getValue', function() {
@@ -15,7 +15,7 @@ describe('#getValue', function() {
     });
 
     it('returns the input value of the first node', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.getValue('input')
             ),
@@ -24,7 +24,7 @@ describe('#getValue', function() {
     });
 
     it('returns undefined for empty nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.getValue('#invalid')
             ),
@@ -33,7 +33,7 @@ describe('#getValue', function() {
     });
 
     it('works with textarea input nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.getValue('textarea')
             ),
@@ -42,7 +42,7 @@ describe('#getValue', function() {
     });
 
     it('works with select input nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.getValue('select')
             ),
@@ -51,7 +51,7 @@ describe('#getValue', function() {
     });
 
     it('works with HTMLElement nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.getValue(
                     document.getElementById('test1')
@@ -62,7 +62,7 @@ describe('#getValue', function() {
     });
 
     it('works with NodeList nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.getValue(
                     document.querySelectorAll('input')
@@ -73,7 +73,7 @@ describe('#getValue', function() {
     });
 
     it('works with HTMLCollection nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.getValue(
                     document.body.children
@@ -84,7 +84,7 @@ describe('#getValue', function() {
     });
 
     it('works with array nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.getValue([
                     document.getElementById('test1'),

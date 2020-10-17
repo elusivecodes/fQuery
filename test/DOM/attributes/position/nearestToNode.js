@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../../setup');
 
 describe('#nearestToNode', function() {
@@ -19,7 +19,7 @@ describe('#nearestToNode', function() {
     });
 
     it('returns the nearest node to another node', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const nearest = dom.nearestToNode('[data-toggle="from"]', '[data-toggle="to"]');
                 return nearest.id;
@@ -29,7 +29,7 @@ describe('#nearestToNode', function() {
     });
 
     it('returns undefined for empty nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.nearestToNode('#invalid', '[data-toggle="to"]')
             ),
@@ -38,7 +38,7 @@ describe('#nearestToNode', function() {
     });
 
     it('returns undefined for empty other nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.nearestToNode('[data-toggle="from"]', '#invalid')
             ),
@@ -47,7 +47,7 @@ describe('#nearestToNode', function() {
     });
 
     it('works with HTMLElement nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const nearest = dom.nearestToNode(
                     document.getElementById('test1'),
@@ -60,7 +60,7 @@ describe('#nearestToNode', function() {
     });
 
     it('works with NodeList nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const nearest = dom.nearestToNode(
                     document.querySelectorAll('[data-toggle="from"]'),
@@ -73,7 +73,7 @@ describe('#nearestToNode', function() {
     });
 
     it('works with HTMLCollection nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const nearest = dom.nearestToNode(
                     document.getElementById('fromParent').children,
@@ -86,7 +86,7 @@ describe('#nearestToNode', function() {
     });
 
     it('works with array nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const nearest = dom.nearestToNode([
                     document.getElementById('test1'),
@@ -99,7 +99,7 @@ describe('#nearestToNode', function() {
     });
 
     it('works with HTMLElement other nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const nearest = dom.nearestToNode(
                     '[data-toggle="from"]',
@@ -112,7 +112,7 @@ describe('#nearestToNode', function() {
     });
 
     it('works with NodeList other nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const nearest = dom.nearestToNode(
                     '[data-toggle="from"]',
@@ -125,7 +125,7 @@ describe('#nearestToNode', function() {
     });
 
     it('works with HTMLCollection other nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const nearest = dom.nearestToNode(
                     '[data-toggle="from"]',
@@ -138,7 +138,7 @@ describe('#nearestToNode', function() {
     });
 
     it('works with array other nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const nearest = dom.nearestToNode('[data-toggle="from"]', [
                     document.getElementById('test3'),

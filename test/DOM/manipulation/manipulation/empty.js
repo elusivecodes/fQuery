@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../../setup');
 const { testNoAnimation, waitFor } = require('../../../helpers');
 
@@ -23,7 +23,7 @@ describe('#empty', function() {
     });
 
     it('removes contents of all nodes from the DOM', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.empty('div');
                 return document.body.innerHTML;
@@ -34,7 +34,7 @@ describe('#empty', function() {
     });
 
     it('removes events recursively', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 let result = 0;
                 const nodes = document.querySelectorAll('a');
@@ -53,7 +53,7 @@ describe('#empty', function() {
     });
 
     it('removes data recursively', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ => {
                 const nodes = document.querySelectorAll('a');
                 dom.setData('a', 'test', 'Test');
@@ -119,7 +119,7 @@ describe('#empty', function() {
                 }
             });
         }).then(waitFor(100)).then(async _ => {
-            assert.equal(
+            assert.strictEqual(
                 await exec(_ => document.body.innerHTML),
                 '<div id="outer1">' +
                 '</div>' +
@@ -134,7 +134,7 @@ describe('#empty', function() {
     });
 
     it('triggers a remove event recursively', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 let result = 0;
                 dom.addEvent('a', 'remove', _ => {
@@ -148,7 +148,7 @@ describe('#empty', function() {
     });
 
     it('works with HTMLElement nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.empty(
                     document.getElementById('outer1')
@@ -166,7 +166,7 @@ describe('#empty', function() {
     });
 
     it('works with NodeList nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.empty(
                     document.querySelectorAll('div')
@@ -179,7 +179,7 @@ describe('#empty', function() {
     });
 
     it('works with HTMLCollection nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.empty(
                     document.body.children
@@ -192,7 +192,7 @@ describe('#empty', function() {
     });
 
     it('works with DocumentFragment nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const range = document.createRange();
                 const fragment = range.createContextualFragment(
@@ -208,7 +208,7 @@ describe('#empty', function() {
     });
 
     it('works with ShadowRoot nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const div = document.createElement('div');
                 const shadow = div.attachShadow({ mode: 'open' });
@@ -225,7 +225,7 @@ describe('#empty', function() {
     });
 
     it('works with Document nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const parser = new DOMParser();
                 const myDoc = parser.parseFromString(
@@ -240,7 +240,7 @@ describe('#empty', function() {
     });
 
     it('works with array nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.empty([
                     document.getElementById('outer1'),

@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../../setup');
 
 describe('QuerySetImmutable #siblings', function() {
@@ -44,7 +44,7 @@ describe('QuerySetImmutable #siblings', function() {
     });
 
     it('returns all siblings of each node', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.query('.span')
                     .siblings()
@@ -65,7 +65,7 @@ describe('QuerySetImmutable #siblings', function() {
     });
 
     it('returns all siblings of each node matching a filter', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.query('.span')
                     .siblings('#span1, #span10')
@@ -80,7 +80,7 @@ describe('QuerySetImmutable #siblings', function() {
     });
 
     it('returns a new QuerySetImmutable', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const query1 = dom.query('.span');
                 const query2 = query1.siblings();
@@ -91,7 +91,7 @@ describe('QuerySetImmutable #siblings', function() {
     });
 
     it('works with function filter', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.query('.span')
                     .siblings(node => node.id === 'span5')
@@ -105,7 +105,7 @@ describe('QuerySetImmutable #siblings', function() {
     });
 
     it('works with HTMLElement filter', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.query('.span')
                     .siblings(
@@ -121,7 +121,7 @@ describe('QuerySetImmutable #siblings', function() {
     });
 
     it('works with NodeList filter', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.query('.span')
                     .siblings(
@@ -138,7 +138,7 @@ describe('QuerySetImmutable #siblings', function() {
     });
 
     it('works with HTMLCollection filter', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.query('.span')
                     .siblings(
@@ -157,7 +157,7 @@ describe('QuerySetImmutable #siblings', function() {
     });
 
     it('works with array filter', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.query('.span')
                     .siblings([
@@ -175,7 +175,7 @@ describe('QuerySetImmutable #siblings', function() {
     });
 
     it('works with QuerySet filter', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ => {
                 const query = dom.query('#span1, #span10');
                 return dom.query('.span')

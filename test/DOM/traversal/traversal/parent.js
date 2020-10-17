@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../../setup');
 
 describe('#parent', function() {
@@ -24,7 +24,7 @@ describe('#parent', function() {
     });
 
     it('returns the parents of each node', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.parent('a')
                     .map(node => node.id)
@@ -37,7 +37,7 @@ describe('#parent', function() {
     });
 
     it('returns the parents of each node matching a filter', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.parent('a', '#span2')
                     .map(node => node.id)
@@ -49,7 +49,7 @@ describe('#parent', function() {
     });
 
     it('returns an empty array for empty nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.parent('#invalid')
             ),
@@ -58,7 +58,7 @@ describe('#parent', function() {
     });
 
     it('works with HTMLElement nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.parent(
                     document.getElementById('a2'),
@@ -72,7 +72,7 @@ describe('#parent', function() {
     });
 
     it('works with NodeList nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.parent(
                     document.querySelectorAll('a'),
@@ -86,7 +86,7 @@ describe('#parent', function() {
     });
 
     it('works with HTMLCollection nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.parent(
                     document.getElementById('span2').children,
@@ -100,7 +100,7 @@ describe('#parent', function() {
     });
 
     it('works with array nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.parent([
                     document.getElementById('a1'),
@@ -115,7 +115,7 @@ describe('#parent', function() {
     });
 
     it('works with function filter', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.parent(
                     'a',
@@ -129,7 +129,7 @@ describe('#parent', function() {
     });
 
     it('works with HTMLElement filter', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.parent(
                     'a',
@@ -143,7 +143,7 @@ describe('#parent', function() {
     });
 
     it('works with NodeList filter', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.parent(
                     'a',
@@ -157,7 +157,7 @@ describe('#parent', function() {
     });
 
     it('works with HTMLCollection filter', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.parent(
                     'a',
@@ -171,7 +171,7 @@ describe('#parent', function() {
     });
 
     it('works with array filter', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.parent('a', [
                     document.getElementById('span2')

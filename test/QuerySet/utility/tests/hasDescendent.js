@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../../setup');
 
 describe('QuerySet #hasDescendent', function() {
@@ -22,7 +22,7 @@ describe('QuerySet #hasDescendent', function() {
     });
 
     it('returns true if any node has a descendent matching a filter', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.queryMutable('div')
                     .hasDescendent('a')
@@ -32,7 +32,7 @@ describe('QuerySet #hasDescendent', function() {
     });
 
     it('returns false if no nodes have a descendent matching a filter', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.queryMutable('div:not(.test)')
                     .hasDescendent('a')
@@ -42,7 +42,7 @@ describe('QuerySet #hasDescendent', function() {
     });
 
     it('works with DocumentFragment nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const range = document.createRange();
                 const fragment = range.createContextualFragment(
@@ -56,7 +56,7 @@ describe('QuerySet #hasDescendent', function() {
     });
 
     it('works with ShadowRoot nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const div = document.createElement('div');
                 const shadow = div.attachShadow({ mode: 'open' });
@@ -73,7 +73,7 @@ describe('QuerySet #hasDescendent', function() {
     });
 
     it('works with Document nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.queryMutable(document)
                     .hasDescendent('div')
@@ -83,7 +83,7 @@ describe('QuerySet #hasDescendent', function() {
     });
 
     it('works with function filter', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.queryMutable('div')
                     .hasDescendent(node => node.id === 'a1')
@@ -93,7 +93,7 @@ describe('QuerySet #hasDescendent', function() {
     });
 
     it('works with HTMLElement filter', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.queryMutable('div')
                     .hasDescendent(
@@ -105,7 +105,7 @@ describe('QuerySet #hasDescendent', function() {
     });
 
     it('works with NodeList filter', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.queryMutable('div')
                     .hasDescendent(
@@ -117,7 +117,7 @@ describe('QuerySet #hasDescendent', function() {
     });
 
     it('works with HTMLCollection filter', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.queryMutable('div')
                     .hasDescendent(
@@ -129,7 +129,7 @@ describe('QuerySet #hasDescendent', function() {
     });
 
     it('works with array filter', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.queryMutable('div')
                     .hasDescendent([
@@ -142,7 +142,7 @@ describe('QuerySet #hasDescendent', function() {
     });
 
     it('works with QuerySet filter', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const query = dom.queryMutable('a');
                 return dom.queryMutable('div')

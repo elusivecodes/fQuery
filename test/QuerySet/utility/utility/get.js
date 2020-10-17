@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../../setup');
 
 describe('QuerySet #slice', function() {
@@ -14,7 +14,7 @@ describe('QuerySet #slice', function() {
     });
 
     it('reduces the nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.queryMutable('div')
                     .get()
@@ -30,7 +30,7 @@ describe('QuerySet #slice', function() {
     });
 
     it('reduces the node at an index', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.queryMutable('div')
                     .get(1).id

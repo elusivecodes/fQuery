@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../../setup');
 
 describe('QuerySetImmutable #map', function() {
@@ -16,7 +16,7 @@ describe('QuerySetImmutable #map', function() {
     });
 
     it('executes a callback on each node in the set, and creates a new set from the results', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.query('div')
                     .map(node => node.firstChild)
@@ -31,7 +31,7 @@ describe('QuerySetImmutable #map', function() {
     });
 
     it('returns a new QuerySetImmutable', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ => {
                 const query1 = dom.query('div');
                 const query2 = query1.map(node => node.firstChild);

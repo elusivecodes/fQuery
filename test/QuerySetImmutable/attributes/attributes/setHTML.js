@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../../setup');
 const { testNoAnimation, waitFor } = require('../../../helpers');
 
@@ -15,7 +15,7 @@ describe('QuerySetImmutable #setHTML', function() {
     });
 
     it('sets the HTML contents for all nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.query('div')
                     .setHTML('<span>Test 2</span>');
@@ -27,7 +27,7 @@ describe('QuerySetImmutable #setHTML', function() {
     });
 
     it('removes events recursively', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 let result = 0;
                 const node = document.getElementById('inner');
@@ -48,7 +48,7 @@ describe('QuerySetImmutable #setHTML', function() {
     });
 
     it('removes data recursively', async function() {
-        assert.equal; (
+        assert.strictEqual; (
             await exec(_ => {
                 const node = document.getElementById('inner');
                 dom.setData(node, 'test', 'Test');
@@ -100,7 +100,7 @@ describe('QuerySetImmutable #setHTML', function() {
                 document.body.appendChild(node);
             });
         }).then(waitFor(100)).then(async _ => {
-            assert.equal(
+            assert.strictEqual(
                 await exec(_ => document.body.innerHTML),
                 '<div id="test1"><span>Test 2</span></div>' +
                 '<div id="test2"><span>Test 2</span></div>' +
@@ -110,7 +110,7 @@ describe('QuerySetImmutable #setHTML', function() {
     });
 
     it('triggers a remove event recursively', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 let result = 0;
                 dom.addEvent('#inner', 'remove', _ => {
@@ -125,7 +125,7 @@ describe('QuerySetImmutable #setHTML', function() {
     });
 
     it('returns the QuerySet', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const query = dom.query('div');
                 return query === query.setHTML('<span>Test 2</span>');

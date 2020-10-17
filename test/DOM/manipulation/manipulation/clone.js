@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../../setup');
 const { easeInOut, testAnimation, testNoAnimation, waitFor } = require('../../../helpers');
 
@@ -19,7 +19,7 @@ describe('#clone', function() {
     });
 
     it('clones all nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const clones = dom.clone('div');
                 for (const clone of clones) {
@@ -47,7 +47,7 @@ describe('#clone', function() {
     });
 
     it('shallow clones all nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const clones = dom.clone('div', {
                     deep: false
@@ -71,7 +71,7 @@ describe('#clone', function() {
     });
 
     it('clones all nodes with events', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 let result = 0;
                 dom.addEvent('a', 'click', _ => {
@@ -91,7 +91,7 @@ describe('#clone', function() {
     });
 
     it('clones all nodes with data', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ => {
                 dom.setData('a', 'test', 'Test');
                 const clones = dom.clone('a', {
@@ -155,7 +155,7 @@ describe('#clone', function() {
     });
 
     it('works with HTMLElement nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const clones = dom.clone(
                     document.querySelector('.parent1')
@@ -181,7 +181,7 @@ describe('#clone', function() {
     });
 
     it('works with NodeList nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const clones = dom.clone(
                     document.querySelectorAll('div')
@@ -211,7 +211,7 @@ describe('#clone', function() {
     });
 
     it('works with HTMLCollection nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const clones = dom.clone(
                     document.body.children,
@@ -238,7 +238,7 @@ describe('#clone', function() {
     });
 
     it('works with DocumentFragment nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const range = document.createRange();
                 const fragment = range.createContextualFragment(
@@ -265,7 +265,7 @@ describe('#clone', function() {
     });
 
     it('works with array nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const clones = dom.clone([
                     document.querySelector('.parent1'),

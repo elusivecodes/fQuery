@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../../setup');
 
 describe('QuerySet #fragment', function() {
@@ -15,7 +15,7 @@ describe('QuerySet #fragment', function() {
     });
 
     it('returns the document fragment of the first node', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const query = dom.queryMutable('template');
                 const fragment = query.fragment();
@@ -26,7 +26,7 @@ describe('QuerySet #fragment', function() {
     });
 
     it('returns the QuerySet', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const query = dom.queryMutable('template');
                 return query === query.fragment();

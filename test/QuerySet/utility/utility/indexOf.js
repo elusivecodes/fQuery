@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../../setup');
 
 describe('QuerySet #indexOf', function() {
@@ -14,7 +14,7 @@ describe('QuerySet #indexOf', function() {
     });
 
     it('returns the index of the first node', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.queryMutable('div')
                     .indexOf()
@@ -24,7 +24,7 @@ describe('QuerySet #indexOf', function() {
     });
 
     it('returns the index of the first node matching a filter', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.queryMutable('div')
                     .indexOf('.test')
@@ -34,7 +34,7 @@ describe('QuerySet #indexOf', function() {
     });
 
     it('works with DocumentFragment nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const fragment = document.createDocumentFragment();
                 return dom.queryMutable(fragment)
@@ -45,7 +45,7 @@ describe('QuerySet #indexOf', function() {
     });
 
     it('works with ShadowRoot nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const div = document.createElement('div');
                 const shadow = div.attachShadow({ mode: 'open' });
@@ -57,7 +57,7 @@ describe('QuerySet #indexOf', function() {
     });
 
     it('works with function filter', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.queryMutable('div')
                     .indexOf(node => node.id === 'div2')
@@ -67,7 +67,7 @@ describe('QuerySet #indexOf', function() {
     });
 
     it('works with HTMLElement filter', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.queryMutable('div')
                     .indexOf(
@@ -79,7 +79,7 @@ describe('QuerySet #indexOf', function() {
     });
 
     it('works with NodeList filter', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.queryMutable('div')
                     .indexOf(
@@ -91,7 +91,7 @@ describe('QuerySet #indexOf', function() {
     });
 
     it('works with HTMLCollection filter', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.queryMutable('div')
                     .indexOf(
@@ -103,7 +103,7 @@ describe('QuerySet #indexOf', function() {
     });
 
     it('works with DocumentFragment filter', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const fragment = document.createDocumentFragment();
                 return dom.queryMutable([
@@ -117,7 +117,7 @@ describe('QuerySet #indexOf', function() {
     });
 
     it('works with ShadowRoot filter', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const div = document.createElement('div');
                 const shadow = div.attachShadow({ mode: 'open' });
@@ -132,7 +132,7 @@ describe('QuerySet #indexOf', function() {
     });
 
     it('works with array filter', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.queryMutable('div')
                     .indexOf([
@@ -145,7 +145,7 @@ describe('QuerySet #indexOf', function() {
     });
 
     it('works with QuerySet filter', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const query = dom.queryMutable('.test');
                 return dom.queryMutable('div')

@@ -1,5 +1,5 @@
 const puppeteer = require('puppeteer');
-const assert = require('assert').strict;
+const assert = require('assert');
 const server = require('../server/server.js');
 const port = 3001;
 
@@ -28,21 +28,21 @@ before(async function() {
         waitUntil: 'domcontentloaded'
     });
 
-    assert.equal(
+    assert.strictEqual(
         await page.evaluate(_ => {
             return AjaxRequest.useMock;
         }),
         false
     );
 
-    assert.equal(
+    assert.strictEqual(
         await page.evaluate(_ => {
             return Animation.useTimeout;
         }),
         false
     );
 
-    assert.equal(
+    assert.strictEqual(
         await page.evaluate(_ => {
             return Animation.defaults.duration;
         }),

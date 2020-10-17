@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../../setup');
 
 describe('QuerySet #sort', function() {
@@ -14,7 +14,7 @@ describe('QuerySet #sort', function() {
     });
 
     it('returns nodes sorted by the order they appear in the DOM', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ => {
                 const template = document.createElement('template');
                 const fragment = template.content;
@@ -49,7 +49,7 @@ describe('QuerySet #sort', function() {
     });
 
     it('returns the QuerySet', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ => {
                 const query = dom.queryMutable('div');
                 return query === query.sort();
@@ -59,7 +59,7 @@ describe('QuerySet #sort', function() {
     });
 
     it('works with DocumentFragment nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ => {
                 const fragment = document.createDocumentFragment();
                 fragment.id = 'fragment';
@@ -75,7 +75,7 @@ describe('QuerySet #sort', function() {
     });
 
     it('works with ShadowRoot nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ => {
                 const div = document.createElement('div');
                 const shadow = div.attachShadow({ mode: 'open' });
@@ -92,7 +92,7 @@ describe('QuerySet #sort', function() {
     });
 
     it('works with Document nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.queryMutable(document)
                     .sort()
@@ -106,7 +106,7 @@ describe('QuerySet #sort', function() {
     });
 
     it('works with Window nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.queryMutable(window)
                     .sort()

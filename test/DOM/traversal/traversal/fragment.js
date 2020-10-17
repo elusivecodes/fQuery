@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../../setup');
 
 describe('#fragment', function() {
@@ -15,7 +15,7 @@ describe('#fragment', function() {
     });
 
     it('returns the document fragment of the first node', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const fragment = dom.fragment('template');
                 return fragment instanceof DocumentFragment;
@@ -25,7 +25,7 @@ describe('#fragment', function() {
     });
 
     it('returns undefined for nodes without a fragment', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.fragment('#div1')
             ),
@@ -34,7 +34,7 @@ describe('#fragment', function() {
     });
 
     it('returns undefined for empty nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.fragment('#invalid')
             ),
@@ -43,7 +43,7 @@ describe('#fragment', function() {
     });
 
     it('works with HTMLElement nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const fragment = dom.fragment(
                     document.getElementById('template1')
@@ -55,7 +55,7 @@ describe('#fragment', function() {
     });
 
     it('works with NodeList nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const fragment = dom.fragment(
                     document.querySelectorAll('template')
@@ -67,7 +67,7 @@ describe('#fragment', function() {
     });
 
     it('works with HTMLCollection nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const fragment = dom.fragment(
                     document.body.children
@@ -79,7 +79,7 @@ describe('#fragment', function() {
     });
 
     it('works with array nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const fragment = dom.fragment([
                     document.getElementById('template1'),

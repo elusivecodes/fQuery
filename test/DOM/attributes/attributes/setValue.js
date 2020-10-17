@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../../setup');
 
 describe('#setValue', function() {
@@ -14,7 +14,7 @@ describe('#setValue', function() {
     });
 
     it('sets the input value for all nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ => {
                 dom.setValue('input', 'Test');
                 return [
@@ -30,7 +30,7 @@ describe('#setValue', function() {
     });
 
     it('works with textarea input nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.setValue('textarea', 'Test');
                 return document.getElementById('test3').value;
@@ -40,7 +40,7 @@ describe('#setValue', function() {
     });
 
     it('works with select input nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.setValue('select', 2);
                 return document.getElementById('test4').value;
@@ -50,7 +50,7 @@ describe('#setValue', function() {
     });
 
     it('works with HTMLElement nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ => {
                 const element = document.getElementById('test1');
                 dom.setValue(element, 'Test');
@@ -67,7 +67,7 @@ describe('#setValue', function() {
     });
 
     it('works with NodeList nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ => {
                 dom.setValue(
                     document.querySelectorAll('input'),
@@ -86,7 +86,7 @@ describe('#setValue', function() {
     });
 
     it('works with HTMLCollection nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ => {
                 dom.setValue(
                     document.body.children,
@@ -105,7 +105,7 @@ describe('#setValue', function() {
     });
 
     it('works with array nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ => {
                 const element1 = document.getElementById('test1');
                 const element2 = document.getElementById('test2');

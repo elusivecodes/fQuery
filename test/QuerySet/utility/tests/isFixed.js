@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec, setStyle } = require('../../../setup');
 
 describe('QuerySet #isFixed', function() {
@@ -23,7 +23,7 @@ describe('QuerySet #isFixed', function() {
     });
 
     it('returns true if any node is fixed', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.queryMutable('div')
                     .isFixed()
@@ -33,7 +33,7 @@ describe('QuerySet #isFixed', function() {
     });
 
     it('returns false if no nodes are fixed', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.queryMutable('div:not(.test)')
                     .isFixed()
@@ -43,7 +43,7 @@ describe('QuerySet #isFixed', function() {
     });
 
     it('returns true if any node is a descendent of a fixed node', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.queryMutable('span')
                     .isFixed()

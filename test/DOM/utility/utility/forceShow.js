@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec, setStyle } = require('../../../setup');
 
 describe('#forceShow', function() {
@@ -17,7 +17,7 @@ describe('#forceShow', function() {
     });
 
     it('forces the first node to be visible', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.forceShow('.test', _ => document.body.innerHTML)
             ),
@@ -31,7 +31,7 @@ describe('#forceShow', function() {
     });
 
     it('forces hidden parent nodes to be visible', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 document.getElementById('outer').style.setProperty('display', 'none');
                 return dom.forceShow('.test', _ => document.body.innerHTML);
@@ -46,7 +46,7 @@ describe('#forceShow', function() {
     });
 
     it('restores the original markup', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.forceShow('.test', _ => { });
                 return document.body.innerHTML;
@@ -61,7 +61,7 @@ describe('#forceShow', function() {
     });
 
     it('restores the original markup with hidden parent', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 document.getElementById('outer').style.setProperty('display', 'none');
                 dom.forceShow('.test', _ => { });
@@ -77,7 +77,7 @@ describe('#forceShow', function() {
     });
 
     it('executes the callback for visible nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.forceShow('#div2', _ => document.body.innerHTML)
             ),
@@ -91,7 +91,7 @@ describe('#forceShow', function() {
     });
 
     it('sends the node as an argument', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.forceShow('.test', node =>
                     node.id
@@ -102,7 +102,7 @@ describe('#forceShow', function() {
     });
 
     it('works with HTMLElement nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.forceShow(
                     document.getElementById('div1'),
@@ -119,7 +119,7 @@ describe('#forceShow', function() {
     });
 
     it('works with NodeList nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.forceShow(
                     document.querySelectorAll('.test'),
@@ -136,7 +136,7 @@ describe('#forceShow', function() {
     });
 
     it('works with HTMLCollection nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.forceShow(
                     document.getElementById('outer').children,
@@ -153,7 +153,7 @@ describe('#forceShow', function() {
     });
 
     it('works with array nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.forceShow(
                     [

@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../../setup');
 
 describe('QuerySet #wrap', function() {
@@ -25,7 +25,7 @@ describe('QuerySet #wrap', function() {
     });
 
     it('wraps each node', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.queryMutable('a')
                     .wrap('.outer');
@@ -66,7 +66,7 @@ describe('QuerySet #wrap', function() {
     });
 
     it('returns the QuerySet', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const query = dom.queryMutable('a');
                 return query === query.wrap('.outer');
@@ -76,7 +76,7 @@ describe('QuerySet #wrap', function() {
     });
 
     it('works with HTMLElement other nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.queryMutable('a')
                     .wrap(
@@ -119,7 +119,7 @@ describe('QuerySet #wrap', function() {
     });
 
     it('works with NodeList other nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.queryMutable('a')
                     .wrap(
@@ -162,7 +162,7 @@ describe('QuerySet #wrap', function() {
     });
 
     it('works with HTMLCollection other nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.queryMutable('a')
                     .wrap(
@@ -205,7 +205,7 @@ describe('QuerySet #wrap', function() {
     });
 
     it('works with DocumentFragment other nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const range = document.createRange();
                 const fragment = range.createContextualFragment(
@@ -250,7 +250,7 @@ describe('QuerySet #wrap', function() {
     });
 
     it('works with array other nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.queryMutable('a')
                     .wrap([
@@ -293,7 +293,7 @@ describe('QuerySet #wrap', function() {
     });
 
     it('works with HTML other nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.queryMutable('a')
                     .wrap('<div class="div-outer"><span class="span-inner"></span></div>');
@@ -334,7 +334,7 @@ describe('QuerySet #wrap', function() {
     });
 
     it('works with QuerySet other nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const query = dom.queryMutable('.outer');
                 dom.queryMutable('a')

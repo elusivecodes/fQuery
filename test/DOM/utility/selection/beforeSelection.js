@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../../setup');
 
 describe('#beforeSelection', function() {
@@ -32,7 +32,7 @@ describe('#beforeSelection', function() {
     });
 
     it('inserts each node before the selected nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.beforeSelection('a');
                 return document.body.innerHTML;
@@ -53,7 +53,7 @@ describe('#beforeSelection', function() {
     });
 
     it('works with HTMLElement nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.beforeSelection(
                     document.getElementById('a1')
@@ -77,7 +77,7 @@ describe('#beforeSelection', function() {
     });
 
     it('works with NodeList nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.beforeSelection(
                     document.querySelectorAll('a')
@@ -100,7 +100,7 @@ describe('#beforeSelection', function() {
     });
 
     it('works with HTMLCollection nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.beforeSelection(
                     document.getElementById('parent').children
@@ -123,7 +123,7 @@ describe('#beforeSelection', function() {
     });
 
     it('works with DocumentFragment nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const range = document.createRange();
                 const fragment = range.createContextualFragment(
@@ -150,7 +150,7 @@ describe('#beforeSelection', function() {
     });
 
     it('works with array nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.beforeSelection([
                     document.getElementById('a1'),
@@ -174,7 +174,7 @@ describe('#beforeSelection', function() {
     });
 
     it('works with HTML nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.beforeSelection('<div><span></span></div>');
                 return document.body.innerHTML;

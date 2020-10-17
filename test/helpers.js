@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('./setup');
 
 const easeIn = (start, now, duration = 200, infinite = false) => {
@@ -61,7 +61,7 @@ const linear = (start, now, duration = 200, infinite = false) => {
 const testAnimation = async (selector, test, duration = 200, infinite = false) => {
     const data = await getAnimationData(selector);
 
-    assert.equal(
+    assert.strictEqual(
         parseFloat(data.progress),
         test(
             data.start,
@@ -75,7 +75,7 @@ const testAnimation = async (selector, test, duration = 200, infinite = false) =
 const testNoAnimation = async selector => {
     const data = await getAnimationData(selector);
 
-    assert.deepEqual(
+    assert.deepStrictEqual(
         data,
         {}
     );
@@ -92,7 +92,7 @@ const testNoStyle = async (selector, style = 'transform', translateStyle = null)
         expected[translateStyle] = '';
     }
 
-    assert.deepEqual(
+    assert.deepStrictEqual(
         data,
         expected
     );

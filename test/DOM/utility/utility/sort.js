@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../../setup');
 
 describe('#sort', function() {
@@ -14,7 +14,7 @@ describe('#sort', function() {
     });
 
     it('returns nodes sorted by the order they appear in the DOM', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.sort('div')
                     .map(node => node.id)
@@ -29,7 +29,7 @@ describe('#sort', function() {
     });
 
     it('works with HTMLElement nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.sort(
                     document.getElementById('div2')
@@ -42,7 +42,7 @@ describe('#sort', function() {
     });
 
     it('works with NodeList nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.sort(
                     document.querySelectorAll('div')
@@ -58,7 +58,7 @@ describe('#sort', function() {
     });
 
     it('works with HTMLCollection nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.sort(
                     document.body.children
@@ -74,7 +74,7 @@ describe('#sort', function() {
     });
 
     it('works with DocumentFragment nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ => {
                 const fragment = document.createDocumentFragment();
                 fragment.id = 'fragment';
@@ -88,7 +88,7 @@ describe('#sort', function() {
     });
 
     it('works with ShadowRoot nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ => {
                 const div = document.createElement('div');
                 const shadow = div.attachShadow({ mode: 'open' });
@@ -103,7 +103,7 @@ describe('#sort', function() {
     });
 
     it('works with Document nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.sort(document)
                     .map(node => node.id)
@@ -115,7 +115,7 @@ describe('#sort', function() {
     });
 
     it('works with Window nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.sort(window)
                     .map(node => node.id)
@@ -127,7 +127,7 @@ describe('#sort', function() {
     });
 
     it('works with array nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ => {
                 const template = document.createElement('template');
                 const fragment = template.content;

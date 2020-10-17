@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../../setup');
 
 describe('#removeProperty', function() {
@@ -14,7 +14,7 @@ describe('#removeProperty', function() {
     });
 
     it('removes a property for all nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ => {
                 dom.removeProperty('input', 'test');
                 return [
@@ -30,7 +30,7 @@ describe('#removeProperty', function() {
     });
 
     it('works with HTMLElement nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ => {
                 const element = document.getElementById('test1');
                 dom.removeProperty(
@@ -50,7 +50,7 @@ describe('#removeProperty', function() {
     });
 
     it('works with NodeList nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ => {
                 dom.removeProperty(
                     document.querySelectorAll('input'),
@@ -69,7 +69,7 @@ describe('#removeProperty', function() {
     });
 
     it('works with HTMLCollection nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ => {
                 dom.removeProperty(
                     document.body.children,
@@ -88,7 +88,7 @@ describe('#removeProperty', function() {
     });
 
     it('works with array nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ => {
                 const element1 = document.getElementById('test1');
                 const element2 = document.getElementById('test2');

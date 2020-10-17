@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec, setStyle } = require('../../../setup');
 
 describe('QuerySet #withCSSAnimation', function() {
@@ -18,7 +18,7 @@ describe('QuerySet #withCSSAnimation', function() {
     });
 
     it('returns nodes with CSS animations', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.queryMutable('div')
                     .withCSSAnimation()
@@ -33,7 +33,7 @@ describe('QuerySet #withCSSAnimation', function() {
     });
 
     it('returns the QuerySet', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const query = dom.queryMutable('div');
                 return query === query.withCSSAnimation();

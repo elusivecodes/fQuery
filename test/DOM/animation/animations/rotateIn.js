@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec, setStyle } = require('../../../setup');
 const { easeIn, easeInOut, easeOut, getAnimationStyle, linear, testAnimation, testNoAnimation, testNoStyle, waitFor } = require('../../../helpers');
 
@@ -11,7 +11,7 @@ const testRotateIn = async (selector, x = 0, y = 1, z = 0, inverse = 1) => {
     const data = await getAnimationStyle(selector, 'transform');
 
     const amount = rotateIn(data.progress, inverse);
-    assert.equal(data.transform, `rotate3d(${x}, ${y}, ${z}, ${amount}deg)`);
+    assert.strictEqual(data.transform, `rotate3d(${x}, ${y}, ${z}, ${amount}deg)`);
 };
 
 describe('#rotateIn', function() {
@@ -422,7 +422,7 @@ describe('#rotateIn', function() {
     });
 
     it('throws when the animation is stopped (without finishing)', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(async _ => {
                 try {
                     const animation = dom.rotateIn('.animate', {
@@ -490,7 +490,7 @@ describe('#rotateIn', function() {
     });
 
     it('throws when all animation are stopped (without finishing)', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(async _ => {
                 try {
                     const animation = dom.rotateIn('.animate', {

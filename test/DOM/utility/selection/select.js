@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../../setup');
 
 describe('#select', function() {
@@ -20,7 +20,7 @@ describe('#select', function() {
     });
 
     it('creates a selection on the first node', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.select('.select');
                 const selection = document.getSelection();
@@ -32,7 +32,7 @@ describe('#select', function() {
     });
 
     it('creates a selection on an input node', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.select('#input');
                 document.execCommand('cut');
@@ -43,7 +43,7 @@ describe('#select', function() {
     });
 
     it('creates a selection on a textarea node', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.select('#textarea');
                 document.execCommand('cut');
@@ -54,7 +54,7 @@ describe('#select', function() {
     });
 
     it('works with HTMLElement nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.select(
                     document.getElementById('div1')
@@ -68,7 +68,7 @@ describe('#select', function() {
     });
 
     it('works with NodeList nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.select(
                     document.querySelectorAll('.select')
@@ -82,7 +82,7 @@ describe('#select', function() {
     });
 
     it('works with HTMLCollection nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.select(
                     document.getElementById('select').children
@@ -96,7 +96,7 @@ describe('#select', function() {
     });
 
     it('works with array nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.select([
                     document.getElementById('div1'),

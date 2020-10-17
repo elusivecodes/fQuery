@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec, setStyle } = require('../../../setup');
 const { easeIn, easeInOut, easeOut, getAnimationStyle, linear, testAnimation, testNoAnimation, testNoStyle, waitFor } = require('../../../helpers');
 
@@ -16,13 +16,13 @@ const testSqueezeIn = async (selector, style = 'height', translate = false, tran
     const data = await getAnimationStyle(selector, style, translateStyle);
 
     const amount = squeezeIn(data.progress);
-    assert.equal(data[style], `${amount}px`);
+    assert.strictEqual(data[style], `${amount}px`);
 
     if (translate === false) {
-        assert.equal(data[translateStyle], '');
+        assert.strictEqual(data[translateStyle], '');
     } else {
         const translateAmount = squeezeInOffset(amount);
-        assert.equal(
+        assert.strictEqual(
             data[translateStyle],
             translate ?
                 `translate${translate}(${translateAmount}px)` :
@@ -579,7 +579,7 @@ describe('#squeezeIn', function() {
     });
 
     it('throws when the animation is stopped (without finishing)', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(async _ => {
                 try {
                     const animation = dom.squeezeIn('.animate', {
@@ -647,7 +647,7 @@ describe('#squeezeIn', function() {
     });
 
     it('throws when all animation are stopped (without finishing)', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(async _ => {
                 try {
                     const animation = dom.squeezeIn('.animate', {

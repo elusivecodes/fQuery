@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../../setup');
 
 describe('#index', function() {
@@ -14,7 +14,7 @@ describe('#index', function() {
     });
 
     it('returns the index of the first node relative to the parent', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.index('.test')
             ),
@@ -23,7 +23,7 @@ describe('#index', function() {
     });
 
     it('works with HTMLElement nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.index(
                     document.getElementById('div2')
@@ -34,7 +34,7 @@ describe('#index', function() {
     });
 
     it('works with NodeList nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.index(
                     document.querySelectorAll('.test')
@@ -45,7 +45,7 @@ describe('#index', function() {
     });
 
     it('works with HTMLCollection nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.index(
                     document.body.children
@@ -56,7 +56,7 @@ describe('#index', function() {
     });
 
     it('works with array nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.index([
                     document.getElementById('div2'),

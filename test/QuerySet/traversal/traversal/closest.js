@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../../setup');
 
 describe('QuerySet #closest', function() {
@@ -24,7 +24,7 @@ describe('QuerySet #closest', function() {
     });
 
     it('returns the closest ancestor of each node', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.queryMutable('a')
                     .closest()
@@ -39,7 +39,7 @@ describe('QuerySet #closest', function() {
     });
 
     it('returns the closest ancestor of each node matching a filter', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.queryMutable('a')
                     .closest('div')
@@ -54,7 +54,7 @@ describe('QuerySet #closest', function() {
     });
 
     it('returns the closest ancestor of each node before a limit', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.queryMutable('a')
                     .closest('div', '#span2')
@@ -68,7 +68,7 @@ describe('QuerySet #closest', function() {
     });
 
     it('returns the QuerySet', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const query = dom.queryMutable('a');
                 return query === query.closest();
@@ -78,7 +78,7 @@ describe('QuerySet #closest', function() {
     });
 
     it('works with function filter', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.queryMutable('a')
                     .closest(node => node.tagName === 'DIV')
@@ -93,7 +93,7 @@ describe('QuerySet #closest', function() {
     });
 
     it('works with HTMLElement filter', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.queryMutable('a')
                     .closest(
@@ -109,7 +109,7 @@ describe('QuerySet #closest', function() {
     });
 
     it('works with NodeList filter', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.queryMutable('a')
                     .closest(
@@ -126,7 +126,7 @@ describe('QuerySet #closest', function() {
     });
 
     it('works with HTMLCollection filter', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.queryMutable('a')
                     .closest(
@@ -143,7 +143,7 @@ describe('QuerySet #closest', function() {
     });
 
     it('works with array filter', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.queryMutable('a')
                     .closest([
@@ -161,7 +161,7 @@ describe('QuerySet #closest', function() {
     });
 
     it('works with QuerySet filter', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ => {
                 const query = dom.queryMutable('div');
                 return dom.queryMutable('a')
@@ -177,7 +177,7 @@ describe('QuerySet #closest', function() {
     });
 
     it('works with function limit', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.queryMutable('a')
                     .closest(
@@ -194,7 +194,7 @@ describe('QuerySet #closest', function() {
     });
 
     it('works with HTMLElement limit', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.queryMutable('a')
                     .closest(
@@ -211,7 +211,7 @@ describe('QuerySet #closest', function() {
     });
 
     it('works with NodeList limit', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.queryMutable('a')
                     .closest(
@@ -228,7 +228,7 @@ describe('QuerySet #closest', function() {
     });
 
     it('works with HTMLCollection limit', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.queryMutable('a')
                     .closest(
@@ -245,7 +245,7 @@ describe('QuerySet #closest', function() {
     });
 
     it('works with array limit', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.queryMutable('a')
                     .closest('div', [
@@ -261,7 +261,7 @@ describe('QuerySet #closest', function() {
     });
 
     it('works with QuerySet limit', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ => {
                 const query = dom.queryMutable('#span2');
                 return dom.queryMutable('a')

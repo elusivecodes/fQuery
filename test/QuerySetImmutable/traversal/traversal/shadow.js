@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../../setup');
 
 describe('QuerySetImmutable #shadow', function() {
@@ -15,7 +15,7 @@ describe('QuerySetImmutable #shadow', function() {
     });
 
     it('returns the shadow root of the first node', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const query = dom.query('div');
                 const shadow = query.shadow();
@@ -26,7 +26,7 @@ describe('QuerySetImmutable #shadow', function() {
     });
 
     it('returns an empty QuerySet for closed shadow roots', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const query = dom.query('#div2');
                 const shadow = query.shadow();
@@ -37,7 +37,7 @@ describe('QuerySetImmutable #shadow', function() {
     });
 
     it('returns a new QuerySetImmutable', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const query1 = dom.query('div');
                 const query2 = query1.shadow();

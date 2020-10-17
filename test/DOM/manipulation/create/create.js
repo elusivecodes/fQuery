@@ -1,10 +1,10 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../../setup');
 
 describe('#create', function() {
 
     it('creates a new node', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const element = dom.create('div');
                 document.body.appendChild(element);
@@ -15,7 +15,7 @@ describe('#create', function() {
     });
 
     it('creates a new node with HTML', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const element = dom.create('div', {
                     html: '<span>Test</span>'
@@ -28,7 +28,7 @@ describe('#create', function() {
     });
 
     it('creates a new node with text', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const element = dom.create('div', {
                     text: '<span>Test</span>'
@@ -41,7 +41,7 @@ describe('#create', function() {
     });
 
     it('creates a new node with classes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const element = dom.create('div', {
                     class: 'test'
@@ -54,7 +54,7 @@ describe('#create', function() {
     });
 
     it('creates a new node with styles', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const element = dom.create('div', {
                     style: {
@@ -70,7 +70,7 @@ describe('#create', function() {
     });
 
     it('creates a new node with value', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const element = dom.create('input', {
                     value: 'Test'
@@ -82,7 +82,7 @@ describe('#create', function() {
     });
 
     it('creates a new node with attributes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const element = dom.create('input', {
                     attributes: {
@@ -99,7 +99,7 @@ describe('#create', function() {
     });
 
     it('creates a new node with properties', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const element = dom.create('input', {
                     properties: {
@@ -113,7 +113,7 @@ describe('#create', function() {
     });
 
     it('creates a new node with dataset values', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const element = dom.create('div', {
                     dataset: {

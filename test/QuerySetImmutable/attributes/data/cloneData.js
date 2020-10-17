@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../../setup');
 
 describe('QuerySetImmutable #cloneData', function() {
@@ -20,7 +20,7 @@ describe('QuerySetImmutable #cloneData', function() {
     });
 
     it('clones data from all nodes to all other nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ => {
                 dom.query('[data-toggle="data"]')
                     .cloneData('[data-toggle="noData"]');
@@ -43,7 +43,7 @@ describe('QuerySetImmutable #cloneData', function() {
     });
 
     it('returns the QuerySet', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const query = dom.query('[data-toggle="data"]');
                 return query === query.cloneData('[data-toggle="noData"]');
@@ -53,7 +53,7 @@ describe('QuerySetImmutable #cloneData', function() {
     });
 
     it('works with DocumentFragment nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ => {
                 const fragment = document.createDocumentFragment();
                 dom.setData(fragment, 'test', 'Test 1');
@@ -76,7 +76,7 @@ describe('QuerySetImmutable #cloneData', function() {
     });
 
     it('works with ShadowRoot nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ => {
                 const div = document.createElement('div');
                 const shadow = div.attachShadow({ mode: 'open' });
@@ -100,7 +100,7 @@ describe('QuerySetImmutable #cloneData', function() {
     });
 
     it('works with Document nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ => {
                 dom.setData(document, 'test', 'Test 1');
                 dom.query(document)
@@ -122,7 +122,7 @@ describe('QuerySetImmutable #cloneData', function() {
     });
 
     it('works with Window nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ => {
                 dom.setData(window, 'test', 'Test 1');
                 dom.query(window)
@@ -144,7 +144,7 @@ describe('QuerySetImmutable #cloneData', function() {
     });
 
     it('works with HTMLElement other nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ => {
                 dom.query('[data-toggle="data"]')
                     .cloneData(
@@ -160,7 +160,7 @@ describe('QuerySetImmutable #cloneData', function() {
     });
 
     it('works with NodeList other nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ => {
                 dom.query('[data-toggle="data"]')
                     .cloneData(
@@ -185,7 +185,7 @@ describe('QuerySetImmutable #cloneData', function() {
     });
 
     it('works with HTMLCollection other nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ => {
                 dom.query('[data-toggle="data"]')
                     .cloneData(
@@ -210,7 +210,7 @@ describe('QuerySetImmutable #cloneData', function() {
     });
 
     it('works with DocumentFragment other nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ => {
                 const fragment = document.createDocumentFragment();
                 dom.query('[data-toggle="data"]')
@@ -225,7 +225,7 @@ describe('QuerySetImmutable #cloneData', function() {
     });
 
     it('works with ShadowRoot other nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ => {
                 const div = document.createElement('div');
                 const shadow = div.attachShadow({ mode: 'open' });
@@ -241,7 +241,7 @@ describe('QuerySetImmutable #cloneData', function() {
     });
 
     it('works with Document other nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ => {
                 dom.query('[data-toggle="data"]')
                     .cloneData(document);
@@ -255,7 +255,7 @@ describe('QuerySetImmutable #cloneData', function() {
     });
 
     it('works with Window other nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ => {
                 dom.query('[data-toggle="data"]')
                     .cloneData(window);
@@ -269,7 +269,7 @@ describe('QuerySetImmutable #cloneData', function() {
     });
 
     it('works with array other nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ => {
                 dom.cloneData(
                     '[data-toggle="data"]',
@@ -297,7 +297,7 @@ describe('QuerySetImmutable #cloneData', function() {
     });
 
     it('works with QuerySet other nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ => {
                 const query = dom.query('[data-toggle="noData"]');
                 dom.query('[data-toggle="data"]')

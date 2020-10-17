@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../../setup');
 
 describe('QuerySet #prev', function() {
@@ -38,7 +38,7 @@ describe('QuerySet #prev', function() {
     });
 
     it('returns the previous sibling of each node', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.queryMutable('.span')
                     .prev()
@@ -53,7 +53,7 @@ describe('QuerySet #prev', function() {
     });
 
     it('returns the previous sibling of each node matching a filter', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.queryMutable('.span')
                     .prev('#span6')
@@ -67,7 +67,7 @@ describe('QuerySet #prev', function() {
     });
 
     it('returns the QuerySet', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const query = dom.queryMutable('.span');
                 return query === query.prev();
@@ -77,7 +77,7 @@ describe('QuerySet #prev', function() {
     });
 
     it('works with function filter', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.queryMutable('.span')
                     .prev(node => node.id === 'span6')
@@ -91,7 +91,7 @@ describe('QuerySet #prev', function() {
     });
 
     it('works with HTMLElement filter', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.queryMutable('.span')
                     .prev(
@@ -107,7 +107,7 @@ describe('QuerySet #prev', function() {
     });
 
     it('works with NodeList filter', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.queryMutable('.span')
                     .prev(
@@ -123,7 +123,7 @@ describe('QuerySet #prev', function() {
     });
 
     it('works with HTMLCollection filter', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.queryMutable('.span')
                     .prev(
@@ -139,7 +139,7 @@ describe('QuerySet #prev', function() {
     });
 
     it('works with array filter', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.queryMutable('.span')
                     .prev([
@@ -157,7 +157,7 @@ describe('QuerySet #prev', function() {
     });
 
     it('works with QuerySet filter', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ => {
                 const query = dom.queryMutable('#span6');
                 return dom.queryMutable('.span')

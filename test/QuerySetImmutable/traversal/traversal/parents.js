@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../../setup');
 
 describe('QuerySetImmutable #parents', function() {
@@ -24,7 +24,7 @@ describe('QuerySetImmutable #parents', function() {
     });
 
     it('returns the parents of each node', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.query('a')
                     .parents()
@@ -45,7 +45,7 @@ describe('QuerySetImmutable #parents', function() {
     });
 
     it('returns the parents of each node matching a filter', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.query('a')
                     .parents('div')
@@ -62,7 +62,7 @@ describe('QuerySetImmutable #parents', function() {
     });
 
     it('returns the parents of each node before a limit', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.query('a')
                     .parents(null, 'div')
@@ -77,7 +77,7 @@ describe('QuerySetImmutable #parents', function() {
     });
 
     it('returns a new QuerySetImmutable', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const query1 = dom.query('a');
                 const query2 = query1.parents();
@@ -88,7 +88,7 @@ describe('QuerySetImmutable #parents', function() {
     });
 
     it('works with function filter', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.query('a')
                     .parents(node => node.tagName === 'DIV')
@@ -105,7 +105,7 @@ describe('QuerySetImmutable #parents', function() {
     });
 
     it('works with HTMLElement filter', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.query('a')
                     .parents(
@@ -121,7 +121,7 @@ describe('QuerySetImmutable #parents', function() {
     });
 
     it('works with NodeList filter', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.query('a')
                     .parents(
@@ -140,7 +140,7 @@ describe('QuerySetImmutable #parents', function() {
     });
 
     it('works with HTMLCollection filter', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.query('a')
                     .parents(
@@ -157,7 +157,7 @@ describe('QuerySetImmutable #parents', function() {
     });
 
     it('works with array filter', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.query('a')
                     .parents([
@@ -179,7 +179,7 @@ describe('QuerySetImmutable #parents', function() {
     });
 
     it('works with QuerySet filter', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ => {
                 const query = dom.query('div');
                 return dom.query('a')
@@ -197,7 +197,7 @@ describe('QuerySetImmutable #parents', function() {
     });
 
     it('works with function limit', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.query('a')
                     .parents(
@@ -219,7 +219,7 @@ describe('QuerySetImmutable #parents', function() {
     });
 
     it('works with HTMLElement limit', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.query('a')
                     .parents(
@@ -241,7 +241,7 @@ describe('QuerySetImmutable #parents', function() {
     });
 
     it('works with NodeList limit', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.query('a')
                     .parents(
@@ -259,7 +259,7 @@ describe('QuerySetImmutable #parents', function() {
     });
 
     it('works with HTMLCollection limit', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.query('a')
                     .parents(
@@ -279,7 +279,7 @@ describe('QuerySetImmutable #parents', function() {
     });
 
     it('works with array limit', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.query('a')
                     .parents(null, [
@@ -299,7 +299,7 @@ describe('QuerySetImmutable #parents', function() {
     });
 
     it('works with QuerySet limit', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ => {
                 const query = dom.query('div');
                 return dom.query('a')

@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../../setup');
 
 describe('QuerySet #hasAttribute', function() {
@@ -14,7 +14,7 @@ describe('QuerySet #hasAttribute', function() {
     });
 
     it('returns true if any node has a specified attribute', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.queryMutable('div')
                     .hasAttribute('class')
@@ -24,7 +24,7 @@ describe('QuerySet #hasAttribute', function() {
     });
 
     it('returns false if no nodes have a specified attribute', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.queryMutable('div:not(.test)')
                     .hasAttribute('class')

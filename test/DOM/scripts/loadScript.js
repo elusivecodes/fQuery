@@ -1,10 +1,10 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../setup');
 
 describe('#loadScript', function() {
 
     it('loads a script', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.loadScript('assets/test.js');
                 return document.head.innerHTML;
@@ -14,7 +14,7 @@ describe('#loadScript', function() {
     });
 
     it('loads a script with attributes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.loadScript('assets/test.js', {
                     integrity: 'sha384-1AK0oxsmb9+cemh1YwLG4rPfSc3jb81aGOY8CBrD6WNTumSzeeAs3p5iYyXJemZu',
@@ -49,7 +49,7 @@ describe('#loadScript', function() {
     });
 
     it('resolves when the script is loaded', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(async _ => {
                 await dom.loadScript('assets/test.js');
                 return window.data;
@@ -59,7 +59,7 @@ describe('#loadScript', function() {
     });
 
     it('throws on error', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(async _ => {
                 try {
                     await dom.loadScript('assets/error.js');

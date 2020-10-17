@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../../setup');
 
 describe('#getProperty', function() {
@@ -14,7 +14,7 @@ describe('#getProperty', function() {
     });
 
     it('returns a property value for the first node', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.getProperty('input', 'test')
             ),
@@ -23,7 +23,7 @@ describe('#getProperty', function() {
     });
 
     it('returns undefined for an undefined property', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.getProperty('input', 'invalid')
             ),
@@ -32,7 +32,7 @@ describe('#getProperty', function() {
     });
 
     it('returns undefined for empty nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.getProperty('#invalid', 'test')
             ),
@@ -41,7 +41,7 @@ describe('#getProperty', function() {
     });
 
     it('works with HTMLElement nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.getProperty(
                     document.getElementById('test1'),
@@ -53,7 +53,7 @@ describe('#getProperty', function() {
     });
 
     it('works with NodeList nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.getProperty(
                     document.querySelectorAll('input'),
@@ -65,7 +65,7 @@ describe('#getProperty', function() {
     });
 
     it('works with HTMLCollection nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.getProperty(
                     document.body.children,
@@ -77,7 +77,7 @@ describe('#getProperty', function() {
     });
 
     it('works with array nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.getProperty([
                     document.getElementById('test1'),

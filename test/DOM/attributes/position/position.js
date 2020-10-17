@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../../setup');
 
 describe('#position', function() {
@@ -14,7 +14,7 @@ describe('#position', function() {
     });
 
     it('returns the position of the first node', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.position('[data-toggle="child"]')
             ),
@@ -26,7 +26,7 @@ describe('#position', function() {
     });
 
     it('returns the position of the first node with offset', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.position('[data-toggle="child"]', true)
             ),
@@ -38,7 +38,7 @@ describe('#position', function() {
     });
 
     it('returns undefined for empty nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.position('#invalid')
             ),
@@ -47,7 +47,7 @@ describe('#position', function() {
     });
 
     it('works with HTMLElement nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.position(
                     document.getElementById('test1')
@@ -61,7 +61,7 @@ describe('#position', function() {
     });
 
     it('works with NodeList nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.position(
                     document.querySelectorAll('[data-toggle="child"]')
@@ -75,7 +75,7 @@ describe('#position', function() {
     });
 
     it('works with HTMLCollection nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.position(
                     document.getElementById('parent').children
@@ -89,7 +89,7 @@ describe('#position', function() {
     });
 
     it('works with array nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.position([
                     document.getElementById('test1'),

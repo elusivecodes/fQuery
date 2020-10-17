@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../../setup');
 
 describe('QuerySetImmutable #tagName', function() {
@@ -14,7 +14,7 @@ describe('QuerySetImmutable #tagName', function() {
     });
 
     it('returns the tag name of the first node', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.query('div')
                     .tagName()

@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../../setup');
 
 describe('QuerySetImmutable #hasData', function() {
@@ -16,7 +16,7 @@ describe('QuerySetImmutable #hasData', function() {
     });
 
     it('returns true if any node has data', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.query('div')
                     .hasData()
@@ -26,7 +26,7 @@ describe('QuerySetImmutable #hasData', function() {
     });
 
     it('returns false if no nodes have data', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.query('div:not(.test)')
                     .hasData()
@@ -36,7 +36,7 @@ describe('QuerySetImmutable #hasData', function() {
     });
 
     it('returns true if any node has data for a key', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.query('#div1')
                     .hasData('test1')
@@ -46,7 +46,7 @@ describe('QuerySetImmutable #hasData', function() {
     });
 
     it('returns false if no nodes have data for a key', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.query('#div1')
                     .hasData('test2')
@@ -56,7 +56,7 @@ describe('QuerySetImmutable #hasData', function() {
     });
 
     it('works with DocumentFragment nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const fragment = document.createDocumentFragment();
                 dom.setData(fragment, 'test', 'Test');
@@ -68,7 +68,7 @@ describe('QuerySetImmutable #hasData', function() {
     });
 
     it('works with ShadowRoot nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const div = document.createElement('div');
                 const shadow = div.attachShadow({ mode: 'open' });
@@ -81,7 +81,7 @@ describe('QuerySetImmutable #hasData', function() {
     });
 
     it('works with Document nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.setData(document, 'test', 'Test');
                 return dom.query(document)
@@ -92,7 +92,7 @@ describe('QuerySetImmutable #hasData', function() {
     });
 
     it('works with Window nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.setData(window, 'test', 'Test');
                 return dom.query(window)

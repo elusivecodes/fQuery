@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../../setup');
 
 describe('QuerySetImmutable #addEventDelegate', function() {
@@ -22,7 +22,7 @@ describe('QuerySetImmutable #addEventDelegate', function() {
     });
 
     it('adds a delegated event to each node', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 let result = 0;
                 const event = new Event('click', {
@@ -51,7 +51,7 @@ describe('QuerySetImmutable #addEventDelegate', function() {
     });
 
     it('adds delegated events to each node', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 let result = 0;
                 const event1 = new Event('click', {
@@ -91,7 +91,7 @@ describe('QuerySetImmutable #addEventDelegate', function() {
     });
 
     it('adds a delegated event to each node with custom child selector', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 let result = 0;
                 const event = new Event('click', {
@@ -120,7 +120,7 @@ describe('QuerySetImmutable #addEventDelegate', function() {
     });
 
     it('adds delegated events to each node with custom child selector', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 let result = 0;
                 const event1 = new Event('click', {
@@ -160,7 +160,7 @@ describe('QuerySetImmutable #addEventDelegate', function() {
     });
 
     it('adds a namespaced delegated event to each node', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 let result = 0;
                 const event = new Event('click', {
@@ -189,7 +189,7 @@ describe('QuerySetImmutable #addEventDelegate', function() {
     });
 
     it('adds namespaced delegated events to each node', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 let result = 0;
                 const event1 = new Event('click', {
@@ -229,7 +229,7 @@ describe('QuerySetImmutable #addEventDelegate', function() {
     });
 
     it('adds a deep namespaced delegated event to each node', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 let result = 0;
                 const event = new Event('click', {
@@ -258,7 +258,7 @@ describe('QuerySetImmutable #addEventDelegate', function() {
     });
 
     it('adds deep namespaced delegated events to each node', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 let result = 0;
                 const event1 = new Event('click', {
@@ -298,7 +298,7 @@ describe('QuerySetImmutable #addEventDelegate', function() {
     });
 
     it('returns the QuerySet', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const query = dom.query('div');
                 return query === query.addEventDelegate('click', 'a', _ => {
@@ -310,7 +310,7 @@ describe('QuerySetImmutable #addEventDelegate', function() {
     });
 
     it('works with ShadowRoot nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 let result = 0;
                 const event = new Event('click', {
@@ -333,7 +333,7 @@ describe('QuerySetImmutable #addEventDelegate', function() {
     });
 
     it('works with Document nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 let result = 0;
                 const event = new Event('click', {

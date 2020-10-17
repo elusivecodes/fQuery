@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec, setStyle } = require('../../../setup');
 const { easeIn, easeInOut, easeOut, getAnimationStyle, linear, testAnimation, testNoAnimation, testNoStyle, waitFor } = require('../../../helpers');
 
@@ -11,7 +11,7 @@ const testSlideIn = async (selector, translate = 'Y', inverse = 1, style = 'tran
     const data = await getAnimationStyle(selector, style);
 
     const amount = slideIn(data.progress, inverse);
-    assert.equal(
+    assert.strictEqual(
         data[style],
         translate ?
             `translate${translate}(${amount}px)` :
@@ -567,7 +567,7 @@ describe('#slideIn', function() {
     });
 
     it('throws when the animation is stopped (without finishing)', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(async _ => {
                 try {
                     const animation = dom.slideIn('.animate', {
@@ -635,7 +635,7 @@ describe('#slideIn', function() {
     });
 
     it('throws when all animation are stopped (without finishing)', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(async _ => {
                 try {
                     const animation = dom.slideIn('.animate', {

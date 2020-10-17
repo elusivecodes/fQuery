@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec, setStyle } = require('../../../setup');
 
 describe('#isVisible', function() {
@@ -23,7 +23,7 @@ describe('#isVisible', function() {
     });
 
     it('returns true if any node is visible', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.isVisible('div')
             ),
@@ -32,7 +32,7 @@ describe('#isVisible', function() {
     });
 
     it('returns false if no nodes are visible', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.isVisible('.test')
             ),
@@ -41,7 +41,7 @@ describe('#isVisible', function() {
     });
 
     it('returns true if any node is a descendent of a visible node', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.isVisible('span')
             ),
@@ -50,7 +50,7 @@ describe('#isVisible', function() {
     });
 
     it('works with HTMLElement nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.isVisible(
                     document.getElementById('div1')
@@ -61,7 +61,7 @@ describe('#isVisible', function() {
     });
 
     it('works with NodeList nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.isVisible(
                     document.querySelectorAll('div')
@@ -72,7 +72,7 @@ describe('#isVisible', function() {
     });
 
     it('works with HTMLCollection nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.isVisible(
                     document.body.children
@@ -83,7 +83,7 @@ describe('#isVisible', function() {
     });
 
     it('works with Document nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.isVisible(document)
             ),
@@ -92,7 +92,7 @@ describe('#isVisible', function() {
     });
 
     it('works with Window nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.isVisible(window)
             ),
@@ -101,7 +101,7 @@ describe('#isVisible', function() {
     });
 
     it('works with array nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.isVisible([
                     document.getElementById('div1'),

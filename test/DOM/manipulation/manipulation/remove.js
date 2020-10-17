@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../../setup');
 const { testNoAnimation, waitFor } = require('../../../helpers');
 
@@ -23,7 +23,7 @@ describe('#remove', function() {
     });
 
     it('removes all nodes from the DOM', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.remove('a');
                 return document.body.innerHTML;
@@ -40,7 +40,7 @@ describe('#remove', function() {
     });
 
     it('removes events', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 let result = 0;
                 const nodes = document.querySelectorAll('a');
@@ -59,7 +59,7 @@ describe('#remove', function() {
     });
 
     it('removes events recursively', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 let result = 0;
                 const nodes = document.querySelectorAll('a');
@@ -78,7 +78,7 @@ describe('#remove', function() {
     });
 
     it('removes data', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ => {
                 const nodes = document.querySelectorAll('a');
                 dom.setData('a', 'test', 'Test');
@@ -101,7 +101,7 @@ describe('#remove', function() {
     });
 
     it('removes data recursively', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ => {
                 const nodes = document.querySelectorAll('a');
                 dom.setData('a', 'test', 'Test');
@@ -192,7 +192,7 @@ describe('#remove', function() {
                 }
             });
         }).then(waitFor(100)).then(async _ => {
-            assert.equal(
+            assert.strictEqual(
                 await exec(_ => document.body.innerHTML),
                 '<div id="outer1">' +
                 '<div id="inner1"></div>' +
@@ -228,7 +228,7 @@ describe('#remove', function() {
                 }
             });
         }).then(waitFor(100)).then(async _ => {
-            assert.equal(
+            assert.strictEqual(
                 await exec(_ => document.body.innerHTML),
                 '<a href="#" id="test1"></a>' +
                 '<a href="#" id="test2"></a>' +
@@ -239,7 +239,7 @@ describe('#remove', function() {
     });
 
     it('triggers a remove event', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 let result = 0;
                 dom.addEvent('a', 'remove', _ => {
@@ -253,7 +253,7 @@ describe('#remove', function() {
     });
 
     it('triggers a remove event recursively', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 let result = 0;
                 dom.addEvent('a', 'remove', _ => {
@@ -267,7 +267,7 @@ describe('#remove', function() {
     });
 
     it('works with HTMLElement nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.remove(
                     document.getElementById('inner1')
@@ -286,7 +286,7 @@ describe('#remove', function() {
     });
 
     it('works with NodeList nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.remove(
                     document.querySelectorAll('a')
@@ -305,7 +305,7 @@ describe('#remove', function() {
     });
 
     it('works with HTMLCollection nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.remove(
                     document.body.children
@@ -317,7 +317,7 @@ describe('#remove', function() {
     });
 
     it('works with array nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.remove([
                     document.getElementById('test1'),

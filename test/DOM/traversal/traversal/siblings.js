@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../../setup');
 
 describe('#siblings', function() {
@@ -44,7 +44,7 @@ describe('#siblings', function() {
     });
 
     it('returns all siblings of each node', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.siblings('.span')
                     .map(node => node.id)
@@ -63,7 +63,7 @@ describe('#siblings', function() {
     });
 
     it('returns all siblings of each node matching a filter', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.siblings('.span', '#span1, #span10')
                     .map(node => node.id)
@@ -76,7 +76,7 @@ describe('#siblings', function() {
     });
 
     it('returns an empty array for empty nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.siblings('#invalid')
             ),
@@ -85,7 +85,7 @@ describe('#siblings', function() {
     });
 
     it('works with HTMLElement nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.siblings(
                     document.getElementById('span3'),
@@ -99,7 +99,7 @@ describe('#siblings', function() {
     });
 
     it('works with NodeList nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.siblings(
                     document.querySelectorAll('.span'),
@@ -114,7 +114,7 @@ describe('#siblings', function() {
     });
 
     it('works with HTMLCollection nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.siblings(
                     document.getElementById('parent2').children,
@@ -128,7 +128,7 @@ describe('#siblings', function() {
     });
 
     it('works with array nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.siblings([
                     document.getElementById('span3'),
@@ -143,7 +143,7 @@ describe('#siblings', function() {
     });
 
     it('works with function filter', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.siblings(
                     '.span',
@@ -157,7 +157,7 @@ describe('#siblings', function() {
     });
 
     it('works with HTMLElement filter', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.siblings(
                     '.span',
@@ -171,7 +171,7 @@ describe('#siblings', function() {
     });
 
     it('works with NodeList filter', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.siblings(
                     '.span',
@@ -186,7 +186,7 @@ describe('#siblings', function() {
     });
 
     it('works with HTMLCollection filter', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.siblings(
                     '.span',
@@ -203,7 +203,7 @@ describe('#siblings', function() {
     });
 
     it('works with array filter', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.siblings('.span', [
                     document.getElementById('span1'),

@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../../setup');
 
 describe('QuerySet #isSame', function() {
@@ -14,7 +14,7 @@ describe('QuerySet #isSame', function() {
     });
 
     it('returns true if any node is identical to any other node', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.queryMutable('div')
                     .isSame('#div2, #div4')
@@ -24,7 +24,7 @@ describe('QuerySet #isSame', function() {
     });
 
     it('returns false if no nodes are identical to any other node', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.queryMutable('div')
                     .isSame('span')
@@ -34,7 +34,7 @@ describe('QuerySet #isSame', function() {
     });
 
     it('works with DocumentFragment nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const fragment = document.createDocumentFragment();
                 return dom.queryMutable(fragment)
@@ -45,7 +45,7 @@ describe('QuerySet #isSame', function() {
     });
 
     it('works with ShadowRoot nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const div = document.createElement('div');
                 const shadow = div.attachShadow({ mode: 'open' });
@@ -57,7 +57,7 @@ describe('QuerySet #isSame', function() {
     });
 
     it('works with HTMLElement other nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.queryMutable('div')
                     .isSame(
@@ -69,7 +69,7 @@ describe('QuerySet #isSame', function() {
     });
 
     it('works with NodeList other nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.queryMutable('div')
                     .isSame(
@@ -81,7 +81,7 @@ describe('QuerySet #isSame', function() {
     });
 
     it('works with HTMLCollection other nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.queryMutable('div')
                     .isSame(
@@ -93,7 +93,7 @@ describe('QuerySet #isSame', function() {
     });
 
     it('works with DocumentFragment other nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const fragment = document.createDocumentFragment();
                 return dom.queryMutable([fragment])
@@ -104,7 +104,7 @@ describe('QuerySet #isSame', function() {
     });
 
     it('works with ShadowRoot other nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const div = document.createElement('div');
                 const shadow = div.attachShadow({ mode: 'open' });
@@ -116,7 +116,7 @@ describe('QuerySet #isSame', function() {
     });
 
     it('works with array other nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.queryMutable('div')
                     .isSame([
@@ -129,7 +129,7 @@ describe('QuerySet #isSame', function() {
     });
 
     it('works with QuerySet other nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const query = dom.queryMutable('#div2, #div4');
                 return dom.queryMutable('div')

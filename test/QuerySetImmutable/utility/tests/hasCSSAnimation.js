@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec, setStyle } = require('../../../setup');
 
 describe('QuerySetImmutable #hasCSSAnimation', function() {
@@ -18,7 +18,7 @@ describe('QuerySetImmutable #hasCSSAnimation', function() {
     });
 
     it('returns true if any node has a CSS animation', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.query('div')
                     .hasCSSAnimation()
@@ -28,7 +28,7 @@ describe('QuerySetImmutable #hasCSSAnimation', function() {
     });
 
     it('returns false if no nodes have a CSS animation', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.query('div:not(.test)')
                     .hasCSSAnimation()

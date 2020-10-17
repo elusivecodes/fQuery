@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../../setup');
 
 describe('#offsetParent', function() {
@@ -24,7 +24,7 @@ describe('#offsetParent', function() {
     });
 
     it('returns the offset parent of the first node', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.offsetParent('a').id
             ),
@@ -33,7 +33,7 @@ describe('#offsetParent', function() {
     });
 
     it('returns undefined for empty nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.offsetParent('#invalid')
             ),
@@ -42,7 +42,7 @@ describe('#offsetParent', function() {
     });
 
     it('works with HTMLElement nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.offsetParent(
                     document.getElementById('a1')
@@ -53,7 +53,7 @@ describe('#offsetParent', function() {
     });
 
     it('works with NodeList nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.offsetParent(
                     document.querySelectorAll('a')
@@ -64,7 +64,7 @@ describe('#offsetParent', function() {
     });
 
     it('works with HTMLCollection nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.offsetParent(
                     document.getElementById('span1').children
@@ -75,7 +75,7 @@ describe('#offsetParent', function() {
     });
 
     it('works with array nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.offsetParent([
                     document.getElementById('a1'),

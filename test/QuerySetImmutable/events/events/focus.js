@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../../setup');
 
 describe('QuerySetImmutable #focus', function() {
@@ -12,7 +12,7 @@ describe('QuerySetImmutable #focus', function() {
     });
 
     it('triggers a focus event on the first node', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 let result;
                 const element = document.getElementById('test1');
@@ -26,7 +26,7 @@ describe('QuerySetImmutable #focus', function() {
     });
 
     it('returns the QuerySet', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const query = dom.query('div');
                 return query === query.focus();

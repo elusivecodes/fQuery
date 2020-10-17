@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../../setup');
 
 describe('#getAttribute', function() {
@@ -12,7 +12,7 @@ describe('#getAttribute', function() {
     });
 
     it('returns an object with all attributes for the first node', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.getAttribute('input')
             ),
@@ -25,7 +25,7 @@ describe('#getAttribute', function() {
     });
 
     it('returns an attribute value for the first node', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.getAttribute('input', 'type')
             ),
@@ -34,7 +34,7 @@ describe('#getAttribute', function() {
     });
 
     it('returns null for an undefined property', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.getAttribute('input', 'disabled')
             ),
@@ -43,7 +43,7 @@ describe('#getAttribute', function() {
     });
 
     it('returns undefined for empty nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.getAttribute('#invalid', 'type')
             ),
@@ -52,7 +52,7 @@ describe('#getAttribute', function() {
     });
 
     it('works with HTMLElement nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.getAttribute(
                     document.getElementById('test1'),
@@ -64,7 +64,7 @@ describe('#getAttribute', function() {
     });
 
     it('works with NodeList nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.getAttribute(
                     document.querySelectorAll('input'),
@@ -76,7 +76,7 @@ describe('#getAttribute', function() {
     });
 
     it('works with HTMLCollection nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.getAttribute(
                     document.body.children,
@@ -88,7 +88,7 @@ describe('#getAttribute', function() {
     });
 
     it('works with array nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.getAttribute([
                     document.getElementById('test1'),

@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec, setStyle } = require('../../../setup');
 
 describe('#withCSSTransition', function() {
@@ -15,7 +15,7 @@ describe('#withCSSTransition', function() {
     });
 
     it('returns nodes with CSS transitions', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.withCSSTransition('div')
                     .map(node => node.id)
@@ -28,7 +28,7 @@ describe('#withCSSTransition', function() {
     });
 
     it('works with HTMLElement nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.withCSSTransition(
                     document.getElementById('div1')
@@ -41,7 +41,7 @@ describe('#withCSSTransition', function() {
     });
 
     it('works with NodeList nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.withCSSTransition(
                     document.querySelectorAll('div')
@@ -55,7 +55,7 @@ describe('#withCSSTransition', function() {
     });
 
     it('works with HTMLCollection nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.withCSSTransition(
                     document.body.children
@@ -69,7 +69,7 @@ describe('#withCSSTransition', function() {
     });
 
     it('works with array nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.withCSSTransition([
                     document.getElementById('div1'),

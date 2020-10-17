@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../../setup');
 
 describe('#setDataset', function() {
@@ -12,7 +12,7 @@ describe('#setDataset', function() {
     });
 
     it('sets a dataset object for all nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.setDataset('div', {
                     testA: 'Test 1',
@@ -26,7 +26,7 @@ describe('#setDataset', function() {
     });
 
     it('sets a dataset value for all nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.setDataset('div', 'text', 'Test');
                 return document.body.innerHTML;
@@ -37,7 +37,7 @@ describe('#setDataset', function() {
     });
 
     it('formats boolean true values', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.setDataset('#test1', 'true', true);
                 return document.body.innerHTML;
@@ -48,7 +48,7 @@ describe('#setDataset', function() {
     });
 
     it('formats boolean false values', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.setDataset('#test1', 'false', false);
                 return document.body.innerHTML;
@@ -59,7 +59,7 @@ describe('#setDataset', function() {
     });
 
     it('formats boolean null values', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.setDataset('#test1', 'null', null);
                 return document.body.innerHTML;
@@ -70,7 +70,7 @@ describe('#setDataset', function() {
     });
 
     it('formats array values', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.setDataset('#test1', 'array', [1, 2, 3]);
                 return document.body.innerHTML;
@@ -81,7 +81,7 @@ describe('#setDataset', function() {
     });
 
     it('formats object values', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.setDataset('#test1', 'object', { a: 1 });
                 return document.body.innerHTML;
@@ -92,7 +92,7 @@ describe('#setDataset', function() {
     });
 
     it('works with HTMLElement nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.setDataset(
                     document.getElementById('test1'),
@@ -107,7 +107,7 @@ describe('#setDataset', function() {
     });
 
     it('works with NodeList nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.setDataset(
                     document.querySelectorAll('div'),
@@ -122,7 +122,7 @@ describe('#setDataset', function() {
     });
 
     it('works with HTMLCollection nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.setDataset(
                     document.body.children,
@@ -137,7 +137,7 @@ describe('#setDataset', function() {
     });
 
     it('works with array nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.setDataset([
                     document.getElementById('test1'),

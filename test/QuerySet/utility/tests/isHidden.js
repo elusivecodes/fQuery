@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec, setStyle } = require('../../../setup');
 
 describe('QuerySet #isHidden', function() {
@@ -23,7 +23,7 @@ describe('QuerySet #isHidden', function() {
     });
 
     it('returns true if any node is hidden', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.queryMutable('div')
                     .isHidden()
@@ -33,7 +33,7 @@ describe('QuerySet #isHidden', function() {
     });
 
     it('returns false if no nodes are hidden', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.queryMutable('div:not(.test)')
                     .isHidden()
@@ -43,7 +43,7 @@ describe('QuerySet #isHidden', function() {
     });
 
     it('returns true if any node is a descendent of a hidden node', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.queryMutable('span')
                     .isHidden()
@@ -53,7 +53,7 @@ describe('QuerySet #isHidden', function() {
     });
 
     it('works with Document nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const myDoc = new Document();
                 return dom.queryMutable(myDoc)
@@ -64,7 +64,7 @@ describe('QuerySet #isHidden', function() {
     });
 
     it('works with Window nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const myWindow = {
                     document: {},

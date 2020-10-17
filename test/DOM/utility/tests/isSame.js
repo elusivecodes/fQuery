@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../../setup');
 
 describe('#isSame', function() {
@@ -14,7 +14,7 @@ describe('#isSame', function() {
     });
 
     it('returns true if any node is identical to any other node', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.isSame('div', '#div2, #div4')
             ),
@@ -23,7 +23,7 @@ describe('#isSame', function() {
     });
 
     it('returns false if no nodes are identical to any other node', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.isSame('div', 'span')
             ),
@@ -32,7 +32,7 @@ describe('#isSame', function() {
     });
 
     it('works with HTMLElement nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.isSame(
                     document.getElementById('div2'),
@@ -44,7 +44,7 @@ describe('#isSame', function() {
     });
 
     it('works with NodeList nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.isSame(
                     document.querySelectorAll('div'),
@@ -56,7 +56,7 @@ describe('#isSame', function() {
     });
 
     it('works with HTMLCollection nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.isSame(
                     document.body.children,
@@ -68,7 +68,7 @@ describe('#isSame', function() {
     });
 
     it('works with DocumentFragment nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const fragment = document.createDocumentFragment();
                 return dom.isSame(
@@ -83,7 +83,7 @@ describe('#isSame', function() {
     });
 
     it('works with ShadowRoot nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const div = document.createElement('div');
                 const shadow = div.attachShadow({ mode: 'open' });
@@ -99,7 +99,7 @@ describe('#isSame', function() {
     });
 
     it('works with array nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.isSame([
                     document.getElementById('div1'),
@@ -113,7 +113,7 @@ describe('#isSame', function() {
     });
 
     it('works with HTMLElement other nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.isSame(
                     'div',
@@ -125,7 +125,7 @@ describe('#isSame', function() {
     });
 
     it('works with NodeList other nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.isSame(
                     'div',
@@ -137,7 +137,7 @@ describe('#isSame', function() {
     });
 
     it('works with HTMLCollection other nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.isSame(
                     'div',
@@ -149,7 +149,7 @@ describe('#isSame', function() {
     });
 
     it('works with DocumentFragment other nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const fragment = document.createDocumentFragment();
                 return dom.isSame(
@@ -164,7 +164,7 @@ describe('#isSame', function() {
     });
 
     it('works with ShadowRoot other nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const div = document.createElement('div');
                 const shadow = div.attachShadow({ mode: 'open' });
@@ -180,7 +180,7 @@ describe('#isSame', function() {
     });
 
     it('works with array other nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.isSame('div', [
                     document.querySelector('#div2'),

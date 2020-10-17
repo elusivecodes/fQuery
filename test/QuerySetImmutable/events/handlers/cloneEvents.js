@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../../setup');
 
 describe('QuerySetImmutable #cloneEvents', function() {
@@ -24,7 +24,7 @@ describe('QuerySetImmutable #cloneEvents', function() {
     });
 
     it('clones all events from all elements to all other elements', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const event = new Event('click');
                 dom.query('[data-toggle="event"]')
@@ -47,7 +47,7 @@ describe('QuerySetImmutable #cloneEvents', function() {
     });
 
     it('returns the QuerySet', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const query = dom.query('[data-toggle="event"]');
                 return query === query.cloneEvents('[data-toggle="noEvent"]');
@@ -57,7 +57,7 @@ describe('QuerySetImmutable #cloneEvents', function() {
     });
 
     it('works with ShadowRoot nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 let result = 0;
                 const event = new Event('click');
@@ -78,7 +78,7 @@ describe('QuerySetImmutable #cloneEvents', function() {
     });
 
     it('works with Document nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 let result = 0;
                 const event = new Event('click');
@@ -97,7 +97,7 @@ describe('QuerySetImmutable #cloneEvents', function() {
     });
 
     it('works with Window nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 let result = 0;
                 const event = new Event('click');
@@ -116,7 +116,7 @@ describe('QuerySetImmutable #cloneEvents', function() {
     });
 
     it('works with HTMLElement other nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const event = new Event('click');
                 const element = document.getElementById('test3');
@@ -140,7 +140,7 @@ describe('QuerySetImmutable #cloneEvents', function() {
     });
 
     it('works with NodeList other nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const event = new Event('click');
                 dom.query('[data-toggle="event"]')
@@ -165,7 +165,7 @@ describe('QuerySetImmutable #cloneEvents', function() {
     });
 
     it('works with HTMLCollection other nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const event = new Event('click');
                 dom.query('[data-toggle="event"]')
@@ -190,7 +190,7 @@ describe('QuerySetImmutable #cloneEvents', function() {
     });
 
     it('works with ShadowRoot other nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 let result = 0;
                 const event = new Event('click');
@@ -211,7 +211,7 @@ describe('QuerySetImmutable #cloneEvents', function() {
     });
 
     it('works with Document other nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 let result = 0;
                 const event = new Event('click');
@@ -230,7 +230,7 @@ describe('QuerySetImmutable #cloneEvents', function() {
     });
 
     it('works with Window other nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 let result = 0;
                 const event = new Event('click');
@@ -249,7 +249,7 @@ describe('QuerySetImmutable #cloneEvents', function() {
     });
 
     it('works with array other nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const event = new Event('click');
                 const element1 = document.getElementById('test3');
@@ -277,7 +277,7 @@ describe('QuerySetImmutable #cloneEvents', function() {
     });
 
     it('works with QuerySet other nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const event = new Event('click');
                 const query = dom.query('[data-toggle="noEvent"]');

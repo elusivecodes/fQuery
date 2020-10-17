@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../../setup');
 
 describe('QuerySet #findOneByTag', function() {
@@ -31,7 +31,7 @@ describe('QuerySet #findOneByTag', function() {
     });
 
     it('finds elements by tag name', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.queryMutable(document.body)
                     .findOneByTag('span')
@@ -45,7 +45,7 @@ describe('QuerySet #findOneByTag', function() {
     });
 
     it('returns the QuerySet', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const query = dom.queryMutable(document.body);
                 return query === query.findOneByTag('span');
@@ -55,7 +55,7 @@ describe('QuerySet #findOneByTag', function() {
     });
 
     it('works with DocumentFragment nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ => {
                 const range = document.createRange();
                 const fragment = range.createContextualFragment(
@@ -76,7 +76,7 @@ describe('QuerySet #findOneByTag', function() {
     });
 
     it('works with ShadowRoot nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ => {
                 const div = document.createElement('div');
                 const shadow = div.attachShadow({ mode: 'open' });
@@ -100,7 +100,7 @@ describe('QuerySet #findOneByTag', function() {
     });
 
     it('works with Document nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ => {
                 const parser = new DOMParser();
                 const myDoc = parser.parseFromString(

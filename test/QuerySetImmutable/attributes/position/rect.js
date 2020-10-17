@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../../setup');
 
 describe('QuerySetImmutable #rect', function() {
@@ -13,7 +13,7 @@ describe('QuerySetImmutable #rect', function() {
     });
 
     it('returns the bounding rectangle of the first node', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.query('div')
                     .rect()
@@ -33,7 +33,7 @@ describe('QuerySetImmutable #rect', function() {
     });
 
     it('returns the bounding rectangle of the first node with offset', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.query('div')
                     .rect(true)
@@ -53,7 +53,7 @@ describe('QuerySetImmutable #rect', function() {
     });
 
     it('returns undefined for empty nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.query('#invalid')
                     .rect()

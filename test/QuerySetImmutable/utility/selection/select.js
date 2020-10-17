@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../../setup');
 
 describe('QuerySetImmutable #select', function() {
@@ -20,7 +20,7 @@ describe('QuerySetImmutable #select', function() {
     });
 
     it('creates a selection on the first node', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.query('.select')
                     .select();
@@ -33,7 +33,7 @@ describe('QuerySetImmutable #select', function() {
     });
 
     it('creates a selection on an input node', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.query('#input')
                     .select();
@@ -45,7 +45,7 @@ describe('QuerySetImmutable #select', function() {
     });
 
     it('creates a selection on a textarea node', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.query('#textarea')
                     .select();
@@ -57,7 +57,7 @@ describe('QuerySetImmutable #select', function() {
     });
 
     it('returns the QuerySet', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const query = dom.query('.select');
                 return query === query.select();

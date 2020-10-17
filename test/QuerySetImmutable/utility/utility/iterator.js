@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../../setup');
 
 describe('QuerySetImmutable Iterator', function() {
@@ -14,7 +14,7 @@ describe('QuerySetImmutable Iterator', function() {
     });
 
     it('allows iteration of nodes in the set', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ => {
                 const results = [];
                 const query = dom.query('div');

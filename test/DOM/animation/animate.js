@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../setup');
 const { easeIn, easeInOut, easeOut, linear, testAnimation, testNoAnimation, waitFor } = require('../../helpers');
 
@@ -241,7 +241,7 @@ describe('#animate', function() {
     });
 
     it('throws when the animation is stopped (without finishing)', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(async _ => {
                 try {
                     const animation = dom.animate(
@@ -317,7 +317,7 @@ describe('#animate', function() {
     });
 
     it('throws when all animations are stopped (without finishing)', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(async _ => {
                 try {
                     const animation = dom.animate(

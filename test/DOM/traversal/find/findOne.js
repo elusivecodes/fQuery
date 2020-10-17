@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../../setup');
 
 describe('#findOne', function() {
@@ -98,7 +98,7 @@ describe('#findOne', function() {
     });
 
     it('finds elements by query selector', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.findOne('#parent1 > #child1 > span, #parent1 > #child2 > span').id
             ),
@@ -107,7 +107,7 @@ describe('#findOne', function() {
     });
 
     it('finds elements by custom child selector', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.findOne('> .group1 > .group1, > .group2 > .group2', '#child1, #child4').id
             ),
@@ -116,7 +116,7 @@ describe('#findOne', function() {
     });
 
     it('finds elements by ID', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.findOne('#parent1').id
             ),
@@ -125,7 +125,7 @@ describe('#findOne', function() {
     });
 
     it('finds elements by class name', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.findOne('.span1').id
             ),
@@ -134,7 +134,7 @@ describe('#findOne', function() {
     });
 
     it('finds elements by tag name', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.findOne('span').id
             ),
@@ -143,7 +143,7 @@ describe('#findOne', function() {
     });
 
     it('returns null for non-matching selector', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.findOne('#invalid')
             ),
@@ -152,7 +152,7 @@ describe('#findOne', function() {
     });
 
     it('returns undefined for empty nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.findOne('span', '#invalid')
             ),
@@ -161,7 +161,7 @@ describe('#findOne', function() {
     });
 
     it('works with query selector nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.findOne('span', '#parent1 > #child2').id
             ),
@@ -170,7 +170,7 @@ describe('#findOne', function() {
     });
 
     it('works with HTMLElement nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.findOne(
                     'span',
@@ -182,7 +182,7 @@ describe('#findOne', function() {
     });
 
     it('works with NodeList nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.findOne(
                     'span',
@@ -194,7 +194,7 @@ describe('#findOne', function() {
     });
 
     it('works with HTMLCollection nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.findOne(
                     'span',
@@ -206,7 +206,7 @@ describe('#findOne', function() {
     });
 
     it('works with DocumentFragment nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const range = document.createRange();
                 const fragment = range.createContextualFragment(
@@ -220,7 +220,7 @@ describe('#findOne', function() {
     });
 
     it('works with ShadowRoot nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const div = document.createElement('div');
                 const shadow = div.attachShadow({ mode: 'open' });
@@ -237,7 +237,7 @@ describe('#findOne', function() {
     });
 
     it('works with Document nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const parser = new DOMParser();
                 const myDoc = parser.parseFromString(
@@ -258,7 +258,7 @@ describe('#findOne', function() {
     });
 
     it('works with array nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.findOne('span', [
                     document.getElementById('child4'),

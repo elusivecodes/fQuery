@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../../setup');
 
 describe('QuerySetImmutable #prevAll', function() {
@@ -38,7 +38,7 @@ describe('QuerySetImmutable #prevAll', function() {
     });
 
     it('returns all previous siblings of each node', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.query('.span')
                     .prevAll()
@@ -55,7 +55,7 @@ describe('QuerySetImmutable #prevAll', function() {
     });
 
     it('returns all previous siblings of each node matching a filter', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.query('.span')
                     .prevAll('#span1, #span5')
@@ -70,7 +70,7 @@ describe('QuerySetImmutable #prevAll', function() {
     });
 
     it('returns a new QuerySetImmutable', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const query1 = dom.query('.span');
                 const query2 = query1.prevAll();
@@ -81,7 +81,7 @@ describe('QuerySetImmutable #prevAll', function() {
     });
 
     it('works with function filter', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.query('.span')
                     .prevAll(node => node.id === 'span5')
@@ -95,7 +95,7 @@ describe('QuerySetImmutable #prevAll', function() {
     });
 
     it('works with HTMLElement filter', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.query('.span')
                     .prevAll(
@@ -111,7 +111,7 @@ describe('QuerySetImmutable #prevAll', function() {
     });
 
     it('works with NodeList filter', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.query('.span')
                     .prevAll(
@@ -128,7 +128,7 @@ describe('QuerySetImmutable #prevAll', function() {
     });
 
     it('works with HTMLCollection filter', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.query('.span')
                     .prevAll(
@@ -145,7 +145,7 @@ describe('QuerySetImmutable #prevAll', function() {
     });
 
     it('works with array filter', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.query('.span')
                     .prevAll([
@@ -163,7 +163,7 @@ describe('QuerySetImmutable #prevAll', function() {
     });
 
     it('works with QuerySet filter', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ => {
                 const query = dom.query('#span1, #span5');
                 return dom.query('.span')
@@ -179,7 +179,7 @@ describe('QuerySetImmutable #prevAll', function() {
     });
 
     it('works with function limit', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.query('.span')
                     .prevAll(
@@ -197,7 +197,7 @@ describe('QuerySetImmutable #prevAll', function() {
     });
 
     it('works with HTMLElement limit', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.query('.span')
                     .prevAll(
@@ -215,7 +215,7 @@ describe('QuerySetImmutable #prevAll', function() {
     });
 
     it('works with NodeList limit', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.query('.span')
                     .prevAll(
@@ -232,7 +232,7 @@ describe('QuerySetImmutable #prevAll', function() {
     });
 
     it('works with HTMLCollection limit', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.query('.span')
                     .prevAll(
@@ -250,7 +250,7 @@ describe('QuerySetImmutable #prevAll', function() {
     });
 
     it('works with array limit', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.query('.span')
                     .prevAll(null, [,
@@ -267,7 +267,7 @@ describe('QuerySetImmutable #prevAll', function() {
     });
 
     it('works with QuerySet limit', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ => {
                 const query = dom.query('#span1, #span6');
                 return dom.query('.span')

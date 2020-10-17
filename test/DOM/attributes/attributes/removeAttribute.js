@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../../setup');
 
 describe('#removeAttribute', function() {
@@ -12,7 +12,7 @@ describe('#removeAttribute', function() {
     });
 
     it('removes an attribute for all nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.removeAttribute('input', 'disabled');
                 return document.body.innerHTML;
@@ -23,7 +23,7 @@ describe('#removeAttribute', function() {
     });
 
     it('works with HTMLElement nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.removeAttribute(
                     document.getElementById('test1'),
@@ -37,7 +37,7 @@ describe('#removeAttribute', function() {
     });
 
     it('works with NodeList nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.removeAttribute(
                     document.querySelectorAll('input'),
@@ -51,7 +51,7 @@ describe('#removeAttribute', function() {
     });
 
     it('works with HTMLCollection nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.removeAttribute(
                     document.body.children,
@@ -65,7 +65,7 @@ describe('#removeAttribute', function() {
     });
 
     it('works with array nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.removeAttribute([
                     document.getElementById('test1'),

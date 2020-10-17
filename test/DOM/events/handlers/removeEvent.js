@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../../setup');
 
 describe('#removeEvent', function() {
@@ -12,7 +12,7 @@ describe('#removeEvent', function() {
     });
 
     it('removes all events from each node', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 let result = 0;
                 const event1 = new Event('click');
@@ -34,7 +34,7 @@ describe('#removeEvent', function() {
     });
 
     it('removes all events of a type from each node', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 let result = 0;
                 const event1 = new Event('click');
@@ -59,7 +59,7 @@ describe('#removeEvent', function() {
     });
 
     it('removes all events of types from each node', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 let result = 0;
                 const event1 = new Event('click');
@@ -84,7 +84,7 @@ describe('#removeEvent', function() {
     });
 
     it('removes a specific event from each node', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 let result = 0;
                 const callback = _ => {
@@ -107,7 +107,7 @@ describe('#removeEvent', function() {
     });
 
     it('removes a namespaced event from each node', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 let result = 0;
                 const event = new Event('click');
@@ -126,7 +126,7 @@ describe('#removeEvent', function() {
     });
 
     it('removes namespaced events from each node', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 let result = 0;
                 const event1 = new Event('click');
@@ -148,7 +148,7 @@ describe('#removeEvent', function() {
     });
 
     it('removes a deep namespaced event from each node', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 let result = 0;
                 const event = new Event('click');
@@ -167,7 +167,7 @@ describe('#removeEvent', function() {
     });
 
     it('removes deep namespaced events from each node', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 let result = 0;
                 const event1 = new Event('click');
@@ -189,7 +189,7 @@ describe('#removeEvent', function() {
     });
 
     it('removes a namespaced event with namespacing from each node', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 let result = 0;
                 const event = new Event('click');
@@ -208,7 +208,7 @@ describe('#removeEvent', function() {
     });
 
     it('removes namespaced events with namespacing from each node', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 let result = 0;
                 const event1 = new Event('click');
@@ -230,7 +230,7 @@ describe('#removeEvent', function() {
     });
 
     it('removes a deep namespaced event with namespacing from each node', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 let result = 0;
                 const event = new Event('click');
@@ -249,7 +249,7 @@ describe('#removeEvent', function() {
     });
 
     it('removes deep namespaced events with namespacing from each node', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 let result = 0;
                 const event1 = new Event('click');
@@ -271,7 +271,7 @@ describe('#removeEvent', function() {
     });
 
     it('removes a deep namespaced event with deep namespacing from each node', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 let result = 0;
                 const event = new Event('click');
@@ -290,7 +290,7 @@ describe('#removeEvent', function() {
     });
 
     it('removes deep namespaced events with deep namespacing from each node', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 let result = 0;
                 const event1 = new Event('click');
@@ -312,7 +312,7 @@ describe('#removeEvent', function() {
     });
 
     it('does not remove a specific event of the wrong type from each node', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 let result = 0;
                 const callback = _ => {
@@ -335,7 +335,7 @@ describe('#removeEvent', function() {
     });
 
     it('does not remove an event without namespacing from each node', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 let result = 0;
                 const event = new Event('click');
@@ -354,7 +354,7 @@ describe('#removeEvent', function() {
     });
 
     it('does not remove events without namespacing from each node', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 let result = 0;
                 const event1 = new Event('click');
@@ -376,7 +376,7 @@ describe('#removeEvent', function() {
     });
 
     it('does not remove a namespaced event with deep namespacing from each node', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 let result = 0;
                 const event = new Event('click');
@@ -395,7 +395,7 @@ describe('#removeEvent', function() {
     });
 
     it('does not remove namespaced events with deep namespacing from each node', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 let result = 0;
                 const event1 = new Event('click');
@@ -417,7 +417,7 @@ describe('#removeEvent', function() {
     });
 
     it('works with HTMLElement nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 let result = 0;
                 const callback = _ => {
@@ -440,7 +440,7 @@ describe('#removeEvent', function() {
     });
 
     it('works with NodeList nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 let result = 0;
                 const callback = _ => {
@@ -467,7 +467,7 @@ describe('#removeEvent', function() {
     });
 
     it('works with HTMLCollection nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 let result = 0;
                 const callback = _ => {
@@ -494,7 +494,7 @@ describe('#removeEvent', function() {
     });
 
     it('works with ShadowRoot nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 let result = 0;
                 const callback = _ => {
@@ -516,7 +516,7 @@ describe('#removeEvent', function() {
     });
 
     it('works with Document nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 let result = 0;
                 const callback = _ => {
@@ -536,7 +536,7 @@ describe('#removeEvent', function() {
     });
 
     it('works with Window nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 let result = 0;
                 const callback = _ => {
@@ -556,7 +556,7 @@ describe('#removeEvent', function() {
     });
 
     it('works with array nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 let result = 0;
                 const callback = _ => {

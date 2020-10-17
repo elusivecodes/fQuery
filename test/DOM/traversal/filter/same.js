@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../../setup');
 
 describe('#same', function() {
@@ -14,7 +14,7 @@ describe('#same', function() {
     });
 
     it('returns nodes identical to other nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.same('div', '#div2, #div4')
                     .map(node => node.id)
@@ -27,7 +27,7 @@ describe('#same', function() {
     });
 
     it('works with HTMLElement nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.same(
                     document.getElementById('div2'),
@@ -41,7 +41,7 @@ describe('#same', function() {
     });
 
     it('works with NodeList nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.same(
                     document.querySelectorAll('div'),
@@ -56,7 +56,7 @@ describe('#same', function() {
     });
 
     it('works with HTMLCollection nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.same(
                     document.body.children,
@@ -71,7 +71,7 @@ describe('#same', function() {
     });
 
     it('works with DocumentFragment nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ => {
                 const fragment = document.createDocumentFragment();
                 fragment.id = 'fragment';
@@ -89,7 +89,7 @@ describe('#same', function() {
     });
 
     it('works with ShadowRoot nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ => {
                 const div = document.createElement('div');
                 const shadow = div.attachShadow({ mode: 'open' });
@@ -104,7 +104,7 @@ describe('#same', function() {
     });
 
     it('works with array nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.same([
                     document.getElementById('div1'),
@@ -121,7 +121,7 @@ describe('#same', function() {
     });
 
     it('works with HTMLElement other nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.same(
                     'div',
@@ -135,7 +135,7 @@ describe('#same', function() {
     });
 
     it('works with NodeList other nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.same(
                     'div',
@@ -150,7 +150,7 @@ describe('#same', function() {
     });
 
     it('works with HTMLCollection other nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.same(
                     'div',
@@ -167,7 +167,7 @@ describe('#same', function() {
     });
 
     it('works with DocumentFragment other nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ => {
                 const fragment = document.createDocumentFragment();
                 fragment.id = 'fragment';
@@ -185,7 +185,7 @@ describe('#same', function() {
     });
 
     it('works with ShadowRoot other nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ => {
                 const div = document.createElement('div');
                 const shadow = div.attachShadow({ mode: 'open' });
@@ -205,7 +205,7 @@ describe('#same', function() {
     });
 
     it('works with array other nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.same('div', [
                     document.querySelector('#div2'),

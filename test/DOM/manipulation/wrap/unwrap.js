@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../../setup');
 const { testNoAnimation, waitFor } = require('../../../helpers');
 
@@ -19,7 +19,7 @@ describe('#unwrap', function() {
     });
 
     it('unwraps each node', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.unwrap('a');
                 return document.body.innerHTML;
@@ -32,7 +32,7 @@ describe('#unwrap', function() {
     });
 
     it('unwraps each node with filter', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.unwrap('a', '#parent1');
                 return document.body.innerHTML;
@@ -47,7 +47,7 @@ describe('#unwrap', function() {
     });
 
     it('removes events', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 let result = 0;
                 const nodes = document.querySelectorAll('div');
@@ -66,7 +66,7 @@ describe('#unwrap', function() {
     });
 
     it('removes data', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ => {
                 const nodes = document.querySelectorAll('div');
                 dom.setData('div', 'test', 'Test');
@@ -128,7 +128,7 @@ describe('#unwrap', function() {
                 }
             });
         }).then(waitFor(100)).then(async _ => {
-            assert.equal(
+            assert.strictEqual(
                 await exec(_ => document.body.innerHTML),
                 '<a href="#" id="test1">Test</a>' +
                 '<a href="#" id="test2">Test</a>' +
@@ -143,7 +143,7 @@ describe('#unwrap', function() {
     });
 
     it('triggers a remove event', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 let result = 0;
                 dom.addEvent('div', 'remove', _ => {
@@ -157,7 +157,7 @@ describe('#unwrap', function() {
     });
 
     it('works with HTMLElement nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.unwrap(
                     document.getElementById('test1'),
@@ -175,7 +175,7 @@ describe('#unwrap', function() {
     });
 
     it('works with NodeList nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.unwrap(
                     document.querySelectorAll('a'),
@@ -193,7 +193,7 @@ describe('#unwrap', function() {
     });
 
     it('works with HTMLCollection nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.unwrap(
                     document.getElementById('parent1').children,
@@ -211,7 +211,7 @@ describe('#unwrap', function() {
     });
 
     it('works with array nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.unwrap([
                     document.getElementById('test1'),
@@ -231,7 +231,7 @@ describe('#unwrap', function() {
     });
 
     it('works with function filter', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.unwrap(
                     'a',
@@ -249,7 +249,7 @@ describe('#unwrap', function() {
     });
 
     it('works with HTMLElement filter', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.unwrap(
                     'a',
@@ -267,7 +267,7 @@ describe('#unwrap', function() {
     });
 
     it('works with NodeList filter', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.unwrap(
                     'a',
@@ -285,7 +285,7 @@ describe('#unwrap', function() {
     });
 
     it('works with HTMLCollection filter', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.unwrap(
                     'a',
@@ -301,7 +301,7 @@ describe('#unwrap', function() {
     });
 
     it('works with array filter', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.unwrap('a', [
                     document.getElementById('parent1')

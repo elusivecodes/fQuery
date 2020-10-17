@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../setup');
 const { easeInOut, testAnimation, testNoAnimation, waitFor } = require('../../helpers');
 
@@ -57,7 +57,7 @@ describe('#stop', function() {
             await testAnimation('#test4', easeInOut, 100);
         }).then(waitFor(25)).then(async _ => {
             const html = await exec(_ => document.body.innerHTML);
-            assert.equal(
+            assert.strictEqual(
                 html,
                 testHtml
             );

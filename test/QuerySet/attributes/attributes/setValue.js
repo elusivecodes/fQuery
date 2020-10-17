@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../../setup');
 
 describe('QuerySet #setValue', function() {
@@ -14,7 +14,7 @@ describe('QuerySet #setValue', function() {
     });
 
     it('sets the input value for all nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ => {
                 dom.queryMutable('input')
                     .setValue('Test');
@@ -31,7 +31,7 @@ describe('QuerySet #setValue', function() {
     });
 
     it('works with textarea input nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.queryMutable('textarea')
                     .setValue('Test');
@@ -42,7 +42,7 @@ describe('QuerySet #setValue', function() {
     });
 
     it('works with select input nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.queryMutable('select')
                     .setValue(2);
@@ -53,7 +53,7 @@ describe('QuerySet #setValue', function() {
     });
 
     it('returns the QuerySet', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const query = dom.queryMutable('input');
                 return query === query.setValue('Test');

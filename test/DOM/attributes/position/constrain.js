@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../../setup');
 
 describe('#constrain', function() {
@@ -18,7 +18,7 @@ describe('#constrain', function() {
     });
 
     it('constrains each node inside another node', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.constrain('[data-toggle="from"]', '[data-toggle="to"]');
                 return document.body.innerHTML;
@@ -35,7 +35,7 @@ describe('#constrain', function() {
     });
 
     it('works with HTMLElement nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.constrain(
                     document.getElementById('test1'),
@@ -55,7 +55,7 @@ describe('#constrain', function() {
     });
 
     it('works with NodeList nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.constrain(
                     document.querySelectorAll('[data-toggle="from"]'),
@@ -75,7 +75,7 @@ describe('#constrain', function() {
     });
 
     it('works with HTMLCollection nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.constrain(
                     document.getElementById('fromParent').children,
@@ -95,7 +95,7 @@ describe('#constrain', function() {
     });
 
     it('works with array nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.constrain([
                     document.getElementById('test1'),
@@ -115,7 +115,7 @@ describe('#constrain', function() {
     });
 
     it('works with HTMLElement other nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.constrain(
                     '[data-toggle="from"]',
@@ -135,7 +135,7 @@ describe('#constrain', function() {
     });
 
     it('works with NodeList other nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.constrain(
                     '[data-toggle="from"]',
@@ -155,7 +155,7 @@ describe('#constrain', function() {
     });
 
     it('works with HTMLCollection other nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.constrain(
                     '[data-toggle="from"]',
@@ -175,7 +175,7 @@ describe('#constrain', function() {
     });
 
     it('works with array other nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.constrain('[data-toggle="from"]', [
                     document.getElementById('test3'),

@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../../setup');
 const { easeInOut, testAnimation, testNoAnimation, waitFor } = require('../../../helpers');
 
@@ -21,7 +21,7 @@ describe('QuerySetImmutable #insertAfter', function() {
     });
 
     it('inserts each node after each other node', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.query('a')
                     .insertAfter('div');
@@ -45,7 +45,7 @@ describe('QuerySetImmutable #insertAfter', function() {
     });
 
     it('preserves events for nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 let result = 0;
                 dom.addEvent('a', 'click', _ => {
@@ -61,7 +61,7 @@ describe('QuerySetImmutable #insertAfter', function() {
     });
 
     it('preserves data for nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ => {
                 dom.setData('a', 'test', 'Test');
                 dom.query('a')
@@ -118,7 +118,7 @@ describe('QuerySetImmutable #insertAfter', function() {
     });
 
     it('does not clone for the last nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const nodes = [...document.querySelectorAll('a')];
                 dom.query('a')
@@ -131,7 +131,7 @@ describe('QuerySetImmutable #insertAfter', function() {
     });
 
     it('returns the QuerySet', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const query = dom.query('a');
                 return query === query.insertAfter('div');
@@ -141,7 +141,7 @@ describe('QuerySetImmutable #insertAfter', function() {
     });
 
     it('works with DocumentFragment nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const range = document.createRange();
                 const fragment = range.createContextualFragment(
@@ -167,7 +167,7 @@ describe('QuerySetImmutable #insertAfter', function() {
     });
 
     it('works with HTMLElement other nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.query('a')
                     .insertAfter(
@@ -189,7 +189,7 @@ describe('QuerySetImmutable #insertAfter', function() {
     });
 
     it('works with NodeList other nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.query('a')
                     .insertAfter(
@@ -215,7 +215,7 @@ describe('QuerySetImmutable #insertAfter', function() {
     });
 
     it('works with HTMLCollection other nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.query('a')
                     .insertAfter(
@@ -241,7 +241,7 @@ describe('QuerySetImmutable #insertAfter', function() {
     });
 
     it('works with array other nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.query('a')
                     .insertAfter([
@@ -268,7 +268,7 @@ describe('QuerySetImmutable #insertAfter', function() {
     });
 
     it('works with QuerySet other nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const query = dom.query('div');
                 dom.query('a')

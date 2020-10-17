@@ -1,10 +1,10 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../setup');
 
 describe('#loadScripts', function() {
 
     it('loads scripts', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.loadScripts([
                     'assets/test.js',
@@ -18,7 +18,7 @@ describe('#loadScripts', function() {
     });
 
     it('loads scripts with attributes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.loadScripts([
                     {
@@ -68,7 +68,7 @@ describe('#loadScripts', function() {
     });
 
     it('resolves when the scripts are loaded', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(async _ => {
                 await dom.loadScripts([
                     'assets/test.js',
@@ -81,7 +81,7 @@ describe('#loadScripts', function() {
     });
 
     it('throws on error', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(async _ => {
                 try {
                     await dom.loadScripts([

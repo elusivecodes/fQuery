@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../../setup');
 
 describe('QuerySet #index', function() {
@@ -14,7 +14,7 @@ describe('QuerySet #index', function() {
     });
 
     it('returns the index of the first node relative to the parent', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.queryMutable('.test')
                     .index()

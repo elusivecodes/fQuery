@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../../setup');
 
 describe('QuerySetImmutable #nearestTo', function() {
@@ -13,7 +13,7 @@ describe('QuerySetImmutable #nearestTo', function() {
     });
 
     it('returns the nearest node to a position', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.query('div')
                     .nearestTo(1000, 1000)
@@ -27,7 +27,7 @@ describe('QuerySetImmutable #nearestTo', function() {
     });
 
     it('returns the nearest node to a position with offset', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.query('div')
                     .nearestTo(1000, 1000, true)
@@ -41,7 +41,7 @@ describe('QuerySetImmutable #nearestTo', function() {
     });
 
     it('returns an empty QuerySet for empty nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.query('#invalid')
                     .nearestTo(1000, 1000)
@@ -52,7 +52,7 @@ describe('QuerySetImmutable #nearestTo', function() {
     });
 
     it('returns a new QuerySetImmutable', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const query1 = dom.query('div');
                 const query2 = query1.nearestTo(1000, 1000);

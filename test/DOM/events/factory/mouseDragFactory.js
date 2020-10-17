@@ -1,10 +1,10 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../../setup');
 
 describe('#mouseDragFactory', function() {
 
     it('creates a mouse drag event', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 let result = 0;
                 const downEvent = new Event('mousedown');
@@ -23,7 +23,7 @@ describe('#mouseDragFactory', function() {
     });
 
     it('creates a mouse drag event with move event', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 let result = 0;
                 const downEvent = new Event('mousedown');
@@ -56,7 +56,7 @@ describe('#mouseDragFactory', function() {
     });
 
     it('creates a mouse drag event with up event', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 let result = 0;
                 const downEvent = new Event('mousedown');
@@ -88,7 +88,7 @@ describe('#mouseDragFactory', function() {
     });
 
     it('does not run callbacks if down callback returns false', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 let result = 0;
                 const downEvent = new Event('mousedown');
@@ -123,7 +123,7 @@ describe('#mouseDragFactory', function() {
     });
 
     it('removes move event on mouseup', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 let result = 0;
                 const downEvent = new Event('mousedown');
@@ -156,7 +156,7 @@ describe('#mouseDragFactory', function() {
     });
 
     it('removes up event on mouseup', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 let result = 0;
                 const downEvent = new Event('mousedown');

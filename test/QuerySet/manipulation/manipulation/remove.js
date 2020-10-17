@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../../setup');
 const { testNoAnimation, waitFor } = require('../../../helpers');
 
@@ -23,7 +23,7 @@ describe('QuerySet #remove', function() {
     });
 
     it('removes all nodes from the DOM', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.queryMutable('a')
                     .remove();
@@ -41,7 +41,7 @@ describe('QuerySet #remove', function() {
     });
 
     it('removes events', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 let result = 0;
                 const nodes = document.querySelectorAll('a');
@@ -64,7 +64,7 @@ describe('QuerySet #remove', function() {
     });
 
     it('removes events recursively', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 let result = 0;
                 const nodes = document.querySelectorAll('a');
@@ -87,7 +87,7 @@ describe('QuerySet #remove', function() {
     });
 
     it('removes data', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ => {
                 const nodes = document.querySelectorAll('a');
                 dom.setData('a', 'test', 'Test');
@@ -111,7 +111,7 @@ describe('QuerySet #remove', function() {
     });
 
     it('removes data recursively', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ => {
                 const nodes = document.querySelectorAll('a');
                 dom.setData('a', 'test', 'Test');
@@ -206,7 +206,7 @@ describe('QuerySet #remove', function() {
                 }
             });
         }).then(waitFor(100)).then(async _ => {
-            assert.equal(
+            assert.strictEqual(
                 await exec(_ => document.body.innerHTML),
                 '<div id="outer1">' +
                 '<div id="inner1"></div>' +
@@ -242,7 +242,7 @@ describe('QuerySet #remove', function() {
                 }
             });
         }).then(waitFor(100)).then(async _ => {
-            assert.equal(
+            assert.strictEqual(
                 await exec(_ => document.body.innerHTML),
                 '<a href="#" id="test1"></a>' +
                 '<a href="#" id="test2"></a>' +
@@ -253,7 +253,7 @@ describe('QuerySet #remove', function() {
     });
 
     it('triggers a remove event', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 let result = 0;
                 dom.addEvent('a', 'remove', _ => {
@@ -268,7 +268,7 @@ describe('QuerySet #remove', function() {
     });
 
     it('triggers a remove event recursively', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 let result = 0;
                 dom.addEvent('a', 'remove', _ => {
@@ -283,7 +283,7 @@ describe('QuerySet #remove', function() {
     });
 
     it('returns the QuerySet', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const query = dom.queryMutable('a');
                 return query === query.remove();

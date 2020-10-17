@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../../setup');
 
 describe('QuerySetImmutable #getText', function() {
@@ -12,7 +12,7 @@ describe('QuerySetImmutable #getText', function() {
     });
 
     it('returns the text contents of the first node', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.query('div')
                     .getText()
@@ -22,7 +22,7 @@ describe('QuerySetImmutable #getText', function() {
     });
 
     it('returns undefined for empty nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.query('#invalid')
                     .getText()

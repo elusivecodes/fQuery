@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../../setup');
 const { easeInOut, testAnimation, testNoAnimation, waitFor } = require('../../../helpers');
 
@@ -19,7 +19,7 @@ describe('#detach', function() {
     });
 
     it('detaches all nodes from the DOM', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.detach('a');
                 return document.body.innerHTML;
@@ -30,7 +30,7 @@ describe('#detach', function() {
     });
 
     it('returns detached nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.detach('a')
                     .map(node => node.id)
@@ -45,7 +45,7 @@ describe('#detach', function() {
     });
 
     it('does not remove events', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 let result = 0;
                 dom.addEvent('a', 'click', _ => {
@@ -63,7 +63,7 @@ describe('#detach', function() {
     });
 
     it('does not remove data', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ => {
                 dom.setData('a', 'test', 'Test');
                 const nodes = dom.detach('a');
@@ -130,7 +130,7 @@ describe('#detach', function() {
                 }
             });
         }).then(waitFor(100)).then(async _ => {
-            assert.equal(
+            assert.strictEqual(
                 await exec(_ => document.body.innerHTML),
                 '<div id="parent1"></div>' +
                 '<div id="parent2"></div>' +
@@ -143,7 +143,7 @@ describe('#detach', function() {
     });
 
     it('works with HTMLElement nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.detach(
                     document.getElementById('test1')
@@ -161,7 +161,7 @@ describe('#detach', function() {
     });
 
     it('works with NodeList nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.detach(
                     document.querySelectorAll('a')
@@ -174,7 +174,7 @@ describe('#detach', function() {
     });
 
     it('works with HTMLCollection nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.detach(
                     document.body.children
@@ -186,7 +186,7 @@ describe('#detach', function() {
     });
 
     it('works with array nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.detach([
                     document.getElementById('test1'),

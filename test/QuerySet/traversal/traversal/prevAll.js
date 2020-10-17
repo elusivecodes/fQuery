@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../../setup');
 
 describe('QuerySet #prevAll', function() {
@@ -38,7 +38,7 @@ describe('QuerySet #prevAll', function() {
     });
 
     it('returns all previous siblings of each node', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.queryMutable('.span')
                     .prevAll()
@@ -55,7 +55,7 @@ describe('QuerySet #prevAll', function() {
     });
 
     it('returns all previous siblings of each node matching a filter', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.queryMutable('.span')
                     .prevAll('#span1, #span5')
@@ -70,7 +70,7 @@ describe('QuerySet #prevAll', function() {
     });
 
     it('returns the QuerySet', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const query = dom.queryMutable('.span');
                 return query === query.prevAll();
@@ -80,7 +80,7 @@ describe('QuerySet #prevAll', function() {
     });
 
     it('works with function filter', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.queryMutable('.span')
                     .prevAll(node => node.id === 'span5')
@@ -94,7 +94,7 @@ describe('QuerySet #prevAll', function() {
     });
 
     it('works with HTMLElement filter', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.queryMutable('.span')
                     .prevAll(
@@ -110,7 +110,7 @@ describe('QuerySet #prevAll', function() {
     });
 
     it('works with NodeList filter', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.queryMutable('.span')
                     .prevAll(
@@ -127,7 +127,7 @@ describe('QuerySet #prevAll', function() {
     });
 
     it('works with HTMLCollection filter', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.queryMutable('.span')
                     .prevAll(
@@ -144,7 +144,7 @@ describe('QuerySet #prevAll', function() {
     });
 
     it('works with array filter', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.queryMutable('.span')
                     .prevAll([
@@ -162,7 +162,7 @@ describe('QuerySet #prevAll', function() {
     });
 
     it('works with QuerySet filter', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ => {
                 const query = dom.queryMutable('#span1, #span5');
                 return dom.queryMutable('.span')
@@ -178,7 +178,7 @@ describe('QuerySet #prevAll', function() {
     });
 
     it('works with function limit', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.queryMutable('.span')
                     .prevAll(
@@ -196,7 +196,7 @@ describe('QuerySet #prevAll', function() {
     });
 
     it('works with HTMLElement limit', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.queryMutable('.span')
                     .prevAll(
@@ -214,7 +214,7 @@ describe('QuerySet #prevAll', function() {
     });
 
     it('works with NodeList limit', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.queryMutable('.span')
                     .prevAll(
@@ -231,7 +231,7 @@ describe('QuerySet #prevAll', function() {
     });
 
     it('works with HTMLCollection limit', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.queryMutable('.span')
                     .prevAll(
@@ -249,7 +249,7 @@ describe('QuerySet #prevAll', function() {
     });
 
     it('works with array limit', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.queryMutable('.span')
                     .prevAll(null, [,
@@ -266,7 +266,7 @@ describe('QuerySet #prevAll', function() {
     });
 
     it('works with QuerySet limit', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ => {
                 const query = dom.queryMutable('#span1, #span6');
                 return dom.queryMutable('.span')

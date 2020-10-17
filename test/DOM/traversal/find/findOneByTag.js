@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../../setup');
 
 describe('#findOneByTag', function() {
@@ -31,7 +31,7 @@ describe('#findOneByTag', function() {
     });
 
     it('finds elements by tag name', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.findOneByTag('span').id
             ),
@@ -40,7 +40,7 @@ describe('#findOneByTag', function() {
     });
 
     it('returns null for non-matching tag', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.findOneByTag('invalid')
             ),
@@ -49,7 +49,7 @@ describe('#findOneByTag', function() {
     });
 
     it('returns undefined for empty nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.findOneByTag('span', '#invalid')
             ),
@@ -58,7 +58,7 @@ describe('#findOneByTag', function() {
     });
 
     it('works with query selector nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.findOneByTag('span', '#parent2').id
             ),
@@ -67,7 +67,7 @@ describe('#findOneByTag', function() {
     });
 
     it('works with HTMLElement nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.findOneByTag(
                     'span',
@@ -79,7 +79,7 @@ describe('#findOneByTag', function() {
     });
 
     it('works with NodeList nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.findOneByTag(
                     'span',
@@ -91,7 +91,7 @@ describe('#findOneByTag', function() {
     });
 
     it('works with HTMLCollection nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.findOneByTag(
                     'span',
@@ -103,7 +103,7 @@ describe('#findOneByTag', function() {
     });
 
     it('works with DocumentFragment nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const range = document.createRange();
                 const fragment = range.createContextualFragment(
@@ -119,7 +119,7 @@ describe('#findOneByTag', function() {
     });
 
     it('works with ShadowRoot nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const div = document.createElement('div');
                 const shadow = div.attachShadow({ mode: 'open' });
@@ -138,7 +138,7 @@ describe('#findOneByTag', function() {
     });
 
     it('works with Document nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const parser = new DOMParser();
                 const myDoc = parser.parseFromString(
@@ -161,7 +161,7 @@ describe('#findOneByTag', function() {
     });
 
     it('works with array nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.findOneByTag('span', [
                     document.getElementById('child3'),

@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../../setup');
 
 describe('#hasProperty', function() {
@@ -16,7 +16,7 @@ describe('#hasProperty', function() {
     });
 
     it('returns true if any node has a specified property', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.hasProperty('div', 'test')
             ),
@@ -25,7 +25,7 @@ describe('#hasProperty', function() {
     });
 
     it('returns false if no nodes have a specified property', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.hasProperty('div:not(.test)', 'test')
             ),
@@ -34,7 +34,7 @@ describe('#hasProperty', function() {
     });
 
     it('works with HTMLElement nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.hasProperty(
                     document.getElementById('div1'),
@@ -46,7 +46,7 @@ describe('#hasProperty', function() {
     });
 
     it('works with NodeList nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.hasProperty(
                     document.querySelectorAll('div'),
@@ -58,7 +58,7 @@ describe('#hasProperty', function() {
     });
 
     it('works with HTMLCollection nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.hasProperty(
                     document.body.children,
@@ -70,7 +70,7 @@ describe('#hasProperty', function() {
     });
 
     it('works with array nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.hasProperty([
                     document.getElementById('div1'),

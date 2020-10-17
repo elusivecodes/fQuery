@@ -1,10 +1,10 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../setup');
 
 describe('#removeCookie', function() {
 
     it('removes a cookie', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const myDoc = {
                     cookie: 'test=Test',
@@ -19,7 +19,7 @@ describe('#removeCookie', function() {
     });
 
     it('removes a cookie with path', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const myDoc = {
                     cookie: 'test=Test',
@@ -34,7 +34,7 @@ describe('#removeCookie', function() {
     });
 
     it('removes a cookie with secure', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const myDoc = {
                     cookie: 'test=Test',

@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../../setup');
 
 describe('#commonAncestor', function() {
@@ -20,7 +20,7 @@ describe('#commonAncestor', function() {
     });
 
     it('returns the closest common ancestor of all nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.commonAncestor('a').id
             ),
@@ -29,7 +29,7 @@ describe('#commonAncestor', function() {
     });
 
     it('returns undefined for empty nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.commonAncestor('#invalid')
             ),
@@ -38,7 +38,7 @@ describe('#commonAncestor', function() {
     });
 
     it('works with HTMLElement nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.commonAncestor(
                     document.getElementById('a1')
@@ -49,7 +49,7 @@ describe('#commonAncestor', function() {
     });
 
     it('works with NodeList nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.commonAncestor(
                     document.querySelectorAll('a')
@@ -60,7 +60,7 @@ describe('#commonAncestor', function() {
     });
 
     it('works with HTMLCollection nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.commonAncestor(
                     document.getElementById('span1').children
@@ -71,7 +71,7 @@ describe('#commonAncestor', function() {
     });
 
     it('works with array nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.commonAncestor([
                     document.getElementById('a1'),

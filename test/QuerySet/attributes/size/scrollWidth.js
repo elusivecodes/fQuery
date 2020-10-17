@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../../setup');
 
 describe('QuerySet #scrollWidth', function() {
@@ -14,7 +14,7 @@ describe('QuerySet #scrollWidth', function() {
     });
 
     it('returns the scroll width of the first node', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.queryMutable('div')
                     .scrollWidth()
@@ -24,7 +24,7 @@ describe('QuerySet #scrollWidth', function() {
     });
 
     it('returns the scroll width of the first node (hidden)', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 document.body.style.display = 'none';
                 return dom.queryMutable('div')
@@ -35,7 +35,7 @@ describe('QuerySet #scrollWidth', function() {
     });
 
     it('returns undefined for empty nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.queryMutable('#invalid')
                     .scrollWidth()
@@ -45,7 +45,7 @@ describe('QuerySet #scrollWidth', function() {
     });
 
     it('works with Document nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 document.body.innerHTML = '<div style="block; width: 1000px; height: 1000px;"></div>';
                 return dom.queryMutable(document)

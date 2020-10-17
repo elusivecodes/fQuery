@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../../setup');
 const { testNoAnimation, waitFor } = require('../../../helpers');
 
@@ -15,7 +15,7 @@ describe('#setText', function() {
     });
 
     it('sets the text contents for all nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.setText('div', 'Test 2');
                 return document.body.innerHTML;
@@ -26,7 +26,7 @@ describe('#setText', function() {
     });
 
     it('escapes HTML strings', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.setText('#test1', '<span>Test 2</span>');
                 return document.body.innerHTML;
@@ -37,7 +37,7 @@ describe('#setText', function() {
     });
 
     it('removes events recursively', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 let result = 0;
                 const node = document.getElementById('inner');
@@ -54,7 +54,7 @@ describe('#setText', function() {
     });
 
     it('removes data recursively', async function() {
-        assert.equal; (
+        assert.strictEqual; (
             await exec(_ => {
                 const node = document.getElementById('inner');
                 dom.setData(node, 'test', 'Test');
@@ -103,7 +103,7 @@ describe('#setText', function() {
                 document.body.appendChild(node);
             });
         }).then(waitFor(100)).then(async _ => {
-            assert.equal(
+            assert.strictEqual(
                 await exec(_ => document.body.innerHTML),
                 '<div id="test1">Test 2</div>' +
                 '<div id="test2">Test 2</div>' +
@@ -113,7 +113,7 @@ describe('#setText', function() {
     });
 
     it('triggers a remove event recursively', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 let result = 0;
                 dom.addEvent('#inner', 'remove', _ => {
@@ -127,7 +127,7 @@ describe('#setText', function() {
     });
 
     it('works with HTMLElement nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.setText(
                     document.getElementById('test1'),
@@ -141,7 +141,7 @@ describe('#setText', function() {
     });
 
     it('works with NodeList nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.setText(
                     document.querySelectorAll('div'),
@@ -155,7 +155,7 @@ describe('#setText', function() {
     });
 
     it('works with HTMLCollection nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.setText(
                     document.body.children,
@@ -169,7 +169,7 @@ describe('#setText', function() {
     });
 
     it('works with array nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.setText([
                     document.getElementById('test1'),

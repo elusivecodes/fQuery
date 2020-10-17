@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../../setup');
 const { easeInOut, testAnimation, testNoAnimation, waitFor } = require('../../../helpers');
 
@@ -21,7 +21,7 @@ describe('#insertBefore', function() {
     });
 
     it('inserts each node before each other node', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.insertBefore('a', 'div');
                 return document.body.innerHTML;
@@ -44,7 +44,7 @@ describe('#insertBefore', function() {
     });
 
     it('preserves events for nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 let result = 0;
                 dom.addEvent('a', 'click', _ => {
@@ -59,7 +59,7 @@ describe('#insertBefore', function() {
     });
 
     it('preserves data for nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ => {
                 dom.setData('a', 'test', 'Test');
                 dom.insertBefore('a', 'div');
@@ -114,7 +114,7 @@ describe('#insertBefore', function() {
     });
 
     it('does not clone for the last nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const nodes = [...document.querySelectorAll('a')];
                 dom.insertBefore('a', 'div');
@@ -126,7 +126,7 @@ describe('#insertBefore', function() {
     });
 
     it('works with HTMLElement nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.insertBefore(
                     document.querySelector('.test1'),
@@ -149,7 +149,7 @@ describe('#insertBefore', function() {
     });
 
     it('works with NodeList nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.insertBefore(
                     document.querySelectorAll('a'),
@@ -175,7 +175,7 @@ describe('#insertBefore', function() {
     });
 
     it('works with HTMLCollection nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.insertBefore(
                     document.getElementById('parent1').children,
@@ -200,7 +200,7 @@ describe('#insertBefore', function() {
     });
 
     it('works with DocumentFragment nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const range = document.createRange();
                 const fragment = range.createContextualFragment(
@@ -225,7 +225,7 @@ describe('#insertBefore', function() {
     });
 
     it('works with array nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.insertBefore([
                     document.querySelector('.test1'),
@@ -253,7 +253,7 @@ describe('#insertBefore', function() {
     });
 
     it('works with HTML nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.insertBefore('<div><span></span></div>', 'div');
                 return document.body.innerHTML;
@@ -274,7 +274,7 @@ describe('#insertBefore', function() {
     });
 
     it('works with HTMLElement other nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.insertBefore(
                     'a',
@@ -296,7 +296,7 @@ describe('#insertBefore', function() {
     });
 
     it('works with NodeList other nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.insertBefore(
                     'a',
@@ -322,7 +322,7 @@ describe('#insertBefore', function() {
     });
 
     it('works with HTMLCollection other nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.insertBefore(
                     'a',
@@ -348,7 +348,7 @@ describe('#insertBefore', function() {
     });
 
     it('works with array other nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.insertBefore('a', [
                     document.getElementById('parent1'),

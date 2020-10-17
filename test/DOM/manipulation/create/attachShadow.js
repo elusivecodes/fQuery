@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../../setup');
 
 describe('#attachShadow', function() {
@@ -10,7 +10,7 @@ describe('#attachShadow', function() {
     });
 
     it('attaches a shadow root to the first node', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ => {
                 const shadow = dom.attachShadow('#test');
                 return [
@@ -26,7 +26,7 @@ describe('#attachShadow', function() {
     });
 
     it('attaches a closed shadow root to the first node', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ => {
                 const shadow = dom.attachShadow('#test', false);
                 return [
@@ -42,7 +42,7 @@ describe('#attachShadow', function() {
     });
 
     it('works with HTMLElement nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const element = document.getElementById('test');
                 dom.attachShadow(element);
@@ -53,7 +53,7 @@ describe('#attachShadow', function() {
     });
 
     it('works with NodeList nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.attachShadow(
                     document.querySelectorAll('div')
@@ -65,7 +65,7 @@ describe('#attachShadow', function() {
     });
 
     it('works with HTMLCollection nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.attachShadow(
                     document.body.children
@@ -77,7 +77,7 @@ describe('#attachShadow', function() {
     });
 
     it('works with array nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const element = document.getElementById('test');
                 dom.attachShadow([element]);

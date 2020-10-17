@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../setup');
 
 describe('#loadStyles', function() {
@@ -10,7 +10,7 @@ describe('#loadStyles', function() {
     });
 
     it('loads stylesheets', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.loadStyles([,
                     'assets/test.css',
@@ -24,7 +24,7 @@ describe('#loadStyles', function() {
     });
 
     it('loads stylesheets with attributes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.loadStyles([
                     {
@@ -74,7 +74,7 @@ describe('#loadStyles', function() {
     });
 
     it('resolves when stylesheets are loaded', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(async _ => {
                 await dom.loadStyles([
                     'assets/test.css',
@@ -87,7 +87,7 @@ describe('#loadStyles', function() {
     });
 
     it('throws on error', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(async _ => {
                 try {
                     await dom.loadStyles([

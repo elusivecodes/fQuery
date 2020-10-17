@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../../setup');
 
 describe('#hasDescendent', function() {
@@ -22,7 +22,7 @@ describe('#hasDescendent', function() {
     });
 
     it('returns true if any node has a descendent matching a filter', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.hasDescendent('div', 'a')
             ),
@@ -31,7 +31,7 @@ describe('#hasDescendent', function() {
     });
 
     it('returns false if no nodes have a descendent matching a filter', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.hasDescendent('div:not(.test)', 'a')
             ),
@@ -40,7 +40,7 @@ describe('#hasDescendent', function() {
     });
 
     it('works with HTMLElement nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.hasDescendent(
                     document.getElementById('div1'),
@@ -52,7 +52,7 @@ describe('#hasDescendent', function() {
     });
 
     it('works with HTMLCollection nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.hasDescendent(
                     document.body.children,
@@ -64,7 +64,7 @@ describe('#hasDescendent', function() {
     });
 
     it('works with NodeList nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.hasDescendent(
                     document.querySelectorAll('div'),
@@ -76,7 +76,7 @@ describe('#hasDescendent', function() {
     });
 
     it('works with DocumentFragment nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const range = document.createRange();
                 const fragment = range.createContextualFragment(
@@ -89,7 +89,7 @@ describe('#hasDescendent', function() {
     });
 
     it('works with ShadowRoot nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const div = document.createElement('div');
                 const shadow = div.attachShadow({ mode: 'open' });
@@ -105,7 +105,7 @@ describe('#hasDescendent', function() {
     });
 
     it('works with Document nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.hasDescendent(document, 'div')
             ),
@@ -114,7 +114,7 @@ describe('#hasDescendent', function() {
     });
 
     it('works with array nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.hasDescendent([
                     document.getElementById('div1'),
@@ -128,7 +128,7 @@ describe('#hasDescendent', function() {
     });
 
     it('works with function filter', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.hasDescendent(
                     'div',
@@ -140,7 +140,7 @@ describe('#hasDescendent', function() {
     });
 
     it('works with HTMLElement filter', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.hasDescendent(
                     'div',
@@ -152,7 +152,7 @@ describe('#hasDescendent', function() {
     });
 
     it('works with NodeList filter', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.hasDescendent(
                     'div',
@@ -164,7 +164,7 @@ describe('#hasDescendent', function() {
     });
 
     it('works with HTMLCollection filter', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.hasDescendent(
                     'div',
@@ -176,7 +176,7 @@ describe('#hasDescendent', function() {
     });
 
     it('works with array filter', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.hasDescendent('div', [
                     document.getElementById('a1'),

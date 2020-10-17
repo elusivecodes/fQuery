@@ -1,10 +1,10 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../../setup');
 
 describe('#createFragment', function() {
 
     it('creates a new document fragment', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.createFragment() instanceof DocumentFragment
             ),

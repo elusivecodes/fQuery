@@ -1,10 +1,10 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../setup');
 
 describe('#delete', function() {
 
     it('performs an AJAX DELETE request', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(async _ => {
                 const response = await DOM.delete();
                 response.xhr = response.xhr.data;
@@ -31,7 +31,7 @@ describe('#delete', function() {
     });
 
     it('performs an AJAX DELETE request with URL', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(async _ => {
                 const response = await DOM.delete('/test');
                 response.xhr = response.xhr.data;
@@ -58,7 +58,7 @@ describe('#delete', function() {
     });
 
     it('performs an AJAX DELETE request with content type', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(async _ => {
                 const response = await DOM.delete(null, {
                     contentType: 'text/plain'
@@ -87,7 +87,7 @@ describe('#delete', function() {
     });
 
     it('performs an AJAX DELETE request with response type', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(async _ => {
                 const response = await DOM.delete(null, {
                     responseType: 'json'
@@ -117,7 +117,7 @@ describe('#delete', function() {
     });
 
     it('performs an AJAX DELETE request with MIME type', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(async _ => {
                 const response = await DOM.delete(null, {
                     mimeType: 'text/plain'
@@ -147,7 +147,7 @@ describe('#delete', function() {
     });
 
     it('performs an AJAX DELETE request with username', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(async _ => {
                 const response = await DOM.delete(null, {
                     username: 'test'
@@ -177,7 +177,7 @@ describe('#delete', function() {
     });
 
     it('performs an AJAX DELETE request with password', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(async _ => {
                 const response = await DOM.delete(null, {
                     password: 'test'
@@ -207,7 +207,7 @@ describe('#delete', function() {
     });
 
     it('performs an AJAX DELETE request with timeout', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(async _ => {
                 const response = await DOM.delete(null, {
                     timeout: 1000
@@ -237,7 +237,7 @@ describe('#delete', function() {
     });
 
     it('performs an AJAX DELETE request (local)', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(async _ => {
                 const response = await DOM.delete(null, {
                     isLocal: true
@@ -265,7 +265,7 @@ describe('#delete', function() {
     });
 
     it('performs an AJAX DELETE request with custom headers', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(async _ => {
                 const response = await DOM.delete(null, {
                     headers: {
@@ -325,7 +325,7 @@ describe('#delete', function() {
     });
 
     it('works with beforeSend callback', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(async _ => {
                 let result;
                 await DOM.delete(null, {
@@ -350,7 +350,7 @@ describe('#delete', function() {
     });
 
     it('works with afterSend callback', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(async _ => {
                 let result;
                 await DOM.delete(null, {
@@ -376,7 +376,7 @@ describe('#delete', function() {
     });
 
     it('works with onProgress callback', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(async _ => {
                 let result;
                 await DOM.delete(null, {
@@ -412,7 +412,7 @@ describe('#delete', function() {
     });
 
     it('works with onUploadProgress callback', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(async _ => {
                 let result;
                 await DOM.delete(null, {
@@ -448,7 +448,7 @@ describe('#delete', function() {
     });
 
     it('can be cancelled', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(async _ => {
                 try {
                     const ajax = DOM.delete();
@@ -478,7 +478,7 @@ describe('#delete', function() {
     });
 
     it('throws on XHR error', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(async _ => {
                 try {
                     const ajax = DOM.delete();
@@ -511,7 +511,7 @@ describe('#delete', function() {
     });
 
     it('throws on status error', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(async _ => {
                 try {
                     const ajax = DOM.delete();

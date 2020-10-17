@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../../setup');
 
 describe('QuerySetImmutable #afterSelection', function() {
@@ -32,7 +32,7 @@ describe('QuerySetImmutable #afterSelection', function() {
     });
 
     it('inserts each node after the selected nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.query('a')
                     .afterSelection();
@@ -54,7 +54,7 @@ describe('QuerySetImmutable #afterSelection', function() {
     });
 
     it('returns the QuerySet', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const query = dom.query('a');
                 return query === query.afterSelection();
@@ -64,7 +64,7 @@ describe('QuerySetImmutable #afterSelection', function() {
     });
 
     it('works with DocumentFragment nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const range = document.createRange();
                 const fragment = range.createContextualFragment(

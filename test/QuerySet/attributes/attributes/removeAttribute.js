@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../../setup');
 
 describe('QuerySet #removeAttribute', function() {
@@ -12,7 +12,7 @@ describe('QuerySet #removeAttribute', function() {
     });
 
     it('removes an attribute for all nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.queryMutable('input')
                     .removeAttribute('disabled');
@@ -24,7 +24,7 @@ describe('QuerySet #removeAttribute', function() {
     });
 
     it('returns the QuerySet', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const query = dom.queryMutable('input');
                 return query === query.removeAttribute('disabled');

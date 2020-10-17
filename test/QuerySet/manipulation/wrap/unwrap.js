@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../../setup');
 const { testNoAnimation, waitFor } = require('../../../helpers');
 
@@ -19,7 +19,7 @@ describe('QuerySet #unwrap', function() {
     });
 
     it('unwraps each node', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.queryMutable('a')
                     .unwrap();
@@ -33,7 +33,7 @@ describe('QuerySet #unwrap', function() {
     });
 
     it('unwraps each node with filter', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.queryMutable('a')
                     .unwrap('#parent1');
@@ -49,7 +49,7 @@ describe('QuerySet #unwrap', function() {
     });
 
     it('removes events', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 let result = 0;
                 const nodes = document.querySelectorAll('div');
@@ -69,7 +69,7 @@ describe('QuerySet #unwrap', function() {
     });
 
     it('removes data', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ => {
                 const nodes = document.querySelectorAll('div');
                 dom.setData('div', 'test', 'Test');
@@ -134,7 +134,7 @@ describe('QuerySet #unwrap', function() {
                 }
             });
         }).then(waitFor(100)).then(async _ => {
-            assert.equal(
+            assert.strictEqual(
                 await exec(_ => document.body.innerHTML),
                 '<a href="#" id="test1">Test</a>' +
                 '<a href="#" id="test2">Test</a>' +
@@ -149,7 +149,7 @@ describe('QuerySet #unwrap', function() {
     });
 
     it('triggers a remove event', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 let result = 0;
                 dom.addEvent('div', 'remove', _ => {
@@ -164,7 +164,7 @@ describe('QuerySet #unwrap', function() {
     });
 
     it('returns the QuerySet', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const query = dom.queryMutable('a');
                 return query === query.unwrap();
@@ -174,7 +174,7 @@ describe('QuerySet #unwrap', function() {
     });
 
     it('works with function filter', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.queryMutable('a')
                     .unwrap(
@@ -192,7 +192,7 @@ describe('QuerySet #unwrap', function() {
     });
 
     it('works with HTMLElement filter', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.queryMutable('a')
                     .unwrap(
@@ -210,7 +210,7 @@ describe('QuerySet #unwrap', function() {
     });
 
     it('works with NodeList filter', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.queryMutable('a')
                     .unwrap(
@@ -228,7 +228,7 @@ describe('QuerySet #unwrap', function() {
     });
 
     it('works with HTMLCollection filter', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.queryMutable('a')
                     .unwrap(
@@ -244,7 +244,7 @@ describe('QuerySet #unwrap', function() {
     });
 
     it('works with array filter', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.queryMutable('a')
                     .unwrap([
@@ -262,7 +262,7 @@ describe('QuerySet #unwrap', function() {
     });
 
     it('works with QuerySet filter', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const query = dom.queryMutable('#parent1');
                 dom.queryMutable('a')

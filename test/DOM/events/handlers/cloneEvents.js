@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../../setup');
 
 describe('#cloneEvents', function() {
@@ -24,7 +24,7 @@ describe('#cloneEvents', function() {
     });
 
     it('clones all events from all elements to all other elements', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const event = new Event('click');
                 dom.cloneEvents('[data-toggle="event"]', '[data-toggle="noEvent"]');
@@ -46,7 +46,7 @@ describe('#cloneEvents', function() {
     });
 
     it('works with HTMLElement nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const event = new Event('click');
                 const element = document.getElementById('test1');
@@ -69,7 +69,7 @@ describe('#cloneEvents', function() {
     });
 
     it('works with NodeList nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const event = new Event('click');
                 dom.cloneEvents(
@@ -94,7 +94,7 @@ describe('#cloneEvents', function() {
     });
 
     it('works with HTMLCollection nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const event = new Event('click');
                 dom.cloneEvents(
@@ -119,7 +119,7 @@ describe('#cloneEvents', function() {
     });
 
     it('works with ShadowRoot nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 let result = 0;
                 const event = new Event('click');
@@ -139,7 +139,7 @@ describe('#cloneEvents', function() {
     });
 
     it('works with Document nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 let result = 0;
                 const event = new Event('click');
@@ -157,7 +157,7 @@ describe('#cloneEvents', function() {
     });
 
     it('works with Window nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 let result = 0;
                 const event = new Event('click');
@@ -175,7 +175,7 @@ describe('#cloneEvents', function() {
     });
 
     it('works with array nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const event = new Event('click');
                 const element1 = document.getElementById('test1');
@@ -202,7 +202,7 @@ describe('#cloneEvents', function() {
     });
 
     it('works with HTMLElement other nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const event = new Event('click');
                 const element = document.getElementById('test3');
@@ -225,7 +225,7 @@ describe('#cloneEvents', function() {
     });
 
     it('works with NodeList other nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const event = new Event('click');
                 dom.cloneEvents(
@@ -250,7 +250,7 @@ describe('#cloneEvents', function() {
     });
 
     it('works with HTMLCollection other nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const event = new Event('click');
                 dom.cloneEvents(
@@ -275,7 +275,7 @@ describe('#cloneEvents', function() {
     });
 
     it('works with ShadowRoot other nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 let result = 0;
                 const event = new Event('click');
@@ -295,7 +295,7 @@ describe('#cloneEvents', function() {
     });
 
     it('works with Document other nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 let result = 0;
                 const event = new Event('click');
@@ -313,7 +313,7 @@ describe('#cloneEvents', function() {
     });
 
     it('works with Window other nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 let result = 0;
                 const event = new Event('click');
@@ -331,7 +331,7 @@ describe('#cloneEvents', function() {
     });
 
     it('works with array other nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const event = new Event('click');
                 const element1 = document.getElementById('test3');

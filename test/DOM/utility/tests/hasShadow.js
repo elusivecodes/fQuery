@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../../setup');
 
 describe('#hasShadow', function() {
@@ -16,7 +16,7 @@ describe('#hasShadow', function() {
     });
 
     it('returns true if any node has a shadow root', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.hasShadow('div')
             ),
@@ -25,7 +25,7 @@ describe('#hasShadow', function() {
     });
 
     it('returns false if no nodes have a shadow root', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.hasShadow('div:not(.test)')
             ),
@@ -34,7 +34,7 @@ describe('#hasShadow', function() {
     });
 
     it('returns false for closed shadow roots', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.hasShadow('#div3')
             ),
@@ -43,7 +43,7 @@ describe('#hasShadow', function() {
     });
 
     it('works with HTMLElement nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.hasShadow(
                     document.getElementById('div1')
@@ -54,7 +54,7 @@ describe('#hasShadow', function() {
     });
 
     it('works with NodeList nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.hasShadow(
                     document.querySelectorAll('div')
@@ -65,7 +65,7 @@ describe('#hasShadow', function() {
     });
 
     it('works with HTMLCollection nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.hasShadow(
                     document.body.children
@@ -76,7 +76,7 @@ describe('#hasShadow', function() {
     });
 
     it('works with array nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.hasShadow([
                     document.getElementById('div1'),

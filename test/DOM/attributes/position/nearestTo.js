@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../../setup');
 
 describe('#nearestTo', function() {
@@ -13,7 +13,7 @@ describe('#nearestTo', function() {
     });
 
     it('returns the nearest node to a position', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const nearest = dom.nearestTo('div', 1000, 1000);
                 return nearest.id;
@@ -23,7 +23,7 @@ describe('#nearestTo', function() {
     });
 
     it('returns the nearest node to a position with offset', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const nearest = dom.nearestTo('div', 1000, 1000, true);
                 return nearest.id;
@@ -33,7 +33,7 @@ describe('#nearestTo', function() {
     });
 
     it('returns undefined for empty nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.nearestTo('#invalid', 1000, 1000)
             ),
@@ -42,7 +42,7 @@ describe('#nearestTo', function() {
     });
 
     it('works with HTMLElement nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const nearest = dom.nearestTo(
                     document.getElementById('test1'),
@@ -56,7 +56,7 @@ describe('#nearestTo', function() {
     });
 
     it('works with NodeList nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const nearest = dom.nearestTo(
                     document.querySelectorAll('div'),
@@ -70,7 +70,7 @@ describe('#nearestTo', function() {
     });
 
     it('works with HTMLCollection nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const nearest = dom.nearestTo(
                     document.body.children,
@@ -84,7 +84,7 @@ describe('#nearestTo', function() {
     });
 
     it('works with array nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const nearest = dom.nearestTo([
                     document.getElementById('test1'),

@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec, setStyle } = require('../../../setup');
 const { easeIn, easeInOut, easeOut, getAnimationStyle, linear, testAnimation, testNoAnimation, testNoStyle, waitFor } = require('../../../helpers');
 
@@ -16,13 +16,13 @@ const testSqueezeOut = async (selector, style = 'height', translate = false, tra
     const data = await getAnimationStyle(selector, style, translateStyle);
 
     const amount = squeezeOut(data.progress);
-    assert.equal(data[style], `${amount}px`);
+    assert.strictEqual(data[style], `${amount}px`);
 
     if (translate === false) {
-        assert.equal(data[translateStyle], '');
+        assert.strictEqual(data[translateStyle], '');
     } else {
         const translateAmount = squeezeOutOffset(amount);
-        assert.equal(
+        assert.strictEqual(
             data[translateStyle],
             translate ?
                 `translate${translate}(${translateAmount}px)` :
@@ -535,7 +535,7 @@ describe('QuerySet #squeezeOut', function() {
                     }
                 );
         }).then(waitFor(50)).then(async _ => {
-            assert.equal(
+            assert.strictEqual(
                 await exec(_ => document.body.innerHTML),
                 '<div id="test1"></div>' +
                 '<div id="test2" class="animate"></div>' +
@@ -555,7 +555,7 @@ describe('QuerySet #squeezeOut', function() {
     });
 
     it('returns the QuerySet', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const query = dom.queryMutable('.animate');
                 return query === query.squeezeOut(

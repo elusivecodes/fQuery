@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../../setup');
 
 describe('#equal', function() {
@@ -20,7 +20,7 @@ describe('#equal', function() {
     });
 
     it('returns nodes equal to other nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.equal('#parent1 span', '#parent2 span')
                     .map(node => node.dataset.id)
@@ -33,7 +33,7 @@ describe('#equal', function() {
     });
 
     it('works with HTMLElement nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.equal(
                     document.querySelector('#parent1 [data-id="span2"]'),
@@ -47,7 +47,7 @@ describe('#equal', function() {
     });
 
     it('works with NodeList nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.equal(
                     document.querySelectorAll('#parent1 span'),
@@ -62,7 +62,7 @@ describe('#equal', function() {
     });
 
     it('works with HTMLCollection nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.equal(
                     document.getElementById('parent1').children,
@@ -77,7 +77,7 @@ describe('#equal', function() {
     });
 
     it('works with DocumentFragment nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ => {
                 const fragment1 = document.createDocumentFragment();
                 const fragment2 = document.createDocumentFragment();
@@ -96,7 +96,7 @@ describe('#equal', function() {
     });
 
     it('works with ShadowRoot nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ => {
                 const div1 = document.createElement('div');
                 const div2 = document.createElement('div');
@@ -117,7 +117,7 @@ describe('#equal', function() {
     });
 
     it('works with array nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.equal([
                     document.querySelector('#parent1 > [data-id="span1"]'),
@@ -133,7 +133,7 @@ describe('#equal', function() {
     });
 
     it('works with HTMLElement other nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.equal(
                     '#parent1 span',
@@ -147,7 +147,7 @@ describe('#equal', function() {
     });
 
     it('works with NodeList other nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.equal(
                     '#parent1 span',
@@ -162,7 +162,7 @@ describe('#equal', function() {
     });
 
     it('works with HTMLCollection other nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.equal(
                     '#parent1 span',
@@ -177,7 +177,7 @@ describe('#equal', function() {
     });
 
     it('works with DocumentFragment other nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ => {
                 const fragment1 = document.createDocumentFragment();
                 const fragment2 = document.createDocumentFragment();
@@ -196,7 +196,7 @@ describe('#equal', function() {
     });
 
     it('works with ShadowRoot other nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ => {
                 const div1 = document.createElement('div');
                 const div2 = document.createElement('div');
@@ -217,7 +217,7 @@ describe('#equal', function() {
     });
 
     it('works with array other nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.equal('#parent1 span', [
                     document.querySelector('#parent2 > [data-id="span2"]'),

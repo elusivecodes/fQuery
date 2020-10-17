@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../../setup');
 
 describe('#click', function() {
@@ -12,7 +12,7 @@ describe('#click', function() {
     });
 
     it('triggers a click event on the first node', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 let result;
                 const element = document.getElementById('test1');
@@ -27,7 +27,7 @@ describe('#click', function() {
     });
 
     it('works with HTMLElement nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 let result;
                 const element = document.getElementById('test1');
@@ -44,7 +44,7 @@ describe('#click', function() {
     });
 
     it('works with NodeList nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 let result;
                 const element = document.getElementById('test1');
@@ -61,7 +61,7 @@ describe('#click', function() {
     });
 
     it('works with HTMLCollection nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 let result;
                 const element = document.getElementById('test1');
@@ -78,7 +78,7 @@ describe('#click', function() {
     });
 
     it('works with array nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 let result;
                 const element = document.getElementById('test1');

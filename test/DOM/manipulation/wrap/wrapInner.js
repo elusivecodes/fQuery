@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../../setup');
 
 describe('#wrapInner', function() {
@@ -25,7 +25,7 @@ describe('#wrapInner', function() {
     });
 
     it('wraps contents of each node', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.wrapInner('#wrap > div', '.outer');
                 return document.body.innerHTML;
@@ -58,7 +58,7 @@ describe('#wrapInner', function() {
     });
 
     it('works with HTMLElement nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.wrapInner(
                     document.getElementById('parent1'),
@@ -90,7 +90,7 @@ describe('#wrapInner', function() {
     });
 
     it('works with NodeList nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.wrapInner(
                     document.querySelectorAll('#wrap > div'),
@@ -126,7 +126,7 @@ describe('#wrapInner', function() {
     });
 
     it('works with HTMLCollection nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.wrapInner(
                     document.getElementById('wrap').children,
@@ -162,7 +162,7 @@ describe('#wrapInner', function() {
     });
 
     it('works with DocumentFragment nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const range = document.createRange();
                 const fragment = range.createContextualFragment(
@@ -199,7 +199,7 @@ describe('#wrapInner', function() {
     });
 
     it('works with ShadowRoot nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const div = document.createElement('div');
                 const shadow = div.attachShadow({ mode: 'open' });
@@ -222,7 +222,7 @@ describe('#wrapInner', function() {
     });
 
     it('works with array nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.wrapInner([
                     document.getElementById('parent1'),
@@ -258,7 +258,7 @@ describe('#wrapInner', function() {
     });
 
     it('works with HTMLElement other nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.wrapInner(
                     '#wrap > div',
@@ -294,7 +294,7 @@ describe('#wrapInner', function() {
     });
 
     it('works with NodeList other nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.wrapInner(
                     '#wrap > div',
@@ -330,7 +330,7 @@ describe('#wrapInner', function() {
     });
 
     it('works with HTMLCollection other nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.wrapInner(
                     '#wrap > div',
@@ -366,7 +366,7 @@ describe('#wrapInner', function() {
     });
 
     it('works with DocumentFragment other nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const range = document.createRange();
                 const fragment = range.createContextualFragment(
@@ -403,7 +403,7 @@ describe('#wrapInner', function() {
     });
 
     it('works with array other nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.wrapInner('#wrap > div', [
                     document.querySelector('.outer')
@@ -438,7 +438,7 @@ describe('#wrapInner', function() {
     });
 
     it('works with HTML other nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.wrapInner('#wrap > div', '<div class="div-outer"><span class="span-inner"></span></div>');
                 return document.body.innerHTML;

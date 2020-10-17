@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../setup');
 const { waitFor } = require('../../helpers');
 
@@ -22,7 +22,7 @@ describe('QuerySetImmutable #clearQueue', function() {
             dom.query('.queue')
                 .clearQueue();
         }).then(waitFor(100)).then(async _ => {
-            assert.equal(
+            assert.strictEqual(
                 await exec(_ => document.body.innerHTML),
                 '<div id="test1"></div>' +
                 '<div id="test2" class="queue"></div>' +
@@ -47,7 +47,7 @@ describe('QuerySetImmutable #clearQueue', function() {
                 dom.query('.queue')
                     .clearQueue();
             });
-            assert.equal(
+            assert.strictEqual(
                 await exec(_ => document.body.innerHTML),
                 '<div id="test1"></div>' +
                 '<div id="test2" class="queue"></div>' +
@@ -55,7 +55,7 @@ describe('QuerySetImmutable #clearQueue', function() {
                 '<div id="test4" class="queue"></div>'
             );
         }).then(waitFor(100)).then(async _ => {
-            assert.equal(
+            assert.strictEqual(
                 await exec(_ => document.body.innerHTML),
                 '<div id="test1"></div>' +
                 '<div id="test2" class="queue"></div>' +
@@ -66,7 +66,7 @@ describe('QuerySetImmutable #clearQueue', function() {
     });
 
     it('returns the QuerySet', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const query = dom.query('.queue');
                 return query === query.clearQueue();

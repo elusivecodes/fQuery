@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../../setup');
 
 describe('QuerySetImmutable #commonAncestor', function() {
@@ -20,7 +20,7 @@ describe('QuerySetImmutable #commonAncestor', function() {
     });
 
     it('returns the closest common ancestor of all nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.query('a')
                     .commonAncestor()
@@ -34,7 +34,7 @@ describe('QuerySetImmutable #commonAncestor', function() {
     });
 
     it('returns a new QuerySetImmutable', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const query1 = dom.query('a');
                 const query2 = query1.commonAncestor();

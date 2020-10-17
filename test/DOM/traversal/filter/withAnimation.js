@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../../setup');
 
 describe('#withAnimation', function() {
@@ -20,7 +20,7 @@ describe('#withAnimation', function() {
     });
 
     it('returns nodes with animations', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.withAnimation('div')
                     .map(node => node.id)
@@ -33,7 +33,7 @@ describe('#withAnimation', function() {
     });
 
     it('works with HTMLElement nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.withAnimation(
                     document.getElementById('div1')
@@ -46,7 +46,7 @@ describe('#withAnimation', function() {
     });
 
     it('works with NodeList nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.withAnimation(
                     document.querySelectorAll('div')
@@ -60,7 +60,7 @@ describe('#withAnimation', function() {
     });
 
     it('works with HTMLCollection nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.withAnimation(
                     document.body.children
@@ -74,7 +74,7 @@ describe('#withAnimation', function() {
     });
 
     it('works with array nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.withAnimation([
                     document.getElementById('div1'),

@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../../setup');
 
 describe('#withDescendent', function() {
@@ -22,7 +22,7 @@ describe('#withDescendent', function() {
     });
 
     it('returns nodes with a descendent matching a filter', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.withDescendent('div', 'a')
                     .map(node => node.id)
@@ -35,7 +35,7 @@ describe('#withDescendent', function() {
     });
 
     it('returns nodes with a descendent matching a custom selector filter', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.withDescendent('div', '> span > a')
                     .map(node => node.id)
@@ -48,7 +48,7 @@ describe('#withDescendent', function() {
     });
 
     it('works with HTMLElement nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.withDescendent(
                     document.getElementById('div1'),
@@ -62,7 +62,7 @@ describe('#withDescendent', function() {
     });
 
     it('works with NodeList nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.withDescendent(
                     document.querySelectorAll('div'),
@@ -77,7 +77,7 @@ describe('#withDescendent', function() {
     });
 
     it('works with HTMLCollection nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.withDescendent(
                     document.body.children,
@@ -92,7 +92,7 @@ describe('#withDescendent', function() {
     });
 
     it('works with DocumentFragment nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ => {
                 const range = document.createRange();
                 const fragment = range.createContextualFragment(
@@ -109,7 +109,7 @@ describe('#withDescendent', function() {
     });
 
     it('works with ShadowRoot nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ => {
                 const div = document.createElement('div');
                 const shadow = div.attachShadow({ mode: 'open' });
@@ -129,7 +129,7 @@ describe('#withDescendent', function() {
     });
 
     it('works with Document nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.withDescendent(document, 'div')
                     .map(node => node.id)
@@ -141,7 +141,7 @@ describe('#withDescendent', function() {
     });
 
     it('works with array nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.withDescendent([
                     document.getElementById('div1'),
@@ -158,7 +158,7 @@ describe('#withDescendent', function() {
     });
 
     it('works with function filter', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.withDescendent(
                     'div',
@@ -172,7 +172,7 @@ describe('#withDescendent', function() {
     });
 
     it('works with HTMLElement filter', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.withDescendent(
                     'div',
@@ -186,7 +186,7 @@ describe('#withDescendent', function() {
     });
 
     it('works with NodeList filter', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.withDescendent(
                     'div',
@@ -201,7 +201,7 @@ describe('#withDescendent', function() {
     });
 
     it('works with HTMLCollection filter', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.withDescendent(
                     'div',
@@ -215,7 +215,7 @@ describe('#withDescendent', function() {
     });
 
     it('works with array filter', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.withDescendent('div', [
                     document.getElementById('a1'),

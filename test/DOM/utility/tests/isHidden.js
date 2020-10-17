@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec, setStyle } = require('../../../setup');
 
 describe('#isHidden', function() {
@@ -23,7 +23,7 @@ describe('#isHidden', function() {
     });
 
     it('returns true if any node is hidden', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.isHidden('div')
             ),
@@ -32,7 +32,7 @@ describe('#isHidden', function() {
     });
 
     it('returns false if no nodes are hidden', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.isHidden('div:not(.test)')
             ),
@@ -41,7 +41,7 @@ describe('#isHidden', function() {
     });
 
     it('returns true if any node is a descendent of a hidden node', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.isHidden('span')
             ),
@@ -50,7 +50,7 @@ describe('#isHidden', function() {
     });
 
     it('works with HTMLElement nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.isHidden(
                     document.getElementById('div1')
@@ -61,7 +61,7 @@ describe('#isHidden', function() {
     });
 
     it('works with NodeList nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.isHidden(
                     document.querySelectorAll('div')
@@ -72,7 +72,7 @@ describe('#isHidden', function() {
     });
 
     it('works with HTMLCollection nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.isHidden(
                     document.body.children
@@ -83,7 +83,7 @@ describe('#isHidden', function() {
     });
 
     it('works with Document nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const myDoc = new Document();
                 return dom.isHidden(myDoc);
@@ -93,7 +93,7 @@ describe('#isHidden', function() {
     });
 
     it('works with Window nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const myWindow = {
                     document: {},
@@ -107,7 +107,7 @@ describe('#isHidden', function() {
     });
 
     it('works with array nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.isHidden([
                     document.getElementById('div1'),

@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../../setup');
 
 describe('#width', function() {
@@ -12,7 +12,7 @@ describe('#width', function() {
     });
 
     it('returns the width of the first node', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.width('div')
             ),
@@ -21,7 +21,7 @@ describe('#width', function() {
     });
 
     it('returns the inner width of the first node', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.width('div', DOM.INNER)
             ),
@@ -30,7 +30,7 @@ describe('#width', function() {
     });
 
     it('returns the outer width of the first node', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.width('div', DOM.OUTER)
             ),
@@ -39,7 +39,7 @@ describe('#width', function() {
     });
 
     it('returns the outer width of the first node with margin', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.width('div', DOM.OUTER_MARGIN)
             ),
@@ -48,7 +48,7 @@ describe('#width', function() {
     });
 
     it('returns the width of the first node (hidden)', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 document.body.style.display = 'none';
                 return dom.width('div');
@@ -58,7 +58,7 @@ describe('#width', function() {
     });
 
     it('returns undefined for empty nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.width('#invalid')
             ),
@@ -67,7 +67,7 @@ describe('#width', function() {
     });
 
     it('works with HTMLElement nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.width(
                     document.getElementById('test1')
@@ -78,7 +78,7 @@ describe('#width', function() {
     });
 
     it('works with NodeList nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.width(
                     document.querySelectorAll('div')
@@ -89,7 +89,7 @@ describe('#width', function() {
     });
 
     it('works with HTMLCollection nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.width(
                     document.body.children
@@ -100,7 +100,7 @@ describe('#width', function() {
     });
 
     it('works with Document nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.width(document)
             ),
@@ -109,7 +109,7 @@ describe('#width', function() {
     });
 
     it('works with Window nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.width(window)
             ),
@@ -118,7 +118,7 @@ describe('#width', function() {
     });
 
     it('works with array nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.width([
                     document.getElementById('test1'),

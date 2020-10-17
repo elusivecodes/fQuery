@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec, setStyle } = require('../../../setup');
 
 describe('QuerySet #hidden', function() {
@@ -23,7 +23,7 @@ describe('QuerySet #hidden', function() {
     });
 
     it('returns hidden nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.queryMutable('div')
                     .hidden()
@@ -38,7 +38,7 @@ describe('QuerySet #hidden', function() {
     });
 
     it('returns descendents of hidden nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.queryMutable('span')
                     .hidden()
@@ -53,7 +53,7 @@ describe('QuerySet #hidden', function() {
     });
 
     it('returns the QuerySet', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const query = dom.queryMutable('div');
                 return query === query.hidden();
@@ -63,7 +63,7 @@ describe('QuerySet #hidden', function() {
     });
 
     it('works with Document nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ => {
                 const myDoc = new Document();
                 myDoc.id = 'document';
@@ -79,7 +79,7 @@ describe('QuerySet #hidden', function() {
     });
 
     it('works with Window nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ => {
                 const myWindow = {
                     document: {},

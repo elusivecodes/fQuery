@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../../setup');
 const { testNoAnimation, waitFor } = require('../../../helpers');
 
@@ -15,7 +15,7 @@ describe('#setHTML', function() {
     });
 
     it('sets the HTML contents for all nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.setHTML('div', '<span>Test 2</span>');
                 return document.body.innerHTML;
@@ -26,7 +26,7 @@ describe('#setHTML', function() {
     });
 
     it('removes events recursively', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 let result = 0;
                 const node = document.getElementById('inner');
@@ -43,7 +43,7 @@ describe('#setHTML', function() {
     });
 
     it('removes data recursively', async function() {
-        assert.equal; (
+        assert.strictEqual; (
             await exec(_ => {
                 const node = document.getElementById('inner');
                 dom.setData(node, 'test', 'Test');
@@ -92,7 +92,7 @@ describe('#setHTML', function() {
                 document.body.appendChild(node);
             });
         }).then(waitFor(100)).then(async _ => {
-            assert.equal(
+            assert.strictEqual(
                 await exec(_ => document.body.innerHTML),
                 '<div id="test1"><span>Test 2</span></div>' +
                 '<div id="test2"><span>Test 2</span></div>' +
@@ -102,7 +102,7 @@ describe('#setHTML', function() {
     });
 
     it('triggers a remove event recursively', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 let result = 0;
                 dom.addEvent('#inner', 'remove', _ => {
@@ -116,7 +116,7 @@ describe('#setHTML', function() {
     });
 
     it('works with HTMLElement nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.setHTML(
                     document.getElementById('test1'),
@@ -130,7 +130,7 @@ describe('#setHTML', function() {
     });
 
     it('works with NodeList nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.setHTML(
                     document.querySelectorAll('div'),
@@ -144,7 +144,7 @@ describe('#setHTML', function() {
     });
 
     it('works with HTMLCollection nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.setHTML(
                     document.body.children,
@@ -158,7 +158,7 @@ describe('#setHTML', function() {
     });
 
     it('works with array nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 dom.setHTML([
                     document.getElementById('test1'),

@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../../setup');
 
 describe('QuerySet #withDescendent', function() {
@@ -22,7 +22,7 @@ describe('QuerySet #withDescendent', function() {
     });
 
     it('returns nodes with a descendent matching a filter', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.queryMutable('div')
                     .withDescendent('a')
@@ -37,7 +37,7 @@ describe('QuerySet #withDescendent', function() {
     });
 
     it('returns nodes with a descendent matching a custom selector filter', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.queryMutable('div')
                     .withDescendent('> span > a')
@@ -52,7 +52,7 @@ describe('QuerySet #withDescendent', function() {
     });
 
     it('returns the QuerySet', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ => {
                 const query = dom.queryMutable('div');
                 return query === query.withDescendent('a');
@@ -62,7 +62,7 @@ describe('QuerySet #withDescendent', function() {
     });
 
     it('works with DocumentFragment nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ => {
                 const range = document.createRange();
                 const fragment = range.createContextualFragment(
@@ -81,7 +81,7 @@ describe('QuerySet #withDescendent', function() {
     });
 
     it('works with ShadowRoot nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ => {
                 const div = document.createElement('div');
                 const shadow = div.attachShadow({ mode: 'open' });
@@ -103,7 +103,7 @@ describe('QuerySet #withDescendent', function() {
     });
 
     it('works with Document nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.queryMutable(document)
                     .withDescendent('div')
@@ -117,7 +117,7 @@ describe('QuerySet #withDescendent', function() {
     });
 
     it('works with function filter', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.queryMutable('div')
                     .withDescendent(node => node.id === 'a1')
@@ -131,7 +131,7 @@ describe('QuerySet #withDescendent', function() {
     });
 
     it('works with HTMLElement filter', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.queryMutable('div')
                     .withDescendent(
@@ -147,7 +147,7 @@ describe('QuerySet #withDescendent', function() {
     });
 
     it('works with NodeList filter', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.queryMutable('div')
                     .withDescendent(
@@ -164,7 +164,7 @@ describe('QuerySet #withDescendent', function() {
     });
 
     it('works with HTMLCollection filter', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.queryMutable('div')
                     .withDescendent(
@@ -180,7 +180,7 @@ describe('QuerySet #withDescendent', function() {
     });
 
     it('works with array filter', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.queryMutable('div')
                     .withDescendent([
@@ -198,7 +198,7 @@ describe('QuerySet #withDescendent', function() {
     });
 
     it('works with QuerySet filter', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ => {
                 const query = dom.queryMutable('a');
                 return dom.queryMutable('div')

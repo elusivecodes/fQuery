@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec, setStyle } = require('../../../setup');
 
 describe('#hidden', function() {
@@ -23,7 +23,7 @@ describe('#hidden', function() {
     });
 
     it('returns hidden nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.hidden('div')
                     .map(node => node.id)
@@ -36,7 +36,7 @@ describe('#hidden', function() {
     });
 
     it('returns descendents of hidden nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.hidden('span')
                     .map(node => node.id)
@@ -49,7 +49,7 @@ describe('#hidden', function() {
     });
 
     it('works with HTMLElement nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.hidden(
                     document.getElementById('div2')
@@ -62,7 +62,7 @@ describe('#hidden', function() {
     });
 
     it('works with NodeList nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.hidden(
                     document.querySelectorAll('div')
@@ -76,7 +76,7 @@ describe('#hidden', function() {
     });
 
     it('works with HTMLCollection nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.hidden(
                     document.body.children
@@ -90,7 +90,7 @@ describe('#hidden', function() {
     });
 
     it('works with Document nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ => {
                 const myDoc = new Document();
                 myDoc.id = 'document';
@@ -104,7 +104,7 @@ describe('#hidden', function() {
     });
 
     it('works with Window nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ => {
                 const myWindow = {
                     document: {},
@@ -121,7 +121,7 @@ describe('#hidden', function() {
     });
 
     it('works with array nodes', async function() {
-        assert.deepEqual(
+        assert.deepStrictEqual(
             await exec(_ =>
                 dom.hidden([
                     document.getElementById('div1'),

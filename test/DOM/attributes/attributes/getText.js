@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert');
 const { exec } = require('../../../setup');
 
 describe('#getText', function() {
@@ -12,7 +12,7 @@ describe('#getText', function() {
     });
 
     it('returns the text contents of the first node', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.getText('div')
             ),
@@ -21,7 +21,7 @@ describe('#getText', function() {
     });
 
     it('returns undefined for empty nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.getText('#invalid')
             ),
@@ -30,7 +30,7 @@ describe('#getText', function() {
     });
 
     it('works with HTMLElement nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.getText(
                     document.getElementById('test1')
@@ -41,7 +41,7 @@ describe('#getText', function() {
     });
 
     it('works with NodeList nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.getText(
                     document.querySelectorAll('div')
@@ -52,7 +52,7 @@ describe('#getText', function() {
     });
 
     it('works with HTMLCollection nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.getText(
                     document.body.children
@@ -63,7 +63,7 @@ describe('#getText', function() {
     });
 
     it('works with array nodes', async function() {
-        assert.equal(
+        assert.strictEqual(
             await exec(_ =>
                 dom.getText([
                     document.getElementById('test1'),

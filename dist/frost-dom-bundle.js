@@ -1096,7 +1096,7 @@
     });
 
     /**
-     * FrostDOM v1.1.6
+     * FrostDOM v1.1.7
      * https://github.com/elusivecodes/FrostDOM
      */
     (function(global, factory) {
