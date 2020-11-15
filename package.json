@@ -1,6 +1,6 @@
 {
     "name": "frostdom",
-    "version": "1.1.7",
+    "version": "1.1.8",
     "description": "FrostDOM is a free, open-source DOM manipulation library for JavaScript.",
     "keywords": [
         "dom",
@@ -24,9 +24,9 @@
     "scripts": {
         "build": "node build.js",
         "test": "npm run test-dom && npm run test-query && npm run test-query-immutable",
-        "test-dom": "./node_modules/.bin/mocha test/DOM --recursive",
-        "test-query": "./node_modules/.bin/mocha test/QuerySet --recursive",
-        "test-query-immutable": "./node_modules/.bin/mocha test/QuerySetImmutable --recursive"
+        "test-dom": "mocha test/DOM --recursive",
+        "test-query": "mocha test/QuerySet --recursive",
+        "test-query-immutable": "mocha test/QuerySetImmutable --recursive"
     },
     "repository": {
         "type": "git",
@@ -43,6 +43,6 @@
         "terser": "^4.8.0"
     },
     "dependencies": {
-        "frostcore": "^1.0.8"
+        "frostcore": "^1.0.10"
     }
 }

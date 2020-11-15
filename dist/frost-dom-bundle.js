@@ -20,7 +20,7 @@
     }
 
     /**
-     * FrostCore v1.0.8
+     * FrostCore v1.0.10
      * https://github.com/elusivecodes/FrostCore
      */
     (function(global, factory) {
@@ -1096,7 +1096,7 @@
     });
 
     /**
-     * FrostDOM v1.1.7
+     * FrostDOM v1.1.8
      * https://github.com/elusivecodes/FrostDOM
      */
     (function(global, factory) {
