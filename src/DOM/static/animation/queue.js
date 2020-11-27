@@ -7,9 +7,22 @@ Object.assign(DOM, {
     /**
      * Clear the queue of a single node.
      * @param {HTMLElement} node The input node.
+     * @param {string} queueName The name of the queue to clear.
      */
-    _clearQueue(node) {
-        if (!this._queues.has(node)) {
+    _clearQueue(node, queueName) {
+        const queue = this._queues.get(node);
+
+        if (!queue || (queueName && !(queueName in queue))) {
+            return;
+        }
+
+        for (const key in queue) {
+            if (!queueName || key === queueName) {
+                delete queue[key];
+            }
+        }
+
+        if (Object.keys(queue).length) {
             return;
         }
 
@@ -19,24 +32,26 @@ Object.assign(DOM, {
     /**
      * Run the next callback for a single node.
      * @param {HTMLElement} node The input node.
+     * @param {string} queueName The name of the queue to use.
      */
-    _dequeueNode(node) {
-        if (!this._queues.has(node)) {
+    _dequeue(node, queueName) {
+        const queue = this._queues.get(node);
+
+        if (!queue || !(queueName in queue)) {
             return;
         }
 
-        const next = this._queues.get(node).shift();
+        const next = queue[queueName].shift();
 
         if (!next) {
-            this._queues.delete(node);
-            return;
+            return this._clearQueue(node, queueName);
         }
 
         Promise.resolve(next(node))
             .then(_ =>
-                this._dequeueNode(node)
+                this._dequeue(node, queueName)
             ).catch(_ =>
-                this._clearQueue(node)
+                this._clearQueue(node, queueName)
             );
     },
 
@@ -44,22 +59,28 @@ Object.assign(DOM, {
      * Queue a callback on a single node.
      * @param {HTMLElement} node The input node.
      * @param {DOM~queueCallback} callback The callback to queue.
+     * @param {string} queueName The name of the queue to use.
      */
-    _queue(node, callback) {
-        const newQueue = !this._queues.has(node);
+    _queue(node, callback, queueName) {
+        if (!this._queues.has(node)) {
+            this._queues.set(node, {});
+        }
 
-        if (newQueue) {
-            this._queues.set(node, [
+        const queue = this._queues.get(node);
+        const runningQueue = queueName in queue;
+
+        if (!runningQueue) {
+            queue[queueName] = [
                 _ => new Promise(
                     resolve => setTimeout(resolve, 0)
                 )
-            ]);
+            ];
         }
 
-        this._queues.get(node).push(callback);
+        queue[queueName].push(callback);
 
-        if (newQueue) {
-            this._dequeueNode(node);
+        if (!runningQueue) {
+            this._dequeue(node, queueName);
         }
     }
 

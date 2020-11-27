@@ -109,6 +109,40 @@ describe('QuerySetImmutable #queue', function() {
         });
     });
 
+    it('processes multiple queues simultaneously', async function() {
+        await exec(_ => {
+            dom.query('.queue')
+                .queue(node => {
+                    node.dataset.test1 = 'Test'
+                });
+            dom.query('.queue')
+                .queue(node =>
+                    new Promise(resolve =>
+                        setTimeout(resolve, 100)
+                    )
+                );
+            dom.query('.queue')
+                .queue(node => {
+                    node.dataset.test2 = 'Test'
+                }, 'test');
+            dom.query('.queue')
+                .queue(node =>
+                    new Promise(resolve =>
+                        setTimeout(resolve, 100)
+                    ),
+                    'test'
+                );
+        }).then(waitFor(50)).then(async _ => {
+            assert.strictEqual(
+                await exec(_ => document.body.innerHTML),
+                '<div id="test1"></div>' +
+                '<div id="test2" class="queue" data-test1="Test" data-test2="Test"></div>' +
+                '<div id="test3"></div>' +
+                '<div id="test4" class="queue" data-test1="Test" data-test2="Test"></div>'
+            );
+        });
+    });
+
     it('returns the QuerySet', async function() {
         assert.strictEqual(
             await exec(_ => {

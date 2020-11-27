@@ -111,20 +111,6 @@ describe('QuerySet #findOne', function() {
         );
     });
 
-    it('finds elements by custom child selector', async function() {
-        assert.deepStrictEqual(
-            await exec(_ =>
-                dom.queryMutable('#child1, #child4')
-                    .findOne('> .group1 > .group1, > .group2 > .group2')
-                    .get()
-                    .map(node => node.id)
-            ),
-            [
-                'a1'
-            ]
-        );
-    });
-
     it('finds elements by ID', async function() {
         assert.deepStrictEqual(
             await exec(_ =>

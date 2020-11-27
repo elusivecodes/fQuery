@@ -303,13 +303,16 @@ const animation = dom.squeezeOut(nodes, options);
 
 **Clear Queue**
 
-Clear the queue of each node.
+Clear a queue of each node.
 
 - `nodes` is a query selector string, a *HTMLElement*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
+- `queueName` is a string indicating the name of the queue to clear, and will default to "*default*".
 
 ```javascript
-dom.clearQueue(nodes);
+dom.clearQueue(nodes, queueName);
 ```
+
+If the `queueName` is set to *false*, then all queues will be cleared.
 
 **Queue**
 
@@ -317,6 +320,7 @@ Queue a callback on each node.
 
 - `nodes` is a query selector string, a *HTMLElement*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
 - `callback` is a function that accepts `node` as an argument, where node is a *HTMLElement*. The callback can return a *Promise* which will pause the queue until the promise is resolved.
+- `queueName` is a string indicating the name of the queue to use, and will default to "*default*".
 
 ```javascript
 dom.queue(nodes, callback);
@@ -765,59 +769,43 @@ dom.setScrollY(nodes, y);
 
 **Height**
 
-Get the computed height of the first node (and optionally padding, border or margin).
+Get the computed height of the first node.
 
 - `nodes` is a query selector string, a *HTMLElement*, *Document*, *Window*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
-- `innerNumber` is a number indicating whether to include padding, border or margin sizes in the calculation. Allowed values are *0* (no padding), *1* (padding), *2* (padding and border) and *3* (padding, border and margin), and will default to *1*.
+- `boxSize` is a number indicating the box sizing to calculate. Allowed values are *0* (no padding), *1* (padding), *2* (padding and border), *3* (padding, border and margin) and *4* (scroll area), and will default to *1*.
 
 ```javascript
-const height = dom.height(nodes, innerNumber);
+const height = dom.height(nodes, boxSize);
 ```
 
-If the first node passed to this method is a *Window*, the second argument will instead determine whether to use the outer height, and will default to *0*.
+If the first node passed to this method is a *Window*, the second argument will instead determine whether to use the outer height, and will default to *false*.
 
 The following constants can also be used as the second argument for brevity.
-- `DOM.INNER` *0*
-- `DOM.OUTER` *2*
-- `DOM.OUTER_MARGIN` *3*
-
-**Scroll Height**
-
-Get the scroll height of the first node.
-
-- `nodes` is a query selector string, a *HTMLElement*, *Document*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
-
-```javascript
-const scrollHeight = dom.scrollHeight(nodes);
-```
-
-**Scroll Width**
-
-Get the scroll width of the first node.
-
-- `nodes` is a query selector string, a *HTMLElement*, *Document*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
-
-```javascript
-const scrollWidth = dom.scrollWidth(nodes);
-```
+- `DOM.CONTENT_BOX` *0*
+- `DOM.PADDING_BOX` *1*
+- `DOM.BORDER_BOX` *2*
+- `DOM.MARGIN_BOX` *3*
+- `DOM.SCROLL_BOX` *4*
 
 **Width**
 
-Get the computed width of the first node (and optionally padding, border or margin).
+Get the computed width of the first node.
 
 - `nodes` is a query selector string, a *HTMLElement*, *Document*, *Window*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
-- `innerNumber` is a number indicating whether to include padding, border or margin sizes in the calculation. Allowed values are *0* (no padding), *1* (padding), *2* (padding and border) and *3* (padding, border and margin), and will default to *1*.
+- `boxSize` is a number indicating the box sizing to calculate. Allowed values are *0* (no padding), *1* (padding), *2* (padding and border), *3* (padding, border and margin) and *4* (scroll area), and will default to *1*.
 
 ```javascript
-const width = dom.width(nodes, innerNumber);
+const width = dom.width(nodes, boxSize);
 ```
 
-If the first node passed to this method is a *Window*, the second argument will instead determine whether to use the outer width, and will default to *0*.
+If the first node passed to this method is a *Window*, the second argument will instead determine whether to use the outer width, and will default to *false*.
 
 The following constants can also be used as the second argument for brevity.
-- `DOM.INNER` *0*
-- `DOM.OUTER` *2*
-- `DOM.OUTER_MARGIN` *3*
+- `DOM.CONTENT_BOX` *0*
+- `DOM.PADDING_BOX` *1*
+- `DOM.BORDER_BOX` *2*
+- `DOM.MARGIN_BOX` *3*
+- `DOM.SCROLL_BOX` *4*
 
 ##### Styles
 
@@ -2172,6 +2160,17 @@ If the `key` argument is omitted, this method will return *true* if any of the n
 
 ```javascript
 dom.hasData(nodes);
+```
+
+**Has Dataset**
+
+Returns *true* if any of the nodes has a specified dataset value.
+
+- `nodes` is a query selector string, a *HTMLElement*, *DocumentFragment*, *ShadowRoot*, *Document*, *Window*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
+- `key` is a string indicating the custom dataset value to test for.
+
+```javascript
+const hasDataset = dom.hasDataset(nodes, key);
 ```
 
 **Has Descendent**

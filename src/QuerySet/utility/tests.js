@@ -64,6 +64,15 @@ Object.assign(QuerySet.prototype, {
     },
 
     /**
+     * Returns true if any of the nodes has the specified dataset value.
+     * @param {string} [key] The dataset key.
+     * @returns {Boolean} TRUE if any of the nodes has the dataset value, otherwise FALSE.
+     */
+    hasDataset(key) {
+        return this._dom.hasDataset(this, key);
+    },
+
+    /**
      * Returns true if any of the nodes contains a descendent matching a filter.
      * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
      * @returns {Boolean} TRUE if any of the nodes contains a descendent matching the filter, otherwise FALSE.

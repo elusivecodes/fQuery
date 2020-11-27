@@ -36,21 +36,6 @@ describe('QuerySet #withDescendent', function() {
         );
     });
 
-    it('returns nodes with a descendent matching a custom selector filter', async function() {
-        assert.deepStrictEqual(
-            await exec(_ =>
-                dom.queryMutable('div')
-                    .withDescendent('> span > a')
-                    .get()
-                    .map(node => node.id)
-            ),
-            [
-                'div1',
-                'div3'
-            ]
-        );
-    });
-
     it('returns the QuerySet', async function() {
         assert.strictEqual(
             await exec(_ => {

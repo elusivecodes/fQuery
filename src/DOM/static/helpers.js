@@ -43,7 +43,8 @@ Object.assign(DOM, {
     _parseClasses(classList) {
         return classList
             .flat()
-            .flatMap(val => val.split(' '));
+            .flatMap(val => val.split(' '))
+            .filter(val => !!val);
     },
 
     /**
@@ -125,23 +126,6 @@ Object.assign(DOM, {
      */
     _parseEvents(events) {
         return events.split(' ');
-    },
-
-    /**
-     * Return a prefixed selector string.
-     * @param {string} selectors The input selectors.
-     * @param {string} prefix The input prefix.
-     * @returns {string} The prefixed selector.
-     */
-    _prefixSelectors(selectors, prefix) {
-        return selectors.split(this._splitRegExp)
-            .filter(selector => !!selector)
-            .map(selector =>
-                this._customSelectors.includes(selector.trim().charAt(0)) ?
-                    `${prefix} ${selector}` :
-                    selector
-            )
-            .join(', ');
     }
 
 });

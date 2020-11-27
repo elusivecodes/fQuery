@@ -110,19 +110,6 @@ describe('#queryOne', function() {
         );
     });
 
-    it('finds elements by custom child selector', async function() {
-        assert.deepStrictEqual(
-            await exec(_ =>
-                dom.queryOne('> .group1 > .group1, > .group2 > .group2', '#child1, #child4')
-                    .get()
-                    .map(node => node.id)
-            ),
-            [
-                'a1'
-            ]
-        );
-    });
-
     it('finds elements by ID', async function() {
         assert.deepStrictEqual(
             await exec(_ =>

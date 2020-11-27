@@ -7,10 +7,10 @@ Object.assign(DOM.prototype, {
     /**
      * Get the computed height of the first node.
      * @param {string|array|HTMLElement|Document|Window|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
-     * @param {number} [innerOuter] Whether to include padding, border and margin heights.
+     * @param {number} [boxSize=1] The box sizing to calculate.
      * @returns {number} The height.
      */
-    height(nodes, innerOuter) {
+    height(nodes, boxSize) {
         const node = this.parseNode(nodes, {
             document: true,
             window: true
@@ -21,71 +21,25 @@ Object.assign(DOM.prototype, {
         }
 
         if (Core.isWindow(node)) {
-            return innerOuter ?
+            return boxSize ?
                 node.outerHeight :
                 node.innerHeight;
         }
 
-        if (Core.isUndefined(innerOuter)) {
-            innerOuter = 1;
+        if (Core.isUndefined(boxSize)) {
+            boxSize = this.constructor.PADDING_BOX;
         }
 
-        return this.constructor._height(node, innerOuter);
-    },
-
-    /**
-     * Get the scroll height of the first node.
-     * @param {string|array|HTMLElement|Document|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
-     * @returns {number} The scroll height.
-     */
-    scrollHeight(nodes) {
-        const node = this.parseNode(nodes, {
-            document: true
-        });
-
-        if (!node) {
-            return;
-        }
-
-        return this.constructor._forceShow(node, node => {
-            if (Core.isDocument(node)) {
-                node = node.documentElement;
-            }
-
-            return node.scrollHeight;
-        });
-    },
-
-    /**
-     * Get the scroll width of the first node.
-     * @param {string|array|HTMLElement|Document|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
-     * @returns {number} The scroll width.
-     */
-    scrollWidth(nodes) {
-        const node = this.parseNode(nodes, {
-            document: true
-        });
-
-        if (!node) {
-            return;
-        }
-
-        return this.constructor._forceShow(node, node => {
-            if (Core.isDocument(node)) {
-                node = node.documentElement;
-            }
-
-            return node.scrollWidth;
-        });
+        return this.constructor._height(node, boxSize);
     },
 
     /**
      * Get the computed width of the first node.
      * @param {string|array|HTMLElement|Document|Window|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
-     * @param {number} [innerOuter] Whether to include padding, border and margin widths.
+     * @param {number} [boxSize=1] The box sizing to calculate.
      * @returns {number} The width.
      */
-    width(nodes, innerOuter) {
+    width(nodes, boxSize) {
         const node = this.parseNode(nodes, {
             document: true,
             window: true
@@ -96,16 +50,16 @@ Object.assign(DOM.prototype, {
         }
 
         if (Core.isWindow(node)) {
-            return innerOuter ?
+            return boxSize ?
                 node.outerWidth :
                 node.innerWidth;
         }
 
-        if (Core.isUndefined(innerOuter)) {
-            innerOuter = 1;
+        if (Core.isUndefined(boxSize)) {
+            boxSize = this.constructor.PADDING_BOX;
         }
 
-        return this.constructor._width(node, innerOuter);
+        return this.constructor._width(node, boxSize);
     }
 
 });

@@ -58,6 +58,17 @@ describe('#removeClass', function() {
         );
     });
 
+    it('works with empty strings', async function() {
+        assert.strictEqual(
+            await exec(_ => {
+                dom.removeClass('div', '');
+                return document.body.innerHTML;
+            }),
+            '<div id="test1" class="test1 test2"></div>' +
+            '<div id="test2" class="test1 test2"></div>'
+        );
+    });
+
     it('works with HTMLElement nodes', async function() {
         assert.strictEqual(
             await exec(_ => {

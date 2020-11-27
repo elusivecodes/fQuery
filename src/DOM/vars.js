@@ -82,20 +82,13 @@ Object.assign(DOM, {
         'z-index'
     ],
 
-    INNER: 0,
-    OUTER: 2,
-    OUTER_MARGIN: 3,
-
-    // Complex selector RegExp
-    _complexRegExp: /(?:^\s*[\>\+\~]|\,(?=(?:(?:[^"']*["']){2})*[^"']*$)\s*[\>\+\~])/,
-
-    // Custom selectors
-    _customSelectors: ['>', '+', '~'],
+    CONTENT_BOX: 0,
+    PADDING_BOX: 1,
+    BORDER_BOX: 2,
+    MARGIN_BOX: 3,
+    SCROLL_BOX: 4,
 
     // Fast selector RegExp
-    _fastRegExp: /^([\#\.]?)([\w\-]+)$/,
-
-    // Comma seperated selector RegExp
-    _splitRegExp: /\,(?=(?:(?:[^"]*"){2})*[^"]*$)\s*/
+    _fastRegExp: /^([\#\.]?)([\w\-]+)$/
 
 });

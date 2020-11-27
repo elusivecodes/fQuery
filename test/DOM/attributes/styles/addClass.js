@@ -58,6 +58,17 @@ describe('#addClass', function() {
         );
     });
 
+    it('works with empty strings', async function() {
+        assert.strictEqual(
+            await exec(_ => {
+                dom.addClass('div', '');
+                return document.body.innerHTML;
+            }),
+            '<div id="test1"></div>' +
+            '<div id="test2"></div>'
+        );
+    });
+
     it('works with HTMLElement nodes', async function() {
         assert.strictEqual(
             await exec(_ => {

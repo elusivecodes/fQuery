@@ -51,7 +51,7 @@ const query = new QuerySetImmutable(nodes, context);
 
 **Animate**
 
-Add an animation to the queue for each node.
+Add an animation to the default queue for each node.
 
 - `callback` is a function that accepts `node`, `progress` and `options` as arguments, where `node` is a *HTMLElement*, `progress` is a value between *0* and *1* and `options` is the `options` object passed to this method.
 - `options` is an object containing properties to define how the animation should be handled.
@@ -77,7 +77,7 @@ query.stop(finish);
 
 **Drop In**
 
-Add a drop in animation to the queue for each node.
+Add a drop in animation to the default queue for each node.
 
 - `options` is an object containing properties to define how the animation should be handled.
     - `direction` is a string or function that returns either "*top*", "*right*", "*bottom*" or "*left*" indicating the direction to drop from, and will default to "*top*".
@@ -92,7 +92,7 @@ query.dropIn(options);
 
 **Drop Out**
 
-Add a drop out animation to the queue for each node.
+Add a drop out animation to the default queue for each node.
 
 - `options` is an object containing properties to define how the animation should be handled.
     - `direction` is a string or function that returns either "*top*", "*right*", "*bottom*" or "*left*" indicating the direction to drop from, and will default to "*top*".
@@ -107,7 +107,7 @@ query.dropOut(options);
 
 **Fade In**
 
-Add a fade in animation to the queue for each node.
+Add a fade in animation to the default queue for each node.
 
 - `options` is an object containing properties to define how the animation should be handled.
     - `duration` is the number of milliseconds that the animation should last, and will default to *1000*.
@@ -120,7 +120,7 @@ query.fadeIn(options);
 
 **Fade Out**
 
-Add a fade out animation to the queue for each node.
+Add a fade out animation to the default queue for each node.
 
 - `options` is an object containing properties to define how the animation should be handled.
     - `duration` is the number of milliseconds that the animation should last, and will default to *1000*.
@@ -133,7 +133,7 @@ query.fadeOut(options);
 
 **Rotate In**
 
-Add a rotate in animation to the queue for each node.
+Add a rotate in animation to the default queue for each node.
 
 - `options` is an object containing properties to define how the animation should be handled.
     - `x` is the amount of rotation to apply to the X axis, and will default to *0*.
@@ -150,7 +150,7 @@ query.rotateIn(options);
 
 **Rotate Out**
 
-Add a rotate out animation to the queue for each node.
+Add a rotate out animation to the default queue for each node.
 
 - `options` is an object containing properties to define how the animation should be handled.
     - `x` is the amount of rotation to apply to the X axis, and will default to *0*.
@@ -167,7 +167,7 @@ query.rotateOut(options);
 
 **Slide In**
 
-Add a slide in animation to the queue for each node.
+Add a slide in animation to the default queue for each node.
 
 - `options` is an object containing properties to define how the animation should be handled.
     - `direction` is a string or function that returns either "*top*", "*right*", "*bottom*" or "*left*" indicating the direction to drop from, and will default to "*top*".
@@ -182,7 +182,7 @@ query.slideIn(options);
 
 **Slide Out**
 
-Add a slide out animation to the queue for each node.
+Add a slide out animation to the default queue for each node.
 
 - `options` is an object containing properties to define how the animation should be handled.
     - `direction` is a string or function that returns either "*top*", "*right*", "*bottom*" or "*left*" indicating the direction to drop from, and will default to "*top*".
@@ -197,7 +197,7 @@ query.slideOut(options);
 
 **Squeeze In**
 
-Add a squeeze in animation to the queue for each node.
+Add a squeeze in animation to the default queue for each node.
 
 - `options` is an object containing properties to define how the animation should be handled.
     - `direction` is a string or function that returns either "*top*", "*right*", "*bottom*" or "*left*" indicating the direction to drop from, and will default to "*top*".
@@ -212,7 +212,7 @@ query.squeezeIn(options);
 
 **Squeeze Out**
 
-Add a squeeze out animation to the queue for each node.
+Add a squeeze out animation to the default queue for each node.
 
 - `options` is an object containing properties to define how the animation should be handled.
     - `direction` is a string or function that returns either "*top*", "*right*", "*bottom*" or "*left*" indicating the direction to drop from, and will default to "*top*".
@@ -229,10 +229,12 @@ query.squeezeOut(options);
 
 **Clear Queue**
 
-Clear the queue of each node.
+Clear a queue of each node.
+
+- `queueName` is a string indicating the name of the queue to clear, and will default to "*default*".
 
 ```javascript
-query.clearQueue();
+query.clearQueue(queueName);
 ```
 
 **Delay**
@@ -240,9 +242,10 @@ query.clearQueue();
 Delay execution of subsequent items in the queue.
 
 - `duration` is the number of milliseconds to delay execution by.
+- `queueName` is a string indicating the name of the queue to use, and will default to "*default*".
 
 ```javascript
-query.delay(duration);
+query.delay(duration, queueName);
 ```
 
 **Queue**
@@ -250,9 +253,10 @@ query.delay(duration);
 Queue a callback on each node.
 
 - `callback` is a function that accepts `node` as an argument, where node is a *HTMLElement*. The callback can return a *Promise* which will pause the queue until the promise is resolved.
+- `queueName` is a string indicating the name of the queue to use, and will default to "*default*".
 
 ```javascript
-query.queue(callback);
+query.queue(callback, queueName);
 ```
 
 If an item in the queue returns a *Promise* that rejects, the queue will be cleared.
@@ -663,53 +667,41 @@ query.setScrollY(y);
 
 **Height**
 
-Get the computed height of the first node (and optionally padding, border or margin).
+Get the computed height of the first node.
 
-- `innerNumber` is a number indicating whether to include padding, border or margin sizes in the calculation. Allowed values are *0* (no padding), *1* (padding), *2* (padding and border) and *3* (padding, border and margin), and will default to *1*.
+- `boxSize` is a number indicating the box sizing to calculate. Allowed values are *0* (no padding), *1* (padding), *2* (padding and border), *3* (padding, border and margin) and *4* (scroll area), and will default to *1*.
 
 ```javascript
-const height = query.height(innerNumber);
+const height = query.height(boxSize);
 ```
 
-If the first node is a *Window*, the first argument will instead determine whether to use the outer height, and will default to *0*.
+If the first node is a *Window*, the first argument will instead determine whether to use the outer height, and will default to *false*.
 
 The following constants can also be used as the first argument for brevity.
-- `DOM.INNER` *0*
-- `DOM.OUTER` *2*
-- `DOM.OUTER_MARGIN` *3*
-
-**Scroll Height**
-
-Get the scroll height of the first node.
-
-```javascript
-const scrollHeight = query.scrollHeight();
-```
-
-**Scroll Width**
-
-Get the scroll width of the first node.
-
-```javascript
-const scrollWidth = query.scrollWidth();
-```
+- `DOM.CONTENT_BOX` *0*
+- `DOM.PADDING_BOX` *1*
+- `DOM.BORDER_BOX` *2*
+- `DOM.MARGIN_BOX` *3*
+- `DOM.SCROLL_BOX` *4*
 
 **Width**
 
-Get the computed width of the first node (and optionally padding, border or margin).
+Get the computed width of the first node.
 
-- `innerNumber` is a number indicating whether to include padding, border or margin sizes in the calculation. Allowed values are *0* (no padding), *1* (padding), *2* (padding and border) and *3* (padding, border and margin), and will default to *1*.
+- `boxSize` is a number indicating the box sizing to calculate. Allowed values are *0* (no padding), *1* (padding), *2* (padding and border), *3* (padding, border and margin) and *4* (scroll area), and will default to *1*.
 
 ```javascript
-const width = query.width(innerNumber);
+const width = query.width(boxSize);
 ```
 
-If the first node is a *Window*, the first argument will instead determine whether to use the outer width, and will default to *0*.
+If the first node is a *Window*, the first argument will instead determine whether to use the outer width, and will default to *false*.
 
 The following constants can also be used as the first argument for brevity.
-- `DOM.INNER` *0*
-- `DOM.OUTER` *2*
-- `DOM.OUTER_MARGIN` *3*
+- `DOM.CONTENT_BOX` *0*
+- `DOM.PADDING_BOX` *1*
+- `DOM.BORDER_BOX` *2*
+- `DOM.MARGIN_BOX` *3*
+- `DOM.SCROLL_BOX` *4*
 
 ##### Styles
 
@@ -1902,6 +1894,16 @@ If the `key` argument is omitted, this method will return *true* if any of the n
 
 ```javascript
 query.hasData();
+```
+
+**Has Dataset**
+
+Returns *true* if any of the nodes has a specified dataset value.
+
+- `key` is a string indicating the custom dataset value to test for.
+
+```javascript
+const hasDataset = query.hasDataset(key);
 ```
 
 **Has Descendent**

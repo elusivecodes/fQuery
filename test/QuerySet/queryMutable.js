@@ -126,30 +126,6 @@ describe('#queryMutable', function() {
         );
     });
 
-    it('finds elements by custom child selector', async function() {
-        assert.deepStrictEqual(
-            await exec(_ =>
-                dom.queryMutable('> .group1 > .group1, > .group2 > .group2', '#child1, #child4')
-                    .get()
-                    .map(node => node.id)
-            ),
-            [
-                'a1',
-                'a2',
-                'a3',
-                'a4',
-                'a5',
-                'a6',
-                'a10',
-                'a11',
-                'a12',
-                'a13',
-                'a14',
-                'a15'
-            ]
-        );
-    });
-
     it('finds elements by ID', async function() {
         assert.deepStrictEqual(
             await exec(_ =>

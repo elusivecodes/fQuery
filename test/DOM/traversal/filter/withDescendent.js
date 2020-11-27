@@ -34,19 +34,6 @@ describe('#withDescendent', function() {
         );
     });
 
-    it('returns nodes with a descendent matching a custom selector filter', async function() {
-        assert.deepStrictEqual(
-            await exec(_ =>
-                dom.withDescendent('div', '> span > a')
-                    .map(node => node.id)
-            ),
-            [
-                'div1',
-                'div3'
-            ]
-        );
-    });
-
     it('works with HTMLElement nodes', async function() {
         assert.deepStrictEqual(
             await exec(_ =>

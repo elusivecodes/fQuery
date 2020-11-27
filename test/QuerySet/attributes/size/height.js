@@ -6,7 +6,9 @@ describe('QuerySet #height', function() {
     beforeEach(async function() {
         await exec(_ => {
             document.body.innerHTML =
-                '<div id="test1" style="display: block; height: 1000px; width: 1200px; margin: 50px; padding: 25px; border: 1px solid grey;"></div>' +
+                '<div id="test1" style="display: block; height: 1000px; width: 1200px; margin: 50px; padding: 25px; border: 1px solid grey; overflow-y: scroll;">' +
+                '<div style="display: block; width: 1px; height: 2500px;"></div>' +
+                '</div>' +
                 '<div id="test2"></div>';
         });
     });
@@ -21,33 +23,43 @@ describe('QuerySet #height', function() {
         );
     });
 
-    it('returns the inner height of the first node', async function() {
+    it('returns the content box height of the first node', async function() {
         assert.strictEqual(
             await exec(_ =>
                 dom.queryMutable('div')
-                    .height(DOM.INNER)
+                    .height(DOM.CONTENT_BOX)
             ),
             1000
         );
     });
 
-    it('returns the outer height of the first node', async function() {
+    it('returns the border box height of the first node', async function() {
         assert.strictEqual(
             await exec(_ =>
                 dom.queryMutable('div')
-                    .height(DOM.OUTER)
+                    .height(DOM.BORDER_BOX)
             ),
             1052
         );
     });
 
-    it('returns the outer height of the first node with margin', async function() {
+    it('returns the margin box height of the first node', async function() {
         assert.strictEqual(
             await exec(_ =>
                 dom.queryMutable('div')
-                    .height(DOM.OUTER_MARGIN)
+                    .height(DOM.MARGIN_BOX)
             ),
             1152
+        );
+    });
+
+    it('returns the scroll box height of the first node', async function() {
+        assert.strictEqual(
+            await exec(_ =>
+                dom.queryMutable('div')
+                    .height(DOM.SCROLL_BOX)
+            ),
+            2550
         );
     });
 

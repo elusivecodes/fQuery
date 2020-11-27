@@ -25,11 +25,6 @@ Object.assign(DOM.prototype, {
             return this.findByTag(match[2], nodes);
         }
 
-        // custom selector
-        if (selector.match(this.constructor._complexRegExp)) {
-            selector = this.constructor._prefixSelectors(selector, ':scope ');
-        }
-
         // standard selector
         if (Core.isDocument(nodes) || Core.isElement(nodes) || Core.isFragment(nodes) || Core.isShadow(nodes)) {
             return Core.wrap(
@@ -169,11 +164,6 @@ Object.assign(DOM.prototype, {
             }
 
             return this.findOneByTag(match[2], nodes);
-        }
-
-        // custom selector
-        if (selector.match(this.constructor._complexRegExp)) {
-            selector = this.constructor._prefixSelectors(selector, ':scope ');
         }
 
         // standard selector

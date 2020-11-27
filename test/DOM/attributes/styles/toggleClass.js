@@ -58,6 +58,17 @@ describe('#toggleClass', function() {
         );
     });
 
+    it('works with empty strings', async function() {
+        assert.strictEqual(
+            await exec(_ => {
+                dom.toggleClass('div', '');
+                return document.body.innerHTML;
+            }),
+            '<div id="test1" class="test1 test2"></div>' +
+            '<div id="test2"></div>'
+        );
+    });
+
     it('works with HTMLElement nodes', async function() {
         assert.strictEqual(
             await exec(_ => {

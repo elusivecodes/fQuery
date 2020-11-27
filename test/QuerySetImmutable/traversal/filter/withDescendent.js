@@ -36,21 +36,6 @@ describe('QuerySetImmutable #withDescendent', function() {
         );
     });
 
-    it('returns nodes with a descendent matching a custom selector filter', async function() {
-        assert.deepStrictEqual(
-            await exec(_ =>
-                dom.query('div')
-                    .withDescendent('> span > a')
-                    .get()
-                    .map(node => node.id)
-            ),
-            [
-                'div1',
-                'div3'
-            ]
-        );
-    });
-
     it('returns a new QuerySetImmutable', async function() {
         assert.strictEqual(
             await exec(_ => {

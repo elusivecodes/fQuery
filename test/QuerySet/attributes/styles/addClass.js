@@ -62,7 +62,19 @@ describe('QuerySet #addClass', function() {
         );
     });
 
-    it('adds a class to all nodes', async function() {
+    it('works with empty strings', async function() {
+        assert.strictEqual(
+            await exec(_ => {
+                dom.queryMutable('div')
+                    .addClass('');
+                return document.body.innerHTML;
+            }),
+            '<div id="test1"></div>' +
+            '<div id="test2"></div>'
+        );
+    });
+
+    it('returns the QuerySet', async function() {
         assert.strictEqual(
             await exec(_ => {
                 const query = dom.queryMutable('div');

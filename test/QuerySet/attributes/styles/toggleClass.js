@@ -62,6 +62,18 @@ describe('QuerySet #toggleClass', function() {
         );
     });
 
+    it('works with empty strings', async function() {
+        assert.strictEqual(
+            await exec(_ => {
+                dom.queryMutable('div')
+                    .toggleClass('');
+                return document.body.innerHTML;
+            }),
+            '<div id="test1" class="test1 test2"></div>' +
+            '<div id="test2"></div>'
+        );
+    });
+
     it('returns the QuerySet', async function() {
         assert.strictEqual(
             await exec(_ => {

@@ -106,15 +106,6 @@ describe('#findOne', function() {
         );
     });
 
-    it('finds elements by custom child selector', async function() {
-        assert.strictEqual(
-            await exec(_ =>
-                dom.findOne('> .group1 > .group1, > .group2 > .group2', '#child1, #child4').id
-            ),
-            'a1'
-        );
-    });
-
     it('finds elements by ID', async function() {
         assert.strictEqual(
             await exec(_ =>

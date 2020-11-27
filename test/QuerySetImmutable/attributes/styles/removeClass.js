@@ -65,6 +65,18 @@ describe('QuerySetImmutable #removeClass', function() {
         );
     });
 
+    it('works with empty strings', async function() {
+        assert.strictEqual(
+            await exec(_ => {
+                dom.query('div')
+                    .removeClass('');
+                return document.body.innerHTML;
+            }),
+            '<div id="test1" class="test1 test2"></div>' +
+            '<div id="test2" class="test1 test2"></div>'
+        );
+    });
+
     it('returns the QuerySet', async function() {
         assert.strictEqual(
             await exec(_ => {

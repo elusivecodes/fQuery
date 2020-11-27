@@ -115,32 +115,6 @@ describe('QuerySetImmutable #add', function() {
         );
     });
 
-    it('adds elements by custom child selector', async function() {
-        assert.deepStrictEqual(
-            await exec(_ =>
-                dom.query('#parent1')
-                    .add('> .group1 > .group1, > .group2 > .group2', '#child1, #child4')
-                    .get()
-                    .map(node => node.id)
-            ),
-            [
-                'parent1',
-                'a1',
-                'a2',
-                'a3',
-                'a4',
-                'a5',
-                'a6',
-                'a10',
-                'a11',
-                'a12',
-                'a13',
-                'a14',
-                'a15'
-            ]
-        );
-    });
-
     it('adds elements by ID', async function() {
         assert.deepStrictEqual(
             await exec(_ =>
@@ -474,13 +448,12 @@ describe('QuerySetImmutable #add', function() {
                     '<div id="div1"></div>' +
                     '<div id="div2"></div>'
                 );
-                return dom.query('#parent1')
+                return dom.query('')
                     .add('div', fragment)
                     .get()
                     .map(node => node.id);
             }),
             [
-                'parent1',
                 'div1',
                 'div2'
             ]
@@ -498,13 +471,12 @@ describe('QuerySetImmutable #add', function() {
                     '<div id="div2"></div>'
                 );
                 shadow.appendChild(fragment);
-                return dom.query('#parent1')
+                return dom.query('')
                     .add('div', shadow)
                     .get()
                     .map(node => node.id);
             }),
             [
-                'parent1',
                 'div1',
                 'div2'
             ]
@@ -526,13 +498,12 @@ describe('QuerySetImmutable #add', function() {
                     '</html>',
                     'text/html'
                 );
-                return dom.query('#parent1')
+                return dom.query('')
                     .add('div', myDoc)
                     .get()
                     .map(node => node.id);
             }),
             [
-                'parent1',
                 'div1',
                 'div2'
             ]

@@ -1,5 +1,5 @@
 /**
- * FrostDOM v1.1.8
+ * FrostDOM v2.0.0
  * https://github.com/elusivecodes/FrostDOM
  */
 (function(global, factory) {
@@ -1410,12 +1410,13 @@
         /**
          * Clear the queue of each node.
          * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
+         * @param {string} [queueName=default] The name of the queue to use.
          */
-        clearQueue(nodes) {
+        clearQueue(nodes, queueName = 'default') {
             nodes = this.parseNodes(nodes);
 
             for (const node of nodes) {
-                this.constructor._clearQueue(node);
+                this.constructor._clearQueue(node, queueName);
             }
         },
 
@@ -1423,12 +1424,13 @@
          * Queue a callback on each node.
          * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
          * @param {DOM~queueCallback} callback The callback to queue.
+         * @param {string} [queueName=default] The name of the queue to use.
          */
-        queue(nodes, callback) {
+        queue(nodes, callback, queueName = 'default') {
             nodes = this.parseNodes(nodes);
 
             for (const node of nodes) {
-                this.constructor._queue(node, callback);
+                this.constructor._queue(node, callback, queueName);
             }
         }
 
@@ -2147,10 +2149,10 @@
         /**
          * Get the computed height of the first node.
          * @param {string|array|HTMLElement|Document|Window|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
-         * @param {number} [innerOuter] Whether to include padding, border and margin heights.
+         * @param {number} [boxSize=1] The box sizing to calculate.
          * @returns {number} The height.
          */
-        height(nodes, innerOuter) {
+        height(nodes, boxSize) {
             const node = this.parseNode(nodes, {
                 document: true,
                 window: true
@@ -2161,71 +2163,25 @@
             }
 
             if (Core.isWindow(node)) {
-                return innerOuter ?
+                return boxSize ?
                     node.outerHeight :
                     node.innerHeight;
             }
 
-            if (Core.isUndefined(innerOuter)) {
-                innerOuter = 1;
+            if (Core.isUndefined(boxSize)) {
+                boxSize = this.constructor.PADDING_BOX;
             }
 
-            return this.constructor._height(node, innerOuter);
-        },
-
-        /**
-         * Get the scroll height of the first node.
-         * @param {string|array|HTMLElement|Document|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
-         * @returns {number} The scroll height.
-         */
-        scrollHeight(nodes) {
-            const node = this.parseNode(nodes, {
-                document: true
-            });
-
-            if (!node) {
-                return;
-            }
-
-            return this.constructor._forceShow(node, node => {
-                if (Core.isDocument(node)) {
-                    node = node.documentElement;
-                }
-
-                return node.scrollHeight;
-            });
-        },
-
-        /**
-         * Get the scroll width of the first node.
-         * @param {string|array|HTMLElement|Document|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
-         * @returns {number} The scroll width.
-         */
-        scrollWidth(nodes) {
-            const node = this.parseNode(nodes, {
-                document: true
-            });
-
-            if (!node) {
-                return;
-            }
-
-            return this.constructor._forceShow(node, node => {
-                if (Core.isDocument(node)) {
-                    node = node.documentElement;
-                }
-
-                return node.scrollWidth;
-            });
+            return this.constructor._height(node, boxSize);
         },
 
         /**
          * Get the computed width of the first node.
          * @param {string|array|HTMLElement|Document|Window|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
-         * @param {number} [innerOuter] Whether to include padding, border and margin widths.
+         * @param {number} [boxSize=1] The box sizing to calculate.
          * @returns {number} The width.
          */
-        width(nodes, innerOuter) {
+        width(nodes, boxSize) {
             const node = this.parseNode(nodes, {
                 document: true,
                 window: true
@@ -2236,16 +2192,16 @@
             }
 
             if (Core.isWindow(node)) {
-                return innerOuter ?
+                return boxSize ?
                     node.outerWidth :
                     node.innerWidth;
             }
 
-            if (Core.isUndefined(innerOuter)) {
-                innerOuter = 1;
+            if (Core.isUndefined(boxSize)) {
+                boxSize = this.constructor.PADDING_BOX;
             }
 
-            return this.constructor._width(node, innerOuter);
+            return this.constructor._width(node, boxSize);
         }
 
     });
@@ -4079,11 +4035,6 @@
                 return this.findByTag(match[2], nodes);
             }
 
-            // custom selector
-            if (selector.match(this.constructor._complexRegExp)) {
-                selector = this.constructor._prefixSelectors(selector, ':scope ');
-            }
-
             // standard selector
             if (Core.isDocument(nodes) || Core.isElement(nodes) || Core.isFragment(nodes) || Core.isShadow(nodes)) {
                 return Core.wrap(
@@ -4223,11 +4174,6 @@
                 }
 
                 return this.findOneByTag(match[2], nodes);
-            }
-
-            // custom selector
-            if (selector.match(this.constructor._complexRegExp)) {
-                selector = this.constructor._prefixSelectors(selector, ':scope ');
             }
 
             // standard selector
@@ -5289,6 +5235,20 @@
         },
 
         /**
+         * Returns true if any of the nodes has the specified dataset value.
+         * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
+         * @param {string} [key] The dataset key.
+         * @returns {Boolean} TRUE if any of the nodes has the dataset value, otherwise FALSE.
+         */
+        hasDataset(nodes, key) {
+            key = Core.camelCase(key);
+
+            return this.parseNodes(nodes).some(node =>
+                !!node.dataset[key]
+            );
+        },
+
+        /**
          * Returns true if any of the nodes contains a descendent matching a filter.
          * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
          * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
@@ -5949,9 +5909,22 @@
         /**
          * Clear the queue of a single node.
          * @param {HTMLElement} node The input node.
+         * @param {string} queueName The name of the queue to clear.
          */
-        _clearQueue(node) {
-            if (!this._queues.has(node)) {
+        _clearQueue(node, queueName) {
+            const queue = this._queues.get(node);
+
+            if (!queue || (queueName && !(queueName in queue))) {
+                return;
+            }
+
+            for (const key in queue) {
+                if (!queueName || key === queueName) {
+                    delete queue[key];
+                }
+            }
+
+            if (Object.keys(queue).length) {
                 return;
             }
 
@@ -5961,24 +5934,26 @@
         /**
          * Run the next callback for a single node.
          * @param {HTMLElement} node The input node.
+         * @param {string} queueName The name of the queue to use.
          */
-        _dequeueNode(node) {
-            if (!this._queues.has(node)) {
+        _dequeue(node, queueName) {
+            const queue = this._queues.get(node);
+
+            if (!queue || !(queueName in queue)) {
                 return;
             }
 
-            const next = this._queues.get(node).shift();
+            const next = queue[queueName].shift();
 
             if (!next) {
-                this._queues.delete(node);
-                return;
+                return this._clearQueue(node, queueName);
             }
 
             Promise.resolve(next(node))
                 .then(_ =>
-                    this._dequeueNode(node)
+                    this._dequeue(node, queueName)
                 ).catch(_ =>
-                    this._clearQueue(node)
+                    this._clearQueue(node, queueName)
                 );
         },
 
@@ -5986,22 +5961,28 @@
          * Queue a callback on a single node.
          * @param {HTMLElement} node The input node.
          * @param {DOM~queueCallback} callback The callback to queue.
+         * @param {string} queueName The name of the queue to use.
          */
-        _queue(node, callback) {
-            const newQueue = !this._queues.has(node);
+        _queue(node, callback, queueName) {
+            if (!this._queues.has(node)) {
+                this._queues.set(node, {});
+            }
 
-            if (newQueue) {
-                this._queues.set(node, [
+            const queue = this._queues.get(node);
+            const runningQueue = queueName in queue;
+
+            if (!runningQueue) {
+                queue[queueName] = [
                     _ => new Promise(
                         resolve => setTimeout(resolve, 0)
                     )
-                ]);
+                ];
             }
 
-            this._queues.get(node).push(callback);
+            queue[queueName].push(callback);
 
-            if (newQueue) {
-                this._dequeueNode(node);
+            if (!runningQueue) {
+                this._dequeue(node, queueName);
             }
         }
 
@@ -6169,28 +6150,32 @@
         /**
          * Get the computed height of a single node.
          * @param {HTMLElement} node The input node.
-         * @param {number} [innerOuter=1] Whether to include padding, border and margin heights.
+         * @param {number} [boxSize=1] The box sizing to calculate.
          * @returns {number} The height.
          */
-        _height(node, innerOuter = 1) {
+        _height(node, boxSize = 1) {
             return this._forceShow(node, node => {
                 if (Core.isDocument(node)) {
                     node = node.documentElement;
                 }
 
+                if (boxSize === this.SCROLL_BOX) {
+                    return node.scrollHeight;
+                }
+
                 let result = node.clientHeight;
 
-                if (innerOuter === this.INNER) {
+                if (boxSize === this.CONTENT_BOX) {
                     result -= parseInt(this._css(node, 'padding-top'))
                         + parseInt(this._css(node, 'padding-bottom'));
                 }
 
-                if (innerOuter >= this.OUTER) {
+                if (boxSize >= this.BORDER_BOX) {
                     result += parseInt(this._css(node, 'border-top-width'))
                         + parseInt(this._css(node, 'border-bottom-width'));
                 }
 
-                if (innerOuter === this.OUTER_MARGIN) {
+                if (boxSize === this.MARGIN_BOX) {
                     result += parseInt(this._css(node, 'margin-top'))
                         + parseInt(this._css(node, 'margin-bottom'));
                 }
@@ -6202,28 +6187,32 @@
         /**
          * Get the computed width of a single node.
          * @param {HTMLElement} node The input node.
-         * @param {number} [innerOuter] Whether to include padding, border and margin widths.
+         * @param {number} [boxSize=1] The box sizing to calculate.
          * @returns {number} The width.
          */
-        _width(node, innerOuter = 1) {
+        _width(node, boxSize = 1) {
             return this._forceShow(node, node => {
                 if (Core.isDocument(node)) {
                     node = node.documentElement;
                 }
 
+                if (boxSize === this.SCROLL_BOX) {
+                    return node.scrollWidth;
+                }
+
                 let result = node.clientWidth;
 
-                if (innerOuter === this.INNER) {
+                if (boxSize === this.CONTENT_BOX) {
                     result -= parseInt(this._css(node, 'padding-left'))
                         + parseInt(this._css(node, 'padding-right'));
                 }
 
-                if (innerOuter >= this.OUTER) {
+                if (boxSize >= this.BORDER_BOX) {
                     result += parseInt(this._css(node, 'border-left-width'))
                         + parseInt(this._css(node, 'border-right-width'));
                 }
 
-                if (innerOuter === this.OUTER_MARGIN) {
+                if (boxSize === this.MARGIN_BOX) {
                     result += parseInt(this._css(node, 'margin-left'))
                         + parseInt(this._css(node, 'margin-right'));
                 }
@@ -6308,9 +6297,7 @@
          * @returns {DOM~eventCallback} The delegated event callback.
          */
         _delegateFactory(node, selector, callback) {
-            const getDelegate = selector.match(this._complexRegExp) ?
-                this._getDelegateContainsFactory(node, selector) :
-                this._getDelegateMatchFactory(node, selector);
+            const getDelegate = this._getDelegateMatchFactory(node, selector);
 
             return e => {
                 if (node.isSameNode(e.target)) {
@@ -6338,37 +6325,6 @@
                 Object.freeze(event)
 
                 return callback(event);
-            };
-        },
-
-        /**
-         * Return a function for matching a delegate target to a custom selector.
-         * @param {HTMLElement|ShadowRoot|Document} node The input node.
-         * @param {string} selector The delegate query selector.
-         * @returns {DOM~delegateCallback} The callback for finding the matching delegate.
-         */
-        _getDelegateContainsFactory(node, selector) {
-            selector = this._prefixSelectors(selector, ':scope ');
-
-            return target => {
-                const matches = Core.wrap(
-                    node.querySelectorAll(selector)
-                );
-
-                if (!matches.length) {
-                    return false;
-                }
-
-                if (matches.includes(target)) {
-                    return target;
-                }
-
-                return this._parents(
-                    target,
-                    parent => matches.includes(parent),
-                    parent => parent.isSameNode(node),
-                    true
-                ).shift();
             };
         },
 
@@ -6656,7 +6612,8 @@
         _parseClasses(classList) {
             return classList
                 .flat()
-                .flatMap(val => val.split(' '));
+                .flatMap(val => val.split(' '))
+                .filter(val => !!val);
         },
 
         /**
@@ -6738,23 +6695,6 @@
          */
         _parseEvents(events) {
             return events.split(' ');
-        },
-
-        /**
-         * Return a prefixed selector string.
-         * @param {string} selectors The input selectors.
-         * @param {string} prefix The input prefix.
-         * @returns {string} The prefixed selector.
-         */
-        _prefixSelectors(selectors, prefix) {
-            return selectors.split(this._splitRegExp)
-                .filter(selector => !!selector)
-                .map(selector =>
-                    this._customSelectors.includes(selector.trim().charAt(0)) ?
-                        `${prefix} ${selector}` :
-                        selector
-                )
-                .join(', ');
         }
 
     });
@@ -7484,21 +7424,14 @@
             'z-index'
         ],
 
-        INNER: 0,
-        OUTER: 2,
-        OUTER_MARGIN: 3,
-
-        // Complex selector RegExp
-        _complexRegExp: /(?:^\s*[\>\+\~]|\,(?=(?:(?:[^"']*["']){2})*[^"']*$)\s*[\>\+\~])/,
-
-        // Custom selectors
-        _customSelectors: ['>', '+', '~'],
+        CONTENT_BOX: 0,
+        PADDING_BOX: 1,
+        BORDER_BOX: 2,
+        MARGIN_BOX: 3,
+        SCROLL_BOX: 4,
 
         // Fast selector RegExp
-        _fastRegExp: /^([\#\.]?)([\w\-]+)$/,
-
-        // Comma seperated selector RegExp
-        _splitRegExp: /\,(?=(?:(?:[^"]*"){2})*[^"]*$)\s*/
+        _fastRegExp: /^([\#\.]?)([\w\-]+)$/
 
     });
 
@@ -7785,10 +7718,11 @@
 
         /**
          * Clear the queue of each node.
+         * @param {string} [queueName=default] The name of the queue to clear.
          * @returns {QuerySet} The QuerySet object.
          */
-        clearQueue() {
-            this._dom.clearQueue(this);
+        clearQueue(queueName = 'default') {
+            this._dom.clearQueue(this, queueName);
 
             return this;
         },
@@ -7796,26 +7730,29 @@
         /**
          * Delay execution of subsequent items in the queue for each node.
          * @param {number} duration The number of milliseconds to delay execution by.
+         * @param {string} [queueName=default] The name of the queue to use.
          * @returns {QuerySet} The QuerySet object.
          */
-        delay(duration) {
+        delay(duration, queueName = 'default') {
             return this.queue(_ =>
                 new Promise(resolve =>
                     setTimeout(
                         resolve,
                         duration
                     )
-                )
+                ),
+                queueName
             );
         },
 
         /**
          * Queue a callback on each node.
          * @param {DOM~queueCallback} callback The callback to queue.
+         * @param {string} [queueName=default] The name of the queue to use.
          * @returns {QuerySet} The QuerySet object.
          */
-        queue(callback) {
-            this._dom.queue(this, callback);
+        queue(callback, queueName = 'default') {
+            this._dom.queue(this, callback, queueName);
 
             return this;
         }
@@ -8211,36 +8148,20 @@
 
         /**
          * Get the computed height of the first node.
-         * @param {number} [innerOuter] Whether to include padding, border and margin heights.
+         * @param {number} [boxSize=1] The box sizing to calculate.
          * @returns {number} The height.
          */
-        height(innerOuter) {
-            return this._dom.height(this, innerOuter);
-        },
-
-        /**
-         * Get the scroll height of the first node.
-         * @returns {number} The scroll height.
-         */
-        scrollHeight() {
-            return this._dom.scrollHeight(this);
-        },
-
-        /**
-         * Get the scroll width of the first node.
-         * @returns {number} The scroll width.
-         */
-        scrollWidth() {
-            return this._dom.scrollWidth(this);
+        height(boxSize) {
+            return this._dom.height(this, boxSize);
         },
 
         /**
          * Get the computed width of the first node.
-         * @param {number} [innerOuter] Whether to include padding, border and margin heights.
+         * @param {number} [boxSize=1] The box sizing to calculate.
          * @returns {number} The width.
          */
-        width(innerOuter) {
-            return this._dom.width(this, innerOuter);
+        width(boxSize) {
+            return this._dom.width(this, boxSize);
         }
 
     });
@@ -9350,6 +9271,15 @@
          */
         hasData(key) {
             return this._dom.hasData(this, key);
+        },
+
+        /**
+         * Returns true if any of the nodes has the specified dataset value.
+         * @param {string} [key] The dataset key.
+         * @returns {Boolean} TRUE if any of the nodes has the dataset value, otherwise FALSE.
+         */
+        hasDataset(key) {
+            return this._dom.hasDataset(this, key);
         },
 
         /**

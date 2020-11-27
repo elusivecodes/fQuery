@@ -6,7 +6,9 @@ describe('#width', function() {
     beforeEach(async function() {
         await exec(_ => {
             document.body.innerHTML =
-                '<div id="test1" style="display: block; height: 1000px; width: 1200px; margin: 50px; padding: 25px; border: 1px solid grey;"></div>' +
+                '<div id="test1" style="display: block; height: 1000px; width: 1200px; margin: 50px; padding: 25px; border: 1px solid grey; overflow-x: scroll">' +
+                '<div style="display: block; height: 1px; width: 2500px;"></div>' +
+                '</div>' +
                 '<div id="test2"></div>';
         });
     });
@@ -20,30 +22,39 @@ describe('#width', function() {
         );
     });
 
-    it('returns the inner width of the first node', async function() {
+    it('returns the content box width of the first node', async function() {
         assert.strictEqual(
             await exec(_ =>
-                dom.width('div', DOM.INNER)
+                dom.width('div', DOM.CONTENT_BOX)
             ),
             1200
         );
     });
 
-    it('returns the outer width of the first node', async function() {
+    it('returns the border box width of the first node', async function() {
         assert.strictEqual(
             await exec(_ =>
-                dom.width('div', DOM.OUTER)
+                dom.width('div', DOM.BORDER_BOX)
             ),
             1252
         );
     });
 
-    it('returns the outer width of the first node with margin', async function() {
+    it('returns the margin box width of the first node', async function() {
         assert.strictEqual(
             await exec(_ =>
-                dom.width('div', DOM.OUTER_MARGIN)
+                dom.width('div', DOM.MARGIN_BOX)
             ),
             1352
+        );
+    });
+
+    it('returns the scroll box width of the first node', async function() {
+        assert.strictEqual(
+            await exec(_ =>
+                dom.width('div', DOM.SCROLL_BOX)
+            ),
+            2525
         );
     });
 

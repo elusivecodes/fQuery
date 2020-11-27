@@ -103,6 +103,20 @@ Object.assign(DOM.prototype, {
     },
 
     /**
+     * Returns true if any of the nodes has the specified dataset value.
+     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
+     * @param {string} [key] The dataset key.
+     * @returns {Boolean} TRUE if any of the nodes has the dataset value, otherwise FALSE.
+     */
+    hasDataset(nodes, key) {
+        key = Core.camelCase(key);
+
+        return this.parseNodes(nodes).some(node =>
+            !!node.dataset[key]
+        );
+    },
+
+    /**
      * Returns true if any of the nodes contains a descendent matching a filter.
      * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
      * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet|DOM~filterCallback} [filter] The filter node(s), a query selector string or custom filter function.
