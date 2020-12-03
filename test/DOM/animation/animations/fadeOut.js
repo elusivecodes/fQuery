@@ -298,8 +298,7 @@ describe('#fadeOut', function() {
     it('does not stop all animations', async function() {
         await exec(async _ => {
             const animation = dom.fadeOut('.animate', {
-                duration: 100,
-                debug: true
+                duration: 100
             });
             dom.animate(
                 '.animate',

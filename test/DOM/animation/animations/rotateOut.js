@@ -472,8 +472,7 @@ describe('#rotateOut', function() {
     it('does not stop all animations', async function() {
         await exec(async _ => {
             const animation = dom.rotateOut('.animate', {
-                duration: 100,
-                debug: true
+                duration: 100
             });
             dom.animate(
                 '.animate',

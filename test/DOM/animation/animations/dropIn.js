@@ -588,8 +588,7 @@ describe('#dropIn', function() {
     it('does not stop all animations', async function() {
         await exec(async _ => {
             const animation = dom.dropIn('.animate', {
-                duration: 100,
-                debug: true
+                duration: 100
             });
             dom.animate(
                 '.animate',

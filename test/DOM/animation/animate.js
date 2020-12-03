@@ -269,8 +269,7 @@ describe('#animate', function() {
                 '.animate',
                 _ => { },
                 {
-                    duration: 100,
-                    debug: true
+                    duration: 100
                 }
             );
             dom.animate(
