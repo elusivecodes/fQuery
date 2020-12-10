@@ -214,10 +214,10 @@ describe('QuerySetImmutable #remove', function() {
                 '<div id="outer2">' +
                 '<div id="inner2"></div>' +
                 '</div>' +
-                '<a href="#" id="test1"></a>' +
-                '<a href="#" id="test2"></a>' +
-                '<a href="#" id="test3"></a>' +
-                '<a href="#" id="test4"></a>'
+                '<a href="#" id="test1">Test</a>' +
+                '<a href="#" id="test2">Test</a>' +
+                '<a href="#" id="test3">Test</a>' +
+                '<a href="#" id="test4">Test</a>'
             );
         });
     });
@@ -244,10 +244,10 @@ describe('QuerySetImmutable #remove', function() {
         }).then(waitFor(100)).then(async _ => {
             assert.strictEqual(
                 await exec(_ => document.body.innerHTML),
-                '<a href="#" id="test1"></a>' +
-                '<a href="#" id="test2"></a>' +
-                '<a href="#" id="test3"></a>' +
-                '<a href="#" id="test4"></a>'
+                '<a href="#" id="test1">Test</a>' +
+                '<a href="#" id="test2">Test</a>' +
+                '<a href="#" id="test3">Test</a>' +
+                '<a href="#" id="test4">Test</a>'
             );
         });
     });

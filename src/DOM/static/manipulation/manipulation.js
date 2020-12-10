@@ -69,14 +69,18 @@ Object.assign(DOM, {
     /**
      * Remove all children of a single node from the DOM.
      * @param {HTMLElement|DocumentFragment|ShadowRoot|Document} node The input node.
+     * @param {Boolean} [detach=true] Whether to detach elements from the DOM.
      */
-    _empty(node) {
+    _empty(node, detach = true) {
         // Remove descendent elements
         const children = Core.wrap(node.childNodes);
 
         for (const child of children) {
             this._remove(child);
-            node.removeChild(child);
+
+            if (detach) {
+                node.removeChild(child);
+            }
         }
 
         // Remove ShadowRoot
@@ -98,7 +102,7 @@ Object.assign(DOM, {
         const eventData = new Event('remove');
         node.dispatchEvent(eventData);
 
-        this._empty(node);
+        this._empty(node, false);
 
         if (Core.isElement(node)) {
             this._clearQueue(node);

@@ -133,10 +133,10 @@ describe('QuerySetImmutable #empty', function() {
                 '</div>' +
                 '<div id="outer2">' +
                 '</div>' +
-                '<a href="#" id="test1"></a>' +
-                '<a href="#" id="test2"></a>' +
-                '<a href="#" id="test3"></a>' +
-                '<a href="#" id="test4"></a>'
+                '<a href="#" id="test1">Test</a>' +
+                '<a href="#" id="test2">Test</a>' +
+                '<a href="#" id="test3">Test</a>' +
+                '<a href="#" id="test4">Test</a>'
             );
         });
     });

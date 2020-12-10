@@ -96,7 +96,7 @@ describe('#setHTML', function() {
                 await exec(_ => document.body.innerHTML),
                 '<div id="test1"><span>Test 2</span></div>' +
                 '<div id="test2"><span>Test 2</span></div>' +
-                '<span id="inner"></span>'
+                '<span id="inner">Test 1</span>'
             );
         });
     });

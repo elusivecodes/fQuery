@@ -1,5 +1,5 @@
 /**
- * FrostDOM v2.0.1
+ * FrostDOM v2.0.2
  * https://github.com/elusivecodes/FrostDOM
  */
 (function(global, factory) {
@@ -6770,14 +6770,18 @@
         /**
          * Remove all children of a single node from the DOM.
          * @param {HTMLElement|DocumentFragment|ShadowRoot|Document} node The input node.
+         * @param {Boolean} [detach=true] Whether to detach elements from the DOM.
          */
-        _empty(node) {
+        _empty(node, detach = true) {
             // Remove descendent elements
             const children = Core.wrap(node.childNodes);
 
             for (const child of children) {
                 this._remove(child);
-                node.removeChild(child);
+
+                if (detach) {
+                    node.removeChild(child);
+                }
             }
 
             // Remove ShadowRoot
@@ -6799,7 +6803,7 @@
             const eventData = new Event('remove');
             node.dispatchEvent(eventData);
 
-            this._empty(node);
+            this._empty(node, false);
 
             if (Core.isElement(node)) {
                 this._clearQueue(node);
