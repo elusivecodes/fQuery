@@ -12,7 +12,9 @@ Object.assign(DOM, {
      * @returns {DOM~eventCallback} The delegated event callback.
      */
     _delegateFactory(node, selector, callback) {
-        const getDelegate = this._getDelegateMatchFactory(node, selector);
+        const getDelegate = selector.match(this._scopeRegExp) ?
+            this._getDelegateContainsFactory(node, selector) :
+            this._getDelegateMatchFactory(node, selector);
 
         return e => {
             if (node.isSameNode(e.target)) {
@@ -40,6 +42,35 @@ Object.assign(DOM, {
             Object.freeze(event)
 
             return callback(event);
+        };
+    },
+
+    /**
+     * Return a function for matching a delegate target to a custom selector.
+     * @param {HTMLElement|ShadowRoot|Document} node The input node.
+     * @param {string} selector The delegate query selector.
+     * @returns {DOM~delegateCallback} The callback for finding the matching delegate.
+     */
+    _getDelegateContainsFactory(node, selector) {
+        return target => {
+            const matches = Core.wrap(
+                node.querySelectorAll(selector)
+            );
+
+            if (!matches.length) {
+                return false;
+            }
+
+            if (matches.includes(target)) {
+                return target;
+            }
+
+            return this._parents(
+                target,
+                parent => matches.includes(parent),
+                parent => parent.isSameNode(node),
+                true
+            ).shift();
         };
     },
 

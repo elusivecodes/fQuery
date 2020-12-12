@@ -89,6 +89,9 @@ Object.assign(DOM, {
     SCROLL_BOX: 4,
 
     // Fast selector RegExp
-    _fastRegExp: /^([\#\.]?)([\w\-]+)$/
+    _fastRegExp: /^([\#\.]?)([\w\-]+)$/,
+
+    // Scope selector RegExp
+    _scopeRegExp: /(?:^\s*\:scope|\,(?=(?:(?:[^"']*["']){2})*[^"']*$)\s*\:scope)/
 
 });
