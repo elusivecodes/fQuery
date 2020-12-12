@@ -83,7 +83,7 @@ Object.assign(DOM.prototype, {
      * @returns {string} The text contents.
      */
     getText(nodes) {
-        return this.getProperty(nodes, 'innerText');
+        return this.getProperty(nodes, 'textContent');
     },
 
     /**
@@ -205,7 +205,7 @@ Object.assign(DOM.prototype, {
     setText(nodes, text) {
         this.empty(nodes);
 
-        this.setProperty(nodes, 'innerText', text);
+        this.setProperty(nodes, 'textContent', text);
     },
 
     /**

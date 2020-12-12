@@ -89,7 +89,7 @@ const exec = async (callback, data) =>
 const setStyle = async (style = '') =>
     await exec(style => {
         const element = document.createElement('style');
-        element.innerText = style;
+        element.textContent = style;
         document.head.appendChild(element);
     }, style);
 

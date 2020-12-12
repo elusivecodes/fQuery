@@ -48,7 +48,7 @@ Object.assign(DOM.prototype, {
         if ('html' in options) {
             node.innerHTML = options.html;
         } else if ('text' in options) {
-            node.innerText = options.text;
+            node.textContent = options.text;
         }
 
         if ('class' in options) {
