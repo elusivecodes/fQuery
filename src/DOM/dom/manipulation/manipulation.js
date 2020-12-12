@@ -44,13 +44,7 @@ Object.assign(DOM.prototype, {
         });
 
         for (const node of nodes) {
-            const parent = node.parentNode;
-
-            if (!parent) {
-                continue;
-            }
-
-            parent.removeChild(node);
+            node.remove();
         }
 
         return nodes;
@@ -84,14 +78,8 @@ Object.assign(DOM.prototype, {
         });
 
         for (const node of nodes) {
-            const parent = node.parentNode;
-
-            if (!parent) {
-                continue;
-            }
-
             this.constructor._remove(node);
-            parent.removeChild(node);
+            node.remove();
         }
     },
 
@@ -165,14 +153,8 @@ Object.assign(DOM.prototype, {
         }
 
         for (const node of nodes) {
-            const parent = node.parentNode;
-
-            if (!parent) {
-                continue;
-            }
-
             this.constructor._remove(node);
-            parent.removeChild(node);
+            node.remove();
         }
     }
 

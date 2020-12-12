@@ -59,13 +59,12 @@ Object.assign(DOM, {
      * @param {HTMLElement} parent The parent node.
      * @param {object} [allowedTags] An object containing allowed tags and attributes.
      */
-    _sanitize(node, parent, allowedTags = this.allowedTags) {
+    _sanitize(node, allowedTags = this.allowedTags) {
         // check node
         const name = node.tagName.toLowerCase();
 
         if (!(name in allowedTags)) {
-            parent.removeChild(node);
-            return;
+            return node.remove();
         }
 
         // check node attributes
@@ -91,7 +90,7 @@ Object.assign(DOM, {
         // check children
         const children = this._children(node, null, false, true);
         for (const child of children) {
-            this._sanitize(child, node, allowedTags);
+            this._sanitize(child, allowedTags);
         }
     }
 

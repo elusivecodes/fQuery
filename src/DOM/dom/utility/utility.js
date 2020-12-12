@@ -100,7 +100,7 @@ Object.assign(DOM.prototype, {
             children = this.constructor._children(fragment, null, false, true);
 
         for (const child of children) {
-            this.constructor._sanitize(child, fragment, allowedTags);
+            this.constructor._sanitize(child, allowedTags);
         }
 
         return this.getHTML(template);

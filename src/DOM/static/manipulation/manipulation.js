@@ -79,7 +79,7 @@ Object.assign(DOM, {
             this._remove(child);
 
             if (detach) {
-                node.removeChild(child);
+                child.remove();
             }
         }
 

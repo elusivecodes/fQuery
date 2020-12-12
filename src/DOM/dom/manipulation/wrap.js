@@ -52,7 +52,7 @@ Object.assign(DOM.prototype, {
             }
 
             this.constructor._remove(parent);
-            outerParent.removeChild(parent);
+            parent.remove();
         }
     },
 

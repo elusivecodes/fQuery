@@ -1096,7 +1096,7 @@
     });
 
     /**
-     * FrostDOM v2.0.5
+     * FrostDOM v2.0.6
      * https://github.com/elusivecodes/FrostDOM
      */
     (function(global, factory) {
@@ -4033,13 +4033,7 @@
                 });
 
                 for (const node of nodes) {
-                    const parent = node.parentNode;
-
-                    if (!parent) {
-                        continue;
-                    }
-
-                    parent.removeChild(node);
+                    node.remove();
                 }
 
                 return nodes;
@@ -4073,14 +4067,8 @@
                 });
 
                 for (const node of nodes) {
-                    const parent = node.parentNode;
-
-                    if (!parent) {
-                        continue;
-                    }
-
                     this.constructor._remove(node);
-                    parent.removeChild(node);
+                    node.remove();
                 }
             },
 
@@ -4154,14 +4142,8 @@
                 }
 
                 for (const node of nodes) {
-                    const parent = node.parentNode;
-
-                    if (!parent) {
-                        continue;
-                    }
-
                     this.constructor._remove(node);
-                    parent.removeChild(node);
+                    node.remove();
                 }
             }
 
@@ -4431,7 +4413,7 @@
                     }
 
                     this.constructor._remove(parent);
-                    outerParent.removeChild(parent);
+                    parent.remove();
                 }
             },
 
@@ -6637,7 +6619,7 @@
                     children = this.constructor._children(fragment, null, false, true);
 
                 for (const child of children) {
-                    this.constructor._sanitize(child, fragment, allowedTags);
+                    this.constructor._sanitize(child, allowedTags);
                 }
 
                 return this.getHTML(template);
@@ -7908,7 +7890,7 @@
                     this._remove(child);
 
                     if (detach) {
-                        node.removeChild(child);
+                        child.remove();
                     }
                 }
 
@@ -8434,13 +8416,12 @@
              * @param {HTMLElement} parent The parent node.
              * @param {object} [allowedTags] An object containing allowed tags and attributes.
              */
-            _sanitize(node, parent, allowedTags = this.allowedTags) {
+            _sanitize(node, allowedTags = this.allowedTags) {
                 // check node
                 const name = node.tagName.toLowerCase();
 
                 if (!(name in allowedTags)) {
-                    parent.removeChild(node);
-                    return;
+                    return node.remove();
                 }
 
                 // check node attributes
@@ -8466,7 +8447,7 @@
                 // check children
                 const children = this._children(node, null, false, true);
                 for (const child of children) {
-                    this._sanitize(child, node, allowedTags);
+                    this._sanitize(child, allowedTags);
                 }
             }
 
