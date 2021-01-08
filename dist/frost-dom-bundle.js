@@ -1096,7 +1096,7 @@
     });
 
     /**
-     * FrostDOM v2.0.6
+     * FrostDOM v2.0.7
      * https://github.com/elusivecodes/FrostDOM
      */
     (function(global, factory) {
@@ -2888,6 +2888,9 @@
 
                 nodes = this.parseNodes(nodes);
 
+                const preScrollX = this.width(this._context, DOM.SCROLL_BOX) > this.width(window);
+                const preScrollY = this.height(this._context, DOM.SCROLL_BOX) > this.height(window);
+
                 for (const node of nodes) {
                     const nodeBox = this.constructor._rect(node);
 
@@ -2903,7 +2906,7 @@
 
                     let leftOffset;
                     if (nodeBox.left - containerBox.left < 0) {
-                        leftOffset = nodeBox.left - containerBox.left
+                        leftOffset = nodeBox.left - containerBox.left;
                     } else if (nodeBox.right - containerBox.right > 0) {
                         leftOffset = nodeBox.right - containerBox.right;
                     }
@@ -2932,6 +2935,13 @@
                     }
 
                     this.constructor._setStyles(node, style);
+                }
+
+                const postScrollX = this.width(this._context, DOM.SCROLL_BOX) > this.width(window);
+                const postScrollY = this.height(this._context, DOM.SCROLL_BOX) > this.height(window);
+
+                if (preScrollX !== postScrollX || preScrollY !== postScrollY) {
+                    this.constrain(nodes, container);
                 }
             },
 
