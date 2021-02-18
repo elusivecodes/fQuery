@@ -1096,7 +1096,7 @@
     });
 
     /**
-     * FrostDOM v2.0.7
+     * FrostDOM v2.0.8
      * https://github.com/elusivecodes/FrostDOM
      */
     (function(global, factory) {
@@ -1682,7 +1682,9 @@
                 };
 
                 if (!('start' in this._options)) {
-                    this._options.start = performance.now();
+                    this._options.start = document.timeline ?
+                        document.timeline.currentTime :
+                        performance.now();
                 }
 
                 if (this._options.debug) {
@@ -1757,7 +1759,9 @@
                     return true;
                 }
 
-                const now = performance.now();
+                const now = document.timeline ?
+                    document.timeline.currentTime :
+                    performance.now();
 
                 let progress;
                 if (finish) {

@@ -24,7 +24,9 @@ class Animation {
         };
 
         if (!('start' in this._options)) {
-            this._options.start = performance.now();
+            this._options.start = document.timeline ?
+                document.timeline.currentTime :
+                performance.now();
         }
 
         if (this._options.debug) {
@@ -99,7 +101,9 @@ class Animation {
             return true;
         }
 
-        const now = performance.now();
+        const now = document.timeline ?
+            document.timeline.currentTime :
+            performance.now();
 
         let progress;
         if (finish) {

@@ -32,7 +32,7 @@ describe('#dropIn', function() {
         });
     });
 
-    it('adds a drop-in animation to each node', async function() {
+    it.only('adds a drop-in animation to each node', async function() {
         await exec(_ => {
             dom.dropIn('.animate', {
                 debug: true
