@@ -127,11 +127,12 @@ Object.assign(DOM, {
      * @param {string} events The event names.
      * @param {string} delegate The delegate selector.
      * @param {DOM~eventCallback} callback The callback to execute.
+     * @param {Boolean} [useCapture] Whether to use a capture event.
      * @returns {DOM~eventCallback} The wrapped event callback.
      */
-    _selfDestructFactory(node, events, delegate, callback) {
+    _selfDestructFactory(node, events, delegate, callback, useCapture = null) {
         return e => {
-            this._removeEvent(node, events, callback, delegate);
+            this._removeEvent(node, events, callback, useCapture, delegate);
             return callback(e);
         };
     }

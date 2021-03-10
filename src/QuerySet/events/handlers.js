@@ -8,10 +8,11 @@ Object.assign(QuerySet.prototype, {
      * Add an event to each node.
      * @param {string} events The event names.
      * @param {DOM~eventCallback} callback The callback to execute.
+     * @param {Boolean} [useCapture] Whether to use a capture event.
      * @returns {QuerySet} The QuerySet object.
      */
-    addEvent(events, callback) {
-        this._dom.addEvent(this, events, callback);
+    addEvent(events, callback, useCapture = false) {
+        this._dom.addEvent(this, events, callback, useCapture);
 
         return this;
     },
@@ -21,10 +22,11 @@ Object.assign(QuerySet.prototype, {
      * @param {string} events The event names.
      * @param {string} delegate The delegate selector.
      * @param {DOM~eventCallback} callback The callback to execute.
+     * @param {Boolean} [useCapture] Whether to use a capture event.
      * @returns {QuerySet} The QuerySet object.
      */
-    addEventDelegate(events, delegate, callback) {
-        this._dom.addEventDelegate(this, events, delegate, callback);
+    addEventDelegate(events, delegate, callback, useCapture = false) {
+        this._dom.addEventDelegate(this, events, delegate, callback, useCapture);
 
         return this;
     },
@@ -34,10 +36,11 @@ Object.assign(QuerySet.prototype, {
      * @param {string} events The event names.
      * @param {string} delegate The delegate selector.
      * @param {DOM~eventCallback} callback The callback to execute.
+     * @param {Boolean} [useCapture] Whether to use a capture event.
      * @returns {QuerySet} The QuerySet object.
      */
-    addEventDelegateOnce(events, delegate, callback) {
-        this._dom.addEventDelegateOnce(this, events, delegate, callback);
+    addEventDelegateOnce(events, delegate, callback, useCapture = false) {
+        this._dom.addEventDelegateOnce(this, events, delegate, callback, useCapture);
 
         return this;
     },
@@ -46,10 +49,11 @@ Object.assign(QuerySet.prototype, {
      * Add a self-destructing event to each node.
      * @param {string} events The event names.
      * @param {DOM~eventCallback} callback The callback to execute.
+     * @param {Boolean} [useCapture] Whether to use a capture event.
      * @returns {QuerySet} The QuerySet object.
      */
-    addEventOnce(events, callback) {
-        this._dom.addEventOnce(this, events, callback);
+    addEventOnce(events, callback, useCapture = false) {
+        this._dom.addEventOnce(this, events, callback, useCapture);
 
         return this;
     },
@@ -69,10 +73,11 @@ Object.assign(QuerySet.prototype, {
      * Remove events from each node.
      * @param {string} [events] The event names.
      * @param {DOM~eventCallback} [callback] The callback to remove.
+     * @param {Boolean} [useCapture] Whether to use a capture event.
      * @returns {QuerySet} The QuerySet object.
      */
-    removeEvent(events, callback) {
-        this._dom.removeEvent(this, events, callback);
+    removeEvent(events, callback, useCapture = null) {
+        this._dom.removeEvent(this, events, callback, useCapture);
 
         return this;
     },
@@ -82,10 +87,11 @@ Object.assign(QuerySet.prototype, {
      * @param {string} [events] The event names.
      * @param {string} [delegate] The delegate selector.
      * @param {DOM~eventCallback} [callback] The callback to remove.
+     * @param {Boolean} [useCapture] Whether to use a capture event.
      * @returns {QuerySet} The QuerySet object.
      */
-    removeEventDelegate(events, delegate, callback) {
-        this._dom.removeEventDelegate(this, events, delegate, callback);
+    removeEventDelegate(events, delegate, callback, useCapture = null) {
+        this._dom.removeEventDelegate(this, events, delegate, callback, useCapture);
 
         return this;
     },

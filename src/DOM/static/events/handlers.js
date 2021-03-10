@@ -9,26 +9,28 @@ Object.assign(DOM, {
      * @param {HTMLElement|ShadowRoot|Document|Window} node The input node.
      * @param {string} event The event name.
      * @param {DOM~eventCallback} callback The callback to execute.
+     * @param {Boolean} [useCapture] Whether to use a capture event.
      * @param {string} [delegate] The delegate selector.
      * @param {Boolean} [selfDestruct] Whether to remove the event after triggering.
      */
-    _addEvent(node, event, callback, delegate, selfDestruct) {
+    _addEvent(node, event, callback, useCapture = false, delegate, selfDestruct) {
         if (!this._events.has(node)) {
             this._events.set(node, {});
         }
 
         const nodeEvents = this._events.get(node),
             eventData = {
-                delegate,
                 callback,
-                selfDestruct
+                delegate,
+                selfDestruct,
+                useCapture
             },
             realEvent = this._parseEvent(event);
 
         let realCallback = callback;
 
         if (selfDestruct) {
-            realCallback = this._selfDestructFactory(node, event, delegate, realCallback);
+            realCallback = this._selfDestructFactory(node, event, delegate, realCallback, useCapture);
         }
 
         realCallback = this._preventFactory(realCallback);
@@ -49,7 +51,7 @@ Object.assign(DOM, {
 
         nodeEvents[realEvent].push(eventData);
 
-        node.addEventListener(realEvent, realCallback);
+        node.addEventListener(realEvent, realCallback, useCapture);
     },
 
     /**
@@ -69,6 +71,7 @@ Object.assign(DOM, {
                     other,
                     eventData.event,
                     eventData.callback,
+                    eventData.useCapture,
                     eventData.delegate,
                     eventData.selfDestruct
                 );
@@ -81,9 +84,10 @@ Object.assign(DOM, {
      * @param {HTMLElement|ShadowRoot|Document|Window} nodes The input node.
      * @param {string} [event] The event name.
      * @param {DOM~eventCallback} [callback] The callback to remove.
+     * @param {Boolean} [useCapture] Whether to use a capture event.
      * @param {string} [delegate] The delegate selector.
      */
-    _removeEvent(node, event, callback, delegate) {
+    _removeEvent(node, event, callback, useCapture = null, delegate) {
         if (!this._events.has(node)) {
             return;
         }
@@ -94,7 +98,7 @@ Object.assign(DOM, {
             const realEvents = Object.keys(nodeEvents);
 
             for (const realEvent of realEvents) {
-                this._removeEvent(node, realEvent, callback, delegate);
+                this._removeEvent(node, realEvent, callback, useCapture, delegate);
             }
 
             return;
@@ -115,6 +119,10 @@ Object.assign(DOM, {
                 (
                     callback &&
                     callback !== eventData.callback
+                ) ||
+                (
+                    useCapture !== null &&
+                    useCapture !== eventData.useCapture
                 )
             ) {
                 return true;
@@ -128,7 +136,7 @@ Object.assign(DOM, {
                 }
             }
 
-            node.removeEventListener(eventData.realEvent, eventData.realCallback);
+            node.removeEventListener(eventData.realEvent, eventData.realCallback, eventData.useCapture);
 
             return false;
         });

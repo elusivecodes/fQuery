@@ -663,4 +663,67 @@ describe('QuerySet #removeEventDelegate', function() {
         );
     });
 
+    it('removes capture events', async function() {
+        assert.strictEqual(
+            await exec(_ => {
+                let result = 0;
+                const event1 = new Event('click');
+                const event2 = new Event('hover');
+                const element1 = document.getElementById('test1');
+                const element2 = document.getElementById('test2');
+                const element3 = document.getElementById('test3');
+                const element4 = document.getElementById('test4');
+                dom.addEventDelegate('div', 'click hover', 'a', _ => {
+                    result++;
+                }, true);
+                dom.queryMutable('div')
+                    .removeEventDelegate(null, 'a');
+                element1.dispatchEvent(event1);
+                element1.dispatchEvent(event2);
+                element2.dispatchEvent(event1);
+                element2.dispatchEvent(event2);
+                element3.dispatchEvent(event1);
+                element3.dispatchEvent(event2);
+                element4.dispatchEvent(event1);
+                element4.dispatchEvent(event2);
+                return result;
+            }),
+            0
+        );
+    });
+
+    it('works with use capture', async function() {
+        assert.strictEqual(
+            await exec(_ => {
+                let result = 0;
+                const event1 = new Event('click', {
+                    bubbles: true
+                });
+                const event2 = new Event('hover');
+                const element1 = document.getElementById('test1');
+                const element2 = document.getElementById('test2');
+                const element3 = document.getElementById('test3');
+                const element4 = document.getElementById('test4');
+                dom.addEventDelegate('div', 'click', 'a', _ => {
+                    result++;
+                });
+                dom.addEventDelegate('div', 'hover', 'a', _ => {
+                    result++;
+                }, true);
+                dom.queryMutable('div')
+                    .removeEventDelegate(null, 'a', null, true);
+                element1.dispatchEvent(event1);
+                element1.dispatchEvent(event2);
+                element2.dispatchEvent(event1);
+                element2.dispatchEvent(event2);
+                element3.dispatchEvent(event1);
+                element3.dispatchEvent(event2);
+                element4.dispatchEvent(event1);
+                element4.dispatchEvent(event2);
+                return result;
+            }),
+            4
+        );
+    });
+
 });

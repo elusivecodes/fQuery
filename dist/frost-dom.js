@@ -1,5 +1,5 @@
 /**
- * FrostDOM v2.0.8
+ * FrostDOM v2.0.9
  * https://github.com/elusivecodes/FrostDOM
  */
 (function(global, factory) {
@@ -2603,10 +2603,11 @@
          * @param {string|array|HTMLElement|ShadowRoot|Document|Window|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
          * @param {string} events The event names.
          * @param {DOM~eventCallback} callback The callback to execute.
+         * @param {Boolean} [useCapture] Whether to use a capture event.
          * @param {string} [delegate] The delegate selector.
          * @param {Boolean} [selfDestruct] Whether to remove the event after triggering.
          */
-        addEvent(nodes, events, callback, delegate, selfDestruct) {
+        addEvent(nodes, events, callback, useCapture = false, delegate, selfDestruct) {
             nodes = this.parseNodes(nodes, {
                 shadow: true,
                 document: true,
@@ -2615,7 +2616,7 @@
 
             for (const node of nodes) {
                 for (const event of this.constructor._parseEvents(events)) {
-                    this.constructor._addEvent(node, event, callback, delegate, selfDestruct);
+                    this.constructor._addEvent(node, event, callback, useCapture, delegate, selfDestruct);
                 }
             }
         },
@@ -2626,9 +2627,10 @@
          * @param {string} events The event names.
          * @param {string} delegate The delegate selector.
          * @param {DOM~eventCallback} callback The callback to execute.
+         * @param {Boolean} [useCapture] Whether to use a capture event.
          */
-        addEventDelegate(nodes, events, delegate, callback) {
-            this.addEvent(nodes, events, callback, delegate);
+        addEventDelegate(nodes, events, delegate, callback, useCapture = false) {
+            this.addEvent(nodes, events, callback, useCapture, delegate);
         },
 
         /**
@@ -2637,9 +2639,10 @@
          * @param {string} events The event names.
          * @param {string} delegate The delegate selector.
          * @param {DOM~eventCallback} callback The callback to execute.
+         * @param {Boolean} [useCapture] Whether to use a capture event.
          */
-        addEventDelegateOnce(nodes, events, delegate, callback) {
-            this.addEvent(nodes, events, callback, delegate, true);
+        addEventDelegateOnce(nodes, events, delegate, callback, useCapture = false) {
+            this.addEvent(nodes, events, callback, useCapture, delegate, true);
         },
 
         /**
@@ -2647,9 +2650,10 @@
          * @param {string|array|HTMLElement|ShadowRoot|Document|Window|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
          * @param {string} events The event names.
          * @param {DOM~eventCallback} callback The callback to execute.
+         * @param {Boolean} [useCapture] Whether to use a capture event.
          */
-        addEventOnce(nodes, events, callback) {
-            this.addEvent(nodes, events, callback, null, true);
+        addEventOnce(nodes, events, callback, useCapture = false) {
+            this.addEvent(nodes, events, callback, useCapture, null, true);
         },
 
         /**
@@ -2682,9 +2686,10 @@
          * @param {string|array|HTMLElement|ShadowRoot|Document|Window|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
          * @param {string} [events] The event names.
          * @param {DOM~eventCallback} [callback] The callback to remove.
+         * @param {Boolean} [useCapture] Whether to use a capture event.
          * @param {string} [delegate] The delegate selector.
          */
-        removeEvent(nodes, events, callback, delegate) {
+        removeEvent(nodes, events, callback, useCapture = null, delegate) {
             nodes = this.parseNodes(nodes, {
                 shadow: true,
                 document: true,
@@ -2701,12 +2706,12 @@
                 }
 
                 if (!events) {
-                    this.constructor._removeEvent(node, events, callback, delegate);
+                    this.constructor._removeEvent(node, events, callback, useCapture, delegate);
                     continue;
                 }
 
                 for (const event of events) {
-                    this.constructor._removeEvent(node, event, callback, delegate);
+                    this.constructor._removeEvent(node, event, callback, useCapture, delegate);
                 }
             }
         },
@@ -2717,9 +2722,10 @@
          * @param {string} [events] The event names.
          * @param {string} [delegate] The delegate selector.
          * @param {DOM~eventCallback} [callback] The callback to remove.
+         * @param {Boolean} [useCapture] Whether to use a capture event.
          */
-        removeEventDelegate(nodes, events, delegate, callback) {
-            this.removeEvent(nodes, events, callback, delegate);
+        removeEventDelegate(nodes, events, delegate, callback, useCapture = null) {
+            this.removeEvent(nodes, events, callback, useCapture, delegate);
         },
 
         /**
@@ -6408,11 +6414,12 @@
          * @param {string} events The event names.
          * @param {string} delegate The delegate selector.
          * @param {DOM~eventCallback} callback The callback to execute.
+         * @param {Boolean} [useCapture] Whether to use a capture event.
          * @returns {DOM~eventCallback} The wrapped event callback.
          */
-        _selfDestructFactory(node, events, delegate, callback) {
+        _selfDestructFactory(node, events, delegate, callback, useCapture = null) {
             return e => {
-                this._removeEvent(node, events, callback, delegate);
+                this._removeEvent(node, events, callback, useCapture, delegate);
                 return callback(e);
             };
         }
@@ -6430,26 +6437,28 @@
          * @param {HTMLElement|ShadowRoot|Document|Window} node The input node.
          * @param {string} event The event name.
          * @param {DOM~eventCallback} callback The callback to execute.
+         * @param {Boolean} [useCapture] Whether to use a capture event.
          * @param {string} [delegate] The delegate selector.
          * @param {Boolean} [selfDestruct] Whether to remove the event after triggering.
          */
-        _addEvent(node, event, callback, delegate, selfDestruct) {
+        _addEvent(node, event, callback, useCapture = false, delegate, selfDestruct) {
             if (!this._events.has(node)) {
                 this._events.set(node, {});
             }
 
             const nodeEvents = this._events.get(node),
                 eventData = {
-                    delegate,
                     callback,
-                    selfDestruct
+                    delegate,
+                    selfDestruct,
+                    useCapture
                 },
                 realEvent = this._parseEvent(event);
 
             let realCallback = callback;
 
             if (selfDestruct) {
-                realCallback = this._selfDestructFactory(node, event, delegate, realCallback);
+                realCallback = this._selfDestructFactory(node, event, delegate, realCallback, useCapture);
             }
 
             realCallback = this._preventFactory(realCallback);
@@ -6470,7 +6479,7 @@
 
             nodeEvents[realEvent].push(eventData);
 
-            node.addEventListener(realEvent, realCallback);
+            node.addEventListener(realEvent, realCallback, useCapture);
         },
 
         /**
@@ -6490,6 +6499,7 @@
                         other,
                         eventData.event,
                         eventData.callback,
+                        eventData.useCapture,
                         eventData.delegate,
                         eventData.selfDestruct
                     );
@@ -6502,9 +6512,10 @@
          * @param {HTMLElement|ShadowRoot|Document|Window} nodes The input node.
          * @param {string} [event] The event name.
          * @param {DOM~eventCallback} [callback] The callback to remove.
+         * @param {Boolean} [useCapture] Whether to use a capture event.
          * @param {string} [delegate] The delegate selector.
          */
-        _removeEvent(node, event, callback, delegate) {
+        _removeEvent(node, event, callback, useCapture = null, delegate) {
             if (!this._events.has(node)) {
                 return;
             }
@@ -6515,7 +6526,7 @@
                 const realEvents = Object.keys(nodeEvents);
 
                 for (const realEvent of realEvents) {
-                    this._removeEvent(node, realEvent, callback, delegate);
+                    this._removeEvent(node, realEvent, callback, useCapture, delegate);
                 }
 
                 return;
@@ -6536,6 +6547,10 @@
                     (
                         callback &&
                         callback !== eventData.callback
+                    ) ||
+                    (
+                        useCapture !== null &&
+                        useCapture !== eventData.useCapture
                     )
                 ) {
                     return true;
@@ -6549,7 +6564,7 @@
                     }
                 }
 
-                node.removeEventListener(eventData.realEvent, eventData.realCallback);
+                node.removeEventListener(eventData.realEvent, eventData.realCallback, eventData.useCapture);
 
                 return false;
             });
@@ -8347,10 +8362,11 @@
          * Add an event to each node.
          * @param {string} events The event names.
          * @param {DOM~eventCallback} callback The callback to execute.
+         * @param {Boolean} [useCapture] Whether to use a capture event.
          * @returns {QuerySet} The QuerySet object.
          */
-        addEvent(events, callback) {
-            this._dom.addEvent(this, events, callback);
+        addEvent(events, callback, useCapture = false) {
+            this._dom.addEvent(this, events, callback, useCapture);
 
             return this;
         },
@@ -8360,10 +8376,11 @@
          * @param {string} events The event names.
          * @param {string} delegate The delegate selector.
          * @param {DOM~eventCallback} callback The callback to execute.
+         * @param {Boolean} [useCapture] Whether to use a capture event.
          * @returns {QuerySet} The QuerySet object.
          */
-        addEventDelegate(events, delegate, callback) {
-            this._dom.addEventDelegate(this, events, delegate, callback);
+        addEventDelegate(events, delegate, callback, useCapture = false) {
+            this._dom.addEventDelegate(this, events, delegate, callback, useCapture);
 
             return this;
         },
@@ -8373,10 +8390,11 @@
          * @param {string} events The event names.
          * @param {string} delegate The delegate selector.
          * @param {DOM~eventCallback} callback The callback to execute.
+         * @param {Boolean} [useCapture] Whether to use a capture event.
          * @returns {QuerySet} The QuerySet object.
          */
-        addEventDelegateOnce(events, delegate, callback) {
-            this._dom.addEventDelegateOnce(this, events, delegate, callback);
+        addEventDelegateOnce(events, delegate, callback, useCapture = false) {
+            this._dom.addEventDelegateOnce(this, events, delegate, callback, useCapture);
 
             return this;
         },
@@ -8385,10 +8403,11 @@
          * Add a self-destructing event to each node.
          * @param {string} events The event names.
          * @param {DOM~eventCallback} callback The callback to execute.
+         * @param {Boolean} [useCapture] Whether to use a capture event.
          * @returns {QuerySet} The QuerySet object.
          */
-        addEventOnce(events, callback) {
-            this._dom.addEventOnce(this, events, callback);
+        addEventOnce(events, callback, useCapture = false) {
+            this._dom.addEventOnce(this, events, callback, useCapture);
 
             return this;
         },
@@ -8408,10 +8427,11 @@
          * Remove events from each node.
          * @param {string} [events] The event names.
          * @param {DOM~eventCallback} [callback] The callback to remove.
+         * @param {Boolean} [useCapture] Whether to use a capture event.
          * @returns {QuerySet} The QuerySet object.
          */
-        removeEvent(events, callback) {
-            this._dom.removeEvent(this, events, callback);
+        removeEvent(events, callback, useCapture = null) {
+            this._dom.removeEvent(this, events, callback, useCapture);
 
             return this;
         },
@@ -8421,10 +8441,11 @@
          * @param {string} [events] The event names.
          * @param {string} [delegate] The delegate selector.
          * @param {DOM~eventCallback} [callback] The callback to remove.
+         * @param {Boolean} [useCapture] Whether to use a capture event.
          * @returns {QuerySet} The QuerySet object.
          */
-        removeEventDelegate(events, delegate, callback) {
-            this._dom.removeEventDelegate(this, events, delegate, callback);
+        removeEventDelegate(events, delegate, callback, useCapture = null) {
+            this._dom.removeEventDelegate(this, events, delegate, callback, useCapture);
 
             return this;
         },

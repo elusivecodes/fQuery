@@ -510,4 +510,55 @@ describe('QuerySet #removeEvent', function() {
         );
     });
 
+    it('removes capture events', async function() {
+        assert.strictEqual(
+            await exec(_ => {
+                let result = 0;
+                const event1 = new Event('click');
+                const event2 = new Event('hover');
+                const element1 = document.getElementById('test1');
+                const element2 = document.getElementById('test2');
+                dom.addEvent(document, 'click hover', _ => {
+                    result++;
+                }, true);
+                dom.queryMutable(document)
+                    .removeEvent();
+                element1.dispatchEvent(event1);
+                element1.dispatchEvent(event2);
+                element2.dispatchEvent(event1);
+                element2.dispatchEvent(event2);
+                return result;
+            }),
+            0
+        );
+    });
+
+    it('works with useCapture', async function() {
+        assert.strictEqual(
+            await exec(_ => {
+                let result = 0;
+                const event1 = new Event('click', {
+                    bubbles: true
+                });
+                const event2 = new Event('hover');
+                const element1 = document.getElementById('test1');
+                const element2 = document.getElementById('test2');
+                dom.addEvent(document, 'click', _ => {
+                    result++;
+                });
+                dom.addEvent(document, 'hover', _ => {
+                    result++;
+                }, true);
+                dom.queryMutable(document)
+                    .removeEvent(null, null, true);
+                element1.dispatchEvent(event1);
+                element1.dispatchEvent(event2);
+                element2.dispatchEvent(event1);
+                element2.dispatchEvent(event2);
+                return result;
+            }),
+            2
+        );
+    });
+
 });

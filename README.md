@@ -979,9 +979,10 @@ Add events to each node.
 - `nodes` is a query selector string, a *HTMLElement*, *ShadowRoot*, *Document*, *Window*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
 - `events` is a space-separated string of events to attach to the nodes.
 - `callback` is a function that accepts an `event` argument, which will be called when the event is triggered.
+- `useCapture` is a boolean indicating whether to use a capture event, and will default to *false*.
 
 ```javascript
-dom.addEvent(nodes, events, callback);
+dom.addEvent(nodes, events, callback, useCapture);
 ```
 
 **Add Event Delegate**
@@ -992,9 +993,10 @@ Add delegated events to each node.
 - `events` is a space-separated string of events to attach to the nodes.
 - `delegate` is a query selector string which will only trigger the event if it is propagated by a target matching the selector.
 - `callback` is a function that accepts an `event` argument, which will be called when the event is triggered.
+- `useCapture` is a boolean indicating whether to use a capture event, and will default to *false*.
 
 ```javascript
-dom.addEventDelegate(nodes, events, delegate, callback);
+dom.addEventDelegate(nodes, events, delegate, callback, useCapture);
 ```
 
 **Add Event Delegate Once**
@@ -1005,9 +1007,10 @@ Add self-destructing delegated events to each node.
 - `events` is a space-separated string of events to attach to the nodes.
 - `delegate` is a query selector string which will only trigger the event if it is propagated by a target matching the selector.
 - `callback` is a function that accepts an `event` argument, which will be called when the event is triggered.
+- `useCapture` is a boolean indicating whether to use a capture event, and will default to *false*.
 
 ```javascript
-dom.addEventDelegateOnce(nodes, events, delegate, callback);
+dom.addEventDelegateOnce(nodes, events, delegate, callback, useCapture);
 ```
 
 **Add Event Once**
@@ -1017,9 +1020,10 @@ Add self-destructing events to each node.
 - `nodes` is a query selector string, a *HTMLElement*, *ShadowRoot*, *Document*, *Window*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
 - `events` is a space-separated string of events to attach to the nodes.
 - `callback` is a function that accepts an `event` argument, which will be called when the event is triggered.
+- `useCapture` is a boolean indicating whether to use a capture event, and will default to *false*.
 
 ```javascript
-dom.addEventOnce(nodes, events, callback);
+dom.addEventOnce(nodes, events, callback, useCapture);
 ```
 
 **Clone Events**
@@ -1040,14 +1044,13 @@ Remove events from each node.
 - `nodes` is a query selector string, a *HTMLElement*, *ShadowRoot*, *Document*, *Window*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
 - `events` is a space-separated string of events to remove from the nodes.
 - `callback` is a function that accepts an `event` argument, which will be called when the event is triggered.
+- `useCapture` is a boolean indicating whether to use a capture event, and will default to *null*.
 
 ```javascript
-dom.removeEvent(nodes, events, callback);
+dom.removeEvent(nodes, events, callback, useCapture);
 ```
 
-If the `events` and `callback` arguments are omitted, this method will remove all events from each node.
-
-If just the `callback` arguments is omitted, this method will remove all events of the specified types.
+If the `events`, `callback` or `useCapture` arguments are omitted, this method will remove all matching events from each node.
 
 **Remove Event Delegate**
 
@@ -1057,9 +1060,10 @@ Remove delegated events from each node.
 - `events` is a space-separated string of events to remove from the nodes.
 - `delegate` is a query selector string which will only trigger the event if it is propagated by a target matching the selector.
 - `callback` is a function that accepts an `event` argument, which will be called when the event is triggered.
+- `useCapture` is a boolean indicating whether to use a capture event, and will default to *null*.
 
 ```javascript
-dom.removeEventDelegate(nodes, events, delegate, callback);
+dom.removeEventDelegate(nodes, events, delegate, callback, useCapture);
 ```
 
 **Trigger Event**

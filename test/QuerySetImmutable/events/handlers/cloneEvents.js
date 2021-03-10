@@ -300,4 +300,26 @@ describe('QuerySetImmutable #cloneEvents', function() {
         );
     });
 
+    it('clones useCapture events', async function() {
+        assert.strictEqual(
+            await exec(_ => {
+                let result = 0;
+                const event = new Event('click');
+                dom.removeEvent('#test1');
+                dom.removeEvent('#test2');
+                dom.addEvent('#eventParent', 'click', _ => {
+                    result++;
+                }, true);
+                dom.query('#eventParent')
+                    .cloneEvents('#noEventParent');
+                document.getElementById('test1').dispatchEvent(event);
+                document.getElementById('test2').dispatchEvent(event);
+                document.getElementById('test3').dispatchEvent(event);
+                document.getElementById('test4').dispatchEvent(event);
+                return result;
+            }),
+            4
+        );
+    });
+
 });

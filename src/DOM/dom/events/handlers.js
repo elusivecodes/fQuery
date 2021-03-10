@@ -9,10 +9,11 @@ Object.assign(DOM.prototype, {
      * @param {string|array|HTMLElement|ShadowRoot|Document|Window|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
      * @param {string} events The event names.
      * @param {DOM~eventCallback} callback The callback to execute.
+     * @param {Boolean} [useCapture] Whether to use a capture event.
      * @param {string} [delegate] The delegate selector.
      * @param {Boolean} [selfDestruct] Whether to remove the event after triggering.
      */
-    addEvent(nodes, events, callback, delegate, selfDestruct) {
+    addEvent(nodes, events, callback, useCapture = false, delegate, selfDestruct) {
         nodes = this.parseNodes(nodes, {
             shadow: true,
             document: true,
@@ -21,7 +22,7 @@ Object.assign(DOM.prototype, {
 
         for (const node of nodes) {
             for (const event of this.constructor._parseEvents(events)) {
-                this.constructor._addEvent(node, event, callback, delegate, selfDestruct);
+                this.constructor._addEvent(node, event, callback, useCapture, delegate, selfDestruct);
             }
         }
     },
@@ -32,9 +33,10 @@ Object.assign(DOM.prototype, {
      * @param {string} events The event names.
      * @param {string} delegate The delegate selector.
      * @param {DOM~eventCallback} callback The callback to execute.
+     * @param {Boolean} [useCapture] Whether to use a capture event.
      */
-    addEventDelegate(nodes, events, delegate, callback) {
-        this.addEvent(nodes, events, callback, delegate);
+    addEventDelegate(nodes, events, delegate, callback, useCapture = false) {
+        this.addEvent(nodes, events, callback, useCapture, delegate);
     },
 
     /**
@@ -43,9 +45,10 @@ Object.assign(DOM.prototype, {
      * @param {string} events The event names.
      * @param {string} delegate The delegate selector.
      * @param {DOM~eventCallback} callback The callback to execute.
+     * @param {Boolean} [useCapture] Whether to use a capture event.
      */
-    addEventDelegateOnce(nodes, events, delegate, callback) {
-        this.addEvent(nodes, events, callback, delegate, true);
+    addEventDelegateOnce(nodes, events, delegate, callback, useCapture = false) {
+        this.addEvent(nodes, events, callback, useCapture, delegate, true);
     },
 
     /**
@@ -53,9 +56,10 @@ Object.assign(DOM.prototype, {
      * @param {string|array|HTMLElement|ShadowRoot|Document|Window|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
      * @param {string} events The event names.
      * @param {DOM~eventCallback} callback The callback to execute.
+     * @param {Boolean} [useCapture] Whether to use a capture event.
      */
-    addEventOnce(nodes, events, callback) {
-        this.addEvent(nodes, events, callback, null, true);
+    addEventOnce(nodes, events, callback, useCapture = false) {
+        this.addEvent(nodes, events, callback, useCapture, null, true);
     },
 
     /**
@@ -88,9 +92,10 @@ Object.assign(DOM.prototype, {
      * @param {string|array|HTMLElement|ShadowRoot|Document|Window|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
      * @param {string} [events] The event names.
      * @param {DOM~eventCallback} [callback] The callback to remove.
+     * @param {Boolean} [useCapture] Whether to use a capture event.
      * @param {string} [delegate] The delegate selector.
      */
-    removeEvent(nodes, events, callback, delegate) {
+    removeEvent(nodes, events, callback, useCapture = null, delegate) {
         nodes = this.parseNodes(nodes, {
             shadow: true,
             document: true,
@@ -107,12 +112,12 @@ Object.assign(DOM.prototype, {
             }
 
             if (!events) {
-                this.constructor._removeEvent(node, events, callback, delegate);
+                this.constructor._removeEvent(node, events, callback, useCapture, delegate);
                 continue;
             }
 
             for (const event of events) {
-                this.constructor._removeEvent(node, event, callback, delegate);
+                this.constructor._removeEvent(node, event, callback, useCapture, delegate);
             }
         }
     },
@@ -123,9 +128,10 @@ Object.assign(DOM.prototype, {
      * @param {string} [events] The event names.
      * @param {string} [delegate] The delegate selector.
      * @param {DOM~eventCallback} [callback] The callback to remove.
+     * @param {Boolean} [useCapture] Whether to use a capture event.
      */
-    removeEventDelegate(nodes, events, delegate, callback) {
-        this.removeEvent(nodes, events, callback, delegate);
+    removeEventDelegate(nodes, events, delegate, callback, useCapture = null) {
+        this.removeEvent(nodes, events, callback, useCapture, delegate);
     },
 
     /**

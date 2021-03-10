@@ -291,4 +291,44 @@ describe('#addEvent', function() {
         );
     });
 
+    it('does not capture events', async function() {
+        assert.strictEqual(
+            await exec(_ => {
+                let result = 0;
+                const event = new Event('click');
+                const element1 = document.getElementById('test1');
+                const element2 = document.getElementById('test2');
+                dom.addEvent(document, 'click', _ => {
+                    result++;
+                });
+                element1.dispatchEvent(event);
+                element1.dispatchEvent(event);
+                element2.dispatchEvent(event);
+                element2.dispatchEvent(event);
+                return result;
+            }),
+            0
+        );
+    });
+
+    it('works with useCapture', async function() {
+        assert.strictEqual(
+            await exec(_ => {
+                let result = 0;
+                const event = new Event('click');
+                const element1 = document.getElementById('test1');
+                const element2 = document.getElementById('test2');
+                dom.addEvent(document, 'click', _ => {
+                    result++;
+                }, true);
+                element1.dispatchEvent(event);
+                element1.dispatchEvent(event);
+                element2.dispatchEvent(event);
+                element2.dispatchEvent(event);
+                return result;
+            }),
+            4
+        );
+    });
+
 });
