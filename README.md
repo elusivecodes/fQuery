@@ -2371,7 +2371,7 @@ Load and execute multiple JavaScript files (in order).
 This method returns a *Promise* that resolves when the scripts are loaded, or rejects on failure.
 
 ```javascript
-const promise = dom.loadScripts(scripts, attributes, cache);
+const promise = dom.loadScripts(scripts, cache);
 ```
 
 ### Stylesheets

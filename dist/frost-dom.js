@@ -1,5 +1,5 @@
 /**
- * FrostDOM v2.0.9
+ * FrostDOM v2.0.10
  * https://github.com/elusivecodes/FrostDOM
  */
 (function(global, factory) {
@@ -6842,8 +6842,10 @@
          * @param {Node|HTMLElement|DocumentFragment|ShadowRoot} node The input node.
          */
         _remove(node) {
-            const eventData = new Event('remove');
-            node.dispatchEvent(eventData);
+            this._triggerEvent(node, 'remove', {
+                bubbles: false,
+                cancelable: false
+            });
 
             this._empty(node, false);
 

@@ -99,8 +99,10 @@ Object.assign(DOM, {
      * @param {Node|HTMLElement|DocumentFragment|ShadowRoot} node The input node.
      */
     _remove(node) {
-        const eventData = new Event('remove');
-        node.dispatchEvent(eventData);
+        this._triggerEvent(node, 'remove', {
+            bubbles: false,
+            cancelable: false
+        });
 
         this._empty(node, false);
 
