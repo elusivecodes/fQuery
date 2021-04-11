@@ -56,7 +56,7 @@ It is a lightweight (~18kb gzipped) and modern library, utilizing ES6 syntax and
 Alternatively, a bundle version is supplied which includes the *FrostCore* library in a single JS file.
 
 ```html
-<script type="text/javascript" src="/path/to/frost-core-bundle.min.js"></script>
+<script type="text/javascript" src="/path/to/frost-dom-bundle.min.js"></script>
 ```
 
 **Using NPM**

@@ -1,6 +1,6 @@
 {
     "name": "frostdom",
-    "version": "2.0.10",
+    "version": "2.0.11",
     "description": "FrostDOM is a free, open-source DOM manipulation library for JavaScript.",
     "keywords": [
         "dom",
