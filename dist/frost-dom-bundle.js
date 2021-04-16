@@ -1,5 +1,5 @@
 /**
- * FrostDOM Bundle v1.1.6
+ * FrostDOM Bundle v2.0.12
  * https://github.com/elusivecodes/FrostCore
  * https://github.com/elusivecodes/FrostDOM
  */
@@ -1096,7 +1096,7 @@
     });
 
     /**
-     * FrostDOM v2.0.11
+     * FrostDOM v2.0.12
      * https://github.com/elusivecodes/FrostDOM
      */
     (function(global, factory) {
@@ -3600,18 +3600,36 @@
                 }
 
                 return e => {
+                    const isTouch = e.type === 'touchstart';
+
+                    if (isTouch) {
+                        e.preventDefault();
+                    }
+
                     if (down && down(e) === false) {
                         return false;
                     }
 
+                    const moveEvent = isTouch ?
+                        'touchmove' :
+                        'mousemove';
+
                     if (move) {
-                        this.addEvent(window, 'mousemove', move);
+                        this.addEvent(window, moveEvent, move);
                     }
 
                     if (move || up) {
-                        this.addEventOnce(window, 'mouseup', e => {
+                        const upEvent = isTouch ?
+                            'touchend' :
+                            'mouseup';
+
+                        this.addEventOnce(window, upEvent, e => {
+                            if (isTouch) {
+                                e.preventDefault();
+                            }
+
                             if (move) {
-                                this.removeEvent(window, 'mousemove', move);
+                                this.removeEvent(window, moveEvent, move);
                             }
 
                             if (up) {

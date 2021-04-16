@@ -184,4 +184,40 @@ describe('#mouseDragFactory', function() {
         );
     });
 
+    it('works with touch events', async function() {
+        assert.strictEqual(
+            await exec(_ => {
+                let result = 0;
+                const downEvent = new Event('touchstart');
+                const moveEvent = new Event('touchmove', {
+                    bubbles: true
+                });
+                const upEvent = new Event('touchend', {
+                    bubbles: true
+                });
+                dom.addEvent(
+                    document.body,
+                    'touchstart',
+                    dom.mouseDragFactory(
+                        _ => {
+                            result++;
+                        },
+                        _ => {
+                            result++;
+                        },
+                        _ => {
+                            result++;
+                        },
+                        false
+                    )
+                );
+                document.body.dispatchEvent(downEvent);
+                document.body.dispatchEvent(moveEvent);
+                document.body.dispatchEvent(upEvent);
+                return result;
+            }),
+            3
+        );
+    });
+
 });

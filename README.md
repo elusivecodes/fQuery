@@ -1113,6 +1113,8 @@ Create a mouse drag event (optionally limited by animation frame).
 const drag = dom.mouseDragFactory(down, move, up, debounce);
 ```
 
+This method also works with touch events.
+
 
 #### Manipulation
 
