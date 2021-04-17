@@ -1,5 +1,5 @@
 /**
- * FrostDOM Bundle v2.0.12
+ * FrostDOM Bundle v2.0.13
  * https://github.com/elusivecodes/FrostCore
  * https://github.com/elusivecodes/FrostDOM
  */
@@ -1096,7 +1096,7 @@
     });
 
     /**
-     * FrostDOM v2.0.12
+     * FrostDOM v2.0.13
      * https://github.com/elusivecodes/FrostDOM
      */
     (function(global, factory) {
@@ -3602,12 +3602,12 @@
                 return e => {
                     const isTouch = e.type === 'touchstart';
 
-                    if (isTouch) {
-                        e.preventDefault();
+                    if (down && down(e) === false) {
+                        return;
                     }
 
-                    if (down && down(e) === false) {
-                        return false;
+                    if (isTouch) {
+                        e.preventDefault();
                     }
 
                     const moveEvent = isTouch ?

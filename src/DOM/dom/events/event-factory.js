@@ -25,12 +25,12 @@ Object.assign(DOM.prototype, {
         return e => {
             const isTouch = e.type === 'touchstart';
 
-            if (isTouch) {
-                e.preventDefault();
+            if (down && down(e) === false) {
+                return;
             }
 
-            if (down && down(e) === false) {
-                return false;
+            if (isTouch) {
+                e.preventDefault();
             }
 
             const moveEvent = isTouch ?
