@@ -46,19 +46,23 @@ Object.assign(DOM.prototype, {
                     'touchend' :
                     'mouseup';
 
-                this.addEventOnce(window, upEvent, e => {
+                const realUp = e => {
+                    if (up && up(e) === false) {
+                        return;
+                    }
+
                     if (isTouch) {
                         e.preventDefault();
                     }
 
+                    this.removeEvent(window, upEvent, realUp);
+
                     if (move) {
                         this.removeEvent(window, moveEvent, move);
                     }
+                };
 
-                    if (up) {
-                        up(e);
-                    }
-                });
+                this.addEvent(window, upEvent, realUp);
             }
         };
     }

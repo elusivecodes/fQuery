@@ -155,6 +155,43 @@ describe('#mouseDragFactory', function() {
         );
     });
 
+    it('does not remove callbacks if up callback returns false', async function() {
+        assert.strictEqual(
+            await exec(_ => {
+                let result = 0;
+                const downEvent = new Event('mousedown');
+                const moveEvent = new Event('mousemove', {
+                    bubbles: true
+                });
+                const upEvent = new Event('mouseup', {
+                    bubbles: true
+                });
+                dom.addEvent(
+                    document.body,
+                    'mousedown',
+                    dom.mouseDragFactory(
+                        _ => { },
+                        _ => {
+                            result++;
+                        },
+                        _ => {
+                            return result > 1;
+                        },
+                        false
+                    )
+                );
+                document.body.dispatchEvent(downEvent);
+                document.body.dispatchEvent(moveEvent);
+                document.body.dispatchEvent(upEvent);
+                document.body.dispatchEvent(moveEvent);
+                document.body.dispatchEvent(moveEvent);
+                document.body.dispatchEvent(upEvent);
+                return result;
+            }),
+            3
+        );
+    });
+
     it('removes up event on mouseup', async function() {
         assert.strictEqual(
             await exec(_ => {
