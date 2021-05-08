@@ -1,5 +1,5 @@
 /**
- * FrostDOM Bundle v2.0.14
+ * FrostDOM Bundle v2.0.15
  * https://github.com/elusivecodes/FrostCore
  * https://github.com/elusivecodes/FrostDOM
  */
@@ -20,7 +20,7 @@
     }
 
     /**
-     * FrostCore v1.0.11
+     * FrostCore v1.0.12
      * https://github.com/elusivecodes/FrostCore
      */
     (function(global, factory) {
@@ -1006,15 +1006,6 @@
             isFinite(value);
 
         /**
-         * Returns true if the value is a plain object.
-         * @param {*} value The value to test.
-         * @returns {Boolean} TRUE if the value is a plain object, otherwise FALSE.
-         */
-        Core.isPlainObject = value =>
-            !!value &&
-            value.constructor === Object;
-
-        /**
          * Returns true if the value is an object.
          * @param {*} value The value to test.
          * @returns {Boolean} TRUE if the value is an object, otherwise FALSE.
@@ -1022,6 +1013,15 @@
         Core.isObject = value =>
             !!value &&
             value === Object(value);
+
+        /**
+         * Returns true if the value is a plain object.
+         * @param {*} value The value to test.
+         * @returns {Boolean} TRUE if the value is a plain object, otherwise FALSE.
+         */
+        Core.isPlainObject = value =>
+            !!value &&
+            value.constructor === Object;
 
         /**
          * Returns true if the value is a ShadowRoot.
@@ -1040,6 +1040,15 @@
          */
         Core.isString = value =>
             value === `${value}`;
+
+        /**
+         * Returns true if the value is a text Node.
+         * @param {*} value The value to test.
+         * @returns {Boolean} TRUE if the value is a text Node, otherwise FALSE.
+         */
+        Core.isText = value =>
+            !!value &&
+            value.nodeType === Core.TEXT_NODE;
 
         /**
          * Returns true if the value is undefined.
@@ -1096,7 +1105,7 @@
     });
 
     /**
-     * FrostDOM v2.0.14
+     * FrostDOM v2.0.15
      * https://github.com/elusivecodes/FrostDOM
      */
     (function(global, factory) {

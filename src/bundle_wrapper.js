@@ -1,5 +1,5 @@
 /**
- * FrostDOM Bundle v2.0.14
+ * FrostDOM Bundle v2.0.15
  * https://github.com/elusivecodes/FrostCore
  * https://github.com/elusivecodes/FrostDOM
  */
