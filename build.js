@@ -57,24 +57,12 @@ const bundle = bundleWrapper.replace(
 );
 
 // minify
-const minified = terser.minify(code, {
+terser.minify(code, {
     ecma: 8,
     compress: {
         ecma: 8
     }
-});
-
-const minifiedBundle = terser.minify(bundle, {
-    ecma: 8,
-    compress: {
-        ecma: 8
-    }
-});
-
-// write files
-if (minified.error) {
-    console.error(minified.error);
-} else {
+}).then(minified => {
     fs.writeFileSync(
         path.join(distFolder, name + '.js'),
         code
@@ -84,11 +72,16 @@ if (minified.error) {
         path.join(distFolder, name + '.min.js'),
         minified.code
     );
-}
+}).catch(error => {
+    console.error(error);
+});
 
-if (minifiedBundle.error) {
-    console.error(minifiedBundle.error);
-} else {
+terser.minify(bundle, {
+    ecma: 8,
+    compress: {
+        ecma: 8
+    }
+}).then(minified => {
     fs.writeFileSync(
         path.join(distFolder, name + '-bundle.js'),
         bundle
@@ -96,6 +89,8 @@ if (minifiedBundle.error) {
 
     fs.writeFileSync(
         path.join(distFolder, name + '-bundle.min.js'),
-        minifiedBundle.code
+        minified.code
     );
-}
+}).catch(error => {
+    console.error(error);
+});
