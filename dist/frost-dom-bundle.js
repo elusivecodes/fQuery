@@ -1105,7 +1105,7 @@
     });
 
     /**
-     * FrostDOM v2.0.16
+     * FrostDOM v2.0.17
      * https://github.com/elusivecodes/FrostDOM
      */
     (function(global, factory) {
@@ -7497,7 +7497,7 @@
              */
             _getDelegateMatchFactory(node, selector) {
                 return target =>
-                    target.matches(selector) ?
+                    target.matches && target.matches(selector) ?
                         target :
                         this._parents(
                             target,

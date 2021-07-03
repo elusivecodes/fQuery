@@ -82,7 +82,7 @@ Object.assign(DOM, {
      */
     _getDelegateMatchFactory(node, selector) {
         return target =>
-            target.matches(selector) ?
+            target.matches && target.matches(selector) ?
                 target :
                 this._parents(
                     target,
