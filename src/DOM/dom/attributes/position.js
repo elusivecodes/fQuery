@@ -230,23 +230,21 @@ Object.assign(DOM.prototype, {
             return;
         }
 
-        return this.constructor._forceShow(node, node => {
-            const result = {
-                x: node.offsetLeft,
-                y: node.offsetTop
-            };
+        const result = {
+            x: node.offsetLeft,
+            y: node.offsetTop
+        };
 
-            if (offset) {
-                let offsetParent = node;
+        if (offset) {
+            let offsetParent = node;
 
-                while (offsetParent = offsetParent.offsetParent) {
-                    result.x += offsetParent.offsetLeft;
-                    result.y += offsetParent.offsetTop;
-                }
+            while (offsetParent = offsetParent.offsetParent) {
+                result.x += offsetParent.offsetLeft;
+                result.y += offsetParent.offsetTop;
             }
+        }
 
-            return result;
-        });
+        return result;
     },
 
     /**

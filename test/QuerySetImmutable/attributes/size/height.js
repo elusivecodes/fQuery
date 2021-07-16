@@ -63,17 +63,6 @@ describe('QuerySetImmutable #height', function() {
         );
     });
 
-    it('returns the height of the first node (hidden)', async function() {
-        assert.strictEqual(
-            await exec(_ => {
-                document.body.style.display = 'none';
-                return dom.query('div')
-                    .height();
-            }),
-            1050
-        );
-    });
-
     it('returns undefined for empty nodes', async function() {
         assert.strictEqual(
             await exec(_ =>

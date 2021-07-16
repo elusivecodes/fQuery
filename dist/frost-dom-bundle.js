@@ -1,5 +1,5 @@
 /**
- * FrostDOM Bundle v2.0.16
+ * FrostDOM Bundle v2.1.0
  * https://github.com/elusivecodes/FrostCore
  * https://github.com/elusivecodes/FrostDOM
  */
@@ -1105,7 +1105,7 @@
     });
 
     /**
-     * FrostDOM v2.0.17
+     * FrostDOM v2.1.0
      * https://github.com/elusivecodes/FrostDOM
      */
     (function(global, factory) {
@@ -3094,23 +3094,21 @@
                     return;
                 }
 
-                return this.constructor._forceShow(node, node => {
-                    const result = {
-                        x: node.offsetLeft,
-                        y: node.offsetTop
-                    };
+                const result = {
+                    x: node.offsetLeft,
+                    y: node.offsetTop
+                };
 
-                    if (offset) {
-                        let offsetParent = node;
+                if (offset) {
+                    let offsetParent = node;
 
-                        while (offsetParent = offsetParent.offsetParent) {
-                            result.x += offsetParent.offsetLeft;
-                            result.y += offsetParent.offsetTop;
-                        }
+                    while (offsetParent = offsetParent.offsetParent) {
+                        result.x += offsetParent.offsetLeft;
+                        result.y += offsetParent.offsetTop;
                     }
+                }
 
-                    return result;
-                });
+                return result;
             },
 
             /**
@@ -5616,10 +5614,13 @@
              * @returns {HTMLElement} The offset parent.
              */
             offsetParent(nodes) {
-                return this.forceShow(
-                    nodes,
-                    node => node.offsetParent
-                );
+                const node = this.parseNode(nodes);
+
+                if (!node) {
+                    return;
+                }
+
+                return node.offsetParent;
             },
 
             /**
@@ -6585,26 +6586,6 @@
             },
 
             /**
-             * Force a node to be shown, and then execute a callback.
-             * @param {string|array|Node|HTMLElement|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
-             * @param {DOM~nodeCallback} callback The callback to execute.
-             * @returns {*} The result of the callback.
-             */
-            forceShow(nodes, callback) {
-
-                // DocumentFragment and ShadowRoot nodes have no parent
-                const node = this.parseNode(nodes, {
-                    node: true
-                });
-
-                if (!node) {
-                    return;
-                }
-
-                return this.constructor._forceShow(node, callback);
-            },
-
-            /**
              * Get the index of the first node relative to it's parent.
              * @param {string|array|Node|HTMLElement|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
              * @returns {number} The index.
@@ -7257,16 +7238,14 @@
              * @returns {DOMRect} The computed bounding rectangle.
              */
             _rect(node, offset) {
-                return this._forceShow(node, node => {
-                    const result = node.getBoundingClientRect();
+                const result = node.getBoundingClientRect();
 
-                    if (offset) {
-                        result.x += window.scrollX;
-                        result.y += window.scrollY;
-                    }
+                if (offset) {
+                    result.x += window.scrollX;
+                    result.y += window.scrollY;
+                }
 
-                    return result;
-                });
+                return result;
             }
 
         });
@@ -7284,34 +7263,32 @@
              * @returns {number} The height.
              */
             _height(node, boxSize = 1) {
-                return this._forceShow(node, node => {
-                    if (Core.isDocument(node)) {
-                        node = node.documentElement;
-                    }
+                if (Core.isDocument(node)) {
+                    node = node.documentElement;
+                }
 
-                    if (boxSize === this.SCROLL_BOX) {
-                        return node.scrollHeight;
-                    }
+                if (boxSize === this.SCROLL_BOX) {
+                    return node.scrollHeight;
+                }
 
-                    let result = node.clientHeight;
+                let result = node.clientHeight;
 
-                    if (boxSize === this.CONTENT_BOX) {
-                        result -= parseInt(this._css(node, 'padding-top'))
-                            + parseInt(this._css(node, 'padding-bottom'));
-                    }
+                if (boxSize === this.CONTENT_BOX) {
+                    result -= parseInt(this._css(node, 'padding-top'))
+                        + parseInt(this._css(node, 'padding-bottom'));
+                }
 
-                    if (boxSize >= this.BORDER_BOX) {
-                        result += parseInt(this._css(node, 'border-top-width'))
-                            + parseInt(this._css(node, 'border-bottom-width'));
-                    }
+                if (boxSize >= this.BORDER_BOX) {
+                    result += parseInt(this._css(node, 'border-top-width'))
+                        + parseInt(this._css(node, 'border-bottom-width'));
+                }
 
-                    if (boxSize === this.MARGIN_BOX) {
-                        result += parseInt(this._css(node, 'margin-top'))
-                            + parseInt(this._css(node, 'margin-bottom'));
-                    }
+                if (boxSize === this.MARGIN_BOX) {
+                    result += parseInt(this._css(node, 'margin-top'))
+                        + parseInt(this._css(node, 'margin-bottom'));
+                }
 
-                    return result;
-                });
+                return result;
             },
 
             /**
@@ -7321,34 +7298,32 @@
              * @returns {number} The width.
              */
             _width(node, boxSize = 1) {
-                return this._forceShow(node, node => {
-                    if (Core.isDocument(node)) {
-                        node = node.documentElement;
-                    }
+                if (Core.isDocument(node)) {
+                    node = node.documentElement;
+                }
 
-                    if (boxSize === this.SCROLL_BOX) {
-                        return node.scrollWidth;
-                    }
+                if (boxSize === this.SCROLL_BOX) {
+                    return node.scrollWidth;
+                }
 
-                    let result = node.clientWidth;
+                let result = node.clientWidth;
 
-                    if (boxSize === this.CONTENT_BOX) {
-                        result -= parseInt(this._css(node, 'padding-left'))
-                            + parseInt(this._css(node, 'padding-right'));
-                    }
+                if (boxSize === this.CONTENT_BOX) {
+                    result -= parseInt(this._css(node, 'padding-left'))
+                        + parseInt(this._css(node, 'padding-right'));
+                }
 
-                    if (boxSize >= this.BORDER_BOX) {
-                        result += parseInt(this._css(node, 'border-left-width'))
-                            + parseInt(this._css(node, 'border-right-width'));
-                    }
+                if (boxSize >= this.BORDER_BOX) {
+                    result += parseInt(this._css(node, 'border-left-width'))
+                        + parseInt(this._css(node, 'border-right-width'));
+                }
 
-                    if (boxSize === this.MARGIN_BOX) {
-                        result += parseInt(this._css(node, 'margin-left'))
-                            + parseInt(this._css(node, 'margin-right'));
-                    }
+                if (boxSize === this.MARGIN_BOX) {
+                    result += parseInt(this._css(node, 'margin-left'))
+                        + parseInt(this._css(node, 'margin-right'));
+                }
 
-                    return result;
-                });
+                return result;
             }
 
         });
@@ -8422,55 +8397,6 @@
          */
 
         Object.assign(DOM, {
-
-            /**
-             * Force a single node to be shown, and then execute a callback.
-             * @param {Node|HTMLElement} node The input node.
-             * @param {DOM~nodeCallback} callback The callback to execute.
-             * @returns {*} The result of the callback.
-             */
-            _forceShow(node, callback) {
-                if (this._isVisible(node)) {
-                    return callback(node);
-                }
-
-                const elements = [];
-
-                if (Core.isElement(node) && this._css(node, 'display') === 'none') {
-                    elements.push(node);
-                }
-
-                Core.merge(
-                    elements,
-                    this._parents(
-                        node,
-                        parent =>
-                            Core.isElement(parent) &&
-                            this._css(parent, 'display') === 'none'
-                    )
-                );
-
-                const hidden = new Map;
-
-                for (const element of elements) {
-                    hidden.set(element, element.getAttribute('style'));
-                    element.style.setProperty('display', 'initial', 'important');
-                }
-
-                const result = callback(node);
-
-                for (const [element, style] of hidden) {
-                    if (style) {
-                        element.setAttribute('style', style);
-                    } else {
-                        // force DOM to update
-                        element.getAttribute('style');
-                        element.removeAttribute('style');
-                    }
-                }
-
-                return result;
-            },
 
             /**
              * Sanitize a single node.
@@ -10615,15 +10541,6 @@
              */
             first() {
                 return this.eq(0);
-            },
-
-            /**
-             * Force a node to be shown, and then execute a callback.
-             * @param {DOM~nodeCallback} callback The callback to execute.
-             * @returns {*} The result of the callback.
-             */
-            forceShow(callback) {
-                return this._dom.forceShow(this, callback);
             },
 
             /**

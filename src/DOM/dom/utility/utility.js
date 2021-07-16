@@ -15,26 +15,6 @@ Object.assign(DOM.prototype, {
     },
 
     /**
-     * Force a node to be shown, and then execute a callback.
-     * @param {string|array|Node|HTMLElement|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
-     * @param {DOM~nodeCallback} callback The callback to execute.
-     * @returns {*} The result of the callback.
-     */
-    forceShow(nodes, callback) {
-
-        // DocumentFragment and ShadowRoot nodes have no parent
-        const node = this.parseNode(nodes, {
-            node: true
-        });
-
-        if (!node) {
-            return;
-        }
-
-        return this.constructor._forceShow(node, callback);
-    },
-
-    /**
      * Get the index of the first node relative to it's parent.
      * @param {string|array|Node|HTMLElement|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector string.
      * @returns {number} The index.

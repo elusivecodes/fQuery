@@ -5,55 +5,6 @@
 Object.assign(DOM, {
 
     /**
-     * Force a single node to be shown, and then execute a callback.
-     * @param {Node|HTMLElement} node The input node.
-     * @param {DOM~nodeCallback} callback The callback to execute.
-     * @returns {*} The result of the callback.
-     */
-    _forceShow(node, callback) {
-        if (this._isVisible(node)) {
-            return callback(node);
-        }
-
-        const elements = [];
-
-        if (Core.isElement(node) && this._css(node, 'display') === 'none') {
-            elements.push(node);
-        }
-
-        Core.merge(
-            elements,
-            this._parents(
-                node,
-                parent =>
-                    Core.isElement(parent) &&
-                    this._css(parent, 'display') === 'none'
-            )
-        );
-
-        const hidden = new Map;
-
-        for (const element of elements) {
-            hidden.set(element, element.getAttribute('style'));
-            element.style.setProperty('display', 'initial', 'important');
-        }
-
-        const result = callback(node);
-
-        for (const [element, style] of hidden) {
-            if (style) {
-                element.setAttribute('style', style);
-            } else {
-                // force DOM to update
-                element.getAttribute('style');
-                element.removeAttribute('style');
-            }
-        }
-
-        return result;
-    },
-
-    /**
      * Sanitize a single node.
      * @param {HTMLElement} node The input node.
      * @param {HTMLElement} parent The parent node.

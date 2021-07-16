@@ -1655,16 +1655,6 @@ Reduce the set of nodes to the first.
 const first = query.first();
 ```
 
-**Force Show**
-
-Force an node to be temporarily shown, and then execute a callback.
-
-- `callback` is a function that accepts a `node` as a parameter.
-
-```javascript
-query.forceShow(callback);
-```
-
 **Get**
 
 Retrieve the DOM node(s) contained in the QuerySet.

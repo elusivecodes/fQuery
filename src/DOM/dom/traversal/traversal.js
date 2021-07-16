@@ -186,10 +186,13 @@ Object.assign(DOM.prototype, {
      * @returns {HTMLElement} The offset parent.
      */
     offsetParent(nodes) {
-        return this.forceShow(
-            nodes,
-            node => node.offsetParent
-        );
+        const node = this.parseNode(nodes);
+
+        if (!node) {
+            return;
+        }
+
+        return node.offsetParent;
     },
 
     /**

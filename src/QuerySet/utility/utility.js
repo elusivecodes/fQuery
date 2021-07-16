@@ -55,15 +55,6 @@ Object.assign(QuerySet.prototype, {
     },
 
     /**
-     * Force a node to be shown, and then execute a callback.
-     * @param {DOM~nodeCallback} callback The callback to execute.
-     * @returns {*} The result of the callback.
-     */
-    forceShow(callback) {
-        return this._dom.forceShow(this, callback);
-    },
-
-    /**
      * Retrieve the DOM node(s) contained in the QuerySet.
      * @param {number} [index=null] The index of the node.
      * @returns {array|Node|Document|Window} The node(s).

@@ -11,16 +11,14 @@ Object.assign(DOM, {
      * @returns {DOMRect} The computed bounding rectangle.
      */
     _rect(node, offset) {
-        return this._forceShow(node, node => {
-            const result = node.getBoundingClientRect();
+        const result = node.getBoundingClientRect();
 
-            if (offset) {
-                result.x += window.scrollX;
-                result.y += window.scrollY;
-            }
+        if (offset) {
+            result.x += window.scrollX;
+            result.y += window.scrollY;
+        }
 
-            return result;
-        });
+        return result;
     }
 
 });
