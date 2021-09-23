@@ -42,7 +42,7 @@ describe('#mouseDragFactory', function() {
                             result++;
                         },
                         null,
-                        false
+                        { debounce: false }
                     )
                 );
                 document.body.dispatchEvent(downEvent);
@@ -75,7 +75,7 @@ describe('#mouseDragFactory', function() {
                         _ => {
                             result++;
                         },
-                        false
+                        { debounce: false }
                     )
                 );
                 document.body.dispatchEvent(downEvent);
@@ -109,7 +109,7 @@ describe('#mouseDragFactory', function() {
                         _ => {
                             result++;
                         },
-                        false
+                        { debounce: false }
                     )
                 );
                 document.body.dispatchEvent(downEvent);
@@ -142,7 +142,7 @@ describe('#mouseDragFactory', function() {
                             result++;
                         },
                         null,
-                        false
+                        { debounce: false }
                     )
                 );
                 document.body.dispatchEvent(downEvent);
@@ -177,7 +177,7 @@ describe('#mouseDragFactory', function() {
                         _ => {
                             return result > 1;
                         },
-                        false
+                        { debounce: false }
                     )
                 );
                 document.body.dispatchEvent(downEvent);
@@ -209,7 +209,7 @@ describe('#mouseDragFactory', function() {
                         _ => {
                             result++;
                         },
-                        false
+                        { debounce: false }
                     )
                 );
                 document.body.dispatchEvent(downEvent);
@@ -245,7 +245,7 @@ describe('#mouseDragFactory', function() {
                         _ => {
                             result++;
                         },
-                        false
+                        { debounce: false }
                     )
                 );
                 document.body.dispatchEvent(downEvent);

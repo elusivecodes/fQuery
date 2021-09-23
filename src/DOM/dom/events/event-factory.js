@@ -9,10 +9,18 @@ Object.assign(DOM.prototype, {
      * @param {DOM~eventCallback} down The callback to execute on mousedown.
      * @param {DOM~eventCallback} move The callback to execute on mousemove.
      * @param {DOM~eventCallback} up The callback to execute on mouseup.
-     * @param {Boolean} [debounce=true] Whether to debounce the move event.
+     * @param {object} [options] Options for the mouse drag event.
+     * @param {Boolean} [options.debounce] Whether to debounce the move event.
+     * @param {Boolean} [options.passive] Whether to use passive event listeners.
      * @returns {DOM~eventCallback} The mouse drag event callback.
      */
-    mouseDragFactory(down, move, up, debounce = true) {
+    mouseDragFactory(down, move, up, options = {}) {
+        const { debounce, passive } = {
+            debounce: true,
+            passive: true,
+            ...options
+        };
+
         if (move && debounce) {
             move = this.constructor.debounce(move);
 
@@ -38,7 +46,7 @@ Object.assign(DOM.prototype, {
                 'mousemove';
 
             if (move) {
-                this.addEvent(window, moveEvent, move);
+                this.addEvent(window, moveEvent, move, { passive });
             }
 
             if (move || up) {
@@ -62,7 +70,7 @@ Object.assign(DOM.prototype, {
                     }
                 };
 
-                this.addEvent(window, upEvent, realUp);
+                this.addEvent(window, upEvent, realUp, { passive });
             }
         };
     }

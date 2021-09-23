@@ -1107,7 +1107,9 @@ Create a mouse drag event (optionally limited by animation frame).
 - `down` is a function that accepts an *event* argument, which will be called when the event is started.
 - `move` is a function that accepts an *event* argument, which will be called when the mouse is moved during the event.
 - `up` is a function that accepts an *event* argument, which will be called when the event has ended (mouse button has been released).
-- `debounce` is a boolean indicating whether to debounce the move event, and will default to *true*.
+- `options` is an object containing configuration options for the drag event.
+    - `debounce` is a boolean indicating whether to debounce the move event, and will default to *true*.
+    - `passive` is a boolean indicating whether to use passive event listeners, and will default to *true*.
 
 ```javascript
 const drag = dom.mouseDragFactory(down, move, up, debounce);

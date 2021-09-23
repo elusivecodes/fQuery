@@ -1105,7 +1105,7 @@
     });
 
     /**
-     * FrostDOM v2.1.0
+     * FrostDOM v2.1.1
      * https://github.com/elusivecodes/FrostDOM
      */
     (function(global, factory) {
@@ -3593,10 +3593,18 @@
              * @param {DOM~eventCallback} down The callback to execute on mousedown.
              * @param {DOM~eventCallback} move The callback to execute on mousemove.
              * @param {DOM~eventCallback} up The callback to execute on mouseup.
-             * @param {Boolean} [debounce=true] Whether to debounce the move event.
+             * @param {object} [options] Options for the mouse drag event.
+             * @param {Boolean} [options.debounce] Whether to debounce the move event.
+             * @param {Boolean} [options.passive] Whether to use passive event listeners.
              * @returns {DOM~eventCallback} The mouse drag event callback.
              */
-            mouseDragFactory(down, move, up, debounce = true) {
+            mouseDragFactory(down, move, up, options = {}) {
+                const { debounce, passive } = {
+                    debounce: true,
+                    passive: true,
+                    ...options
+                };
+
                 if (move && debounce) {
                     move = this.constructor.debounce(move);
 
@@ -3622,7 +3630,7 @@
                         'mousemove';
 
                     if (move) {
-                        this.addEvent(window, moveEvent, move);
+                        this.addEvent(window, moveEvent, move, { passive });
                     }
 
                     if (move || up) {
@@ -3646,7 +3654,7 @@
                             }
                         };
 
-                        this.addEvent(window, upEvent, realUp);
+                        this.addEvent(window, upEvent, realUp, { passive });
                     }
                 };
             }
