@@ -15,11 +15,7 @@ Object.assign(DOM.prototype, {
      * @returns {DOM~eventCallback} The mouse drag event callback.
      */
     mouseDragFactory(down, move, up, options = {}) {
-        const { debounce, passive } = {
-            debounce: true,
-            passive: true,
-            ...options
-        };
+        const { debounce = true, passive = true, touches = 1 } = options;
 
         if (move && debounce) {
             move = this.constructor.debounce(move);
@@ -33,6 +29,10 @@ Object.assign(DOM.prototype, {
         return e => {
             const isTouch = e.type === 'touchstart';
 
+            if (isTouch && e.touches.length !== touches) {
+                return;
+            }
+
             if (down && down(e) === false) {
                 return;
             }
@@ -41,37 +41,49 @@ Object.assign(DOM.prototype, {
                 e.preventDefault();
             }
 
+            if (!move && !up) {
+                return;
+            }
+
             const moveEvent = isTouch ?
                 'touchmove' :
                 'mousemove';
 
-            if (move) {
-                this.addEvent(window, moveEvent, move, { passive });
-            }
+            const realMove = e => {
+                if (isTouch && e.touches.length !== touches) {
+                    return;
+                }
 
-            if (move || up) {
-                const upEvent = isTouch ?
-                    'touchend' :
-                    'mouseup';
+                if (!move) {
+                    return;
+                }
 
-                const realUp = e => {
-                    if (up && up(e) === false) {
-                        return;
-                    }
+                move(e);
+            };
 
-                    if (isTouch) {
-                        e.preventDefault();
-                    }
+            const upEvent = isTouch ?
+                'touchend' :
+                'mouseup';
 
-                    this.removeEvent(window, upEvent, realUp);
+            const realUp = e => {
+                if (isTouch && e.touches.length !== touches) {
+                    return;
+                }
 
-                    if (move) {
-                        this.removeEvent(window, moveEvent, move);
-                    }
-                };
+                if (up && up(e) === false) {
+                    return;
+                }
 
-                this.addEvent(window, upEvent, realUp, { passive });
-            }
+                if (isTouch) {
+                    e.preventDefault();
+                }
+
+                this.removeEvent(window, moveEvent, realMove);
+                this.removeEvent(window, upEvent, realUp);
+            };
+
+            this.addEvent(window, moveEvent, realMove, { passive });
+            this.addEvent(window, upEvent, realUp, { passive });
         };
     }
 
