@@ -1,5 +1,5 @@
 /**
- * FrostDOM v2.1.2
+ * FrostDOM v2.1.3
  * https://github.com/elusivecodes/FrostDOM
  */
 (function(global, factory) {
@@ -293,6 +293,30 @@
                 new MockXMLHttpRequest :
                 new XMLHttpRequest;
 
+            if (this._options.data) {
+                if (this._options.processData && Core.isObject(this._options.data)) {
+                    if (this._options.contentType === 'application/json') {
+                        this._options.data = JSON.stringify(this._options.data);
+                    } else if (this._options.contentType === 'application/x-www-form-urlencoded') {
+                        this._options.data = this.constructor._parseParams(this._options.data);
+                    } else {
+                        this._options.data = this.constructor._parseFormData(this._options.data);
+                    }
+                }
+
+                if (this._options.method === 'GET') {
+                    const dataParams = new URLSearchParams(this._options.data);
+
+                    const searchParams = this.constructor.getSearchParams(this._options.url);
+                    for (const [key, value] of dataParams.entries()) {
+                        searchParams.append(key, value);
+                    }
+
+                    this._options.url = this.constructor.setSearchParams(this._options.url, searchParams);
+                    this._options.data = null;
+                }
+            }
+
             this._xhr.open(this._options.method, this._options.url, true, this._options.username, this._options.password);
 
             for (const key in this._options.headers) {
@@ -360,16 +384,6 @@
                 this._options.beforeSend(this._xhr);
             }
 
-            if (this._options.data && this._options.processData && Core.isObject(this._options.data)) {
-                if (this._options.contentType === 'application/json') {
-                    this._options.data = JSON.stringify(this._options.data);
-                } else if (this._options.contentType === 'application/x-www-form-urlencoded') {
-                    this._options.data = this.constructor._parseParams(this._options.data);
-                } else {
-                    this._options.data = this.constructor._parseFormData(this._options.data);
-                }
-            }
-
             this._xhr.send(this._options.data);
 
             if (this._options.afterSend) {
@@ -394,14 +408,61 @@
          * @returns {string} The new URL.
          */
         appendQueryString(url, key, value) {
-            const baseHref = (window.location.origin + window.location.pathname).replace(/\/$/, '');
-            const urlData = new URL(url, baseHref);
-            urlData.searchParams.append(key, value);
-            let newUrl = urlData.toString();
+            const searchParams = this.getSearchParams(url);
 
-            if (newUrl.substring(0, url.length) === url) {
-                return newUrl;
+            searchParams.append(key, value);
+
+            return this.setSearchParams(url, searchParams);
+        },
+
+        /**
+         * Get the URL from a URL string.
+         * @param {string} url The URL.
+         * @returns {URL} The URL.
+         */
+        getURL(url) {
+            const baseHref = (window.location.origin + window.location.pathname).replace(/\/$/, '');
+
+            return new URL(url, baseHref);
+        },
+
+        /**
+         * Get the URLSearchParams from a URL string.
+         * @param {string} url The URL.
+         * @returns {URLSearchParams} The URLSearchParams.
+         */
+        getSearchParams(url) {
+            return this.getURL(url).searchParams;
+        },
+
+        /**
+         * Merge two or more URLSearchParams.
+         * @param  {...URLSearchParams} params The URLSearchParms.
+         * @returns {URLSearchParams} The new URLSearchParams.
+         */
+        mergeSearchParams(...params) {
+            const searchParams = new URLSearchParams('');
+            for (const param of params) {
+                for (const [key, value] of param.entries()) {
+                    searchParams.set(key, value);
+                }
             }
+
+            return searchParams;
+        },
+
+        /**
+         * Set the URLSearchParams for a URL string.
+         * @param {string} url The URL.
+         * @param {URLSearchParams} searchParams The URLSearchParams.
+         * @returns The new URL string.
+         */
+        setSearchParams(url, searchParams) {
+            const urlData = this.getURL(url);
+
+            urlData.search = searchParams.toString();
+
+            const newUrl = urlData.toString();
 
             const pos = newUrl.indexOf(url);
             return newUrl.substring(pos);

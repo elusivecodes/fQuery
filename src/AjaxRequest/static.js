@@ -12,14 +12,61 @@ Object.assign(AjaxRequest, {
      * @returns {string} The new URL.
      */
     appendQueryString(url, key, value) {
-        const baseHref = (window.location.origin + window.location.pathname).replace(/\/$/, '');
-        const urlData = new URL(url, baseHref);
-        urlData.searchParams.append(key, value);
-        let newUrl = urlData.toString();
+        const searchParams = this.getSearchParams(url);
 
-        if (newUrl.substring(0, url.length) === url) {
-            return newUrl;
+        searchParams.append(key, value);
+
+        return this.setSearchParams(url, searchParams);
+    },
+
+    /**
+     * Get the URL from a URL string.
+     * @param {string} url The URL.
+     * @returns {URL} The URL.
+     */
+    getURL(url) {
+        const baseHref = (window.location.origin + window.location.pathname).replace(/\/$/, '');
+
+        return new URL(url, baseHref);
+    },
+
+    /**
+     * Get the URLSearchParams from a URL string.
+     * @param {string} url The URL.
+     * @returns {URLSearchParams} The URLSearchParams.
+     */
+    getSearchParams(url) {
+        return this.getURL(url).searchParams;
+    },
+
+    /**
+     * Merge two or more URLSearchParams.
+     * @param  {...URLSearchParams} params The URLSearchParms.
+     * @returns {URLSearchParams} The new URLSearchParams.
+     */
+    mergeSearchParams(...params) {
+        const searchParams = new URLSearchParams('');
+        for (const param of params) {
+            for (const [key, value] of param.entries()) {
+                searchParams.set(key, value);
+            }
         }
+
+        return searchParams;
+    },
+
+    /**
+     * Set the URLSearchParams for a URL string.
+     * @param {string} url The URL.
+     * @param {URLSearchParams} searchParams The URLSearchParams.
+     * @returns The new URL string.
+     */
+    setSearchParams(url, searchParams) {
+        const urlData = this.getURL(url);
+
+        urlData.search = searchParams.toString();
+
+        const newUrl = urlData.toString();
 
         const pos = newUrl.indexOf(url);
         return newUrl.substring(pos);

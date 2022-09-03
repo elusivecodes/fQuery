@@ -107,14 +107,14 @@ describe('#ajax', function() {
                 response: 'Test',
                 xhr: {
                     async: true,
-                    body: 'test1=Test%201&test2=Test%202',
+                    body: null,
                     headers: {
                         'Content-Type': 'application/x-www-form-urlencoded',
                         'X-Requested-With': 'XMLHttpRequest'
                     },
                     method: 'GET',
                     status: 200,
-                    url: 'http://localhost:3001/'
+                    url: 'http://localhost:3001/?test1=Test+1&test2=Test+2'
                 }
             }
         );
@@ -142,14 +142,14 @@ describe('#ajax', function() {
                 response: 'Test',
                 xhr: {
                     async: true,
-                    body: 'test1=Test%201&test2%5Ba%5D=1&test2%5Bb%5D=2',
+                    body: null,
                     headers: {
                         'Content-Type': 'application/x-www-form-urlencoded',
                         'X-Requested-With': 'XMLHttpRequest'
                     },
                     method: 'GET',
                     status: 200,
-                    url: 'http://localhost:3001/'
+                    url: 'http://localhost:3001/?test1=Test+1&test2%5Ba%5D=1&test2%5Bb%5D=2'
                 }
             }
         );
@@ -175,14 +175,14 @@ describe('#ajax', function() {
                 response: 'Test',
                 xhr: {
                     async: true,
-                    body: 'test1=Test%201&test2%5Ba%5D=1&test2%5Bb%5D=2',
+                    body: null,
                     headers: {
                         'Content-Type': 'application/x-www-form-urlencoded',
                         'X-Requested-With': 'XMLHttpRequest'
                     },
                     method: 'GET',
                     status: 200,
-                    url: 'http://localhost:3001/'
+                    url: 'http://localhost:3001/?test1=Test+1&test2%5Ba%5D=1&test2%5Bb%5D=2'
                 }
             }
         );
@@ -207,14 +207,14 @@ describe('#ajax', function() {
                 response: 'Test',
                 xhr: {
                     async: true,
-                    body: 'test1=Test%201&test2%5B%5D=1&test2%5B%5D=2',
+                    body: null,
                     headers: {
                         'Content-Type': 'application/x-www-form-urlencoded',
                         'X-Requested-With': 'XMLHttpRequest'
                     },
                     method: 'GET',
                     status: 200,
-                    url: 'http://localhost:3001/'
+                    url: 'http://localhost:3001/?test1=Test+1&test2%5B%5D=1&test2%5B%5D=2'
                 }
             }
         );
@@ -239,14 +239,14 @@ describe('#ajax', function() {
                 response: 'Test',
                 xhr: {
                     async: true,
-                    body: 'test1=Test%201&test2%5B%5D=1&test2%5B%5D=2',
+                    body: null,
                     headers: {
                         'Content-Type': 'application/x-www-form-urlencoded',
                         'X-Requested-With': 'XMLHttpRequest'
                     },
                     method: 'GET',
                     status: 200,
-                    url: 'http://localhost:3001/'
+                    url: 'http://localhost:3001/?test1=Test+1&test2%5B%5D=1&test2%5B%5D=2'
                 }
             }
         );
@@ -277,14 +277,14 @@ describe('#ajax', function() {
                 response: 'Test',
                 xhr: {
                     async: true,
-                    body: 'test1=Test%201&test2=Test%202',
+                    body: null,
                     headers: {
                         'Content-Type': 'application/x-www-form-urlencoded',
                         'X-Requested-With': 'XMLHttpRequest'
                     },
                     method: 'GET',
                     status: 200,
-                    url: 'http://localhost:3001/'
+                    url: 'http://localhost:3001/?test1=Test+1&test2=Test+2'
                 }
             }
         );
@@ -315,14 +315,14 @@ describe('#ajax', function() {
                 response: 'Test',
                 xhr: {
                     async: true,
-                    body: 'test1=Test%201&test2%5B%5D=1&test2%5B%5D=2',
+                    body: null,
                     headers: {
                         'Content-Type': 'application/x-www-form-urlencoded',
                         'X-Requested-With': 'XMLHttpRequest'
                     },
                     method: 'GET',
                     status: 200,
-                    url: 'http://localhost:3001/'
+                    url: 'http://localhost:3001/?test1=Test+1&test2%5B%5D=1&test2%5B%5D=2'
                 }
             }
         );
@@ -353,14 +353,14 @@ describe('#ajax', function() {
                 response: 'Test',
                 xhr: {
                     async: true,
-                    body: 'test1=Test%201&test2%5B%5D=1&test2%5B%5D=2',
+                    body: null,
                     headers: {
                         'Content-Type': 'application/x-www-form-urlencoded',
                         'X-Requested-With': 'XMLHttpRequest'
                     },
                     method: 'GET',
                     status: 200,
-                    url: 'http://localhost:3001/'
+                    url: 'http://localhost:3001/?test1=Test+1&test2%5B%5D=1&test2%5B%5D=2'
                 }
             }
         );
@@ -382,93 +382,14 @@ describe('#ajax', function() {
                 response: 'Test',
                 xhr: {
                     async: true,
-                    body: 'test1=Test%201&test2=Test%202',
+                    body: null,
                     headers: {
                         'Content-Type': 'application/x-www-form-urlencoded',
                         'X-Requested-With': 'XMLHttpRequest'
                     },
                     method: 'GET',
                     status: 200,
-                    url: 'http://localhost:3001/'
-                }
-            }
-        );
-    });
-
-    it('performs an AJAX request with data (JSON)', async function() {
-        assert.deepStrictEqual(
-            await exec(async _ => {
-                const response = await DOM.ajax({
-                    data: {
-                        test1: 'Test 1',
-                        test2: 'Test 2'
-                    },
-                    contentType: 'application/json'
-                });
-                response.xhr = response.xhr.data;
-                return response;
-            }),
-            {
-                event: {
-                    isTrusted: false
-                },
-                response: 'Test',
-                xhr: {
-                    async: true,
-                    body: '{"test1":"Test 1","test2":"Test 2"}',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-Requested-With': 'XMLHttpRequest'
-                    },
-                    method: 'GET',
-                    status: 200,
-                    url: 'http://localhost:3001/'
-                }
-            }
-        );
-    });
-
-    it('performs an AJAX request with FormData', async function() {
-        assert.deepStrictEqual(
-            await exec(async _ => {
-                const response = await DOM.ajax({
-                    data: {
-                        test1: 'Test 1',
-                        test2: 'Test 2'
-                    },
-                    contentType: null
-                });
-                response.xhr = response.xhr.data;
-                const results = [];
-                for (const [key, value] of response.xhr.body.entries()) {
-                    results.push({ key, value });
-                }
-                response.xhr.body = results;
-                return response;
-            }),
-            {
-                event: {
-                    isTrusted: false
-                },
-                response: 'Test',
-                xhr: {
-                    async: true,
-                    body: [
-                        {
-                            key: 'test1',
-                            value: 'Test 1'
-                        },
-                        {
-                            key: 'test2',
-                            value: 'Test 2'
-                        }
-                    ],
-                    headers: {
-                        'X-Requested-With': 'XMLHttpRequest'
-                    },
-                    method: 'GET',
-                    status: 200,
-                    url: 'http://localhost:3001/'
+                    url: 'http://localhost:3001/?test1=Test+1&test2=Test+2'
                 }
             }
         );

@@ -12,6 +12,30 @@ Object.assign(AjaxRequest.prototype, {
             new MockXMLHttpRequest :
             new XMLHttpRequest;
 
+        if (this._options.data) {
+            if (this._options.processData && Core.isObject(this._options.data)) {
+                if (this._options.contentType === 'application/json') {
+                    this._options.data = JSON.stringify(this._options.data);
+                } else if (this._options.contentType === 'application/x-www-form-urlencoded') {
+                    this._options.data = this.constructor._parseParams(this._options.data);
+                } else {
+                    this._options.data = this.constructor._parseFormData(this._options.data);
+                }
+            }
+
+            if (this._options.method === 'GET') {
+                const dataParams = new URLSearchParams(this._options.data);
+
+                const searchParams = this.constructor.getSearchParams(this._options.url);
+                for (const [key, value] of dataParams.entries()) {
+                    searchParams.append(key, value);
+                }
+
+                this._options.url = this.constructor.setSearchParams(this._options.url, searchParams);
+                this._options.data = null;
+            }
+        }
+
         this._xhr.open(this._options.method, this._options.url, true, this._options.username, this._options.password);
 
         for (const key in this._options.headers) {
@@ -77,16 +101,6 @@ Object.assign(AjaxRequest.prototype, {
     _send() {
         if (this._options.beforeSend) {
             this._options.beforeSend(this._xhr);
-        }
-
-        if (this._options.data && this._options.processData && Core.isObject(this._options.data)) {
-            if (this._options.contentType === 'application/json') {
-                this._options.data = JSON.stringify(this._options.data);
-            } else if (this._options.contentType === 'application/x-www-form-urlencoded') {
-                this._options.data = this.constructor._parseParams(this._options.data);
-            } else {
-                this._options.data = this.constructor._parseFormData(this._options.data);
-            }
         }
 
         this._xhr.send(this._options.data);

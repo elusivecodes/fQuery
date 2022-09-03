@@ -1221,9 +1221,9 @@ Create a new DOM element.
     - `html` is a string that will become the HTML contents of the node.
     - `text` is a string that will become the text contents of the node.
     - `class` is an array of classes, or a space seperated string of class names.
-    - `styles` is an object containing style values to set.
+    - `style` is an object containing style values to set.
     - `value` is a string that will become the value of the node.
-    - `attribute` is an object containing attribute values to set.
+    - `attributes` is an object containing attribute values to set.
     - `properties` is an object containing property values to set.
     - `dataset` is an object containing dataset values to set.
 
