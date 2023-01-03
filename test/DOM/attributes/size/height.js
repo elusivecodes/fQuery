@@ -1,10 +1,9 @@
-const assert = require('assert');
-const { exec } = require('../../../setup');
+import assert from 'node:assert/strict';
+import { exec } from './../../../setup.js';
 
 describe('#height', function() {
-
     beforeEach(async function() {
-        await exec(_ => {
+        await exec((_) => {
             document.body.innerHTML =
                 '<div id="test1" style="display: block; height: 1000px; width: 1200px; margin: 50px; padding: 25px; border: 1px solid grey; overflow-y: scroll;">' +
                 '<div style="display: block; width: 1px; height: 2500px;"></div>' +
@@ -15,119 +14,118 @@ describe('#height', function() {
 
     it('returns the height of the first node', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.height('div')
+            await exec((_) =>
+                $.height('div'),
             ),
-            1050
+            1050,
         );
     });
 
     it('returns the content box height of the first node', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.height('div', DOM.CONTENT_BOX)
+            await exec((_) =>
+                $.height('div', { boxSize: $.CONTENT_BOX }),
             ),
-            1000
+            1000,
         );
     });
 
     it('returns the border box height of the first node', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.height('div', DOM.BORDER_BOX)
+            await exec((_) =>
+                $.height('div', { boxSize: $.BORDER_BOX }),
             ),
-            1052
+            1052,
         );
     });
 
     it('returns the margin box height of the first node', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.height('div', DOM.MARGIN_BOX)
+            await exec((_) =>
+                $.height('div', { boxSize: $.MARGIN_BOX }),
             ),
-            1152
+            1152,
         );
     });
 
     it('returns the scroll box height of the first node', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.height('div', DOM.SCROLL_BOX)
+            await exec((_) =>
+                $.height('div', { boxSize: $.SCROLL_BOX }),
             ),
-            2550
+            2550,
         );
     });
 
     it('returns undefined for empty nodes', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.height('#invalid')
+            await exec((_) =>
+                $.height('#invalid'),
             ),
-            undefined
+            undefined,
         );
     });
 
     it('works with HTMLElement nodes', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.height(
-                    document.getElementById('test1')
-                )
+            await exec((_) =>
+                $.height(
+                    document.getElementById('test1'),
+                ),
             ),
-            1050
+            1050,
         );
     });
 
     it('works with NodeList nodes', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.height(
-                    document.querySelectorAll('div')
-                )
+            await exec((_) =>
+                $.height(
+                    document.querySelectorAll('div'),
+                ),
             ),
-            1050
+            1050,
         );
     });
 
     it('works with HTMLCollection nodes', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.height(
-                    document.body.children
-                )
+            await exec((_) =>
+                $.height(
+                    document.body.children,
+                ),
             ),
-            1050
+            1050,
         );
     });
 
     it('works with Document nodes', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.height(document)
+            await exec((_) =>
+                $.height(document),
             ),
-            1152
+            1152,
         );
     });
 
     it('works with Window nodes', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.height(window)
+            await exec((_) =>
+                $.height(window),
             ),
-            600
+            600,
         );
     });
 
     it('works with array nodes', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.height([
+            await exec((_) =>
+                $.height([
                     document.getElementById('test1'),
-                    document.getElementById('test2')
-                ])
+                    document.getElementById('test2'),
+                ]),
             ),
-            1050
+            1050,
         );
     });
-
 });

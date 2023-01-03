@@ -1,10 +1,9 @@
-const assert = require('assert');
-const { exec } = require('../../../setup');
+import assert from 'node:assert/strict';
+import { exec } from './../../../setup.js';
 
 describe('#serializeArray', function() {
-
     beforeEach(async function() {
-        await exec(_ => {
+        await exec((_) => {
             document.body.innerHTML =
                 '<form id="form">' +
                 '<div>' +
@@ -42,325 +41,325 @@ describe('#serializeArray', function() {
 
     it('returns a serialized string of all form elements', async function() {
         assert.deepStrictEqual(
-            await exec(_ =>
-                dom.serializeArray('form')
+            await exec((_) =>
+                $.serializeArray('form'),
             ),
             [
                 {
                     name: 'test1',
-                    value: 'Test 1'
+                    value: 'Test 1',
                 },
                 {
                     name: 'test2',
-                    value: '2'
+                    value: '2',
                 },
                 {
                     name: 'test3',
-                    value: 'Test 3'
+                    value: 'Test 3',
                 },
                 {
                     name: 'test4',
-                    value: '42'
+                    value: '42',
                 },
                 {
                     name: 'test5[]',
-                    value: '51'
+                    value: '51',
                 },
                 {
                     name: 'test5[]',
-                    value: '52'
+                    value: '52',
                 },
                 {
                     name: 'test6',
-                    value: 'Test 6'
+                    value: 'Test 6',
                 },
                 {
                     name: 'test8',
-                    value: 'Test 8b'
+                    value: 'Test 8b',
                 },
                 {
                     name: 'test9[]',
-                    value: 'Test 9a'
+                    value: 'Test 9a',
                 },
                 {
                     name: 'test9[]',
-                    value: 'Test 9b'
-                }
-            ]
+                    value: 'Test 9b',
+                },
+            ],
         );
     });
 
     it('works with HTMLElement nodes', async function() {
         assert.deepStrictEqual(
-            await exec(_ =>
-                dom.serializeArray(
-                    document.getElementById('form')
-                )
+            await exec((_) =>
+                $.serializeArray(
+                    document.getElementById('form'),
+                ),
             ),
             [
                 {
                     name: 'test1',
-                    value: 'Test 1'
+                    value: 'Test 1',
                 },
                 {
                     name: 'test2',
-                    value: '2'
+                    value: '2',
                 },
                 {
                     name: 'test3',
-                    value: 'Test 3'
+                    value: 'Test 3',
                 },
                 {
                     name: 'test4',
-                    value: '42'
+                    value: '42',
                 },
                 {
                     name: 'test5[]',
-                    value: '51'
+                    value: '51',
                 },
                 {
                     name: 'test5[]',
-                    value: '52'
+                    value: '52',
                 },
                 {
                     name: 'test6',
-                    value: 'Test 6'
+                    value: 'Test 6',
                 },
                 {
                     name: 'test8',
-                    value: 'Test 8b'
+                    value: 'Test 8b',
                 },
                 {
                     name: 'test9[]',
-                    value: 'Test 9a'
+                    value: 'Test 9a',
                 },
                 {
                     name: 'test9[]',
-                    value: 'Test 9b'
-                }
-            ]
+                    value: 'Test 9b',
+                },
+            ],
         );
     });
 
     it('works with NodeList nodes', async function() {
         assert.deepStrictEqual(
-            await exec(_ =>
-                dom.serializeArray(
-                    document.querySelectorAll('input, textarea, select')
-                )
+            await exec((_) =>
+                $.serializeArray(
+                    document.querySelectorAll('input, textarea, select'),
+                ),
             ),
             [
                 {
                     name: 'test1',
-                    value: 'Test 1'
+                    value: 'Test 1',
                 },
                 {
                     name: 'test2',
-                    value: '2'
+                    value: '2',
                 },
                 {
                     name: 'test3',
-                    value: 'Test 3'
+                    value: 'Test 3',
                 },
                 {
                     name: 'test4',
-                    value: '42'
+                    value: '42',
                 },
                 {
                     name: 'test5[]',
-                    value: '51'
+                    value: '51',
                 },
                 {
                     name: 'test5[]',
-                    value: '52'
+                    value: '52',
                 },
                 {
                     name: 'test6',
-                    value: 'Test 6'
+                    value: 'Test 6',
                 },
                 {
                     name: 'test8',
-                    value: 'Test 8b'
+                    value: 'Test 8b',
                 },
                 {
                     name: 'test9[]',
-                    value: 'Test 9a'
+                    value: 'Test 9a',
                 },
                 {
                     name: 'test9[]',
-                    value: 'Test 9b'
-                }
-            ]
+                    value: 'Test 9b',
+                },
+            ],
         );
     });
 
     it('works with HTMLCollection nodes', async function() {
         assert.deepStrictEqual(
-            await exec(_ =>
-                dom.serializeArray(
-                    document.body.children
-                )
+            await exec((_) =>
+                $.serializeArray(
+                    document.body.children,
+                ),
             ),
             [
                 {
                     name: 'test1',
-                    value: 'Test 1'
+                    value: 'Test 1',
                 },
                 {
                     name: 'test2',
-                    value: '2'
+                    value: '2',
                 },
                 {
                     name: 'test3',
-                    value: 'Test 3'
+                    value: 'Test 3',
                 },
                 {
                     name: 'test4',
-                    value: '42'
+                    value: '42',
                 },
                 {
                     name: 'test5[]',
-                    value: '51'
+                    value: '51',
                 },
                 {
                     name: 'test5[]',
-                    value: '52'
+                    value: '52',
                 },
                 {
                     name: 'test6',
-                    value: 'Test 6'
+                    value: 'Test 6',
                 },
                 {
                     name: 'test8',
-                    value: 'Test 8b'
+                    value: 'Test 8b',
                 },
                 {
                     name: 'test9[]',
-                    value: 'Test 9a'
+                    value: 'Test 9a',
                 },
                 {
                     name: 'test9[]',
-                    value: 'Test 9b'
-                }
-            ]
+                    value: 'Test 9b',
+                },
+            ],
         );
     });
 
     it('works with DocumentFragment nodes', async function() {
         assert.deepStrictEqual(
-            await exec(_ => {
+            await exec((_) => {
                 const range = document.createRange();
                 const fragment = range.createContextualFragment(
-                    document.body.innerHTML
+                    document.body.innerHTML,
                 );
-                return dom.serializeArray(fragment);
+                return $.serializeArray(fragment);
             }),
             [
                 {
                     name: 'test1',
-                    value: 'Test 1'
+                    value: 'Test 1',
                 },
                 {
                     name: 'test2',
-                    value: '2'
+                    value: '2',
                 },
                 {
                     name: 'test3',
-                    value: 'Test 3'
+                    value: 'Test 3',
                 },
                 {
                     name: 'test4',
-                    value: '42'
+                    value: '42',
                 },
                 {
                     name: 'test5[]',
-                    value: '51'
+                    value: '51',
                 },
                 {
                     name: 'test5[]',
-                    value: '52'
+                    value: '52',
                 },
                 {
                     name: 'test6',
-                    value: 'Test 6'
+                    value: 'Test 6',
                 },
                 {
                     name: 'test8',
-                    value: 'Test 8b'
+                    value: 'Test 8b',
                 },
                 {
                     name: 'test9[]',
-                    value: 'Test 9a'
+                    value: 'Test 9a',
                 },
                 {
                     name: 'test9[]',
-                    value: 'Test 9b'
-                }
-            ]
+                    value: 'Test 9b',
+                },
+            ],
         );
     });
 
     it('works with ShadowRoot nodes', async function() {
         assert.deepStrictEqual(
-            await exec(_ => {
+            await exec((_) => {
                 const div = document.createElement('div');
                 const shadow = div.attachShadow({ mode: 'open' });
                 const range = document.createRange();
                 const fragment = range.createContextualFragment(
-                    document.body.innerHTML
+                    document.body.innerHTML,
                 );
                 shadow.appendChild(fragment);
-                return dom.serializeArray(shadow);
+                return $.serializeArray(shadow);
             }),
             [
                 {
                     name: 'test1',
-                    value: 'Test 1'
+                    value: 'Test 1',
                 },
                 {
                     name: 'test2',
-                    value: '2'
+                    value: '2',
                 },
                 {
                     name: 'test3',
-                    value: 'Test 3'
+                    value: 'Test 3',
                 },
                 {
                     name: 'test4',
-                    value: '42'
+                    value: '42',
                 },
                 {
                     name: 'test5[]',
-                    value: '51'
+                    value: '51',
                 },
                 {
                     name: 'test5[]',
-                    value: '52'
+                    value: '52',
                 },
                 {
                     name: 'test6',
-                    value: 'Test 6'
+                    value: 'Test 6',
                 },
                 {
                     name: 'test8',
-                    value: 'Test 8b'
+                    value: 'Test 8b',
                 },
                 {
                     name: 'test9[]',
-                    value: 'Test 9a'
+                    value: 'Test 9a',
                 },
                 {
                     name: 'test9[]',
-                    value: 'Test 9b'
-                }
-            ]
+                    value: 'Test 9b',
+                },
+            ],
         );
     });
 
     it('works with array nodes', async function() {
         assert.deepStrictEqual(
-            await exec(_ =>
-                dom.serializeArray([
+            await exec((_) =>
+                $.serializeArray([
                     document.getElementById('test1'),
                     document.getElementById('test2'),
                     document.getElementById('test3'),
@@ -371,52 +370,51 @@ describe('#serializeArray', function() {
                     document.getElementById('test8a'),
                     document.getElementById('test8b'),
                     document.getElementById('test9a'),
-                    document.getElementById('test9b')
-                ])
+                    document.getElementById('test9b'),
+                ]),
             ),
             [
                 {
                     name: 'test1',
-                    value: 'Test 1'
+                    value: 'Test 1',
                 },
                 {
                     name: 'test2',
-                    value: '2'
+                    value: '2',
                 },
                 {
                     name: 'test3',
-                    value: 'Test 3'
+                    value: 'Test 3',
                 },
                 {
                     name: 'test4',
-                    value: '42'
+                    value: '42',
                 },
                 {
                     name: 'test5[]',
-                    value: '51'
+                    value: '51',
                 },
                 {
                     name: 'test5[]',
-                    value: '52'
+                    value: '52',
                 },
                 {
                     name: 'test6',
-                    value: 'Test 6'
+                    value: 'Test 6',
                 },
                 {
                     name: 'test8',
-                    value: 'Test 8b'
+                    value: 'Test 8b',
                 },
                 {
                     name: 'test9[]',
-                    value: 'Test 9a'
+                    value: 'Test 9a',
                 },
                 {
                     name: 'test9[]',
-                    value: 'Test 9b'
-                }
-            ]
+                    value: 'Test 9b',
+                },
+            ],
         );
     });
-
 });

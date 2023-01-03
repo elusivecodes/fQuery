@@ -1,10 +1,9 @@
-const assert = require('assert');
-const { exec } = require('../../../setup');
+import assert from 'node:assert/strict';
+import { exec } from './../../../setup.js';
 
 describe('#removeAttribute', function() {
-
     beforeEach(async function() {
-        await exec(_ => {
+        await exec((_) => {
             document.body.innerHTML =
                 '<input type="text" id="test1" disabled>' +
                 '<input type="number" id="test2" disabled>';
@@ -13,69 +12,68 @@ describe('#removeAttribute', function() {
 
     it('removes an attribute for all nodes', async function() {
         assert.strictEqual(
-            await exec(_ => {
-                dom.removeAttribute('input', 'disabled');
+            await exec((_) => {
+                $.removeAttribute('input', 'disabled');
                 return document.body.innerHTML;
             }),
             '<input type="text" id="test1">' +
-            '<input type="number" id="test2">'
+            '<input type="number" id="test2">',
         );
     });
 
     it('works with HTMLElement nodes', async function() {
         assert.strictEqual(
-            await exec(_ => {
-                dom.removeAttribute(
+            await exec((_) => {
+                $.removeAttribute(
                     document.getElementById('test1'),
-                    'disabled'
+                    'disabled',
                 );
                 return document.body.innerHTML;
             }),
             '<input type="text" id="test1">' +
-            '<input type="number" id="test2" disabled="">'
+            '<input type="number" id="test2" disabled="">',
         );
     });
 
     it('works with NodeList nodes', async function() {
         assert.strictEqual(
-            await exec(_ => {
-                dom.removeAttribute(
+            await exec((_) => {
+                $.removeAttribute(
                     document.querySelectorAll('input'),
-                    'disabled'
+                    'disabled',
                 );
                 return document.body.innerHTML;
             }),
             '<input type="text" id="test1">' +
-            '<input type="number" id="test2">'
+            '<input type="number" id="test2">',
         );
     });
 
     it('works with HTMLCollection nodes', async function() {
         assert.strictEqual(
-            await exec(_ => {
-                dom.removeAttribute(
+            await exec((_) => {
+                $.removeAttribute(
                     document.body.children,
-                    'disabled'
+                    'disabled',
                 );
                 return document.body.innerHTML;
             }),
             '<input type="text" id="test1">' +
-            '<input type="number" id="test2">'
+            '<input type="number" id="test2">',
         );
     });
 
     it('works with array nodes', async function() {
         assert.strictEqual(
-            await exec(_ => {
-                dom.removeAttribute([
+            await exec((_) => {
+                $.removeAttribute([
                     document.getElementById('test1'),
-                    document.getElementById('test2')
+                    document.getElementById('test2'),
                 ], 'disabled');
                 return document.body.innerHTML;
             }),
             '<input type="text" id="test1">' +
-            '<input type="number" id="test2">'
+            '<input type="number" id="test2">',
         );
     });
-
 });

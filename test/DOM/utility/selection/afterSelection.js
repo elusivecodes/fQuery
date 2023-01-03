@@ -1,10 +1,9 @@
-const assert = require('assert');
-const { exec } = require('../../../setup');
+import assert from 'node:assert/strict';
+import { exec } from './../../../setup.js';
 
 describe('#afterSelection', function() {
-
     beforeEach(async function() {
-        await exec(_ => {
+        await exec((_) => {
             document.body.innerHTML =
                 '<div id="select">' +
                 '<div id="div1">' +
@@ -33,8 +32,8 @@ describe('#afterSelection', function() {
 
     it('inserts each node after the selected nodes', async function() {
         assert.strictEqual(
-            await exec(_ => {
-                dom.afterSelection('a');
+            await exec((_) => {
+                $.afterSelection('a');
                 return document.body.innerHTML;
             }),
             '<div id="select">' +
@@ -48,15 +47,15 @@ describe('#afterSelection', function() {
             't 2</span>' +
             '</div>' +
             '</div>' +
-            '<div id="parent"></div>'
+            '<div id="parent"></div>',
         );
     });
 
     it('works with HTMLElement nodes', async function() {
         assert.strictEqual(
-            await exec(_ => {
-                dom.afterSelection(
-                    document.getElementById('a1')
+            await exec((_) => {
+                $.afterSelection(
+                    document.getElementById('a1'),
                 );
                 return document.body.innerHTML;
             }),
@@ -72,15 +71,15 @@ describe('#afterSelection', function() {
             '</div>' +
             '<div id="parent">' +
             '<a href="#" id="a2">Test</a>' +
-            '</div>'
+            '</div>',
         );
     });
 
     it('works with NodeList nodes', async function() {
         assert.strictEqual(
-            await exec(_ => {
-                dom.afterSelection(
-                    document.querySelectorAll('a')
+            await exec((_) => {
+                $.afterSelection(
+                    document.querySelectorAll('a'),
                 );
                 return document.body.innerHTML;
             }),
@@ -95,15 +94,15 @@ describe('#afterSelection', function() {
             't 2</span>' +
             '</div>' +
             '</div>' +
-            '<div id="parent"></div>'
+            '<div id="parent"></div>',
         );
     });
 
     it('works with HTMLCollection nodes', async function() {
         assert.strictEqual(
-            await exec(_ => {
-                dom.afterSelection(
-                    document.getElementById('parent').children
+            await exec((_) => {
+                $.afterSelection(
+                    document.getElementById('parent').children,
                 );
                 return document.body.innerHTML;
             }),
@@ -118,18 +117,18 @@ describe('#afterSelection', function() {
             't 2</span>' +
             '</div>' +
             '</div>' +
-            '<div id="parent"></div>'
+            '<div id="parent"></div>',
         );
     });
 
     it('works with DocumentFragment nodes', async function() {
         assert.strictEqual(
-            await exec(_ => {
+            await exec((_) => {
                 const range = document.createRange();
                 const fragment = range.createContextualFragment(
-                    '<div><span></span></div>'
+                    '<div><span></span></div>',
                 );
-                dom.afterSelection(fragment);
+                $.afterSelection(fragment);
                 return document.body.innerHTML;
             }),
             '<div id="select">' +
@@ -145,16 +144,16 @@ describe('#afterSelection', function() {
             '<div id="parent">' +
             '<a href="#" id="a1">Test</a>' +
             '<a href="#" id="a2">Test</a>' +
-            '</div>'
+            '</div>',
         );
     });
 
     it('works with array nodes', async function() {
         assert.strictEqual(
-            await exec(_ => {
-                dom.afterSelection([
+            await exec((_) => {
+                $.afterSelection([
                     document.getElementById('a1'),
-                    document.getElementById('a2')
+                    document.getElementById('a2'),
                 ]);
                 return document.body.innerHTML;
             }),
@@ -169,14 +168,14 @@ describe('#afterSelection', function() {
             't 2</span>' +
             '</div>' +
             '</div>' +
-            '<div id="parent"></div>'
+            '<div id="parent"></div>',
         );
     });
 
     it('works with HTML nodes', async function() {
         assert.strictEqual(
-            await exec(_ => {
-                dom.afterSelection('<div><span></span></div>');
+            await exec((_) => {
+                $.afterSelection('<div><span></span></div>');
                 return document.body.innerHTML;
             }),
             '<div id="select">' +
@@ -192,8 +191,7 @@ describe('#afterSelection', function() {
             '<div id="parent">' +
             '<a href="#" id="a1">Test</a>' +
             '<a href="#" id="a2">Test</a>' +
-            '</div>'
+            '</div>',
         );
     });
-
 });

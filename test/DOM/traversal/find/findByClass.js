@@ -1,10 +1,9 @@
-const assert = require('assert');
-const { exec } = require('../../../setup');
+import assert from 'node:assert/strict';
+import { exec } from './../../../setup.js';
 
 describe('#findByClass', function() {
-
     beforeEach(async function() {
-        await exec(_ => {
+        await exec((_) => {
             document.body.innerHTML =
                 '<div id="parent1">' +
                 '<div id="child1">' +
@@ -32,118 +31,118 @@ describe('#findByClass', function() {
 
     it('finds elements by class name', async function() {
         assert.deepStrictEqual(
-            await exec(_ =>
-                dom.findByClass('test')
-                    .map(node => node.id)
+            await exec((_) =>
+                $.findByClass('test')
+                    .map((node) => node.id),
             ),
             [
                 'span1',
                 'span3',
                 'span5',
-                'span7'
-            ]
+                'span7',
+            ],
         );
     });
 
     it('returns an empty array for non-matching class', async function() {
         assert.deepStrictEqual(
-            await exec(_ =>
-                dom.findByClass('invalid')
+            await exec((_) =>
+                $.findByClass('invalid'),
             ),
-            []
+            [],
         );
     });
 
     it('returns an empty array for empty nodes', async function() {
         assert.deepStrictEqual(
-            await exec(_ =>
-                dom.findByClass('test', '#invalid')
+            await exec((_) =>
+                $.findByClass('test', '#invalid'),
             ),
-            []
+            [],
         );
     });
 
     it('works with query selector nodes', async function() {
         assert.deepStrictEqual(
-            await exec(_ =>
-                dom.findByClass('test', '#parent1')
-                    .map(node => node.id)
+            await exec((_) =>
+                $.findByClass('test', '#parent1')
+                    .map((node) => node.id),
             ),
             [
                 'span1',
-                'span3'
-            ]
+                'span3',
+            ],
         );
     });
 
     it('works with HTMLElement nodes', async function() {
         assert.deepStrictEqual(
-            await exec(_ =>
-                dom.findByClass(
+            await exec((_) =>
+                $.findByClass(
                     'test',
-                    document.getElementById('parent1')
-                ).map(node => node.id)
+                    document.getElementById('parent1'),
+                ).map((node) => node.id),
             ),
             [
                 'span1',
-                'span3'
-            ]
+                'span3',
+            ],
         );
     });
 
     it('works with NodeList nodes', async function() {
         assert.deepStrictEqual(
-            await exec(_ =>
-                dom.findByClass(
+            await exec((_) =>
+                $.findByClass(
                     'test',
-                    document.querySelectorAll('#parent1')
-                ).map(node => node.id)
+                    document.querySelectorAll('#parent1'),
+                ).map((node) => node.id),
             ),
             [
                 'span1',
-                'span3'
-            ]
+                'span3',
+            ],
         );
     });
 
     it('works with HTMLCollection nodes', async function() {
         assert.deepStrictEqual(
-            await exec(_ =>
-                dom.findByClass(
+            await exec((_) =>
+                $.findByClass(
                     'test',
-                    document.getElementById('parent1').children
-                ).map(node => node.id)
+                    document.getElementById('parent1').children,
+                ).map((node) => node.id),
             ),
             [
                 'span1',
-                'span3'
-            ]
+                'span3',
+            ],
         );
     });
 
     it('works with DocumentFragment nodes', async function() {
         assert.deepStrictEqual(
-            await exec(_ => {
+            await exec((_) => {
                 const range = document.createRange();
                 const fragment = range.createContextualFragment(
                     '<div id="div1" class="test"></div>' +
                     '<div id="div2"></div>' +
                     '<div id="div3" class="test"></div>' +
-                    '<div id="div4"></div>'
+                    '<div id="div4"></div>',
                 );
-                return dom.findByClass('test', fragment)
-                    .map(node => node.id);
+                return $.findByClass('test', fragment)
+                    .map((node) => node.id);
             }),
             [
                 'div1',
-                'div3'
-            ]
+                'div3',
+            ],
         );
     });
 
     it('works with ShadowRoot nodes', async function() {
         assert.deepStrictEqual(
-            await exec(_ => {
+            await exec((_) => {
                 const div = document.createElement('div');
                 const shadow = div.attachShadow({ mode: 'open' });
                 const range = document.createRange();
@@ -151,22 +150,22 @@ describe('#findByClass', function() {
                     '<div id="div1" class="test"></div>' +
                     '<div id="div2"></div>' +
                     '<div id="div3" class="test"></div>' +
-                    '<div id="div4"></div>'
+                    '<div id="div4"></div>',
                 );
                 shadow.appendChild(fragment);
-                return dom.findByClass('test', shadow)
-                    .map(node => node.id);
+                return $.findByClass('test', shadow)
+                    .map((node) => node.id);
             }),
             [
                 'div1',
-                'div3'
-            ]
+                'div3',
+            ],
         );
     });
 
     it('works with Document nodes', async function() {
         assert.deepStrictEqual(
-            await exec(_ => {
+            await exec((_) => {
                 const parser = new DOMParser();
                 const myDoc = parser.parseFromString(
                     '<html>' +
@@ -179,31 +178,30 @@ describe('#findByClass', function() {
                     '<div id="div4"></div>' +
                     '</body>' +
                     '</html>',
-                    'text/html'
+                    'text/html',
                 );
-                return dom.findByClass('test', myDoc)
-                    .map(node => node.id);
+                return $.findByClass('test', myDoc)
+                    .map((node) => node.id);
             }),
             [
                 'div1',
-                'div3'
-            ]
+                'div3',
+            ],
         );
     });
 
     it('works with array nodes', async function() {
         assert.deepStrictEqual(
-            await exec(_ =>
-                dom.findByClass('test', [
+            await exec((_) =>
+                $.findByClass('test', [
                     document.getElementById('child1'),
-                    document.getElementById('child2')
-                ]).map(node => node.id)
+                    document.getElementById('child2'),
+                ]).map((node) => node.id),
             ),
             [
                 'span1',
-                'span3'
-            ]
+                'span3',
+            ],
         );
     });
-
 });

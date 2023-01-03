@@ -1,10 +1,9 @@
-const assert = require('assert');
-const { exec } = require('../../../setup');
+import assert from 'node:assert/strict';
+import { exec } from './../../../setup.js';
 
 describe('#index', function() {
-
     beforeEach(async function() {
-        await exec(_ => {
+        await exec((_) => {
             document.body.innerHTML =
                 '<div id="div1"></div>' +
                 '<div id="div2" class="test"></div>' +
@@ -15,56 +14,55 @@ describe('#index', function() {
 
     it('returns the index of the first node relative to the parent', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.index('.test')
+            await exec((_) =>
+                $.index('.test'),
             ),
-            1
+            1,
         );
     });
 
     it('works with HTMLElement nodes', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.index(
-                    document.getElementById('div2')
-                )
+            await exec((_) =>
+                $.index(
+                    document.getElementById('div2'),
+                ),
             ),
-            1
+            1,
         );
     });
 
     it('works with NodeList nodes', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.index(
-                    document.querySelectorAll('.test')
-                )
+            await exec((_) =>
+                $.index(
+                    document.querySelectorAll('.test'),
+                ),
             ),
-            1
+            1,
         );
     });
 
     it('works with HTMLCollection nodes', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.index(
-                    document.body.children
-                )
+            await exec((_) =>
+                $.index(
+                    document.body.children,
+                ),
             ),
-            0
+            0,
         );
     });
 
     it('works with array nodes', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.index([
+            await exec((_) =>
+                $.index([
                     document.getElementById('div2'),
-                    document.getElementById('div4')
-                ])
+                    document.getElementById('div4'),
+                ]),
             ),
-            1
+            1,
         );
     });
-
 });

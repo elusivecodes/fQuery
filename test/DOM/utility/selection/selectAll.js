@@ -1,10 +1,9 @@
-const assert = require('assert');
-const { exec } = require('../../../setup');
+import assert from 'node:assert/strict';
+import { exec } from './../../../setup.js';
 
 describe('#selectAll', function() {
-
     beforeEach(async function() {
-        await exec(_ => {
+        await exec((_) => {
             document.body.innerHTML =
                 '<div id="select">' +
                 '<div id="div1">' +
@@ -28,71 +27,70 @@ describe('#selectAll', function() {
 
     it('creates a selection on all nodes', async function() {
         assert.strictEqual(
-            await exec(_ => {
-                dom.selectAll('.select');
+            await exec((_) => {
+                $.selectAll('.select');
                 const selection = document.getSelection();
                 const range = selection.getRangeAt(0);
                 return range.toString();
             }),
-            'Test 2Test 3Test 4'
+            'Test 2Test 3Test 4',
         );
     });
 
     it('works with HTMLElement nodes', async function() {
         assert.strictEqual(
-            await exec(_ => {
-                dom.selectAll(
-                    document.getElementById('div3')
+            await exec((_) => {
+                $.selectAll(
+                    document.getElementById('div3'),
                 );
                 const selection = document.getSelection();
                 const range = selection.getRangeAt(0);
                 return range.toString();
             }),
-            'Test 3'
+            'Test 3',
         );
     });
 
     it('works with NodeList nodes', async function() {
         assert.strictEqual(
-            await exec(_ => {
-                dom.selectAll(
-                    document.querySelectorAll('.select')
+            await exec((_) => {
+                $.selectAll(
+                    document.querySelectorAll('.select'),
                 );
                 const selection = document.getSelection();
                 const range = selection.getRangeAt(0);
                 return range.toString();
             }),
-            'Test 2Test 3Test 4'
+            'Test 2Test 3Test 4',
         );
     });
 
     it('works with HTMLCollection nodes', async function() {
         assert.strictEqual(
-            await exec(_ => {
-                dom.selectAll(
-                    document.getElementById('select').children
+            await exec((_) => {
+                $.selectAll(
+                    document.getElementById('select').children,
                 );
                 const selection = document.getSelection();
                 const range = selection.getRangeAt(0);
                 return range.toString();
             }),
-            'Test 1Test 2Test 3Test 4Test 5'
+            'Test 1Test 2Test 3Test 4Test 5',
         );
     });
 
     it('works with array nodes', async function() {
         assert.strictEqual(
-            await exec(_ => {
-                dom.selectAll([
+            await exec((_) => {
+                $.selectAll([
                     document.getElementById('div4'),
-                    document.getElementById('div2')
+                    document.getElementById('div2'),
                 ]);
                 const selection = document.getSelection();
                 const range = selection.getRangeAt(0);
                 return range.toString();
             }),
-            'Test 2Test 3Test 4'
+            'Test 2Test 3Test 4',
         );
     });
-
 });

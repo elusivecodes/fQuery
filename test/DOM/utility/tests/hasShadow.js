@@ -1,10 +1,9 @@
-const assert = require('assert');
-const { exec } = require('../../../setup');
+import assert from 'node:assert/strict';
+import { exec } from './../../../setup.js';
 
 describe('#hasShadow', function() {
-
     beforeEach(async function() {
-        await exec(_ => {
+        await exec((_) => {
             document.body.innerHTML =
                 '<div id="div1" class="test"></div>' +
                 '<div id="div2"></div>' +
@@ -17,76 +16,75 @@ describe('#hasShadow', function() {
 
     it('returns true if any node has a shadow root', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.hasShadow('div')
+            await exec((_) =>
+                $.hasShadow('div'),
             ),
-            true
+            true,
         );
     });
 
     it('returns false if no nodes have a shadow root', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.hasShadow('div:not(.test)')
+            await exec((_) =>
+                $.hasShadow('div:not(.test)'),
             ),
-            false
+            false,
         );
     });
 
     it('returns false for closed shadow roots', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.hasShadow('#div3')
+            await exec((_) =>
+                $.hasShadow('#div3'),
             ),
-            false
+            false,
         );
     });
 
     it('works with HTMLElement nodes', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.hasShadow(
-                    document.getElementById('div1')
-                )
+            await exec((_) =>
+                $.hasShadow(
+                    document.getElementById('div1'),
+                ),
             ),
-            true
+            true,
         );
     });
 
     it('works with NodeList nodes', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.hasShadow(
-                    document.querySelectorAll('div')
-                )
+            await exec((_) =>
+                $.hasShadow(
+                    document.querySelectorAll('div'),
+                ),
             ),
-            true
+            true,
         );
     });
 
     it('works with HTMLCollection nodes', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.hasShadow(
-                    document.body.children
-                )
+            await exec((_) =>
+                $.hasShadow(
+                    document.body.children,
+                ),
             ),
-            true
+            true,
         );
     });
 
     it('works with array nodes', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.hasShadow([
+            await exec((_) =>
+                $.hasShadow([
                     document.getElementById('div1'),
                     document.getElementById('div2'),
                     document.getElementById('div3'),
-                    document.getElementById('div4')
-                ])
+                    document.getElementById('div4'),
+                ]),
             ),
-            true
+            true,
         );
     });
-
 });

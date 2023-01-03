@@ -1,6 +1,6 @@
-const fs = require('fs');
-const http = require('http');
-const path = require('path');
+import * as fs from 'fs';
+import * as http from 'http';
+import * as path from 'path';
 
 const server = http.createServer((request, response) => {
     let filePath = request.url;
@@ -19,8 +19,8 @@ const server = http.createServer((request, response) => {
                 contentType = 'text/css';
                 break;
         }
-        if (filePath === '/assets/frost-dom-bundle.js') {
-            filePath = './dist/frost-dom-bundle.js';
+        if (filePath === '/assets/fquery.js') {
+            filePath = './dist/fquery.js';
         } else {
             filePath = './public/' + filePath;
         }
@@ -39,7 +39,12 @@ const server = http.createServer((request, response) => {
     });
 });
 
-const startServer = port => {
+/**
+ * Start the server.
+ * @param {number} port The port.
+ * @return {Promise} The promise.
+ */
+export function start(port) {
     return new Promise((resolve, reject) => {
         server.listen(port, (error) => {
             if (error) {
@@ -51,13 +56,12 @@ const startServer = port => {
     });
 };
 
-const closeServer = _ => {
-    return new Promise(resolve => {
+/**
+ * Close the server.
+ * @return {Promise} The promise.
+ */
+export function close() {
+    return new Promise((resolve) => {
         server.close(resolve);
     });
-};
-
-module.exports = {
-    start: startServer,
-    close: closeServer
 };

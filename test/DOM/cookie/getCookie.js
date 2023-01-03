@@ -1,43 +1,40 @@
-const assert = require('assert');
-const { exec } = require('../../setup');
-const { _isPuppeteerCore } = require('puppeteer');
+import assert from 'node:assert/strict';
+import { exec } from './../../setup.js';
 
 describe('#getCookie', function() {
-
     it('returns a cookie value', async function() {
         assert.strictEqual(
-            await exec(_ => {
+            await exec((_) => {
                 const myDoc = {
                     cookie: 'test=Test',
-                    nodeType: Core.DOCUMENT_NODE
+                    nodeType: Node.DOCUMENT_NODE,
                 };
-                const myDom = new DOM(myDoc);
-                return myDom.getCookie('test');
+                $.setContext(myDoc);
+                return $.getCookie('test');
             }),
-            'Test'
-        )
+            'Test',
+        );
     });
 
     it('returns a cookie value from multiple cookie values', async function() {
         assert.deepStrictEqual(
-            await exec(_ => {
+            await exec((_) => {
                 const myDoc = {
                     cookie: 'test1=Test 1;test2=Test 2;test3=Test 3',
-                    nodeType: Core.DOCUMENT_NODE
+                    nodeType: Node.DOCUMENT_NODE,
                 };
-                const myDom = new DOM(myDoc);
+                $.setContext(myDoc);
                 return [
-                    myDom.getCookie('test1'),
-                    myDom.getCookie('test2'),
-                    myDom.getCookie('test3')
+                    $.getCookie('test1'),
+                    $.getCookie('test2'),
+                    $.getCookie('test3'),
                 ];
             }),
             [
                 'Test 1',
                 'Test 2',
-                'Test 3'
-            ]
-        )
+                'Test 3',
+            ],
+        );
     });
-
 });

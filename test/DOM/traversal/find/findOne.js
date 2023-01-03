@@ -1,10 +1,9 @@
-const assert = require('assert');
-const { exec } = require('../../../setup');
+import assert from 'node:assert/strict';
+import { exec } from './../../../setup.js';
 
 describe('#findOne', function() {
-
     beforeEach(async function() {
-        await exec(_ => {
+        await exec((_) => {
             document.body.innerHTML =
                 '<div id="parent1">' +
                 '<div id="child1">' +
@@ -99,137 +98,137 @@ describe('#findOne', function() {
 
     it('finds elements by query selector', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.findOne('#parent1 > #child1 > span, #parent1 > #child2 > span').id
+            await exec((_) =>
+                $.findOne('#parent1 > #child1 > span, #parent1 > #child2 > span').id,
             ),
-            'span1'
+            'span1',
         );
     });
 
     it('finds elements by ID', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.findOne('#parent1').id
+            await exec((_) =>
+                $.findOne('#parent1').id,
             ),
-            'parent1'
+            'parent1',
         );
     });
 
     it('finds elements by class name', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.findOne('.span1').id
+            await exec((_) =>
+                $.findOne('.span1').id,
             ),
-            'span1'
+            'span1',
         );
     });
 
     it('finds elements by tag name', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.findOne('span').id
+            await exec((_) =>
+                $.findOne('span').id,
             ),
-            'span1'
+            'span1',
         );
     });
 
     it('returns null for non-matching selector', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.findOne('#invalid')
+            await exec((_) =>
+                $.findOne('#invalid'),
             ),
-            null
+            null,
         );
     });
 
     it('returns undefined for empty nodes', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.findOne('span', '#invalid')
+            await exec((_) =>
+                $.findOne('span', '#invalid'),
             ),
-            undefined
+            undefined,
         );
     });
 
     it('works with query selector nodes', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.findOne('span', '#parent1 > #child2').id
+            await exec((_) =>
+                $.findOne('span', '#parent1 > #child2').id,
             ),
-            'span3'
+            'span3',
         );
     });
 
     it('works with HTMLElement nodes', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.findOne(
+            await exec((_) =>
+                $.findOne(
                     'span',
-                    document.getElementById('child2')
-                ).id
+                    document.getElementById('child2'),
+                ).id,
             ),
-            'span3'
+            'span3',
         );
     });
 
     it('works with NodeList nodes', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.findOne(
+            await exec((_) =>
+                $.findOne(
                     'span',
-                    document.querySelectorAll('#parent2 > div')
-                ).id
+                    document.querySelectorAll('#parent2 > div'),
+                ).id,
             ),
-            'span7'
+            'span7',
         );
     });
 
     it('works with HTMLCollection nodes', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.findOne(
+            await exec((_) =>
+                $.findOne(
                     'span',
-                    document.getElementById('parent2').children
-                ).id
+                    document.getElementById('parent2').children,
+                ).id,
             ),
-            'span7'
+            'span7',
         );
     });
 
     it('works with DocumentFragment nodes', async function() {
         assert.strictEqual(
-            await exec(_ => {
+            await exec((_) => {
                 const range = document.createRange();
                 const fragment = range.createContextualFragment(
                     '<div id="div1"></div>' +
-                    '<div id="div2"></div>'
+                    '<div id="div2"></div>',
                 );
-                return dom.findOne('div', fragment).id;
+                return $.findOne('div', fragment).id;
             }),
-            'div1'
+            'div1',
         );
     });
 
     it('works with ShadowRoot nodes', async function() {
         assert.strictEqual(
-            await exec(_ => {
+            await exec((_) => {
                 const div = document.createElement('div');
                 const shadow = div.attachShadow({ mode: 'open' });
                 const range = document.createRange();
                 const fragment = range.createContextualFragment(
                     '<div id="div1"></div>' +
-                    '<div id="div2"></div>'
+                    '<div id="div2"></div>',
                 );
                 shadow.appendChild(fragment);
-                return dom.findOne('div', shadow).id;
+                return $.findOne('div', shadow).id;
             }),
-            'div1'
+            'div1',
         );
     });
 
     it('works with Document nodes', async function() {
         assert.strictEqual(
-            await exec(_ => {
+            await exec((_) => {
                 const parser = new DOMParser();
                 const myDoc = parser.parseFromString(
                     '<html>' +
@@ -240,25 +239,24 @@ describe('#findOne', function() {
                     '<div id="div2"></div>' +
                     '</body>' +
                     '</html>',
-                    'text/html'
+                    'text/html',
                 );
-                return dom.findOne('div', myDoc).id;
+                return $.findOne('div', myDoc).id;
             }),
-            'div1'
+            'div1',
         );
     });
 
     it('works with array nodes', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.findOne('span', [
+            await exec((_) =>
+                $.findOne('span', [
                     document.getElementById('child4'),
                     document.getElementById('child5'),
-                    document.getElementById('child6')
-                ]).id
+                    document.getElementById('child6'),
+                ]).id,
             ),
-            'span7'
+            'span7',
         );
     });
-
 });

@@ -1,144 +1,142 @@
-const assert = require('assert');
-const { exec } = require('../../../setup');
+import assert from 'node:assert/strict';
+import { exec } from './../../../setup.js';
 
 describe('#hasData', function() {
-
     beforeEach(async function() {
-        await exec(_ => {
+        await exec((_) => {
             document.body.innerHTML =
                 '<div id="div1" class="test"></div>' +
                 '<div id="div2"></div>' +
                 '<div id="div3" class="test"></div>' +
                 '<div id="div4"></div>';
-            dom.setData('#div1', 'test1', 'Test 1');
-            dom.setData('#div3', 'test2', 'Test 2');
+            $.setData('#div1', 'test1', 'Test 1');
+            $.setData('#div3', 'test2', 'Test 2');
         });
     });
 
     it('returns true if any node has data', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.hasData('div')
+            await exec((_) =>
+                $.hasData('div'),
             ),
-            true
+            true,
         );
     });
 
     it('returns false if no nodes have data', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.hasData('div:not(.test)')
+            await exec((_) =>
+                $.hasData('div:not(.test)'),
             ),
-            false
+            false,
         );
     });
 
     it('returns true if any node has data for a key', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.hasData('#div1', 'test1')
+            await exec((_) =>
+                $.hasData('#div1', 'test1'),
             ),
-            true
+            true,
         );
     });
 
     it('returns false if no nodes have data for a key', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.hasData('#div1', 'test2')
+            await exec((_) =>
+                $.hasData('#div1', 'test2'),
             ),
-            false
+            false,
         );
     });
 
     it('works with HTMLElement nodes', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.hasData(
-                    document.getElementById('div1')
-                )
+            await exec((_) =>
+                $.hasData(
+                    document.getElementById('div1'),
+                ),
             ),
-            true
+            true,
         );
     });
 
     it('works with NodeList nodes', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.hasData(
-                    document.querySelectorAll('div')
-                )
+            await exec((_) =>
+                $.hasData(
+                    document.querySelectorAll('div'),
+                ),
             ),
-            true
+            true,
         );
     });
 
     it('works with HTMLCollection nodes', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.hasData(
-                    document.body.children
-                )
+            await exec((_) =>
+                $.hasData(
+                    document.body.children,
+                ),
             ),
-            true
+            true,
         );
     });
 
     it('works with DocumentFragment nodes', async function() {
         assert.strictEqual(
-            await exec(_ => {
+            await exec((_) => {
                 const fragment = document.createDocumentFragment();
-                dom.setData(fragment, 'test', 'Test');
-                return dom.hasData(fragment);
+                $.setData(fragment, 'test', 'Test');
+                return $.hasData(fragment);
             }),
-            true
+            true,
         );
     });
 
     it('works with ShadowRoot nodes', async function() {
         assert.strictEqual(
-            await exec(_ => {
+            await exec((_) => {
                 const div = document.createElement('div');
                 const shadow = div.attachShadow({ mode: 'open' });
-                dom.setData(shadow, 'test', 'Test');
-                return dom.hasData(shadow);
+                $.setData(shadow, 'test', 'Test');
+                return $.hasData(shadow);
             }),
-            true
+            true,
         );
     });
 
     it('works with Document nodes', async function() {
         assert.strictEqual(
-            await exec(_ => {
-                dom.setData(document, 'test', 'Test');
-                return dom.hasData(document);
+            await exec((_) => {
+                $.setData(document, 'test', 'Test');
+                return $.hasData(document);
             }),
-            true
+            true,
         );
     });
 
     it('works with Window nodes', async function() {
         assert.strictEqual(
-            await exec(_ => {
-                dom.setData(window, 'test', 'Test');
-                return dom.hasData(window);
+            await exec((_) => {
+                $.setData(window, 'test', 'Test');
+                return $.hasData(window);
             }),
-            true
+            true,
         );
     });
 
     it('works with array nodes', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.hasData([
+            await exec((_) =>
+                $.hasData([
                     document.getElementById('div1'),
                     document.getElementById('div2'),
                     document.getElementById('div3'),
-                    document.getElementById('div4')
-                ])
+                    document.getElementById('div4'),
+                ]),
             ),
-            true
+            true,
         );
     });
-
 });

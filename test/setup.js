@@ -1,9 +1,11 @@
-const puppeteer = require('puppeteer');
-const assert = require('assert');
-const server = require('../server/server.js');
+import assert from 'node:assert/strict';
+import puppeteer from 'puppeteer';
+import * as server from './../server/server.js';
+
 const port = 3001;
 
-let browser, page;
+let browser;
+let page;
 
 before(async function() {
     this.timeout(30000);
@@ -18,53 +20,58 @@ before(async function() {
             '--no-first-run',
             '--no-sandbox',
             '--no-zygote',
-            '--single-process'
-        ]
+            '--single-process',
+        ],
     });
 
     page = await browser.newPage();
 
     await page.goto('http://localhost:3001', {
-        waitUntil: 'domcontentloaded'
+        waitUntil: 'domcontentloaded',
+    });
+
+    await page.evaluate((_) => {
+        $.setAjaxDefaults({
+            xhr: (_) => new MockXMLHttpRequest(),
+        });
+        $.setAnimationDefaults({
+            duration: 200,
+        });
+        $.useTimeout();
     });
 
     assert.strictEqual(
-        await page.evaluate(_ => {
-            return AjaxRequest.useMock;
-        }),
-        false
-    );
+        await page.evaluate((_) => {
+            if (window.$ !== window.fQuery) {
+                return false;
+            }
 
-    assert.strictEqual(
-        await page.evaluate(_ => {
-            return Animation.useTimeout;
-        }),
-        false
-    );
+            $.noConflict();
 
-    assert.strictEqual(
-        await page.evaluate(_ => {
-            return Animation.defaults.duration;
-        }),
-        1000
-    );
+            if (window.$ === window.fQuery) {
+                return false;
+            }
 
-    await page.evaluate(_ => {
-        AjaxRequest.useMock = true;
-        Animation.useTimeout = true;
-        Animation.defaults.duration = 200;
-    });
+            window.$ = window.fQuery;
+
+            return true;
+        }),
+        true,
+    );
 });
 
 beforeEach(async function() {
     this.timeout(30000);
 
-    await page.evaluate(_ => {
-        dom.removeData(window);
-        dom.removeData(document);
+    await page.evaluate((_) => {
+        $.setWindow(window);
+        $.setContext(document);
 
-        dom.removeEvent(window);
-        dom.removeEvent(document);
+        $.removeData(window);
+        $.removeData(document);
+
+        $.removeEvent(window);
+        $.removeEvent(document);
 
         delete window.data;
         window.id = 'window';
@@ -83,17 +90,25 @@ after(async function() {
     await server.close();
 });
 
-const exec = async (callback, data) =>
-    await page.evaluate(callback, data);
+/**
+ * Execute a callback in the document.
+ * @param {function} callback The callback to execute.
+ * @param {array} [data] The data to provide to the callback.
+ * @return {Promise} The promise.
+ */
+export async function exec(callback, data) {
+    return await page.evaluate(callback, data);
+};
 
-const setStyle = async (style = '') =>
-    await exec(style => {
+/**
+ * Add a stylesheet to the document.
+ * @param {string} style The stylesheet.
+ * @return {Promise} The promise.
+ */
+export async function setStyle(style = '') {
+    return await exec((style) => {
         const element = document.createElement('style');
         element.textContent = style;
         document.head.appendChild(element);
     }, style);
-
-module.exports = {
-    exec,
-    setStyle
 };

@@ -1,10 +1,9 @@
-const assert = require('assert');
-const { exec } = require('../../../setup');
+import assert from 'node:assert/strict';
+import { exec } from './../../../setup.js';
 
 describe('#is', function() {
-
     beforeEach(async function() {
-        await exec(_ => {
+        await exec((_) => {
             document.body.innerHTML =
                 '<div id="div1" class="test"></div>' +
                 '<div id="div2"></div>' +
@@ -15,184 +14,183 @@ describe('#is', function() {
 
     it('returns true if any node matches a filter', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.is('div', '.test')
+            await exec((_) =>
+                $.is('div', '.test'),
             ),
-            true
+            true,
         );
     });
 
     it('returns false if no nodes match a filter', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.is('div:not(.test)', '.test')
+            await exec((_) =>
+                $.is('div:not(.test)', '.test'),
             ),
-            false
+            false,
         );
     });
 
     it('works with HTMLElement nodes', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.is(
+            await exec((_) =>
+                $.is(
                     document.getElementById('div1'),
-                    '.test'
-                )
+                    '.test',
+                ),
             ),
-            true
+            true,
         );
     });
 
     it('works with NodeList nodes', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.is(
+            await exec((_) =>
+                $.is(
                     document.querySelectorAll('div'),
-                    '.test'
-                )
+                    '.test',
+                ),
             ),
-            true
+            true,
         );
     });
 
     it('works with HTMLCollection nodes', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.is(
+            await exec((_) =>
+                $.is(
                     document.body.children,
-                    '.test'
-                )
+                    '.test',
+                ),
             ),
-            true
+            true,
         );
     });
 
     it('works with DocumentFragment nodes', async function() {
         assert.strictEqual(
-            await exec(_ => {
+            await exec((_) => {
                 const fragment = document.createDocumentFragment();
-                return dom.is(fragment);
+                return $.is(fragment);
             }),
-            true
+            true,
         );
     });
 
     it('works with ShadowRoot nodes', async function() {
         assert.strictEqual(
-            await exec(_ => {
+            await exec((_) => {
                 const div = document.createElement('div');
                 const shadow = div.attachShadow({ mode: 'open' });
-                return dom.is(shadow);
+                return $.is(shadow);
             }),
-            true
+            true,
         );
     });
 
     it('works with array nodes', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.is([
+            await exec((_) =>
+                $.is([
                     document.getElementById('div1'),
                     document.getElementById('div2'),
                     document.getElementById('div3'),
-                    document.getElementById('div4')
-                ], '.test')
+                    document.getElementById('div4'),
+                ], '.test'),
             ),
-            true
+            true,
         );
     });
 
     it('works with function filter', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.is(
+            await exec((_) =>
+                $.is(
                     'div',
-                    node => node.classList.contains('test')
-                )
+                    (node) => node.classList.contains('test'),
+                ),
             ),
-            true
+            true,
         );
     });
 
     it('works with HTMLElement filter', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.is(
+            await exec((_) =>
+                $.is(
                     'div',
-                    document.getElementById('div1')
-                )
+                    document.getElementById('div1'),
+                ),
             ),
-            true
+            true,
         );
     });
 
     it('works with NodeList filter', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.is(
+            await exec((_) =>
+                $.is(
                     'div',
-                    document.querySelectorAll('div')
-                )
+                    document.querySelectorAll('div'),
+                ),
             ),
-            true
+            true,
         );
     });
 
     it('works with HTMLCollection filter', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.is(
+            await exec((_) =>
+                $.is(
                     'div',
-                    document.body.children
-                )
+                    document.body.children,
+                ),
             ),
-            true
+            true,
         );
     });
 
     it('works with DocumentFragment filter', async function() {
         assert.strictEqual(
-            await exec(_ => {
+            await exec((_) => {
                 const fragment = document.createDocumentFragment();
-                return dom.is(
+                return $.is(
                     [
-                        fragment
+                        fragment,
                     ],
-                    fragment
+                    fragment,
                 );
             }),
-            true
+            true,
         );
     });
 
     it('works with ShadowRoot filter', async function() {
         assert.strictEqual(
-            await exec(_ => {
+            await exec((_) => {
                 const div = document.createElement('div');
                 const shadow = div.attachShadow({ mode: 'open' });
-                return dom.is(
+                return $.is(
                     [
-                        shadow
+                        shadow,
                     ],
-                    shadow
+                    shadow,
                 );
             }),
-            true
+            true,
         );
     });
 
     it('works with array filter', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.is('div', [
+            await exec((_) =>
+                $.is('div', [
                     document.getElementById('div1'),
                     document.getElementById('div2'),
                     document.getElementById('div3'),
-                    document.getElementById('div4')
-                ])
+                    document.getElementById('div4'),
+                ]),
             ),
-            true
+            true,
         );
     });
-
 });

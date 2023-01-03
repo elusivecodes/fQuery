@@ -1,10 +1,9 @@
-const assert = require('assert');
-const { exec } = require('../../../setup');
+import assert from 'node:assert/strict';
+import { exec } from './../../../setup.js';
 
 describe('#findOneByClass', function() {
-
     beforeEach(async function() {
-        await exec(_ => {
+        await exec((_) => {
             document.body.innerHTML =
                 '<div id="parent1">' +
                 '<div id="child1">' +
@@ -32,95 +31,95 @@ describe('#findOneByClass', function() {
 
     it('finds elements by class name', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.findOneByClass('test').id
+            await exec((_) =>
+                $.findOneByClass('test').id,
             ),
-            'span1'
+            'span1',
         );
     });
 
     it('returns null for non-matching class', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.findOneByClass('invalid')
+            await exec((_) =>
+                $.findOneByClass('invalid'),
             ),
-            null
+            null,
         );
     });
 
     it('returns undefined for empty nodes', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.findOneByClass('test', '#invalid')
+            await exec((_) =>
+                $.findOneByClass('test', '#invalid'),
             ),
-            undefined
+            undefined,
         );
     });
 
     it('works with query selector nodes', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.findOneByClass('test', '#parent2').id
+            await exec((_) =>
+                $.findOneByClass('test', '#parent2').id,
             ),
-            'span5'
+            'span5',
         );
     });
 
     it('works with HTMLElement nodes', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.findOneByClass(
+            await exec((_) =>
+                $.findOneByClass(
                     'test',
-                    document.getElementById('parent2')
-                ).id
+                    document.getElementById('parent2'),
+                ).id,
             ),
-            'span5'
+            'span5',
         );
     });
 
     it('works with NodeList nodes', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.findOneByClass(
+            await exec((_) =>
+                $.findOneByClass(
                     'test',
-                    document.querySelectorAll('#parent2')
-                ).id
+                    document.querySelectorAll('#parent2'),
+                ).id,
             ),
-            'span5'
+            'span5',
         );
     });
 
     it('works with HTMLCollection nodes', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.findOneByClass(
+            await exec((_) =>
+                $.findOneByClass(
                     'test',
-                    document.getElementById('parent2').children
-                ).id
+                    document.getElementById('parent2').children,
+                ).id,
             ),
-            'span5'
+            'span5',
         );
     });
 
     it('works with DocumentFragment nodes', async function() {
         assert.strictEqual(
-            await exec(_ => {
+            await exec((_) => {
                 const range = document.createRange();
                 const fragment = range.createContextualFragment(
                     '<div id="div1" class="test"></div>' +
                     '<div id="div2"></div>' +
                     '<div id="div3" class="test"></div>' +
-                    '<div id="div4"></div>'
+                    '<div id="div4"></div>',
                 );
-                return dom.findOneByClass('test', fragment).id;
+                return $.findOneByClass('test', fragment).id;
             }),
-            'div1'
+            'div1',
         );
     });
 
     it('works with ShadowRoot nodes', async function() {
         assert.strictEqual(
-            await exec(_ => {
+            await exec((_) => {
                 const div = document.createElement('div');
                 const shadow = div.attachShadow({ mode: 'open' });
                 const range = document.createRange();
@@ -128,18 +127,18 @@ describe('#findOneByClass', function() {
                     '<div id="div1" class="test"></div>' +
                     '<div id="div2"></div>' +
                     '<div id="div3" class="test"></div>' +
-                    '<div id="div4"></div>'
+                    '<div id="div4"></div>',
                 );
                 shadow.appendChild(fragment);
-                return dom.findOneByClass('test', shadow).id;
+                return $.findOneByClass('test', shadow).id;
             }),
-            'div1'
+            'div1',
         );
     });
 
     it('works with Document nodes', async function() {
         assert.strictEqual(
-            await exec(_ => {
+            await exec((_) => {
                 const parser = new DOMParser();
                 const myDoc = parser.parseFromString(
                     '<html>' +
@@ -152,24 +151,23 @@ describe('#findOneByClass', function() {
                     '<div id="div4"></div>' +
                     '</body>' +
                     '</html>',
-                    'text/html'
+                    'text/html',
                 );
-                return dom.findOneByClass('test', myDoc).id;
+                return $.findOneByClass('test', myDoc).id;
             }),
-            'div1'
+            'div1',
         );
     });
 
     it('works with array nodes', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.findOneByClass('test', [
+            await exec((_) =>
+                $.findOneByClass('test', [
                     document.getElementById('child3'),
-                    document.getElementById('child4')
-                ]).id
+                    document.getElementById('child4'),
+                ]).id,
             ),
-            'span5'
+            'span5',
         );
     });
-
 });

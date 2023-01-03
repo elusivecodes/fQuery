@@ -1,10 +1,9 @@
-const assert = require('assert');
-const { exec } = require('../../../setup');
+import assert from 'node:assert/strict';
+import { exec } from './../../../setup.js';
 
 describe('#beforeSelection', function() {
-
     beforeEach(async function() {
-        await exec(_ => {
+        await exec((_) => {
             document.body.innerHTML =
                 '<div id="select">' +
                 '<div id="div1">' +
@@ -33,8 +32,8 @@ describe('#beforeSelection', function() {
 
     it('inserts each node before the selected nodes', async function() {
         assert.strictEqual(
-            await exec(_ => {
-                dom.beforeSelection('a');
+            await exec((_) => {
+                $.beforeSelection('a');
                 return document.body.innerHTML;
             }),
             '<div id="select">' +
@@ -48,15 +47,15 @@ describe('#beforeSelection', function() {
             '<span id="span2">Test 2</span>' +
             '</div>' +
             '</div>' +
-            '<div id="parent"></div>'
+            '<div id="parent"></div>',
         );
     });
 
     it('works with HTMLElement nodes', async function() {
         assert.strictEqual(
-            await exec(_ => {
-                dom.beforeSelection(
-                    document.getElementById('a1')
+            await exec((_) => {
+                $.beforeSelection(
+                    document.getElementById('a1'),
                 );
                 return document.body.innerHTML;
             }),
@@ -72,15 +71,15 @@ describe('#beforeSelection', function() {
             '</div>' +
             '<div id="parent">' +
             '<a href="#" id="a2">Test</a>' +
-            '</div>'
+            '</div>',
         );
     });
 
     it('works with NodeList nodes', async function() {
         assert.strictEqual(
-            await exec(_ => {
-                dom.beforeSelection(
-                    document.querySelectorAll('a')
+            await exec((_) => {
+                $.beforeSelection(
+                    document.querySelectorAll('a'),
                 );
                 return document.body.innerHTML;
             }),
@@ -95,15 +94,15 @@ describe('#beforeSelection', function() {
             '<span id="span2">Test 2</span>' +
             '</div>' +
             '</div>' +
-            '<div id="parent"></div>'
+            '<div id="parent"></div>',
         );
     });
 
     it('works with HTMLCollection nodes', async function() {
         assert.strictEqual(
-            await exec(_ => {
-                dom.beforeSelection(
-                    document.getElementById('parent').children
+            await exec((_) => {
+                $.beforeSelection(
+                    document.getElementById('parent').children,
                 );
                 return document.body.innerHTML;
             }),
@@ -118,18 +117,18 @@ describe('#beforeSelection', function() {
             '<span id="span2">Test 2</span>' +
             '</div>' +
             '</div>' +
-            '<div id="parent"></div>'
+            '<div id="parent"></div>',
         );
     });
 
     it('works with DocumentFragment nodes', async function() {
         assert.strictEqual(
-            await exec(_ => {
+            await exec((_) => {
                 const range = document.createRange();
                 const fragment = range.createContextualFragment(
-                    '<div><span></span></div>'
+                    '<div><span></span></div>',
                 );
-                dom.beforeSelection(fragment);
+                $.beforeSelection(fragment);
                 return document.body.innerHTML;
             }),
             '<div id="select">' +
@@ -145,16 +144,16 @@ describe('#beforeSelection', function() {
             '<div id="parent">' +
             '<a href="#" id="a1">Test</a>' +
             '<a href="#" id="a2">Test</a>' +
-            '</div>'
+            '</div>',
         );
     });
 
     it('works with array nodes', async function() {
         assert.strictEqual(
-            await exec(_ => {
-                dom.beforeSelection([
+            await exec((_) => {
+                $.beforeSelection([
                     document.getElementById('a1'),
-                    document.getElementById('a2')
+                    document.getElementById('a2'),
                 ]);
                 return document.body.innerHTML;
             }),
@@ -169,14 +168,14 @@ describe('#beforeSelection', function() {
             '<span id="span2">Test 2</span>' +
             '</div>' +
             '</div>' +
-            '<div id="parent"></div>'
+            '<div id="parent"></div>',
         );
     });
 
     it('works with HTML nodes', async function() {
         assert.strictEqual(
-            await exec(_ => {
-                dom.beforeSelection('<div><span></span></div>');
+            await exec((_) => {
+                $.beforeSelection('<div><span></span></div>');
                 return document.body.innerHTML;
             }),
             '<div id="select">' +
@@ -192,8 +191,7 @@ describe('#beforeSelection', function() {
             '<div id="parent">' +
             '<a href="#" id="a1">Test</a>' +
             '<a href="#" id="a2">Test</a>' +
-            '</div>'
+            '</div>',
         );
     });
-
 });

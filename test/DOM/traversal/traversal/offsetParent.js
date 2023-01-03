@@ -1,10 +1,9 @@
-const assert = require('assert');
-const { exec } = require('../../../setup');
+import assert from 'node:assert/strict';
+import { exec } from './../../../setup.js';
 
 describe('#offsetParent', function() {
-
     beforeEach(async function() {
-        await exec(_ => {
+        await exec((_) => {
             document.body.innerHTML =
                 '<div id="parent1">' +
                 '<div id="child1" style="position: relative;">' +
@@ -25,65 +24,64 @@ describe('#offsetParent', function() {
 
     it('returns the offset parent of the first node', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.offsetParent('a').id
+            await exec((_) =>
+                $.offsetParent('a').id,
             ),
-            'child1'
+            'child1',
         );
     });
 
     it('returns undefined for empty nodes', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.offsetParent('#invalid')
+            await exec((_) =>
+                $.offsetParent('#invalid'),
             ),
-            undefined
+            undefined,
         );
     });
 
     it('works with HTMLElement nodes', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.offsetParent(
-                    document.getElementById('a1')
-                ).id
+            await exec((_) =>
+                $.offsetParent(
+                    document.getElementById('a1'),
+                ).id,
             ),
-            'child1'
+            'child1',
         );
     });
 
     it('works with NodeList nodes', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.offsetParent(
-                    document.querySelectorAll('a')
-                ).id
+            await exec((_) =>
+                $.offsetParent(
+                    document.querySelectorAll('a'),
+                ).id,
             ),
-            'child1'
+            'child1',
         );
     });
 
     it('works with HTMLCollection nodes', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.offsetParent(
-                    document.getElementById('span1').children
-                ).id
+            await exec((_) =>
+                $.offsetParent(
+                    document.getElementById('span1').children,
+                ).id,
             ),
-            'child1'
+            'child1',
         );
     });
 
     it('works with array nodes', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.offsetParent([
+            await exec((_) =>
+                $.offsetParent([
                     document.getElementById('a1'),
-                    document.getElementById('a2')
-                ]).id
+                    document.getElementById('a2'),
+                ]).id,
             ),
-            'child1'
+            'child1',
         );
     });
-
 });

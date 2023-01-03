@@ -1,10 +1,9 @@
-const assert = require('assert');
-const { exec } = require('../../../setup');
+import assert from 'node:assert/strict';
+import { exec } from './../../../setup.js';
 
 describe('#hasDescendent', function() {
-
     beforeEach(async function() {
-        await exec(_ => {
+        await exec((_) => {
             document.body.innerHTML =
                 '<div id="div1" class="test">' +
                 '<span id="span1">' +
@@ -23,168 +22,167 @@ describe('#hasDescendent', function() {
 
     it('returns true if any node has a descendent matching a filter', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.hasDescendent('div', 'a')
+            await exec((_) =>
+                $.hasDescendent('div', 'a'),
             ),
-            true
+            true,
         );
     });
 
     it('returns false if no nodes have a descendent matching a filter', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.hasDescendent('div:not(.test)', 'a')
+            await exec((_) =>
+                $.hasDescendent('div:not(.test)', 'a'),
             ),
-            false
+            false,
         );
     });
 
     it('works with HTMLElement nodes', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.hasDescendent(
+            await exec((_) =>
+                $.hasDescendent(
                     document.getElementById('div1'),
-                    'a'
-                )
+                    'a',
+                ),
             ),
-            true
+            true,
         );
     });
 
     it('works with HTMLCollection nodes', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.hasDescendent(
+            await exec((_) =>
+                $.hasDescendent(
                     document.body.children,
-                    'a'
-                )
+                    'a',
+                ),
             ),
-            true
+            true,
         );
     });
 
     it('works with NodeList nodes', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.hasDescendent(
+            await exec((_) =>
+                $.hasDescendent(
                     document.querySelectorAll('div'),
-                    'a'
-                )
+                    'a',
+                ),
             ),
-            true
+            true,
         );
     });
 
     it('works with DocumentFragment nodes', async function() {
         assert.strictEqual(
-            await exec(_ => {
+            await exec((_) => {
                 const range = document.createRange();
                 const fragment = range.createContextualFragment(
-                    '<div></div>'
+                    '<div></div>',
                 );
-                return dom.hasDescendent(fragment, 'div');
+                return $.hasDescendent(fragment, 'div');
             }),
-            true
+            true,
         );
     });
 
     it('works with ShadowRoot nodes', async function() {
         assert.strictEqual(
-            await exec(_ => {
+            await exec((_) => {
                 const div = document.createElement('div');
                 const shadow = div.attachShadow({ mode: 'open' });
                 const range = document.createRange();
                 const fragment = range.createContextualFragment(
-                    '<div></div>'
+                    '<div></div>',
                 );
                 shadow.appendChild(fragment);
-                return dom.hasDescendent(shadow, 'div');
+                return $.hasDescendent(shadow, 'div');
             }),
-            true
+            true,
         );
     });
 
     it('works with Document nodes', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.hasDescendent(document, 'div')
+            await exec((_) =>
+                $.hasDescendent(document, 'div'),
             ),
-            true
+            true,
         );
     });
 
     it('works with array nodes', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.hasDescendent([
+            await exec((_) =>
+                $.hasDescendent([
                     document.getElementById('div1'),
                     document.getElementById('div2'),
                     document.getElementById('div3'),
-                    document.getElementById('div4')
-                ], 'a')
+                    document.getElementById('div4'),
+                ], 'a'),
             ),
-            true
+            true,
         );
     });
 
     it('works with function filter', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.hasDescendent(
+            await exec((_) =>
+                $.hasDescendent(
                     'div',
-                    node => node.id === 'a1'
-                )
+                    (node) => node.id === 'a1',
+                ),
             ),
-            true
+            true,
         );
     });
 
     it('works with HTMLElement filter', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.hasDescendent(
+            await exec((_) =>
+                $.hasDescendent(
                     'div',
-                    document.getElementById('a1')
-                )
+                    document.getElementById('a1'),
+                ),
             ),
-            true
+            true,
         );
     });
 
     it('works with NodeList filter', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.hasDescendent(
+            await exec((_) =>
+                $.hasDescendent(
                     'div',
-                    document.querySelectorAll('a')
-                )
+                    document.querySelectorAll('a'),
+                ),
             ),
-            true
+            true,
         );
     });
 
     it('works with HTMLCollection filter', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.hasDescendent(
+            await exec((_) =>
+                $.hasDescendent(
                     'div',
-                    document.getElementById('span1').children
-                )
+                    document.getElementById('span1').children,
+                ),
             ),
-            true
+            true,
         );
     });
 
     it('works with array filter', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.hasDescendent('div', [
+            await exec((_) =>
+                $.hasDescendent('div', [
                     document.getElementById('a1'),
-                    document.getElementById('a2')
-                ])
+                    document.getElementById('a2'),
+                ]),
             ),
-            true
+            true,
         );
     });
-
 });

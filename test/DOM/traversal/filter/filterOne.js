@@ -1,10 +1,9 @@
-const assert = require('assert');
-const { exec } = require('../../../setup');
+import assert from 'node:assert/strict';
+import { exec } from './../../../setup.js';
 
 describe('#filterOne', function() {
-
     beforeEach(async function() {
-        await exec(_ => {
+        await exec((_) => {
             document.body.innerHTML =
                 '<div id="div1"></div>' +
                 '<div id="div2" data-filter="test"></div>' +
@@ -15,177 +14,176 @@ describe('#filterOne', function() {
 
     it('returns the first node matching a filter', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.filterOne('div', '[data-filter="test"]').id
+            await exec((_) =>
+                $.filterOne('div', '[data-filter="test"]').id,
             ),
-            'div2'
+            'div2',
         );
     });
 
     it('works with HTMLElement nodes', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.filterOne(
+            await exec((_) =>
+                $.filterOne(
                     document.getElementById('div2'),
-                    '[data-filter="test"]'
-                ).id
+                    '[data-filter="test"]',
+                ).id,
             ),
-            'div2'
+            'div2',
         );
     });
 
     it('works with NodeList nodes', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.filterOne(
+            await exec((_) =>
+                $.filterOne(
                     document.querySelectorAll('div'),
-                    '[data-filter="test"]'
-                ).id
+                    '[data-filter="test"]',
+                ).id,
             ),
-            'div2'
+            'div2',
         );
     });
 
     it('works with HTMLCollection nodes', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.filterOne(
+            await exec((_) =>
+                $.filterOne(
                     document.body.children,
-                    '[data-filter="test"]'
-                ).id
+                    '[data-filter="test"]',
+                ).id,
             ),
-            'div2'
+            'div2',
         );
     });
 
     it('works with DocumentFragment nodes', async function() {
         assert.strictEqual(
-            await exec(_ => {
+            await exec((_) => {
                 const fragment = document.createDocumentFragment();
                 fragment.id = 'fragment';
-                return dom.filterOne(fragment).id;
+                return $.filterOne(fragment).id;
             }),
-            'fragment'
+            'fragment',
         );
     });
 
     it('works with ShadowRoot nodes', async function() {
         assert.strictEqual(
-            await exec(_ => {
+            await exec((_) => {
                 const div = document.createElement('div');
                 const shadow = div.attachShadow({ mode: 'open' });
                 shadow.id = 'shadow';
-                return dom.filterOne(shadow).id;
+                return $.filterOne(shadow).id;
             }),
-            'shadow'
+            'shadow',
         );
     });
 
     it('works with array nodes', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.filterOne([
+            await exec((_) =>
+                $.filterOne([
                     document.getElementById('div1'),
                     document.getElementById('div2'),
                     document.getElementById('div3'),
-                    document.getElementById('div4')
-                ], '[data-filter="test"]').id
+                    document.getElementById('div4'),
+                ], '[data-filter="test"]').id,
             ),
-            'div2'
+            'div2',
         );
     });
 
     it('works with function filter', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.filterOne(
+            await exec((_) =>
+                $.filterOne(
                     'div',
-                    node => node.dataset.filter === 'test'
-                ).id
+                    (node) => node.dataset.filter === 'test',
+                ).id,
             ),
-            'div2'
+            'div2',
         );
     });
 
     it('works with HTMLElement filter', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.filterOne(
+            await exec((_) =>
+                $.filterOne(
                     'div',
-                    document.getElementById('div2')
-                ).id
+                    document.getElementById('div2'),
+                ).id,
             ),
-            'div2'
+            'div2',
         );
     });
 
     it('works with NodeList filter', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.filterOne(
+            await exec((_) =>
+                $.filterOne(
                     'div',
-                    document.querySelectorAll('[data-filter="test"]')
-                ).id
+                    document.querySelectorAll('[data-filter="test"]'),
+                ).id,
             ),
-            'div2'
+            'div2',
         );
     });
 
     it('works with HTMLCollection filter', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.filterOne(
+            await exec((_) =>
+                $.filterOne(
                     'div',
-                    document.body.children
-                ).id
+                    document.body.children,
+                ).id,
             ),
-            'div1'
+            'div1',
         );
     });
 
     it('works with DocumentFragment filter', async function() {
         assert.strictEqual(
-            await exec(_ => {
+            await exec((_) => {
                 const fragment = document.createDocumentFragment();
                 fragment.id = 'fragment';
-                return dom.filterOne(
+                return $.filterOne(
                     [
-                        fragment
+                        fragment,
                     ],
                     fragment,
                 ).id;
             }),
-            'fragment'
+            'fragment',
         );
     });
 
     it('works with ShadowRoot filter', async function() {
         assert.strictEqual(
-            await exec(_ => {
+            await exec((_) => {
                 const div = document.createElement('div');
                 const shadow = div.attachShadow({ mode: 'open' });
                 shadow.id = 'shadow';
-                return dom.filterOne(
+                return $.filterOne(
                     [
-                        shadow
+                        shadow,
                     ],
-                    shadow
+                    shadow,
                 ).id;
             }),
-            'shadow'
+            'shadow',
         );
     });
 
     it('works with array filter', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.filterOne('div', [
+            await exec((_) =>
+                $.filterOne('div', [
                     document.getElementById('div2'),
-                    document.getElementById('div4')
-                ]).id
+                    document.getElementById('div4'),
+                ]).id,
             ),
-            'div2'
+            'div2',
         );
     });
-
 });

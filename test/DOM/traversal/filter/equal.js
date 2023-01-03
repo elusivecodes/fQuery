@@ -1,10 +1,9 @@
-const assert = require('assert');
-const { exec } = require('../../../setup');
+import assert from 'node:assert/strict';
+import { exec } from './../../../setup.js';
 
 describe('#equal', function() {
-
     beforeEach(async function() {
-        await exec(_ => {
+        await exec((_) => {
             document.body.innerHTML =
                 '<div id="parent1">' +
                 '<span data-id="span1"></span>' +
@@ -21,214 +20,213 @@ describe('#equal', function() {
 
     it('returns nodes equal to other nodes', async function() {
         assert.deepStrictEqual(
-            await exec(_ =>
-                dom.equal('#parent1 span', '#parent2 span')
-                    .map(node => node.dataset.id)
+            await exec((_) =>
+                $.equal('#parent1 span', '#parent2 span')
+                    .map((node) => node.dataset.id),
             ),
             [
                 'span2',
-                'span3'
-            ]
+                'span3',
+            ],
         );
     });
 
     it('works with HTMLElement nodes', async function() {
         assert.deepStrictEqual(
-            await exec(_ =>
-                dom.equal(
+            await exec((_) =>
+                $.equal(
                     document.querySelector('#parent1 [data-id="span2"]'),
-                    '#parent2 span'
-                ).map(node => node.dataset.id)
+                    '#parent2 span',
+                ).map((node) => node.dataset.id),
             ),
             [
-                'span2'
-            ]
+                'span2',
+            ],
         );
     });
 
     it('works with NodeList nodes', async function() {
         assert.deepStrictEqual(
-            await exec(_ =>
-                dom.equal(
+            await exec((_) =>
+                $.equal(
                     document.querySelectorAll('#parent1 span'),
-                    '#parent2 span'
-                ).map(node => node.dataset.id)
+                    '#parent2 span',
+                ).map((node) => node.dataset.id),
             ),
             [
                 'span2',
-                'span3'
-            ]
+                'span3',
+            ],
         );
     });
 
     it('works with HTMLCollection nodes', async function() {
         assert.deepStrictEqual(
-            await exec(_ =>
-                dom.equal(
+            await exec((_) =>
+                $.equal(
                     document.getElementById('parent1').children,
-                    '#parent2 span'
-                ).map(node => node.dataset.id)
+                    '#parent2 span',
+                ).map((node) => node.dataset.id),
             ),
             [
                 'span2',
-                'span3'
-            ]
+                'span3',
+            ],
         );
     });
 
     it('works with DocumentFragment nodes', async function() {
         assert.deepStrictEqual(
-            await exec(_ => {
+            await exec((_) => {
                 const fragment1 = document.createDocumentFragment();
                 const fragment2 = document.createDocumentFragment();
                 fragment1.id = 'fragment';
-                return dom.equal(
+                return $.equal(
                     fragment1,
                     [
-                        fragment2
-                    ]
-                ).map(node => node.id);
+                        fragment2,
+                    ],
+                ).map((node) => node.id);
             }),
             [
-                'fragment'
-            ]
+                'fragment',
+            ],
         );
     });
 
     it('works with ShadowRoot nodes', async function() {
         assert.deepStrictEqual(
-            await exec(_ => {
+            await exec((_) => {
                 const div1 = document.createElement('div');
                 const div2 = document.createElement('div');
                 const shadow1 = div1.attachShadow({ mode: 'open' });
                 const shadow2 = div2.attachShadow({ mode: 'closed' });
                 shadow1.id = 'shadow';
-                return dom.equal(
+                return $.equal(
                     shadow1,
                     [
-                        shadow2
-                    ]
-                ).map(node => node.id);
+                        shadow2,
+                    ],
+                ).map((node) => node.id);
             }),
             [
-                'shadow'
-            ]
+                'shadow',
+            ],
         );
     });
 
     it('works with array nodes', async function() {
         assert.deepStrictEqual(
-            await exec(_ =>
-                dom.equal([
+            await exec((_) =>
+                $.equal([
                     document.querySelector('#parent1 > [data-id="span1"]'),
                     document.querySelector('#parent1 > [data-id="span2"]'),
-                    document.querySelector('#parent1 > [data-id="span3"]')
-                ], '#parent2 span').map(node => node.dataset.id)
+                    document.querySelector('#parent1 > [data-id="span3"]'),
+                ], '#parent2 span').map((node) => node.dataset.id),
             ),
             [
                 'span2',
-                'span3'
-            ]
+                'span3',
+            ],
         );
     });
 
     it('works with HTMLElement other nodes', async function() {
         assert.deepStrictEqual(
-            await exec(_ =>
-                dom.equal(
+            await exec((_) =>
+                $.equal(
                     '#parent1 span',
-                    document.querySelector('#parent2 > [data-id="span2"]')
-                ).map(node => node.dataset.id)
+                    document.querySelector('#parent2 > [data-id="span2"]'),
+                ).map((node) => node.dataset.id),
             ),
             [
-                'span2'
-            ]
+                'span2',
+            ],
         );
     });
 
     it('works with NodeList other nodes', async function() {
         assert.deepStrictEqual(
-            await exec(_ =>
-                dom.equal(
+            await exec((_) =>
+                $.equal(
                     '#parent1 span',
-                    document.querySelectorAll('#parent2 > span')
-                ).map(node => node.dataset.id)
+                    document.querySelectorAll('#parent2 > span'),
+                ).map((node) => node.dataset.id),
             ),
             [
                 'span2',
-                'span3'
-            ]
+                'span3',
+            ],
         );
     });
 
     it('works with HTMLCollection other nodes', async function() {
         assert.deepStrictEqual(
-            await exec(_ =>
-                dom.equal(
+            await exec((_) =>
+                $.equal(
                     '#parent1 span',
-                    document.getElementById('parent2').children
-                ).map(node => node.dataset.id)
+                    document.getElementById('parent2').children,
+                ).map((node) => node.dataset.id),
             ),
             [
                 'span2',
-                'span3'
-            ]
+                'span3',
+            ],
         );
     });
 
     it('works with DocumentFragment other nodes', async function() {
         assert.deepStrictEqual(
-            await exec(_ => {
+            await exec((_) => {
                 const fragment1 = document.createDocumentFragment();
                 const fragment2 = document.createDocumentFragment();
                 fragment1.id = 'fragment';
-                return dom.equal(
+                return $.equal(
                     [
-                        fragment1
+                        fragment1,
                     ],
-                    fragment2
-                ).map(node => node.id);
+                    fragment2,
+                ).map((node) => node.id);
             }),
             [
-                'fragment'
-            ]
+                'fragment',
+            ],
         );
     });
 
     it('works with ShadowRoot other nodes', async function() {
         assert.deepStrictEqual(
-            await exec(_ => {
+            await exec((_) => {
                 const div1 = document.createElement('div');
                 const div2 = document.createElement('div');
                 const shadow1 = div1.attachShadow({ mode: 'open' });
                 const shadow2 = div2.attachShadow({ mode: 'closed' });
                 shadow1.id = 'shadow';
-                return dom.equal(
+                return $.equal(
                     [
-                        shadow1
+                        shadow1,
                     ],
-                    shadow2
-                ).map(node => node.id);
+                    shadow2,
+                ).map((node) => node.id);
             }),
             [
-                'shadow'
-            ]
+                'shadow',
+            ],
         );
     });
 
     it('works with array other nodes', async function() {
         assert.deepStrictEqual(
-            await exec(_ =>
-                dom.equal('#parent1 span', [
+            await exec((_) =>
+                $.equal('#parent1 span', [
                     document.querySelector('#parent2 > [data-id="span2"]'),
-                    document.querySelector('#parent2 > [data-id="span3"]')
-                ]).map(node => node.dataset.id)
+                    document.querySelector('#parent2 > [data-id="span3"]'),
+                ]).map((node) => node.dataset.id),
             ),
             [
                 'span2',
-                'span3'
-            ]
+                'span3',
+            ],
         );
     });
-
 });

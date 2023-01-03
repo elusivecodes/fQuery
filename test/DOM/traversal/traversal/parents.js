@@ -1,10 +1,9 @@
-const assert = require('assert');
-const { exec } = require('../../../setup');
+import assert from 'node:assert/strict';
+import { exec } from './../../../setup.js';
 
 describe('#parents', function() {
-
     beforeEach(async function() {
-        await exec(_ => {
+        await exec((_) => {
             document.body.innerHTML =
                 '<div id="parent1">' +
                 '<div id="child1">' +
@@ -25,9 +24,9 @@ describe('#parents', function() {
 
     it('returns the parents of each node', async function() {
         assert.deepStrictEqual(
-            await exec(_ =>
-                dom.parents('a')
-                    .map(node => node.id)
+            await exec((_) =>
+                $.parents('a')
+                    .map((node) => node.id),
             ),
             [
                 'html',
@@ -37,202 +36,202 @@ describe('#parents', function() {
                 'span1',
                 'parent2',
                 'child2',
-                'span2'
-            ]
+                'span2',
+            ],
         );
     });
 
     it('returns the parents of each node matching a filter', async function() {
         assert.deepStrictEqual(
-            await exec(_ =>
-                dom.parents('a', 'div')
-                    .map(node => node.id)
+            await exec((_) =>
+                $.parents('a', 'div')
+                    .map((node) => node.id),
             ),
             [
                 'parent1',
                 'child1',
                 'parent2',
-                'child2'
-            ]
+                'child2',
+            ],
         );
     });
 
     it('returns the parents of each node before a limit', async function() {
         assert.deepStrictEqual(
-            await exec(_ =>
-                dom.parents('a', null, 'div')
-                    .map(node => node.id)
+            await exec((_) =>
+                $.parents('a', null, 'div')
+                    .map((node) => node.id),
             ),
             [
                 'span1',
-                'span2'
-            ]
+                'span2',
+            ],
         );
     });
 
     it('returns an empty array for empty nodes', async function() {
         assert.deepStrictEqual(
-            await exec(_ =>
-                dom.parents('#invalid')
+            await exec((_) =>
+                $.parents('#invalid'),
             ),
-            []
+            [],
         );
     });
 
     it('works with HTMLElement nodes', async function() {
         assert.deepStrictEqual(
-            await exec(_ =>
-                dom.parents(
+            await exec((_) =>
+                $.parents(
                     document.getElementById('a1'),
-                    'div'
-                ).map(node => node.id)
+                    'div',
+                ).map((node) => node.id),
             ),
             [
                 'parent1',
-                'child1'
-            ]
+                'child1',
+            ],
         );
     });
 
     it('works with NodeList nodes', async function() {
         assert.deepStrictEqual(
-            await exec(_ =>
-                dom.parents(
+            await exec((_) =>
+                $.parents(
                     document.querySelectorAll('a'),
-                    'div'
-                ).map(node => node.id)
+                    'div',
+                ).map((node) => node.id),
             ),
             [
                 'parent1',
                 'child1',
                 'parent2',
-                'child2'
-            ]
+                'child2',
+            ],
         );
     });
 
     it('works with HTMLCollection nodes', async function() {
         assert.deepStrictEqual(
-            await exec(_ =>
-                dom.parents(
+            await exec((_) =>
+                $.parents(
                     document.getElementById('child1').children,
-                    'div'
-                ).map(node => node.id)
+                    'div',
+                ).map((node) => node.id),
             ),
             [
                 'parent1',
-                'child1'
-            ]
+                'child1',
+            ],
         );
     });
 
     it('works with array nodes', async function() {
         assert.deepStrictEqual(
-            await exec(_ =>
-                dom.parents([
+            await exec((_) =>
+                $.parents([
                     document.getElementById('a1'),
-                    document.getElementById('a2')
-                ], 'div').map(node => node.id)
+                    document.getElementById('a2'),
+                ], 'div').map((node) => node.id),
             ),
             [
                 'parent1',
                 'child1',
                 'parent2',
-                'child2'
-            ]
+                'child2',
+            ],
         );
     });
 
     it('works with function filter', async function() {
         assert.deepStrictEqual(
-            await exec(_ =>
-                dom.parents(
+            await exec((_) =>
+                $.parents(
                     'a',
-                    node => node.tagName === 'DIV'
-                ).map(node => node.id)
+                    (node) => node.tagName === 'DIV',
+                ).map((node) => node.id),
             ),
             [
                 'parent1',
                 'child1',
                 'parent2',
-                'child2'
-            ]
+                'child2',
+            ],
         );
     });
 
     it('works with HTMLElement filter', async function() {
         assert.deepStrictEqual(
-            await exec(_ =>
-                dom.parents(
+            await exec((_) =>
+                $.parents(
                     'a',
-                    document.getElementById('child1')
-                ).map(node => node.id)
+                    document.getElementById('child1'),
+                ).map((node) => node.id),
             ),
             [
-                'child1'
-            ]
+                'child1',
+            ],
         );
     });
 
     it('works with NodeList filter', async function() {
         assert.deepStrictEqual(
-            await exec(_ =>
-                dom.parents(
+            await exec((_) =>
+                $.parents(
                     'a',
-                    document.querySelectorAll('div')
-                ).map(node => node.id)
+                    document.querySelectorAll('div'),
+                ).map((node) => node.id),
             ),
             [
                 'parent1',
                 'child1',
                 'parent2',
-                'child2'
-            ]
+                'child2',
+            ],
         );
     });
 
     it('works with HTMLCollection filter', async function() {
         assert.deepStrictEqual(
-            await exec(_ =>
-                dom.parents(
+            await exec((_) =>
+                $.parents(
                     'a',
-                    document.body.children
-                ).map(node => node.id)
+                    document.body.children,
+                ).map((node) => node.id),
             ),
             [
                 'parent1',
-                'parent2'
-            ]
+                'parent2',
+            ],
         );
     });
 
     it('works with array filter', async function() {
         assert.deepStrictEqual(
-            await exec(_ =>
-                dom.parents('a', [
+            await exec((_) =>
+                $.parents('a', [
                     document.getElementById('parent1'),
                     document.getElementById('child1'),
                     document.getElementById('parent2'),
-                    document.getElementById('child2')
-                ]).map(node => node.id)
+                    document.getElementById('child2'),
+                ]).map((node) => node.id),
             ),
             [
                 'parent1',
                 'child1',
                 'parent2',
-                'child2'
-            ]
+                'child2',
+            ],
         );
     });
 
     it('works with function limit', async function() {
         assert.deepStrictEqual(
-            await exec(_ =>
-                dom.parents(
+            await exec((_) =>
+                $.parents(
                     'a',
                     null,
-                    node => node.id === 'body'
-                ).map(node => node.id)
+                    (node) => node.id === 'body',
+                ).map((node) => node.id),
             ),
             [
                 'parent1',
@@ -240,19 +239,19 @@ describe('#parents', function() {
                 'span1',
                 'parent2',
                 'child2',
-                'span2'
-            ]
+                'span2',
+            ],
         );
     });
 
     it('works with HTMLElement limit', async function() {
         assert.deepStrictEqual(
-            await exec(_ =>
-                dom.parents(
+            await exec((_) =>
+                $.parents(
                     'a',
                     null,
-                    document.body
-                ).map(node => node.id)
+                    document.body,
+                ).map((node) => node.id),
             ),
             [
                 'parent1',
@@ -260,60 +259,59 @@ describe('#parents', function() {
                 'span1',
                 'parent2',
                 'child2',
-                'span2'
-            ]
+                'span2',
+            ],
         );
     });
 
     it('works with NodeList limit', async function() {
         assert.deepStrictEqual(
-            await exec(_ =>
-                dom.parents(
+            await exec((_) =>
+                $.parents(
                     'a',
                     null,
-                    document.querySelectorAll('div')
-                ).map(node => node.id)
+                    document.querySelectorAll('div'),
+                ).map((node) => node.id),
             ),
             [
                 'span1',
-                'span2'
-            ]
+                'span2',
+            ],
         );
     });
 
     it('works with HTMLCollection limit', async function() {
         assert.deepStrictEqual(
-            await exec(_ =>
-                dom.parents(
+            await exec((_) =>
+                $.parents(
                     'a',
                     null,
-                    document.body.children
-                ).map(node => node.id)
+                    document.body.children,
+                ).map((node) => node.id),
             ),
             [
                 'child1',
                 'span1',
                 'child2',
-                'span2'
-            ]
+                'span2',
+            ],
         );
     });
 
     it('works with array limit', async function() {
         assert.deepStrictEqual(
-            await exec(_ =>
-                dom.parents('a', null, [
+            await exec((_) =>
+                $.parents('a', null, [
                     document.getElementById('parent1'),
-                    document.getElementById('parent2')
-                ]).map(node => node.id)
+                    document.getElementById('parent2'),
+                ]).map((node) => node.id),
             ),
             [
                 'child1',
                 'span1',
                 'child2',
-                'span2'
-            ]
+                'span2',
+            ],
         );
     });
-
 });

@@ -1,51 +1,49 @@
-const assert = require('assert');
-const { exec } = require('../../setup');
+import assert from 'node:assert/strict';
+import { exec } from './../../setup.js';
 
 describe('#removeCookie', function() {
-
     it('removes a cookie', async function() {
         assert.strictEqual(
-            await exec(_ => {
+            await exec((_) => {
                 const myDoc = {
                     cookie: 'test=Test',
-                    nodeType: Core.DOCUMENT_NODE
+                    nodeType: Node.DOCUMENT_NODE,
                 };
-                const myDom = new DOM(myDoc);
-                myDom.removeCookie('test');
+                $.setContext(myDoc);
+                $.removeCookie('test');
                 return myDoc.cookie;
             }),
-            'test=;expires=Thu, 01 Jan 1970 00:00:00 UTC'
+            'test=;expires=Thu, 01 Jan 1970 00:00:00 UTC',
         );
     });
 
     it('removes a cookie with path', async function() {
         assert.strictEqual(
-            await exec(_ => {
+            await exec((_) => {
                 const myDoc = {
                     cookie: 'test=Test',
-                    nodeType: Core.DOCUMENT_NODE
+                    nodeType: Node.DOCUMENT_NODE,
                 };
-                const myDom = new DOM(myDoc);
-                myDom.removeCookie('test', { path: '/test' });
+                $.setContext(myDoc);
+                $.removeCookie('test', { path: '/test' });
                 return myDoc.cookie;
             }),
-            'test=;expires=Thu, 01 Jan 1970 00:00:00 UTC;path=/test'
+            'test=;expires=Thu, 01 Jan 1970 00:00:00 UTC;path=/test',
         );
     });
 
     it('removes a cookie with secure', async function() {
         assert.strictEqual(
-            await exec(_ => {
+            await exec((_) => {
                 const myDoc = {
                     cookie: 'test=Test',
-                    nodeType: Core.DOCUMENT_NODE
+                    nodeType: Node.DOCUMENT_NODE,
                 };
-                const myDom = new DOM(myDoc);
-                myDom.removeCookie('test', { secure: true });
+                $.setContext(myDoc);
+                $.removeCookie('test', { secure: true });
                 return myDoc.cookie;
             }),
-            'test=;expires=Thu, 01 Jan 1970 00:00:00 UTC;secure'
+            'test=;expires=Thu, 01 Jan 1970 00:00:00 UTC;secure',
         );
     });
-
 });

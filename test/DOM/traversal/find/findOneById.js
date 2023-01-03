@@ -1,10 +1,9 @@
-const assert = require('assert');
-const { exec } = require('../../../setup');
+import assert from 'node:assert/strict';
+import { exec } from './../../../setup.js';
 
 describe('#findOneById', function() {
-
     beforeEach(async function() {
-        await exec(_ => {
+        await exec((_) => {
             document.body.innerHTML =
                 '<div id="parent1">' +
                 '<div id="child1">' +
@@ -32,95 +31,95 @@ describe('#findOneById', function() {
 
     it('finds elements by ID', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.findOneById('test').dataset.id
+            await exec((_) =>
+                $.findOneById('test').dataset.id,
             ),
-            'span1'
+            'span1',
         );
     });
 
     it('returns null for non-matching id', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.findOneById('invalid')
+            await exec((_) =>
+                $.findOneById('invalid'),
             ),
-            null
+            null,
         );
     });
 
     it('returns undefined for empty nodes', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.findOneById('test', '#invalid')
+            await exec((_) =>
+                $.findOneById('test', '#invalid'),
             ),
-            undefined
+            undefined,
         );
     });
 
     it('works with query selector nodes', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.findOneById('test', '#parent2').dataset.id
+            await exec((_) =>
+                $.findOneById('test', '#parent2').dataset.id,
             ),
-            'span5'
+            'span5',
         );
     });
 
     it('works with HTMLElement nodes', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.findOneById(
+            await exec((_) =>
+                $.findOneById(
                     'test',
-                    document.getElementById('parent2')
-                ).dataset.id
+                    document.getElementById('parent2'),
+                ).dataset.id,
             ),
-            'span5'
+            'span5',
         );
     });
 
     it('works with NodeList nodes', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.findOneById(
+            await exec((_) =>
+                $.findOneById(
                     'test',
-                    document.querySelectorAll('#parent2')
-                ).dataset.id
+                    document.querySelectorAll('#parent2'),
+                ).dataset.id,
             ),
-            'span5'
+            'span5',
         );
     });
 
     it('works with HTMLCollection nodes', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.findOneById(
+            await exec((_) =>
+                $.findOneById(
                     'test',
-                    document.getElementById('parent2').children
-                ).dataset.id
+                    document.getElementById('parent2').children,
+                ).dataset.id,
             ),
-            'span5'
+            'span5',
         );
     });
 
     it('works with DocumentFragment nodes', async function() {
         assert.strictEqual(
-            await exec(_ => {
+            await exec((_) => {
                 const range = document.createRange();
                 const fragment = range.createContextualFragment(
                     '<div id="test" data-id="div1"></div>' +
                     '<div data-id="div2"></div>' +
                     '<div id="test" data-id="div3"></div>' +
-                    '<div data-id="div4"></div>'
+                    '<div data-id="div4"></div>',
                 );
-                return dom.findOneById('test', fragment).dataset.id;
+                return $.findOneById('test', fragment).dataset.id;
             }),
-            'div1'
+            'div1',
         );
     });
 
     it('works with ShadowRoot nodes', async function() {
         assert.strictEqual(
-            await exec(_ => {
+            await exec((_) => {
                 const div = document.createElement('div');
                 const shadow = div.attachShadow({ mode: 'open' });
                 const range = document.createRange();
@@ -128,18 +127,18 @@ describe('#findOneById', function() {
                     '<div id="test" data-id="div1"></div>' +
                     '<div data-id="div2"></div>' +
                     '<div id="test" data-id="div3"></div>' +
-                    '<div data-id="div4"></div>'
+                    '<div data-id="div4"></div>',
                 );
                 shadow.appendChild(fragment);
-                return dom.findOneById('test', shadow).dataset.id;
+                return $.findOneById('test', shadow).dataset.id;
             }),
-            'div1'
+            'div1',
         );
     });
 
     it('works with Document nodes', async function() {
         assert.strictEqual(
-            await exec(_ => {
+            await exec((_) => {
                 const parser = new DOMParser();
                 const myDoc = parser.parseFromString(
                     '<html>' +
@@ -152,24 +151,23 @@ describe('#findOneById', function() {
                     '<div data-id="div4"></div>' +
                     '</body>' +
                     '</html>',
-                    'text/html'
+                    'text/html',
                 );
-                return dom.findOneById('test', myDoc).dataset.id;
+                return $.findOneById('test', myDoc).dataset.id;
             }),
-            'div1'
+            'div1',
         );
     });
 
     it('works with array nodes', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.findOneById('test', [
+            await exec((_) =>
+                $.findOneById('test', [
                     document.getElementById('child3'),
-                    document.getElementById('child4')
-                ]).dataset.id
+                    document.getElementById('child4'),
+                ]).dataset.id,
             ),
-            'span5'
+            'span5',
         );
     });
-
 });

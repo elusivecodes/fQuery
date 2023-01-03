@@ -1,31 +1,30 @@
-const assert = require('assert');
-const { exec } = require('../../setup');
+import assert from 'node:assert/strict';
+import { exec } from './../../setup.js';
 
 describe('#setCookie', function() {
-
     it('sets a cookie', async function() {
         assert.strictEqual(
-            await exec(_ => {
+            await exec((_) => {
                 const myDoc = {
                     cookie: '',
-                    nodeType: Core.DOCUMENT_NODE
+                    nodeType: Node.DOCUMENT_NODE,
                 };
-                const myDom = new DOM(myDoc);
-                myDom.setCookie('test', 'Test');
+                $.setContext(myDoc);
+                $.setCookie('test', 'Test');
                 return myDoc.cookie;
             }),
-            'test=Test'
+            'test=Test',
         );
     });
 
     it('sets a cookie with expiration', async function() {
-        const cookie = await exec(_ => {
+        const cookie = await exec((_) => {
             const myDoc = {
                 cookie: '',
-                nodeType: Core.DOCUMENT_NODE
+                nodeType: Node.DOCUMENT_NODE,
             };
-            const myDom = new DOM(myDoc);
-            myDom.setCookie('test', 'Test', { expires: 3600 });
+            $.setContext(myDoc);
+            $.setCookie('test', 'Test', { expires: 3600 });
             return myDoc.cookie;
         });
 
@@ -42,32 +41,31 @@ describe('#setCookie', function() {
 
     it('sets a cookie with path', async function() {
         assert.strictEqual(
-            await exec(_ => {
+            await exec((_) => {
                 const myDoc = {
                     cookie: '',
-                    nodeType: Core.DOCUMENT_NODE
+                    nodeType: Node.DOCUMENT_NODE,
                 };
-                const myDom = new DOM(myDoc);
-                myDom.setCookie('test', 'Test', { path: '/test' });
+                $.setContext(myDoc);
+                $.setCookie('test', 'Test', { path: '/test' });
                 return myDoc.cookie;
             }),
-            'test=Test;path=/test'
+            'test=Test;path=/test',
         );
     });
 
     it('sets a cookie with secure', async function() {
         assert.strictEqual(
-            await exec(_ => {
+            await exec((_) => {
                 const myDoc = {
                     cookie: '',
-                    nodeType: Core.DOCUMENT_NODE
+                    nodeType: Node.DOCUMENT_NODE,
                 };
-                const myDom = new DOM(myDoc);
-                myDom.setCookie('test', 'Test', { secure: true });
+                $.setContext(myDoc);
+                $.setCookie('test', 'Test', { secure: true });
                 return myDoc.cookie;
             }),
-            'test=Test;secure'
+            'test=Test;secure',
         );
     });
-
 });

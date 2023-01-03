@@ -1,10 +1,9 @@
-const assert = require('assert');
-const { exec } = require('../../../setup');
+import assert from 'node:assert/strict';
+import { exec } from './../../../setup.js';
 
 describe('#extractSelection', function() {
-
     beforeEach(async function() {
-        await exec(_ => {
+        await exec((_) => {
             document.body.innerHTML =
                 '<div id="select">' +
                 '<div id="div1">' +
@@ -29,30 +28,29 @@ describe('#extractSelection', function() {
 
     it('returns the extracted nodes', async function() {
         assert.strictEqual(
-            await exec(_ => {
-                const extracted = dom.extractSelection();
+            await exec((_) => {
+                const extracted = $.extractSelection();
                 document.body.innerHTML = '';
                 for (const node of extracted) {
                     document.body.appendChild(node);
                 }
                 return document.body.innerHTML;
             }),
-            '<div id="div1"><span id="span1">Test 1</span></div><div id="div2"><span id="span2">Tes</span></div>'
+            '<div id="div1"><span id="span1">Test 1</span></div><div id="div2"><span id="span2">Tes</span></div>',
         );
     });
 
     it('extracts the selected nodes', async function() {
         assert.strictEqual(
-            await exec(_ => {
-                dom.extractSelection();
+            await exec((_) => {
+                $.extractSelection();
                 return document.body.innerHTML;
             }),
             '<div id="select">' +
             '<div id="div2">' +
             '<span id="span2">t 2</span>' +
             '</div>' +
-            '</div>'
+            '</div>',
         );
     });
-
 });

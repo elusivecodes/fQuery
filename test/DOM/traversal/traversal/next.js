@@ -1,10 +1,9 @@
-const assert = require('assert');
-const { exec } = require('../../../setup');
+import assert from 'node:assert/strict';
+import { exec } from './../../../setup.js';
 
 describe('#next', function() {
-
     beforeEach(async function() {
-        await exec(_ => {
+        await exec((_) => {
             document.body.innerHTML =
                 '<div id="parent">' +
                 '<span id="span1">' +
@@ -39,163 +38,162 @@ describe('#next', function() {
 
     it('returns the next sibling of each node', async function() {
         assert.deepStrictEqual(
-            await exec(_ =>
-                dom.next('.span')
-                    .map(node => node.id)
+            await exec((_) =>
+                $.next('.span')
+                    .map((node) => node.id),
             ),
             [
                 'span3',
-                'span7'
-            ]
+                'span7',
+            ],
         );
     });
 
     it('returns the next sibling of each node matching a filter', async function() {
         assert.deepStrictEqual(
-            await exec(_ =>
-                dom.next('.span', '#span7')
-                    .map(node => node.id)
+            await exec((_) =>
+                $.next('.span', '#span7')
+                    .map((node) => node.id),
             ),
             [
-                'span7'
-            ]
+                'span7',
+            ],
         );
     });
 
     it('returns an empty array for empty nodes', async function() {
         assert.deepStrictEqual(
-            await exec(_ =>
-                dom.next('#invalid')
+            await exec((_) =>
+                $.next('#invalid'),
             ),
-            []
+            [],
         );
     });
 
     it('works with HTMLElement nodes', async function() {
         assert.deepStrictEqual(
-            await exec(_ =>
-                dom.next(
+            await exec((_) =>
+                $.next(
                     document.getElementById('span6'),
-                    '#span7'
-                ).map(node => node.id)
+                    '#span7',
+                ).map((node) => node.id),
             ),
             [
-                'span7'
-            ]
+                'span7',
+            ],
         );
     });
 
     it('works with NodeList nodes', async function() {
         assert.deepStrictEqual(
-            await exec(_ =>
-                dom.next(
+            await exec((_) =>
+                $.next(
                     document.querySelectorAll('.span'),
-                    '#span7'
-                ).map(node => node.id)
+                    '#span7',
+                ).map((node) => node.id),
             ),
             [
-                'span7'
-            ]
+                'span7',
+            ],
         );
     });
 
     it('works with HTMLCollection nodes', async function() {
         assert.deepStrictEqual(
-            await exec(_ =>
-                dom.next(
+            await exec((_) =>
+                $.next(
                     document.getElementById('parent2').children,
-                    '#span7'
-                ).map(node => node.id)
+                    '#span7',
+                ).map((node) => node.id),
             ),
             [
-                'span7'
-            ]
+                'span7',
+            ],
         );
     });
 
     it('works with array nodes', async function() {
         assert.deepStrictEqual(
-            await exec(_ =>
-                dom.next([
+            await exec((_) =>
+                $.next([
                     document.getElementById('span2'),
-                    document.getElementById('span6')
-                ], '#span7').map(node => node.id)
+                    document.getElementById('span6'),
+                ], '#span7').map((node) => node.id),
             ),
             [
-                'span7'
-            ]
+                'span7',
+            ],
         );
     });
 
     it('works with function filter', async function() {
         assert.deepStrictEqual(
-            await exec(_ =>
-                dom.next(
+            await exec((_) =>
+                $.next(
                     '.span',
-                    node => node.id === 'span7'
-                ).map(node => node.id)
+                    (node) => node.id === 'span7',
+                ).map((node) => node.id),
             ),
             [
-                'span7'
-            ]
+                'span7',
+            ],
         );
     });
 
     it('works with HTMLElement filter', async function() {
         assert.deepStrictEqual(
-            await exec(_ =>
-                dom.next(
+            await exec((_) =>
+                $.next(
                     '.span',
-                    document.getElementById('span7')
-                ).map(node => node.id)
+                    document.getElementById('span7'),
+                ).map((node) => node.id),
             ),
             [
-                'span7'
-            ]
+                'span7',
+            ],
         );
     });
 
     it('works with NodeList filter', async function() {
         assert.deepStrictEqual(
-            await exec(_ =>
-                dom.next(
+            await exec((_) =>
+                $.next(
                     '.span',
-                    document.querySelectorAll('#span7')
-                ).map(node => node.id)
+                    document.querySelectorAll('#span7'),
+                ).map((node) => node.id),
             ),
             [
-                'span7'
-            ]
+                'span7',
+            ],
         );
     });
 
     it('works with HTMLCollection filter', async function() {
         assert.deepStrictEqual(
-            await exec(_ =>
-                dom.next(
+            await exec((_) =>
+                $.next(
                     '.span',
-                    document.getElementById('parent2').children
-                ).map(node => node.id)
+                    document.getElementById('parent2').children,
+                ).map((node) => node.id),
             ),
             [
-                'span7'
-            ]
+                'span7',
+            ],
         );
     });
 
     it('works with array filter', async function() {
         assert.deepStrictEqual(
-            await exec(_ =>
-                dom.next('.span', [
+            await exec((_) =>
+                $.next('.span', [
                     document.getElementById('span3'),
-                    document.getElementById('span7')
-                ]).map(node => node.id)
+                    document.getElementById('span7'),
+                ]).map((node) => node.id),
             ),
             [
                 'span3',
-                'span7'
-            ]
+                'span7',
+            ],
         );
     });
-
 });

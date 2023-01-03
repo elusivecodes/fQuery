@@ -1,10 +1,9 @@
-const assert = require('assert');
-const { exec } = require('../../../setup');
+import assert from 'node:assert/strict';
+import { exec } from './../../../setup.js';
 
 describe('#normalize', function() {
-
     beforeEach(async function() {
-        await exec(_ => {
+        await exec((_) => {
             document.body.innerHTML =
                 '<div id="parent1" class="test">' +
                 '<div id="child1"></div>' +
@@ -41,24 +40,24 @@ describe('#normalize', function() {
 
     it('normalizes all text nodes', async function() {
         assert.deepStrictEqual(
-            await exec(_ => {
-                dom.normalize('.test');
+            await exec((_) => {
+                $.normalize('.test');
                 return [
                     document.getElementById('child1').childNodes.length,
-                    document.getElementById('child2').childNodes.length
-                ]
+                    document.getElementById('child2').childNodes.length,
+                ];
             }),
             [
                 3,
-                3
-            ]
+                3,
+            ],
         );
     });
 
     it('retains HTML contents', async function() {
         assert.strictEqual(
-            await exec(_ => {
-                dom.normalize('.test');
+            await exec((_) => {
+                $.normalize('.test');
                 return document.body.innerHTML;
             }),
             '<div id="parent1" class="test">' +
@@ -70,67 +69,67 @@ describe('#normalize', function() {
             '<div id="child2">' +
             'Test 5Test 6<span></span>Test 7Test 8' +
             '</div>' +
-            '</div>'
+            '</div>',
         );
     });
 
     it('works with HTMLElement nodes', async function() {
         assert.deepStrictEqual(
-            await exec(_ => {
-                dom.normalize(
-                    document.getElementById('parent1')
+            await exec((_) => {
+                $.normalize(
+                    document.getElementById('parent1'),
                 );
                 return [
                     document.getElementById('child1').childNodes.length,
-                    document.getElementById('child2').childNodes.length
-                ]
+                    document.getElementById('child2').childNodes.length,
+                ];
             }),
             [
                 3,
-                5
-            ]
+                5,
+            ],
         );
     });
 
     it('works with NodeList nodes', async function() {
         assert.deepStrictEqual(
-            await exec(_ => {
-                dom.normalize(
-                    document.querySelectorAll('.test')
+            await exec((_) => {
+                $.normalize(
+                    document.querySelectorAll('.test'),
                 );
                 return [
                     document.getElementById('child1').childNodes.length,
-                    document.getElementById('child2').childNodes.length
-                ]
+                    document.getElementById('child2').childNodes.length,
+                ];
             }),
             [
                 3,
-                3
-            ]
+                3,
+            ],
         );
     });
 
     it('works with HTMLCollection nodes', async function() {
         assert.deepStrictEqual(
-            await exec(_ => {
-                dom.normalize(
-                    document.body.children
+            await exec((_) => {
+                $.normalize(
+                    document.body.children,
                 );
                 return [
                     document.getElementById('child1').childNodes.length,
-                    document.getElementById('child2').childNodes.length
-                ]
+                    document.getElementById('child2').childNodes.length,
+                ];
             }),
             [
                 3,
-                3
-            ]
+                3,
+            ],
         );
     });
 
     it('works with DocumentFragment nodes', async function() {
         assert.strictEqual(
-            await exec(_ => {
+            await exec((_) => {
                 const fragment = document.createDocumentFragment();
                 const text1 = document.createTextNode('Test 1');
                 const text2 = document.createTextNode('Test 2');
@@ -144,17 +143,17 @@ describe('#normalize', function() {
                 fragment.appendChild(text3);
                 fragment.appendChild(text4);
 
-                dom.normalize(fragment);
+                $.normalize(fragment);
 
-                return fragment.childNodes.length
+                return fragment.childNodes.length;
             }),
-            3
-        )
+            3,
+        );
     });
 
     it('works with ShadowRoot nodes', async function() {
         assert.strictEqual(
-            await exec(_ => {
+            await exec((_) => {
                 const div = document.createElement('div');
                 const shadow = div.attachShadow({ mode: 'open' });
                 const text1 = document.createTextNode('Test 1');
@@ -169,31 +168,30 @@ describe('#normalize', function() {
                 shadow.appendChild(text3);
                 shadow.appendChild(text4);
 
-                dom.normalize(shadow);
+                $.normalize(shadow);
 
-                return shadow.childNodes.length
+                return shadow.childNodes.length;
             }),
-            3
-        )
+            3,
+        );
     });
 
     it('works with array nodes', async function() {
         assert.deepStrictEqual(
-            await exec(_ => {
-                dom.normalize([
+            await exec((_) => {
+                $.normalize([
                     document.getElementById('parent1'),
-                    document.getElementById('parent2')
+                    document.getElementById('parent2'),
                 ]);
                 return [
                     document.getElementById('child1').childNodes.length,
-                    document.getElementById('child2').childNodes.length
-                ]
+                    document.getElementById('child2').childNodes.length,
+                ];
             }),
             [
                 3,
-                3
-            ]
+                3,
+            ],
         );
     });
-
 });

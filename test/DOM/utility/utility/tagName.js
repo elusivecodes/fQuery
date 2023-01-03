@@ -1,10 +1,9 @@
-const assert = require('assert');
-const { exec } = require('../../../setup');
+import assert from 'node:assert/strict';
+import { exec } from './../../../setup.js';
 
 describe('#tagName', function() {
-
     beforeEach(async function() {
-        await exec(_ => {
+        await exec((_) => {
             document.body.innerHTML =
                 '<div id="div1"></div>' +
                 '<div id="div2"></div>' +
@@ -15,58 +14,57 @@ describe('#tagName', function() {
 
     it('returns the tag name of the first node', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.tagName('div')
+            await exec((_) =>
+                $.tagName('div'),
             ),
-            'div'
+            'div',
         );
     });
 
     it('works with HTMLElement nodes', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.tagName(
-                    document.getElementById('span1')
-                )
+            await exec((_) =>
+                $.tagName(
+                    document.getElementById('span1'),
+                ),
             ),
-            'span'
+            'span',
         );
     });
 
     it('works with NodeList nodes', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.tagName(
-                    document.querySelectorAll('div')
-                )
+            await exec((_) =>
+                $.tagName(
+                    document.querySelectorAll('div'),
+                ),
             ),
-            'div'
+            'div',
         );
     });
 
     it('works with HTMLCollection nodes', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.tagName(
-                    document.body.children
-                )
+            await exec((_) =>
+                $.tagName(
+                    document.body.children,
+                ),
             ),
-            'div'
+            'div',
         );
     });
 
     it('works with array nodes', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.tagName([
+            await exec((_) =>
+                $.tagName([
                     document.getElementById('div1'),
                     document.getElementById('div2'),
                     document.getElementById('span1'),
-                    document.getElementById('span2')
-                ])
+                    document.getElementById('span2'),
+                ]),
             ),
-            'div'
+            'div',
         );
     });
-
 });

@@ -1,205 +1,203 @@
-const assert = require('assert');
-const { exec } = require('../../../setup');
+import assert from 'node:assert/strict';
+import { exec } from './../../../setup.js';
 
 describe('#removeData', function() {
-
     beforeEach(async function() {
-        await exec(_ => {
+        await exec((_) => {
             document.body.innerHTML =
                 '<div id="test1"></div>' +
                 '<div id="test2"></div>';
-            dom.setData('div', {
+            $.setData('div', {
                 testA: 'Test 1',
-                testB: 'Test 2'
+                testB: 'Test 2',
             });
         });
     });
 
     it('removes all data for all nodes', async function() {
         assert.deepStrictEqual(
-            await exec(_ => {
-                dom.removeData('div');
+            await exec((_) => {
+                $.removeData('div');
                 return [
-                    dom.getData('#test1'),
-                    dom.getData('#test2')
+                    $.getData('#test1'),
+                    $.getData('#test2'),
                 ];
             }),
             [
                 null,
-                null
-            ]
+                null,
+            ],
         );
     });
 
     it('removes data for all nodes', async function() {
         assert.deepStrictEqual(
-            await exec(_ => {
-                dom.removeData('div', 'testA');
+            await exec((_) => {
+                $.removeData('div', 'testA');
                 return [
-                    dom.getData('#test1'),
-                    dom.getData('#test2')
+                    $.getData('#test1'),
+                    $.getData('#test2'),
                 ];
             }),
             [
                 {
-                    testB: 'Test 2'
+                    testB: 'Test 2',
                 },
                 {
-                    testB: 'Test 2'
-                }
-            ]
+                    testB: 'Test 2',
+                },
+            ],
         );
     });
 
     it('works with HTMLElement nodes', async function() {
         assert.deepStrictEqual(
-            await exec(_ => {
-                dom.removeData(
+            await exec((_) => {
+                $.removeData(
                     document.getElementById('test1'),
-                    'testA'
+                    'testA',
                 );
-                return dom.getData('#test1');
+                return $.getData('#test1');
             }),
             {
-                testB: 'Test 2'
-            }
+                testB: 'Test 2',
+            },
         );
     });
 
     it('works with NodeList nodes', async function() {
         assert.deepStrictEqual(
-            await exec(_ => {
-                dom.removeData(
+            await exec((_) => {
+                $.removeData(
                     document.querySelectorAll('div'),
-                    'testA'
+                    'testA',
                 );
                 return [
-                    dom.getData('#test1'),
-                    dom.getData('#test2')
+                    $.getData('#test1'),
+                    $.getData('#test2'),
                 ];
             }),
             [
                 {
-                    testB: 'Test 2'
+                    testB: 'Test 2',
                 },
                 {
-                    testB: 'Test 2'
-                }
-            ]
+                    testB: 'Test 2',
+                },
+            ],
         );
     });
 
     it('works with HTMLCollection nodes', async function() {
         assert.deepStrictEqual(
-            await exec(_ => {
-                dom.removeData(
+            await exec((_) => {
+                $.removeData(
                     document.body.children,
-                    'testA'
+                    'testA',
                 );
                 return [
-                    dom.getData('#test1'),
-                    dom.getData('#test2')
+                    $.getData('#test1'),
+                    $.getData('#test2'),
                 ];
             }),
             [
                 {
-                    testB: 'Test 2'
+                    testB: 'Test 2',
                 },
                 {
-                    testB: 'Test 2'
-                }
-            ]
+                    testB: 'Test 2',
+                },
+            ],
         );
     });
 
     it('works with DocumentFragment nodes', async function() {
         assert.deepStrictEqual(
-            await exec(_ => {
+            await exec((_) => {
                 const fragment = document.createDocumentFragment();
-                dom.setData(fragment, {
+                $.setData(fragment, {
                     testA: 'Test 1',
-                    testB: 'Test 2'
+                    testB: 'Test 2',
                 });
-                dom.removeData(fragment, 'testA');
-                return dom.getData(fragment);
+                $.removeData(fragment, 'testA');
+                return $.getData(fragment);
             }),
             {
-                testB: 'Test 2'
-            }
+                testB: 'Test 2',
+            },
         );
     });
 
     it('works with ShadowRoot nodes', async function() {
         assert.deepStrictEqual(
-            await exec(_ => {
+            await exec((_) => {
                 const div = document.createElement('div');
                 const shadow = div.attachShadow({ mode: 'open' });
-                dom.setData(shadow, {
+                $.setData(shadow, {
                     testA: 'Test 1',
-                    testB: 'Test 2'
+                    testB: 'Test 2',
                 });
-                dom.removeData(shadow, 'testA');
-                return dom.getData(shadow);
+                $.removeData(shadow, 'testA');
+                return $.getData(shadow);
             }),
             {
-                testB: 'Test 2'
-            }
+                testB: 'Test 2',
+            },
         );
     });
 
     it('works with Document nodes', async function() {
         assert.deepStrictEqual(
-            await exec(_ => {
-                dom.setData(document, {
+            await exec((_) => {
+                $.setData(document, {
                     testA: 'Test 1',
-                    testB: 'Test 2'
+                    testB: 'Test 2',
                 });
-                dom.removeData(document, 'testA');
-                return dom.getData(document);
+                $.removeData(document, 'testA');
+                return $.getData(document);
             }),
             {
-                testB: 'Test 2'
-            }
+                testB: 'Test 2',
+            },
         );
     });
 
     it('works with Window nodes', async function() {
         assert.deepStrictEqual(
-            await exec(_ => {
-                dom.setData(window, {
+            await exec((_) => {
+                $.setData(window, {
                     testA: 'Test 1',
-                    testB: 'Test 2'
+                    testB: 'Test 2',
                 });
-                dom.removeData(window, 'testA');
-                return dom.getData(window);
+                $.removeData(window, 'testA');
+                return $.getData(window);
             }),
             {
-                testB: 'Test 2'
-            }
+                testB: 'Test 2',
+            },
         );
     });
 
     it('works with array nodes', async function() {
         assert.deepStrictEqual(
-            await exec(_ => {
-                dom.removeData([
+            await exec((_) => {
+                $.removeData([
                     document.getElementById('test1'),
-                    document.getElementById('test2')
+                    document.getElementById('test2'),
                 ], 'testA');
                 return [
-                    dom.getData('#test1'),
-                    dom.getData('#test2')
+                    $.getData('#test1'),
+                    $.getData('#test2'),
                 ];
             }),
             [
                 {
-                    testB: 'Test 2'
+                    testB: 'Test 2',
                 },
                 {
-                    testB: 'Test 2'
-                }
-            ]
+                    testB: 'Test 2',
+                },
+            ],
         );
     });
-
 });

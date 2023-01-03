@@ -1,10 +1,9 @@
-const assert = require('assert');
-const { exec } = require('../../../setup');
+import assert from 'node:assert/strict';
+import { exec } from './../../../setup.js';
 
 describe('#sort', function() {
-
     beforeEach(async function() {
-        await exec(_ => {
+        await exec((_) => {
             document.body.innerHTML =
                 '<div id="div1"></div>' +
                 '<div id="div2"></div>' +
@@ -15,120 +14,120 @@ describe('#sort', function() {
 
     it('returns nodes sorted by the order they appear in the DOM', async function() {
         assert.deepStrictEqual(
-            await exec(_ =>
-                dom.sort('div')
-                    .map(node => node.id)
+            await exec((_) =>
+                $.sort('div')
+                    .map((node) => node.id),
             ),
             [
                 'div1',
                 'div2',
                 'div3',
-                'div4'
-            ]
+                'div4',
+            ],
         );
     });
 
     it('works with HTMLElement nodes', async function() {
         assert.deepStrictEqual(
-            await exec(_ =>
-                dom.sort(
-                    document.getElementById('div2')
-                ).map(node => node.id)
+            await exec((_) =>
+                $.sort(
+                    document.getElementById('div2'),
+                ).map((node) => node.id),
             ),
             [
-                'div2'
-            ]
+                'div2',
+            ],
         );
     });
 
     it('works with NodeList nodes', async function() {
         assert.deepStrictEqual(
-            await exec(_ =>
-                dom.sort(
-                    document.querySelectorAll('div')
-                ).map(node => node.id)
+            await exec((_) =>
+                $.sort(
+                    document.querySelectorAll('div'),
+                ).map((node) => node.id),
             ),
             [
                 'div1',
                 'div2',
                 'div3',
-                'div4'
-            ]
+                'div4',
+            ],
         );
     });
 
     it('works with HTMLCollection nodes', async function() {
         assert.deepStrictEqual(
-            await exec(_ =>
-                dom.sort(
-                    document.body.children
-                ).map(node => node.id)
+            await exec((_) =>
+                $.sort(
+                    document.body.children,
+                ).map((node) => node.id),
             ),
             [
                 'div1',
                 'div2',
                 'div3',
-                'div4'
-            ]
+                'div4',
+            ],
         );
     });
 
     it('works with DocumentFragment nodes', async function() {
         assert.deepStrictEqual(
-            await exec(_ => {
+            await exec((_) => {
                 const fragment = document.createDocumentFragment();
                 fragment.id = 'fragment';
-                return dom.sort(fragment)
-                    .map(node => node.id);
+                return $.sort(fragment)
+                    .map((node) => node.id);
             }),
             [
-                'fragment'
-            ]
+                'fragment',
+            ],
         );
     });
 
     it('works with ShadowRoot nodes', async function() {
         assert.deepStrictEqual(
-            await exec(_ => {
+            await exec((_) => {
                 const div = document.createElement('div');
                 const shadow = div.attachShadow({ mode: 'open' });
                 shadow.id = 'shadow';
-                return dom.sort(shadow)
-                    .map(node => node.id);
+                return $.sort(shadow)
+                    .map((node) => node.id);
             }),
             [
-                'shadow'
-            ]
+                'shadow',
+            ],
         );
     });
 
     it('works with Document nodes', async function() {
         assert.deepStrictEqual(
-            await exec(_ =>
-                dom.sort(document)
-                    .map(node => node.id)
+            await exec((_) =>
+                $.sort(document)
+                    .map((node) => node.id),
             ),
             [
-                'document'
-            ]
+                'document',
+            ],
         );
     });
 
     it('works with Window nodes', async function() {
         assert.deepStrictEqual(
-            await exec(_ =>
-                dom.sort(window)
-                    .map(node => node.id)
+            await exec((_) =>
+                $.sort(window)
+                    .map((node) => node.id),
             ),
             [
-                'window'
-            ]
+                'window',
+            ],
         );
     });
 
     it('works with array nodes', async function() {
         assert.deepStrictEqual(
-            await exec(_ => {
+            await exec((_) => {
                 const template = document.createElement('template');
                 const fragment = template.content;
                 fragment.id = 'fragment';
@@ -137,7 +136,7 @@ describe('#sort', function() {
                 shadow.id = 'shadow';
                 document.body.insertBefore(template, document.body.firstChild);
                 document.body.insertBefore(div, document.body.firstChild);
-                return dom.sort([
+                return $.sort([
                     fragment,
                     document.getElementById('div3'),
                     document.getElementById('div4'),
@@ -145,8 +144,8 @@ describe('#sort', function() {
                     document.getElementById('div1'),
                     shadow,
                     document,
-                    window
-                ]).map(node => node.id);
+                    window,
+                ]).map((node) => node.id);
             }),
             [
                 'fragment',
@@ -156,9 +155,8 @@ describe('#sort', function() {
                 'div3',
                 'div4',
                 'document',
-                'window'
-            ]
+                'window',
+            ],
         );
     });
-
 });

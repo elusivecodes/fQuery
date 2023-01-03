@@ -10,7 +10,7 @@ The *Animation* class provides a Promise-based wrapper for performing animations
     - `infinite` is a boolean indicating whether the animation should continue forever, and will default to *false*.
 
 ```javascript
-const animation = new Animation(node, callback, options);
+const animation = new $.Animation(node, callback, options);
 ```
 
 The *Animation* object resolves when the animation is completed, or rejects if it is stopped without finishing.
@@ -19,10 +19,11 @@ The *Animation* object resolves when the animation is completed, or rejects if i
 
 It is also possible to stop a running *Animation*.
 
-- `finish` is a boolean indicating whether to immediately finish the animation, and will default to *true*.
+- `options` is an object containing properties to define how the animation should be stopped.
+    - `finish` is a boolean indicating whether to immediately finish the animation, and will default to *true*.
 
 ```javascript
-animation.stop(finish);
+animation.stop(options);
 ```
 
 
@@ -33,7 +34,7 @@ The *AnimationSet* class provides a Promise-based wrapper for performing a set o
 - `animations` is an array of *Animation* objects.
 
 ```javascript
-const animationSet = new AnimationSet(animations);
+const animationSet = new $.AnimationSet(animations);
 ```
 
 The *AnimationSet* object resolves when the animations are completed, or rejects if it is stopped without finishing.
@@ -42,8 +43,9 @@ The *AnimationSet* object resolves when the animations are completed, or rejects
 
 It is also possible to stop a running *AnimationSet*.
 
-- `finish` is a boolean indicating whether to immediately finish the animation, and will default to *true*.
+- `options` is an object containing properties to define how the animations should be stopped.
+    - `finish` is a boolean indicating whether to immediately finish the animation, and will default to *true*.
 
 ```javascript
-animationSet.stop(finish);
+animationSet.stop(options);
 ```

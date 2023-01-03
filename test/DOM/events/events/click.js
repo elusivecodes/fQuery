@@ -1,10 +1,9 @@
-const assert = require('assert');
-const { exec } = require('../../../setup');
+import assert from 'node:assert/strict';
+import { exec } from './../../../setup.js';
 
 describe('#click', function() {
-
     beforeEach(async function() {
-        await exec(_ => {
+        await exec((_) => {
             document.body.innerHTML =
                 '<a href="#" id="test1">Test</a>' +
                 '<a href="#" id="test2">Test</a>';
@@ -13,86 +12,85 @@ describe('#click', function() {
 
     it('triggers a click event on the first node', async function() {
         assert.strictEqual(
-            await exec(_ => {
+            await exec((_) => {
                 let result;
                 const element = document.getElementById('test1');
-                element.addEventListener('click', _ => {
+                element.addEventListener('click', (_) => {
                     result = true;
                 });
-                dom.click('a');
+                $.click('a');
                 return result;
             }),
-            true
+            true,
         );
     });
 
     it('works with HTMLElement nodes', async function() {
         assert.strictEqual(
-            await exec(_ => {
+            await exec((_) => {
                 let result;
                 const element = document.getElementById('test1');
-                element.addEventListener('click', _ => {
+                element.addEventListener('click', (_) => {
                     result = true;
                 });
-                dom.click(
-                    document.getElementById('test1')
+                $.click(
+                    document.getElementById('test1'),
                 );
                 return result;
             }),
-            true
+            true,
         );
     });
 
     it('works with NodeList nodes', async function() {
         assert.strictEqual(
-            await exec(_ => {
+            await exec((_) => {
                 let result;
                 const element = document.getElementById('test1');
-                element.addEventListener('click', _ => {
+                element.addEventListener('click', (_) => {
                     result = true;
                 });
-                dom.click(
-                    document.querySelectorAll('a')
+                $.click(
+                    document.querySelectorAll('a'),
                 );
                 return result;
             }),
-            true
+            true,
         );
     });
 
     it('works with HTMLCollection nodes', async function() {
         assert.strictEqual(
-            await exec(_ => {
+            await exec((_) => {
                 let result;
                 const element = document.getElementById('test1');
-                element.addEventListener('click', _ => {
+                element.addEventListener('click', (_) => {
                     result = true;
                 });
-                dom.click(
-                    document.body.children
+                $.click(
+                    document.body.children,
                 );
                 return result;
             }),
-            true
+            true,
         );
     });
 
     it('works with array nodes', async function() {
         assert.strictEqual(
-            await exec(_ => {
+            await exec((_) => {
                 let result;
                 const element = document.getElementById('test1');
-                element.addEventListener('click', _ => {
+                element.addEventListener('click', (_) => {
                     result = true;
                 });
-                dom.click([
+                $.click([
                     document.getElementById('test1'),
-                    document.getElementById('test2')
+                    document.getElementById('test2'),
                 ]);
                 return result;
             }),
-            true
+            true,
         );
     });
-
 });

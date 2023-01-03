@@ -1,10 +1,9 @@
-const assert = require('assert');
-const { exec } = require('../../../setup');
+import assert from 'node:assert/strict';
+import { exec } from './../../../setup.js';
 
 describe('#findOneByTag', function() {
-
     beforeEach(async function() {
-        await exec(_ => {
+        await exec((_) => {
             document.body.innerHTML =
                 '<div id="parent1">' +
                 '<div id="child1">' +
@@ -32,95 +31,95 @@ describe('#findOneByTag', function() {
 
     it('finds elements by tag name', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.findOneByTag('span').id
+            await exec((_) =>
+                $.findOneByTag('span').id,
             ),
-            'span1'
+            'span1',
         );
     });
 
     it('returns null for non-matching tag', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.findOneByTag('invalid')
+            await exec((_) =>
+                $.findOneByTag('invalid'),
             ),
-            null
+            null,
         );
     });
 
     it('returns undefined for empty nodes', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.findOneByTag('span', '#invalid')
+            await exec((_) =>
+                $.findOneByTag('span', '#invalid'),
             ),
-            undefined
+            undefined,
         );
     });
 
     it('works with query selector nodes', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.findOneByTag('span', '#parent2').id
+            await exec((_) =>
+                $.findOneByTag('span', '#parent2').id,
             ),
-            'span5'
+            'span5',
         );
     });
 
     it('works with HTMLElement nodes', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.findOneByTag(
+            await exec((_) =>
+                $.findOneByTag(
                     'span',
-                    document.getElementById('parent2')
-                ).id
+                    document.getElementById('parent2'),
+                ).id,
             ),
-            'span5'
+            'span5',
         );
     });
 
     it('works with NodeList nodes', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.findOneByTag(
+            await exec((_) =>
+                $.findOneByTag(
                     'span',
-                    document.querySelectorAll('#parent2')
-                ).id
+                    document.querySelectorAll('#parent2'),
+                ).id,
             ),
-            'span5'
+            'span5',
         );
     });
 
     it('works with HTMLCollection nodes', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.findOneByTag(
+            await exec((_) =>
+                $.findOneByTag(
                     'span',
-                    document.getElementById('parent2').children
-                ).id
+                    document.getElementById('parent2').children,
+                ).id,
             ),
-            'span5'
+            'span5',
         );
     });
 
     it('works with DocumentFragment nodes', async function() {
         assert.strictEqual(
-            await exec(_ => {
+            await exec((_) => {
                 const range = document.createRange();
                 const fragment = range.createContextualFragment(
                     '<div id="div1"></div>' +
                     '<div id="div2"></div>' +
                     '<span id="span1"></span>' +
-                    '<span id="span2"></span>'
+                    '<span id="span2"></span>',
                 );
-                return dom.findOneByTag('span', fragment).id;
+                return $.findOneByTag('span', fragment).id;
             }),
-            'span1'
+            'span1',
         );
     });
 
     it('works with ShadowRoot nodes', async function() {
         assert.strictEqual(
-            await exec(_ => {
+            await exec((_) => {
                 const div = document.createElement('div');
                 const shadow = div.attachShadow({ mode: 'open' });
                 const range = document.createRange();
@@ -128,18 +127,18 @@ describe('#findOneByTag', function() {
                     '<div id="div1"></div>' +
                     '<div id="div2"></div>' +
                     '<span id="span1"></span>' +
-                    '<span id="span2"></span>'
+                    '<span id="span2"></span>',
                 );
                 shadow.appendChild(fragment);
-                return dom.findOneByTag('span', shadow).id;
+                return $.findOneByTag('span', shadow).id;
             }),
-            'span1'
+            'span1',
         );
     });
 
     it('works with Document nodes', async function() {
         assert.strictEqual(
-            await exec(_ => {
+            await exec((_) => {
                 const parser = new DOMParser();
                 const myDoc = parser.parseFromString(
                     '<html>' +
@@ -152,24 +151,23 @@ describe('#findOneByTag', function() {
                     '<span id="span2"></span>' +
                     '</body>' +
                     '</html>',
-                    'text/html'
+                    'text/html',
                 );
-                return dom.findOneByTag('span', myDoc).id;
+                return $.findOneByTag('span', myDoc).id;
             }),
-            'span1'
+            'span1',
         );
     });
 
     it('works with array nodes', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.findOneByTag('span', [
+            await exec((_) =>
+                $.findOneByTag('span', [
                     document.getElementById('child3'),
-                    document.getElementById('child4')
-                ]).id
+                    document.getElementById('child4'),
+                ]).id,
             ),
-            'span5'
+            'span5',
         );
     });
-
 });

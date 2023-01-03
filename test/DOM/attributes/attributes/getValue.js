@@ -1,10 +1,9 @@
-const assert = require('assert');
-const { exec } = require('../../../setup');
+import assert from 'node:assert/strict';
+import { exec } from './../../../setup.js';
 
 describe('#getValue', function() {
-
     beforeEach(async function() {
-        await exec(_ => {
+        await exec((_) => {
             document.body.innerHTML =
                 '<input type="text" id="test1" value="Test 1">' +
                 '<input type="number" id="test2">' +
@@ -16,83 +15,82 @@ describe('#getValue', function() {
 
     it('returns the input value of the first node', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.getValue('input')
+            await exec((_) =>
+                $.getValue('input'),
             ),
-            'Test 1'
+            'Test 1',
         );
     });
 
     it('returns undefined for empty nodes', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.getValue('#invalid')
+            await exec((_) =>
+                $.getValue('#invalid'),
             ),
-            undefined
+            undefined,
         );
     });
 
     it('works with textarea input nodes', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.getValue('textarea')
+            await exec((_) =>
+                $.getValue('textarea'),
             ),
-            'Test 2'
+            'Test 2',
         );
     });
 
     it('works with select input nodes', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.getValue('select')
+            await exec((_) =>
+                $.getValue('select'),
             ),
-            '2'
+            '2',
         );
     });
 
     it('works with HTMLElement nodes', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.getValue(
-                    document.getElementById('test1')
-                )
+            await exec((_) =>
+                $.getValue(
+                    document.getElementById('test1'),
+                ),
             ),
-            'Test 1'
+            'Test 1',
         );
     });
 
     it('works with NodeList nodes', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.getValue(
-                    document.querySelectorAll('input')
-                )
+            await exec((_) =>
+                $.getValue(
+                    document.querySelectorAll('input'),
+                ),
             ),
-            'Test 1'
+            'Test 1',
         );
     });
 
     it('works with HTMLCollection nodes', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.getValue(
-                    document.body.children
-                )
+            await exec((_) =>
+                $.getValue(
+                    document.body.children,
+                ),
             ),
-            'Test 1'
+            'Test 1',
         );
     });
 
     it('works with array nodes', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.getValue([
+            await exec((_) =>
+                $.getValue([
                     document.getElementById('test1'),
-                    document.getElementById('test2')
-                ])
+                    document.getElementById('test2'),
+                ]),
             ),
-            'Test 1'
+            'Test 1',
         );
     });
-
 });

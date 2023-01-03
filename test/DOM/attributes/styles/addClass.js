@@ -1,10 +1,9 @@
-const assert = require('assert');
-const { exec } = require('../../../setup');
+import assert from 'node:assert/strict';
+import { exec } from './../../../setup.js';
 
 describe('#addClass', function() {
-
     beforeEach(async function() {
-        await exec(_ => {
+        await exec((_) => {
             document.body.innerHTML =
                 '<div id="test1"></div>' +
                 '<div id="test2"></div>';
@@ -13,116 +12,115 @@ describe('#addClass', function() {
 
     it('adds a class to all nodes', async function() {
         assert.strictEqual(
-            await exec(_ => {
-                dom.addClass('div', 'test');
+            await exec((_) => {
+                $.addClass('div', 'test');
                 return document.body.innerHTML;
             }),
             '<div id="test1" class="test"></div>' +
-            '<div id="test2" class="test"></div>'
+            '<div id="test2" class="test"></div>',
         );
     });
 
     it('parses classes from string', async function() {
         assert.strictEqual(
-            await exec(_ => {
-                dom.addClass('div', 'test1 test2');
+            await exec((_) => {
+                $.addClass('div', 'test1 test2');
                 return document.body.innerHTML;
             }),
             '<div id="test1" class="test1 test2"></div>' +
-            '<div id="test2" class="test1 test2"></div>'
+            '<div id="test2" class="test1 test2"></div>',
         );
     });
 
     it('parses classes from array', async function() {
         assert.strictEqual(
-            await exec(_ => {
-                dom.addClass('div', [
+            await exec((_) => {
+                $.addClass('div', [
                     'test1',
-                    'test2'
+                    'test2',
                 ]);
                 return document.body.innerHTML;
             }),
             '<div id="test1" class="test1 test2"></div>' +
-            '<div id="test2" class="test1 test2"></div>'
+            '<div id="test2" class="test1 test2"></div>',
         );
     });
 
     it('parses classes from multiple arguments', async function() {
         assert.strictEqual(
-            await exec(_ => {
-                dom.addClass('div', 'test1', ['test2']);
+            await exec((_) => {
+                $.addClass('div', 'test1', ['test2']);
                 return document.body.innerHTML;
             }),
             '<div id="test1" class="test1 test2"></div>' +
-            '<div id="test2" class="test1 test2"></div>'
+            '<div id="test2" class="test1 test2"></div>',
         );
     });
 
     it('works with empty strings', async function() {
         assert.strictEqual(
-            await exec(_ => {
-                dom.addClass('div', '');
+            await exec((_) => {
+                $.addClass('div', '');
                 return document.body.innerHTML;
             }),
             '<div id="test1"></div>' +
-            '<div id="test2"></div>'
+            '<div id="test2"></div>',
         );
     });
 
     it('works with HTMLElement nodes', async function() {
         assert.strictEqual(
-            await exec(_ => {
-                dom.addClass(
+            await exec((_) => {
+                $.addClass(
                     document.getElementById('test1'),
-                    'test'
+                    'test',
                 );
                 return document.body.innerHTML;
             }),
             '<div id="test1" class="test"></div>' +
-            '<div id="test2"></div>'
+            '<div id="test2"></div>',
         );
     });
 
     it('works with NodeList nodes', async function() {
         assert.strictEqual(
-            await exec(_ => {
-                dom.addClass(
+            await exec((_) => {
+                $.addClass(
                     document.querySelectorAll('div'),
-                    'test'
+                    'test',
                 );
                 return document.body.innerHTML;
             }),
             '<div id="test1" class="test"></div>' +
-            '<div id="test2" class="test"></div>'
+            '<div id="test2" class="test"></div>',
         );
     });
 
     it('works with HTMLCollection nodes', async function() {
         assert.strictEqual(
-            await exec(_ => {
-                dom.addClass(
+            await exec((_) => {
+                $.addClass(
                     document.body.children,
-                    'test'
+                    'test',
                 );
                 return document.body.innerHTML;
             }),
             '<div id="test1" class="test"></div>' +
-            '<div id="test2" class="test"></div>'
+            '<div id="test2" class="test"></div>',
         );
     });
 
     it('works with array nodes', async function() {
         assert.strictEqual(
-            await exec(_ => {
-                dom.addClass([
+            await exec((_) => {
+                $.addClass([
                     document.getElementById('test1'),
-                    document.getElementById('test2')
+                    document.getElementById('test2'),
                 ], 'test');
                 return document.body.innerHTML;
             }),
             '<div id="test1" class="test"></div>' +
-            '<div id="test2" class="test"></div>'
+            '<div id="test2" class="test"></div>',
         );
     });
-
 });

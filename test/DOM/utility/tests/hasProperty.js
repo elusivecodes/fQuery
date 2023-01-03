@@ -1,10 +1,9 @@
-const assert = require('assert');
-const { exec } = require('../../../setup');
+import assert from 'node:assert/strict';
+import { exec } from './../../../setup.js';
 
 describe('#hasProperty', function() {
-
     beforeEach(async function() {
-        await exec(_ => {
+        await exec((_) => {
             document.body.innerHTML =
                 '<div id="div1" class="test"></div>' +
                 '<div id="div2"></div>' +
@@ -17,70 +16,69 @@ describe('#hasProperty', function() {
 
     it('returns true if any node has a specified property', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.hasProperty('div', 'test')
+            await exec((_) =>
+                $.hasProperty('div', 'test'),
             ),
-            true
+            true,
         );
     });
 
     it('returns false if no nodes have a specified property', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.hasProperty('div:not(.test)', 'test')
+            await exec((_) =>
+                $.hasProperty('div:not(.test)', 'test'),
             ),
-            false
+            false,
         );
     });
 
     it('works with HTMLElement nodes', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.hasProperty(
+            await exec((_) =>
+                $.hasProperty(
                     document.getElementById('div1'),
-                    'test'
-                )
+                    'test',
+                ),
             ),
-            true
+            true,
         );
     });
 
     it('works with NodeList nodes', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.hasProperty(
+            await exec((_) =>
+                $.hasProperty(
                     document.querySelectorAll('div'),
-                    'test'
-                )
+                    'test',
+                ),
             ),
-            true
+            true,
         );
     });
 
     it('works with HTMLCollection nodes', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.hasProperty(
+            await exec((_) =>
+                $.hasProperty(
                     document.body.children,
-                    'test'
-                )
+                    'test',
+                ),
             ),
-            true
+            true,
         );
     });
 
     it('works with array nodes', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.hasProperty([
+            await exec((_) =>
+                $.hasProperty([
                     document.getElementById('div1'),
                     document.getElementById('div2'),
                     document.getElementById('div3'),
-                    document.getElementById('div4')
-                ], 'test')
+                    document.getElementById('div4'),
+                ], 'test'),
             ),
-            true
+            true,
         );
     });
-
 });

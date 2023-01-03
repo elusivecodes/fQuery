@@ -1,10 +1,9 @@
-const assert = require('assert');
-const { exec } = require('../../../setup');
+import assert from 'node:assert/strict';
+import { exec } from './../../../setup.js';
 
 describe('#getSelection', function() {
-
     beforeEach(async function() {
-        await exec(_ => {
+        await exec((_) => {
             document.body.innerHTML =
                 '<div id="select">' +
                 '<div id="div1">' +
@@ -28,22 +27,22 @@ describe('#getSelection', function() {
 
     it('returns the selected nodes', async function() {
         assert.strictEqual(
-            await exec(_ => {
-                const selected = dom.getSelection();
+            await exec((_) => {
+                const selected = $.getSelection();
                 document.body.innerHTML = '';
                 for (const node of selected) {
                     document.body.appendChild(node);
                 }
                 return document.body.innerHTML;
             }),
-            '<span id="span2">Test 2</span>'
+            '<span id="span2">Test 2</span>',
         );
     });
 
     it('does not extract the selected nodes', async function() {
         assert.strictEqual(
-            await exec(_ => {
-                dom.getSelection();
+            await exec((_) => {
+                $.getSelection();
                 return document.body.innerHTML;
             }),
             '<div id="select">' +
@@ -53,8 +52,7 @@ describe('#getSelection', function() {
             '<div id="div2">' +
             '<span id="span2">Test 2</span>' +
             '</div>' +
-            '</div>'
+            '</div>',
         );
     });
-
 });

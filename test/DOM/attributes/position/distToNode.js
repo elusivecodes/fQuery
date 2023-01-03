@@ -1,10 +1,9 @@
-const assert = require('assert');
-const { exec } = require('../../../setup');
+import assert from 'node:assert/strict';
+import { exec } from './../../../setup.js';
 
 describe('#distToNode', function() {
-
     beforeEach(async function() {
-        await exec(_ => {
+        await exec((_) => {
             document.body.innerHTML =
                 '<div id="fromParent">' +
                 '<div id="test1" data-toggle="from" style="display: block; width: 100px; height: 100px; margin: 1050px; padding: 50px;"></div>' +
@@ -20,125 +19,124 @@ describe('#distToNode', function() {
 
     it('returns the distance from the first node to another node', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.distToNode('[data-toggle="from"]', '[data-toggle="to"]')
+            await exec((_) =>
+                $.distToNode('[data-toggle="from"]', '[data-toggle="to"]'),
             ),
-            1250
+            1250,
         );
     });
 
     it('returns undefined for empty nodes', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.distToNode('#invalid', '[data-toggle="to"]')
+            await exec((_) =>
+                $.distToNode('#invalid', '[data-toggle="to"]'),
             ),
-            undefined
+            undefined,
         );
     });
 
     it('returns undefined for empty other nodes', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.distToNode('[data-toggle="from"]', '#invalid')
+            await exec((_) =>
+                $.distToNode('[data-toggle="from"]', '#invalid'),
             ),
-            undefined
+            undefined,
         );
     });
 
     it('works with HTMLElement nodes', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.distToNode(
+            await exec((_) =>
+                $.distToNode(
                     document.getElementById('test1'),
-                    '[data-toggle="to"]'
-                )
+                    '[data-toggle="to"]',
+                ),
             ),
-            1250
+            1250,
         );
     });
 
     it('works with NodeList nodes', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.distToNode(
+            await exec((_) =>
+                $.distToNode(
                     document.querySelectorAll('[data-toggle="from"]'),
-                    '[data-toggle="to"]'
-                )
+                    '[data-toggle="to"]',
+                ),
             ),
-            1250
+            1250,
         );
     });
 
     it('works with HTMLCollection nodes', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.distToNode(
+            await exec((_) =>
+                $.distToNode(
                     document.getElementById('fromParent').children,
-                    '[data-toggle="to"]'
-                )
+                    '[data-toggle="to"]',
+                ),
             ),
-            1250
+            1250,
         );
     });
 
     it('works with array nodes', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.distToNode([
+            await exec((_) =>
+                $.distToNode([
                     document.getElementById('test1'),
-                    document.getElementById('test2')
-                ], '[data-toggle="to"]')
+                    document.getElementById('test2'),
+                ], '[data-toggle="to"]'),
             ),
-            1250
+            1250,
         );
     });
 
     it('works with HTMLElement other nodes', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.distToNode(
+            await exec((_) =>
+                $.distToNode(
                     '[data-toggle="from"]',
-                    document.getElementById('test3')
-                )
+                    document.getElementById('test3'),
+                ),
             ),
-            1250
+            1250,
         );
     });
 
     it('works with NodeList other nodes', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.distToNode(
+            await exec((_) =>
+                $.distToNode(
                     '[data-toggle="from"]',
-                    document.querySelectorAll('[data-toggle="to"]')
-                )
+                    document.querySelectorAll('[data-toggle="to"]'),
+                ),
             ),
-            1250
+            1250,
         );
     });
 
     it('works with HTMLCollection other nodes', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.distToNode(
+            await exec((_) =>
+                $.distToNode(
                     '[data-toggle="from"]',
-                    document.getElementById('toParent').children
-                )
+                    document.getElementById('toParent').children,
+                ),
             ),
-            1250
+            1250,
         );
     });
 
     it('works with array other nodes', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.distToNode('[data-toggle="from"]', [
+            await exec((_) =>
+                $.distToNode('[data-toggle="from"]', [
                     document.getElementById('test3'),
-                    document.getElementById('test4')
-                ])
+                    document.getElementById('test4'),
+                ]),
             ),
-            1250
+            1250,
         );
     });
-
 });

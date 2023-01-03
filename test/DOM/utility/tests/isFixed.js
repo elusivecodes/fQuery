@@ -1,11 +1,10 @@
-const assert = require('assert');
-const { exec, setStyle } = require('../../../setup');
+import assert from 'node:assert/strict';
+import { exec, setStyle } from './../../../setup.js';
 
 describe('#isFixed', function() {
-
     beforeEach(async function() {
         await setStyle('.test { position: fixed; }');
-        await exec(_ => {
+        await exec((_) => {
             document.body.innerHTML =
                 '<div id="div1">' +
                 '<span id="span1"></span>' +
@@ -24,76 +23,75 @@ describe('#isFixed', function() {
 
     it('returns true if any node is fixed', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.isFixed('div')
+            await exec((_) =>
+                $.isFixed('div'),
             ),
-            true
+            true,
         );
     });
 
     it('returns false if no nodes are fixed', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.isFixed('div:not(.test)')
+            await exec((_) =>
+                $.isFixed('div:not(.test)'),
             ),
-            false
+            false,
         );
     });
 
     it('returns true if any node is a descendent of a fixed node', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.isFixed('span')
+            await exec((_) =>
+                $.isFixed('span'),
             ),
-            true
+            true,
         );
     });
 
     it('works with HTMLElement nodes', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.isFixed(
-                    document.getElementById('div2')
-                )
+            await exec((_) =>
+                $.isFixed(
+                    document.getElementById('div2'),
+                ),
             ),
-            true
+            true,
         );
     });
 
     it('works with NodeList nodes', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.isFixed(
-                    document.querySelectorAll('div')
-                )
+            await exec((_) =>
+                $.isFixed(
+                    document.querySelectorAll('div'),
+                ),
             ),
-            true
+            true,
         );
     });
 
     it('works with HTMLCollection nodes', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.isFixed(
-                    document.body.children
-                )
+            await exec((_) =>
+                $.isFixed(
+                    document.body.children,
+                ),
             ),
-            true
+            true,
         );
     });
 
     it('works with array nodes', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.isFixed([
+            await exec((_) =>
+                $.isFixed([
                     document.getElementById('div1'),
                     document.getElementById('div2'),
                     document.getElementById('div3'),
-                    document.getElementById('div4')
-                ])
+                    document.getElementById('div4'),
+                ]),
             ),
-            true
+            true,
         );
     });
-
 });

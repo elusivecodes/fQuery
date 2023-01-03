@@ -18,7 +18,7 @@ The *AjaxRequest* class provides a Promise-based wrapper for performing XHR requ
     - `onUploadProgress` is a function that accepts `progress`, `xhr` and `event` as arguments and will be called on XHR upload progress.
 
 ```javascript
-const request = new AjaxRequest(options);
+const request = new $.AjaxRequest(options);
 ```
 
 The *AjaxRequest* object resolves when the request is completed, or rejects on failure.

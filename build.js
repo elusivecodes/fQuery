@@ -14,11 +14,11 @@ if (!fs.existsSync(distFolder)) {
 }
 
 // load files and wrapper
-let bundleWrapper, wrapper;
+let bundleWrapper; let wrapper;
 const files = [];
 const core = fs.readFileSync('./node_modules/frostcore/dist/frost-core.js');
 
-filepath.create(srcFolder).recurse(fullPath => {
+filepath.create(srcFolder).recurse((fullPath) => {
     if (!fullPath.isFile()) {
         return;
     }
@@ -43,54 +43,54 @@ const code = wrapper.replace(
     files.join('\r\n')
         .replace(
             /^(?!\s*$)/mg,
-            ' '.repeat(4)
-        )
+            ' '.repeat(4),
+        ),
 );
 
 const bundle = bundleWrapper.replace(
     '    // {{code}}',
-    _ => [core, code].join('\r\n\r\n')
+    (_) => [core, code].join('\r\n\r\n')
         .replace(
             /^(?!\s*$)/mg,
-            ' '.repeat(4)
-        )
+            ' '.repeat(4),
+        ),
 );
 
 // minify
 terser.minify(code, {
     ecma: 8,
     compress: {
-        ecma: 8
-    }
-}).then(minified => {
+        ecma: 8,
+    },
+}).then((minified) => {
     fs.writeFileSync(
         path.join(distFolder, name + '.js'),
-        code
+        code,
     );
 
     fs.writeFileSync(
         path.join(distFolder, name + '.min.js'),
-        minified.code
+        minified.code,
     );
-}).catch(error => {
+}).catch((error) => {
     console.error(error);
 });
 
 terser.minify(bundle, {
     ecma: 8,
     compress: {
-        ecma: 8
-    }
-}).then(minified => {
+        ecma: 8,
+    },
+}).then((minified) => {
     fs.writeFileSync(
         path.join(distFolder, name + '-bundle.js'),
-        bundle
+        bundle,
     );
 
     fs.writeFileSync(
         path.join(distFolder, name + '-bundle.min.js'),
-        minified.code
+        minified.code,
     );
-}).catch(error => {
+}).catch((error) => {
     console.error(error);
 });

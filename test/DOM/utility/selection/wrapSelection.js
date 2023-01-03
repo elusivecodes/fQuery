@@ -1,10 +1,9 @@
-const assert = require('assert');
-const { exec } = require('../../../setup');
+import assert from 'node:assert/strict';
+import { exec } from './../../../setup.js';
 
 describe('#wrapSelection', function() {
-
     beforeEach(async function() {
-        await exec(_ => {
+        await exec((_) => {
             document.body.innerHTML =
                 '<div id="select">' +
                 '<div id="div1">' +
@@ -34,8 +33,8 @@ describe('#wrapSelection', function() {
 
     it('wraps selected nodes', async function() {
         assert.strictEqual(
-            await exec(_ => {
-                dom.wrapSelection('.outer');
+            await exec((_) => {
+                $.wrapSelection('.outer');
                 return document.body.innerHTML;
             }),
             '<div id="select">' +
@@ -57,15 +56,15 @@ describe('#wrapSelection', function() {
             '</div>' +
             '</div>' +
             '<div id="wrapper">' +
-            '</div>'
-        )
+            '</div>',
+        );
     });
 
     it('works with HTMLElement nodes', async function() {
         assert.strictEqual(
-            await exec(_ => {
-                dom.wrapSelection(
-                    document.querySelector('.outer')
+            await exec((_) => {
+                $.wrapSelection(
+                    document.querySelector('.outer'),
                 );
                 return document.body.innerHTML;
             }),
@@ -88,15 +87,15 @@ describe('#wrapSelection', function() {
             '</div>' +
             '</div>' +
             '<div id="wrapper">' +
-            '</div>'
-        )
+            '</div>',
+        );
     });
 
     it('works with NodeList nodes', async function() {
         assert.strictEqual(
-            await exec(_ => {
-                dom.wrapSelection(
-                    document.querySelectorAll('.outer')
+            await exec((_) => {
+                $.wrapSelection(
+                    document.querySelectorAll('.outer'),
                 );
                 return document.body.innerHTML;
             }),
@@ -119,15 +118,15 @@ describe('#wrapSelection', function() {
             '</div>' +
             '</div>' +
             '<div id="wrapper">' +
-            '</div>'
-        )
+            '</div>',
+        );
     });
 
     it('works with HTMLCollection nodes', async function() {
         assert.strictEqual(
-            await exec(_ => {
-                dom.wrapSelection(
-                    document.getElementById('wrapper').children
+            await exec((_) => {
+                $.wrapSelection(
+                    document.getElementById('wrapper').children,
                 );
                 return document.body.innerHTML;
             }),
@@ -150,18 +149,18 @@ describe('#wrapSelection', function() {
             '</div>' +
             '</div>' +
             '<div id="wrapper">' +
-            '</div>'
-        )
+            '</div>',
+        );
     });
 
     it('works with DocumentFragment nodes', async function() {
         assert.strictEqual(
-            await exec(_ => {
+            await exec((_) => {
                 const range = document.createRange();
                 const fragment = range.createContextualFragment(
-                    '<div class="div-outer"><div class="div-inner"></div></div>'
+                    '<div class="div-outer"><div class="div-inner"></div></div>',
                 );
-                dom.wrapSelection(fragment);
+                $.wrapSelection(fragment);
                 return document.body.innerHTML;
             }),
             '<div id="select">' +
@@ -187,15 +186,15 @@ describe('#wrapSelection', function() {
             '<div class="inner">' +
             '</div>' +
             '</div>' +
-            '</div>'
-        )
+            '</div>',
+        );
     });
 
     it('works with array nodes', async function() {
         assert.strictEqual(
-            await exec(_ => {
-                dom.wrapSelection([
-                    document.querySelector('.outer')
+            await exec((_) => {
+                $.wrapSelection([
+                    document.querySelector('.outer'),
                 ]);
                 return document.body.innerHTML;
             }),
@@ -218,14 +217,14 @@ describe('#wrapSelection', function() {
             '</div>' +
             '</div>' +
             '<div id="wrapper">' +
-            '</div>'
-        )
+            '</div>',
+        );
     });
 
     it('works with HTML nodes', async function() {
         assert.strictEqual(
-            await exec(_ => {
-                dom.wrapSelection('<div class="div-outer"><div class="div-inner"></div></div>');
+            await exec((_) => {
+                $.wrapSelection('<div class="div-outer"><div class="div-inner"></div></div>');
                 return document.body.innerHTML;
             }),
             '<div id="select">' +
@@ -251,8 +250,7 @@ describe('#wrapSelection', function() {
             '<div class="inner">' +
             '</div>' +
             '</div>' +
-            '</div>'
-        )
+            '</div>',
+        );
     });
-
 });

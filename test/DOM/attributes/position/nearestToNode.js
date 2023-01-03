@@ -1,10 +1,9 @@
-const assert = require('assert');
-const { exec } = require('../../../setup');
+import assert from 'node:assert/strict';
+import { exec } from './../../../setup.js';
 
 describe('#nearestToNode', function() {
-
     beforeEach(async function() {
-        await exec(_ => {
+        await exec((_) => {
             document.body.innerHTML =
                 '<div id="fromParent">' +
                 '<div id="test1" data-toggle="from" style="display: block; width: 100px; height: 100px; margin: 1050px; padding: 50px;"></div>' +
@@ -20,134 +19,133 @@ describe('#nearestToNode', function() {
 
     it('returns the nearest node to another node', async function() {
         assert.strictEqual(
-            await exec(_ => {
-                const nearest = dom.nearestToNode('[data-toggle="from"]', '[data-toggle="to"]');
+            await exec((_) => {
+                const nearest = $.nearestToNode('[data-toggle="from"]', '[data-toggle="to"]');
                 return nearest.id;
             }),
-            'test2'
+            'test2',
         );
     });
 
     it('returns undefined for empty nodes', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.nearestToNode('#invalid', '[data-toggle="to"]')
+            await exec((_) =>
+                $.nearestToNode('#invalid', '[data-toggle="to"]'),
             ),
-            undefined
+            undefined,
         );
     });
 
     it('returns undefined for empty other nodes', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.nearestToNode('[data-toggle="from"]', '#invalid')
+            await exec((_) =>
+                $.nearestToNode('[data-toggle="from"]', '#invalid'),
             ),
-            undefined
+            undefined,
         );
     });
 
     it('works with HTMLElement nodes', async function() {
         assert.strictEqual(
-            await exec(_ => {
-                const nearest = dom.nearestToNode(
+            await exec((_) => {
+                const nearest = $.nearestToNode(
                     document.getElementById('test1'),
-                    '[data-toggle="to"]'
+                    '[data-toggle="to"]',
                 );
                 return nearest.id;
             }),
-            'test1'
+            'test1',
         );
     });
 
     it('works with NodeList nodes', async function() {
         assert.strictEqual(
-            await exec(_ => {
-                const nearest = dom.nearestToNode(
+            await exec((_) => {
+                const nearest = $.nearestToNode(
                     document.querySelectorAll('[data-toggle="from"]'),
-                    '[data-toggle="to"]'
+                    '[data-toggle="to"]',
                 );
                 return nearest.id;
             }),
-            'test2'
+            'test2',
         );
     });
 
     it('works with HTMLCollection nodes', async function() {
         assert.strictEqual(
-            await exec(_ => {
-                const nearest = dom.nearestToNode(
+            await exec((_) => {
+                const nearest = $.nearestToNode(
                     document.getElementById('fromParent').children,
-                    '[data-toggle="to"]'
+                    '[data-toggle="to"]',
                 );
                 return nearest.id;
             }),
-            'test2'
+            'test2',
         );
     });
 
     it('works with array nodes', async function() {
         assert.strictEqual(
-            await exec(_ => {
-                const nearest = dom.nearestToNode([
+            await exec((_) => {
+                const nearest = $.nearestToNode([
                     document.getElementById('test1'),
-                    document.getElementById('test2')
+                    document.getElementById('test2'),
                 ], '[data-toggle="to"]');
                 return nearest.id;
             }),
-            'test2'
+            'test2',
         );
     });
 
     it('works with HTMLElement other nodes', async function() {
         assert.strictEqual(
-            await exec(_ => {
-                const nearest = dom.nearestToNode(
+            await exec((_) => {
+                const nearest = $.nearestToNode(
                     '[data-toggle="from"]',
-                    document.getElementById('test3')
+                    document.getElementById('test3'),
                 );
                 return nearest.id;
             }),
-            'test2'
+            'test2',
         );
     });
 
     it('works with NodeList other nodes', async function() {
         assert.strictEqual(
-            await exec(_ => {
-                const nearest = dom.nearestToNode(
+            await exec((_) => {
+                const nearest = $.nearestToNode(
                     '[data-toggle="from"]',
-                    document.querySelectorAll('[data-toggle="to"]')
+                    document.querySelectorAll('[data-toggle="to"]'),
                 );
                 return nearest.id;
             }),
-            'test2'
+            'test2',
         );
     });
 
     it('works with HTMLCollection other nodes', async function() {
         assert.strictEqual(
-            await exec(_ => {
-                const nearest = dom.nearestToNode(
+            await exec((_) => {
+                const nearest = $.nearestToNode(
                     '[data-toggle="from"]',
-                    document.getElementById('toParent').children
+                    document.getElementById('toParent').children,
                 );
                 return nearest.id;
             }),
-            'test2'
+            'test2',
         );
     });
 
     it('works with array other nodes', async function() {
         assert.strictEqual(
-            await exec(_ => {
-                const nearest = dom.nearestToNode('[data-toggle="from"]', [
+            await exec((_) => {
+                const nearest = $.nearestToNode('[data-toggle="from"]', [
                     document.getElementById('test3'),
-                    document.getElementById('test4')
+                    document.getElementById('test4'),
                 ]);
                 return nearest.id;
             }),
-            'test2'
+            'test2',
         );
     });
-
 });

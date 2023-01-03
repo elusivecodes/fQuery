@@ -1,10 +1,9 @@
-const assert = require('assert');
-const { exec } = require('../../../setup');
+import assert from 'node:assert/strict';
+import { exec } from './../../../setup.js';
 
 describe('#getAttribute', function() {
-
     beforeEach(async function() {
-        await exec(_ => {
+        await exec((_) => {
             document.body.innerHTML =
                 '<input type="text" id="test1" required>' +
                 '<input type="number" id="test2">';
@@ -13,90 +12,89 @@ describe('#getAttribute', function() {
 
     it('returns an object with all attributes for the first node', async function() {
         assert.deepStrictEqual(
-            await exec(_ =>
-                dom.getAttribute('input')
+            await exec((_) =>
+                $.getAttribute('input'),
             ),
             {
                 type: 'text',
                 id: 'test1',
-                required: ''
-            }
+                required: '',
+            },
         );
     });
 
     it('returns an attribute value for the first node', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.getAttribute('input', 'type')
+            await exec((_) =>
+                $.getAttribute('input', 'type'),
             ),
-            'text'
+            'text',
         );
     });
 
     it('returns null for an undefined property', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.getAttribute('input', 'disabled')
+            await exec((_) =>
+                $.getAttribute('input', 'disabled'),
             ),
-            null
+            null,
         );
     });
 
     it('returns undefined for empty nodes', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.getAttribute('#invalid', 'type')
+            await exec((_) =>
+                $.getAttribute('#invalid', 'type'),
             ),
-            undefined
+            undefined,
         );
     });
 
     it('works with HTMLElement nodes', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.getAttribute(
+            await exec((_) =>
+                $.getAttribute(
                     document.getElementById('test1'),
-                    'type'
-                )
+                    'type',
+                ),
             ),
-            'text'
+            'text',
         );
     });
 
     it('works with NodeList nodes', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.getAttribute(
+            await exec((_) =>
+                $.getAttribute(
                     document.querySelectorAll('input'),
-                    'type'
-                )
+                    'type',
+                ),
             ),
-            'text'
+            'text',
         );
     });
 
     it('works with HTMLCollection nodes', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.getAttribute(
+            await exec((_) =>
+                $.getAttribute(
                     document.body.children,
-                    'type'
-                )
+                    'type',
+                ),
             ),
-            'text'
+            'text',
         );
     });
 
     it('works with array nodes', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.getAttribute([
+            await exec((_) =>
+                $.getAttribute([
                     document.getElementById('test1'),
-                    document.getElementById('test2')
-                ], 'type')
+                    document.getElementById('test2'),
+                ], 'type'),
             ),
-            'text'
+            'text',
         );
     });
-
 });

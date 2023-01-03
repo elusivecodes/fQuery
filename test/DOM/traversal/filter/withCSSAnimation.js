@@ -1,14 +1,13 @@
-const assert = require('assert');
-const { exec, setStyle } = require('../../../setup');
+import assert from 'node:assert/strict';
+import { exec, setStyle } from './../../../setup.js';
 
 describe('#withCSSAnimation', function() {
-
     beforeEach(async function() {
         await setStyle(
             '.test { animation: spin 4s linear infinite; }' +
-            '@keyframes spin { 100% { transform: rotate(360deg); } }'
+            '@keyframes spin { 100% { transform: rotate(360deg); } }',
         );
-        await exec(_ => {
+        await exec((_) => {
             document.body.innerHTML =
                 '<div id="div1" class="test"></div>' +
                 '<div id="div2"></div>' +
@@ -19,73 +18,72 @@ describe('#withCSSAnimation', function() {
 
     it('returns nodes with CSS animations', async function() {
         assert.deepStrictEqual(
-            await exec(_ =>
-                dom.withCSSAnimation('div')
-                    .map(node => node.id)
+            await exec((_) =>
+                $.withCSSAnimation('div')
+                    .map((node) => node.id),
             ),
             [
                 'div1',
-                'div3'
-            ]
+                'div3',
+            ],
         );
     });
 
     it('works with HTMLElement nodes', async function() {
         assert.deepStrictEqual(
-            await exec(_ =>
-                dom.withCSSAnimation(
-                    document.getElementById('div1')
-                ).map(node => node.id)
+            await exec((_) =>
+                $.withCSSAnimation(
+                    document.getElementById('div1'),
+                ).map((node) => node.id),
             ),
             [
-                'div1'
-            ]
+                'div1',
+            ],
         );
     });
 
     it('works with NodeList nodes', async function() {
         assert.deepStrictEqual(
-            await exec(_ =>
-                dom.withCSSAnimation(
-                    document.querySelectorAll('div')
-                ).map(node => node.id)
+            await exec((_) =>
+                $.withCSSAnimation(
+                    document.querySelectorAll('div'),
+                ).map((node) => node.id),
             ),
             [
                 'div1',
-                'div3'
-            ]
+                'div3',
+            ],
         );
     });
 
     it('works with HTMLCollection nodes', async function() {
         assert.deepStrictEqual(
-            await exec(_ =>
-                dom.withCSSAnimation(
-                    document.body.children
-                ).map(node => node.id)
+            await exec((_) =>
+                $.withCSSAnimation(
+                    document.body.children,
+                ).map((node) => node.id),
             ),
             [
                 'div1',
-                'div3'
-            ]
+                'div3',
+            ],
         );
     });
 
     it('works with array nodes', async function() {
         assert.deepStrictEqual(
-            await exec(_ =>
-                dom.withCSSAnimation([
+            await exec((_) =>
+                $.withCSSAnimation([
                     document.getElementById('div1'),
                     document.getElementById('div2'),
                     document.getElementById('div3'),
-                    document.getElementById('div4')
-                ]).map(node => node.id)
+                    document.getElementById('div4'),
+                ]).map((node) => node.id),
             ),
             [
                 'div1',
-                'div3'
-            ]
+                'div3',
+            ],
         );
     });
-
 });

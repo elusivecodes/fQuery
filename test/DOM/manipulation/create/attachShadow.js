@@ -1,90 +1,88 @@
-const assert = require('assert');
-const { exec } = require('../../../setup');
+import assert from 'node:assert/strict';
+import { exec } from './../../../setup.js';
 
 describe('#attachShadow', function() {
-
     beforeEach(async function() {
-        await exec(_ => {
+        await exec((_) => {
             document.body.innerHTML = '<div id="test"></div>';
         });
     });
 
     it('attaches a shadow root to the first node', async function() {
         assert.deepStrictEqual(
-            await exec(_ => {
-                const shadow = dom.attachShadow('#test');
+            await exec((_) => {
+                const shadow = $.attachShadow('#test');
                 return [
                     shadow instanceof ShadowRoot,
-                    document.getElementById('test').shadowRoot instanceof ShadowRoot
+                    document.getElementById('test').shadowRoot instanceof ShadowRoot,
                 ];
             }),
             [
                 true,
-                true
-            ]
+                true,
+            ],
         );
     });
 
     it('attaches a closed shadow root to the first node', async function() {
         assert.deepStrictEqual(
-            await exec(_ => {
-                const shadow = dom.attachShadow('#test', false);
+            await exec((_) => {
+                const shadow = $.attachShadow('#test', { open: false });
                 return [
                     shadow instanceof ShadowRoot,
-                    document.getElementById('test').shadowRoot
+                    document.getElementById('test').shadowRoot,
                 ];
             }),
             [
                 true,
-                null
-            ]
+                null,
+            ],
         );
     });
 
     it('works with HTMLElement nodes', async function() {
         assert.strictEqual(
-            await exec(_ => {
+            await exec((_) => {
                 const element = document.getElementById('test');
-                dom.attachShadow(element);
+                $.attachShadow(element);
                 return element.shadowRoot instanceof ShadowRoot;
             }),
-            true
+            true,
         );
     });
 
     it('works with NodeList nodes', async function() {
         assert.strictEqual(
-            await exec(_ => {
-                dom.attachShadow(
-                    document.querySelectorAll('div')
+            await exec((_) => {
+                $.attachShadow(
+                    document.querySelectorAll('div'),
                 );
                 return document.getElementById('test').shadowRoot instanceof ShadowRoot;
             }),
-            true
+            true,
         );
     });
 
     it('works with HTMLCollection nodes', async function() {
         assert.strictEqual(
-            await exec(_ => {
-                dom.attachShadow(
-                    document.body.children
+            await exec((_) => {
+                $.attachShadow(
+                    document.body.children,
                 );
                 return document.getElementById('test').shadowRoot instanceof ShadowRoot;
             }),
-            true
+            true,
         );
     });
 
     it('works with array nodes', async function() {
         assert.strictEqual(
-            await exec(_ => {
+            await exec((_) => {
                 const element = document.getElementById('test');
-                dom.attachShadow([element]);
+                $.attachShadow([element]);
                 return element.shadowRoot instanceof ShadowRoot;
             }),
-            true
+            true,
         );
     });
-
 });

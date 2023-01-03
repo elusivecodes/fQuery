@@ -1,8 +1,22 @@
+import { clamp } from '@fr0st/core';
+import { getTime } from './helpers.js';
+import { getAnimationDefaults } from './../config.js';
+import { animations } from './../vars.js';
+
 /**
  * Animation Class
  * @class
  */
-class Animation {
+export default class Animation {
+    #node;
+    #callback;
+    #options;
+    #promise;
+    #resolve;
+    #reject;
+
+    #isStopped = false;
+    #isFinished = false;
 
     /**
      * New Animation constructor.
@@ -15,113 +29,129 @@ class Animation {
      * @param {Boolean} [options.debug] Whether to set debugging info on the node.
      */
     constructor(node, callback, options) {
-        this._node = node;
-        this._callback = callback;
+        this.#node = node;
+        this.#callback = callback;
 
-        this._options = {
-            ...this.constructor.defaults,
-            ...options
+        this.#options = {
+            ...getAnimationDefaults(),
+            ...options,
         };
 
-        if (!('start' in this._options)) {
-            this._options.start = document.timeline ?
-                document.timeline.currentTime :
-                performance.now();
+        if (!('start' in this.#options)) {
+            this.#options.start = getTime();
         }
 
-        if (this._options.debug) {
-            this._node.dataset.animationStart = this._options.start;
+        if (this.#options.debug) {
+            this.#node.dataset.animationStart = this.#options.start;
         }
 
-        this.promise = new Promise((resolve, reject) => {
-            this._resolve = resolve;
-            this._reject = reject;
+        this.#promise = new Promise((resolve, reject) => {
+            this.#resolve = resolve;
+            this.#reject = reject;
         });
 
-        if (this.constructor._animations.has(node)) {
-            this.constructor._animations.get(node).push(this);
-        } else {
-            this.constructor._animations.set(node, [this]);
+        if (!animations.has(node)) {
+            animations.set(node, []);
         }
+
+        animations.get(node).push(this);
     }
 
     /**
      * Execute a callback if the animation is rejected.
      * @param {function} [onRejected] The callback to execute if the animation is rejected.
-     * @returns {Promise} The promise.
+     * @return {Promise} The promise.
      */
     catch(onRejected) {
-        return this.promise.catch(onRejected);
+        return this.#promise.catch(onRejected);
+    }
+
+    /**
+     * Clone the animation to a new node.
+     * @param {HTMLElement} node The input node.
+     * @return {Animation} The cloned Animation.
+     */
+    clone(node) {
+        return new Animation(node, this.#callback, this.#options);
     }
 
     /**
      * Execute a callback once the animation is settled (resolved or rejected).
-     * @param {function} [onRejected] The callback to execute once the animation is settled.
-     * @returns {Promise} The promise.
+     * @param {function} [onFinally] The callback to execute once the animation is settled.
+     * @return {Promise} The promise.
      */
     finally(onFinally) {
-        return this.promise.finally(onFinally);
+        return this.#promise.finally(onFinally);
     }
 
     /**
      * Stop the animation.
-     * @param {Boolean} [finish=true] Whether to finish the animation.
+     * @param {object} [options] The options for stopping the animation.
+     * @param {Boolean} [options.finish=true] Whether to finish the animation.
     */
-    stop(finish = true) {
-        const animations = this.constructor._animations.get(this._node)
-            .filter(animation => animation !== this);
-
-        if (!animations.length) {
-            this.constructor._animations.delete(this._node)
-        } else {
-            this.constructor._animations.set(this._node, animations);
+    stop({ finish = true } = {}) {
+        if (this.#isStopped || this.#isFinished) {
+            return;
         }
 
-        this.update(true, finish);
+        const otherAnimations = animations.get(this.#node)
+            .filter((animation) => animation !== this);
+
+        if (!otherAnimations.length) {
+            animations.delete(this.#node);
+        } else {
+            animations.set(this.#node, otherAnimations);
+        }
+
+        if (finish) {
+            this.update();
+        }
+
+        this.#isStopped = true;
+
+        if (!finish) {
+            this.#reject(this.#node);
+        }
     }
 
     /**
      * Execute a callback once the animation is resolved (or optionally rejected).
      * @param {function} onFulfilled The callback to execute if the animation is resolved.
      * @param {function} [onRejected] The callback to execute if the animation is rejected.
-     * @returns {Promise} The promise.
+     * @return {Promise} The promise.
      */
     then(onFulfilled, onRejected) {
-        return this.promise.then(onFulfilled, onRejected);
+        return this.#promise.then(onFulfilled, onRejected);
     }
 
     /**
      * Run a single frame of the animation.
-     * @param {Boolean} [stop] Whether to stop the animation.
-     * @param {Booelan} [finish] Whether to finish the animation.
+     * @param {number} [time] The current time.
+     * @return {Boolean} TRUE if the animation is finished, otherwise FALSE.
      */
-    update(stop = false, finish = false) {
-        if (stop && !finish) {
-            this._reject(this._node);
+    update(time = null) {
+        if (this.#isStopped) {
             return true;
         }
 
-        const now = document.timeline ?
-            document.timeline.currentTime :
-            performance.now();
-
         let progress;
-        if (finish) {
+
+        if (time === null) {
             progress = 1;
         } else {
-            progress = (now - this._options.start) / this._options.duration;
+            progress = (time - this.#options.start) / this.#options.duration;
 
-            if (this._options.infinite) {
+            if (this.#options.infinite) {
                 progress %= 1;
             } else {
-                progress = Core.clamp(progress);
+                progress = clamp(progress);
             }
 
-            if (this._options.type === 'ease-in') {
+            if (this.#options.type === 'ease-in') {
                 progress = progress ** 2;
-            } else if (this._options.type === 'ease-out') {
+            } else if (this.#options.type === 'ease-out') {
                 progress = Math.sqrt(progress);
-            } else if (this._options.type === 'ease-in-out') {
+            } else if (this.#options.type === 'ease-in-out') {
                 if (progress <= 0.5) {
                     progress = progress ** 2 * 2;
                 } else {
@@ -130,25 +160,31 @@ class Animation {
             }
         }
 
-        if (this._options.debug) {
-            this._node.dataset.animationNow = now;
-            this._node.dataset.animationProgress = progress;
+        if (this.#options.debug) {
+            this.#node.dataset.animationTime = time;
+            this.#node.dataset.animationProgress = progress;
         }
 
-        this._callback(this._node, progress, this._options);
+        this.#callback(this.#node, progress, this.#options);
 
         if (progress < 1) {
-            return;
+            return false;
         }
 
-        if (this._options.debug) {
-            delete this._node.dataset.animationStart;
-            delete this._node.dataset.animationNow;
-            delete this._node.dataset.animationProgress;
+        if (this.#options.debug) {
+            delete this.#node.dataset.animationStart;
+            delete this.#node.dataset.animationTime;
+            delete this.#node.dataset.animationProgress;
         }
 
-        this._resolve(this._node);
+        if (!this.#isFinished) {
+            this.#isFinished = true;
+
+            this.#resolve(this.#node);
+        }
+
         return true;
     }
-
 }
+
+Object.setPrototypeOf(Animation.prototype, Promise.prototype);

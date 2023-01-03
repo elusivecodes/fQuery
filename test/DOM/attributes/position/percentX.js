@@ -1,10 +1,9 @@
-const assert = require('assert');
-const { exec } = require('../../../setup');
+import assert from 'node:assert/strict';
+import { exec } from './../../../setup.js';
 
 describe('#percentX', function() {
-
     beforeEach(async function() {
-        await exec(_ => {
+        await exec((_) => {
             document.body.innerHTML =
                 '<div id="test1" style="display: block; width: 100px; height: 100px; margin: 1050px; padding: 50px;"></div>' +
                 '<div id="test2"></div>';
@@ -14,90 +13,89 @@ describe('#percentX', function() {
 
     it('returns the percent of a position along the X-axis for the first node', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.percentX('div', 700)
+            await exec((_) =>
+                $.percentX('div', 700),
             ),
-            50
+            50,
         );
     });
 
     it('returns the percent of a position along the X-axis for the first node with offset', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.percentX('div', 1158, true)
+            await exec((_) =>
+                $.percentX('div', 1158, { offset: true }),
             ),
-            50
+            50,
         );
     });
 
     it('clamps the returned value between 0 and 100', async function() {
         assert.deepStrictEqual(
-            await exec(_ => [
-                dom.percentX('div', 0),
-                dom.percentX('div', 2000)
+            await exec((_) => [
+                $.percentX('div', 0),
+                $.percentX('div', 2000),
             ]),
             [
                 0,
-                100
-            ]
+                100,
+            ],
         );
     });
 
     it('returns undefined for empty nodes', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.percentX('#invalid', 700)
+            await exec((_) =>
+                $.percentX('#invalid', 700),
             ),
-            undefined
+            undefined,
         );
     });
 
     it('works with HTMLElement nodes', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.percentX(
+            await exec((_) =>
+                $.percentX(
                     document.getElementById('test1'),
-                    700
-                )
+                    700,
+                ),
             ),
-            50
+            50,
         );
     });
 
     it('works with NodeList nodes', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.percentX(
+            await exec((_) =>
+                $.percentX(
                     document.querySelectorAll('div'),
-                    700
-                )
+                    700,
+                ),
             ),
-            50
+            50,
         );
     });
 
     it('works with HTMLCollection nodes', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.percentX(
+            await exec((_) =>
+                $.percentX(
                     document.body.children,
-                    700
-                )
+                    700,
+                ),
             ),
-            50
+            50,
         );
     });
 
     it('works with array nodes', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.percentX([
+            await exec((_) =>
+                $.percentX([
                     document.getElementById('test1'),
-                    document.getElementById('test2')
-                ], 700)
+                    document.getElementById('test2'),
+                ], 700),
             ),
-            50
+            50,
         );
     });
-
 });

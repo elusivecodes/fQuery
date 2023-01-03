@@ -1,10 +1,9 @@
-const assert = require('assert');
-const { exec } = require('../../../setup');
+import assert from 'node:assert/strict';
+import { exec } from './../../../setup.js';
 
 describe('#hasChildren', function() {
-
     beforeEach(async function() {
-        await exec(_ => {
+        await exec((_) => {
             document.body.innerHTML =
                 '<div id="div1" class="test">' +
                 '<span></span>' +
@@ -19,105 +18,104 @@ describe('#hasChildren', function() {
 
     it('returns true if any node has children', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.hasChildren('div')
+            await exec((_) =>
+                $.hasChildren('div'),
             ),
-            true
+            true,
         );
     });
 
     it('returns false if no nodes have children', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.hasChildren('div:not(.test)')
+            await exec((_) =>
+                $.hasChildren('div:not(.test)'),
             ),
-            false
+            false,
         );
     });
 
     it('works with HTMLElement nodes', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.hasChildren(
-                    document.getElementById('div1')
-                )
+            await exec((_) =>
+                $.hasChildren(
+                    document.getElementById('div1'),
+                ),
             ),
-            true
+            true,
         );
     });
 
     it('works with NodeList nodes', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.hasChildren(
-                    document.querySelectorAll('div')
-                )
+            await exec((_) =>
+                $.hasChildren(
+                    document.querySelectorAll('div'),
+                ),
             ),
-            true
+            true,
         );
     });
 
     it('works with HTMLCollection nodes', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.hasChildren(
-                    document.body.children
-                )
+            await exec((_) =>
+                $.hasChildren(
+                    document.body.children,
+                ),
             ),
-            true
+            true,
         );
     });
 
     it('works with DocumentFragment nodes', async function() {
         assert.strictEqual(
-            await exec(_ => {
+            await exec((_) => {
                 const range = document.createRange();
                 const fragment = range.createContextualFragment(
-                    '<div></div>'
+                    '<div></div>',
                 );
-                return dom.hasChildren(fragment);
+                return $.hasChildren(fragment);
             }),
-            true
+            true,
         );
     });
 
     it('works with ShadowRoot nodes', async function() {
         assert.strictEqual(
-            await exec(_ => {
+            await exec((_) => {
                 const div = document.createElement('div');
                 const shadow = div.attachShadow({ mode: 'open' });
                 const range = document.createRange();
                 const fragment = range.createContextualFragment(
-                    '<div></div>'
+                    '<div></div>',
                 );
                 shadow.appendChild(fragment);
-                return dom.hasChildren(shadow);
+                return $.hasChildren(shadow);
             }),
-            true
+            true,
         );
     });
 
     it('works with Document nodes', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.hasChildren(document)
+            await exec((_) =>
+                $.hasChildren(document),
             ),
-            true
+            true,
         );
     });
 
     it('works with array nodes', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.hasChildren([
+            await exec((_) =>
+                $.hasChildren([
                     document.getElementById('div1'),
                     document.getElementById('div2'),
                     document.getElementById('div3'),
-                    document.getElementById('div4')
-                ])
+                    document.getElementById('div4'),
+                ]),
             ),
-            true
+            true,
         );
     });
-
 });

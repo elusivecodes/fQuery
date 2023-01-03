@@ -1,144 +1,142 @@
-const assert = require('assert');
-const { exec } = require('../../../setup');
+import assert from 'node:assert/strict';
+import { exec } from './../../../setup.js';
 
 describe('#getData', function() {
-
     beforeEach(async function() {
-        await exec(_ => {
+        await exec((_) => {
             document.body.innerHTML =
                 '<div id="test1"></div>' +
                 '<div id="test2"></div>';
-            dom.setData('#test1', 'test', 'Test 1');
+            $.setData('#test1', 'test', 'Test 1');
         });
     });
 
     it('returns an object with all data for the first node', async function() {
         assert.deepStrictEqual(
-            await exec(_ =>
-                dom.getData('div')
+            await exec((_) =>
+                $.getData('div'),
             ),
             {
-                test: 'Test 1'
-            }
+                test: 'Test 1',
+            },
         );
     });
 
     it('returns data for the first node', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.getData('div', 'test')
+            await exec((_) =>
+                $.getData('div', 'test'),
             ),
-            'Test 1'
+            'Test 1',
         );
     });
 
     it('returns undefined for an undefined key', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.getData('div', 'invalid')
+            await exec((_) =>
+                $.getData('div', 'invalid'),
             ),
-            undefined
+            undefined,
         );
     });
 
     it('returns undefined for empty nodes', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.getData('#invalid', 'test')
+            await exec((_) =>
+                $.getData('#invalid', 'test'),
             ),
-            undefined
+            undefined,
         );
     });
 
     it('works with HTMLElement nodes', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.getData(
+            await exec((_) =>
+                $.getData(
                     document.getElementById('test1'),
-                    'test'
-                )
+                    'test',
+                ),
             ),
-            'Test 1'
+            'Test 1',
         );
     });
 
     it('works with NodeList nodes', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.getData(
+            await exec((_) =>
+                $.getData(
                     document.querySelectorAll('div'),
-                    'test'
-                )
+                    'test',
+                ),
             ),
-            'Test 1'
+            'Test 1',
         );
     });
 
     it('works with HTMLCollection nodes', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.getData(
+            await exec((_) =>
+                $.getData(
                     document.body.children,
-                    'test'
-                )
+                    'test',
+                ),
             ),
-            'Test 1'
+            'Test 1',
         );
     });
 
     it('works with DocumentFragment nodes', async function() {
         assert.strictEqual(
-            await exec(_ => {
+            await exec((_) => {
                 const fragment = document.createDocumentFragment();
-                dom.setData(fragment, 'test', 'Test 2');
-                return dom.getData(fragment, 'test');
+                $.setData(fragment, 'test', 'Test 2');
+                return $.getData(fragment, 'test');
             }),
-            'Test 2'
+            'Test 2',
         );
     });
 
     it('works with ShadowRoot nodes', async function() {
         assert.strictEqual(
-            await exec(_ => {
+            await exec((_) => {
                 const div = document.createElement('div');
                 const shadow = div.attachShadow({ mode: 'open' });
-                dom.setData(shadow, 'test', 'Test 2');
-                return dom.getData(shadow, 'test');
+                $.setData(shadow, 'test', 'Test 2');
+                return $.getData(shadow, 'test');
             }),
-            'Test 2'
+            'Test 2',
         );
     });
 
     it('works with Document nodes', async function() {
         assert.strictEqual(
-            await exec(_ => {
-                dom.setData(document, 'test', 'Test 2');
-                return dom.getData(document, 'test');
+            await exec((_) => {
+                $.setData(document, 'test', 'Test 2');
+                return $.getData(document, 'test');
             }),
-            'Test 2'
+            'Test 2',
         );
     });
 
     it('works with Window nodes', async function() {
         assert.strictEqual(
-            await exec(_ => {
-                dom.setData(window, 'test', 'Test 2');
-                return dom.getData(window, 'test');
+            await exec((_) => {
+                $.setData(window, 'test', 'Test 2');
+                return $.getData(window, 'test');
             }),
-            'Test 2'
+            'Test 2',
         );
     });
 
     it('works with array nodes', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.getData([
+            await exec((_) =>
+                $.getData([
                     document.getElementById('test1'),
-                    document.getElementById('test2')
-                ], 'test')
+                    document.getElementById('test2'),
+                ], 'test'),
             ),
-            'Test 1'
+            'Test 1',
         );
     });
-
 });

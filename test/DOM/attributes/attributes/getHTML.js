@@ -1,10 +1,9 @@
-const assert = require('assert');
-const { exec } = require('../../../setup');
+import assert from 'node:assert/strict';
+import { exec } from './../../../setup.js';
 
 describe('#getHTML', function() {
-
     beforeEach(async function() {
-        await exec(_ => {
+        await exec((_) => {
             document.body.innerHTML =
                 '<div id="test1"><span>Test</span></div>' +
                 '<div id="test2"></div>';
@@ -13,65 +12,64 @@ describe('#getHTML', function() {
 
     it('returns the HTML contents of the first node', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.getHTML('div')
+            await exec((_) =>
+                $.getHTML('div'),
             ),
-            '<span>Test</span>'
+            '<span>Test</span>',
         );
     });
 
     it('returns undefined for empty nodes', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.getHTML('#invalid')
+            await exec((_) =>
+                $.getHTML('#invalid'),
             ),
-            undefined
+            undefined,
         );
     });
 
     it('works with HTMLElement nodes', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.getHTML(
-                    document.getElementById('test1')
-                )
+            await exec((_) =>
+                $.getHTML(
+                    document.getElementById('test1'),
+                ),
             ),
-            '<span>Test</span>'
+            '<span>Test</span>',
         );
     });
 
     it('works with NodeList nodes', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.getHTML(
-                    document.querySelectorAll('div')
-                )
+            await exec((_) =>
+                $.getHTML(
+                    document.querySelectorAll('div'),
+                ),
             ),
-            '<span>Test</span>'
+            '<span>Test</span>',
         );
     });
 
     it('works with HTMLCollection nodes', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.getHTML(
-                    document.body.children
-                )
+            await exec((_) =>
+                $.getHTML(
+                    document.body.children,
+                ),
             ),
-            '<span>Test</span>'
+            '<span>Test</span>',
         );
     });
 
     it('works with array nodes', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.getHTML([
+            await exec((_) =>
+                $.getHTML([
                     document.getElementById('test1'),
-                    document.getElementById('test2')
-                ])
+                    document.getElementById('test2'),
+                ]),
             ),
-            '<span>Test</span>'
+            '<span>Test</span>',
         );
     });
-
 });

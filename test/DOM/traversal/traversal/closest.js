@@ -1,10 +1,9 @@
-const assert = require('assert');
-const { exec } = require('../../../setup');
+import assert from 'node:assert/strict';
+import { exec } from './../../../setup.js';
 
 describe('#closest', function() {
-
     beforeEach(async function() {
-        await exec(_ => {
+        await exec((_) => {
             document.body.innerHTML =
                 '<div id="parent1">' +
                 '<div id="child1">' +
@@ -25,254 +24,253 @@ describe('#closest', function() {
 
     it('returns the closest ancestor of each node', async function() {
         assert.deepStrictEqual(
-            await exec(_ =>
-                dom.closest('a')
-                    .map(node => node.id)
+            await exec((_) =>
+                $.closest('a')
+                    .map((node) => node.id),
             ),
             [
                 'span1',
-                'span2'
-            ]
+                'span2',
+            ],
         );
     });
 
     it('returns the closest ancestor of each node matching a filter', async function() {
         assert.deepStrictEqual(
-            await exec(_ =>
-                dom.closest('a', 'div')
-                    .map(node => node.id)
+            await exec((_) =>
+                $.closest('a', 'div')
+                    .map((node) => node.id),
             ),
             [
                 'child1',
-                'child2'
-            ]
+                'child2',
+            ],
         );
     });
 
     it('returns the closest ancestor of each node before a limit', async function() {
         assert.deepStrictEqual(
-            await exec(_ =>
-                dom.closest('a', 'div', '#span2')
-                    .map(node => node.id)
+            await exec((_) =>
+                $.closest('a', 'div', '#span2')
+                    .map((node) => node.id),
             ),
             [
-                'child1'
-            ]
+                'child1',
+            ],
         );
     });
 
     it('returns an empty array for empty nodes', async function() {
         assert.deepStrictEqual(
-            await exec(_ =>
-                dom.closest('#invalid')
+            await exec((_) =>
+                $.closest('#invalid'),
             ),
-            []
+            [],
         );
     });
 
     it('works with HTMLElement nodes', async function() {
         assert.deepStrictEqual(
-            await exec(_ =>
-                dom.closest(
+            await exec((_) =>
+                $.closest(
                     document.getElementById('a1'),
-                    'div'
-                ).map(node => node.id)
+                    'div',
+                ).map((node) => node.id),
             ),
             [
-                'child1'
-            ]
+                'child1',
+            ],
         );
     });
 
     it('works with NodeList nodes', async function() {
         assert.deepStrictEqual(
-            await exec(_ =>
-                dom.closest(
+            await exec((_) =>
+                $.closest(
                     document.querySelectorAll('a'),
-                    'div'
-                ).map(node => node.id)
+                    'div',
+                ).map((node) => node.id),
             ),
             [
                 'child1',
-                'child2'
-            ]
+                'child2',
+            ],
         );
     });
 
     it('works with HTMLCollection nodes', async function() {
         assert.deepStrictEqual(
-            await exec(_ =>
-                dom.closest(
+            await exec((_) =>
+                $.closest(
                     document.getElementById('child1').children,
-                    'div'
-                ).map(node => node.id)
+                    'div',
+                ).map((node) => node.id),
             ),
             [
-                'child1'
-            ]
+                'child1',
+            ],
         );
     });
 
     it('works with array nodes', async function() {
         assert.deepStrictEqual(
-            await exec(_ =>
-                dom.closest([
+            await exec((_) =>
+                $.closest([
                     document.getElementById('a1'),
-                    document.getElementById('a2')
-                ], 'div').map(node => node.id)
+                    document.getElementById('a2'),
+                ], 'div').map((node) => node.id),
             ),
             [
                 'child1',
-                'child2'
-            ]
+                'child2',
+            ],
         );
     });
 
     it('works with function filter', async function() {
         assert.deepStrictEqual(
-            await exec(_ =>
-                dom.closest(
+            await exec((_) =>
+                $.closest(
                     'a',
-                    node => node.tagName === 'DIV'
-                ).map(node => node.id)
+                    (node) => node.tagName === 'DIV',
+                ).map((node) => node.id),
             ),
             [
                 'child1',
-                'child2'
-            ]
+                'child2',
+            ],
         );
     });
 
     it('works with HTMLElement filter', async function() {
         assert.deepStrictEqual(
-            await exec(_ =>
-                dom.closest(
+            await exec((_) =>
+                $.closest(
                     'a',
-                    document.getElementById('child1')
-                ).map(node => node.id)
+                    document.getElementById('child1'),
+                ).map((node) => node.id),
             ),
             [
-                'child1'
-            ]
+                'child1',
+            ],
         );
     });
 
     it('works with NodeList filter', async function() {
         assert.deepStrictEqual(
-            await exec(_ =>
-                dom.closest(
+            await exec((_) =>
+                $.closest(
                     'a',
-                    document.querySelectorAll('div')
-                ).map(node => node.id)
+                    document.querySelectorAll('div'),
+                ).map((node) => node.id),
             ),
             [
                 'child1',
-                'child2'
-            ]
+                'child2',
+            ],
         );
     });
 
     it('works with HTMLCollection filter', async function() {
         assert.deepStrictEqual(
-            await exec(_ =>
-                dom.closest(
+            await exec((_) =>
+                $.closest(
                     'a',
-                    document.body.children
-                ).map(node => node.id)
+                    document.body.children,
+                ).map((node) => node.id),
             ),
             [
                 'parent1',
-                'parent2'
-            ]
+                'parent2',
+            ],
         );
     });
 
     it('works with array filter', async function() {
         assert.deepStrictEqual(
-            await exec(_ =>
-                dom.closest('a', [
+            await exec((_) =>
+                $.closest('a', [
                     document.getElementById('child1'),
-                    document.getElementById('child2')
-                ]).map(node => node.id)
+                    document.getElementById('child2'),
+                ]).map((node) => node.id),
             ),
             [
                 'child1',
-                'child2'
-            ]
+                'child2',
+            ],
         );
     });
 
     it('works with function limit', async function() {
         assert.deepStrictEqual(
-            await exec(_ =>
-                dom.closest(
+            await exec((_) =>
+                $.closest(
                     'a',
                     'div',
-                    node => node.id === 'span2'
-                ).map(node => node.id)
+                    (node) => node.id === 'span2',
+                ).map((node) => node.id),
             ),
             [
-                'child1'
-            ]
+                'child1',
+            ],
         );
     });
 
     it('works with HTMLElement limit', async function() {
         assert.deepStrictEqual(
-            await exec(_ =>
-                dom.closest(
+            await exec((_) =>
+                $.closest(
                     'a',
                     'div',
-                    document.getElementById('span2')
-                ).map(node => node.id)
+                    document.getElementById('span2'),
+                ).map((node) => node.id),
             ),
             [
-                'child1'
-            ]
+                'child1',
+            ],
         );
     });
 
     it('works with NodeList limit', async function() {
         assert.deepStrictEqual(
-            await exec(_ =>
-                dom.closest(
+            await exec((_) =>
+                $.closest(
                     'a',
                     'div',
-                    document.querySelectorAll('#span2')
-                ).map(node => node.id)
+                    document.querySelectorAll('#span2'),
+                ).map((node) => node.id),
             ),
             [
-                'child1'
-            ]
+                'child1',
+            ],
         );
     });
 
     it('works with HTMLCollection limit', async function() {
         assert.deepStrictEqual(
-            await exec(_ =>
-                dom.closest(
+            await exec((_) =>
+                $.closest(
                     'a',
                     'div',
-                    document.getElementById('child2').children
-                ).map(node => node.id)
+                    document.getElementById('child2').children,
+                ).map((node) => node.id),
             ),
             [
-                'child1'
-            ]
+                'child1',
+            ],
         );
     });
 
     it('works with array limit', async function() {
         assert.deepStrictEqual(
-            await exec(_ =>
-                dom.closest('a', 'div', [
-                    document.getElementById('span2')
-                ]).map(node => node.id)
+            await exec((_) =>
+                $.closest('a', 'div', [
+                    document.getElementById('span2'),
+                ]).map((node) => node.id),
             ),
             [
-                'child1'
-            ]
+                'child1',
+            ],
         );
     });
-
 });

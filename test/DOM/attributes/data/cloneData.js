@@ -1,10 +1,9 @@
-const assert = require('assert');
-const { exec } = require('../../../setup');
+import assert from 'node:assert/strict';
+import { exec } from './../../../setup.js';
 
 describe('#cloneData', function() {
-
     beforeEach(async function() {
-        await exec(_ => {
+        await exec((_) => {
             document.body.innerHTML =
                 '<div id="dataParent">' +
                 '<div id="test1" data-toggle="data"></div>' +
@@ -14,362 +13,361 @@ describe('#cloneData', function() {
                 '<div id="test3" data-toggle="noData"></div>' +
                 '<div id="test4" data-toggle="noData"></div>' +
                 '</div>';
-            dom.setData('#test1', 'test1', 'Test 1');
-            dom.setData('#test2', 'test2', 'Test 2');
+            $.setData('#test1', 'test1', 'Test 1');
+            $.setData('#test2', 'test2', 'Test 2');
         });
     });
 
     it('clones data from all nodes to all other nodes', async function() {
         assert.deepStrictEqual(
-            await exec(_ => {
-                dom.cloneData('[data-toggle="data"]', '[data-toggle="noData"]');
+            await exec((_) => {
+                $.cloneData('[data-toggle="data"]', '[data-toggle="noData"]');
                 return [
-                    dom.getData('#test3'),
-                    dom.getData('#test4')
+                    $.getData('#test3'),
+                    $.getData('#test4'),
                 ];
             }),
             [
                 {
                     test1: 'Test 1',
-                    test2: 'Test 2'
+                    test2: 'Test 2',
                 },
                 {
                     test1: 'Test 1',
-                    test2: 'Test 2'
-                }
-            ]
+                    test2: 'Test 2',
+                },
+            ],
         );
     });
 
     it('works with HTMLElement nodes', async function() {
         assert.deepStrictEqual(
-            await exec(_ => {
-                dom.cloneData(
+            await exec((_) => {
+                $.cloneData(
                     document.getElementById('test1'),
-                    '[data-toggle="noData"]'
+                    '[data-toggle="noData"]',
                 );
                 return [
-                    dom.getData('#test3'),
-                    dom.getData('#test4')
+                    $.getData('#test3'),
+                    $.getData('#test4'),
                 ];
             }),
             [
                 {
-                    test1: 'Test 1'
+                    test1: 'Test 1',
                 },
                 {
-                    test1: 'Test 1'
-                }
-            ]
+                    test1: 'Test 1',
+                },
+            ],
         );
     });
 
     it('works with NodeList nodes', async function() {
         assert.deepStrictEqual(
-            await exec(_ => {
-                dom.cloneData(
+            await exec((_) => {
+                $.cloneData(
                     document.querySelectorAll('[data-toggle="data"]'),
-                    '[data-toggle="noData"]'
+                    '[data-toggle="noData"]',
                 );
                 return [
-                    dom.getData('#test3'),
-                    dom.getData('#test4')
+                    $.getData('#test3'),
+                    $.getData('#test4'),
                 ];
             }),
             [
                 {
                     test1: 'Test 1',
-                    test2: 'Test 2'
+                    test2: 'Test 2',
                 },
                 {
                     test1: 'Test 1',
-                    test2: 'Test 2'
-                }
-            ]
+                    test2: 'Test 2',
+                },
+            ],
         );
     });
 
     it('works with HTMLCollection nodes', async function() {
         assert.deepStrictEqual(
-            await exec(_ => {
-                dom.cloneData(
+            await exec((_) => {
+                $.cloneData(
                     document.getElementById('dataParent').children,
-                    '[data-toggle="noData"]'
+                    '[data-toggle="noData"]',
                 );
                 return [
-                    dom.getData('#test3'),
-                    dom.getData('#test4')
+                    $.getData('#test3'),
+                    $.getData('#test4'),
                 ];
             }),
             [
                 {
                     test1: 'Test 1',
-                    test2: 'Test 2'
+                    test2: 'Test 2',
                 },
                 {
                     test1: 'Test 1',
-                    test2: 'Test 2'
-                }
-            ]
+                    test2: 'Test 2',
+                },
+            ],
         );
     });
 
     it('works with DocumentFragment nodes', async function() {
         assert.deepStrictEqual(
-            await exec(_ => {
+            await exec((_) => {
                 const fragment = document.createDocumentFragment();
-                dom.setData(fragment, 'test', 'Test 1');
-                dom.cloneData(fragment, '[data-toggle="noData"]');
+                $.setData(fragment, 'test', 'Test 1');
+                $.cloneData(fragment, '[data-toggle="noData"]');
                 return [
-                    dom.getData('#test3'),
-                    dom.getData('#test4')
+                    $.getData('#test3'),
+                    $.getData('#test4'),
                 ];
             }),
             [
                 {
-                    test: 'Test 1'
+                    test: 'Test 1',
                 },
                 {
-                    test: 'Test 1'
-                }
-            ]
+                    test: 'Test 1',
+                },
+            ],
         );
     });
 
     it('works with ShadowRoot nodes', async function() {
         assert.deepStrictEqual(
-            await exec(_ => {
+            await exec((_) => {
                 const div = document.createElement('div');
                 const shadow = div.attachShadow({ mode: 'open' });
-                dom.setData(shadow, 'test', 'Test 1');
-                dom.cloneData(shadow, '[data-toggle="noData"]');
+                $.setData(shadow, 'test', 'Test 1');
+                $.cloneData(shadow, '[data-toggle="noData"]');
                 return [
-                    dom.getData('#test3'),
-                    dom.getData('#test4')
+                    $.getData('#test3'),
+                    $.getData('#test4'),
                 ];
             }),
             [
                 {
-                    test: 'Test 1'
+                    test: 'Test 1',
                 },
                 {
-                    test: 'Test 1'
-                }
-            ]
+                    test: 'Test 1',
+                },
+            ],
         );
     });
 
     it('works with Document nodes', async function() {
         assert.deepStrictEqual(
-            await exec(_ => {
-                dom.setData(document, 'test', 'Test 1');
-                dom.cloneData(document, '[data-toggle="noData"]');
+            await exec((_) => {
+                $.setData(document, 'test', 'Test 1');
+                $.cloneData(document, '[data-toggle="noData"]');
                 return [
-                    dom.getData('#test3'),
-                    dom.getData('#test4')
+                    $.getData('#test3'),
+                    $.getData('#test4'),
                 ];
             }),
             [
                 {
-                    test: 'Test 1'
+                    test: 'Test 1',
                 },
                 {
-                    test: 'Test 1'
-                }
-            ]
+                    test: 'Test 1',
+                },
+            ],
         );
     });
 
     it('works with Window nodes', async function() {
         assert.deepStrictEqual(
-            await exec(_ => {
-                dom.setData(window, 'test', 'Test 1');
-                dom.cloneData(window, '[data-toggle="noData"]');
+            await exec((_) => {
+                $.setData(window, 'test', 'Test 1');
+                $.cloneData(window, '[data-toggle="noData"]');
                 return [
-                    dom.getData('#test3'),
-                    dom.getData('#test4')
+                    $.getData('#test3'),
+                    $.getData('#test4'),
                 ];
             }),
             [
                 {
-                    test: 'Test 1'
+                    test: 'Test 1',
                 },
                 {
-                    test: 'Test 1'
-                }
-            ]
+                    test: 'Test 1',
+                },
+            ],
         );
     });
 
     it('works with array nodes', async function() {
         assert.deepStrictEqual(
-            await exec(_ => {
-                dom.cloneData([
+            await exec((_) => {
+                $.cloneData([
                     document.getElementById('test1'),
-                    document.getElementById('test2')
+                    document.getElementById('test2'),
                 ], '[data-toggle="noData"]');
                 return [
-                    dom.getData('#test3'),
-                    dom.getData('#test4')
+                    $.getData('#test3'),
+                    $.getData('#test4'),
                 ];
             }),
             [
                 {
                     test1: 'Test 1',
-                    test2: 'Test 2'
+                    test2: 'Test 2',
                 },
                 {
                     test1: 'Test 1',
-                    test2: 'Test 2'
-                }
-            ]
+                    test2: 'Test 2',
+                },
+            ],
         );
     });
 
     it('works with HTMLElement other nodes', async function() {
         assert.deepStrictEqual(
-            await exec(_ => {
-                dom.cloneData(
+            await exec((_) => {
+                $.cloneData(
                     '[data-toggle="data"]',
-                    document.getElementById('test3')
+                    document.getElementById('test3'),
                 );
-                return dom.getData('#test3');
+                return $.getData('#test3');
             }),
             {
                 test1: 'Test 1',
-                test2: 'Test 2'
-            }
+                test2: 'Test 2',
+            },
         );
     });
 
     it('works with NodeList other nodes', async function() {
         assert.deepStrictEqual(
-            await exec(_ => {
-                dom.cloneData(
+            await exec((_) => {
+                $.cloneData(
                     '[data-toggle="data"]',
-                    document.querySelectorAll('[data-toggle="noData"]')
+                    document.querySelectorAll('[data-toggle="noData"]'),
                 );
                 return [
-                    dom.getData('#test3'),
-                    dom.getData('#test4')
+                    $.getData('#test3'),
+                    $.getData('#test4'),
                 ];
             }),
             [
                 {
                     test1: 'Test 1',
-                    test2: 'Test 2'
+                    test2: 'Test 2',
                 },
                 {
                     test1: 'Test 1',
-                    test2: 'Test 2'
-                }
-            ]
+                    test2: 'Test 2',
+                },
+            ],
         );
     });
 
     it('works with HTMLCollection other nodes', async function() {
         assert.deepStrictEqual(
-            await exec(_ => {
-                dom.cloneData(
+            await exec((_) => {
+                $.cloneData(
                     '[data-toggle="data"]',
-                    document.getElementById('noDataParent').children
+                    document.getElementById('noDataParent').children,
                 );
                 return [
-                    dom.getData('#test3'),
-                    dom.getData('#test4')
+                    $.getData('#test3'),
+                    $.getData('#test4'),
                 ];
             }),
             [
                 {
                     test1: 'Test 1',
-                    test2: 'Test 2'
+                    test2: 'Test 2',
                 },
                 {
                     test1: 'Test 1',
-                    test2: 'Test 2'
-                }
-            ]
+                    test2: 'Test 2',
+                },
+            ],
         );
     });
 
     it('works with DocumentFragment other nodes', async function() {
         assert.deepStrictEqual(
-            await exec(_ => {
+            await exec((_) => {
                 const fragment = document.createDocumentFragment();
-                dom.cloneData('[data-toggle="data"]', fragment);
-                return dom.getData(fragment);
+                $.cloneData('[data-toggle="data"]', fragment);
+                return $.getData(fragment);
             }),
             {
                 test1: 'Test 1',
-                test2: 'Test 2'
-            }
+                test2: 'Test 2',
+            },
         );
     });
 
     it('works with ShadowRoot other nodes', async function() {
         assert.deepStrictEqual(
-            await exec(_ => {
+            await exec((_) => {
                 const div = document.createElement('div');
                 const shadow = div.attachShadow({ mode: 'open' });
-                dom.cloneData('[data-toggle="data"]', shadow);
-                return dom.getData(shadow);
+                $.cloneData('[data-toggle="data"]', shadow);
+                return $.getData(shadow);
             }),
             {
                 test1: 'Test 1',
-                test2: 'Test 2'
-            }
+                test2: 'Test 2',
+            },
         );
     });
 
     it('works with Document other nodes', async function() {
         assert.deepStrictEqual(
-            await exec(_ => {
-                dom.cloneData('[data-toggle="data"]', document);
-                return dom.getData(document);
+            await exec((_) => {
+                $.cloneData('[data-toggle="data"]', document);
+                return $.getData(document);
             }),
             {
                 test1: 'Test 1',
-                test2: 'Test 2'
-            }
+                test2: 'Test 2',
+            },
         );
     });
 
     it('works with Window other nodes', async function() {
         assert.deepStrictEqual(
-            await exec(_ => {
-                dom.cloneData('[data-toggle="data"]', window);
-                return dom.getData(window);
+            await exec((_) => {
+                $.cloneData('[data-toggle="data"]', window);
+                return $.getData(window);
             }),
             {
                 test1: 'Test 1',
-                test2: 'Test 2'
-            }
+                test2: 'Test 2',
+            },
         );
     });
 
     it('works with array other nodes', async function() {
         assert.deepStrictEqual(
-            await exec(_ => {
-                dom.cloneData('[data-toggle="data"]', [
+            await exec((_) => {
+                $.cloneData('[data-toggle="data"]', [
                     document.getElementById('test3'),
-                    document.getElementById('test4')
+                    document.getElementById('test4'),
                 ]);
                 return [
-                    dom.getData('#test3'),
-                    dom.getData('#test4')
+                    $.getData('#test3'),
+                    $.getData('#test4'),
                 ];
             }),
             [
                 {
                     test1: 'Test 1',
-                    test2: 'Test 2'
+                    test2: 'Test 2',
                 },
                 {
                     test1: 'Test 1',
-                    test2: 'Test 2'
-                }
-            ]
+                    test2: 'Test 2',
+                },
+            ],
         );
     });
-
 });

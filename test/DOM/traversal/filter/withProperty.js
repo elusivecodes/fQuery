@@ -1,10 +1,9 @@
-const assert = require('assert');
-const { exec } = require('../../../setup');
+import assert from 'node:assert/strict';
+import { exec } from './../../../setup.js';
 
 describe('#withProperty', function() {
-
     beforeEach(async function() {
-        await exec(_ => {
+        await exec((_) => {
             document.body.innerHTML =
                 '<div id="div1"></div>' +
                 '<div id="div2"></div>' +
@@ -17,76 +16,75 @@ describe('#withProperty', function() {
 
     it('returns nodes with a specified property', async function() {
         assert.deepStrictEqual(
-            await exec(_ =>
-                dom.withProperty('div', 'test')
-                    .map(node => node.id)
+            await exec((_) =>
+                $.withProperty('div', 'test')
+                    .map((node) => node.id),
             ),
             [
                 'div1',
-                'div3'
-            ]
+                'div3',
+            ],
         );
     });
 
     it('works with HTMLElement nodes', async function() {
         assert.deepStrictEqual(
-            await exec(_ =>
-                dom.withProperty(
+            await exec((_) =>
+                $.withProperty(
                     document.getElementById('div1'),
-                    'test'
-                ).map(node => node.id)
+                    'test',
+                ).map((node) => node.id),
             ),
             [
-                'div1'
-            ]
+                'div1',
+            ],
         );
     });
 
     it('works with NodeList nodes', async function() {
         assert.deepStrictEqual(
-            await exec(_ =>
-                dom.withProperty(
+            await exec((_) =>
+                $.withProperty(
                     document.querySelectorAll('div'),
-                    'test'
-                ).map(node => node.id)
+                    'test',
+                ).map((node) => node.id),
             ),
             [
                 'div1',
-                'div3'
-            ]
+                'div3',
+            ],
         );
     });
 
     it('works with HTMLCollection nodes', async function() {
         assert.deepStrictEqual(
-            await exec(_ =>
-                dom.withProperty(
+            await exec((_) =>
+                $.withProperty(
                     document.body.children,
-                    'test'
-                ).map(node => node.id)
+                    'test',
+                ).map((node) => node.id),
             ),
             [
                 'div1',
-                'div3'
-            ]
+                'div3',
+            ],
         );
     });
 
     it('works with array nodes', async function() {
         assert.deepStrictEqual(
-            await exec(_ =>
-                dom.withProperty([
+            await exec((_) =>
+                $.withProperty([
                     document.getElementById('div1'),
                     document.getElementById('div2'),
                     document.getElementById('div3'),
-                    document.getElementById('div4')
-                ], 'test').map(node => node.id)
+                    document.getElementById('div4'),
+                ], 'test').map((node) => node.id),
             ),
             [
                 'div1',
-                'div3'
-            ]
+                'div3',
+            ],
         );
     });
-
 });

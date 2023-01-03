@@ -1,10 +1,9 @@
-const assert = require('assert');
-const { exec } = require('../../../setup');
+import assert from 'node:assert/strict';
+import { exec } from './../../../setup.js';
 
 describe('#shadow', function() {
-
     beforeEach(async function() {
-        await exec(_ => {
+        await exec((_) => {
             document.body.innerHTML =
                 '<div id="div1"></div>' +
                 '<div id="div2"></div>' +
@@ -16,88 +15,87 @@ describe('#shadow', function() {
 
     it('returns the shadow root of the first node', async function() {
         assert.strictEqual(
-            await exec(_ => {
-                const shadow = dom.shadow('div');
+            await exec((_) => {
+                const shadow = $.shadow('div');
                 return shadow instanceof ShadowRoot;
             }),
-            true
+            true,
         );
     });
 
     it('returns null for closed shadow roots', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.shadow('#div2')
+            await exec((_) =>
+                $.shadow('#div2'),
             ),
-            null
+            null,
         );
     });
 
     it('returns null for nodes without a shadow root', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.shadow('#div3')
+            await exec((_) =>
+                $.shadow('#div3'),
             ),
-            null
+            null,
         );
     });
 
     it('returns undefined for empty nodes', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.shadow('#invalid')
+            await exec((_) =>
+                $.shadow('#invalid'),
             ),
-            undefined
+            undefined,
         );
     });
 
     it('works with HTMLElement nodes', async function() {
         assert.strictEqual(
-            await exec(_ => {
-                const shadow = dom.shadow(
-                    document.getElementById('div1')
+            await exec((_) => {
+                const shadow = $.shadow(
+                    document.getElementById('div1'),
                 );
                 return shadow instanceof ShadowRoot;
             }),
-            true
+            true,
         );
     });
 
     it('works with NodeList nodes', async function() {
         assert.strictEqual(
-            await exec(_ => {
-                const shadow = dom.shadow(
-                    document.querySelectorAll('div')
+            await exec((_) => {
+                const shadow = $.shadow(
+                    document.querySelectorAll('div'),
                 );
                 return shadow instanceof ShadowRoot;
             }),
-            true
+            true,
         );
     });
 
     it('works with HTMLCollection nodes', async function() {
         assert.strictEqual(
-            await exec(_ => {
-                const shadow = dom.shadow(
-                    document.body.children
+            await exec((_) => {
+                const shadow = $.shadow(
+                    document.body.children,
                 );
                 return shadow instanceof ShadowRoot;
             }),
-            true
+            true,
         );
     });
 
     it('works with array nodes', async function() {
         assert.strictEqual(
-            await exec(_ => {
-                const shadow = dom.shadow([
+            await exec((_) => {
+                const shadow = $.shadow([
                     document.getElementById('div1'),
-                    document.getElementById('div2')
+                    document.getElementById('div2'),
                 ]);
                 return shadow instanceof ShadowRoot;
             }),
-            true
+            true,
         );
     });
-
 });

@@ -1,10 +1,9 @@
-const assert = require('assert');
-const { exec } = require('../../../setup');
+import assert from 'node:assert/strict';
+import { exec } from './../../../setup.js';
 
 describe('#getStyle', function() {
-
     beforeEach(async function() {
-        await exec(_ => {
+        await exec((_) => {
             document.body.innerHTML =
                 '<div id="test1" style="display: block; width: 100px; height: 100px;"></div>' +
                 '<div id="test2"></div>';
@@ -13,90 +12,89 @@ describe('#getStyle', function() {
 
     it('returns an object with all style values for the first node', async function() {
         assert.deepStrictEqual(
-            await exec(_ =>
-                dom.getStyle('div')
+            await exec((_) =>
+                $.getStyle('div'),
             ),
             {
                 display: 'block',
                 width: '100px',
-                height: '100px'
-            }
+                height: '100px',
+            },
         );
     });
 
     it('returns a style value for the first node', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.getStyle('div', 'display')
+            await exec((_) =>
+                $.getStyle('div', 'display'),
             ),
-            'block'
+            'block',
         );
     });
 
     it('returns an empty string for an undefined style', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.getStyle('div', 'visibility')
+            await exec((_) =>
+                $.getStyle('div', 'visibility'),
             ),
-            ''
+            '',
         );
     });
 
     it('returns undefined for empty nodes', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.getStyle('#invalid', 'display')
+            await exec((_) =>
+                $.getStyle('#invalid', 'display'),
             ),
-            undefined
+            undefined,
         );
     });
 
     it('works with HTMLElement nodes', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.getStyle(
+            await exec((_) =>
+                $.getStyle(
                     document.getElementById('test1'),
-                    'display'
-                )
+                    'display',
+                ),
             ),
-            'block'
+            'block',
         );
     });
 
     it('works with NodeList nodes', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.getStyle(
+            await exec((_) =>
+                $.getStyle(
                     document.querySelectorAll('div'),
-                    'display'
-                )
+                    'display',
+                ),
             ),
-            'block'
+            'block',
         );
     });
 
     it('works with HTMLCollection nodes', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.getStyle(
+            await exec((_) =>
+                $.getStyle(
                     document.body.children,
-                    'display'
-                )
+                    'display',
+                ),
             ),
-            'block'
+            'block',
         );
     });
 
     it('works with array nodes', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.getStyle([
+            await exec((_) =>
+                $.getStyle([
                     document.getElementById('test1'),
-                    document.getElementById('test2')
-                ], 'display')
+                    document.getElementById('test2'),
+                ], 'display'),
             ),
-            'block'
+            'block',
         );
     });
-
 });

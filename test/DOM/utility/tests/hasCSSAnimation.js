@@ -1,14 +1,13 @@
-const assert = require('assert');
-const { exec, setStyle } = require('../../../setup');
+import assert from 'node:assert/strict';
+import { exec, setStyle } from './../../../setup.js';
 
 describe('#hasCSSAnimation', function() {
-
     beforeEach(async function() {
         await setStyle(
             '.test { animation: spin 4s linear infinite; }' +
-            '@keyframes spin { 100% { transform: rotate(360deg); } }'
+            '@keyframes spin { 100% { transform: rotate(360deg); } }',
         );
-        await exec(_ => {
+        await exec((_) => {
             document.body.innerHTML =
                 '<div id="div1" class="test"></div>' +
                 '<div id="div2"></div>' +
@@ -19,67 +18,66 @@ describe('#hasCSSAnimation', function() {
 
     it('returns true if any node has a CSS animation', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.hasCSSAnimation('div')
+            await exec((_) =>
+                $.hasCSSAnimation('div'),
             ),
-            true
+            true,
         );
     });
 
     it('returns false if no nodes have a CSS animation', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.hasCSSAnimation('div:not(.test)')
+            await exec((_) =>
+                $.hasCSSAnimation('div:not(.test)'),
             ),
-            false
+            false,
         );
     });
 
     it('works with HTMLElement nodes', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.hasCSSAnimation(
-                    document.getElementById('div1')
-                )
+            await exec((_) =>
+                $.hasCSSAnimation(
+                    document.getElementById('div1'),
+                ),
             ),
-            true
+            true,
         );
     });
 
     it('works with NodeList nodes', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.hasCSSAnimation(
-                    document.querySelectorAll('div')
-                )
+            await exec((_) =>
+                $.hasCSSAnimation(
+                    document.querySelectorAll('div'),
+                ),
             ),
-            true
+            true,
         );
     });
 
     it('works with HTMLCollection nodes', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.hasCSSAnimation(
-                    document.body.children
-                )
+            await exec((_) =>
+                $.hasCSSAnimation(
+                    document.body.children,
+                ),
             ),
-            true
+            true,
         );
     });
 
     it('works with array nodes', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.hasCSSAnimation([
+            await exec((_) =>
+                $.hasCSSAnimation([
                     document.getElementById('div1'),
                     document.getElementById('div2'),
                     document.getElementById('div3'),
-                    document.getElementById('div4')
-                ])
+                    document.getElementById('div4'),
+                ]),
             ),
-            true
+            true,
         );
     });
-
 });

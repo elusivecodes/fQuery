@@ -1,10 +1,9 @@
-const assert = require('assert');
-const { exec } = require('../../../setup');
+import assert from 'node:assert/strict';
+import { exec } from './../../../setup.js';
 
 describe('#findById', function() {
-
     beforeEach(async function() {
-        await exec(_ => {
+        await exec((_) => {
             document.body.innerHTML =
                 '<div id="parent1">' +
                 '<div id="child1">' +
@@ -32,118 +31,118 @@ describe('#findById', function() {
 
     it('finds elements by ID', async function() {
         assert.deepStrictEqual(
-            await exec(_ =>
-                dom.findById('test')
-                    .map(node => node.dataset.id)
+            await exec((_) =>
+                $.findById('test')
+                    .map((node) => node.dataset.id),
             ),
             [
                 'span1',
                 'span3',
                 'span5',
-                'span7'
-            ]
+                'span7',
+            ],
         );
     });
 
     it('returns an empty array for non-matching id', async function() {
         assert.deepStrictEqual(
-            await exec(_ =>
-                dom.findById('invalid')
+            await exec((_) =>
+                $.findById('invalid'),
             ),
-            []
+            [],
         );
     });
 
     it('returns an empty array for empty nodes', async function() {
         assert.deepStrictEqual(
-            await exec(_ =>
-                dom.findById('test', '#invalid')
+            await exec((_) =>
+                $.findById('test', '#invalid'),
             ),
-            []
+            [],
         );
     });
 
     it('works with query selector nodes', async function() {
         assert.deepStrictEqual(
-            await exec(_ =>
-                dom.findById('test', '#parent1')
-                    .map(node => node.dataset.id)
+            await exec((_) =>
+                $.findById('test', '#parent1')
+                    .map((node) => node.dataset.id),
             ),
             [
                 'span1',
-                'span3'
-            ]
+                'span3',
+            ],
         );
     });
 
     it('works with HTMLElement nodes', async function() {
         assert.deepStrictEqual(
-            await exec(_ =>
-                dom.findById(
+            await exec((_) =>
+                $.findById(
                     'test',
-                    document.getElementById('parent1')
-                ).map(node => node.dataset.id)
+                    document.getElementById('parent1'),
+                ).map((node) => node.dataset.id),
             ),
             [
                 'span1',
-                'span3'
-            ]
+                'span3',
+            ],
         );
     });
 
     it('works with NodeList nodes', async function() {
         assert.deepStrictEqual(
-            await exec(_ =>
-                dom.findById(
+            await exec((_) =>
+                $.findById(
                     'test',
-                    document.querySelectorAll('#parent1')
-                ).map(node => node.dataset.id)
+                    document.querySelectorAll('#parent1'),
+                ).map((node) => node.dataset.id),
             ),
             [
                 'span1',
-                'span3'
-            ]
+                'span3',
+            ],
         );
     });
 
     it('works with HTMLCollection nodes', async function() {
         assert.deepStrictEqual(
-            await exec(_ =>
-                dom.findById(
+            await exec((_) =>
+                $.findById(
                     'test',
-                    document.getElementById('parent1').children
-                ).map(node => node.dataset.id)
+                    document.getElementById('parent1').children,
+                ).map((node) => node.dataset.id),
             ),
             [
                 'span1',
-                'span3'
-            ]
+                'span3',
+            ],
         );
     });
 
     it('works with DocumentFragment nodes', async function() {
         assert.deepStrictEqual(
-            await exec(_ => {
+            await exec((_) => {
                 const range = document.createRange();
                 const fragment = range.createContextualFragment(
                     '<div id="test" data-id="div1"></div>' +
                     '<div data-id="div2"></div>' +
                     '<div id="test" data-id="div3"></div>' +
-                    '<div data-id="div4"></div>'
+                    '<div data-id="div4"></div>',
                 );
-                return dom.findById('test', fragment)
-                    .map(node => node.dataset.id);
+                return $.findById('test', fragment)
+                    .map((node) => node.dataset.id);
             }),
             [
                 'div1',
-                'div3'
-            ]
+                'div3',
+            ],
         );
     });
 
     it('works with ShadowRoot nodes', async function() {
         assert.deepStrictEqual(
-            await exec(_ => {
+            await exec((_) => {
                 const div = document.createElement('div');
                 const shadow = div.attachShadow({ mode: 'open' });
                 const range = document.createRange();
@@ -151,22 +150,22 @@ describe('#findById', function() {
                     '<div id="test" data-id="div1"></div>' +
                     '<div data-id="div2"></div>' +
                     '<div id="test" data-id="div3"></div>' +
-                    '<div data-id="div4"></div>'
+                    '<div data-id="div4"></div>',
                 );
                 shadow.appendChild(fragment);
-                return dom.findById('test', shadow)
-                    .map(node => node.dataset.id);
+                return $.findById('test', shadow)
+                    .map((node) => node.dataset.id);
             }),
             [
                 'div1',
-                'div3'
-            ]
+                'div3',
+            ],
         );
     });
 
     it('works with Document nodes', async function() {
         assert.deepStrictEqual(
-            await exec(_ => {
+            await exec((_) => {
                 const parser = new DOMParser();
                 const myDoc = parser.parseFromString(
                     '<html>' +
@@ -179,31 +178,30 @@ describe('#findById', function() {
                     '<div data-id="div4"></div>' +
                     '</body>' +
                     '</html>',
-                    'text/html'
+                    'text/html',
                 );
-                return dom.findById('test', myDoc)
-                    .map(node => node.dataset.id);
+                return $.findById('test', myDoc)
+                    .map((node) => node.dataset.id);
             }),
             [
                 'div1',
-                'div3'
-            ]
+                'div3',
+            ],
         );
     });
 
     it('works with array nodes', async function() {
         assert.deepStrictEqual(
-            await exec(_ =>
-                dom.findById('test', [
+            await exec((_) =>
+                $.findById('test', [
                     document.getElementById('child1'),
-                    document.getElementById('child2')
-                ]).map(node => node.dataset.id)
+                    document.getElementById('child2'),
+                ]).map((node) => node.dataset.id),
             ),
             [
                 'span1',
-                'span3'
-            ]
+                'span3',
+            ],
         );
     });
-
 });

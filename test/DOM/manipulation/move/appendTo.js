@@ -1,11 +1,10 @@
-const assert = require('assert');
-const { exec } = require('../../../setup');
-const { easeInOut, testAnimation, testNoAnimation, waitFor } = require('../../../helpers');
+import assert from 'node:assert/strict';
+import { easeInOut, testAnimation, testNoAnimation, waitFor } from './../../../helpers.js';
+import { exec } from './../../../setup.js';
 
 describe('#appendTo', function() {
-
     beforeEach(async function() {
-        await exec(_ => {
+        await exec((_) => {
             document.body.innerHTML =
                 '<div id="parent1">' +
                 '<a href="#" class="test1">Test</a>' +
@@ -22,8 +21,8 @@ describe('#appendTo', function() {
 
     it('appends each node to each other node', async function() {
         assert.strictEqual(
-            await exec(_ => {
-                dom.appendTo('a', 'div');
+            await exec((_) => {
+                $.appendTo('a', 'div');
                 return document.body.innerHTML;
             }),
             '<div id="parent1">' +
@@ -39,33 +38,33 @@ describe('#appendTo', function() {
             '<a href="#" class="test2">Test</a>' +
             '<a href="#" class="test3">Test</a>' +
             '<a href="#" class="test4">Test</a>' +
-            '</div>'
+            '</div>',
         );
     });
 
     it('preserves events for nodes', async function() {
         assert.strictEqual(
-            await exec(_ => {
+            await exec((_) => {
                 let result = 0;
-                dom.addEvent('a', 'click', _ => {
+                $.addEvent('a', 'click', (_) => {
                     result++;
                 });
-                dom.appendTo('a', 'div');
-                dom.triggerEvent('a', 'click');
+                $.appendTo('a', 'div');
+                $.triggerEvent('a', 'click');
                 return result;
             }),
-            8
+            8,
         );
     });
 
     it('preserves data for nodes', async function() {
         assert.deepStrictEqual(
-            await exec(_ => {
-                dom.setData('a', 'test', 'Test');
-                dom.appendTo('a', 'div');
+            await exec((_) => {
+                $.setData('a', 'test', 'Test');
+                $.appendTo('a', 'div');
                 return [...document.querySelectorAll('a')]
-                    .map(node =>
-                        dom.getData(node, 'test')
+                    .map((node) =>
+                        $.getData(node, 'test'),
                     );
             }),
             [
@@ -76,23 +75,23 @@ describe('#appendTo', function() {
                 'Test',
                 'Test',
                 'Test',
-                'Test'
-            ]
+                'Test',
+            ],
         );
     });
 
     it('preserves animations for nodes', async function() {
-        await exec(_ => {
-            dom.animate(
+        await exec((_) => {
+            $.animate(
                 'a',
-                _ => { },
+                (_) => { },
                 {
                     duration: 100,
-                    debug: true
-                }
+                    debug: true,
+                },
             );
-            dom.appendTo('a', 'div');
-        }).then(waitFor(50)).then(async _ => {
+            $.appendTo('a', 'div');
+        }).then(waitFor(50)).then(async (_) => {
             await testAnimation('#parent1 > a:nth-of-type(1)', easeInOut, 100);
             await testAnimation('#parent1 > a:nth-of-type(2)', easeInOut, 100);
             await testAnimation('#parent1 > a:nth-of-type(3)', easeInOut, 100);
@@ -101,7 +100,7 @@ describe('#appendTo', function() {
             await testAnimation('#parent2 > a:nth-of-type(2)', easeInOut, 100);
             await testAnimation('#parent2 > a:nth-of-type(3)', easeInOut, 100);
             await testAnimation('#parent2 > a:nth-of-type(4)', easeInOut, 100);
-        }).then(waitFor(100)).then(async _ => {
+        }).then(waitFor(100)).then(async (_) => {
             await testNoAnimation('#parent1 > a:nth-of-type(1)');
             await testNoAnimation('#parent1 > a:nth-of-type(2)');
             await testNoAnimation('#parent1 > a:nth-of-type(3)');
@@ -115,22 +114,22 @@ describe('#appendTo', function() {
 
     it('does not clone for the last nodes', async function() {
         assert.strictEqual(
-            await exec(_ => {
+            await exec((_) => {
                 const nodes = [...document.querySelectorAll('a')];
-                dom.appendTo('a', 'div');
+                $.appendTo('a', 'div');
                 const newNodes = [...document.querySelectorAll('a')].slice(4);
                 return nodes.every((node, i) => node.isSameNode(newNodes[i]));
             }),
-            true
+            true,
         );
     });
 
     it('works with HTMLElement nodes', async function() {
         assert.strictEqual(
-            await exec(_ => {
-                dom.appendTo(
+            await exec((_) => {
+                $.appendTo(
                     document.querySelector('.test1'),
-                    'div'
+                    'div',
                 );
                 return document.body.innerHTML;
             }),
@@ -144,16 +143,16 @@ describe('#appendTo', function() {
             '<a href="#" class="test4">Test</a>' +
             '<span></span>' +
             '<a href="#" class="test1">Test</a>' +
-            '</div>'
+            '</div>',
         );
     });
 
     it('works with NodeList nodes', async function() {
         assert.strictEqual(
-            await exec(_ => {
-                dom.appendTo(
+            await exec((_) => {
+                $.appendTo(
                     document.querySelectorAll('a'),
-                    'div'
+                    'div',
                 );
                 return document.body.innerHTML;
             }),
@@ -170,16 +169,16 @@ describe('#appendTo', function() {
             '<a href="#" class="test2">Test</a>' +
             '<a href="#" class="test3">Test</a>' +
             '<a href="#" class="test4">Test</a>' +
-            '</div>'
+            '</div>',
         );
     });
 
     it('works with HTMLCollection nodes', async function() {
         assert.strictEqual(
-            await exec(_ => {
-                dom.appendTo(
+            await exec((_) => {
+                $.appendTo(
                     document.getElementById('parent1').children,
-                    'div'
+                    'div',
                 );
                 return document.body.innerHTML;
             }),
@@ -195,18 +194,18 @@ describe('#appendTo', function() {
             '<a href="#" class="test1">Test</a>' +
             '<a href="#" class="test2">Test</a>' +
             '<span></span>' +
-            '</div>'
+            '</div>',
         );
     });
 
     it('works with DocumentFragment nodes', async function() {
         assert.strictEqual(
-            await exec(_ => {
+            await exec((_) => {
                 const range = document.createRange();
                 const fragment = range.createContextualFragment(
-                    '<div><span></span></div>'
+                    '<div><span></span></div>',
                 );
-                dom.appendTo(fragment, 'div');
+                $.appendTo(fragment, 'div');
                 return document.body.innerHTML;
             }),
             '<div id="parent1">' +
@@ -220,18 +219,18 @@ describe('#appendTo', function() {
             '<a href="#" class="test4">Test</a>' +
             '<span></span>' +
             '<div><span></span></div>' +
-            '</div>'
+            '</div>',
         );
     });
 
     it('works with array nodes', async function() {
         assert.strictEqual(
-            await exec(_ => {
-                dom.appendTo([
+            await exec((_) => {
+                $.appendTo([
                     document.querySelector('.test1'),
                     document.querySelector('.test2'),
                     document.querySelector('.test3'),
-                    document.querySelector('.test4')
+                    document.querySelector('.test4'),
                 ], 'div');
                 return document.body.innerHTML;
             }),
@@ -248,14 +247,14 @@ describe('#appendTo', function() {
             '<a href="#" class="test2">Test</a>' +
             '<a href="#" class="test3">Test</a>' +
             '<a href="#" class="test4">Test</a>' +
-            '</div>'
+            '</div>',
         );
     });
 
     it('works with HTML nodes', async function() {
         assert.strictEqual(
-            await exec(_ => {
-                dom.append('div', '<div><span></span></div>');
+            await exec((_) => {
+                $.append('div', '<div><span></span></div>');
                 return document.body.innerHTML;
             }),
             '<div id="parent1">' +
@@ -269,16 +268,16 @@ describe('#appendTo', function() {
             '<a href="#" class="test4">Test</a>' +
             '<span></span>' +
             '<div><span></span></div>' +
-            '</div>'
+            '</div>',
         );
     });
 
     it('works with HTMLElement other nodes', async function() {
         assert.strictEqual(
-            await exec(_ => {
-                dom.appendTo(
+            await exec((_) => {
+                $.appendTo(
                     'a',
-                    document.getElementById('parent1')
+                    document.getElementById('parent1'),
                 );
                 return document.body.innerHTML;
             }),
@@ -291,16 +290,16 @@ describe('#appendTo', function() {
             '</div>' +
             '<div id="parent2">' +
             '<span></span>' +
-            '</div>'
+            '</div>',
         );
     });
 
     it('works with NodeList other nodes', async function() {
         assert.strictEqual(
-            await exec(_ => {
-                dom.appendTo(
+            await exec((_) => {
+                $.appendTo(
                     'a',
-                    document.querySelectorAll('div')
+                    document.querySelectorAll('div'),
                 );
                 return document.body.innerHTML;
             }),
@@ -317,16 +316,16 @@ describe('#appendTo', function() {
             '<a href="#" class="test2">Test</a>' +
             '<a href="#" class="test3">Test</a>' +
             '<a href="#" class="test4">Test</a>' +
-            '</div>'
+            '</div>',
         );
     });
 
     it('works with HTMLCollection other nodes', async function() {
         assert.strictEqual(
-            await exec(_ => {
-                dom.appendTo(
+            await exec((_) => {
+                $.appendTo(
                     'a',
-                    document.body.children
+                    document.body.children,
                 );
                 return document.body.innerHTML;
             }),
@@ -343,18 +342,18 @@ describe('#appendTo', function() {
             '<a href="#" class="test2">Test</a>' +
             '<a href="#" class="test3">Test</a>' +
             '<a href="#" class="test4">Test</a>' +
-            '</div>'
+            '</div>',
         );
     });
 
     it('works with DocumentFragment other nodes', async function() {
         assert.strictEqual(
-            await exec(_ => {
+            await exec((_) => {
                 const range = document.createRange();
                 const fragment = range.createContextualFragment(
-                    '<span></span>'
+                    '<span></span>',
                 );
-                dom.appendTo('a', fragment);
+                $.appendTo('a', fragment);
                 document.body.appendChild(fragment);
                 return document.body.innerHTML;
             }),
@@ -368,48 +367,48 @@ describe('#appendTo', function() {
             '<a href="#" class="test1">Test</a>' +
             '<a href="#" class="test2">Test</a>' +
             '<a href="#" class="test3">Test</a>' +
-            '<a href="#" class="test4">Test</a>'
+            '<a href="#" class="test4">Test</a>',
         );
     });
 
     it('works with ShadowRoot other nodes', async function() {
         assert.strictEqual(
-            await exec(_ => {
+            await exec((_) => {
                 const div = document.createElement('div');
                 const shadow = div.attachShadow({ mode: 'open' });
                 const span = document.createElement('span');
                 shadow.appendChild(span);
-                dom.appendTo('a', shadow);
+                $.appendTo('a', shadow);
                 return shadow.innerHTML;
             }),
             '<span></span>' +
             '<a href="#" class="test1">Test</a>' +
             '<a href="#" class="test2">Test</a>' +
             '<a href="#" class="test3">Test</a>' +
-            '<a href="#" class="test4">Test</a>'
+            '<a href="#" class="test4">Test</a>',
         );
     });
 
     it('works with Document other nodes', async function() {
         assert.strictEqual(
-            await exec(_ => {
+            await exec((_) => {
                 const myDoc = new Document();
-                dom.appendTo(
+                $.appendTo(
                     myDoc.createElement('html'),
-                    myDoc
+                    myDoc,
                 );
                 return myDoc.childNodes.length;
             }),
-            1
+            1,
         );
     });
 
     it('works with array other nodes', async function() {
         assert.strictEqual(
-            await exec(_ => {
-                dom.appendTo('a', [
+            await exec((_) => {
+                $.appendTo('a', [
                     document.getElementById('parent1'),
-                    document.getElementById('parent2')
+                    document.getElementById('parent2'),
                 ]);
                 return document.body.innerHTML;
             }),
@@ -426,8 +425,7 @@ describe('#appendTo', function() {
             '<a href="#" class="test2">Test</a>' +
             '<a href="#" class="test3">Test</a>' +
             '<a href="#" class="test4">Test</a>' +
-            '</div>'
+            '</div>',
         );
     });
-
 });

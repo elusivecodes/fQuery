@@ -1,10 +1,9 @@
-const assert = require('assert');
-const { exec } = require('../../../setup');
+import assert from 'node:assert/strict';
+import { exec } from './../../../setup.js';
 
 describe('#setValue', function() {
-
     beforeEach(async function() {
-        await exec(_ => {
+        await exec((_) => {
             document.body.innerHTML =
                 '<input type="text" id="test1">' +
                 '<input type="text" id="test2">' +
@@ -15,114 +14,113 @@ describe('#setValue', function() {
 
     it('sets the input value for all nodes', async function() {
         assert.deepStrictEqual(
-            await exec(_ => {
-                dom.setValue('input', 'Test');
+            await exec((_) => {
+                $.setValue('input', 'Test');
                 return [
                     document.getElementById('test1').value,
-                    document.getElementById('test2').value
-                ]
+                    document.getElementById('test2').value,
+                ];
             }),
             [
                 'Test',
-                'Test'
-            ]
+                'Test',
+            ],
         );
     });
 
     it('works with textarea input nodes', async function() {
         assert.strictEqual(
-            await exec(_ => {
-                dom.setValue('textarea', 'Test');
+            await exec((_) => {
+                $.setValue('textarea', 'Test');
                 return document.getElementById('test3').value;
             }),
-            'Test'
+            'Test',
         );
     });
 
     it('works with select input nodes', async function() {
         assert.strictEqual(
-            await exec(_ => {
-                dom.setValue('select', 2);
+            await exec((_) => {
+                $.setValue('select', 2);
                 return document.getElementById('test4').value;
             }),
-            '2'
+            '2',
         );
     });
 
     it('works with HTMLElement nodes', async function() {
         assert.deepStrictEqual(
-            await exec(_ => {
+            await exec((_) => {
                 const element = document.getElementById('test1');
-                dom.setValue(element, 'Test');
+                $.setValue(element, 'Test');
                 return [
                     element.value,
-                    document.getElementById('test2').value
-                ]
+                    document.getElementById('test2').value,
+                ];
             }),
             [
                 'Test',
-                ''
-            ]
+                '',
+            ],
         );
     });
 
     it('works with NodeList nodes', async function() {
         assert.deepStrictEqual(
-            await exec(_ => {
-                dom.setValue(
+            await exec((_) => {
+                $.setValue(
                     document.querySelectorAll('input'),
-                    'Test'
+                    'Test',
                 );
                 return [
                     document.getElementById('test1').value,
-                    document.getElementById('test2').value
-                ]
+                    document.getElementById('test2').value,
+                ];
             }),
             [
                 'Test',
-                'Test'
-            ]
+                'Test',
+            ],
         );
     });
 
     it('works with HTMLCollection nodes', async function() {
         assert.deepStrictEqual(
-            await exec(_ => {
-                dom.setValue(
+            await exec((_) => {
+                $.setValue(
                     document.body.children,
-                    'Test'
+                    'Test',
                 );
                 return [
                     document.getElementById('test1').value,
-                    document.getElementById('test2').value
-                ]
+                    document.getElementById('test2').value,
+                ];
             }),
             [
                 'Test',
-                'Test'
-            ]
+                'Test',
+            ],
         );
     });
 
     it('works with array nodes', async function() {
         assert.deepStrictEqual(
-            await exec(_ => {
+            await exec((_) => {
                 const element1 = document.getElementById('test1');
                 const element2 = document.getElementById('test2');
-                dom.setValue([
+                $.setValue([
                     element1,
-                    element2
+                    element2,
                 ], 'Test');
                 return [
                     element1.value,
-                    element2.value
-                ]
+                    element2.value,
+                ];
             }),
             [
                 'Test',
-                'Test'
-            ]
+                'Test',
+            ],
         );
     });
-
 });

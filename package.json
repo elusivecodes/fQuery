@@ -1,7 +1,7 @@
 {
-    "name": "frostdom",
-    "version": "2.1.3",
-    "description": "FrostDOM is a free, open-source DOM manipulation library for JavaScript.",
+    "name": "@fr0st/query",
+    "version": "3.0.0",
+    "description": "fQuery is a free, open-source DOM manipulation library for JavaScript.",
     "keywords": [
         "dom",
         "document",
@@ -9,40 +9,43 @@
         "ajax",
         "cookie"
     ],
-    "homepage": "https://github.com/elusivecodes/FrostDOM",
+    "homepage": "https://github.com/elusivecodes/fQuery",
     "bugs": {
-        "url": "https://github.com/elusivecodes/FrostDOM/issues",
+        "url": "https://github.com/elusivecodes/fQuery/issues",
         "email": "elusivecodes@gmail.com"
     },
-    "main": "./dist/frost-dom-bundle.js",
+    "main": "src/index.js",
+    "type": "module",
     "files": [
-        "/dist/frost-dom.js",
-        "/dist/frost-dom-bundle.js",
+        "dist",
         "/LICENSE",
-        "/README.md"
+        "/README.md",
+        "src"
     ],
     "scripts": {
-        "build": "node build.js",
-        "test": "npm run test-dom && npm run test-query && npm run test-query-immutable",
-        "test-dom": "mocha test/DOM --recursive",
-        "test-query": "mocha test/QuerySet --recursive",
-        "test-query-immutable": "mocha test/QuerySetImmutable --recursive"
+        "build": "npm run js-compile && npm run js-minify",
+        "js-compile": "rollup --config",
+        "js-lint": "eslint --ext .js .",
+        "js-minify": "terser --compress passes=2 --mangle --source-map \"content=dist/fquery.js.map\" --output dist/fquery.min.js dist/fquery.js",
+        "test": "mocha test --recursive"
     },
     "repository": {
         "type": "git",
-        "url": "https://github.com/elusivecodes/FrostDOM.git"
+        "url": "https://github.com/elusivecodes/fQuery.git"
     },
     "author": "Elusive",
     "license": "MIT",
     "private": false,
     "devDependencies": {
-        "filepath": "^1.1.0",
-        "minimist": "^1.2.5",
-        "mocha": "^9.0.0",
-        "puppeteer": "^10.0.0",
-        "terser": "^5.7.0"
+        "@rollup/plugin-node-resolve": "^15.0.1",
+        "eslint": "^8.31.0",
+        "eslint-config-google": "^0.14.0",
+        "mocha": "^10.2.0",
+        "puppeteer": "^19.4.1",
+        "rollup": "^3.9.1",
+        "terser": "^5.16.1"
     },
     "dependencies": {
-        "frostcore": "^1.0.13"
+        "@fr0st/core": "^2.0.1"
     }
 }

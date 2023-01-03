@@ -1,10 +1,9 @@
-const assert = require('assert');
-const { exec } = require('../../../setup');
+import assert from 'node:assert/strict';
+import { exec } from './../../../setup.js';
 
 describe('#find', function() {
-
     beforeEach(async function() {
-        await exec(_ => {
+        await exec((_) => {
             document.body.innerHTML =
                 '<div id="parent1">' +
                 '<div id="child1">' +
@@ -99,36 +98,36 @@ describe('#find', function() {
 
     it('finds elements by query selector', async function() {
         assert.deepStrictEqual(
-            await exec(_ =>
-                dom.find('#parent1 > #child1 > span, #parent1 > #child2 > span')
-                    .map(node => node.id)
+            await exec((_) =>
+                $.find('#parent1 > #child1 > span, #parent1 > #child2 > span')
+                    .map((node) => node.id),
             ),
             [
                 'span1',
                 'span2',
                 'span3',
-                'span4'
-            ]
+                'span4',
+            ],
         );
     });
 
     it('finds elements by ID', async function() {
         assert.deepStrictEqual(
-            await exec(_ =>
-                dom.find('#parent1')
-                    .map(node => node.id)
+            await exec((_) =>
+                $.find('#parent1')
+                    .map((node) => node.id),
             ),
             [
-                'parent1'
-            ]
+                'parent1',
+            ],
         );
     });
 
     it('finds elements by class name', async function() {
         assert.deepStrictEqual(
-            await exec(_ =>
-                dom.find('.span1')
-                    .map(node => node.id)
+            await exec((_) =>
+                $.find('.span1')
+                    .map((node) => node.id),
             ),
             [
                 'span1',
@@ -136,16 +135,16 @@ describe('#find', function() {
                 'span3',
                 'span4',
                 'span5',
-                'span6'
-            ]
+                'span6',
+            ],
         );
     });
 
     it('finds elements by tag name', async function() {
         assert.deepStrictEqual(
-            await exec(_ =>
-                dom.find('span')
-                    .map(node => node.id)
+            await exec((_) =>
+                $.find('span')
+                    .map((node) => node.id),
             ),
             [
                 'span1',
@@ -159,64 +158,64 @@ describe('#find', function() {
                 'span9',
                 'span10',
                 'span11',
-                'span12'
-            ]
+                'span12',
+            ],
         );
     });
 
     it('returns an empty array for non-matching selector', async function() {
         assert.deepStrictEqual(
-            await exec(_ =>
-                dom.find('#invalid')
+            await exec((_) =>
+                $.find('#invalid'),
             ),
-            []
+            [],
         );
     });
 
     it('returns an empty array for empty nodes', async function() {
         assert.deepStrictEqual(
-            await exec(_ =>
-                dom.find('span', '#invalid')
+            await exec((_) =>
+                $.find('span', '#invalid'),
             ),
-            []
+            [],
         );
     });
 
     it('works with query selector nodes', async function() {
         assert.deepStrictEqual(
-            await exec(_ =>
-                dom.find('span', '#parent1 > #child1')
-                    .map(node => node.id)
+            await exec((_) =>
+                $.find('span', '#parent1 > #child1')
+                    .map((node) => node.id),
             ),
             [
                 'span1',
-                'span2'
-            ]
+                'span2',
+            ],
         );
     });
 
     it('works with HTMLElement nodes', async function() {
         assert.deepStrictEqual(
-            await exec(_ =>
-                dom.find(
+            await exec((_) =>
+                $.find(
                     'span',
-                    document.getElementById('child1')
-                ).map(node => node.id)
+                    document.getElementById('child1'),
+                ).map((node) => node.id),
             ),
             [
                 'span1',
-                'span2'
-            ]
+                'span2',
+            ],
         );
     });
 
     it('works with NodeList nodes', async function() {
         assert.deepStrictEqual(
-            await exec(_ =>
-                dom.find(
+            await exec((_) =>
+                $.find(
                     'span',
-                    document.querySelectorAll('#parent1 > div')
-                ).map(node => node.id)
+                    document.querySelectorAll('#parent1 > div'),
+                ).map((node) => node.id),
             ),
             [
                 'span1',
@@ -224,18 +223,18 @@ describe('#find', function() {
                 'span3',
                 'span4',
                 'span5',
-                'span6'
-            ]
+                'span6',
+            ],
         );
     });
 
     it('works with HTMLCollection nodes', async function() {
         assert.deepStrictEqual(
-            await exec(_ =>
-                dom.find(
+            await exec((_) =>
+                $.find(
                     'span',
-                    document.getElementById('parent1').children
-                ).map(node => node.id)
+                    document.getElementById('parent1').children,
+                ).map((node) => node.id),
             ),
             [
                 'span1',
@@ -243,53 +242,53 @@ describe('#find', function() {
                 'span3',
                 'span4',
                 'span5',
-                'span6'
-            ]
+                'span6',
+            ],
         );
     });
 
     it('works with DocumentFragment nodes', async function() {
         assert.deepStrictEqual(
-            await exec(_ => {
+            await exec((_) => {
                 const range = document.createRange();
                 const fragment = range.createContextualFragment(
                     '<div id="div1"></div>' +
-                    '<div id="div2"></div>'
+                    '<div id="div2"></div>',
                 );
-                return dom.find('div', fragment)
-                    .map(node => node.id);
+                return $.find('div', fragment)
+                    .map((node) => node.id);
             }),
             [
                 'div1',
-                'div2'
-            ]
+                'div2',
+            ],
         );
     });
 
     it('works with ShadowRoot nodes', async function() {
         assert.deepStrictEqual(
-            await exec(_ => {
+            await exec((_) => {
                 const div = document.createElement('div');
                 const shadow = div.attachShadow({ mode: 'open' });
                 const range = document.createRange();
                 const fragment = range.createContextualFragment(
                     '<div id="div1"></div>' +
-                    '<div id="div2"></div>'
+                    '<div id="div2"></div>',
                 );
                 shadow.appendChild(fragment);
-                return dom.find('div', shadow)
-                    .map(node => node.id);
+                return $.find('div', shadow)
+                    .map((node) => node.id);
             }),
             [
                 'div1',
-                'div2'
-            ]
+                'div2',
+            ],
         );
     });
 
     it('works with Document nodes', async function() {
         assert.deepStrictEqual(
-            await exec(_ => {
+            await exec((_) => {
                 const parser = new DOMParser();
                 const myDoc = parser.parseFromString(
                     '<html>' +
@@ -300,26 +299,26 @@ describe('#find', function() {
                     '<div id="div2"></div>' +
                     '</body>' +
                     '</html>',
-                    'text/html'
+                    'text/html',
                 );
-                return dom.find('div', myDoc)
-                    .map(node => node.id);
+                return $.find('div', myDoc)
+                    .map((node) => node.id);
             }),
             [
                 'div1',
-                'div2'
-            ]
+                'div2',
+            ],
         );
     });
 
     it('works with array nodes', async function() {
         assert.deepStrictEqual(
-            await exec(_ =>
-                dom.find('span', [
+            await exec((_) =>
+                $.find('span', [
                     document.getElementById('child1'),
                     document.getElementById('child2'),
-                    document.getElementById('child3')
-                ]).map(node => node.id)
+                    document.getElementById('child3'),
+                ]).map((node) => node.id),
             ),
             [
                 'span1',
@@ -327,9 +326,8 @@ describe('#find', function() {
                 'span3',
                 'span4',
                 'span5',
-                'span6'
-            ]
+                'span6',
+            ],
         );
     });
-
 });

@@ -1,10 +1,9 @@
-const assert = require('assert');
-const { exec } = require('../../../setup');
+import assert from 'node:assert/strict';
+import { exec } from './../../../setup.js';
 
 describe('#hasFragment', function() {
-
     beforeEach(async function() {
-        await exec(_ => {
+        await exec((_) => {
             document.body.innerHTML =
                 '<template id="template1">' +
                 'Test 1' +
@@ -19,67 +18,66 @@ describe('#hasFragment', function() {
 
     it('returns true if any node has a document fragment', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.hasFragment('template')
+            await exec((_) =>
+                $.hasFragment('template'),
             ),
-            true
+            true,
         );
     });
 
     it('returns false if no nodes have a document fragment', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.hasFragment('div')
+            await exec((_) =>
+                $.hasFragment('div'),
             ),
-            false
+            false,
         );
     });
 
     it('works with HTMLElement nodes', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.hasFragment(
-                    document.getElementById('template1')
-                )
+            await exec((_) =>
+                $.hasFragment(
+                    document.getElementById('template1'),
+                ),
             ),
-            true
+            true,
         );
     });
 
     it('works with NodeList nodes', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.hasFragment(
-                    document.querySelectorAll('template')
-                )
+            await exec((_) =>
+                $.hasFragment(
+                    document.querySelectorAll('template'),
+                ),
             ),
-            true
+            true,
         );
     });
 
     it('works with HTMLCollection nodes', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.hasFragment(
-                    document.body.children
-                )
+            await exec((_) =>
+                $.hasFragment(
+                    document.body.children,
+                ),
             ),
-            true
+            true,
         );
     });
 
     it('works with array nodes', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.hasFragment([
+            await exec((_) =>
+                $.hasFragment([
                     document.getElementById('template1'),
                     document.getElementById('template2'),
                     document.getElementById('div1'),
-                    document.getElementById('div2')
-                ])
+                    document.getElementById('div2'),
+                ]),
             ),
-            true
+            true,
         );
     });
-
 });

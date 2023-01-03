@@ -1,10 +1,9 @@
-const assert = require('assert');
-const { exec } = require('../../../setup');
+import assert from 'node:assert/strict';
+import { exec } from './../../../setup.js';
 
 describe('#fragment', function() {
-
     beforeEach(async function() {
-        await exec(_ => {
+        await exec((_) => {
             document.body.innerHTML =
                 '<template id="template1">' +
                 '</template>' +
@@ -16,79 +15,78 @@ describe('#fragment', function() {
 
     it('returns the document fragment of the first node', async function() {
         assert.strictEqual(
-            await exec(_ => {
-                const fragment = dom.fragment('template');
+            await exec((_) => {
+                const fragment = $.fragment('template');
                 return fragment instanceof DocumentFragment;
             }),
-            true
+            true,
         );
     });
 
     it('returns undefined for nodes without a fragment', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.fragment('#div1')
+            await exec((_) =>
+                $.fragment('#div1'),
             ),
-            undefined
+            undefined,
         );
     });
 
     it('returns undefined for empty nodes', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.fragment('#invalid')
+            await exec((_) =>
+                $.fragment('#invalid'),
             ),
-            undefined
+            undefined,
         );
     });
 
     it('works with HTMLElement nodes', async function() {
         assert.strictEqual(
-            await exec(_ => {
-                const fragment = dom.fragment(
-                    document.getElementById('template1')
+            await exec((_) => {
+                const fragment = $.fragment(
+                    document.getElementById('template1'),
                 );
                 return fragment instanceof DocumentFragment;
             }),
-            true
+            true,
         );
     });
 
     it('works with NodeList nodes', async function() {
         assert.strictEqual(
-            await exec(_ => {
-                const fragment = dom.fragment(
-                    document.querySelectorAll('template')
+            await exec((_) => {
+                const fragment = $.fragment(
+                    document.querySelectorAll('template'),
                 );
                 return fragment instanceof DocumentFragment;
             }),
-            true
+            true,
         );
     });
 
     it('works with HTMLCollection nodes', async function() {
         assert.strictEqual(
-            await exec(_ => {
-                const fragment = dom.fragment(
-                    document.body.children
+            await exec((_) => {
+                const fragment = $.fragment(
+                    document.body.children,
                 );
                 return fragment instanceof DocumentFragment;
             }),
-            true
+            true,
         );
     });
 
     it('works with array nodes', async function() {
         assert.strictEqual(
-            await exec(_ => {
-                const fragment = dom.fragment([
+            await exec((_) => {
+                const fragment = $.fragment([
                     document.getElementById('template1'),
-                    document.getElementById('template2')
+                    document.getElementById('template2'),
                 ]);
                 return fragment instanceof DocumentFragment;
             }),
-            true
+            true,
         );
     });
-
 });

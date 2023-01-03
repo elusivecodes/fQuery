@@ -1,6 +1,6 @@
 # QuerySet
 
-The *QuerySet* class provides a jQuery-like wrapper for manipulating DOM elements.
+The *QuerySet* class provides an immutable jQuery-like wrapper for manipulating DOM elements.
 
 
 ## Table Of Contents
@@ -32,18 +32,9 @@ The *QuerySet* class provides a jQuery-like wrapper for manipulating DOM element
 ## Usage
 
 - `nodes` is an array of nodes.
-- `context` is the *DOM* context and will default to the global `dom`.
 
 ```javascript
-const query = new QuerySet(nodes, context);
-```
-
-**Immutable QuerySet**
-
-Alternatively, an immutable version of the *QuerySet* is also available.
-
-```javascript
-const query = new QuerySetImmutable(nodes, context);
+const query = new $.QuerySet(nodes);
 ```
 
 
@@ -55,6 +46,7 @@ Add an animation to the default queue for each node.
 
 - `callback` is a function that accepts `node`, `progress` and `options` as arguments, where `node` is a *HTMLElement*, `progress` is a value between *0* and *1* and `options` is the `options` object passed to this method.
 - `options` is an object containing properties to define how the animation should be handled.
+    - `queueName` is a string indicating the name of the queue to use, and will default to "*default*".
     - `duration` is the number of milliseconds that the animation should last, and will default to *1000*.
     - `type` is a string of either *ease-in*, *ease-out*, *ease-in-out* or *linear* indicating the type of animation to run, and will default to *ease-in-out*.
     - `infinite` is a boolean indicating whether the animation should continue forever, and will default to *false*.
@@ -67,10 +59,11 @@ query.animate(callback, options);
 
 Stop all animations and clear the queue of each node.
 
-- `finish` is a boolean indicating whether to immediately finish the animation, and will default to *true*.
+- `options` is an object containing properties to define how the animations should be stopped.
+    - `finish` is a boolean indicating whether to immediately finish the animation, and will default to *true*.
 
 ```javascript
-query.stop(finish);
+query.stop(options);
 ```
 
 ### Animations
@@ -80,6 +73,7 @@ query.stop(finish);
 Add a drop in animation to the default queue for each node.
 
 - `options` is an object containing properties to define how the animation should be handled.
+    - `queueName` is a string indicating the name of the queue to use, and will default to "*default*".
     - `direction` is a string or function that returns either "*top*", "*right*", "*bottom*" or "*left*" indicating the direction to drop from, and will default to "*top*".
     - `duration` is the number of milliseconds that the animation should last, and will default to *1000*.
     - `type` is a string of either "*ease-in*", "*ease-out*", "*ease-in-out*" or "*linear*" indicating the type of animation to run, and will default to "*ease-in-out*".
@@ -95,6 +89,7 @@ query.dropIn(options);
 Add a drop out animation to the default queue for each node.
 
 - `options` is an object containing properties to define how the animation should be handled.
+    - `queueName` is a string indicating the name of the queue to use, and will default to "*default*".
     - `direction` is a string or function that returns either "*top*", "*right*", "*bottom*" or "*left*" indicating the direction to drop from, and will default to "*top*".
     - `duration` is the number of milliseconds that the animation should last, and will default to *1000*.
     - `type` is a string of either "*ease-in*", "*ease-out*", "*ease-in-out*" or "*linear*" indicating the type of animation to run, and will default to "*ease-in-out*".
@@ -110,6 +105,7 @@ query.dropOut(options);
 Add a fade in animation to the default queue for each node.
 
 - `options` is an object containing properties to define how the animation should be handled.
+    - `queueName` is a string indicating the name of the queue to use, and will default to "*default*".
     - `duration` is the number of milliseconds that the animation should last, and will default to *1000*.
     - `type` is a string of either "*ease-in*", "*ease-out*", "*ease-in-out*" or "*linear*" indicating the type of animation to run, and will default to "*ease-in-out*".
     - `infinite` is a boolean indicating whether the animation should continue forever, and will default to *false*.
@@ -123,6 +119,7 @@ query.fadeIn(options);
 Add a fade out animation to the default queue for each node.
 
 - `options` is an object containing properties to define how the animation should be handled.
+    - `queueName` is a string indicating the name of the queue to use, and will default to "*default*".
     - `duration` is the number of milliseconds that the animation should last, and will default to *1000*.
     - `type` is a string of either "*ease-in*", "*ease-out*", "*ease-in-out*" or "*linear*" indicating the type of animation to run, and will default to "*ease-in-out*".
     - `infinite` is a boolean indicating whether the animation should continue forever, and will default to *false*.
@@ -136,6 +133,7 @@ query.fadeOut(options);
 Add a rotate in animation to the default queue for each node.
 
 - `options` is an object containing properties to define how the animation should be handled.
+    - `queueName` is a string indicating the name of the queue to use, and will default to "*default*".
     - `x` is the amount of rotation to apply to the X axis, and will default to *0*.
     - `y` is the amount of rotation to apply to the Y axis, and will default to *1*.
     - `z` is the amount of rotation to apply to the Z axis, and will default to *0*.
@@ -153,6 +151,7 @@ query.rotateIn(options);
 Add a rotate out animation to the default queue for each node.
 
 - `options` is an object containing properties to define how the animation should be handled.
+    - `queueName` is a string indicating the name of the queue to use, and will default to "*default*".
     - `x` is the amount of rotation to apply to the X axis, and will default to *0*.
     - `y` is the amount of rotation to apply to the Y axis, and will default to *1*.
     - `z` is the amount of rotation to apply to the Z axis, and will default to *0*.
@@ -170,6 +169,7 @@ query.rotateOut(options);
 Add a slide in animation to the default queue for each node.
 
 - `options` is an object containing properties to define how the animation should be handled.
+    - `queueName` is a string indicating the name of the queue to use, and will default to "*default*".
     - `direction` is a string or function that returns either "*top*", "*right*", "*bottom*" or "*left*" indicating the direction to drop from, and will default to "*top*".
     - `duration` is the number of milliseconds that the animation should last, and will default to *1000*.
     - `type` is a string of either "*ease-in*", "*ease-out*", "*ease-in-out*" or "*linear*" indicating the type of animation to run, and will default to "*ease-in-out*".
@@ -185,6 +185,7 @@ query.slideIn(options);
 Add a slide out animation to the default queue for each node.
 
 - `options` is an object containing properties to define how the animation should be handled.
+    - `queueName` is a string indicating the name of the queue to use, and will default to "*default*".
     - `direction` is a string or function that returns either "*top*", "*right*", "*bottom*" or "*left*" indicating the direction to drop from, and will default to "*top*".
     - `duration` is the number of milliseconds that the animation should last, and will default to *1000*.
     - `type` is a string of either "*ease-in*", "*ease-out*", "*ease-in-out*" or "*linear*" indicating the type of animation to run, and will default to "*ease-in-out*".
@@ -200,6 +201,7 @@ query.slideOut(options);
 Add a squeeze in animation to the default queue for each node.
 
 - `options` is an object containing properties to define how the animation should be handled.
+    - `queueName` is a string indicating the name of the queue to use, and will default to "*default*".
     - `direction` is a string or function that returns either "*top*", "*right*", "*bottom*" or "*left*" indicating the direction to drop from, and will default to "*top*".
     - `duration` is the number of milliseconds that the animation should last, and will default to *1000*.
     - `type` is a string of either "*ease-in*", "*ease-out*", "*ease-in-out*" or "*linear*" indicating the type of animation to run, and will default to "*ease-in-out*".
@@ -215,6 +217,7 @@ query.squeezeIn(options);
 Add a squeeze out animation to the default queue for each node.
 
 - `options` is an object containing properties to define how the animation should be handled.
+    - `queueName` is a string indicating the name of the queue to use, and will default to "*default*".
     - `direction` is a string or function that returns either "*top*", "*right*", "*bottom*" or "*left*" indicating the direction to drop from, and will default to "*top*".
     - `duration` is the number of milliseconds that the animation should last, and will default to *1000*.
     - `type` is a string of either "*ease-in*", "*ease-out*", "*ease-in-out*" or "*linear*" indicating the type of animation to run, and will default to "*ease-in-out*".
@@ -231,10 +234,11 @@ query.squeezeOut(options);
 
 Clear a queue of each node.
 
-- `queueName` is a string indicating the name of the queue to clear, and will default to "*default*".
+- `options` is an object containing properties to define how the queue should be cleared.
+    - `queueName` is a string indicating the name of the queue to clear, and will default to "*null*".
 
 ```javascript
-query.clearQueue(queueName);
+query.clearQueue(options);
 ```
 
 **Delay**
@@ -242,10 +246,11 @@ query.clearQueue(queueName);
 Delay execution of subsequent items in the queue.
 
 - `duration` is the number of milliseconds to delay execution by.
-- `queueName` is a string indicating the name of the queue to use, and will default to "*default*".
+- `options` is an object containing properties to define how the queue should be added.
+    - `queueName` is a string indicating the name of the queue to use, and will default to "*default*".
 
 ```javascript
-query.delay(duration, queueName);
+query.delay(duration, options);
 ```
 
 **Queue**
@@ -253,10 +258,11 @@ query.delay(duration, queueName);
 Queue a callback on each node.
 
 - `callback` is a function that accepts `node` as an argument, where node is a *HTMLElement*. The callback can return a *Promise* which will pause the queue until the promise is resolved.
-- `queueName` is a string indicating the name of the queue to use, and will default to "*default*".
+- `options` is an object containing properties to define how the queue should be added.
+    - `queueName` is a string indicating the name of the queue to use, and will default to "*default*".
 
 ```javascript
-query.queue(callback, queueName);
+query.queue(callback, options);
 ```
 
 If an item in the queue returns a *Promise* that rejects, the queue will be cleared.
@@ -451,10 +457,10 @@ query.setValue(value);
 
 Clone custom data from each node to each other node.
 
-- `others` is a query selector string, a *HTMLElement*, *DocumentFragment*, *ShadowRoot*, *Document*, *Window*, *NodeList*, *HTMLCollection*, *QuerySet* or an array of nodes.
+- `otherSelector` is a query selector string, a *HTMLElement*, *DocumentFragment*, *ShadowRoot*, *Document*, *Window*, *NodeList*, *HTMLCollection*, *QuerySet* or an array of nodes.
 
 ```javascript
-query.cloneData(others);
+query.cloneData(otherSelector);
 ```
 
 **Get Data**
@@ -506,20 +512,21 @@ query.setData(data);
 
 Get the X,Y co-ordinates for the center of the first node.
 
-- `offset` is a boolean indicating whether the co-ordinates should be offset from the top left of the document, and will default to *false*.
+- `options` is an object containing properties to define how the position should be calculated.
+    - `offset` is a boolean indicating whether the co-ordinates should be offset from the top left of the document, and will default to *false*.
 
 ```javascript
-const center = query.center(offset);
+const center = query.center(options);
 ```
 
 **Constrain**
 
 Constrain each node to a container node.
 
-- `container` is a query selector string, a *HTMLElement*, *NodeList*, *HTMLCollection*, *QuerySet* or an array of nodes.
+- `containerSelector` is a query selector string, a *HTMLElement*, *NodeList*, *HTMLCollection*, *QuerySet* or an array of nodes.
 
 ```javascript
-query.constrain(container);
+query.constrain(containerSelector);
 ```
 
 **Distance To**
@@ -528,20 +535,21 @@ Get the distance of the first node to an X,Y position.
 
 - `x` is a distance (in pixels) along the X axis.
 - `y` is a distance (in pixels) along the Y axis.
-- `offset` is a boolean indicating whether the co-ordinates should be offset from the top left of the document, and will default to *false*.
+- `options` is an object containing properties to define how the distance should be calculated.
+    - `offset` is a boolean indicating whether the co-ordinates should be offset from the top left of the document, and will default to *false*.
 
 ```javascript
-const dist = query.distTo(x, y, offset);
+const dist = query.distTo(x, y, options);
 ```
 
 **Distance To Node**
 
 Get the distance between two nodes.
 
-- `others` is a query selector string, a *HTMLElement*, *NodeList*, *HTMLCollection*, *QuerySet* or an array of nodes.
+- `otherSelector` is a query selector string, a *HTMLElement*, *NodeList*, *HTMLCollection*, *QuerySet* or an array of nodes.
 
 ```javascript
-const dist = query.distToNode(others);
+const dist = query.distToNode(otherSelector);
 ```
 
 **Nearest To**
@@ -550,36 +558,38 @@ Get the nearest node to an X,Y position.
 
 - `x` is a distance (in pixels) along the X axis.
 - `y` is a distance (in pixels) along the Y axis.
-- `offset` is a boolean indicating whether the co-ordinates should be offset from the top left of the document, and will default to *false*.
+- `options` is an object containing properties to define how the distance should be calculated.
+    - `offset` is a boolean indicating whether the co-ordinates should be offset from the top left of the document, and will default to *false*.
 
 ```javascript
-const nearest = query.nearestTo(x, y, offset);
+const nearest = query.nearestTo(x, y, options);
 ```
 
-This method always returns a new *QuerySet* containing the nearest node.
+This method returns a new *QuerySet* containing the nearest node.
 
 **Nearest To Node**
 
 Get the nearest node to another node.
 
-- `others` is a query selector string, a *HTMLElement*, *NodeList*, *HTMLCollection*, *QuerySet* or an array of nodes.
+- `otherSelector` is a query selector string, a *HTMLElement*, *NodeList*, *HTMLCollection*, *QuerySet* or an array of nodes.
 
 ```javascript
-const nearest = query.nearestToNode(others);
+const nearest = query.nearestToNode(otherSelector);
 ```
 
-This method always returns a new *QuerySet* containing the nearest node.
+This method returns a new *QuerySet* containing the nearest node.
 
 **Percent X**
 
 Get the percentage of an X co-ordinate relative to the first node.
 
 - `x` is a distance (in pixels) along the X axis.
-- `offset` is a boolean indicating whether the co-ordinates should be offset from the top left of the document, and will default to *false*.
-- `clamp` is a boolean indicating whether to clamp the percent betwen *0* and *100*, and will default to *true*.
+- `options` is an object containing properties to define how the percent should be calculated.
+    - `offset` is a boolean indicating whether the co-ordinates should be offset from the top left of the document, and will default to *false*.
+    - `clamp` is a boolean indicating whether to clamp the percent betwen *0* and *100*, and will default to *true*.
 
 ```javascript
-const percentX = query.percentX(x, offset, clamp);
+const percentX = query.percentX(x, options);
 ```
 
 **Percent Y**
@@ -587,31 +597,34 @@ const percentX = query.percentX(x, offset, clamp);
 Get the percentage of a Y co-ordinate relative to the first node.
 
 - `y` is a distance (in pixels) along the Y axis.
-- `offset` is a boolean indicating whether the co-ordinates should be offset from the top left of the document, and will default to *false*.
-- `clamp` is a boolean indicating whether to clamp the percent betwen *0* and *100*, and will default to *true*.
+- `options` is an object containing properties to define how the percent should be calculated.
+    - `offset` is a boolean indicating whether the co-ordinates should be offset from the top left of the document, and will default to *false*.
+    - `clamp` is a boolean indicating whether to clamp the percent betwen *0* and *100*, and will default to *true*.
 
 ```javascript
-const percentY = query.percentY(y, offset, clamp);
+const percentY = query.percentY(y, options);
 ```
 
 **Position**
 
 Get the X,Y position for the top/left of the first node.
 
-- `offset` is a boolean indicating whether the co-ordinates should be offset from the top left of the document, and will default to *false*.
+- `options` is an object containing properties to define how the position should be calculated.
+    - `offset` is a boolean indicating whether the co-ordinates should be offset from the top left of the document, and will default to *false*.
 
 ```javascript
-const position = query.position(offset);
+const position = query.position(options);
 ```
 
 **Rectangle**
 
 Get the computed bounding rectangle of the first node.
 
-- `offset` is a boolean indicating whether the rectangle should be offset from the top left of the document, and will default to *false*.
+- `options` is an object containing properties to define how the bounding rectangle should be calculated.
+    - `offset` is a boolean indicating whether the rectangle should be offset from the top left of the document, and will default to *false*.
 
 ```javascript
-const rect = query.rect(offset);
+const rect = query.rect(options);
 ```
 
 #### Scroll
@@ -669,39 +682,39 @@ query.setScrollY(y);
 
 Get the computed height of the first node.
 
-- `boxSize` is a number indicating the box sizing to calculate. Allowed values are *0* (no padding), *1* (padding), *2* (padding and border), *3* (padding, border and margin) and *4* (scroll area), and will default to *1*.
+- `options` is an object containing properties to define how the height should be calculated.
+    - `boxSize` is a number indicating the box sizing to calculate. Allowed values are *0* (no padding), *1* (padding), *2* (padding and border), *3* (padding, border and margin) and *4* (scroll area), and will default to *1*.
+    - `outer` is a boolean indicating whether to use the window outer height, and will default to *false*.
 
 ```javascript
-const height = query.height(boxSize);
+const height = query.height(options);
 ```
 
-If the first node is a *Window*, the first argument will instead determine whether to use the outer height, and will default to *false*.
-
 The following constants can also be used as the first argument for brevity.
-- `DOM.CONTENT_BOX` *0*
-- `DOM.PADDING_BOX` *1*
-- `DOM.BORDER_BOX` *2*
-- `DOM.MARGIN_BOX` *3*
-- `DOM.SCROLL_BOX` *4*
+- `$.CONTENT_BOX` *0*
+- `$.PADDING_BOX` *1*
+- `$.BORDER_BOX` *2*
+- `$.MARGIN_BOX` *3*
+- `$.SCROLL_BOX` *4*
 
 **Width**
 
 Get the computed width of the first node.
 
-- `boxSize` is a number indicating the box sizing to calculate. Allowed values are *0* (no padding), *1* (padding), *2* (padding and border), *3* (padding, border and margin) and *4* (scroll area), and will default to *1*.
+- `options` is an object containing properties to define how the width should be calculated.
+    - `boxSize` is a number indicating the box sizing to calculate. Allowed values are *0* (no padding), *1* (padding), *2* (padding and border), *3* (padding, border and margin) and *4* (scroll area), and will default to *1*.
+    - `outer` is a boolean indicating whether to use the window outer height, and will default to *false*.
 
 ```javascript
-const width = query.width(boxSize);
+const width = query.width(options);
 ```
 
-If the first node is a *Window*, the first argument will instead determine whether to use the outer width, and will default to *false*.
-
 The following constants can also be used as the first argument for brevity.
-- `DOM.CONTENT_BOX` *0*
-- `DOM.PADDING_BOX` *1*
-- `DOM.BORDER_BOX` *2*
-- `DOM.MARGIN_BOX` *3*
-- `DOM.SCROLL_BOX` *4*
+- `$.CONTENT_BOX` *0*
+- `$.PADDING_BOX` *1*
+- `$.BORDER_BOX` *2*
+- `$.MARGIN_BOX` *3*
+- `$.SCROLL_BOX` *4*
 
 ##### Styles
 
@@ -771,10 +784,11 @@ Set style properties for each node.
 
 - `style` is a string indicating the style property value to set.
 - `value` is the value you wish to set the style property to.
-- `important` is a boolean indicating the style should be set as important, and will default to *false*.
+- `options` is an object containing properties to define how the style should be applied.
+    - `important` is a boolean indicating the style should be set as important, and will default to *false*.
 
 ```javascript
-query.setStyle(style, value, important);
+query.setStyle(style, value, options);
 ```
 
 Alternatively, you can set multiple style properties by passing a single `styles` object as the argument with key/value pairs of the styles to set.
@@ -844,10 +858,11 @@ Add events to each node.
 
 - `events` is a space-separated string of events to attach to the nodes.
 - `callback` is a function that accepts an `event` argument, which will be called when the event is triggered.
-- `useCapture` is a boolean indicating whether to use a capture event, and will default to *false*.
+- `options` is an object containing properties to define how the event should be added.
+    - `capture` is a boolean indicating whether to use a capture event, and will default to *false*.
 
 ```javascript
-query.addEvent(events, callback);
+query.addEvent(events, options);
 ```
 
 **Add Event Delegate**
@@ -857,10 +872,11 @@ Add delegated events to each node.
 - `events` is a space-separated string of events to attach to the nodes.
 - `delegate` is a query selector string which will only trigger the event if it is propagated by a target matching the selector.
 - `callback` is a function that accepts an `event` argument, which will be called when the event is triggered.
-- `useCapture` is a boolean indicating whether to use a capture event, and will default to *false*.
+- `options` is an object containing properties to define how the event should be added.
+    - `capture` is a boolean indicating whether to use a capture event, and will default to *false*.
 
 ```javascript
-query.addEventDelegate(events, delegate, callback, useCapture);
+query.addEventDelegate(events, delegate, callback, options);
 ```
 
 **Add Event Delegate Once**
@@ -870,10 +886,11 @@ Add self-destructing delegated events to each node.
 - `events` is a space-separated string of events to attach to the nodes.
 - `delegate` is a query selector string which will only trigger the event if it is propagated by a target matching the selector.
 - `callback` is a function that accepts an `event` argument, which will be called when the event is triggered.
-- `useCapture` is a boolean indicating whether to use a capture event, and will default to *false*.
+- `options` is an object containing properties to define how the event should be added.
+    - `capture` is a boolean indicating whether to use a capture event, and will default to *false*.
 
 ```javascript
-query.addEventDelegateOnce(events, delegate, callback, useCapture);
+query.addEventDelegateOnce(events, delegate, callback, options);
 ```
 
 **Add Event Once**
@@ -882,20 +899,21 @@ Add self-destructing events to each node.
 
 - `events` is a space-separated string of events to attach to the nodes.
 - `callback` is a function that accepts an `event` argument, which will be called when the event is triggered.
-- `useCapture` is a boolean indicating whether to use a capture event, and will default to *false*.
+- `options` is an object containing properties to define how the event should be added.
+    - `capture` is a boolean indicating whether to use a capture event, and will default to *false*.
 
 ```javascript
-query.addEventOnce(events, callback, useCapture);
+query.addEventOnce(events, callback, options);
 ```
 
 **Clone Events**
 
 Clone all events from each node to other nodes.
 
-- `others` is a query selector string, a *HTMLElement*, *ShadowRoot*, *Document*, *Window*, *NodeList*, *HTMLCollection*, *QuerySet* or an array of nodes.
+- `otherSelector` is a query selector string, a *HTMLElement*, *ShadowRoot*, *Document*, *Window*, *NodeList*, *HTMLCollection*, *QuerySet* or an array of nodes.
 
 ```javascript
-query.cloneEvents(others);
+query.cloneEvents(otherSelector);
 ```
 
 **Remove Event**
@@ -904,13 +922,14 @@ Remove events from each node.
 
 - `events` is a space-separated string of events to remove from the nodes.
 - `callback` is a function that accepts an `event` argument, which will be called when the event is triggered.
-- `useCapture` is a boolean indicating whether to use a capture event, and will default to *null*.
+- `options` is an object containing properties to define how the event should be removed.
+    - `capture` is a boolean indicating whether to use a capture event, and will default to *null*.
 
 ```javascript
-query.removeEvent(events, callback, useCapture);
+query.removeEvent(events, callback, options);
 ```
 
-If the `events`, `callback` or `useCapture` arguments are omitted, this method will remove all matching events from each node.
+If the `events`, `callback` or `capture` arguments are omitted, this method will remove all matching events from each node.
 
 **Remove Event Delegate**
 
@@ -919,10 +938,11 @@ Remove delegated events from each node.
 - `events` is a space-separated string of events to remove from the nodes.
 - `delegate` is a query selector string which will only trigger the event if it is propagated by a target matching the selector.
 - `callback` is a function that accepts an `event` argument, which will be called when the event is triggered.
-- `useCapture` is a boolean indicating whether to use a capture event, and will default to *null*.
+- `options` is an object containing properties to define how the event should be removed.
+    - `capture` is a boolean indicating whether to use a capture event, and will default to *null*.
 
 ```javascript
-query.removeEventDelegate(events, delegate, callback, useCapture);
+query.removeEventDelegate(events, delegate, callback, options);
 ```
 
 **Trigger Event**
@@ -970,7 +990,7 @@ Clone each node (optionally deep, and with events and data).
 const clones = query.clone(deep, cloneEvents, cloneData);
 ```
 
-This method always returns a new *QuerySet* containing the cloned nodes.
+This method returns a new *QuerySet* containing the cloned nodes.
 
 **Detach**
 
@@ -1000,10 +1020,10 @@ query.remove();
 
 Replace each other node with nodes.
 
-- `others` is a query selector string, a *Node*, *HTMLElement* *NodeList*, *HTMLCollection*, *QuerySet* or an array of nodes.
+- `otherSelector` is a query selector string, a *Node*, *HTMLElement* *NodeList*, *HTMLCollection*, *QuerySet* or an array of nodes.
 
 ```javascript
-query.replaceAll(others);
+query.replaceAll(otherSelector);
 ```
 
 If a node you are replacing with is a *DocumentFragment*, the fragment contents will be used as a replacement.
@@ -1016,10 +1036,10 @@ All events, data and animations will be removed from each node that is replaced.
 
 Replace each node with other nodes.
 
-- `others` is a query selector string, a HTML string, a *Node*, *HTMLElement*, *DocumentFragment*, *NodeList*, *HTMLCollection*, *QuerySet* or an array of nodes.
+- `otherSelector` is a query selector string, a HTML string, a *Node*, *HTMLElement*, *DocumentFragment*, *NodeList*, *HTMLCollection*, *QuerySet* or an array of nodes.
 
 ```javascript
-query.replaceWith(others);
+query.replaceWith(otherSelector);
 ```
 
 If a node you are replacing with is a *DocumentFragment*, the fragment contents will be used as a replacement.
@@ -1034,13 +1054,14 @@ All events, data and animations will be removed from each node that is replaced.
 
 Attach a shadow DOM tree to the first node.
 
-- `open` is a boolean indicating whether the nodes are accessible from JavaScript outside the root, and will default to *true*.
+- `options` is an object containing properties to define how the shadow should be attached.
+    - `open` is a boolean indicating whether the nodes are accessible from JavaScript outside the root, and will default to *true*.
 
 ```javascript
-const shadow = query.attachShadow(open);
+const shadow = query.attachShadow(options);
 ```
 
-This method always returns a new *QuerySet* containing the ShadowRoot.
+This method returns a new *QuerySet* containing the *ShadowRoot*.
 
 #### Move
 
@@ -1048,10 +1069,10 @@ This method always returns a new *QuerySet* containing the ShadowRoot.
 
 Insert each other node after the first node.
 
-- `others` is a query selector string, a HTML string, a *Node*, *HTMLElement*, *DocumentFragment*, *NodeList*, *HTMLCollection*, *QuerySet* or an array of nodes.
+- `otherSelector` is a query selector string, a HTML string, a *Node*, *HTMLElement*, *DocumentFragment*, *NodeList*, *HTMLCollection*, *QuerySet* or an array of nodes.
 
 ```javascript
-query.after(others);
+query.after(otherSelector);
 ```
 
 If the node you are moving is a *DocumentFragment*, the contents will be moved instead.
@@ -1060,10 +1081,10 @@ If the node you are moving is a *DocumentFragment*, the contents will be moved i
 
 Append each other node to the first node.
 
-- `others` is a query selector string, a HTML string, a *Node*, *HTMLElement*, *DocumentFragment*, *NodeList*, *HTMLCollection*, *QuerySet* or an array of nodes.
+- `otherSelector` is a query selector string, a HTML string, a *Node*, *HTMLElement*, *DocumentFragment*, *NodeList*, *HTMLCollection*, *QuerySet* or an array of nodes.
 
 ```javascript
-query.append(others);
+query.append(otherSelector);
 ```
 
 If a node you are moving is a *DocumentFragment*, the contents will be moved instead.
@@ -1074,10 +1095,10 @@ If multiple copies of the nodes are being moved, cloned nodes will be created fo
 
 Append each node to the first other node.
 
-- `others` is a query selector string, a *HTMLElement*, *DocumentFragment*, *ShadowRoot*, *Document*, *NodeList*, *HTMLCollection*, *QuerySet* or an array of nodes.
+- `otherSelector` is a query selector string, a *HTMLElement*, *DocumentFragment*, *ShadowRoot*, *Document*, *NodeList*, *HTMLCollection*, *QuerySet* or an array of nodes.
 
 ```javascript
-query.appendTo(others);
+query.appendTo(otherSelector);
 ```
 
 If a node you are moving is a *DocumentFragment*, the contents will be moved instead.
@@ -1088,10 +1109,10 @@ If multiple copies of the nodes are being moved, cloned nodes will be created fo
 
 Insert each other node before the first node.
 
-- `others` is a query selector string, a HTML string, a *Node*, *HTMLElement*, *DocumentFragment*, *NodeList*, *HTMLCollection*, *QuerySet* or an array of nodes.
+- `otherSelector` is a query selector string, a HTML string, a *Node*, *HTMLElement*, *DocumentFragment*, *NodeList*, *HTMLCollection*, *QuerySet* or an array of nodes.
 
 ```javascript
-query.before(others);
+query.before(otherSelector);
 ```
 
 If a node you are moving is a *DocumentFragment*, the contents will be moved instead.
@@ -1102,10 +1123,10 @@ If multiple copies of the nodes are being moved, cloned nodes will be created fo
 
 Insert each node after the first other node.
 
-- `others` is a query selector string, a *Node*, *HTMLElement*, *NodeList*, *HTMLCollection*, *QuerySet* or an array of nodes.
+- `otherSelector` is a query selector string, a *Node*, *HTMLElement*, *NodeList*, *HTMLCollection*, *QuerySet* or an array of nodes.
 
 ```javascript
-query.insertAfter(others);
+query.insertAfter(otherSelector);
 ```
 
 If a node you are moving is a *DocumentFragment*, the contents will be moved instead.
@@ -1116,10 +1137,10 @@ If multiple copies of the nodes are being moved, cloned nodes will be created fo
 
 Insert each node before the first other node.
 
-- `others` is a query selector string, a *Node*, *HTMLElement*, *NodeList*, *HTMLCollection*, *QuerySet* or an array of nodes.
+- `otherSelector` is a query selector string, a *Node*, *HTMLElement*, *NodeList*, *HTMLCollection*, *QuerySet* or an array of nodes.
 
 ```javascript
-query.insertBefore(others);
+query.insertBefore(otherSelector);
 ```
 
 If a node you are moving is a *DocumentFragment*, the contents will be moved instead.
@@ -1130,10 +1151,10 @@ If multiple copies of the nodes are being moved, cloned nodes will be created fo
 
 Prepend each other node to the first node.
 
-- `others` is a query selector string, a HTML string, a *Node*, *HTMLElement*, *DocumentFragment*, *NodeList*, *HTMLCollection*, *QuerySet* or an array of nodes.
+- `otherSelector` is a query selector string, a HTML string, a *Node*, *HTMLElement*, *DocumentFragment*, *NodeList*, *HTMLCollection*, *QuerySet* or an array of nodes.
 
 ```javascript
-query.prepend(others);
+query.prepend(otherSelector);
 ```
 
 If a node you are moving is a *DocumentFragment*, the contents will be moved instead.
@@ -1144,10 +1165,10 @@ If multiple copies of the nodes are being moved, cloned nodes will be created fo
 
 Prepend each node to the first other node.
 
-- `others` is a query selector string, a *HTMLElement*, *DocumentFragment*, *ShadowRoot*, *Document*, *NodeList*, *HTMLCollection*, *QuerySet* or an array of nodes.
+- `otherSelector` is a query selector string, a *HTMLElement*, *DocumentFragment*, *ShadowRoot*, *Document*, *NodeList*, *HTMLCollection*, *QuerySet* or an array of nodes.
 
 ```javascript
-query.prependTo(others);
+query.prependTo(otherSelector);
 ```
 
 If a node you are moving is a *DocumentFragment*, the contents will be moved instead.
@@ -1160,20 +1181,20 @@ If multiple copies of the nodes are being moved, cloned nodes will be created fo
 
 Unwrap each node.
 
-- `filter` is either a function that accepts a `node` argument, a query selector string, a *Node*, *HTMLElement*, *DocumentFragment*, *ShadowRoot*, *NodeList*, *HTMLCollection*, *QuerySet* or an array of nodes that must match the parent of each node for it to be unwrapped.
+- `nodeFilter` is either a function that accepts a `node` argument, a query selector string, a *Node*, *HTMLElement*, *DocumentFragment*, *ShadowRoot*, *NodeList*, *HTMLCollection*, *QuerySet* or an array of nodes that must match the parent of each node for it to be unwrapped.
 
 ```javascript
-query.unwrap(filter);
+query.unwrap(nodeFilter);
 ```
 
 **Wrap**
 
 Wrap each nodes with other nodes.
 
-- `others` is a query selector string, a HTML string, a *HTMLElement*, *DocumentFragment*, *NodeList*, *HTMLCollection*, *QuerySet* or an array of nodes.
+- `otherSelector` is a query selector string, a HTML string, a *HTMLElement*, *DocumentFragment*, *NodeList*, *HTMLCollection*, *QuerySet* or an array of nodes.
 
 ```javascript
-query.wrap(others);
+query.wrap(otherSelector);
 ```
 
 If a node you are wrapping with is a *DocumentFragment*, the contents will be used to wrap instead.
@@ -1182,10 +1203,10 @@ If a node you are wrapping with is a *DocumentFragment*, the contents will be us
 
 Wrap all nodes with other nodes.
 
-- `others` is a query selector string, a HTML string, a *HTMLElement*, *DocumentFragment*, *NodeList*, *HTMLCollection*, *QuerySet* or an array of nodes.
+- `otherSelector` is a query selector string, a HTML string, a *HTMLElement*, *DocumentFragment*, *NodeList*, *HTMLCollection*, *QuerySet* or an array of nodes.
 
 ```javascript
-query.wrapAll(others);
+query.wrapAll(otherSelector);
 ```
 
 If a node you are wrapping with is a *DocumentFragment*, the contents will be used to wrap instead.
@@ -1194,10 +1215,10 @@ If a node you are wrapping with is a *DocumentFragment*, the contents will be us
 
 Wrap the contents of each node with other nodes.
 
-- `others` is a query selector string, a HTML string, a *HTMLElement*, *DocumentFragment*, *NodeList*, *HTMLCollection*, *QuerySet* or an array of nodes.
+- `otherSelector` is a query selector string, a HTML string, a *HTMLElement*, *DocumentFragment*, *NodeList*, *HTMLCollection*, *QuerySet* or an array of nodes.
 
 ```javascript
-query.wrapInner(others);
+query.wrapInner(otherSelector);
 ```
 
 If a node you are wrapping with is a *DocumentFragment*, the contents will be used to wrap instead.
@@ -1207,425 +1228,517 @@ If a node you are wrapping with is a *DocumentFragment*, the contents will be us
 
 **Child**
 
-Find the first child of each node (optionally matching a filter) and push them to the stack.
+Find the first child of each node (optionally matching a filter).
 
-- `filter` is either a function that accepts a `node` argument, a query selector string, a *Node*, *HTMLElement*, *DocumentFragment*, *ShadowRoot*, *NodeList*, *HTMLCollection*, *QuerySet* or an array of nodes that the nodes will be filtered by, and will default to *false*.
+- `nodeFilter` is either a function that accepts a `node` argument, a query selector string, a *Node*, *HTMLElement*, *DocumentFragment*, *ShadowRoot*, *NodeList*, *HTMLCollection*, *QuerySet* or an array of nodes that the nodes will be filtered by, and will default to *false*.
 
 ```javascript
-const child = query.child(filter);
+const newQuery = query.child(nodeFilter);
 ```
+
+This method returns a new *QuerySet* containing the traversed nodes.
 
 **Children**
 
-Find all children of each node (optionally matching a filter) and push them to the stack.
+Find all children of each node (optionally matching a filter).
 
-- `filter` is either a function that accepts a `node` argument, a query selector string, a *Node*, *HTMLElement*, *DocumentFragment*, *ShadowRoot*, *NodeList*, *HTMLCollection*, *QuerySet* or an array of nodes that the nodes will be filtered by, and will default to *false*.
+- `nodeFilter` is either a function that accepts a `node` argument, a query selector string, a *Node*, *HTMLElement*, *DocumentFragment*, *ShadowRoot*, *NodeList*, *HTMLCollection*, *QuerySet* or an array of nodes that the nodes will be filtered by, and will default to *false*.
 
 ```javascript
-const children = query.children(filter);
+const newQuery = query.children(nodeFilter);
 ```
+
+This method returns a new *QuerySet* containing the traversed nodes.
 
 **Closest**
 
-Find the closest ancestor to each node (optionally matching a filter, and before a limit) and push them to the stack.
+Find the closest ancestor to each node (optionally matching a filter, and before a limit).
 
-- `filter` is either a function that accepts a `node` argument, a query selector string, a *Node*, *HTMLElement*, *DocumentFragment*, *ShadowRoot*, *NodeList*, *HTMLCollection*, *QuerySet* or an array of nodes that the nodes will be filtered by, and will default to *false*.
-- `limit` is either a function that accepts a `node` argument, a query selector string, a *Node*, *HTMLElement*, *DocumentFragment*, *ShadowRoot*, *NodeList*, *HTMLCollection*, *QuerySet* or an array of nodes that when matched will stop the search, and will default to *false*.
+- `nodeFilter` is either a function that accepts a `node` argument, a query selector string, a *Node*, *HTMLElement*, *DocumentFragment*, *ShadowRoot*, *NodeList*, *HTMLCollection*, *QuerySet* or an array of nodes that the nodes will be filtered by, and will default to *false*.
+- `limitFilter` is either a function that accepts a `node` argument, a query selector string, a *Node*, *HTMLElement*, *DocumentFragment*, *ShadowRoot*, *NodeList*, *HTMLCollection*, *QuerySet* or an array of nodes that when matched will stop the search, and will default to *false*.
 
 ```javascript
-const closest = query.closest(filter, limit);
+const newQuery = query.closest(nodeFilter, limitFilter);
 ```
+
+This method returns a new *QuerySet* containing the traversed nodes.
 
 **Common Ancestor**
 
-Find the common ancestor of all nodes and push it to the stack.
+Find the common ancestor of all nodes.
 
 ```javascript
-const commonAncestor = query.commonAncestor();
+const newQuery = query.commonAncestor();
 ```
+
+This method returns a new *QuerySet* containing the traversed node.
 
 **Contents**
 
-Find all children of each node (including text and comment nodes) and push them to the stack.
+Find all children of each node (including text and comment nodes).
 
 ```javascript
-const contents = query.contents();
+const newQuery = query.contents();
 ```
+
+This method returns a new *QuerySet* containing the traversed nodes.
 
 **Fragment**
 
-Return the *DocumentFragment* of the first node. and push it to the stack
+Return the *DocumentFragment* of the first node.
 
 ```javascript
-const fragment = query.fragment();
+const newQuery = query.fragment();
 ```
+
+This method returns a new *QuerySet* containing the traversed node.
 
 **Next**
 
-Find the next sibling for each node (optionally matching a filter) and push them to the stack.
+Find the next sibling for each node (optionally matching a filter).
 
-- `filter` is either a function that accepts a `node` argument, a query selector string, a *Node*, *HTMLElement*, *DocumentFragment*, *ShadowRoot*, *NodeList*, *HTMLCollection*, *QuerySet* or an array of nodes that the nodes will be filtered by, and will default to *false*.
+- `nodeFilter` is either a function that accepts a `node` argument, a query selector string, a *Node*, *HTMLElement*, *DocumentFragment*, *ShadowRoot*, *NodeList*, *HTMLCollection*, *QuerySet* or an array of nodes that the nodes will be filtered by, and will default to *false*.
 
 ```javascript
-const next = query.next(filter);
+const newQuery = query.next(nodeFilter);
 ```
+
+This method returns a new *QuerySet* containing the traversed nodes.
 
 **Next All**
 
-Find all next siblings for each node (optionally matching a filter, and before a limit) and push them to the stack.
+Find all next siblings for each node (optionally matching a filter, and before a limit).
 
-- `filter` is either a function that accepts a `node` argument, a query selector string, a *Node*, *HTMLElement*, *DocumentFragment*, *ShadowRoot*, *NodeList*, *HTMLCollection*, *QuerySet* or an array of nodes that the nodes will be filtered by, and will default to *false*.
-- `limit` is either a function that accepts a `node` argument, a query selector string, a *Node*, *HTMLElement*, *DocumentFragment*, *ShadowRoot*, *NodeList*, *HTMLCollection*, *QuerySet* or an array of nodes that when matched will stop the search, and will default to *false*.
+- `nodeFilter` is either a function that accepts a `node` argument, a query selector string, a *Node*, *HTMLElement*, *DocumentFragment*, *ShadowRoot*, *NodeList*, *HTMLCollection*, *QuerySet* or an array of nodes that the nodes will be filtered by, and will default to *false*.
+- `limitFilter` is either a function that accepts a `node` argument, a query selector string, a *Node*, *HTMLElement*, *DocumentFragment*, *ShadowRoot*, *NodeList*, *HTMLCollection*, *QuerySet* or an array of nodes that when matched will stop the search, and will default to *false*.
+- `options` is an object containing properties to define how the siblings should be traversed.
+    - `first` is a boolean indicating whether to only return the first matching node for each node, and will default to *false*.
 
 ```javascript
-const nextAll = query.nextAll(filter, limit, first);
+const newQuery = query.nextAll(nodeFilter, limitFilter, options);
 ```
+
+This method returns a new *QuerySet* containing the traversed nodes.
 
 **Offset Parent**
 
-Find the offset parent (relatively positioned) of the first node and push it to the stack.
+Find the offset parent (relatively positioned) of the first node.
 
 ```javascript
-const offsetParent = query.offsetParent();
+const newQuery = query.offsetParent();
 ```
+
+This method returns a new *QuerySet* containing the traversed node.
 
 **Parent**
 
-Find the parent of each node (optionally matching a filter) and push them to the stack.
+Find the parent of each node (optionally matching a filter).
 
-- `filter` is either a function that accepts a `node` argument, a query selector string, a *Node*, *HTMLElement*, *DocumentFragment*, *ShadowRoot*, *NodeList*, *HTMLCollection*, *QuerySet* or an array of nodes that the nodes will be filtered by, and will default to *false*.
+- `nodeFilter` is either a function that accepts a `node` argument, a query selector string, a *Node*, *HTMLElement*, *DocumentFragment*, *ShadowRoot*, *NodeList*, *HTMLCollection*, *QuerySet* or an array of nodes that the nodes will be filtered by, and will default to *false*.
 
 ```javascript
-const parent = query.parent(filter);
+const newQuery = query.parent(nodeFilter);
 ```
+
+This method returns a new *QuerySet* containing the traversed nodes.
 
 **Parents**
 
-Find all parents of each node (optionally matching a filter, and before a limit) and push them to the stack.
+Find all parents of each node (optionally matching a filter, and before a limit).
 
-- `filter` is either a function that accepts a `node` argument, a query selector string, a *Node*, *HTMLElement*, *DocumentFragment*, *ShadowRoot*, *NodeList*, *HTMLCollection*, *QuerySet* or an array of nodes that the nodes will be filtered by, and will default to *false*.
-- `limit` is either a function that accepts a `node` argument, a query selector string, a *Node*, *HTMLElement*, *DocumentFragment*, *ShadowRoot*, *NodeList*, *HTMLCollection*, *QuerySet* or an array of nodes that when matched will stop the search, and will default to *false*.
+- `nodeFilter` is either a function that accepts a `node` argument, a query selector string, a *Node*, *HTMLElement*, *DocumentFragment*, *ShadowRoot*, *NodeList*, *HTMLCollection*, *QuerySet* or an array of nodes that the nodes will be filtered by, and will default to *false*.
+- `limitFilter` is either a function that accepts a `node` argument, a query selector string, a *Node*, *HTMLElement*, *DocumentFragment*, *ShadowRoot*, *NodeList*, *HTMLCollection*, *QuerySet* or an array of nodes that when matched will stop the search, and will default to *false*.
+- `options` is an object containing properties to define how the parents should be traversed.
+    - `first` is a boolean indicating whether to only return the first matching node for each node, and will default to *false*.
 
 ```javascript
-const parents = query.parents(filter, limit, first);
+const newQuery = query.parents(nodeFilter, limitFilter, options);
 ```
+
+This method returns a new *QuerySet* containing the traversed nodes.
 
 **Previous**
 
-Find the previous sibling for each node (optionally matching a filter) and push them to the stack.
+Find the previous sibling for each node (optionally matching a filter).
 
-- `filter` is either a function that accepts a `node` argument, a query selector string, a *Node*, *HTMLElement*, *DocumentFragment*, *ShadowRoot*, *NodeList*, *HTMLCollection*, *QuerySet* or an array of nodes that the nodes will be filtered by, and will default to *false*.
+- `nodeFilter` is either a function that accepts a `node` argument, a query selector string, a *Node*, *HTMLElement*, *DocumentFragment*, *ShadowRoot*, *NodeList*, *HTMLCollection*, *QuerySet* or an array of nodes that the nodes will be filtered by, and will default to *false*.
 
 ```javascript
-const prev = query.prev(filter);
+const newQuery = query.prev(nodeFilter);
 ```
+
+This method returns a new *QuerySet* containing the traversed nodes.
 
 **Previous All**
 
-Find all previous siblings for each node (optionally matching a filter, and before a limit) and push them to the stack.
+Find all previous siblings for each node (optionally matching a filter, and before a limit).
 
-- `filter` is either a function that accepts a `node` argument, a query selector string, a *Node*, *HTMLElement*, *DocumentFragment*, *ShadowRoot*, *NodeList*, *HTMLCollection*, *QuerySet* or an array of nodes that the nodes will be filtered by, and will default to *false*.
-- `limit` is either a function that accepts a `node` argument, a query selector string, a *Node*, *HTMLElement*, *DocumentFragment*, *ShadowRoot*, *NodeList*, *HTMLCollection*, *QuerySet* or an array of nodes that when matched will stop the search, and will default to *false*.
+- `nodeFilter` is either a function that accepts a `node` argument, a query selector string, a *Node*, *HTMLElement*, *DocumentFragment*, *ShadowRoot*, *NodeList*, *HTMLCollection*, *QuerySet* or an array of nodes that the nodes will be filtered by, and will default to *false*.
+- `limitFilter` is either a function that accepts a `node` argument, a query selector string, a *Node*, *HTMLElement*, *DocumentFragment*, *ShadowRoot*, *NodeList*, *HTMLCollection*, *QuerySet* or an array of nodes that when matched will stop the search, and will default to *false*.
+- `options` is an object containing properties to define how the siblings should be traversed.
+    - `first` is a boolean indicating whether to only return the first matching node for each node, and will default to *false*.
 
 ```javascript
-const prevAll = query.prevAll(filter, limit, first);
+const newQuery = query.prevAll(nodeFilter, limitFilter, options);
 ```
+
+This method returns a new *QuerySet* containing the traversed nodes.
 
 **Shadow**
 
-Return the *ShadowRoot* of the first node and push it to the stack.
+Return the *ShadowRoot* of the first node.
 
 ```javascript
-const shadow = query.shadow();
+const newQuery = query.shadow();
 ```
+
+This method returns a new *QuerySet* containing the traversed node.
 
 **Siblings**
 
-Find all siblings for each node (optionally matching a filter) and push them to the stack.
+Find all siblings for each node (optionally matching a filter).
 
-- `filter` is either a function that accepts a `node` argument, a query selector string, a *Node*, *HTMLElement*, *DocumentFragment*, *ShadowRoot*, *NodeList*, *HTMLCollection*, *QuerySet* or an array of nodes that the nodes will be filtered by, and will default to *false*.
+- `nodeFilter` is either a function that accepts a `node` argument, a query selector string, a *Node*, *HTMLElement*, *DocumentFragment*, *ShadowRoot*, *NodeList*, *HTMLCollection*, *QuerySet* or an array of nodes that the nodes will be filtered by, and will default to *false*.
 
 ```javascript
-const siblings = query.siblings(filter);
+const newQuery = query.siblings(nodeFilter);
 ```
+
+This method returns a new *QuerySet* containing the traversed nodes.
 
 #### Filter
 
 **Connected**
 
-Find all nodes connected to the DOM and push them to the stack.
+Find all nodes connected to the DOM.
 
 ```javascript
-const connected = query.connected();
+const newQuery = query.connected();
 ```
+
+This method returns a new *QuerySet* containing the filtered nodes.
 
 **Equal**
 
-Find all nodes considered equal to any of the other nodes and push them to the stack.
+Find all nodes considered equal to any of the other nodes.
 
-- `others` is a query selector string, a *Node*, *HTMLElement*, *DocumentFragment*, *ShadowRoot*, *NodeList*, *HTMLCollection*, *QuerySet* or an array of nodes.
+- `otherSelector` is a query selector string, a *Node*, *HTMLElement*, *DocumentFragment*, *ShadowRoot*, *NodeList*, *HTMLCollection*, *QuerySet* or an array of nodes.
 
 ```javascript
-const equal = query.equal(others);
+const newQuery = query.equal(otherSelector);
 ```
+
+This method returns a new *QuerySet* containing the filtered nodes.
 
 **Filter**
 
-Find all nodes matching a filter and push them to the stack.
+Find all nodes matching a filter.
 
-- `filter` is either a function that accepts a `node` argument, a query selector string, a *Node*, *HTMLElement*, *DocumentFragment*, *ShadowRoot*, *NodeList*, *HTMLCollection*, *QuerySet* or an array of nodes that the nodes will be filtered by.
+- `nodeFilter` is either a function that accepts a `node` argument, a query selector string, a *Node*, *HTMLElement*, *DocumentFragment*, *ShadowRoot*, *NodeList*, *HTMLCollection*, *QuerySet* or an array of nodes that the nodes will be filtered by.
 
 ```javascript
-const filtered = query.filter(filter);
+const newQuery = query.filter(nodeFilter);
 ```
+
+This method returns a new *QuerySet* containing the filtered nodes.
 
 **Filter One**
 
-Find the first node matching a filter and push it to the stack.
+Find the first node matching a filter.
 
-- `filter` is either a function that accepts a `node` argument, a query selector string, a *Node*, *HTMLElement*, *DocumentFragment*, *ShadowRoot*, *NodeList*, *HTMLCollection*, *QuerySet* or an array of nodes that the nodes will be filtered by.
+- `nodeFilter` is either a function that accepts a `node` argument, a query selector string, a *Node*, *HTMLElement*, *DocumentFragment*, *ShadowRoot*, *NodeList*, *HTMLCollection*, *QuerySet* or an array of nodes that the nodes will be filtered by.
 
 ```javascript
-const filteredOne = query.filterOne(filter);
+const newQuery = query.filterOne(nodeFilter);
 ```
+
+This method returns a new *QuerySet* containing the filtered node.
 
 **Fixed**
 
-Find all "fixed" nodes and push them to the stack.
+Find all "fixed" nodes.
 
 ```javascript
-const fixed = query.fixed();
+const newQuery = query.fixed();
 ```
+
+This method returns a new *QuerySet* containing the filtered nodes.
 
 **Hidden**
 
-Find all hidden nodes and push them to the stack.
+Find all hidden nodes.
 
 ```javascript
-const hidden = query.hidden();
+const newQuery = query.hidden();
 ```
+
+This method returns a new *QuerySet* containing the filtered nodes.
 
 **Not**
 
-Find all nodes not matching a filter and push them to the stack.
+Find all nodes not matching a filter.
 
-- `filter` is either a function that accepts a `node` argument, a query selector string, a *Node*, *HTMLElement*, *DocumentFragment*, *ShadowRoot*, *NodeList*, *HTMLCollection*, *QuerySet* or an array of nodes that the nodes will be filtered by.
+- `nodeFilter` is either a function that accepts a `node` argument, a query selector string, a *Node*, *HTMLElement*, *DocumentFragment*, *ShadowRoot*, *NodeList*, *HTMLCollection*, *QuerySet* or an array of nodes that the nodes will be filtered by.
 
 ```javascript
-const not = query.not(filter);
+const newQuery = query.not(nodeFilter);
 ```
+
+This method returns a new *QuerySet* containing the filtered nodes.
 
 **Not One**
 
-Find the first node not matching a filter and push it to the stack.
+Find the first node not matching a filter.
 
-- `filter` is either a function that accepts a `node` argument, a query selector string, a *Node*, *HTMLElement*, *DocumentFragment*, *ShadowRoot*, *NodeList*, *HTMLCollection*, *QuerySet* or an array of nodes that the nodes will be filtered by.
+- `nodeFilter` is either a function that accepts a `node` argument, a query selector string, a *Node*, *HTMLElement*, *DocumentFragment*, *ShadowRoot*, *NodeList*, *HTMLCollection*, *QuerySet* or an array of nodes that the nodes will be filtered by.
 
 ```javascript
-const notOne = query.notOne(filter);
+const newQuery = query.notOne(nodeFilter);
 ```
+
+This method returns a new *QuerySet* containing the filtered node.
 
 **Same**
 
-Find all nodes considered identical to any of the other nodes and push them to the stack.
+Find all nodes considered identical to any of the other nodes.
 
-- `others` is a query selector string, a *Node*, *HTMLElement*, *DocumentFragment*, *ShadowRoot*, *NodeList*, *HTMLCollection*, *QuerySet* or an array of nodes.
+- `otherSelector` is a query selector string, a *Node*, *HTMLElement*, *DocumentFragment*, *ShadowRoot*, *NodeList*, *HTMLCollection*, *QuerySet* or an array of nodes.
 
 ```javascript
-const same = query.same(others);
+const newQuery = query.same(otherSelector);
 ```
+
+This method returns a new *QuerySet* containing the filtered nodes.
 
 **Visible**
 
-Find all visible nodes and push them to the stack.
+Find all visible nodes.
 
 ```javascript
-const visible = query.visible();
+const newQuery = query.visible();
 ```
+
+This method returns a new *QuerySet* containing the filtered nodes.
 
 **With Animation**
 
-Find all nodes with an animation and push them to the stack.
+Find all nodes with an animation.
 
 ```javascript
-const withAnimation = query.withAnimation();
+const newQuery = query.withAnimation();
 ```
+
+This method returns a new *QuerySet* containing the filtered nodes.
 
 **With Attribute**
 
-Find all nodes with a specified attribute and push them to the stack.
+Find all nodes with a specified attribute.
 
 - `attribute` is a string indicating the attribute value to test for.
 
 ```javascript
-const withAttribute = query.withAttribute(attribute);
+const newQuery = query.withAttribute(attribute);
 ```
+
+This method returns a new *QuerySet* containing the filtered nodes.
 
 **With Children**
 
-Find all nodes with child elements and push them to the stack.
+Find all nodes with child elements.
 
 ```javascript
-const withChildren = query.withChildren();
+const newQuery = query.withChildren();
 ```
+
+This method returns a new *QuerySet* containing the filtered nodes.
 
 **With Class**
 
-Find all nodes with any of the specified classes and push them to the stack.
+Find all nodes with any of the specified classes.
 
 - `classes` is an array of classes, or a space seperated string of class names to test for.
 
 ```javascript
-const withClass = query.withClass(classes);
+const newQuery = query.withClass(classes);
 ```
+
+This method returns a new *QuerySet* containing the filtered nodes.
 
 **With CSS Animation**
 
-Find all nodes with a CSS animation and push them to the stack.
+Find all nodes with a CSS animation.
 
 ```javascript
-const withCSSAnimation = query.withCSSAnimation();
+const newQuery = query.withCSSAnimation();
 ```
+
+This method returns a new *QuerySet* containing the filtered nodes.
 
 **With CSS Transition**
 
-Find all nodes with a CSS transition and push them to the stack.
+Find all nodes with a CSS transition.
 
 ```javascript
-const withCSSTransition = query.withCSSTransition();
+const newQuery = query.withCSSTransition();
 ```
+
+This method returns a new *QuerySet* containing the filtered nodes.
 
 **With Data**
 
-Find all nodes with custom data and push them to the stack.
+Find all nodes with custom data.
 
 - `key` is a string indicating the custom data value to test for.
 
 ```javascript
-const withData = query.withData(key);
+const newQuery = query.withData(key);
 ```
 
-If the `key` argument is omitted, this method will find all nodes with any custom data and push them to the stack.
+If the `key` argument is omitted, this method will find all nodes with any custom data.
 
 ```javascript
-const withData = query.withData();
+const newQuery = query.withData();
 ```
+
+This method returns a new *QuerySet* containing the filtered nodes.
 
 **With Descendent**
 
-Find all elements with a descendent matching a filter and push them to the stack.
+Find all elements with a descendent matching a filter.
 
-- `filter` is either a function that accepts a `node` argument, a query selector string, a *Node*, *HTMLElement*, *DocumentFragment*, *ShadowRoot*, *NodeList*, *HTMLCollection*, *QuerySet* or an array of nodes that the nodes will be filtered by.
+- `nodeFilter` is either a function that accepts a `node` argument, a query selector string, a *Node*, *HTMLElement*, *DocumentFragment*, *ShadowRoot*, *NodeList*, *HTMLCollection*, *QuerySet* or an array of nodes that the nodes will be filtered by.
 
 ```javascript
-const withDescendent = query.withDescendent(filter);
+const newQuery = query.withDescendent(nodeFilter);
 ```
+
+This method returns a new *QuerySet* containing the filtered nodes.
 
 **With Property**
 
-Find all nodes with a specified property and push them to the stack.
+Find all nodes with a specified property.
 
 - `property` is a string indicating the property value to test for.
 
 ```javascript
-const withProperty = query.withProperty(property);
+const newQuery = query.withProperty(property);
 ```
+
+This method returns a new *QuerySet* containing the filtered nodes.
 
 #### Find
 
 **Find**
 
-Find all descendent nodes matching a selector and push them to the stack.
+Find all descendent nodes matching a selector.
 
 - `selector` is a query selector string to search for.
 
 ```javascript
-const elements = query.find(selector);
+const newQuery = query.find(selector);
 ```
+
+This method returns a new *QuerySet* containing the matching nodes.
 
 **Find By Class**
 
-Find all descendent nodes with a specific class and push them to the stack.
+Find all descendent nodes with a specific class.
 
 - `className` is a string indicating the class name to search for.
 
 ```javascript
-const elements = query.findByClass(className);
+const newQuery = query.findByClass(className);
 ```
+
+This method returns a new *QuerySet* containing the matching nodes.
 
 **Find By ID**
 
-Find all nodes with a specific ID and push them to the stack.
+Find all nodes with a specific ID.
 
 - `id` is a string indicating the id to search for.
 
 ```javascript
-const elements = query.findById(id);
+const newQuery = query.findById(id);
 ```
+
+This method returns a new *QuerySet* containing the matching nodes.
 
 **Find By Tag**
 
-Find all nodes with a specific tag and push them to the stack.
+Find all nodes with a specific tag.
 
 - `tagName` is a string indicating the tag name to search for.
 
 ```javascript
-const elements = query.findByTag(tagName);
+const newQuery = query.findByTag(tagName);
 ```
+
+This method returns a new *QuerySet* containing the matching nodes.
 
 **Find One**
 
-Find the first node matching a selector and push it to the stack.
+Find the first node matching a selector.
 
 - `selector` is a query selector string to search for.
 
 ```javascript
-const element = query.findOne(selectors);
+const newQuery = query.findOne(selectors);
 ```
+
+This method returns a new *QuerySet* containing the matching node.
 
 **Find One By Class**
 
-Find the first node with a specific class and push it to the stack.
+Find the first node with a specific class.
 
 - `className` is a string indicating the class name to search for.
 
 ```javascript
-const element = query.findOneByClass(className);
+const newQuery = query.findOneByClass(className);
 ```
+
+This method returns a new *QuerySet* containing the matching node.
 
 **Find One By ID**
 
-Find the first node with a specific ID and push it to the stack.
+Find the first node with a specific ID.
 
 - `id` is a string indicating the id to search for.
 
 ```javascript
-const element = query.findOneById(id);
+const newQuery = query.findOneById(id);
 ```
+
+This method returns a new *QuerySet* containing the matching node.
 
 **Find One By Tag**
 
-Find the first node with a specific tag and push it to the stack.
+Find the first node with a specific tag.
 
 - `tagName` is a string indicating the tag name to search for.
 
 ```javascript
-const element = query.findOneByTag(tagName);
+const newQuery = query.findOneByTag(tagName);
 ```
+
+This method returns a new *QuerySet* containing the matching node.
 
 
 ### Utility
 
 **Add**
 
-Push new nodes to the stack and sort the results.
+Merge with new nodes and sort the results.
 
 - `selector` is a query selector string, a *Node*, *HTMLElement*, *DocumentFragment*, *ShadowRoot*, *Document*, *Window*, *NodeList*, *HTMLCollection*, *QuerySet* or an array of nodes.
-- `context` is a query selector string, a *HTMLElement*, *DocumentFragment*, *ShadowRoot*, *Document*, *HTMLCollection*, *QuerySet* or an array of nodes, and will default to the *Document* context of the `dom`.
+- `context` is a query selector string, a *HTMLElement*, *DocumentFragment*, *ShadowRoot*, *Document*, *HTMLCollection*, *QuerySet* or an array of nodes, and will default to the *Document* context.
 
 ```javascript
-const merged = query.add(selector, context);
+const newQuery = query.add(selector, context);
 ```
+
+This method returns a new *QuerySet* containing the merged nodes.
 
 **Each**
 
@@ -1644,16 +1757,20 @@ Reduce the set of nodes to the one at the specified index.
 - `index` is the index of the node.
 
 ```javascript
-const eq = query.eq(index);
+const newQuery = query.eq(index);
 ```
+
+This method returns a new *QuerySet* containing the filtered nodes.
 
 **First**
 
 Reduce the set of nodes to the first.
 
 ```javascript
-const first = query.first();
+const newQuery = query.first();
 ```
+
+This method returns a new *QuerySet* containing the filtered node.
 
 **Get**
 
@@ -1683,10 +1800,10 @@ const index = query.index();
 
 Get the index of the first node matching a filter.
 
-- `filter` is either a function that accepts a `node` argument, a query selector string, a *Node*, *HTMLElement*, *DocumentFragment*, *ShadowRoot*, *NodeList*, *HTMLCollection*, *QuerySet* or an array of nodes that the nodes will be tested for.
+- `nodeFilter` is either a function that accepts a `node` argument, a query selector string, a *Node*, *HTMLElement*, *DocumentFragment*, *ShadowRoot*, *NodeList*, *HTMLCollection*, *QuerySet* or an array of nodes that the nodes will be tested for.
 
 ```javascript
-const indexOf = query.indexOf(filter);
+const indexOf = query.indexOf(nodeFilter);
 ```
 
 **Last**
@@ -1694,8 +1811,10 @@ const indexOf = query.indexOf(filter);
 Reduce the set of nodes to the last.
 
 ```javascript
-const last = query.last();
+const newQuery = query.last();
 ```
+
+This method returns a new *QuerySet* containing the filtered node.
 
 **Map**
 
@@ -1704,10 +1823,10 @@ Execute a function for each node in the set.
 - `callback` is a function that accepts a `node` and `index` as arguments.
 
 ```javascript
-const mapped = query.map(callback);
+const newQuery = query.map(callback);
 ```
 
-This method always returns a new *QuerySet* containing the mapped nodes.
+This method returns a new *QuerySet* containing the mapped nodes.
 
 **Normalize**
 
@@ -1741,18 +1860,20 @@ Reduce the set of matched elements to a subset specified by a range of indices.
 - `end` is a number indicating the index to end slicing, and will default to the length of the set. 
 
 ```javascript
-const sliced = query.slice(begin, end);
+const newQuery = query.slice(begin, end);
 ```
 
-This method always returns a new *QuerySet* containing the sliced nodes.
+This method returns a new *QuerySet* containing the sliced nodes.
 
 **Sort**
 
 Sort nodes by their position in the document.
 
 ```javascript
-query.sort();
+const newQuery = query.sort();
 ```
+
+This method returns a new *QuerySet* containing the sorted nodes.
 
 **Tag Name**
 
@@ -1904,10 +2025,10 @@ const hasDataset = query.hasDataset(key);
 
 Returns *true* if any of the nodes contains a descendent matching a filter.
 
-- `filter` is either a function that accepts a `node` argument, a query selector string, a *Node*, *HTMLElement*, *DocumentFragment*, *ShadowRoot*, *NodeList*, *HTMLCollection*, *QuerySet* or an array of nodes that the nodes will be tested for.
+- `nodeFilter` is either a function that accepts a `node` argument, a query selector string, a *Node*, *HTMLElement*, *DocumentFragment*, *ShadowRoot*, *NodeList*, *HTMLCollection*, *QuerySet* or an array of nodes that the nodes will be tested for.
 
 ```javascript
-const hasDescendent = query.hasDescendent(filter);
+const hasDescendent = query.hasDescendent(nodeFilter);
 ```
 
 **Has Property**
@@ -1924,10 +2045,10 @@ const hasProperty = query.hasProperty(property);
 
 Returns *true* if any of the nodes matches a filter.
 
-- `filter` is either a function that accepts a `node` argument, a query selector string, a *Node*, *HTMLElement*, *DocumentFragment*, *ShadowRoot*, *NodeList*, *HTMLCollection*, *QuerySet* or an array of nodes that the nodes will be tested for.
+- `nodeFilter` is either a function that accepts a `node` argument, a query selector string, a *Node*, *HTMLElement*, *DocumentFragment*, *ShadowRoot*, *NodeList*, *HTMLCollection*, *QuerySet* or an array of nodes that the nodes will be tested for.
 
 ```javascript
-const is = query.is(filter);
+const is = query.is(nodeFilter);
 ```
 
 **Is Connected**
@@ -1942,10 +2063,10 @@ const isConnected = query.isConnected();
 
 Returns *true* if any of the nodes is considered equal to any of the other nodes.
 
-- `others` is a query selector string, a *Node*, *HTMLElement*, *DocumentFragment*, *ShadowRoot*, *NodeList*, *HTMLCollection*, *QuerySet* or an array of nodes.
+- `otherSelector` is a query selector string, a *Node*, *HTMLElement*, *DocumentFragment*, *ShadowRoot*, *NodeList*, *HTMLCollection*, *QuerySet* or an array of nodes.
 
 ```javascript
-const isEqual = query.isEqual(others);
+const isEqual = query.isEqual(otherSelector);
 ```
 
 **Is Fixed**
@@ -1968,10 +2089,10 @@ const isHidden = query.isHidden();
 
 Returns *true* if any of the nodes is considered identical to any of the other nodes.
 
-- `others` is a query selector string, a *Node*, *HTMLElement*, *DocumentFragment*, *ShadowRoot*, *NodeList*, *HTMLCollection*, *QuerySet* or an array of nodes.
+- `otherSelector` is a query selector string, a *Node*, *HTMLElement*, *DocumentFragment*, *ShadowRoot*, *NodeList*, *HTMLCollection*, *QuerySet* or an array of nodes.
 
 ```javascript
-const isSame = query.isSame(others);
+const isSame = query.isSame(otherSelector);
 ```
 
 **Is Visible**

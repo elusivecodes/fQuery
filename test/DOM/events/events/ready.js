@@ -1,19 +1,17 @@
-const assert = require('assert');
-const { exec } = require('../../../setup');
+import assert from 'node:assert/strict';
+import { exec } from './../../../setup.js';
 
 describe('#ready', function() {
-
     it('executes a callback when ready', async function() {
         assert.strictEqual(
-            await exec(_ => {
+            await exec((_) => {
                 let result;
-                dom.ready(_ => {
+                $.ready((_) => {
                     result = true;
                 });
                 return result;
             }),
-            true
+            true,
         );
     });
-
 });

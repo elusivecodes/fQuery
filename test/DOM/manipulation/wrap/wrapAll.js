@@ -1,10 +1,9 @@
-const assert = require('assert');
-const { exec } = require('../../../setup');
+import assert from 'node:assert/strict';
+import { exec } from './../../../setup.js';
 
 describe('#wrapAll', function() {
-
     beforeEach(async function() {
-        await exec(_ => {
+        await exec((_) => {
             document.body.innerHTML =
                 '<div id="wrap">' +
                 '<div id="parent1">' +
@@ -26,8 +25,8 @@ describe('#wrapAll', function() {
 
     it('wraps all nodes', async function() {
         assert.strictEqual(
-            await exec(_ => {
-                dom.wrapAll('a', '.outer');
+            await exec((_) => {
+                $.wrapAll('a', '.outer');
                 return document.body.innerHTML;
             }),
             '<div id="wrap">' +
@@ -48,16 +47,16 @@ describe('#wrapAll', function() {
             '<div class="outer">' +
             '<div class="inner"></div>' +
             '</div>' +
-            '</div>'
+            '</div>',
         );
     });
 
     it('works with HTMLElement nodes', async function() {
         assert.strictEqual(
-            await exec(_ => {
-                dom.wrapAll(
+            await exec((_) => {
+                $.wrapAll(
                     document.getElementById('test1'),
-                    '.outer'
+                    '.outer',
                 );
                 return document.body.innerHTML;
             }),
@@ -79,16 +78,16 @@ describe('#wrapAll', function() {
             '<div class="outer">' +
             '<div class="inner"></div>' +
             '</div>' +
-            '</div>'
+            '</div>',
         );
     });
 
     it('works with NodeList nodes', async function() {
         assert.strictEqual(
-            await exec(_ => {
-                dom.wrapAll(
+            await exec((_) => {
+                $.wrapAll(
                     document.querySelectorAll('a'),
-                    '.outer'
+                    '.outer',
                 );
                 return document.body.innerHTML;
             }),
@@ -110,16 +109,16 @@ describe('#wrapAll', function() {
             '<div class="outer">' +
             '<div class="inner"></div>' +
             '</div>' +
-            '</div>'
+            '</div>',
         );
     });
 
     it('works with HTMLCollection nodes', async function() {
         assert.strictEqual(
-            await exec(_ => {
-                dom.wrapAll(
+            await exec((_) => {
+                $.wrapAll(
                     document.getElementById('parent1').children,
-                    '.outer'
+                    '.outer',
                 );
                 return document.body.innerHTML;
             }),
@@ -141,18 +140,18 @@ describe('#wrapAll', function() {
             '<div class="outer">' +
             '<div class="inner"></div>' +
             '</div>' +
-            '</div>'
+            '</div>',
         );
     });
 
     it('works with array nodes', async function() {
         assert.strictEqual(
-            await exec(_ => {
-                dom.wrapAll([
+            await exec((_) => {
+                $.wrapAll([
                     document.getElementById('test1'),
                     document.getElementById('test2'),
                     document.getElementById('test3'),
-                    document.getElementById('test4')
+                    document.getElementById('test4'),
                 ], '.outer');
                 return document.body.innerHTML;
             }),
@@ -174,16 +173,16 @@ describe('#wrapAll', function() {
             '<div class="outer">' +
             '<div class="inner"></div>' +
             '</div>' +
-            '</div>'
+            '</div>',
         );
     });
 
     it('works with HTMLElement other nodes', async function() {
         assert.strictEqual(
-            await exec(_ => {
-                dom.wrapAll(
+            await exec((_) => {
+                $.wrapAll(
                     'a',
-                    document.querySelector('.outer')
+                    document.querySelector('.outer'),
                 );
                 return document.body.innerHTML;
             }),
@@ -205,16 +204,16 @@ describe('#wrapAll', function() {
             '<div class="outer">' +
             '<div class="inner"></div>' +
             '</div>' +
-            '</div>'
+            '</div>',
         );
     });
 
     it('works with NodeList other nodes', async function() {
         assert.strictEqual(
-            await exec(_ => {
-                dom.wrapAll(
+            await exec((_) => {
+                $.wrapAll(
                     'a',
-                    document.querySelectorAll('.outer')
+                    document.querySelectorAll('.outer'),
                 );
                 return document.body.innerHTML;
             }),
@@ -236,16 +235,16 @@ describe('#wrapAll', function() {
             '<div class="outer">' +
             '<div class="inner"></div>' +
             '</div>' +
-            '</div>'
+            '</div>',
         );
     });
 
     it('works with HTMLCollection other nodes', async function() {
         assert.strictEqual(
-            await exec(_ => {
-                dom.wrapAll(
+            await exec((_) => {
+                $.wrapAll(
                     'a',
-                    document.getElementById('wrapper').children
+                    document.getElementById('wrapper').children,
                 );
                 return document.body.innerHTML;
             }),
@@ -267,18 +266,18 @@ describe('#wrapAll', function() {
             '<div class="outer">' +
             '<div class="inner"></div>' +
             '</div>' +
-            '</div>'
+            '</div>',
         );
     });
 
     it('works with DocumentFragment other nodes', async function() {
         assert.strictEqual(
-            await exec(_ => {
+            await exec((_) => {
                 const range = document.createRange();
                 const fragment = range.createContextualFragment(
-                    '<div><span></span></div>'
+                    '<div><span></span></div>',
                 );
-                dom.wrapAll('a', fragment);
+                $.wrapAll('a', fragment);
                 return document.body.innerHTML;
             }),
             '<div id="wrap">' +
@@ -299,15 +298,15 @@ describe('#wrapAll', function() {
             '<div class="outer">' +
             '<div class="inner"></div>' +
             '</div>' +
-            '</div>'
+            '</div>',
         );
     });
 
     it('works with array other nodes', async function() {
         assert.strictEqual(
-            await exec(_ => {
-                dom.wrapAll('a', [
-                    document.querySelector('.outer')
+            await exec((_) => {
+                $.wrapAll('a', [
+                    document.querySelector('.outer'),
                 ]);
                 return document.body.innerHTML;
             }),
@@ -329,14 +328,14 @@ describe('#wrapAll', function() {
             '<div class="outer">' +
             '<div class="inner"></div>' +
             '</div>' +
-            '</div>'
+            '</div>',
         );
     });
 
     it('works with HTML other nodes', async function() {
         assert.strictEqual(
-            await exec(_ => {
-                dom.wrapAll('a', '<div class="div-outer"><span class="span-inner"></span></div>');
+            await exec((_) => {
+                $.wrapAll('a', '<div class="div-outer"><span class="span-inner"></span></div>');
                 return document.body.innerHTML;
             }),
             '<div id="wrap">' +
@@ -357,8 +356,7 @@ describe('#wrapAll', function() {
             '<div class="outer">' +
             '<div class="inner"></div>' +
             '</div>' +
-            '</div>'
+            '</div>',
         );
     });
-
 });

@@ -1,10 +1,9 @@
-const assert = require('assert');
-const { exec } = require('../../../setup');
+import assert from 'node:assert/strict';
+import { exec } from './../../../setup.js';
 
 describe('#notOne', function() {
-
     beforeEach(async function() {
-        await exec(_ => {
+        await exec((_) => {
             document.body.innerHTML =
                 '<div id="div1" data-filter="test"></div>' +
                 '<div id="div2"></div>' +
@@ -15,177 +14,176 @@ describe('#notOne', function() {
 
     it('returns the first node not matching a filter', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.notOne('div', '[data-filter="test"]').id
+            await exec((_) =>
+                $.notOne('div', '[data-filter="test"]').id,
             ),
-            'div2'
+            'div2',
         );
     });
 
     it('works with HTMLElement nodes', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.notOne(
+            await exec((_) =>
+                $.notOne(
                     document.getElementById('div2'),
-                    '[data-filter="test"]'
-                ).id
+                    '[data-filter="test"]',
+                ).id,
             ),
-            'div2'
+            'div2',
         );
     });
 
     it('works with NodeList nodes', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.notOne(
+            await exec((_) =>
+                $.notOne(
                     document.querySelectorAll('div'),
-                    '[data-filter="test"]'
-                ).id
+                    '[data-filter="test"]',
+                ).id,
             ),
-            'div2'
+            'div2',
         );
     });
 
     it('works with HTMLCollection nodes', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.notOne(
+            await exec((_) =>
+                $.notOne(
                     document.body.children,
-                    '[data-filter="test"]'
-                ).id
+                    '[data-filter="test"]',
+                ).id,
             ),
-            'div2'
+            'div2',
         );
     });
 
     it('works with DocumentFragment nodes', async function() {
         assert.strictEqual(
-            await exec(_ => {
+            await exec((_) => {
                 const fragment = document.createDocumentFragment();
                 fragment.id = 'fragment';
-                return dom.notOne(fragment, '[data-filter="test"]').id;
+                return $.notOne(fragment, '[data-filter="test"]').id;
             }),
-            'fragment'
+            'fragment',
         );
     });
 
     it('works with ShadowRoot nodes', async function() {
         assert.strictEqual(
-            await exec(_ => {
+            await exec((_) => {
                 const div = document.createElement('div');
                 const shadow = div.attachShadow({ mode: 'open' });
                 shadow.id = 'shadow';
-                return dom.notOne(shadow, '[data-filter="test"]').id;
+                return $.notOne(shadow, '[data-filter="test"]').id;
             }),
-            'shadow'
+            'shadow',
         );
     });
 
     it('works with array nodes', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.notOne([
+            await exec((_) =>
+                $.notOne([
                     document.getElementById('div1'),
                     document.getElementById('div2'),
                     document.getElementById('div3'),
-                    document.getElementById('div4')
-                ], '[data-filter="test"]').id
+                    document.getElementById('div4'),
+                ], '[data-filter="test"]').id,
             ),
-            'div2'
+            'div2',
         );
     });
 
     it('works with function filter', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.notOne(
+            await exec((_) =>
+                $.notOne(
                     'div',
-                    node => node.dataset.filter === 'test'
-                ).id
+                    (node) => node.dataset.filter === 'test',
+                ).id,
             ),
-            'div2'
+            'div2',
         );
     });
 
     it('works with HTMLElement filter', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.notOne(
+            await exec((_) =>
+                $.notOne(
                     'div',
-                    document.getElementById('div1')
-                ).id
+                    document.getElementById('div1'),
+                ).id,
             ),
-            'div2'
+            'div2',
         );
     });
 
     it('works with NodeList filter', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.notOne(
+            await exec((_) =>
+                $.notOne(
                     'div',
-                    document.querySelectorAll('[data-filter="test"]')
-                ).id
+                    document.querySelectorAll('[data-filter="test"]'),
+                ).id,
             ),
-            'div2'
+            'div2',
         );
     });
 
     it('works with HTMLCollection filter', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.notOne(
+            await exec((_) =>
+                $.notOne(
                     'div',
-                    document.body.children
-                )
+                    document.body.children,
+                ),
             ),
-            null
+            null,
         );
     });
 
     it('works with DocumentFragment filter', async function() {
         assert.strictEqual(
-            await exec(_ => {
+            await exec((_) => {
                 const fragment = document.createDocumentFragment();
                 fragment.id = 'fragment';
-                return dom.notOne(
+                return $.notOne(
                     [
-                        fragment
+                        fragment,
                     ],
                     fragment,
                 );
             }),
-            null
+            null,
         );
     });
 
     it('works with ShadowRoot filter', async function() {
         assert.strictEqual(
-            await exec(_ => {
+            await exec((_) => {
                 const div = document.createElement('div');
                 const shadow = div.attachShadow({ mode: 'open' });
                 shadow.id = 'shadow';
-                return dom.notOne(
+                return $.notOne(
                     [
-                        shadow
+                        shadow,
                     ],
-                    shadow
+                    shadow,
                 );
             }),
-            null
+            null,
         );
     });
 
     it('works with array filter', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.notOne('div', [
+            await exec((_) =>
+                $.notOne('div', [
                     document.getElementById('div1'),
-                    document.getElementById('div3')
-                ]).id
+                    document.getElementById('div3'),
+                ]).id,
             ),
-            'div2'
+            'div2',
         );
     });
-
 });

@@ -1,10 +1,9 @@
-const assert = require('assert');
-const { exec } = require('../../../setup');
+import assert from 'node:assert/strict';
+import { exec } from './../../../setup.js';
 
 describe('#wrapInner', function() {
-
     beforeEach(async function() {
-        await exec(_ => {
+        await exec((_) => {
             document.body.innerHTML =
                 '<div id="wrap">' +
                 '<div id="parent1">' +
@@ -26,8 +25,8 @@ describe('#wrapInner', function() {
 
     it('wraps contents of each node', async function() {
         assert.strictEqual(
-            await exec(_ => {
-                dom.wrapInner('#wrap > div', '.outer');
+            await exec((_) => {
+                $.wrapInner('#wrap > div', '.outer');
                 return document.body.innerHTML;
             }),
             '<div id="wrap">' +
@@ -53,16 +52,16 @@ describe('#wrapInner', function() {
             '<div class="inner">' +
             '</div>' +
             '</div>' +
-            '</div>'
+            '</div>',
         );
     });
 
     it('works with HTMLElement nodes', async function() {
         assert.strictEqual(
-            await exec(_ => {
-                dom.wrapInner(
+            await exec((_) => {
+                $.wrapInner(
                     document.getElementById('parent1'),
-                    '.outer'
+                    '.outer',
                 );
                 return document.body.innerHTML;
             }),
@@ -85,16 +84,16 @@ describe('#wrapInner', function() {
             '<div class="inner">' +
             '</div>' +
             '</div>' +
-            '</div>'
+            '</div>',
         );
     });
 
     it('works with NodeList nodes', async function() {
         assert.strictEqual(
-            await exec(_ => {
-                dom.wrapInner(
+            await exec((_) => {
+                $.wrapInner(
                     document.querySelectorAll('#wrap > div'),
-                    '.outer'
+                    '.outer',
                 );
                 return document.body.innerHTML;
             }),
@@ -121,16 +120,16 @@ describe('#wrapInner', function() {
             '<div class="inner">' +
             '</div>' +
             '</div>' +
-            '</div>'
+            '</div>',
         );
     });
 
     it('works with HTMLCollection nodes', async function() {
         assert.strictEqual(
-            await exec(_ => {
-                dom.wrapInner(
+            await exec((_) => {
+                $.wrapInner(
                     document.getElementById('wrap').children,
-                    '.outer'
+                    '.outer',
                 );
                 return document.body.innerHTML;
             }),
@@ -157,19 +156,19 @@ describe('#wrapInner', function() {
             '<div class="inner">' +
             '</div>' +
             '</div>' +
-            '</div>'
+            '</div>',
         );
     });
 
     it('works with DocumentFragment nodes', async function() {
         assert.strictEqual(
-            await exec(_ => {
+            await exec((_) => {
                 const range = document.createRange();
                 const fragment = range.createContextualFragment(
                     '<div><span></span></div>' +
-                    '<div><span></span></div>'
+                    '<div><span></span></div>',
                 );
-                dom.wrapInner(fragment, '.outer');
+                $.wrapInner(fragment, '.outer');
                 document.body.appendChild(fragment);
                 return document.body.innerHTML;
             }),
@@ -194,22 +193,22 @@ describe('#wrapInner', function() {
             '<div><span></span></div>' +
             '<div><span></span></div>' +
             '</div>' +
-            '</div>'
+            '</div>',
         );
     });
 
     it('works with ShadowRoot nodes', async function() {
         assert.strictEqual(
-            await exec(_ => {
+            await exec((_) => {
                 const div = document.createElement('div');
                 const shadow = div.attachShadow({ mode: 'open' });
                 const range = document.createRange();
                 const fragment = range.createContextualFragment(
                     '<div><span></span></div>' +
-                    '<div><span></span></div>'
+                    '<div><span></span></div>',
                 );
                 shadow.appendChild(fragment);
-                dom.wrapInner(shadow, '.outer');
+                $.wrapInner(shadow, '.outer');
                 return shadow.innerHTML;
             }),
             '<div class="outer">' +
@@ -217,16 +216,16 @@ describe('#wrapInner', function() {
             '<div><span></span></div>' +
             '<div><span></span></div>' +
             '</div>' +
-            '</div>'
+            '</div>',
         );
     });
 
     it('works with array nodes', async function() {
         assert.strictEqual(
-            await exec(_ => {
-                dom.wrapInner([
+            await exec((_) => {
+                $.wrapInner([
                     document.getElementById('parent1'),
-                    document.getElementById('parent2')
+                    document.getElementById('parent2'),
                 ], '.outer');
                 return document.body.innerHTML;
             }),
@@ -253,16 +252,16 @@ describe('#wrapInner', function() {
             '<div class="inner">' +
             '</div>' +
             '</div>' +
-            '</div>'
+            '</div>',
         );
     });
 
     it('works with HTMLElement other nodes', async function() {
         assert.strictEqual(
-            await exec(_ => {
-                dom.wrapInner(
+            await exec((_) => {
+                $.wrapInner(
                     '#wrap > div',
-                    document.querySelector('.outer')
+                    document.querySelector('.outer'),
                 );
                 return document.body.innerHTML;
             }),
@@ -289,16 +288,16 @@ describe('#wrapInner', function() {
             '<div class="inner">' +
             '</div>' +
             '</div>' +
-            '</div>'
+            '</div>',
         );
     });
 
     it('works with NodeList other nodes', async function() {
         assert.strictEqual(
-            await exec(_ => {
-                dom.wrapInner(
+            await exec((_) => {
+                $.wrapInner(
                     '#wrap > div',
-                    document.querySelectorAll('.outer')
+                    document.querySelectorAll('.outer'),
                 );
                 return document.body.innerHTML;
             }),
@@ -325,16 +324,16 @@ describe('#wrapInner', function() {
             '<div class="inner">' +
             '</div>' +
             '</div>' +
-            '</div>'
+            '</div>',
         );
     });
 
     it('works with HTMLCollection other nodes', async function() {
         assert.strictEqual(
-            await exec(_ => {
-                dom.wrapInner(
+            await exec((_) => {
+                $.wrapInner(
                     '#wrap > div',
-                    document.getElementById('wrapper').children
+                    document.getElementById('wrapper').children,
                 );
                 return document.body.innerHTML;
             }),
@@ -361,18 +360,18 @@ describe('#wrapInner', function() {
             '<div class="inner">' +
             '</div>' +
             '</div>' +
-            '</div>'
+            '</div>',
         );
     });
 
     it('works with DocumentFragment other nodes', async function() {
         assert.strictEqual(
-            await exec(_ => {
+            await exec((_) => {
                 const range = document.createRange();
                 const fragment = range.createContextualFragment(
-                    '<div><span></span></div>'
+                    '<div><span></span></div>',
                 );
-                dom.wrapInner('#wrap > div', fragment);
+                $.wrapInner('#wrap > div', fragment);
                 return document.body.innerHTML;
             }),
             '<div id="wrap">' +
@@ -398,15 +397,15 @@ describe('#wrapInner', function() {
             '<div class="inner">' +
             '</div>' +
             '</div>' +
-            '</div>'
+            '</div>',
         );
     });
 
     it('works with array other nodes', async function() {
         assert.strictEqual(
-            await exec(_ => {
-                dom.wrapInner('#wrap > div', [
-                    document.querySelector('.outer')
+            await exec((_) => {
+                $.wrapInner('#wrap > div', [
+                    document.querySelector('.outer'),
                 ]);
                 return document.body.innerHTML;
             }),
@@ -433,14 +432,14 @@ describe('#wrapInner', function() {
             '<div class="inner">' +
             '</div>' +
             '</div>' +
-            '</div>'
+            '</div>',
         );
     });
 
     it('works with HTML other nodes', async function() {
         assert.strictEqual(
-            await exec(_ => {
-                dom.wrapInner('#wrap > div', '<div class="div-outer"><span class="span-inner"></span></div>');
+            await exec((_) => {
+                $.wrapInner('#wrap > div', '<div class="div-outer"><span class="span-inner"></span></div>');
                 return document.body.innerHTML;
             }),
             '<div id="wrap">' +
@@ -466,8 +465,7 @@ describe('#wrapInner', function() {
             '<div class="inner">' +
             '</div>' +
             '</div>' +
-            '</div>'
+            '</div>',
         );
     });
-
 });

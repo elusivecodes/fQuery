@@ -1,10 +1,9 @@
-const assert = require('assert');
-const { exec } = require('../../../setup');
+import assert from 'node:assert/strict';
+import { exec } from './../../../setup.js';
 
 describe('#prevAll', function() {
-
     beforeEach(async function() {
-        await exec(_ => {
+        await exec((_) => {
             document.body.innerHTML =
                 '<div id="parent1">' +
                 '<span id="span1">' +
@@ -39,259 +38,258 @@ describe('#prevAll', function() {
 
     it('returns all previous siblings of each node', async function() {
         assert.deepStrictEqual(
-            await exec(_ =>
-                dom.prevAll('.span')
-                    .map(node => node.id)
+            await exec((_) =>
+                $.prevAll('.span')
+                    .map((node) => node.id),
             ),
             [
                 'span1',
                 'span2',
                 'span5',
-                'span6'
-            ]
+                'span6',
+            ],
         );
     });
 
     it('returns all previous siblings of each node matching a filter', async function() {
         assert.deepStrictEqual(
-            await exec(_ =>
-                dom.prevAll('.span', '#span1, #span5')
-                    .map(node => node.id)
+            await exec((_) =>
+                $.prevAll('.span', '#span1, #span5')
+                    .map((node) => node.id),
             ),
             [
                 'span1',
-                'span5'
-            ]
+                'span5',
+            ],
         );
     });
 
     it('returns all previous siblings of each node before a limit', async function() {
         assert.deepStrictEqual(
-            await exec(_ =>
-                dom.prevAll('.span', null, '#span1, #span6')
-                    .map(node => node.id)
+            await exec((_) =>
+                $.prevAll('.span', null, '#span1, #span6')
+                    .map((node) => node.id),
             ),
             [
-                'span2'
-            ]
+                'span2',
+            ],
         );
     });
 
     it('returns an empty array for empty nodes', async function() {
         assert.deepStrictEqual(
-            await exec(_ =>
-                dom.prevAll('#invalid')
+            await exec((_) =>
+                $.prevAll('#invalid'),
             ),
-            []
+            [],
         );
     });
 
     it('works with HTMLElement nodes', async function() {
         assert.deepStrictEqual(
-            await exec(_ =>
-                dom.prevAll(
+            await exec((_) =>
+                $.prevAll(
                     document.getElementById('span3'),
-                    '#span1, #span5'
-                ).map(node => node.id)
+                    '#span1, #span5',
+                ).map((node) => node.id),
             ),
             [
-                'span1'
-            ]
+                'span1',
+            ],
         );
     });
 
     it('works with NodeList nodes', async function() {
         assert.deepStrictEqual(
-            await exec(_ =>
-                dom.prevAll(
+            await exec((_) =>
+                $.prevAll(
                     document.querySelectorAll('.span'),
-                    '#span1, #span5'
-                ).map(node => node.id)
+                    '#span1, #span5',
+                ).map((node) => node.id),
             ),
             [
                 'span1',
-                'span5'
-            ]
+                'span5',
+            ],
         );
     });
 
     it('works with HTMLCollection nodes', async function() {
         assert.deepStrictEqual(
-            await exec(_ =>
-                dom.prevAll(
+            await exec((_) =>
+                $.prevAll(
                     document.getElementById('parent2').children,
-                    '#span1, #span5'
-                ).map(node => node.id)
+                    '#span1, #span5',
+                ).map((node) => node.id),
             ),
             [
-                'span5'
-            ]
+                'span5',
+            ],
         );
     });
 
     it('works with array nodes', async function() {
         assert.deepStrictEqual(
-            await exec(_ =>
-                dom.prevAll([
+            await exec((_) =>
+                $.prevAll([
                     document.getElementById('span3'),
-                    document.getElementById('span7')
-                ], '#span1, #span5').map(node => node.id)
+                    document.getElementById('span7'),
+                ], '#span1, #span5').map((node) => node.id),
             ),
             [
                 'span1',
-                'span5'
-            ]
+                'span5',
+            ],
         );
     });
 
     it('works with function filter', async function() {
         assert.deepStrictEqual(
-            await exec(_ =>
-                dom.prevAll(
+            await exec((_) =>
+                $.prevAll(
                     '.span',
-                    node => node.id === 'span5'
-                ).map(node => node.id)
+                    (node) => node.id === 'span5',
+                ).map((node) => node.id),
             ),
             [
-                'span5'
-            ]
+                'span5',
+            ],
         );
     });
 
     it('works with HTMLElement filter', async function() {
         assert.deepStrictEqual(
-            await exec(_ =>
-                dom.prevAll(
+            await exec((_) =>
+                $.prevAll(
                     '.span',
-                    document.getElementById('span1')
-                ).map(node => node.id)
+                    document.getElementById('span1'),
+                ).map((node) => node.id),
             ),
             [
-                'span1'
-            ]
+                'span1',
+            ],
         );
     });
 
     it('works with NodeList filter', async function() {
         assert.deepStrictEqual(
-            await exec(_ =>
-                dom.prevAll(
+            await exec((_) =>
+                $.prevAll(
                     '.span',
-                    document.querySelectorAll('#span1, #span5')
-                ).map(node => node.id)
+                    document.querySelectorAll('#span1, #span5'),
+                ).map((node) => node.id),
             ),
             [
                 'span1',
-                'span5'
-            ]
+                'span5',
+            ],
         );
     });
 
     it('works with HTMLCollection filter', async function() {
         assert.deepStrictEqual(
-            await exec(_ =>
-                dom.prevAll(
+            await exec((_) =>
+                $.prevAll(
                     '.span',
-                    document.getElementById('parent2').children
-                ).map(node => node.id)
+                    document.getElementById('parent2').children,
+                ).map((node) => node.id),
             ),
             [
                 'span5',
-                'span6'
-            ]
+                'span6',
+            ],
         );
     });
 
     it('works with array filter', async function() {
         assert.deepStrictEqual(
-            await exec(_ =>
-                dom.prevAll('.span', [
+            await exec((_) =>
+                $.prevAll('.span', [
                     document.getElementById('span1'),
-                    document.getElementById('span5')
-                ]).map(node => node.id)
+                    document.getElementById('span5'),
+                ]).map((node) => node.id),
             ),
             [
                 'span1',
-                'span5'
-            ]
+                'span5',
+            ],
         );
     });
 
     it('works with function limit', async function() {
         assert.deepStrictEqual(
-            await exec(_ =>
-                dom.prevAll(
+            await exec((_) =>
+                $.prevAll(
                     '.span',
                     null,
-                    node => node.id === 'span6'
-                ).map(node => node.id)
+                    (node) => node.id === 'span6',
+                ).map((node) => node.id),
             ),
             [
                 'span1',
-                'span2'
-            ]
+                'span2',
+            ],
         );
     });
 
     it('works with HTMLElement limit', async function() {
         assert.deepStrictEqual(
-            await exec(_ =>
-                dom.prevAll(
+            await exec((_) =>
+                $.prevAll(
                     '.span',
                     null,
-                    document.getElementById('span6')
-                ).map(node => node.id)
+                    document.getElementById('span6'),
+                ).map((node) => node.id),
             ),
             [
                 'span1',
-                'span2'
-            ]
+                'span2',
+            ],
         );
     });
 
     it('works with NodeList limit', async function() {
         assert.deepStrictEqual(
-            await exec(_ =>
-                dom.prevAll(
+            await exec((_) =>
+                $.prevAll(
                     '.span',
                     null,
-                    document.querySelectorAll('#span1, #span6')
-                ).map(node => node.id)
+                    document.querySelectorAll('#span1, #span6'),
+                ).map((node) => node.id),
             ),
             [
-                'span2'
-            ]
+                'span2',
+            ],
         );
     });
 
     it('works with HTMLCollection limit', async function() {
         assert.deepStrictEqual(
-            await exec(_ =>
-                dom.prevAll(
+            await exec((_) =>
+                $.prevAll(
                     '.span',
                     null,
-                    document.getElementById('parent2').children
-                ).map(node => node.id)
+                    document.getElementById('parent2').children,
+                ).map((node) => node.id),
             ),
             [
                 'span1',
-                'span2'
-            ]
+                'span2',
+            ],
         );
     });
 
     it('works with array limit', async function() {
         assert.deepStrictEqual(
-            await exec(_ =>
-                dom.prevAll('.span', null, [,
+            await exec((_) =>
+                $.prevAll('.span', null, [,
                     document.getElementById('span1'),
-                    document.getElementById('span6')
-                ]).map(node => node.id)
+                    document.getElementById('span6'),
+                ]).map((node) => node.id),
             ),
             [
-                'span2'
-            ]
+                'span2',
+            ],
         );
     });
-
 });

@@ -1,10 +1,9 @@
-const assert = require('assert');
-const { exec } = require('../../../setup');
+import assert from 'node:assert/strict';
+import { exec } from './../../../setup.js';
 
 describe('#commonAncestor', function() {
-
     beforeEach(async function() {
-        await exec(_ => {
+        await exec((_) => {
             document.body.innerHTML =
                 '<div id="parent">' +
                 '<div id="child">' +
@@ -21,65 +20,64 @@ describe('#commonAncestor', function() {
 
     it('returns the closest common ancestor of all nodes', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.commonAncestor('a').id
+            await exec((_) =>
+                $.commonAncestor('a').id,
             ),
-            'child'
+            'child',
         );
     });
 
     it('returns undefined for empty nodes', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.commonAncestor('#invalid')
+            await exec((_) =>
+                $.commonAncestor('#invalid'),
             ),
-            undefined
+            undefined,
         );
     });
 
     it('works with HTMLElement nodes', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.commonAncestor(
-                    document.getElementById('a1')
-                ).id
+            await exec((_) =>
+                $.commonAncestor(
+                    document.getElementById('a1'),
+                ).id,
             ),
-            'span1'
+            'span1',
         );
     });
 
     it('works with NodeList nodes', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.commonAncestor(
-                    document.querySelectorAll('a')
-                ).id
+            await exec((_) =>
+                $.commonAncestor(
+                    document.querySelectorAll('a'),
+                ).id,
             ),
-            'child'
+            'child',
         );
     });
 
     it('works with HTMLCollection nodes', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.commonAncestor(
-                    document.getElementById('span1').children
-                ).id
+            await exec((_) =>
+                $.commonAncestor(
+                    document.getElementById('span1').children,
+                ).id,
             ),
-            'span1'
+            'span1',
         );
     });
 
     it('works with array nodes', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.commonAncestor([
+            await exec((_) =>
+                $.commonAncestor([
                     document.getElementById('a1'),
-                    document.getElementById('a2')
-                ]).id
+                    document.getElementById('a2'),
+                ]).id,
             ),
-            'child'
+            'child',
         );
     });
-
 });

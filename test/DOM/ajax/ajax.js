@@ -1,18 +1,17 @@
-const assert = require('assert');
-const { exec } = require('../../setup');
+import assert from 'node:assert/strict';
+import { exec } from './../../setup.js';
 
 describe('#ajax', function() {
-
     it('performs an AJAX request', async function() {
         assert.deepStrictEqual(
-            await exec(async _ => {
-                const response = await DOM.ajax();
+            await exec(async (_) => {
+                const response = await $.ajax();
                 response.xhr = response.xhr.data;
                 return response;
             }),
             {
                 event: {
-                    isTrusted: false
+                    isTrusted: false,
                 },
                 response: 'Test',
                 xhr: {
@@ -20,28 +19,28 @@ describe('#ajax', function() {
                     body: null,
                     headers: {
                         'Content-Type': 'application/x-www-form-urlencoded',
-                        'X-Requested-With': 'XMLHttpRequest'
+                        'X-Requested-With': 'XMLHttpRequest',
                     },
                     method: 'GET',
                     status: 200,
-                    url: 'http://localhost:3001/'
-                }
-            }
+                    url: 'http://localhost:3001/',
+                },
+            },
         );
     });
 
     it('performs an AJAX request with URL', async function() {
         assert.deepStrictEqual(
-            await exec(async _ => {
-                const response = await DOM.ajax({
-                    url: '/test'
+            await exec(async (_) => {
+                const response = await $.ajax({
+                    url: '/test',
                 });
                 response.xhr = response.xhr.data;
                 return response;
             }),
             {
                 event: {
-                    isTrusted: false
+                    isTrusted: false,
                 },
                 response: 'Test',
                 xhr: {
@@ -49,28 +48,28 @@ describe('#ajax', function() {
                     body: null,
                     headers: {
                         'Content-Type': 'application/x-www-form-urlencoded',
-                        'X-Requested-With': 'XMLHttpRequest'
+                        'X-Requested-With': 'XMLHttpRequest',
                     },
                     method: 'GET',
                     status: 200,
-                    url: '/test'
-                }
-            }
+                    url: '/test',
+                },
+            },
         );
     });
 
     it('performs an AJAX request with method', async function() {
         assert.deepStrictEqual(
-            await exec(async _ => {
-                const response = await DOM.ajax({
-                    method: 'POST'
+            await exec(async (_) => {
+                const response = await $.ajax({
+                    method: 'POST',
                 });
                 response.xhr = response.xhr.data;
                 return response;
             }),
             {
                 event: {
-                    isTrusted: false
+                    isTrusted: false,
                 },
                 response: 'Test',
                 xhr: {
@@ -78,31 +77,31 @@ describe('#ajax', function() {
                     body: null,
                     headers: {
                         'Content-Type': 'application/x-www-form-urlencoded',
-                        'X-Requested-With': 'XMLHttpRequest'
+                        'X-Requested-With': 'XMLHttpRequest',
                     },
                     method: 'POST',
                     status: 200,
-                    url: 'http://localhost:3001/'
-                }
-            }
+                    url: 'http://localhost:3001/',
+                },
+            },
         );
     });
 
     it('performs an AJAX request with data (object)', async function() {
         assert.deepStrictEqual(
-            await exec(async _ => {
-                const response = await DOM.ajax({
+            await exec(async (_) => {
+                const response = await $.ajax({
                     data: {
                         test1: 'Test 1',
-                        test2: 'Test 2'
-                    }
+                        test2: 'Test 2',
+                    },
                 });
                 response.xhr = response.xhr.data;
                 return response;
             }),
             {
                 event: {
-                    isTrusted: false
+                    isTrusted: false,
                 },
                 response: 'Test',
                 xhr: {
@@ -110,34 +109,34 @@ describe('#ajax', function() {
                     body: null,
                     headers: {
                         'Content-Type': 'application/x-www-form-urlencoded',
-                        'X-Requested-With': 'XMLHttpRequest'
+                        'X-Requested-With': 'XMLHttpRequest',
                     },
                     method: 'GET',
                     status: 200,
-                    url: 'http://localhost:3001/?test1=Test+1&test2=Test+2'
-                }
-            }
+                    url: 'http://localhost:3001/?test1=Test+1&test2=Test+2',
+                },
+            },
         );
     });
 
     it('performs an AJAX request with data (deep object)', async function() {
         assert.deepStrictEqual(
-            await exec(async _ => {
-                const response = await DOM.ajax({
+            await exec(async (_) => {
+                const response = await $.ajax({
                     data: {
                         test1: 'Test 1',
                         test2: {
                             a: '1',
-                            b: '2'
-                        }
-                    }
+                            b: '2',
+                        },
+                    },
                 });
                 response.xhr = response.xhr.data;
                 return response;
             }),
             {
                 event: {
-                    isTrusted: false
+                    isTrusted: false,
                 },
                 response: 'Test',
                 xhr: {
@@ -145,32 +144,32 @@ describe('#ajax', function() {
                     body: null,
                     headers: {
                         'Content-Type': 'application/x-www-form-urlencoded',
-                        'X-Requested-With': 'XMLHttpRequest'
+                        'X-Requested-With': 'XMLHttpRequest',
                     },
                     method: 'GET',
                     status: 200,
-                    url: 'http://localhost:3001/?test1=Test+1&test2%5Ba%5D=1&test2%5Bb%5D=2'
-                }
-            }
+                    url: 'http://localhost:3001/?test1=Test+1&test2%5Ba%5D=1&test2%5Bb%5D=2',
+                },
+            },
         );
     });
 
     it('performs an AJAX request with data (implicit deep object)', async function() {
         assert.deepStrictEqual(
-            await exec(async _ => {
-                const response = await DOM.ajax({
+            await exec(async (_) => {
+                const response = await $.ajax({
                     data: {
-                        test1: 'Test 1',
+                        'test1': 'Test 1',
                         'test2[a]': '1',
-                        'test2[b]': '2'
-                    }
+                        'test2[b]': '2',
+                    },
                 });
                 response.xhr = response.xhr.data;
                 return response;
             }),
             {
                 event: {
-                    isTrusted: false
+                    isTrusted: false,
                 },
                 response: 'Test',
                 xhr: {
@@ -178,31 +177,31 @@ describe('#ajax', function() {
                     body: null,
                     headers: {
                         'Content-Type': 'application/x-www-form-urlencoded',
-                        'X-Requested-With': 'XMLHttpRequest'
+                        'X-Requested-With': 'XMLHttpRequest',
                     },
                     method: 'GET',
                     status: 200,
-                    url: 'http://localhost:3001/?test1=Test+1&test2%5Ba%5D=1&test2%5Bb%5D=2'
-                }
-            }
+                    url: 'http://localhost:3001/?test1=Test+1&test2%5Ba%5D=1&test2%5Bb%5D=2',
+                },
+            },
         );
     });
 
     it('performs an AJAX request with data (object with array)', async function() {
         assert.deepStrictEqual(
-            await exec(async _ => {
-                const response = await DOM.ajax({
+            await exec(async (_) => {
+                const response = await $.ajax({
                     data: {
                         test1: 'Test 1',
-                        test2: ['1', '2']
-                    }
+                        test2: ['1', '2'],
+                    },
                 });
                 response.xhr = response.xhr.data;
                 return response;
             }),
             {
                 event: {
-                    isTrusted: false
+                    isTrusted: false,
                 },
                 response: 'Test',
                 xhr: {
@@ -210,31 +209,31 @@ describe('#ajax', function() {
                     body: null,
                     headers: {
                         'Content-Type': 'application/x-www-form-urlencoded',
-                        'X-Requested-With': 'XMLHttpRequest'
+                        'X-Requested-With': 'XMLHttpRequest',
                     },
                     method: 'GET',
                     status: 200,
-                    url: 'http://localhost:3001/?test1=Test+1&test2%5B%5D=1&test2%5B%5D=2'
-                }
-            }
+                    url: 'http://localhost:3001/?test1=Test+1&test2%5B%5D=1&test2%5B%5D=2',
+                },
+            },
         );
     });
 
     it('performs an AJAX request with data (object with implicit array)', async function() {
         assert.deepStrictEqual(
-            await exec(async _ => {
-                const response = await DOM.ajax({
+            await exec(async (_) => {
+                const response = await $.ajax({
                     data: {
-                        test1: 'Test 1',
-                        'test2[]': ['1', '2']
-                    }
+                        'test1': 'Test 1',
+                        'test2[]': ['1', '2'],
+                    },
                 });
                 response.xhr = response.xhr.data;
                 return response;
             }),
             {
                 event: {
-                    isTrusted: false
+                    isTrusted: false,
                 },
                 response: 'Test',
                 xhr: {
@@ -242,37 +241,37 @@ describe('#ajax', function() {
                     body: null,
                     headers: {
                         'Content-Type': 'application/x-www-form-urlencoded',
-                        'X-Requested-With': 'XMLHttpRequest'
+                        'X-Requested-With': 'XMLHttpRequest',
                     },
                     method: 'GET',
                     status: 200,
-                    url: 'http://localhost:3001/?test1=Test+1&test2%5B%5D=1&test2%5B%5D=2'
-                }
-            }
+                    url: 'http://localhost:3001/?test1=Test+1&test2%5B%5D=1&test2%5B%5D=2',
+                },
+            },
         );
     });
 
     it('performs an AJAX request with data (array)', async function() {
         assert.deepStrictEqual(
-            await exec(async _ => {
-                const response = await DOM.ajax({
+            await exec(async (_) => {
+                const response = await $.ajax({
                     data: [
                         {
                             name: 'test1',
-                            value: 'Test 1'
+                            value: 'Test 1',
                         },
                         {
                             name: 'test2',
-                            value: 'Test 2'
-                        }
-                    ]
+                            value: 'Test 2',
+                        },
+                    ],
                 });
                 response.xhr = response.xhr.data;
                 return response;
             }),
             {
                 event: {
-                    isTrusted: false
+                    isTrusted: false,
                 },
                 response: 'Test',
                 xhr: {
@@ -280,37 +279,37 @@ describe('#ajax', function() {
                     body: null,
                     headers: {
                         'Content-Type': 'application/x-www-form-urlencoded',
-                        'X-Requested-With': 'XMLHttpRequest'
+                        'X-Requested-With': 'XMLHttpRequest',
                     },
                     method: 'GET',
                     status: 200,
-                    url: 'http://localhost:3001/?test1=Test+1&test2=Test+2'
-                }
-            }
+                    url: 'http://localhost:3001/?test1=Test+1&test2=Test+2',
+                },
+            },
         );
     });
 
     it('performs an AJAX request with data (deep array)', async function() {
         assert.deepStrictEqual(
-            await exec(async _ => {
-                const response = await DOM.ajax({
+            await exec(async (_) => {
+                const response = await $.ajax({
                     data: [
                         {
                             name: 'test1',
-                            value: 'Test 1'
+                            value: 'Test 1',
                         },
                         {
                             name: 'test2',
-                            value: ['1', '2']
-                        }
-                    ]
+                            value: ['1', '2'],
+                        },
+                    ],
                 });
                 response.xhr = response.xhr.data;
                 return response;
             }),
             {
                 event: {
-                    isTrusted: false
+                    isTrusted: false,
                 },
                 response: 'Test',
                 xhr: {
@@ -318,37 +317,37 @@ describe('#ajax', function() {
                     body: null,
                     headers: {
                         'Content-Type': 'application/x-www-form-urlencoded',
-                        'X-Requested-With': 'XMLHttpRequest'
+                        'X-Requested-With': 'XMLHttpRequest',
                     },
                     method: 'GET',
                     status: 200,
-                    url: 'http://localhost:3001/?test1=Test+1&test2%5B%5D=1&test2%5B%5D=2'
-                }
-            }
+                    url: 'http://localhost:3001/?test1=Test+1&test2%5B%5D=1&test2%5B%5D=2',
+                },
+            },
         );
     });
 
     it('performs an AJAX request with data (implicit deep array)', async function() {
         assert.deepStrictEqual(
-            await exec(async _ => {
-                const response = await DOM.ajax({
+            await exec(async (_) => {
+                const response = await $.ajax({
                     data: [
                         {
                             name: 'test1',
-                            value: 'Test 1'
+                            value: 'Test 1',
                         },
                         {
                             name: 'test2[]',
-                            value: ['1', '2']
-                        }
-                    ]
+                            value: ['1', '2'],
+                        },
+                    ],
                 });
                 response.xhr = response.xhr.data;
                 return response;
             }),
             {
                 event: {
-                    isTrusted: false
+                    isTrusted: false,
                 },
                 response: 'Test',
                 xhr: {
@@ -356,28 +355,28 @@ describe('#ajax', function() {
                     body: null,
                     headers: {
                         'Content-Type': 'application/x-www-form-urlencoded',
-                        'X-Requested-With': 'XMLHttpRequest'
+                        'X-Requested-With': 'XMLHttpRequest',
                     },
                     method: 'GET',
                     status: 200,
-                    url: 'http://localhost:3001/?test1=Test+1&test2%5B%5D=1&test2%5B%5D=2'
-                }
-            }
+                    url: 'http://localhost:3001/?test1=Test+1&test2%5B%5D=1&test2%5B%5D=2',
+                },
+            },
         );
     });
 
     it('performs an AJAX request with data (string)', async function() {
         assert.deepStrictEqual(
-            await exec(async _ => {
-                const response = await DOM.ajax({
-                    data: 'test1=Test%201&test2=Test%202'
+            await exec(async (_) => {
+                const response = await $.ajax({
+                    data: 'test1=Test%201&test2=Test%202',
                 });
                 response.xhr = response.xhr.data;
                 return response;
             }),
             {
                 event: {
-                    isTrusted: false
+                    isTrusted: false,
                 },
                 response: 'Test',
                 xhr: {
@@ -385,28 +384,28 @@ describe('#ajax', function() {
                     body: null,
                     headers: {
                         'Content-Type': 'application/x-www-form-urlencoded',
-                        'X-Requested-With': 'XMLHttpRequest'
+                        'X-Requested-With': 'XMLHttpRequest',
                     },
                     method: 'GET',
                     status: 200,
-                    url: 'http://localhost:3001/?test1=Test+1&test2=Test+2'
-                }
-            }
+                    url: 'http://localhost:3001/?test1=Test+1&test2=Test+2',
+                },
+            },
         );
     });
 
     it('performs an AJAX request with content type', async function() {
         assert.deepStrictEqual(
-            await exec(async _ => {
-                const response = await DOM.ajax({
-                    contentType: 'text/plain'
+            await exec(async (_) => {
+                const response = await $.ajax({
+                    contentType: 'text/plain',
                 });
                 response.xhr = response.xhr.data;
                 return response;
             }),
             {
                 event: {
-                    isTrusted: false
+                    isTrusted: false,
                 },
                 response: 'Test',
                 xhr: {
@@ -414,28 +413,28 @@ describe('#ajax', function() {
                     body: null,
                     headers: {
                         'Content-Type': 'text/plain',
-                        'X-Requested-With': 'XMLHttpRequest'
+                        'X-Requested-With': 'XMLHttpRequest',
                     },
                     method: 'GET',
                     status: 200,
-                    url: 'http://localhost:3001/'
-                }
-            }
+                    url: 'http://localhost:3001/',
+                },
+            },
         );
     });
 
     it('performs an AJAX request with response type', async function() {
         assert.deepStrictEqual(
-            await exec(async _ => {
-                const response = await DOM.ajax({
-                    responseType: 'json'
+            await exec(async (_) => {
+                const response = await $.ajax({
+                    responseType: 'json',
                 });
                 response.xhr = response.xhr.data;
                 return response;
             }),
             {
                 event: {
-                    isTrusted: false
+                    isTrusted: false,
                 },
                 response: 'Test',
                 xhr: {
@@ -443,29 +442,29 @@ describe('#ajax', function() {
                     body: null,
                     headers: {
                         'Content-Type': 'application/x-www-form-urlencoded',
-                        'X-Requested-With': 'XMLHttpRequest'
+                        'X-Requested-With': 'XMLHttpRequest',
                     },
                     method: 'GET',
                     responseType: 'json',
                     status: 200,
-                    url: 'http://localhost:3001/'
-                }
-            }
+                    url: 'http://localhost:3001/',
+                },
+            },
         );
     });
 
     it('performs an AJAX request with MIME type', async function() {
         assert.deepStrictEqual(
-            await exec(async _ => {
-                const response = await DOM.ajax({
-                    mimeType: 'text/plain'
+            await exec(async (_) => {
+                const response = await $.ajax({
+                    mimeType: 'text/plain',
                 });
                 response.xhr = response.xhr.data;
                 return response;
             }),
             {
                 event: {
-                    isTrusted: false
+                    isTrusted: false,
                 },
                 response: 'Test',
                 xhr: {
@@ -473,29 +472,29 @@ describe('#ajax', function() {
                     body: null,
                     headers: {
                         'Content-Type': 'application/x-www-form-urlencoded',
-                        'X-Requested-With': 'XMLHttpRequest'
+                        'X-Requested-With': 'XMLHttpRequest',
                     },
                     method: 'GET',
                     mimeType: 'text/plain',
                     status: 200,
-                    url: 'http://localhost:3001/'
-                }
-            }
+                    url: 'http://localhost:3001/',
+                },
+            },
         );
     });
 
     it('performs an AJAX request with username', async function() {
         assert.deepStrictEqual(
-            await exec(async _ => {
-                const response = await DOM.ajax({
-                    username: 'test'
+            await exec(async (_) => {
+                const response = await $.ajax({
+                    username: 'test',
                 });
                 response.xhr = response.xhr.data;
                 return response;
             }),
             {
                 event: {
-                    isTrusted: false
+                    isTrusted: false,
                 },
                 response: 'Test',
                 xhr: {
@@ -503,29 +502,29 @@ describe('#ajax', function() {
                     body: null,
                     headers: {
                         'Content-Type': 'application/x-www-form-urlencoded',
-                        'X-Requested-With': 'XMLHttpRequest'
+                        'X-Requested-With': 'XMLHttpRequest',
                     },
                     method: 'GET',
                     username: 'test',
                     status: 200,
-                    url: 'http://localhost:3001/'
-                }
-            }
+                    url: 'http://localhost:3001/',
+                },
+            },
         );
     });
 
     it('performs an AJAX request with password', async function() {
         assert.deepStrictEqual(
-            await exec(async _ => {
-                const response = await DOM.ajax({
-                    password: 'test'
+            await exec(async (_) => {
+                const response = await $.ajax({
+                    password: 'test',
                 });
                 response.xhr = response.xhr.data;
                 return response;
             }),
             {
                 event: {
-                    isTrusted: false
+                    isTrusted: false,
                 },
                 response: 'Test',
                 xhr: {
@@ -533,29 +532,29 @@ describe('#ajax', function() {
                     body: null,
                     headers: {
                         'Content-Type': 'application/x-www-form-urlencoded',
-                        'X-Requested-With': 'XMLHttpRequest'
+                        'X-Requested-With': 'XMLHttpRequest',
                     },
                     method: 'GET',
                     password: 'test',
                     status: 200,
-                    url: 'http://localhost:3001/'
-                }
-            }
+                    url: 'http://localhost:3001/',
+                },
+            },
         );
     });
 
     it('performs an AJAX request with timeout', async function() {
         assert.deepStrictEqual(
-            await exec(async _ => {
-                const response = await DOM.ajax({
-                    timeout: 1000
+            await exec(async (_) => {
+                const response = await $.ajax({
+                    timeout: 1000,
                 });
                 response.xhr = response.xhr.data;
                 return response;
             }),
             {
                 event: {
-                    isTrusted: false
+                    isTrusted: false,
                 },
                 response: 'Test',
                 xhr: {
@@ -563,59 +562,59 @@ describe('#ajax', function() {
                     body: null,
                     headers: {
                         'Content-Type': 'application/x-www-form-urlencoded',
-                        'X-Requested-With': 'XMLHttpRequest'
+                        'X-Requested-With': 'XMLHttpRequest',
                     },
                     method: 'GET',
                     status: 200,
                     timeout: 1000,
-                    url: 'http://localhost:3001/'
-                }
-            }
+                    url: 'http://localhost:3001/',
+                },
+            },
         );
     });
 
     it('performs an AJAX request (local)', async function() {
         assert.deepStrictEqual(
-            await exec(async _ => {
-                const response = await DOM.ajax({
-                    isLocal: true
+            await exec(async (_) => {
+                const response = await $.ajax({
+                    isLocal: true,
                 });
                 response.xhr = response.xhr.data;
                 return response;
             }),
             {
                 event: {
-                    isTrusted: false
+                    isTrusted: false,
                 },
                 response: 'Test',
                 xhr: {
                     async: true,
                     body: null,
                     headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded'
+                        'Content-Type': 'application/x-www-form-urlencoded',
                     },
                     method: 'GET',
                     status: 200,
-                    url: 'http://localhost:3001/'
-                }
-            }
+                    url: 'http://localhost:3001/',
+                },
+            },
         );
     });
 
     it('performs an AJAX request with custom headers', async function() {
         assert.deepStrictEqual(
-            await exec(async _ => {
-                const response = await DOM.ajax({
+            await exec(async (_) => {
+                const response = await $.ajax({
                     headers: {
-                        'Test': 'Test 1'
-                    }
+                        'Test': 'Test 1',
+                    },
                 });
                 response.xhr = response.xhr.data;
                 return response;
             }),
             {
                 event: {
-                    isTrusted: false
+                    isTrusted: false,
                 },
                 response: 'Test',
                 xhr: {
@@ -624,20 +623,20 @@ describe('#ajax', function() {
                     headers: {
                         'Content-Type': 'application/x-www-form-urlencoded',
                         'Test': 'Test 1',
-                        'X-Requested-With': 'XMLHttpRequest'
+                        'X-Requested-With': 'XMLHttpRequest',
                     },
                     method: 'GET',
                     status: 200,
-                    url: 'http://localhost:3001/'
-                }
-            }
+                    url: 'http://localhost:3001/',
+                },
+            },
         );
     });
 
     it('performs an AJAX request without cache', async function() {
-        const response = await exec(async _ => {
-            const response = await DOM.ajax({
-                cache: false
+        const response = await exec(async (_) => {
+            const response = await $.ajax({
+                cache: false,
             });
             response.xhr = response.xhr.data;
             return response;
@@ -649,10 +648,10 @@ describe('#ajax', function() {
     });
 
     it('performs an AJAX request without cache (query string)', async function() {
-        const response = await exec(async _ => {
-            const response = await DOM.ajax({
+        const response = await exec(async (_) => {
+            const response = await $.ajax({
                 url: '/?test=1',
-                cache: false
+                cache: false,
             });
             response.xhr = response.xhr.data;
             return response;
@@ -665,14 +664,14 @@ describe('#ajax', function() {
 
     it('works with beforeSend callback', async function() {
         assert.deepStrictEqual(
-            await exec(async _ => {
+            await exec(async (_) => {
                 let result;
-                await DOM.ajax({
-                    beforeSend: xhr => {
+                await $.ajax({
+                    beforeSend: (xhr) => {
                         result = {
-                            ...xhr.data
+                            ...xhr.data,
                         };
-                    }
+                    },
                 });
                 return result;
             }),
@@ -680,24 +679,24 @@ describe('#ajax', function() {
                 async: true,
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded',
-                    'X-Requested-With': 'XMLHttpRequest'
+                    'X-Requested-With': 'XMLHttpRequest',
                 },
                 method: 'GET',
-                url: 'http://localhost:3001/'
-            }
+                url: 'http://localhost:3001/',
+            },
         );
     });
 
     it('works with afterSend callback', async function() {
         assert.deepStrictEqual(
-            await exec(async _ => {
+            await exec(async (_) => {
                 let result;
-                await DOM.ajax({
-                    afterSend: xhr => {
+                await $.ajax({
+                    afterSend: (xhr) => {
                         result = {
-                            ...xhr.data
+                            ...xhr.data,
                         };
-                    }
+                    },
                 });
                 return result;
             }),
@@ -706,26 +705,26 @@ describe('#ajax', function() {
                 body: null,
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded',
-                    'X-Requested-With': 'XMLHttpRequest'
+                    'X-Requested-With': 'XMLHttpRequest',
                 },
                 method: 'GET',
-                url: 'http://localhost:3001/'
-            }
+                url: 'http://localhost:3001/',
+            },
         );
     });
 
     it('works with onProgress callback', async function() {
         assert.deepStrictEqual(
-            await exec(async _ => {
+            await exec(async (_) => {
                 let result;
-                await DOM.ajax({
+                await $.ajax({
                     onProgress: (progress, xhr, event) => {
                         result = {
                             progress,
                             xhr: { ...xhr.data },
-                            event
+                            event,
                         };
-                    }
+                    },
                 });
                 return result;
             }),
@@ -733,7 +732,7 @@ describe('#ajax', function() {
                 event: {
                     isTrusted: false,
                     loaded: 500,
-                    total: 1000
+                    total: 1000,
                 },
                 progress: 0.5,
                 xhr: {
@@ -741,27 +740,27 @@ describe('#ajax', function() {
                     body: null,
                     headers: {
                         'Content-Type': 'application/x-www-form-urlencoded',
-                        'X-Requested-With': 'XMLHttpRequest'
+                        'X-Requested-With': 'XMLHttpRequest',
                     },
                     method: 'GET',
-                    url: 'http://localhost:3001/'
-                }
-            }
+                    url: 'http://localhost:3001/',
+                },
+            },
         );
     });
 
     it('works with onUploadProgress callback', async function() {
         assert.deepStrictEqual(
-            await exec(async _ => {
+            await exec(async (_) => {
                 let result;
-                await DOM.ajax({
+                await $.ajax({
                     onUploadProgress: (progress, xhr, event) => {
                         result = {
                             progress,
                             xhr: { ...xhr.data },
-                            event
+                            event,
                         };
-                    }
+                    },
                 });
                 return result;
             }),
@@ -769,7 +768,7 @@ describe('#ajax', function() {
                 event: {
                     isTrusted: false,
                     loaded: 5000,
-                    total: 10000
+                    total: 10000,
                 },
                 progress: 0.5,
                 xhr: {
@@ -777,20 +776,20 @@ describe('#ajax', function() {
                     body: null,
                     headers: {
                         'Content-Type': 'application/x-www-form-urlencoded',
-                        'X-Requested-With': 'XMLHttpRequest'
+                        'X-Requested-With': 'XMLHttpRequest',
                     },
                     method: 'GET',
-                    url: 'http://localhost:3001/'
-                }
-            }
+                    url: 'http://localhost:3001/',
+                },
+            },
         );
     });
 
     it('can be cancelled', async function() {
         assert.deepStrictEqual(
-            await exec(async _ => {
+            await exec(async (_) => {
                 try {
-                    const ajax = DOM.ajax();
+                    const ajax = $.ajax();
                     ajax.cancel();
                     await ajax;
                     return false;
@@ -807,22 +806,22 @@ describe('#ajax', function() {
                     body: null,
                     headers: {
                         'Content-Type': 'application/x-www-form-urlencoded',
-                        'X-Requested-With': 'XMLHttpRequest'
+                        'X-Requested-With': 'XMLHttpRequest',
                     },
                     method: 'GET',
-                    url: 'http://localhost:3001/'
-                }
-            }
+                    url: 'http://localhost:3001/',
+                },
+            },
         );
     });
 
     it('throws on XHR error', async function() {
         assert.deepStrictEqual(
-            await exec(async _ => {
+            await exec(async (_) => {
                 try {
-                    const ajax = DOM.ajax();
-                    ajax._xhr.forceError = true;
-                    ajax._xhr.status = null;
+                    const ajax = $.ajax();
+                    ajax.xhr.forceError = true;
+                    ajax.xhr.status = null;
                     await ajax;
                     return false;
                 } catch (e) {
@@ -832,7 +831,7 @@ describe('#ajax', function() {
             }),
             {
                 event: {
-                    isTrusted: false
+                    isTrusted: false,
                 },
                 status: null,
                 xhr: {
@@ -840,21 +839,21 @@ describe('#ajax', function() {
                     body: null,
                     headers: {
                         'Content-Type': 'application/x-www-form-urlencoded',
-                        'X-Requested-With': 'XMLHttpRequest'
+                        'X-Requested-With': 'XMLHttpRequest',
                     },
                     method: 'GET',
-                    url: 'http://localhost:3001/'
-                }
-            }
+                    url: 'http://localhost:3001/',
+                },
+            },
         );
     });
 
     it('throws on status error', async function() {
         assert.deepStrictEqual(
-            await exec(async _ => {
+            await exec(async (_) => {
                 try {
-                    const ajax = DOM.ajax();
-                    ajax._xhr.status = 404;
+                    const ajax = $.ajax();
+                    ajax.xhr.status = 404;
                     await ajax;
                     return false;
                 } catch (e) {
@@ -864,7 +863,7 @@ describe('#ajax', function() {
             }),
             {
                 event: {
-                    isTrusted: false
+                    isTrusted: false,
                 },
                 status: 404,
                 xhr: {
@@ -872,14 +871,13 @@ describe('#ajax', function() {
                     body: null,
                     headers: {
                         'Content-Type': 'application/x-www-form-urlencoded',
-                        'X-Requested-With': 'XMLHttpRequest'
+                        'X-Requested-With': 'XMLHttpRequest',
                     },
                     method: 'GET',
                     status: 404,
-                    url: 'http://localhost:3001/'
-                }
-            }
+                    url: 'http://localhost:3001/',
+                },
+            },
         );
     });
-
 });

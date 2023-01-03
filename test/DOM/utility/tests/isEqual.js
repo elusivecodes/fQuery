@@ -1,10 +1,9 @@
-const assert = require('assert');
-const { exec } = require('../../../setup');
+import assert from 'node:assert/strict';
+import { exec } from './../../../setup.js';
 
 describe('#isEqual', function() {
-
     beforeEach(async function() {
-        await exec(_ => {
+        await exec((_) => {
             document.body.innerHTML =
                 '<div id="parent1">' +
                 '<span data-id="span1"></span>' +
@@ -26,185 +25,184 @@ describe('#isEqual', function() {
 
     it('returns true if any node is equal to any other node', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.isEqual('#parent1 span', '#parent2 span')
+            await exec((_) =>
+                $.isEqual('#parent1 span', '#parent2 span'),
             ),
-            true
+            true,
         );
     });
 
     it('returns false if no nodes are equal to any other node', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.isEqual('#parent1 span', '#parent3 a')
+            await exec((_) =>
+                $.isEqual('#parent1 span', '#parent3 a'),
             ),
-            false
+            false,
         );
     });
 
     it('works with HTMLElement nodes', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.isEqual(
+            await exec((_) =>
+                $.isEqual(
                     document.querySelector('#parent1 [data-id="span2"]'),
-                    '#parent2 span'
-                )
+                    '#parent2 span',
+                ),
             ),
-            true
+            true,
         );
     });
 
     it('works with NodeList nodes', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.isEqual(
+            await exec((_) =>
+                $.isEqual(
                     document.querySelectorAll('#parent1 span'),
-                    '#parent2 span'
-                )
+                    '#parent2 span',
+                ),
             ),
-            true
+            true,
         );
     });
 
     it('works with HTMLCollection nodes', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.isEqual(
+            await exec((_) =>
+                $.isEqual(
                     document.getElementById('parent1').children,
-                    '#parent2 span'
-                )
+                    '#parent2 span',
+                ),
             ),
-            true
+            true,
         );
     });
 
     it('works with DocumentFragment nodes', async function() {
         assert.strictEqual(
-            await exec(_ => {
+            await exec((_) => {
                 const fragment1 = document.createDocumentFragment();
                 const fragment2 = document.createDocumentFragment();
-                return dom.isEqual(
+                return $.isEqual(
                     fragment1,
                     [
-                        fragment2
-                    ]
+                        fragment2,
+                    ],
                 );
             }),
-            true
+            true,
         );
     });
 
     it('works with ShadowRoot nodes', async function() {
         assert.strictEqual(
-            await exec(_ => {
+            await exec((_) => {
                 const div1 = document.createElement('div');
                 const div2 = document.createElement('div');
                 const shadow1 = div1.attachShadow({ mode: 'open' });
                 const shadow2 = div2.attachShadow({ mode: 'closed' });
-                return dom.isEqual(
+                return $.isEqual(
                     shadow1,
                     [
-                        shadow2
-                    ]
+                        shadow2,
+                    ],
                 );
             }),
-            true
+            true,
         );
     });
 
     it('works with array nodes', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.isEqual([
+            await exec((_) =>
+                $.isEqual([
                     document.querySelector('#parent1 > [data-id="span1"]'),
                     document.querySelector('#parent1 > [data-id="span2"]'),
-                    document.querySelector('#parent1 > [data-id="span3"]')
-                ], '#parent2 span')
+                    document.querySelector('#parent1 > [data-id="span3"]'),
+                ], '#parent2 span'),
             ),
-            true
+            true,
         );
     });
 
     it('works with HTMLElement other nodes', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.isEqual(
+            await exec((_) =>
+                $.isEqual(
                     '#parent1 span',
-                    document.querySelector('#parent2 > [data-id="span2"]')
-                )
+                    document.querySelector('#parent2 > [data-id="span2"]'),
+                ),
             ),
-            true
+            true,
         );
     });
 
     it('works with NodeList other nodes', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.isEqual(
+            await exec((_) =>
+                $.isEqual(
                     '#parent1 span',
-                    document.querySelectorAll('#parent2 > span')
-                )
+                    document.querySelectorAll('#parent2 > span'),
+                ),
             ),
-            true
+            true,
         );
     });
 
     it('works with HTMLCollection other nodes', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.isEqual(
+            await exec((_) =>
+                $.isEqual(
                     '#parent1 span',
-                    document.getElementById('parent2').children
-                )
+                    document.getElementById('parent2').children,
+                ),
             ),
-            true
+            true,
         );
     });
 
     it('works with DocumentFragment other nodes', async function() {
         assert.strictEqual(
-            await exec(_ => {
+            await exec((_) => {
                 const fragment1 = document.createDocumentFragment();
                 const fragment2 = document.createDocumentFragment();
-                return dom.isEqual(
+                return $.isEqual(
                     [
                         fragment1,
                     ],
-                    fragment2
+                    fragment2,
                 );
             }),
-            true
+            true,
         );
     });
 
     it('works with ShadowRoot other nodes', async function() {
         assert.strictEqual(
-            await exec(_ => {
+            await exec((_) => {
                 const div1 = document.createElement('div');
                 const div2 = document.createElement('div');
                 const shadow1 = div1.attachShadow({ mode: 'open' });
                 const shadow2 = div2.attachShadow({ mode: 'closed' });
-                return dom.isEqual(
+                return $.isEqual(
                     [
                         shadow1,
                     ],
-                    shadow2
+                    shadow2,
                 );
             }),
-            true
+            true,
         );
     });
 
     it('works with array other nodes', async function() {
         assert.strictEqual(
-            await exec(_ =>
-                dom.isEqual('#parent1 span', [
+            await exec((_) =>
+                $.isEqual('#parent1 span', [
                     document.querySelector('#parent2 > [data-id="span2"]'),
-                    document.querySelector('#parent2 > [data-id="span3"]')
-                ])
+                    document.querySelector('#parent2 > [data-id="span3"]'),
+                ]),
             ),
-            true
+            true,
         );
     });
-
 });
