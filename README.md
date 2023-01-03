@@ -1356,7 +1356,7 @@ This method also works with touch events.
 Clone each node (optionally deep, and with events and data).
 
 - `selector` is a query selector string, a *Node*, *HTMLElement*, *DocumentFragment*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
-- `options` is an object containing properties to define the new node.
+- `options` is an object containing properties to define how to clone the nodes.
     - `deep` is a boolean indicating whether to also clone child nodes, and will default to *true*.
     - `events` is a boolean indicating whether to also clone events, and will default to *false*.
     - `data` is a boolean indicating whether to also clone data, and will default to *false*.

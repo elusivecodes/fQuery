@@ -982,7 +982,7 @@ This method returns *false* if the event was cancelled, otherwise returns *true*
 
 Clone each node (optionally deep, and with events and data).
 
-- `options` is an object containing properties to define the new node.
+- `options` is an object containing properties to define how to clone the nodes.
     - `deep` is a boolean indicating whether to also clone child nodes, and will default to *true*.
     - `events` is a boolean indicating whether to also clone events, and will default to *false*.
     - `data` is a boolean indicating whether to also clone data, and will default to *false*.
