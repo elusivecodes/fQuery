@@ -2,7 +2,7 @@
 
 **fQuery** is a free, open-source DOM manipulation library for *JavaScript*.
 
-It is a lightweight (~15kb gzipped) and modern library, utilizing ES6 syntax and features including Promises.
+It is a lightweight (~16kb gzipped) and modern library, utilizing ES6 syntax and features including Promises.
 
 
 ## Table Of Contents
@@ -888,7 +888,7 @@ Get the computed bounding rectangle of the first node.
     - `offset` is a boolean indicating whether the rectangle should be offset from the top left of the document, and will default to *false*.
 
 ```javascript
-const rect = $.rect(selector, offset);
+const rect = $.rect(selector, options);
 ```
 
 ### Scroll
@@ -962,12 +962,12 @@ Get the computed height of the first node.
 const height = $.height(selector, options);
 ```
 
-The following constants can also be used as the second argument for brevity.
-- `$.CONTENT_BOX` *0*
-- `$.PADDING_BOX` *1*
-- `$.BORDER_BOX` *2*
-- `$.MARGIN_BOX` *3*
-- `$.SCROLL_BOX` *4*
+The following constants can also be used as the `boxSize` for brevity.
+- `$.CONTENT_BOX`
+- `$.PADDING_BOX`
+- `$.BORDER_BOX`
+- `$.MARGIN_BOX`
+- `$.SCROLL_BOX`
 
 **Width**
 
@@ -982,12 +982,12 @@ Get the computed width of the first node.
 const width = $.width(selector, options);
 ```
 
-The following constants can also be used as the second argument for brevity.
-- `$.CONTENT_BOX` *0*
-- `$.PADDING_BOX` *1*
-- `$.BORDER_BOX` *2*
-- `$.MARGIN_BOX` *3*
-- `$.SCROLL_BOX` *4*
+The following constants can also be used as the `boxSize` for brevity.
+- `$.CONTENT_BOX`
+- `$.PADDING_BOX`
+- `$.BORDER_BOX`
+- `$.MARGIN_BOX`
+- `$.SCROLL_BOX`
 
 ### Styles
 
@@ -1343,7 +1343,7 @@ Create a mouse drag event (optionally limited by animation frame).
     - `passive` is a boolean indicating whether to use passive event listeners, and will default to *true*.
 
 ```javascript
-const drag = $.mouseDragFactory(down, move, up, debounce);
+const drag = $.mouseDragFactory(down, move, up, options);
 ```
 
 This method also works with touch events.
@@ -2230,7 +2230,7 @@ Find the first node matching a selector.
 - `context` is a query selector string, a *HTMLElement*, *DocumentFragment*, *ShadowRoot*, *Document*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes, and will default to the *Document* context.
 
 ```javascript
-const element = $.findOne(selectors, context);
+const element = $.findOne(selector, context);
 ```
 
 **Find One By Class**

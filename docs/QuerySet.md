@@ -690,12 +690,12 @@ Get the computed height of the first node.
 const height = query.height(options);
 ```
 
-The following constants can also be used as the first argument for brevity.
-- `$.CONTENT_BOX` *0*
-- `$.PADDING_BOX` *1*
-- `$.BORDER_BOX` *2*
-- `$.MARGIN_BOX` *3*
-- `$.SCROLL_BOX` *4*
+The following constants can also be used as the `boxSize` for brevity.
+- `$.CONTENT_BOX`
+- `$.PADDING_BOX`
+- `$.BORDER_BOX`
+- `$.MARGIN_BOX`
+- `$.SCROLL_BOX`
 
 **Width**
 
@@ -709,12 +709,12 @@ Get the computed width of the first node.
 const width = query.width(options);
 ```
 
-The following constants can also be used as the first argument for brevity.
-- `$.CONTENT_BOX` *0*
-- `$.PADDING_BOX` *1*
-- `$.BORDER_BOX` *2*
-- `$.MARGIN_BOX` *3*
-- `$.SCROLL_BOX` *4*
+The following constants can also be used as the `boxSize` for brevity.
+- `$.CONTENT_BOX`
+- `$.PADDING_BOX`
+- `$.BORDER_BOX`
+- `$.MARGIN_BOX`
+- `$.SCROLL_BOX`
 
 ##### Styles
 
@@ -1683,7 +1683,7 @@ Find the first node matching a selector.
 - `selector` is a query selector string to search for.
 
 ```javascript
-const newQuery = query.findOne(selectors);
+const newQuery = query.findOne(selector);
 ```
 
 This method returns a new *QuerySet* containing the matching node.
