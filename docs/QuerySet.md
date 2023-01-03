@@ -982,12 +982,14 @@ This method returns *false* if the event was cancelled, otherwise returns *true*
 
 Clone each node (optionally deep, and with events and data).
 
-- `deep` is a boolean indicating whether you wish to clone all descendent nodes, and will default to *true*.
-- `cloneEvents` is a boolean indicating whether you wish to clone all events to the new nodes and will default to *false*.
-- `cloneData` is a boolean indicating whether you wish to clone all custom data to the new nodes and will default to *false*.
+- `options` is an object containing properties to define the new node.
+    - `deep` is a boolean indicating whether to also clone child nodes, and will default to *true*.
+    - `events` is a boolean indicating whether to also clone events, and will default to *false*.
+    - `data` is a boolean indicating whether to also clone data, and will default to *false*.
+    - `animations` is a boolean indicating whether to also clone animations, and will default to *false*.
 
 ```javascript
-const clones = query.clone(deep, cloneEvents, cloneData);
+const clones = query.clone(options);
 ```
 
 This method returns a new *QuerySet* containing the cloned nodes.
