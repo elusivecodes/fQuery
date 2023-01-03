@@ -42,7 +42,7 @@ const query = new $.QuerySet(nodes);
 
 **Animate**
 
-Add an animation to the default queue for each node.
+Add an animation to the queue for each node.
 
 - `callback` is a function that accepts `node`, `progress` and `options` as arguments, where `node` is a *HTMLElement*, `progress` is a value between *0* and *1* and `options` is the `options` object passed to this method.
 - `options` is an object containing properties to define how the animation should be handled.
@@ -70,7 +70,7 @@ query.stop(options);
 
 **Drop In**
 
-Add a drop in animation to the default queue for each node.
+Add a drop in animation to the queue for each node.
 
 - `options` is an object containing properties to define how the animation should be handled.
     - `queueName` is a string indicating the name of the queue to use, and will default to "*default*".
@@ -86,7 +86,7 @@ query.dropIn(options);
 
 **Drop Out**
 
-Add a drop out animation to the default queue for each node.
+Add a drop out animation to the queue for each node.
 
 - `options` is an object containing properties to define how the animation should be handled.
     - `queueName` is a string indicating the name of the queue to use, and will default to "*default*".
@@ -102,7 +102,7 @@ query.dropOut(options);
 
 **Fade In**
 
-Add a fade in animation to the default queue for each node.
+Add a fade in animation to the queue for each node.
 
 - `options` is an object containing properties to define how the animation should be handled.
     - `queueName` is a string indicating the name of the queue to use, and will default to "*default*".
@@ -116,7 +116,7 @@ query.fadeIn(options);
 
 **Fade Out**
 
-Add a fade out animation to the default queue for each node.
+Add a fade out animation to the queue for each node.
 
 - `options` is an object containing properties to define how the animation should be handled.
     - `queueName` is a string indicating the name of the queue to use, and will default to "*default*".
@@ -130,7 +130,7 @@ query.fadeOut(options);
 
 **Rotate In**
 
-Add a rotate in animation to the default queue for each node.
+Add a rotate in animation to the queue for each node.
 
 - `options` is an object containing properties to define how the animation should be handled.
     - `queueName` is a string indicating the name of the queue to use, and will default to "*default*".
@@ -148,7 +148,7 @@ query.rotateIn(options);
 
 **Rotate Out**
 
-Add a rotate out animation to the default queue for each node.
+Add a rotate out animation to the queue for each node.
 
 - `options` is an object containing properties to define how the animation should be handled.
     - `queueName` is a string indicating the name of the queue to use, and will default to "*default*".
@@ -166,7 +166,7 @@ query.rotateOut(options);
 
 **Slide In**
 
-Add a slide in animation to the default queue for each node.
+Add a slide in animation to the queue for each node.
 
 - `options` is an object containing properties to define how the animation should be handled.
     - `queueName` is a string indicating the name of the queue to use, and will default to "*default*".
@@ -182,7 +182,7 @@ query.slideIn(options);
 
 **Slide Out**
 
-Add a slide out animation to the default queue for each node.
+Add a slide out animation to the queue for each node.
 
 - `options` is an object containing properties to define how the animation should be handled.
     - `queueName` is a string indicating the name of the queue to use, and will default to "*default*".
@@ -198,7 +198,7 @@ query.slideOut(options);
 
 **Squeeze In**
 
-Add a squeeze in animation to the default queue for each node.
+Add a squeeze in animation to the queue for each node.
 
 - `options` is an object containing properties to define how the animation should be handled.
     - `queueName` is a string indicating the name of the queue to use, and will default to "*default*".
@@ -214,7 +214,7 @@ query.squeezeIn(options);
 
 **Squeeze Out**
 
-Add a squeeze out animation to the default queue for each node.
+Add a squeeze out animation to the queue for each node.
 
 - `options` is an object containing properties to define how the animation should be handled.
     - `queueName` is a string indicating the name of the queue to use, and will default to "*default*".
