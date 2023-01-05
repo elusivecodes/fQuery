@@ -2385,7 +2385,7 @@
      * @param {string} input The input string.
      * @param {object} [options] The options for parsing the string.
      * @param {string} [options.contentType=text/html] The content type.
-     * @returns {Document} A new Document object.
+     * @return {Document} A new Document object.
      */
     function parseDocument(input, { contentType = 'text/html' } = {}) {
         return parser.parseFromString(input, contentType);
@@ -4238,8 +4238,14 @@
                 return;
             }
 
-            Object.defineProperty(event, 'currentTarget', delegate);
-            Object.defineProperty(event, 'delegateTarget', node);
+            Object.defineProperty(event, 'currentTarget', {
+                value: delegate,
+                configurable: true
+            });
+            Object.defineProperty(event, 'delegateTarget', {
+                value: node,
+                configurable: true
+            });
 
             return callback(event);
         };
@@ -6545,7 +6551,7 @@
     function animate(callback, { queueName = 'default', ...options } = {}) {
         return this.queue((node) =>
             animate$1(node, callback, options),
-            { queueName },
+        { queueName },
         );
     }
     /**
@@ -6580,7 +6586,7 @@
     function dropIn({ queueName = 'default', ...options } = {}) {
         return this.queue((node) =>
             dropIn$1(node, options),
-            { queueName },
+        { queueName },
         );
     }
     /**
@@ -6598,7 +6604,7 @@
     function dropOut({ queueName = 'default', ...options } = {}) {
         return this.queue((node) =>
             dropOut$1(node, options),
-            { queueName },
+        { queueName },
         );
     }
     /**
@@ -6614,7 +6620,7 @@
     function fadeIn({ queueName = 'default', ...options } = {}) {
         return this.queue((node) =>
             fadeIn$1(node, options),
-            { queueName },
+        { queueName },
         );
     }
     /**
@@ -6630,7 +6636,7 @@
     function fadeOut({ queueName = 'default', ...options } = {}) {
         return this.queue((node) =>
             fadeOut$1(node, options),
-            { queueName },
+        { queueName },
         );
     }
     /**
@@ -6650,7 +6656,7 @@
     function rotateIn({ queueName = 'default', ...options } = {}) {
         return this.queue((node) =>
             rotateIn$1(node, options),
-            { queueName },
+        { queueName },
         );
     }
     /**
@@ -6670,7 +6676,7 @@
     function rotateOut({ queueName = 'default', ...options } = {}) {
         return this.queue((node) =>
             rotateOut$1(node, options),
-            { queueName },
+        { queueName },
         );
     }
     /**
@@ -6688,7 +6694,7 @@
     function slideIn({ queueName = 'default', ...options } = {}) {
         return this.queue((node) =>
             slideIn$1(node, options),
-            { queueName },
+        { queueName },
         );
     }
     /**
@@ -6706,7 +6712,7 @@
     function slideOut({ queueName = 'default', ...options } = {}) {
         return this.queue((node) =>
             slideOut$1(node, options),
-            { queueName },
+        { queueName },
         );
     }
     /**
@@ -6724,7 +6730,7 @@
     function squeezeIn({ queueName = 'default', ...options } = {}) {
         return this.queue((node) =>
             squeezeIn$1(node, options),
-            { queueName },
+        { queueName },
         );
     }
     /**
@@ -6742,7 +6748,7 @@
     function squeezeOut({ queueName = 'default', ...options } = {}) {
         return this.queue((node) =>
             squeezeOut$1(node, options),
-            { queueName },
+        { queueName },
         );
     }
 

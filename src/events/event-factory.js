@@ -73,8 +73,14 @@ export function delegateFactory(node, selector, callback) {
             return;
         }
 
-        Object.defineProperty(event, 'currentTarget', delegate);
-        Object.defineProperty(event, 'delegateTarget', node);
+        Object.defineProperty(event, 'currentTarget', {
+            value: delegate,
+            configurable: true
+        });
+        Object.defineProperty(event, 'delegateTarget', {
+            value: node,
+            configurable: true
+        });
 
         return callback(event);
     };
