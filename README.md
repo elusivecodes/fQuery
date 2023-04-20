@@ -101,10 +101,10 @@ You can continue to use this library by using the global `fQuery` variable.
 
 ### Core Methods
 
-This library also includes all functions from the [*FrostCore*](https://github.com/elusivecodes/FrostCore) library, accessible from the `$` global variable.
+This library also includes all functions from the [*FrostCore*](https://github.com/elusivecodes/FrostCore) library, accessible from the `$` global variable (with an underscore prefix).
 
 ```javascript
-const random = $.random();
+const random = $._random();
 ```
 
 

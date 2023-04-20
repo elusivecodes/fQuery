@@ -1,6 +1,7 @@
 import * as _ from '@fr0st/core';
 import { getAjaxDefaults, getAnimationDefaults, getContext, getWindow, setAjaxDefaults, setAnimationDefaults, setContext, setWindow, useTimeout } from './config.js';
 import { noConflict } from './globals.js';
+import { debounce } from './helpers.js';
 import { BORDER_BOX, CONTENT_BOX, MARGIN_BOX, PADDING_BOX, SCROLL_BOX } from './vars.js';
 import { ajax, _delete, get, patch, post, put } from './ajax/ajax.js';
 import { parseFormData, parseParams } from './ajax/helpers.js';
@@ -37,7 +38,6 @@ import { hasAnimation, hasAttribute, hasChildren, hasClass, hasCSSAnimation, has
 import { exec, index, indexOf, normalize, serialize, serializeArray, sort, tagName } from './utility/utility.js';
 
 Object.assign(query, {
-    ..._,
     BORDER_BOX,
     CONTENT_BOX,
     MARGIN_BOX,
@@ -80,6 +80,7 @@ Object.assign(query, {
     createRange,
     createText,
     css,
+    debounce,
     delete: _delete,
     detach,
     distTo,
@@ -250,5 +251,9 @@ Object.assign(query, {
     wrapInner,
     wrapSelection,
 });
+
+for (const [key, value] of Object.entries(_)) {
+    query[`_${key}`] = value;
+}
 
 export default query;
