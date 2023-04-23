@@ -876,7 +876,7 @@ Get the X,Y position for the top/left of the first node.
     - `offset` is a boolean indicating whether the co-ordinates should be offset from the top left of the document, and will default to *false*.
 
 ```javascript
-const position = $.position(selector, offset);
+const position = $.position(selector, options);
 ```
 
 **Rectangle**
