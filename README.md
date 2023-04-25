@@ -1341,6 +1341,7 @@ Create a mouse drag event (optionally limited by animation frame).
 - `options` is an object containing configuration options for the drag event.
     - `debounce` is a boolean indicating whether to debounce the move event, and will default to *true*.
     - `passive` is a boolean indicating whether to use passive event listeners, and will default to *true*.
+    - `touches` is a number indicating the number of touches to trigger the event for, and will default to *1*.
 
 ```javascript
 const drag = $.mouseDragFactory(down, move, up, options);

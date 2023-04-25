@@ -94,6 +94,7 @@ export function delegateFactory(node, selector, callback) {
  * @param {object} [options] The options for the mouse drag event.
  * @param {Boolean} [options.debounce] Whether to debounce the move event.
  * @param {Boolean} [options.passive] Whether to use passive event listeners.
+ * @param {number} [options.touches=1] The number of touches to trigger the event for.
  * @return {DOM~eventCallback} The mouse drag event callback.
  */
 export function mouseDragFactory(down, move, up, { debounce = true, passive = true, touches = 1 } = {}) {
@@ -146,7 +147,7 @@ export function mouseDragFactory(down, move, up, { debounce = true, passive = tr
             'mouseup';
 
         const realUp = (event) => {
-            if (isTouch && event.touches.length !== touches) {
+            if (isTouch && event.touches.length !== touches - 1) {
                 return;
             }
 

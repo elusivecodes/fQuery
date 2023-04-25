@@ -237,7 +237,7 @@ describe('#mouseDragFactory', function() {
                     bubbles: true,
                 });
                 const upEvent = new TouchEvent('touchend', {
-                    touches: [touch],
+                    touches: [],
                     bubbles: true,
                 });
                 $.addEvent(

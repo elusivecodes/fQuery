@@ -4310,7 +4310,7 @@
                 'mouseup';
 
             const realUp = (event) => {
-                if (isTouch && event.touches.length !== touches) {
+                if (isTouch && event.touches.length !== touches - 1) {
                     return;
                 }
 
