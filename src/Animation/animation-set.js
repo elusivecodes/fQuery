@@ -3,16 +3,13 @@
 * @class
 */
 export default class AnimationSet {
-    #animations;
-    #promise;
-
     /**
      * New AnimationSet constructor.
      * @param {array} animations The animations.
      */
     constructor(animations) {
-        this.#animations = animations;
-        this.#promise = Promise.all(animations);
+        this._animations = animations;
+        this._promise = Promise.all(animations);
     }
 
     /**
@@ -21,7 +18,7 @@ export default class AnimationSet {
      * @return {Promise} The promise.
      */
     catch(onRejected) {
-        return this.#promise.catch(onRejected);
+        return this._promise.catch(onRejected);
     }
 
     /**
@@ -30,7 +27,7 @@ export default class AnimationSet {
      * @return {Promise} The promise.
      */
     finally(onFinally) {
-        return this.#promise.finally(onFinally);
+        return this._promise.finally(onFinally);
     }
 
     /**
@@ -39,7 +36,7 @@ export default class AnimationSet {
      * @param {Boolean} [options.finish=true] Whether to finish the animations.
     */
     stop({ finish = true } = {}) {
-        for (const animation of this.#animations) {
+        for (const animation of this._animations) {
             animation.stop({ finish });
         }
     }
@@ -51,7 +48,7 @@ export default class AnimationSet {
      * @return {Promise} The promise.
      */
     then(onFulfilled, onRejected) {
-        return this.#promise.then(onFulfilled, onRejected);
+        return this._promise.then(onFulfilled, onRejected);
     }
 }
 

@@ -7,15 +7,6 @@ import { getAjaxDefaults, getWindow } from './../config.js';
  * @class
  */
 export default class AjaxRequest {
-    #options;
-    #promise;
-    #resolve;
-    #reject;
-
-    #isResolved = false;
-    #isRejected = false;
-    #isCancelled = false;
-
     /**
      * New AjaxRequest constructor.
      * @param {object} [options] The options to use for the request.
@@ -39,97 +30,97 @@ export default class AjaxRequest {
      * @param {Boolean|function} [options.onUploadProgress=null] A callback to execute on upload progress.
      */
     constructor(options) {
-        this.#options = extend(
+        this._options = extend(
             {},
             getAjaxDefaults(),
             options,
         );
 
-        if (!this.#options.url) {
-            this.#options.url = getWindow().location.href;
+        if (!this._options.url) {
+            this._options.url = getWindow().location.href;
         }
 
-        if (!this.#options.cache) {
-            this.#options.url = appendQueryString(this.#options.url, '_', Date.now());
+        if (!this._options.cache) {
+            this._options.url = appendQueryString(this._options.url, '_', Date.now());
         }
 
-        if (!('Content-Type' in this.#options.headers) && this.#options.contentType) {
-            this.#options.headers['Content-Type'] = this.#options.contentType;
+        if (!('Content-Type' in this._options.headers) && this._options.contentType) {
+            this._options.headers['Content-Type'] = this._options.contentType;
         }
 
-        if (this.#options.isLocal === null) {
-            this.#options.isLocal = /^(?:about|app|app-storage|.+-extension|file|res|widget):$/.test(location.protocol);
+        if (this._options.isLocal === null) {
+            this._options.isLocal = /^(?:about|app|app-storage|.+-extension|file|res|widget):$/.test(location.protocol);
         }
 
-        if (!this.#options.isLocal && !('X-Requested-With' in this.#options.headers)) {
-            this.#options.headers['X-Requested-With'] = 'XMLHttpRequest';
+        if (!this._options.isLocal && !('X-Requested-With' in this._options.headers)) {
+            this._options.headers['X-Requested-With'] = 'XMLHttpRequest';
         }
 
-        this.#promise = new Promise((resolve, reject) => {
-            this.#resolve = (value) => {
-                this.#isResolved = true;
+        this._promise = new Promise((resolve, reject) => {
+            this._resolve = (value) => {
+                this._isResolved = true;
                 resolve(value);
             };
 
-            this.#reject = (error) => {
-                this.#isRejected = true;
+            this._reject = (error) => {
+                this._isRejected = true;
                 reject(error);
             };
         });
 
-        this.xhr = this.#options.xhr();
+        this.xhr = this._options.xhr();
 
-        if (this.#options.data) {
-            if (this.#options.processData && isObject(this.#options.data)) {
-                if (this.#options.contentType === 'application/json') {
-                    this.#options.data = JSON.stringify(this.#options.data);
-                } else if (this.#options.contentType === 'application/x-www-form-urlencoded') {
-                    this.#options.data = parseParams(this.#options.data);
+        if (this._options.data) {
+            if (this._options.processData && isObject(this._options.data)) {
+                if (this._options.contentType === 'application/json') {
+                    this._options.data = JSON.stringify(this._options.data);
+                } else if (this._options.contentType === 'application/x-www-form-urlencoded') {
+                    this._options.data = parseParams(this._options.data);
                 } else {
-                    this.#options.data = parseFormData(this.#options.data);
+                    this._options.data = parseFormData(this._options.data);
                 }
             }
 
-            if (this.#options.method === 'GET') {
-                const dataParams = new URLSearchParams(this.#options.data);
+            if (this._options.method === 'GET') {
+                const dataParams = new URLSearchParams(this._options.data);
 
-                const searchParams = getSearchParams(this.#options.url);
+                const searchParams = getSearchParams(this._options.url);
                 for (const [key, value] of dataParams.entries()) {
                     searchParams.append(key, value);
                 }
 
-                this.#options.url = setSearchParams(this.#options.url, searchParams);
-                this.#options.data = null;
+                this._options.url = setSearchParams(this._options.url, searchParams);
+                this._options.data = null;
             }
         }
 
-        this.xhr.open(this.#options.method, this.#options.url, true, this.#options.username, this.#options.password);
+        this.xhr.open(this._options.method, this._options.url, true, this._options.username, this._options.password);
 
-        for (const [key, value] of Object.entries(this.#options.headers)) {
+        for (const [key, value] of Object.entries(this._options.headers)) {
             this.xhr.setRequestHeader(key, value);
         }
 
-        if (this.#options.responseType) {
-            this.xhr.responseType = this.#options.responseType;
+        if (this._options.responseType) {
+            this.xhr.responseType = this._options.responseType;
         }
 
-        if (this.#options.mimeType) {
-            this.xhr.overrideMimeType(this.#options.mimeType);
+        if (this._options.mimeType) {
+            this.xhr.overrideMimeType(this._options.mimeType);
         }
 
-        if (this.#options.timeout) {
-            this.xhr.timeout = this.#options.timeout;
+        if (this._options.timeout) {
+            this.xhr.timeout = this._options.timeout;
         }
 
         this.xhr.onload = (e) => {
             if (this.xhr.status > 400) {
-                this.#reject({
+                this._reject({
                     status: this.xhr.status,
                     xhr: this.xhr,
                     event: e,
                 });
             } else {
-                this.#resolve({
+                this._resolve({
                     response: this.xhr.response,
                     xhr: this.xhr,
                     event: e,
@@ -137,33 +128,33 @@ export default class AjaxRequest {
             }
         };
 
-        if (!this.#options.isLocal) {
+        if (!this._options.isLocal) {
             this.xhr.onerror = (e) =>
-                this.#reject({
+                this._reject({
                     status: this.xhr.status,
                     xhr: this.xhr,
                     event: e,
                 });
         }
 
-        if (this.#options.onProgress) {
+        if (this._options.onProgress) {
             this.xhr.onprogress = (e) =>
-                this.#options.onProgress(e.loaded / e.total, this.xhr, e);
+                this._options.onProgress(e.loaded / e.total, this.xhr, e);
         }
 
-        if (this.#options.onUploadProgress) {
+        if (this._options.onUploadProgress) {
             this.xhr.upload.onprogress = (e) =>
-                this.#options.onUploadProgress(e.loaded / e.total, this.xhr, e);
+                this._options.onUploadProgress(e.loaded / e.total, this.xhr, e);
         }
 
-        if (this.#options.beforeSend) {
-            this.#options.beforeSend(this.xhr);
+        if (this._options.beforeSend) {
+            this._options.beforeSend(this.xhr);
         }
 
-        this.xhr.send(this.#options.data);
+        this.xhr.send(this._options.data);
 
-        if (this.#options.afterSend) {
-            this.#options.afterSend(this.xhr);
+        if (this._options.afterSend) {
+            this._options.afterSend(this.xhr);
         }
     }
 
@@ -172,16 +163,16 @@ export default class AjaxRequest {
      * @param {string} [reason=Request was cancelled] The reason for cancelling the request.
      */
     cancel(reason = 'Request was cancelled') {
-        if (this.#isResolved || this.#isRejected || this.#isCancelled) {
+        if (this._isResolved || this._isRejected || this._isCancelled) {
             return;
         }
 
         this.xhr.abort();
 
-        this.#isCancelled = true;
+        this._isCancelled = true;
 
-        if (this.#options.rejectOnCancel) {
-            this.#reject({
+        if (this._options.rejectOnCancel) {
+            this._reject({
                 status: this.xhr.status,
                 xhr: this.xhr,
                 reason,
@@ -195,7 +186,7 @@ export default class AjaxRequest {
      * @return {Promise} The promise.
      */
     catch(onRejected) {
-        return this.#promise.catch(onRejected);
+        return this._promise.catch(onRejected);
     }
 
     /**
@@ -204,7 +195,7 @@ export default class AjaxRequest {
      * @return {Promise} The promise.
      */
     finally(onFinally) {
-        return this.#promise.finally(onFinally);
+        return this._promise.finally(onFinally);
     }
 
     /**
@@ -214,7 +205,7 @@ export default class AjaxRequest {
      * @return {Promise} The promise.
      */
     then(onFulfilled, onRejected) {
-        return this.#promise.then(onFulfilled, onRejected);
+        return this._promise.then(onFulfilled, onRejected);
     }
 }
 

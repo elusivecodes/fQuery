@@ -8,16 +8,6 @@ import { animations } from './../vars.js';
  * @class
  */
 export default class Animation {
-    #node;
-    #callback;
-    #options;
-    #promise;
-    #resolve;
-    #reject;
-
-    #isStopped = false;
-    #isFinished = false;
-
     /**
      * New Animation constructor.
      * @param {HTMLElement} node The input node.
@@ -29,25 +19,25 @@ export default class Animation {
      * @param {Boolean} [options.debug] Whether to set debugging info on the node.
      */
     constructor(node, callback, options) {
-        this.#node = node;
-        this.#callback = callback;
+        this._node = node;
+        this._callback = callback;
 
-        this.#options = {
+        this._options = {
             ...getAnimationDefaults(),
             ...options,
         };
 
-        if (!('start' in this.#options)) {
-            this.#options.start = getTime();
+        if (!('start' in this._options)) {
+            this._options.start = getTime();
         }
 
-        if (this.#options.debug) {
-            this.#node.dataset.animationStart = this.#options.start;
+        if (this._options.debug) {
+            this._node.dataset.animationStart = this._options.start;
         }
 
-        this.#promise = new Promise((resolve, reject) => {
-            this.#resolve = resolve;
-            this.#reject = reject;
+        this._promise = new Promise((resolve, reject) => {
+            this._resolve = resolve;
+            this._reject = reject;
         });
 
         if (!animations.has(node)) {
@@ -63,7 +53,7 @@ export default class Animation {
      * @return {Promise} The promise.
      */
     catch(onRejected) {
-        return this.#promise.catch(onRejected);
+        return this._promise.catch(onRejected);
     }
 
     /**
@@ -72,7 +62,7 @@ export default class Animation {
      * @return {Animation} The cloned Animation.
      */
     clone(node) {
-        return new Animation(node, this.#callback, this.#options);
+        return new Animation(node, this._callback, this._options);
     }
 
     /**
@@ -81,7 +71,7 @@ export default class Animation {
      * @return {Promise} The promise.
      */
     finally(onFinally) {
-        return this.#promise.finally(onFinally);
+        return this._promise.finally(onFinally);
     }
 
     /**
@@ -90,27 +80,27 @@ export default class Animation {
      * @param {Boolean} [options.finish=true] Whether to finish the animation.
     */
     stop({ finish = true } = {}) {
-        if (this.#isStopped || this.#isFinished) {
+        if (this._isStopped || this._isFinished) {
             return;
         }
 
-        const otherAnimations = animations.get(this.#node)
+        const otherAnimations = animations.get(this._node)
             .filter((animation) => animation !== this);
 
         if (!otherAnimations.length) {
-            animations.delete(this.#node);
+            animations.delete(this._node);
         } else {
-            animations.set(this.#node, otherAnimations);
+            animations.set(this._node, otherAnimations);
         }
 
         if (finish) {
             this.update();
         }
 
-        this.#isStopped = true;
+        this._isStopped = true;
 
         if (!finish) {
-            this.#reject(this.#node);
+            this._reject(this._node);
         }
     }
 
@@ -121,7 +111,7 @@ export default class Animation {
      * @return {Promise} The promise.
      */
     then(onFulfilled, onRejected) {
-        return this.#promise.then(onFulfilled, onRejected);
+        return this._promise.then(onFulfilled, onRejected);
     }
 
     /**
@@ -130,7 +120,7 @@ export default class Animation {
      * @return {Boolean} TRUE if the animation is finished, otherwise FALSE.
      */
     update(time = null) {
-        if (this.#isStopped) {
+        if (this._isStopped) {
             return true;
         }
 
@@ -139,19 +129,19 @@ export default class Animation {
         if (time === null) {
             progress = 1;
         } else {
-            progress = (time - this.#options.start) / this.#options.duration;
+            progress = (time - this._options.start) / this._options.duration;
 
-            if (this.#options.infinite) {
+            if (this._options.infinite) {
                 progress %= 1;
             } else {
                 progress = clamp(progress);
             }
 
-            if (this.#options.type === 'ease-in') {
+            if (this._options.type === 'ease-in') {
                 progress = progress ** 2;
-            } else if (this.#options.type === 'ease-out') {
+            } else if (this._options.type === 'ease-out') {
                 progress = Math.sqrt(progress);
-            } else if (this.#options.type === 'ease-in-out') {
+            } else if (this._options.type === 'ease-in-out') {
                 if (progress <= 0.5) {
                     progress = progress ** 2 * 2;
                 } else {
@@ -160,27 +150,27 @@ export default class Animation {
             }
         }
 
-        if (this.#options.debug) {
-            this.#node.dataset.animationTime = time;
-            this.#node.dataset.animationProgress = progress;
+        if (this._options.debug) {
+            this._node.dataset.animationTime = time;
+            this._node.dataset.animationProgress = progress;
         }
 
-        this.#callback(this.#node, progress, this.#options);
+        this._callback(this._node, progress, this._options);
 
         if (progress < 1) {
             return false;
         }
 
-        if (this.#options.debug) {
-            delete this.#node.dataset.animationStart;
-            delete this.#node.dataset.animationTime;
-            delete this.#node.dataset.animationProgress;
+        if (this._options.debug) {
+            delete this._node.dataset.animationStart;
+            delete this._node.dataset.animationTime;
+            delete this._node.dataset.animationProgress;
         }
 
-        if (!this.#isFinished) {
-            this.#isFinished = true;
+        if (!this._isFinished) {
+            this._isFinished = true;
 
-            this.#resolve(this.#node);
+            this._resolve(this._node);
         }
 
         return true;

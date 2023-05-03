@@ -3,11 +3,6 @@
  * @class
  */
 class MockXMLHttpRequest { // eslint-disable-line no-unused-vars
-    #response;
-    #uploadTimer;
-    #progressTimer;
-    #completeTimer;
-
     /**
      * New MockXMLHttpRequest constructor.
      */
@@ -18,16 +13,16 @@ class MockXMLHttpRequest { // eslint-disable-line no-unused-vars
         this.status = 200;
         this.timeout = 0;
         this.upload = {};
-        this.#response = 'Test';
+        this._response = 'Test';
     }
 
     /**
      * Abort the request if it has already been sent.
      */
     abort() {
-        clearTimeout(this.#uploadTimer);
-        clearTimeout(this.#progressTimer);
-        clearTimeout(this.#completeTimer);
+        clearTimeout(this._uploadTimer);
+        clearTimeout(this._progressTimer);
+        clearTimeout(this._completeTimer);
     }
 
     /**
@@ -70,8 +65,8 @@ class MockXMLHttpRequest { // eslint-disable-line no-unused-vars
         }
 
         if (this.upload && this.upload.onprogress) {
-            this.#uploadTimer = setTimeout((_) => {
-                this.#uploadTimer = null;
+            this._uploadTimer = setTimeout((_) => {
+                this._uploadTimer = null;
 
                 const progressEvent = new Event('progress');
                 progressEvent.loaded = 5000;
@@ -82,8 +77,8 @@ class MockXMLHttpRequest { // eslint-disable-line no-unused-vars
         }
 
         if (this.onprogress) {
-            this.#progressTimer = setTimeout((_) => {
-                this.#progressTimer = null;
+            this._progressTimer = setTimeout((_) => {
+                this._progressTimer = null;
 
                 const progressEvent = new Event('progress');
                 progressEvent.loaded = 500;
@@ -93,8 +88,8 @@ class MockXMLHttpRequest { // eslint-disable-line no-unused-vars
             }, 10);
         }
 
-        this.#completeTimer = setTimeout((_) => {
-            this.#completeTimer = null;
+        this._completeTimer = setTimeout((_) => {
+            this._completeTimer = null;
 
             if (this.forceError) {
                 if (this.onerror) {
@@ -105,7 +100,7 @@ class MockXMLHttpRequest { // eslint-disable-line no-unused-vars
             }
 
             this.data.status = this.status;
-            this.response = this.#response;
+            this.response = this._response;
 
             if (this.onload) {
                 const loadEvent = new Event('load');

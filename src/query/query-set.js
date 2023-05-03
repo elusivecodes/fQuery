@@ -3,14 +3,12 @@
  * @class
  */
 export default class QuerySet {
-    #nodes = [];
-
     /**
      * New DOM constructor.
      * @param {array} nodes The input nodes.
      */
     constructor(nodes = []) {
-        this.#nodes = nodes;
+        this._nodes = nodes;
     }
 
     /**
@@ -18,7 +16,7 @@ export default class QuerySet {
      * @return {number} The number of nodes.
      */
     get length() {
-        return this.#nodes.length;
+        return this._nodes.length;
     }
 
     /**
@@ -27,7 +25,7 @@ export default class QuerySet {
      * @return {QuerySet} The QuerySet object.
      */
     each(callback) {
-        this.#nodes.forEach(
+        this._nodes.forEach(
             (v, i) => callback(v, i),
         );
 
@@ -41,12 +39,12 @@ export default class QuerySet {
      */
     get(index = null) {
         if (index === null) {
-            return this.#nodes;
+            return this._nodes;
         }
 
         return index < 0 ?
-            this.#nodes[index + this.#nodes.length] :
-            this.#nodes[index];
+            this._nodes[index + this._nodes.length] :
+            this._nodes[index];
     }
 
     /**
@@ -55,7 +53,7 @@ export default class QuerySet {
      * @return {QuerySet} A new QuerySet object.
      */
     map(callback) {
-        const nodes = this.#nodes.map(callback);
+        const nodes = this._nodes.map(callback);
 
         return new QuerySet(nodes);
     }
@@ -67,7 +65,7 @@ export default class QuerySet {
      * @return {QuerySet} A new QuerySet object.
      */
     slice(begin, end) {
-        const nodes = this.#nodes.slice(begin, end);
+        const nodes = this._nodes.slice(begin, end);
 
         return new QuerySet(nodes);
     }
@@ -77,6 +75,6 @@ export default class QuerySet {
      * @return {ArrayIterator} The iterator object.
      */
     [Symbol.iterator]() {
-        return this.#nodes.values();
+        return this._nodes.values();
     }
 }
