@@ -164,7 +164,7 @@ export function mouseDragFactory(down, move, up, { debounce = true, passive = tr
         };
 
         addEvent(window, moveEvent, realMove, { passive });
-        addEvent(window, upEvent, realUp, { passive });
+        addEvent(window, upEvent, realUp);
     };
 };
 

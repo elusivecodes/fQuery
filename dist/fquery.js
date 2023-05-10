@@ -1558,15 +1558,6 @@
      * @class
      */
     class AjaxRequest {
-        #options;
-        #promise;
-        #resolve;
-        #reject;
-
-        #isResolved = false;
-        #isRejected = false;
-        #isCancelled = false;
-
         /**
          * New AjaxRequest constructor.
          * @param {object} [options] The options to use for the request.
@@ -1590,97 +1581,97 @@
          * @param {Boolean|function} [options.onUploadProgress=null] A callback to execute on upload progress.
          */
         constructor(options) {
-            this.#options = extend(
+            this._options = extend(
                 {},
                 getAjaxDefaults(),
                 options,
             );
 
-            if (!this.#options.url) {
-                this.#options.url = getWindow().location.href;
+            if (!this._options.url) {
+                this._options.url = getWindow().location.href;
             }
 
-            if (!this.#options.cache) {
-                this.#options.url = appendQueryString(this.#options.url, '_', Date.now());
+            if (!this._options.cache) {
+                this._options.url = appendQueryString(this._options.url, '_', Date.now());
             }
 
-            if (!('Content-Type' in this.#options.headers) && this.#options.contentType) {
-                this.#options.headers['Content-Type'] = this.#options.contentType;
+            if (!('Content-Type' in this._options.headers) && this._options.contentType) {
+                this._options.headers['Content-Type'] = this._options.contentType;
             }
 
-            if (this.#options.isLocal === null) {
-                this.#options.isLocal = /^(?:about|app|app-storage|.+-extension|file|res|widget):$/.test(location.protocol);
+            if (this._options.isLocal === null) {
+                this._options.isLocal = /^(?:about|app|app-storage|.+-extension|file|res|widget):$/.test(location.protocol);
             }
 
-            if (!this.#options.isLocal && !('X-Requested-With' in this.#options.headers)) {
-                this.#options.headers['X-Requested-With'] = 'XMLHttpRequest';
+            if (!this._options.isLocal && !('X-Requested-With' in this._options.headers)) {
+                this._options.headers['X-Requested-With'] = 'XMLHttpRequest';
             }
 
-            this.#promise = new Promise((resolve, reject) => {
-                this.#resolve = (value) => {
-                    this.#isResolved = true;
+            this._promise = new Promise((resolve, reject) => {
+                this._resolve = (value) => {
+                    this._isResolved = true;
                     resolve(value);
                 };
 
-                this.#reject = (error) => {
-                    this.#isRejected = true;
+                this._reject = (error) => {
+                    this._isRejected = true;
                     reject(error);
                 };
             });
 
-            this.xhr = this.#options.xhr();
+            this.xhr = this._options.xhr();
 
-            if (this.#options.data) {
-                if (this.#options.processData && isObject(this.#options.data)) {
-                    if (this.#options.contentType === 'application/json') {
-                        this.#options.data = JSON.stringify(this.#options.data);
-                    } else if (this.#options.contentType === 'application/x-www-form-urlencoded') {
-                        this.#options.data = parseParams(this.#options.data);
+            if (this._options.data) {
+                if (this._options.processData && isObject(this._options.data)) {
+                    if (this._options.contentType === 'application/json') {
+                        this._options.data = JSON.stringify(this._options.data);
+                    } else if (this._options.contentType === 'application/x-www-form-urlencoded') {
+                        this._options.data = parseParams(this._options.data);
                     } else {
-                        this.#options.data = parseFormData(this.#options.data);
+                        this._options.data = parseFormData(this._options.data);
                     }
                 }
 
-                if (this.#options.method === 'GET') {
-                    const dataParams = new URLSearchParams(this.#options.data);
+                if (this._options.method === 'GET') {
+                    const dataParams = new URLSearchParams(this._options.data);
 
-                    const searchParams = getSearchParams(this.#options.url);
+                    const searchParams = getSearchParams(this._options.url);
                     for (const [key, value] of dataParams.entries()) {
                         searchParams.append(key, value);
                     }
 
-                    this.#options.url = setSearchParams(this.#options.url, searchParams);
-                    this.#options.data = null;
+                    this._options.url = setSearchParams(this._options.url, searchParams);
+                    this._options.data = null;
                 }
             }
 
-            this.xhr.open(this.#options.method, this.#options.url, true, this.#options.username, this.#options.password);
+            this.xhr.open(this._options.method, this._options.url, true, this._options.username, this._options.password);
 
-            for (const [key, value] of Object.entries(this.#options.headers)) {
+            for (const [key, value] of Object.entries(this._options.headers)) {
                 this.xhr.setRequestHeader(key, value);
             }
 
-            if (this.#options.responseType) {
-                this.xhr.responseType = this.#options.responseType;
+            if (this._options.responseType) {
+                this.xhr.responseType = this._options.responseType;
             }
 
-            if (this.#options.mimeType) {
-                this.xhr.overrideMimeType(this.#options.mimeType);
+            if (this._options.mimeType) {
+                this.xhr.overrideMimeType(this._options.mimeType);
             }
 
-            if (this.#options.timeout) {
-                this.xhr.timeout = this.#options.timeout;
+            if (this._options.timeout) {
+                this.xhr.timeout = this._options.timeout;
             }
 
             this.xhr.onload = (e) => {
                 if (this.xhr.status > 400) {
-                    this.#reject({
+                    this._reject({
                         status: this.xhr.status,
                         xhr: this.xhr,
                         event: e,
                     });
                 } else {
-                    this.#resolve({
+                    this._resolve({
                         response: this.xhr.response,
                         xhr: this.xhr,
                         event: e,
@@ -1688,33 +1679,33 @@
                 }
             };
 
-            if (!this.#options.isLocal) {
+            if (!this._options.isLocal) {
                 this.xhr.onerror = (e) =>
-                    this.#reject({
+                    this._reject({
                         status: this.xhr.status,
                         xhr: this.xhr,
                         event: e,
                     });
             }
 
-            if (this.#options.onProgress) {
+            if (this._options.onProgress) {
                 this.xhr.onprogress = (e) =>
-                    this.#options.onProgress(e.loaded / e.total, this.xhr, e);
+                    this._options.onProgress(e.loaded / e.total, this.xhr, e);
             }
 
-            if (this.#options.onUploadProgress) {
+            if (this._options.onUploadProgress) {
                 this.xhr.upload.onprogress = (e) =>
-                    this.#options.onUploadProgress(e.loaded / e.total, this.xhr, e);
+                    this._options.onUploadProgress(e.loaded / e.total, this.xhr, e);
             }
 
-            if (this.#options.beforeSend) {
-                this.#options.beforeSend(this.xhr);
+            if (this._options.beforeSend) {
+                this._options.beforeSend(this.xhr);
             }
 
-            this.xhr.send(this.#options.data);
+            this.xhr.send(this._options.data);
 
-            if (this.#options.afterSend) {
-                this.#options.afterSend(this.xhr);
+            if (this._options.afterSend) {
+                this._options.afterSend(this.xhr);
             }
         }
 
@@ -1723,16 +1714,16 @@
          * @param {string} [reason=Request was cancelled] The reason for cancelling the request.
          */
         cancel(reason = 'Request was cancelled') {
-            if (this.#isResolved || this.#isRejected || this.#isCancelled) {
+            if (this._isResolved || this._isRejected || this._isCancelled) {
                 return;
             }
 
             this.xhr.abort();
 
-            this.#isCancelled = true;
+            this._isCancelled = true;
 
-            if (this.#options.rejectOnCancel) {
-                this.#reject({
+            if (this._options.rejectOnCancel) {
+                this._reject({
                     status: this.xhr.status,
                     xhr: this.xhr,
                     reason,
@@ -1746,7 +1737,7 @@
          * @return {Promise} The promise.
          */
         catch(onRejected) {
-            return this.#promise.catch(onRejected);
+            return this._promise.catch(onRejected);
         }
 
         /**
@@ -1755,7 +1746,7 @@
          * @return {Promise} The promise.
          */
         finally(onFinally) {
-            return this.#promise.finally(onFinally);
+            return this._promise.finally(onFinally);
         }
 
         /**
@@ -1765,7 +1756,7 @@
          * @return {Promise} The promise.
          */
         then(onFulfilled, onRejected) {
-            return this.#promise.then(onFulfilled, onRejected);
+            return this._promise.then(onFulfilled, onRejected);
         }
     }
 
@@ -2010,16 +2001,6 @@
      * @class
      */
     class Animation {
-        #node;
-        #callback;
-        #options;
-        #promise;
-        #resolve;
-        #reject;
-
-        #isStopped = false;
-        #isFinished = false;
-
         /**
          * New Animation constructor.
          * @param {HTMLElement} node The input node.
@@ -2031,25 +2012,25 @@
          * @param {Boolean} [options.debug] Whether to set debugging info on the node.
          */
         constructor(node, callback, options) {
-            this.#node = node;
-            this.#callback = callback;
+            this._node = node;
+            this._callback = callback;
 
-            this.#options = {
+            this._options = {
                 ...getAnimationDefaults(),
                 ...options,
             };
 
-            if (!('start' in this.#options)) {
-                this.#options.start = getTime();
+            if (!('start' in this._options)) {
+                this._options.start = getTime();
             }
 
-            if (this.#options.debug) {
-                this.#node.dataset.animationStart = this.#options.start;
+            if (this._options.debug) {
+                this._node.dataset.animationStart = this._options.start;
             }
 
-            this.#promise = new Promise((resolve, reject) => {
-                this.#resolve = resolve;
-                this.#reject = reject;
+            this._promise = new Promise((resolve, reject) => {
+                this._resolve = resolve;
+                this._reject = reject;
             });
 
             if (!animations.has(node)) {
@@ -2065,7 +2046,7 @@
          * @return {Promise} The promise.
          */
         catch(onRejected) {
-            return this.#promise.catch(onRejected);
+            return this._promise.catch(onRejected);
         }
 
         /**
@@ -2074,7 +2055,7 @@
          * @return {Animation} The cloned Animation.
          */
         clone(node) {
-            return new Animation(node, this.#callback, this.#options);
+            return new Animation(node, this._callback, this._options);
         }
 
         /**
@@ -2083,7 +2064,7 @@
          * @return {Promise} The promise.
          */
         finally(onFinally) {
-            return this.#promise.finally(onFinally);
+            return this._promise.finally(onFinally);
         }
 
         /**
@@ -2092,27 +2073,27 @@
          * @param {Boolean} [options.finish=true] Whether to finish the animation.
         */
         stop({ finish = true } = {}) {
-            if (this.#isStopped || this.#isFinished) {
+            if (this._isStopped || this._isFinished) {
                 return;
             }
 
-            const otherAnimations = animations.get(this.#node)
+            const otherAnimations = animations.get(this._node)
                 .filter((animation) => animation !== this);
 
             if (!otherAnimations.length) {
-                animations.delete(this.#node);
+                animations.delete(this._node);
             } else {
-                animations.set(this.#node, otherAnimations);
+                animations.set(this._node, otherAnimations);
             }
 
             if (finish) {
                 this.update();
             }
 
-            this.#isStopped = true;
+            this._isStopped = true;
 
             if (!finish) {
-                this.#reject(this.#node);
+                this._reject(this._node);
             }
         }
 
@@ -2123,7 +2104,7 @@
          * @return {Promise} The promise.
          */
         then(onFulfilled, onRejected) {
-            return this.#promise.then(onFulfilled, onRejected);
+            return this._promise.then(onFulfilled, onRejected);
         }
 
         /**
@@ -2132,7 +2113,7 @@
          * @return {Boolean} TRUE if the animation is finished, otherwise FALSE.
          */
         update(time = null) {
-            if (this.#isStopped) {
+            if (this._isStopped) {
                 return true;
             }
 
@@ -2141,19 +2122,19 @@
             if (time === null) {
                 progress = 1;
             } else {
-                progress = (time - this.#options.start) / this.#options.duration;
+                progress = (time - this._options.start) / this._options.duration;
 
-                if (this.#options.infinite) {
+                if (this._options.infinite) {
                     progress %= 1;
                 } else {
                     progress = clamp(progress);
                 }
 
-                if (this.#options.type === 'ease-in') {
+                if (this._options.type === 'ease-in') {
                     progress = progress ** 2;
-                } else if (this.#options.type === 'ease-out') {
+                } else if (this._options.type === 'ease-out') {
                     progress = Math.sqrt(progress);
-                } else if (this.#options.type === 'ease-in-out') {
+                } else if (this._options.type === 'ease-in-out') {
                     if (progress <= 0.5) {
                         progress = progress ** 2 * 2;
                     } else {
@@ -2162,27 +2143,27 @@
                 }
             }
 
-            if (this.#options.debug) {
-                this.#node.dataset.animationTime = time;
-                this.#node.dataset.animationProgress = progress;
+            if (this._options.debug) {
+                this._node.dataset.animationTime = time;
+                this._node.dataset.animationProgress = progress;
             }
 
-            this.#callback(this.#node, progress, this.#options);
+            this._callback(this._node, progress, this._options);
 
             if (progress < 1) {
                 return false;
             }
 
-            if (this.#options.debug) {
-                delete this.#node.dataset.animationStart;
-                delete this.#node.dataset.animationTime;
-                delete this.#node.dataset.animationProgress;
+            if (this._options.debug) {
+                delete this._node.dataset.animationStart;
+                delete this._node.dataset.animationTime;
+                delete this._node.dataset.animationProgress;
             }
 
-            if (!this.#isFinished) {
-                this.#isFinished = true;
+            if (!this._isFinished) {
+                this._isFinished = true;
 
-                this.#resolve(this.#node);
+                this._resolve(this._node);
             }
 
             return true;
@@ -2196,16 +2177,13 @@
     * @class
     */
     class AnimationSet {
-        #animations;
-        #promise;
-
         /**
          * New AnimationSet constructor.
          * @param {array} animations The animations.
          */
         constructor(animations) {
-            this.#animations = animations;
-            this.#promise = Promise.all(animations);
+            this._animations = animations;
+            this._promise = Promise.all(animations);
         }
 
         /**
@@ -2214,7 +2192,7 @@
          * @return {Promise} The promise.
          */
         catch(onRejected) {
-            return this.#promise.catch(onRejected);
+            return this._promise.catch(onRejected);
         }
 
         /**
@@ -2223,7 +2201,7 @@
          * @return {Promise} The promise.
          */
         finally(onFinally) {
-            return this.#promise.finally(onFinally);
+            return this._promise.finally(onFinally);
         }
 
         /**
@@ -2232,7 +2210,7 @@
          * @param {Boolean} [options.finish=true] Whether to finish the animations.
         */
         stop({ finish = true } = {}) {
-            for (const animation of this.#animations) {
+            for (const animation of this._animations) {
                 animation.stop({ finish });
             }
         }
@@ -2244,7 +2222,7 @@
          * @return {Promise} The promise.
          */
         then(onFulfilled, onRejected) {
-            return this.#promise.then(onFulfilled, onRejected);
+            return this._promise.then(onFulfilled, onRejected);
         }
     }
 
@@ -2408,14 +2386,12 @@
      * @class
      */
     class QuerySet {
-        #nodes = [];
-
         /**
          * New DOM constructor.
          * @param {array} nodes The input nodes.
          */
         constructor(nodes = []) {
-            this.#nodes = nodes;
+            this._nodes = nodes;
         }
 
         /**
@@ -2423,7 +2399,7 @@
          * @return {number} The number of nodes.
          */
         get length() {
-            return this.#nodes.length;
+            return this._nodes.length;
         }
 
         /**
@@ -2432,7 +2408,7 @@
          * @return {QuerySet} The QuerySet object.
          */
         each(callback) {
-            this.#nodes.forEach(
+            this._nodes.forEach(
                 (v, i) => callback(v, i),
             );
 
@@ -2446,12 +2422,12 @@
          */
         get(index = null) {
             if (index === null) {
-                return this.#nodes;
+                return this._nodes;
             }
 
             return index < 0 ?
-                this.#nodes[index + this.#nodes.length] :
-                this.#nodes[index];
+                this._nodes[index + this._nodes.length] :
+                this._nodes[index];
         }
 
         /**
@@ -2460,7 +2436,7 @@
          * @return {QuerySet} A new QuerySet object.
          */
         map(callback) {
-            const nodes = this.#nodes.map(callback);
+            const nodes = this._nodes.map(callback);
 
             return new QuerySet(nodes);
         }
@@ -2472,7 +2448,7 @@
          * @return {QuerySet} A new QuerySet object.
          */
         slice(begin, end) {
-            const nodes = this.#nodes.slice(begin, end);
+            const nodes = this._nodes.slice(begin, end);
 
             return new QuerySet(nodes);
         }
@@ -2482,7 +2458,7 @@
          * @return {ArrayIterator} The iterator object.
          */
         [Symbol.iterator]() {
-            return this.#nodes.values();
+            return this._nodes.values();
         }
     }
 
@@ -4258,6 +4234,7 @@
      * @param {object} [options] The options for the mouse drag event.
      * @param {Boolean} [options.debounce] Whether to debounce the move event.
      * @param {Boolean} [options.passive] Whether to use passive event listeners.
+     * @param {number} [options.touches=1] The number of touches to trigger the event for.
      * @return {DOM~eventCallback} The mouse drag event callback.
      */
     function mouseDragFactory(down, move, up, { debounce: debounce$1 = true, passive = true, touches = 1 } = {}) {
@@ -4327,7 +4304,7 @@
             };
 
             addEvent$1(window, moveEvent, realMove, { passive });
-            addEvent$1(window, upEvent, realUp, { passive });
+            addEvent$1(window, upEvent, realUp);
         };
     }
     /**

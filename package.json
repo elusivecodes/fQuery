@@ -1,6 +1,6 @@
 {
     "name": "@fr0st/query",
-    "version": "3.1.4",
+    "version": "3.1.5",
     "description": "fQuery is a free, open-source DOM manipulation library for JavaScript.",
     "keywords": [
         "dom",
