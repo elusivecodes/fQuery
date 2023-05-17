@@ -100,13 +100,14 @@ export function removeEventDelegate(events, delegate, callback, { capture = fals
  * Trigger events on each node.
  * @param {string} events The event names.
  * @param {object} [options] The options to use for the Event.
- * @param {*} [options.detail] Additional data to attach to the event.
+ * @param {object} [options.data] Additional data to attach to the event.
+ * @param {*} [options.detail] Additional details to attach to the event.
  * @param {Boolean} [options.bubbles=true] Whether the event will bubble.
  * @param {Boolean} [options.cancelable=true] Whether the event is cancelable.
  * @return {QuerySet} The QuerySet object.
  */
-export function triggerEvent(events, { detail = null, bubbles = true, cancelable = true } = {}) {
-    _triggerEvent(this, events, { detail, bubbles, cancelable });
+export function triggerEvent(events, { data = null, detail = null, bubbles = true, cancelable = true } = {}) {
+    _triggerEvent(this, events, { data, detail, bubbles, cancelable });
 
     return this;
 };
@@ -115,11 +116,12 @@ export function triggerEvent(events, { detail = null, bubbles = true, cancelable
  * Trigger an event for the first node.
  * @param {string} event The event name.
  * @param {object} [options] The options to use for the Event.
- * @param {*} [options.detail] Additional data to attach to the event.
+ * @param {object} [options.data] Additional data to attach to the event.
+ * @param {*} [options.detail] Additional details to attach to the event.
  * @param {Boolean} [options.bubbles=true] Whether the event will bubble.
  * @param {Boolean} [options.cancelable=true] Whether the event is cancelable.
  * @return {Boolean} FALSE if the event was cancelled, otherwise TRUE.
  */
-export function triggerOne(event, { detail = null, bubbles = true, cancelable = true } = {}) {
-    return _triggerOne(this, event, { detail, bubbles, cancelable });
+export function triggerOne(event, { data = null, detail = null, bubbles = true, cancelable = true } = {}) {
+    return _triggerOne(this, event, { data, detail, bubbles, cancelable });
 };

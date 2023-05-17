@@ -246,11 +246,12 @@ export function removeEventDelegate(selector, events, delegate, callback, { capt
  * @param {string|array|HTMLElement|ShadowRoot|Document|Window|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
  * @param {string} events The event names.
  * @param {object} [options] The options to use for the Event.
- * @param {*} [options.detail] Additional data to attach to the event.
+ * @param {object} [options.data] Additional data to attach to the event.
+ * @param {*} [options.detail] Additional details to attach to the event.
  * @param {Boolean} [options.bubbles=true] Whether the event will bubble.
  * @param {Boolean} [options.cancelable=true] Whether the event is cancelable.
  */
-export function triggerEvent(selector, events, { detail = null, bubbles = true, cancelable = true } = {}) {
+export function triggerEvent(selector, events, { data = null, detail = null, bubbles = true, cancelable = true } = {}) {
     const nodes = parseNodes(selector, {
         shadow: true,
         document: true,
@@ -268,6 +269,10 @@ export function triggerEvent(selector, events, { detail = null, bubbles = true, 
             cancelable,
         });
 
+        if (data) {
+            Object.assign(eventData, data);
+        }
+
         if (realEvent !== event) {
             eventData.namespace = event.substring(realEvent.length + 1);
             eventData.namespaceRegExp = eventNamespacedRegExp(event);
@@ -284,12 +289,13 @@ export function triggerEvent(selector, events, { detail = null, bubbles = true, 
  * @param {string|array|HTMLElement|ShadowRoot|Document|Window|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
  * @param {string} event The event name.
  * @param {object} [options] The options to use for the Event.
- * @param {*} [options.detail] Additional data to attach to the event.
+ * @param {object} [options.data] Additional data to attach to the event.
+ * @param {*} [options.detail] Additional details to attach to the event.
  * @param {Boolean} [options.bubbles=true] Whether the event will bubble.
  * @param {Boolean} [options.cancelable=true] Whether the event is cancelable.
  * @return {Boolean} FALSE if the event was cancelled, otherwise TRUE.
  */
-export function triggerOne(selector, event, { detail = null, bubbles = true, cancelable = true } = {}) {
+export function triggerOne(selector, event, { data = null, detail = null, bubbles = true, cancelable = true } = {}) {
     const node = parseNode(selector, {
         shadow: true,
         document: true,
@@ -303,6 +309,10 @@ export function triggerOne(selector, event, { detail = null, bubbles = true, can
         bubbles,
         cancelable,
     });
+
+    if (data) {
+        Object.assign(eventData, data);
+    }
 
     if (realEvent !== event) {
         eventData.namespace = event.substring(realEvent.length + 1);

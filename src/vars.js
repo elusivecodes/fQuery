@@ -41,16 +41,6 @@ export const allowedTags = {
     'ul': [],
 };
 
-export const cssNumberProperties = [
-    'font-weight',
-    'line-height',
-    'opacity',
-    'orphans',
-    'scale',
-    'widows',
-    'z-index',
-];
-
 export const animations = new Map();
 
 export const data = new WeakMap();

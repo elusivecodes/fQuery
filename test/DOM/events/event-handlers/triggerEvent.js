@@ -265,6 +265,27 @@ describe('#triggerEvent', function() {
             await exec((_) => {
                 let result = 0;
                 $.addEvent('a', 'click', (e) => {
+                    if (e.test) {
+                        result++;
+                    }
+                });
+                $.triggerEvent('a', 'click');
+                $.triggerEvent('a', 'click', {
+                    data: {
+                        test: true,
+                    },
+                });
+                return result;
+            }),
+            2,
+        );
+    });
+
+    it('triggers an event for each node with custom details', async function() {
+        assert.strictEqual(
+            await exec((_) => {
+                let result = 0;
+                $.addEvent('a', 'click', (e) => {
                     if (e.detail === 'test') {
                         result++;
                     }

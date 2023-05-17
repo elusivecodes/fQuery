@@ -137,6 +137,29 @@ describe('QuerySet #triggerOne', function() {
             await exec((_) => {
                 let result = 0;
                 $.addEvent('a', 'click', (e) => {
+                    if (e.test) {
+                        result++;
+                    }
+                });
+                $('a')
+                    .triggerOne('click');
+                $('a')
+                    .triggerOne('click', {
+                        data: {
+                            test: true,
+                        },
+                    });
+                return result;
+            }),
+            1,
+        );
+    });
+
+    it('triggers an event for the first node with custom details', async function() {
+        assert.strictEqual(
+            await exec((_) => {
+                let result = 0;
+                $.addEvent('a', 'click', (e) => {
                     if (e.detail === 'test') {
                         result++;
                     }

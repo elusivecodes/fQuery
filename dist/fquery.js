@@ -1402,16 +1402,6 @@
         'ul': [],
     };
 
-    const cssNumberProperties = [
-        'font-weight',
-        'line-height',
-        'opacity',
-        'orphans',
-        'scale',
-        'widows',
-        'z-index',
-    ];
-
     const animations = new Map();
 
     const data = new WeakMap();
@@ -2285,8 +2275,8 @@
             for (let [style, value] of Object.entries(options.style)) {
                 style = kebabCase(style);
 
-                // if value is numeric and not a number property, add px
-                if (value && isNumeric(value) && !cssNumberProperties.includes(style)) {
+                // if value is numeric and property doesn't support number values, add px
+                if (value && isNumeric(value) && !CSS.supports(style, value)) {
                     value += 'px';
                 }
 
@@ -4587,11 +4577,12 @@
      * @param {string|array|HTMLElement|ShadowRoot|Document|Window|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
      * @param {string} events The event names.
      * @param {object} [options] The options to use for the Event.
-     * @param {*} [options.detail] Additional data to attach to the event.
+     * @param {object} [options.data] Additional data to attach to the event.
+     * @param {*} [options.detail] Additional details to attach to the event.
      * @param {Boolean} [options.bubbles=true] Whether the event will bubble.
      * @param {Boolean} [options.cancelable=true] Whether the event is cancelable.
      */
-    function triggerEvent$1(selector, events, { detail = null, bubbles = true, cancelable = true } = {}) {
+    function triggerEvent$1(selector, events, { data = null, detail = null, bubbles = true, cancelable = true } = {}) {
         const nodes = parseNodes(selector, {
             shadow: true,
             document: true,
@@ -4609,6 +4600,10 @@
                 cancelable,
             });
 
+            if (data) {
+                Object.assign(eventData, data);
+            }
+
             if (realEvent !== event) {
                 eventData.namespace = event.substring(realEvent.length + 1);
                 eventData.namespaceRegExp = eventNamespacedRegExp(event);
@@ -4624,12 +4619,13 @@
      * @param {string|array|HTMLElement|ShadowRoot|Document|Window|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
      * @param {string} event The event name.
      * @param {object} [options] The options to use for the Event.
-     * @param {*} [options.detail] Additional data to attach to the event.
+     * @param {object} [options.data] Additional data to attach to the event.
+     * @param {*} [options.detail] Additional details to attach to the event.
      * @param {Boolean} [options.bubbles=true] Whether the event will bubble.
      * @param {Boolean} [options.cancelable=true] Whether the event is cancelable.
      * @return {Boolean} FALSE if the event was cancelled, otherwise TRUE.
      */
-    function triggerOne$1(selector, event, { detail = null, bubbles = true, cancelable = true } = {}) {
+    function triggerOne$1(selector, event, { data = null, detail = null, bubbles = true, cancelable = true } = {}) {
         const node = parseNode(selector, {
             shadow: true,
             document: true,
@@ -4643,6 +4639,10 @@
             bubbles,
             cancelable,
         });
+
+        if (data) {
+            Object.assign(eventData, data);
+        }
 
         if (realEvent !== event) {
             eventData.namespace = event.substring(realEvent.length + 1);
@@ -5422,8 +5422,8 @@
         for (let [style, value] of Object.entries(styles)) {
             style = kebabCase(style);
 
-            // if value is numeric and not a number property, add px
-            if (value && isNumeric(value) && !cssNumberProperties.includes(style)) {
+            // if value is numeric and property doesn't support number values, add px
+            if (value && isNumeric(value) && !CSS.supports(style, value)) {
                 value += 'px';
             }
 
@@ -7281,13 +7281,14 @@
      * Trigger events on each node.
      * @param {string} events The event names.
      * @param {object} [options] The options to use for the Event.
-     * @param {*} [options.detail] Additional data to attach to the event.
+     * @param {object} [options.data] Additional data to attach to the event.
+     * @param {*} [options.detail] Additional details to attach to the event.
      * @param {Boolean} [options.bubbles=true] Whether the event will bubble.
      * @param {Boolean} [options.cancelable=true] Whether the event is cancelable.
      * @return {QuerySet} The QuerySet object.
      */
-    function triggerEvent(events, { detail = null, bubbles = true, cancelable = true } = {}) {
-        triggerEvent$1(this, events, { detail, bubbles, cancelable });
+    function triggerEvent(events, { data = null, detail = null, bubbles = true, cancelable = true } = {}) {
+        triggerEvent$1(this, events, { data, detail, bubbles, cancelable });
 
         return this;
     }
@@ -7295,13 +7296,14 @@
      * Trigger an event for the first node.
      * @param {string} event The event name.
      * @param {object} [options] The options to use for the Event.
-     * @param {*} [options.detail] Additional data to attach to the event.
+     * @param {object} [options.data] Additional data to attach to the event.
+     * @param {*} [options.detail] Additional details to attach to the event.
      * @param {Boolean} [options.bubbles=true] Whether the event will bubble.
      * @param {Boolean} [options.cancelable=true] Whether the event is cancelable.
      * @return {Boolean} FALSE if the event was cancelled, otherwise TRUE.
      */
-    function triggerOne(event, { detail = null, bubbles = true, cancelable = true } = {}) {
-        return triggerOne$1(this, event, { detail, bubbles, cancelable });
+    function triggerOne(event, { data = null, detail = null, bubbles = true, cancelable = true } = {}) {
+        return triggerOne$1(this, event, { data, detail, bubbles, cancelable });
     }
 
     /**

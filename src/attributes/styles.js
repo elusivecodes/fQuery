@@ -2,7 +2,7 @@ import { isNumeric, kebabCase } from '@fr0st/core';
 import { getWindow } from './../config.js';
 import { parseNode, parseNodes } from './../filters.js';
 import { parseClasses, parseData } from './../helpers.js';
-import { cssNumberProperties, styles } from './../vars.js';
+import { styles } from './../vars.js';
 
 /**
  * DOM Styles
@@ -133,8 +133,8 @@ export function setStyle(selector, style, value, { important = false } = {}) {
     for (let [style, value] of Object.entries(styles)) {
         style = kebabCase(style);
 
-        // if value is numeric and not a number property, add px
-        if (value && isNumeric(value) && !cssNumberProperties.includes(style)) {
+        // if value is numeric and property doesn't support number values, add px
+        if (value && isNumeric(value) && !CSS.supports(style, value)) {
             value += 'px';
         }
 

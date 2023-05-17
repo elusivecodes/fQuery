@@ -1304,7 +1304,8 @@ Trigger events on each node.
 - `selector` is a query selector string, a *HTMLElement*, *ShadowRoot*, *Document*, *Window*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
 - `events` is a space-separated string of events to trigger on the nodes.
 - `options` is an object containing properties to define the new Event.
-    - `detail` can be used to attach additional data to the event.
+    - `data` can be used to attach additional data to the event.
+    - `detail` can be used to attach additional details to the event.
     - `bubbles` is a boolean indicating whether the event should bubble, and will default to *true*.
     - `cancelable` is a boolean indicating whether the event is cancelable, and will default to *true*.
 
@@ -1319,7 +1320,8 @@ Trigger an event on the first node.
 - `selector` is a query selector string, a *HTMLElement*, *ShadowRoot*, *Document*, *Window*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
 - `event` is an event to trigger on the nodes.
 - `options` is an object containing properties to define the new Event.
-    - `detail` can be used to attach additional data to the event.
+    - `data` can be used to attach additional data to the event.
+    - `detail` can be used to attach additional details to the event.
     - `bubbles` is a boolean indicating whether the event should bubble, and will default to *true*.
     - `cancelable` is a boolean indicating whether the event is cancelable, and will default to *true*.
 
