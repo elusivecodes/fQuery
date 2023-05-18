@@ -8,11 +8,13 @@ import { addEvent as _addEvent, addEventDelegate as _addEventDelegate, addEventD
  * Add an event to each node.
  * @param {string} events The event names.
  * @param {DOM~eventCallback} callback The callback to execute.
- * @param {Boolean} [capture] Whether to use a capture event.
+ * @param {object} [options] The options for the event.
+ * @param {Boolean} [options.capture] Whether to use a capture event.
+ * @param {Boolean} [options.passive] Whether to use a passive event.
  * @return {QuerySet} The QuerySet object.
  */
-export function addEvent(events, callback, { capture = false } = {}) {
-    _addEvent(this, events, callback, { capture });
+export function addEvent(events, callback, { capture = false, passive = false } = {}) {
+    _addEvent(this, events, callback, { capture, passive });
 
     return this;
 };
@@ -22,11 +24,13 @@ export function addEvent(events, callback, { capture = false } = {}) {
  * @param {string} events The event names.
  * @param {string} delegate The delegate selector.
  * @param {DOM~eventCallback} callback The callback to execute.
- * @param {Boolean} [capture] Whether to use a capture event.
+ * @param {object} [options] The options for the event.
+ * @param {Boolean} [options.capture] Whether to use a capture event.
+ * @param {Boolean} [options.passive] Whether to use a passive event.
  * @return {QuerySet} The QuerySet object.
  */
-export function addEventDelegate(events, delegate, callback, { capture = false } = {}) {
-    _addEventDelegate(this, events, delegate, callback, { capture });
+export function addEventDelegate(events, delegate, callback, { capture = false, passive = false } = {}) {
+    _addEventDelegate(this, events, delegate, callback, { capture, passive });
 
     return this;
 };
@@ -36,11 +40,13 @@ export function addEventDelegate(events, delegate, callback, { capture = false }
  * @param {string} events The event names.
  * @param {string} delegate The delegate selector.
  * @param {DOM~eventCallback} callback The callback to execute.
- * @param {Boolean} [capture] Whether to use a capture event.
+ * @param {object} [options] The options for the event.
+ * @param {Boolean} [options.capture] Whether to use a capture event.
+ * @param {Boolean} [options.passive] Whether to use a passive event.
  * @return {QuerySet} The QuerySet object.
  */
-export function addEventDelegateOnce(events, delegate, callback, { capture = false } = {}) {
-    _addEventDelegateOnce(this, events, delegate, callback, { capture });
+export function addEventDelegateOnce(events, delegate, callback, { capture = false, passive = false } = {}) {
+    _addEventDelegateOnce(this, events, delegate, callback, { capture, passive });
 
     return this;
 };
@@ -49,11 +55,13 @@ export function addEventDelegateOnce(events, delegate, callback, { capture = fal
  * Add a self-destructing event to each node.
  * @param {string} events The event names.
  * @param {DOM~eventCallback} callback The callback to execute.
- * @param {Boolean} [capture] Whether to use a capture event.
+ * @param {object} [options] The options for the event.
+ * @param {Boolean} [options.capture] Whether to use a capture event.
+ * @param {Boolean} [options.passive] Whether to use a passive event.
  * @return {QuerySet} The QuerySet object.
  */
-export function addEventOnce(events, callback, { capture = false } = {}) {
-    _addEventOnce(this, events, callback, { capture });
+export function addEventOnce(events, callback, { capture = false, passive = false } = {}) {
+    _addEventOnce(this, events, callback, { capture, passive });
 
     return this;
 };
@@ -73,10 +81,11 @@ export function cloneEvents(otherSelector) {
  * Remove events from each node.
  * @param {string} [events] The event names.
  * @param {DOM~eventCallback} [callback] The callback to remove.
- * @param {Boolean} [capture] Whether to use a capture event.
+ * @param {object} [options] The options for the event.
+ * @param {Boolean} [options.capture] Whether to use a capture event.
  * @return {QuerySet} The QuerySet object.
  */
-export function removeEvent(events, callback, { capture = false } = {}) {
+export function removeEvent(events, callback, { capture = null } = {}) {
     _removeEvent(this, events, callback, { capture });
 
     return this;
@@ -87,10 +96,11 @@ export function removeEvent(events, callback, { capture = false } = {}) {
  * @param {string} [events] The event names.
  * @param {string} [delegate] The delegate selector.
  * @param {DOM~eventCallback} [callback] The callback to remove.
- * @param {Boolean} [capture] Whether to use a capture event.
+ * @param {object} [options] The options for the event.
+ * @param {Boolean} [options.capture] Whether to use a capture event.
  * @return {QuerySet} The QuerySet object.
  */
-export function removeEventDelegate(events, delegate, callback, { capture = false } = {}) {
+export function removeEventDelegate(events, delegate, callback, { capture = null } = {}) {
     _removeEventDelegate(this, events, delegate, callback, { capture });
 
     return this;

@@ -15,9 +15,10 @@ import { events } from './../vars.js';
  * @param {object} [options] The options for the event.
  * @param {Boolean} [options.capture] Whether to use a capture event.
  * @param {string} [options.delegate] The delegate selector.
+ * @param {Boolean} [options.passive] Whether to use a passive event.
  * @param {Boolean} [options.selfDestruct] Whether to use a self-destructing event.
  */
-export function addEvent(selector, eventNames, callback, { capture = false, delegate = null, selfDestruct = false } = {}) {
+export function addEvent(selector, eventNames, callback, { capture = false, delegate = null, passive = false, selfDestruct = false } = {}) {
     const nodes = parseNodes(selector, {
         shadow: true,
         document: true,
@@ -34,6 +35,7 @@ export function addEvent(selector, eventNames, callback, { capture = false, dele
             delegate,
             selfDestruct,
             capture,
+            passive,
         };
 
         for (const node of nodes) {
@@ -67,7 +69,7 @@ export function addEvent(selector, eventNames, callback, { capture = false, dele
 
             nodeEvents[realEventName].push({ ...eventData });
 
-            node.addEventListener(realEventName, realCallback, { capture });
+            node.addEventListener(realEventName, realCallback, { capture, passive });
         }
     }
 };
@@ -80,9 +82,10 @@ export function addEvent(selector, eventNames, callback, { capture = false, dele
  * @param {DOM~eventCallback} callback The callback to execute.
  * @param {object} [options] The options for the event.
  * @param {Boolean} [options.capture] Whether to use a capture event.
+ * @param {Boolean} [options.passive] Whether to use a passive event.
  */
-export function addEventDelegate(selector, events, delegate, callback, { capture = false } = {}) {
-    addEvent(selector, events, callback, { capture, delegate });
+export function addEventDelegate(selector, events, delegate, callback, { capture = false, passive = false } = {}) {
+    addEvent(selector, events, callback, { capture, delegate, passive });
 };
 
 /**
@@ -93,9 +96,10 @@ export function addEventDelegate(selector, events, delegate, callback, { capture
  * @param {DOM~eventCallback} callback The callback to execute.
  * @param {object} [options] The options for the event.
  * @param {Boolean} [options.capture] Whether to use a capture event.
+ * @param {Boolean} [options.passive] Whether to use a passive event.
  */
-export function addEventDelegateOnce(selector, events, delegate, callback, { capture = false } = {}) {
-    addEvent(selector, events, callback, { capture, delegate, selfDestruct: true });
+export function addEventDelegateOnce(selector, events, delegate, callback, { capture = false, passive = false } = {}) {
+    addEvent(selector, events, callback, { capture, delegate, passive, selfDestruct: true });
 };
 
 /**
@@ -105,9 +109,10 @@ export function addEventDelegateOnce(selector, events, delegate, callback, { cap
  * @param {DOM~eventCallback} callback The callback to execute.
  * @param {object} [options] The options for the event.
  * @param {Boolean} [options.capture] Whether to use a capture event.
+ * @param {Boolean} [options.passive] Whether to use a passive event.
  */
-export function addEventOnce(selector, events, callback, { capture = false } = {}) {
-    addEvent(selector, events, callback, { capture, selfDestruct: true });
+export function addEventOnce(selector, events, callback, { capture = false, passive = false } = {}) {
+    addEvent(selector, events, callback, { capture, passive, selfDestruct: true });
 };
 
 /**
@@ -134,6 +139,7 @@ export function cloneEvents(selector, otherSelector) {
                     {
                         capture: eventData.capture,
                         delegate: eventData.delegate,
+                        passive: eventData.passive,
                         selfDestruct: eventData.selfDestruct,
                     },
                 );

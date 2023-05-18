@@ -860,6 +860,7 @@ Add events to each node.
 - `callback` is a function that accepts an `event` argument, which will be called when the event is triggered.
 - `options` is an object containing properties to define how the event should be added.
     - `capture` is a boolean indicating whether to use a capture event, and will default to *false*.
+    - `passive` is a boolean indicating whether to use a passive event, and will default to *false*.
 
 ```javascript
 query.addEvent(events, options);
@@ -874,6 +875,7 @@ Add delegated events to each node.
 - `callback` is a function that accepts an `event` argument, which will be called when the event is triggered.
 - `options` is an object containing properties to define how the event should be added.
     - `capture` is a boolean indicating whether to use a capture event, and will default to *false*.
+    - `passive` is a boolean indicating whether to use a passive event, and will default to *false*.
 
 ```javascript
 query.addEventDelegate(events, delegate, callback, options);
@@ -888,6 +890,7 @@ Add self-destructing delegated events to each node.
 - `callback` is a function that accepts an `event` argument, which will be called when the event is triggered.
 - `options` is an object containing properties to define how the event should be added.
     - `capture` is a boolean indicating whether to use a capture event, and will default to *false*.
+    - `passive` is a boolean indicating whether to use a passive event, and will default to *false*.
 
 ```javascript
 query.addEventDelegateOnce(events, delegate, callback, options);
@@ -901,6 +904,7 @@ Add self-destructing events to each node.
 - `callback` is a function that accepts an `event` argument, which will be called when the event is triggered.
 - `options` is an object containing properties to define how the event should be added.
     - `capture` is a boolean indicating whether to use a capture event, and will default to *false*.
+    - `passive` is a boolean indicating whether to use a passive event, and will default to *false*.
 
 ```javascript
 query.addEventOnce(events, callback, options);
@@ -951,7 +955,8 @@ Trigger events on each node.
 
 - `events` is a space-separated string of events to trigger on the nodes.
 - `options` is an object containing properties to define the new Event.
-    - `detail` can be used to attach additional data to the event.
+    - `data` can be used to attach additional data to the event.
+    - `detail` can be used to attach additional details to the event.
     - `bubbles` is a boolean indicating whether the event should bubble, and will default to *true*.
     - `cancelable` is a boolean indicating whether the event is cancelable, and will default to *true*.
 
@@ -965,7 +970,8 @@ Trigger an event on the first node.
 
 - `event` is an event to trigger on the nodes.
 - `options` is an object containing properties to define the new Event.
-    - `detail` can be used to attach additional data to the event.
+    - `data` can be used to attach additional data to the event.
+    - `detail` can be used to attach additional details to the event.
     - `bubbles` is a boolean indicating whether the event should bubble, and will default to *true*.
     - `cancelable` is a boolean indicating whether the event is cancelable, and will default to *true*.
 

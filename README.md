@@ -1206,6 +1206,7 @@ Add events to each node.
 - `callback` is a function that accepts an `event` argument, which will be called when the event is triggered.
 - `options` is an object containing properties to define how the event should be added.
     - `capture` is a boolean indicating whether to use a capture event, and will default to *false*.
+    - `passive` is a boolean indicating whether to use a passive event, and will default to *false*.
 
 ```javascript
 $.addEvent(selector, events, callback, options);
@@ -1221,6 +1222,7 @@ Add delegated events to each node.
 - `callback` is a function that accepts an `event` argument, which will be called when the event is triggered.
 - `options` is an object containing properties to define how the event should be added.
     - `capture` is a boolean indicating whether to use a capture event, and will default to *false*.
+    - `passive` is a boolean indicating whether to use a passive event, and will default to *false*.
 
 ```javascript
 $.addEventDelegate(selector, events, delegate, callback, options);
@@ -1236,6 +1238,7 @@ Add self-destructing delegated events to each node.
 - `callback` is a function that accepts an `event` argument, which will be called when the event is triggered.
 - `options` is an object containing properties to define how the event should be added.
     - `capture` is a boolean indicating whether to use a capture event, and will default to *false*.
+    - `passive` is a boolean indicating whether to use a passive event, and will default to *false*.
 
 ```javascript
 $.addEventDelegateOnce(selector, events, delegate, callback, options);
@@ -1250,6 +1253,7 @@ Add self-destructing events to each node.
 - `callback` is a function that accepts an `event` argument, which will be called when the event is triggered.
 - `options` is an object containing properties to define how the event should be added.
     - `capture` is a boolean indicating whether to use a capture event, and will default to *false*.
+    - `passive` is a boolean indicating whether to use a passive event, and will default to *false*.
 
 ```javascript
 $.addEventOnce(selector, events, callback, options);
