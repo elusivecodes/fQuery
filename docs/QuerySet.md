@@ -45,7 +45,7 @@ const query = new $.QuerySet(nodes);
 Add an animation to the queue for each node.
 
 - `callback` is a function that accepts `node`, `progress` and `options` as arguments, where `node` is a *HTMLElement*, `progress` is a value between *0* and *1* and `options` is the `options` object passed to this method.
-- `options` is an object containing properties to define how the animation should be handled.
+- `options` is an object containing options for how the animation should be handled.
     - `queueName` is a string indicating the name of the queue to use, and will default to "*default*".
     - `duration` is the number of milliseconds that the animation should last, and will default to *1000*.
     - `type` is a string of either *ease-in*, *ease-out*, *ease-in-out* or *linear* indicating the type of animation to run, and will default to *ease-in-out*.
@@ -59,7 +59,7 @@ query.animate(callback, options);
 
 Stop all animations and clear the queue of each node.
 
-- `options` is an object containing properties to define how the animations should be stopped.
+- `options` is an object containing options for how the animations should be stopped.
     - `finish` is a boolean indicating whether to immediately finish the animation, and will default to *true*.
 
 ```javascript
@@ -72,7 +72,7 @@ query.stop(options);
 
 Add a drop in animation to the queue for each node.
 
-- `options` is an object containing properties to define how the animation should be handled.
+- `options` is an object containing options for how the animation should be handled.
     - `queueName` is a string indicating the name of the queue to use, and will default to "*default*".
     - `direction` is a string or function that returns either "*top*", "*right*", "*bottom*" or "*left*" indicating the direction to drop from, and will default to "*top*".
     - `duration` is the number of milliseconds that the animation should last, and will default to *1000*.
@@ -88,7 +88,7 @@ query.dropIn(options);
 
 Add a drop out animation to the queue for each node.
 
-- `options` is an object containing properties to define how the animation should be handled.
+- `options` is an object containing options for how the animation should be handled.
     - `queueName` is a string indicating the name of the queue to use, and will default to "*default*".
     - `direction` is a string or function that returns either "*top*", "*right*", "*bottom*" or "*left*" indicating the direction to drop from, and will default to "*top*".
     - `duration` is the number of milliseconds that the animation should last, and will default to *1000*.
@@ -104,7 +104,7 @@ query.dropOut(options);
 
 Add a fade in animation to the queue for each node.
 
-- `options` is an object containing properties to define how the animation should be handled.
+- `options` is an object containing options for how the animation should be handled.
     - `queueName` is a string indicating the name of the queue to use, and will default to "*default*".
     - `duration` is the number of milliseconds that the animation should last, and will default to *1000*.
     - `type` is a string of either "*ease-in*", "*ease-out*", "*ease-in-out*" or "*linear*" indicating the type of animation to run, and will default to "*ease-in-out*".
@@ -118,7 +118,7 @@ query.fadeIn(options);
 
 Add a fade out animation to the queue for each node.
 
-- `options` is an object containing properties to define how the animation should be handled.
+- `options` is an object containing options for how the animation should be handled.
     - `queueName` is a string indicating the name of the queue to use, and will default to "*default*".
     - `duration` is the number of milliseconds that the animation should last, and will default to *1000*.
     - `type` is a string of either "*ease-in*", "*ease-out*", "*ease-in-out*" or "*linear*" indicating the type of animation to run, and will default to "*ease-in-out*".
@@ -132,7 +132,7 @@ query.fadeOut(options);
 
 Add a rotate in animation to the queue for each node.
 
-- `options` is an object containing properties to define how the animation should be handled.
+- `options` is an object containing options for how the animation should be handled.
     - `queueName` is a string indicating the name of the queue to use, and will default to "*default*".
     - `x` is the amount of rotation to apply to the X axis, and will default to *0*.
     - `y` is the amount of rotation to apply to the Y axis, and will default to *1*.
@@ -150,7 +150,7 @@ query.rotateIn(options);
 
 Add a rotate out animation to the queue for each node.
 
-- `options` is an object containing properties to define how the animation should be handled.
+- `options` is an object containing options for how the animation should be handled.
     - `queueName` is a string indicating the name of the queue to use, and will default to "*default*".
     - `x` is the amount of rotation to apply to the X axis, and will default to *0*.
     - `y` is the amount of rotation to apply to the Y axis, and will default to *1*.
@@ -168,7 +168,7 @@ query.rotateOut(options);
 
 Add a slide in animation to the queue for each node.
 
-- `options` is an object containing properties to define how the animation should be handled.
+- `options` is an object containing options for how the animation should be handled.
     - `queueName` is a string indicating the name of the queue to use, and will default to "*default*".
     - `direction` is a string or function that returns either "*top*", "*right*", "*bottom*" or "*left*" indicating the direction to drop from, and will default to "*top*".
     - `duration` is the number of milliseconds that the animation should last, and will default to *1000*.
@@ -184,7 +184,7 @@ query.slideIn(options);
 
 Add a slide out animation to the queue for each node.
 
-- `options` is an object containing properties to define how the animation should be handled.
+- `options` is an object containing options for how the animation should be handled.
     - `queueName` is a string indicating the name of the queue to use, and will default to "*default*".
     - `direction` is a string or function that returns either "*top*", "*right*", "*bottom*" or "*left*" indicating the direction to drop from, and will default to "*top*".
     - `duration` is the number of milliseconds that the animation should last, and will default to *1000*.
@@ -200,7 +200,7 @@ query.slideOut(options);
 
 Add a squeeze in animation to the queue for each node.
 
-- `options` is an object containing properties to define how the animation should be handled.
+- `options` is an object containing options for how the animation should be handled.
     - `queueName` is a string indicating the name of the queue to use, and will default to "*default*".
     - `direction` is a string or function that returns either "*top*", "*right*", "*bottom*" or "*left*" indicating the direction to drop from, and will default to "*top*".
     - `duration` is the number of milliseconds that the animation should last, and will default to *1000*.
@@ -216,7 +216,7 @@ query.squeezeIn(options);
 
 Add a squeeze out animation to the queue for each node.
 
-- `options` is an object containing properties to define how the animation should be handled.
+- `options` is an object containing options for how the animation should be handled.
     - `queueName` is a string indicating the name of the queue to use, and will default to "*default*".
     - `direction` is a string or function that returns either "*top*", "*right*", "*bottom*" or "*left*" indicating the direction to drop from, and will default to "*top*".
     - `duration` is the number of milliseconds that the animation should last, and will default to *1000*.
@@ -234,7 +234,7 @@ query.squeezeOut(options);
 
 Clear a queue of each node.
 
-- `options` is an object containing properties to define how the queue should be cleared.
+- `options` is an object containing options for how the queue should be cleared.
     - `queueName` is a string indicating the name of the queue to clear, and will default to "*null*".
 
 ```javascript
@@ -246,7 +246,7 @@ query.clearQueue(options);
 Delay execution of subsequent items in the queue.
 
 - `duration` is the number of milliseconds to delay execution by.
-- `options` is an object containing properties to define how the queue should be added.
+- `options` is an object containing options for how the queue should be added.
     - `queueName` is a string indicating the name of the queue to use, and will default to "*default*".
 
 ```javascript
@@ -258,7 +258,7 @@ query.delay(duration, options);
 Queue a callback on each node.
 
 - `callback` is a function that accepts `node` as an argument, where node is a *HTMLElement*. The callback can return a *Promise* which will pause the queue until the promise is resolved.
-- `options` is an object containing properties to define how the queue should be added.
+- `options` is an object containing options for how the queue should be added.
     - `queueName` is a string indicating the name of the queue to use, and will default to "*default*".
 
 ```javascript
@@ -512,7 +512,7 @@ query.setData(data);
 
 Get the X,Y co-ordinates for the center of the first node.
 
-- `options` is an object containing properties to define how the position should be calculated.
+- `options` is an object containing options for how the position should be calculated.
     - `offset` is a boolean indicating whether the co-ordinates should be offset from the top left of the document, and will default to *false*.
 
 ```javascript
@@ -535,7 +535,7 @@ Get the distance of the first node to an X,Y position.
 
 - `x` is a distance (in pixels) along the X axis.
 - `y` is a distance (in pixels) along the Y axis.
-- `options` is an object containing properties to define how the distance should be calculated.
+- `options` is an object containing options for how the distance should be calculated.
     - `offset` is a boolean indicating whether the co-ordinates should be offset from the top left of the document, and will default to *false*.
 
 ```javascript
@@ -558,7 +558,7 @@ Get the nearest node to an X,Y position.
 
 - `x` is a distance (in pixels) along the X axis.
 - `y` is a distance (in pixels) along the Y axis.
-- `options` is an object containing properties to define how the distance should be calculated.
+- `options` is an object containing options for how the distance should be calculated.
     - `offset` is a boolean indicating whether the co-ordinates should be offset from the top left of the document, and will default to *false*.
 
 ```javascript
@@ -584,7 +584,7 @@ This method returns a new *QuerySet* containing the nearest node.
 Get the percentage of an X co-ordinate relative to the first node.
 
 - `x` is a distance (in pixels) along the X axis.
-- `options` is an object containing properties to define how the percent should be calculated.
+- `options` is an object containing options for how the percent should be calculated.
     - `offset` is a boolean indicating whether the co-ordinates should be offset from the top left of the document, and will default to *false*.
     - `clamp` is a boolean indicating whether to clamp the percent betwen *0* and *100*, and will default to *true*.
 
@@ -597,7 +597,7 @@ const percentX = query.percentX(x, options);
 Get the percentage of a Y co-ordinate relative to the first node.
 
 - `y` is a distance (in pixels) along the Y axis.
-- `options` is an object containing properties to define how the percent should be calculated.
+- `options` is an object containing options for how the percent should be calculated.
     - `offset` is a boolean indicating whether the co-ordinates should be offset from the top left of the document, and will default to *false*.
     - `clamp` is a boolean indicating whether to clamp the percent betwen *0* and *100*, and will default to *true*.
 
@@ -609,7 +609,7 @@ const percentY = query.percentY(y, options);
 
 Get the X,Y position for the top/left of the first node.
 
-- `options` is an object containing properties to define how the position should be calculated.
+- `options` is an object containing options for how the position should be calculated.
     - `offset` is a boolean indicating whether the co-ordinates should be offset from the top left of the document, and will default to *false*.
 
 ```javascript
@@ -620,7 +620,7 @@ const position = query.position(options);
 
 Get the computed bounding rectangle of the first node.
 
-- `options` is an object containing properties to define how the bounding rectangle should be calculated.
+- `options` is an object containing options for how the bounding rectangle should be calculated.
     - `offset` is a boolean indicating whether the rectangle should be offset from the top left of the document, and will default to *false*.
 
 ```javascript
@@ -682,7 +682,7 @@ query.setScrollY(y);
 
 Get the computed height of the first node.
 
-- `options` is an object containing properties to define how the height should be calculated.
+- `options` is an object containing options for how the height should be calculated.
     - `boxSize` is a number indicating the box sizing to calculate. Allowed values are *0* (no padding), *1* (padding), *2* (padding and border), *3* (padding, border and margin) and *4* (scroll area), and will default to *1*.
     - `outer` is a boolean indicating whether to use the window outer height, and will default to *false*.
 
@@ -701,7 +701,7 @@ The following constants can also be used as the `boxSize` for brevity.
 
 Get the computed width of the first node.
 
-- `options` is an object containing properties to define how the width should be calculated.
+- `options` is an object containing options for how the width should be calculated.
     - `boxSize` is a number indicating the box sizing to calculate. Allowed values are *0* (no padding), *1* (padding), *2* (padding and border), *3* (padding, border and margin) and *4* (scroll area), and will default to *1*.
     - `outer` is a boolean indicating whether to use the window outer height, and will default to *false*.
 
@@ -784,7 +784,7 @@ Set style properties for each node.
 
 - `style` is a string indicating the style property value to set.
 - `value` is the value you wish to set the style property to.
-- `options` is an object containing properties to define how the style should be applied.
+- `options` is an object containing options for how the style should be applied.
     - `important` is a boolean indicating the style should be set as important, and will default to *false*.
 
 ```javascript
@@ -858,7 +858,7 @@ Add events to each node.
 
 - `events` is a space-separated string of events to attach to the nodes.
 - `callback` is a function that accepts an `event` argument, which will be called when the event is triggered.
-- `options` is an object containing properties to define how the event should be added.
+- `options` is an object containing options for how the event should be added.
     - `capture` is a boolean indicating whether to use a capture event, and will default to *false*.
     - `passive` is a boolean indicating whether to use a passive event, and will default to *false*.
 
@@ -873,7 +873,7 @@ Add delegated events to each node.
 - `events` is a space-separated string of events to attach to the nodes.
 - `delegate` is a query selector string which will only trigger the event if it is propagated by a target matching the selector.
 - `callback` is a function that accepts an `event` argument, which will be called when the event is triggered.
-- `options` is an object containing properties to define how the event should be added.
+- `options` is an object containing options for how the event should be added.
     - `capture` is a boolean indicating whether to use a capture event, and will default to *false*.
     - `passive` is a boolean indicating whether to use a passive event, and will default to *false*.
 
@@ -888,7 +888,7 @@ Add self-destructing delegated events to each node.
 - `events` is a space-separated string of events to attach to the nodes.
 - `delegate` is a query selector string which will only trigger the event if it is propagated by a target matching the selector.
 - `callback` is a function that accepts an `event` argument, which will be called when the event is triggered.
-- `options` is an object containing properties to define how the event should be added.
+- `options` is an object containing options for how the event should be added.
     - `capture` is a boolean indicating whether to use a capture event, and will default to *false*.
     - `passive` is a boolean indicating whether to use a passive event, and will default to *false*.
 
@@ -902,7 +902,7 @@ Add self-destructing events to each node.
 
 - `events` is a space-separated string of events to attach to the nodes.
 - `callback` is a function that accepts an `event` argument, which will be called when the event is triggered.
-- `options` is an object containing properties to define how the event should be added.
+- `options` is an object containing options for how the event should be added.
     - `capture` is a boolean indicating whether to use a capture event, and will default to *false*.
     - `passive` is a boolean indicating whether to use a passive event, and will default to *false*.
 
@@ -926,7 +926,7 @@ Remove events from each node.
 
 - `events` is a space-separated string of events to remove from the nodes.
 - `callback` is a function that accepts an `event` argument, which will be called when the event is triggered.
-- `options` is an object containing properties to define how the event should be removed.
+- `options` is an object containing options for how the event should be removed.
     - `capture` is a boolean indicating whether to use a capture event, and will default to *null*.
 
 ```javascript
@@ -942,7 +942,7 @@ Remove delegated events from each node.
 - `events` is a space-separated string of events to remove from the nodes.
 - `delegate` is a query selector string which will only trigger the event if it is propagated by a target matching the selector.
 - `callback` is a function that accepts an `event` argument, which will be called when the event is triggered.
-- `options` is an object containing properties to define how the event should be removed.
+- `options` is an object containing options for how the event should be removed.
     - `capture` is a boolean indicating whether to use a capture event, and will default to *null*.
 
 ```javascript
@@ -954,7 +954,7 @@ query.removeEventDelegate(events, delegate, callback, options);
 Trigger events on each node.
 
 - `events` is a space-separated string of events to trigger on the nodes.
-- `options` is an object containing properties to define the new Event.
+- `options` is an object containing creating the new event.
     - `data` can be used to attach additional data to the event.
     - `detail` can be used to attach additional details to the event.
     - `bubbles` is a boolean indicating whether the event should bubble, and will default to *true*.
@@ -969,7 +969,7 @@ query.triggerEvent(events, options);
 Trigger an event on the first node.
 
 - `event` is an event to trigger on the nodes.
-- `options` is an object containing properties to define the new Event.
+- `options` is an object containing creating the new event.
     - `data` can be used to attach additional data to the event.
     - `detail` can be used to attach additional details to the event.
     - `bubbles` is a boolean indicating whether the event should bubble, and will default to *true*.
@@ -988,7 +988,7 @@ This method returns *false* if the event was cancelled, otherwise returns *true*
 
 Clone each node (optionally deep, and with events and data).
 
-- `options` is an object containing properties to define how to clone the nodes.
+- `options` is an object containing options for how to clone the nodes.
     - `deep` is a boolean indicating whether to also clone child nodes, and will default to *true*.
     - `events` is a boolean indicating whether to also clone events, and will default to *false*.
     - `data` is a boolean indicating whether to also clone data, and will default to *false*.
@@ -1062,7 +1062,7 @@ All events, data and animations will be removed from each node that is replaced.
 
 Attach a shadow DOM tree to the first node.
 
-- `options` is an object containing properties to define how the shadow should be attached.
+- `options` is an object containing options for how the shadow should be attached.
     - `open` is a boolean indicating whether the nodes are accessible from JavaScript outside the root, and will default to *true*.
 
 ```javascript
@@ -1319,7 +1319,7 @@ Find all next siblings for each node (optionally matching a filter, and before a
 
 - `nodeFilter` is either a function that accepts a `node` argument, a query selector string, a *Node*, *HTMLElement*, *DocumentFragment*, *ShadowRoot*, *NodeList*, *HTMLCollection*, *QuerySet* or an array of nodes that the nodes will be filtered by, and will default to *false*.
 - `limitFilter` is either a function that accepts a `node` argument, a query selector string, a *Node*, *HTMLElement*, *DocumentFragment*, *ShadowRoot*, *NodeList*, *HTMLCollection*, *QuerySet* or an array of nodes that when matched will stop the search, and will default to *false*.
-- `options` is an object containing properties to define how the siblings should be traversed.
+- `options` is an object containing options for how the siblings should be traversed.
     - `first` is a boolean indicating whether to only return the first matching node for each node, and will default to *false*.
 
 ```javascript
@@ -1356,7 +1356,7 @@ Find all parents of each node (optionally matching a filter, and before a limit)
 
 - `nodeFilter` is either a function that accepts a `node` argument, a query selector string, a *Node*, *HTMLElement*, *DocumentFragment*, *ShadowRoot*, *NodeList*, *HTMLCollection*, *QuerySet* or an array of nodes that the nodes will be filtered by, and will default to *false*.
 - `limitFilter` is either a function that accepts a `node` argument, a query selector string, a *Node*, *HTMLElement*, *DocumentFragment*, *ShadowRoot*, *NodeList*, *HTMLCollection*, *QuerySet* or an array of nodes that when matched will stop the search, and will default to *false*.
-- `options` is an object containing properties to define how the parents should be traversed.
+- `options` is an object containing options for how the parents should be traversed.
     - `first` is a boolean indicating whether to only return the first matching node for each node, and will default to *false*.
 
 ```javascript
@@ -1383,7 +1383,7 @@ Find all previous siblings for each node (optionally matching a filter, and befo
 
 - `nodeFilter` is either a function that accepts a `node` argument, a query selector string, a *Node*, *HTMLElement*, *DocumentFragment*, *ShadowRoot*, *NodeList*, *HTMLCollection*, *QuerySet* or an array of nodes that the nodes will be filtered by, and will default to *false*.
 - `limitFilter` is either a function that accepts a `node` argument, a query selector string, a *Node*, *HTMLElement*, *DocumentFragment*, *ShadowRoot*, *NodeList*, *HTMLCollection*, *QuerySet* or an array of nodes that when matched will stop the search, and will default to *false*.
-- `options` is an object containing properties to define how the siblings should be traversed.
+- `options` is an object containing options for how the siblings should be traversed.
     - `first` is a boolean indicating whether to only return the first matching node for each node, and will default to *false*.
 
 ```javascript

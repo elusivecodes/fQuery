@@ -468,10 +468,11 @@
      * Create a wrapped version of a function that executes at most once per animation frame
      * (using the most recent arguments passed to it).
      * @param {function} callback Callback function to execute.
-     * @param {Boolean} [leading] Whether to execute on the leading edge of the animation frame.
+     * @param {object} [options] The options for executing the function.
+     * @param {Boolean} [options.leading=false] Whether to execute on the leading edge of the animation frame.
      * @return {function} The wrapped function.
      */
-    const animation = (callback, leading) => {
+    const animation = (callback, { leading = false } = {}) => {
         let animationReference;
         let newArgs;
         let running;
@@ -554,11 +555,12 @@
      * (using the most recent arguments passed to it).
      * @param {function} callback Callback function to execute.
      * @param {number} [wait=0] The number of milliseconds to wait until next execution.
-     * @param {Boolean} [leading=false] Whether to execute on the leading edge of the wait period.
-     * @param {Boolean} [trailing=true] Whether to execute on the trailing edge of the wait period.
+     * @param {object} [options] The options for executing the function.
+     * @param {Boolean} [options.leading=false] Whether to execute on the leading edge of the wait period.
+     * @param {Boolean} [options.trailing=true] Whether to execute on the trailing edge of the wait period.
      * @return {function} The wrapped function.
      */
-    const debounce$1 = (callback, wait = 0, leading = false, trailing = true) => {
+    const debounce$1 = (callback, wait = 0, { leading = false, trailing = true } = {}) => {
         let debounceReference;
         let lastRan;
         let newArgs;
@@ -677,11 +679,12 @@
      * (using the most recent arguments passed to it).
      * @param {function} callback Callback function to execute.
      * @param {number} [wait=0] The number of milliseconds to wait until next execution.
-     * @param {Boolean} [leading=true] Whether to execute on the leading edge of the wait period.
-     * @param {Boolean} [trailing=true] Whether to execute on the trailing edge of the wait period.
+     * @param {object} [options] The options for executing the function.
+     * @param {Boolean} [options.leading=true] Whether to execute on the leading edge of the wait period.
+     * @param {Boolean} [options.trailing=true] Whether to execute on the trailing edge of the wait period.
      * @return {function} The wrapped function.
      */
-    const throttle = (callback, wait = 0, leading = true, trailing = true) => {
+    const throttle = (callback, wait = 0, { leading = true, trailing = true } = {}) => {
         let throttleReference;
         let lastRan;
         let newArgs;
@@ -869,9 +872,10 @@
      * @param {object} object The input object.
      * @param {string} key The key to set in the object.
      * @param {*} value The value to set.
-     * @param {Boolean} [overwrite=true] Whether to overwrite, if the key already exists.
+     * @param {object} [options] The options for setting the value.
+     * @param {Boolean} [options.overwrite=true] Whether to overwrite, if the key already exists.
      */
-    const setDot = (object, key, value, overwrite = true) => {
+    const setDot = (object, key, value, { overwrite = true } = {}) => {
         const keys = key.split('.');
         while ((key = keys.shift())) {
             if (key === '*') {

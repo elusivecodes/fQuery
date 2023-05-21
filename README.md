@@ -298,7 +298,7 @@ Add an animation to each node.
 
 - `selector` is a query selector string, a *HTMLElement*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
 - `callback` is a function that accepts `node`, `progress` and `options` as arguments, where `node` is a *HTMLElement*, `progress` is a value between *0* and *1* and `options` is the `options` object passed to this method.
-- `options` is an object containing properties to define how the animation should be handled.
+- `options` is an object containing options for how the animation should be handled.
     - `duration` is the number of milliseconds that the animation should last, and will default to *1000*.
     - `type` is a string of either *ease-in*, *ease-out*, *ease-in-out* or *linear* indicating the type of animation to run, and will default to *ease-in-out*.
     - `infinite` is a boolean indicating whether the animation should continue forever, and will default to *false*.
@@ -314,7 +314,7 @@ const animation = $.animate(selector, callback, options);
 Stop all animations for each node.
 
 - `selector` is a query selector string, a *HTMLElement*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
-- `options` is an object containing properties to define how the animations should be stopped.
+- `options` is an object containing options for how the animations should be stopped.
     - `finish` is a boolean indicating whether to immediately finish the animation, and will default to *true*.
 
 ```javascript
@@ -328,7 +328,7 @@ $.stop(selector, options);
 Drop each node into place.
 
 - `selector` is a query selector string, a *HTMLElement*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of node.
-- `options` is an object containing properties to define how the animation should be handled.
+- `options` is an object containing options for how the animation should be handled.
     - `direction` is a string or function that returns either "*top*", "*right*", "*bottom*" or "*left*" indicating the direction to drop from, and will default to "*top*".
     - `duration` is the number of milliseconds that the animation should last, and will default to *1000*.
     - `type` is a string of either "*ease-in*", "*ease-out*", "*ease-in-out*" or "*linear*" indicating the type of animation to run, and will default to "*ease-in-out*".
@@ -346,7 +346,7 @@ const animation = $.dropIn(selector, options);
 Drop each node out of place.
 
 - `selector` is a query selector string, a *HTMLElement*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
-- `options` is an object containing properties to define how the animation should be handled.
+- `options` is an object containing options for how the animation should be handled.
     - `direction` is a string or function that returns either "*top*", "*right*", "*bottom*" or "*left*" indicating the direction to drop from, and will default to "*top*".
     - `duration` is the number of milliseconds that the animation should last, and will default to *1000*.
     - `type` is a string of either "*ease-in*", "*ease-out*", "*ease-in-out*" or "*linear*" indicating the type of animation to run, and will default to "*ease-in-out*".
@@ -364,7 +364,7 @@ const animation = $.dropOut(selector, options);
 Fade the opacity of each node in.
 
 - `selector` is a query selector string, a *HTMLElement*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
-- `options` is an object containing properties to define how the animation should be handled.
+- `options` is an object containing options for how the animation should be handled.
     - `duration` is the number of milliseconds that the animation should last, and will default to *1000*.
     - `type` is a string of either "*ease-in*", "*ease-out*", "*ease-in-out*" or "*linear*" indicating the type of animation to run, and will default to "*ease-in-out*".
     - `infinite` is a boolean indicating whether the animation should continue forever, and will default to *false*.
@@ -380,7 +380,7 @@ const animation = $.fadeIn(selector, options);
 Fade the opacity of each node out.
 
 - `selector` is a query selector string, a *HTMLElement*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
-- `options` is an object containing properties to define how the animation should be handled.
+- `options` is an object containing options for how the animation should be handled.
     - `duration` is the number of milliseconds that the animation should last, and will default to *1000*.
     - `type` is a string of either "*ease-in*", "*ease-out*", "*ease-in-out*" or "*linear*" indicating the type of animation to run, and will default to "*ease-in-out*".
     - `infinite` is a boolean indicating whether the animation should continue forever, and will default to *false*.
@@ -396,7 +396,7 @@ const animation = $.fadeOut(selector, options);
 Rotate each node in on an X, Y or Z.
 
 - `selector` is a query selector string, a *HTMLElement*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
-- `options` is an object containing properties to define how the animation should be handled.
+- `options` is an object containing options for how the animation should be handled.
     - `x` is the amount of rotation to apply to the X axis, and will default to *0*.
     - `y` is the amount of rotation to apply to the Y axis, and will default to *1*.
     - `z` is the amount of rotation to apply to the Z axis, and will default to *0*.
@@ -416,7 +416,7 @@ const animation = $.rotateIn(selector, options);
 Rotate each node out on an X, Y or Z.
 
 - `selector` is a query selector string, a *HTMLElement*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
-- `options` is an object containing properties to define how the animation should be handled.
+- `options` is an object containing options for how the animation should be handled.
     - `x` is the amount of rotation to apply to the X axis, and will default to *0*.
     - `y` is the amount of rotation to apply to the Y axis, and will default to *1*.
     - `z` is the amount of rotation to apply to the Z axis, and will default to *0*.
@@ -436,7 +436,7 @@ const animation = $.rotateOut(selector, options);
 Slide each node into place to a direction.
 
 - `selector` is a query selector string, a *HTMLElement*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
-- `options` is an object containing properties to define how the animation should be handled.
+- `options` is an object containing options for how the animation should be handled.
     - `direction` is a string or function that returns either "*top*", "*right*", "*bottom*" or "*left*" indicating the direction to slide from, and will default to "*top*".
     - `duration` is the number of milliseconds that the animation should last, and will default to *1000*.
     - `type` is a string of either "*ease-in*", "*ease-out*", "*ease-in-out*" or "*linear*" indicating the type of animation to run, and will default to "*ease-in-out*".
@@ -454,7 +454,7 @@ const animation = $.slideIn(selector, options);
 Slide each node out of place from a direction.
 
 - `selector` is a query selector string, a *HTMLElement*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
-- `options` is an object containing properties to define how the animation should be handled.
+- `options` is an object containing options for how the animation should be handled.
     - `direction` is a string or function that returns either "*top*", "*right*", "*bottom*" or "*left*" indicating the direction to slide from, and will default to "*top*".
     - `duration` is the number of milliseconds that the animation should last, and will default to *1000*.
     - `type` is a string of either "*ease-in*", "*ease-out*", "*ease-in-out*" or "*linear*" indicating the type of animation to run, and will default to "*ease-in-out*".
@@ -472,7 +472,7 @@ const animation = $.slideOut(selector, options);
 Squeeze each node into place to a direction.
 
 - `selector` is a query selector string, a *HTMLElement*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
-- `options` is an object containing properties to define how the animation should be handled.
+- `options` is an object containing options for how the animation should be handled.
     - `direction` is a string or function that returns either "*top*", "*right*", "*bottom*" or "*left*" indicating the direction to squeeze from, and will default to "*top*".
     - `duration` is the number of milliseconds that the animation should last, and will default to *1000*.
     - `type` is a string of either "*ease-in*", "*ease-out*", "*ease-in-out*" or "*linear*" indicating the type of animation to run, and will default to "*ease-in-out*".
@@ -490,7 +490,7 @@ const animation = $.squeezeIn(selector, options);
 Squeeze each node out of place from a direction.
 
 - `selector` is a query selector string, a *HTMLElement*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
-- `options` is an object containing properties to define how the animation should be handled.
+- `options` is an object containing options for how the animation should be handled.
     - `direction` is a string or function that returns either "*top*", "*right*", "*bottom*" or "*left*" indicating the direction to squeeze from, and will default to "*top*".
     - `duration` is the number of milliseconds that the animation should last, and will default to *1000*.
     - `type` is a string of either "*ease-in*", "*ease-out*", "*ease-in-out*" or "*linear*" indicating the type of animation to run, and will default to "*ease-in-out*".
@@ -771,7 +771,7 @@ $.setData(selector, data);
 Get the X,Y co-ordinates for the center of the first node.
 
 - `selector` is a query selector string, a *HTMLElement*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
-- `options` is an object containing properties to define how the position should be calculated.
+- `options` is an object containing options for how the position should be calculated.
     - `offset` is a boolean indicating whether the co-ordinates should be offset from the top left of the document, and will default to *false*.
 
 ```javascript
@@ -796,7 +796,7 @@ Get the distance of the first node to an X,Y position.
 - `selector` is a query selector string, a *HTMLElement*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
 - `x` is a distance (in pixels) along the X axis.
 - `y` is a distance (in pixels) along the Y axis.
-- `options` is an object containing properties to define how the distance should be calculated.
+- `options` is an object containing options for how the distance should be calculated.
     - `offset` is a boolean indicating whether the co-ordinates should be offset from the top left of the document, and will default to *false*.
 
 ```javascript
@@ -821,7 +821,7 @@ Get the nearest node to an X,Y position.
 - `selector` is a query selector string, a *HTMLElement*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
 - `x` is a distance (in pixels) along the X axis.
 - `y` is a distance (in pixels) along the Y axis.
-- `options` is an object containing properties to define how the distance should be calculated.
+- `options` is an object containing options for how the distance should be calculated.
     - `offset` is a boolean indicating whether the co-ordinates should be offset from the top left of the document, and will default to *false*.
 
 ```javascript
@@ -845,7 +845,7 @@ Get the percentage of an X co-ordinate relative to the first node.
 
 - `selector` is a query selector string, a *HTMLElement*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
 - `x` is a distance (in pixels) along the X axis.
-- `options` is an object containing properties to define how the percent should be calculated.
+- `options` is an object containing options for how the percent should be calculated.
     - `offset` is a boolean indicating whether the co-ordinates should be offset from the top left of the document, and will default to *false*.
     - `clamp` is a boolean indicating whether to clamp the percent betwen *0* and *100*, and will default to *true*.
 
@@ -859,7 +859,7 @@ Get the percentage of a Y co-ordinate relative to the first node.
 
 - `selector` is a query selector string, a *HTMLElement*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
 - `y` is a distance (in pixels) along the Y axis.
-- `options` is an object containing properties to define how the percent should be calculated.
+- `options` is an object containing options for how the percent should be calculated.
     - `offset` is a boolean indicating whether the co-ordinates should be offset from the top left of the document, and will default to *false*.
     - `clamp` is a boolean indicating whether to clamp the percent betwen *0* and *100*, and will default to *true*.
 
@@ -872,7 +872,7 @@ const percentY = $.percentY(selector, y, options);
 Get the X,Y position for the top/left of the first node.
 
 - `selector` is a query selector string, a *HTMLElement*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
-- `options` is an object containing properties to define how the position should be calculated.
+- `options` is an object containing options for how the position should be calculated.
     - `offset` is a boolean indicating whether the co-ordinates should be offset from the top left of the document, and will default to *false*.
 
 ```javascript
@@ -884,7 +884,7 @@ const position = $.position(selector, options);
 Get the computed bounding rectangle of the first node.
 
 - `selector` is a query selector string, a *HTMLElement*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
-- `options` is an object containing properties to define how the bounding rectangle should be calculated.
+- `options` is an object containing options for how the bounding rectangle should be calculated.
     - `offset` is a boolean indicating whether the rectangle should be offset from the top left of the document, and will default to *false*.
 
 ```javascript
@@ -954,7 +954,7 @@ $.setScrollY(selector, y);
 Get the computed height of the first node.
 
 - `selector` is a query selector string, a *HTMLElement*, *Document*, *Window*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
-- `options` is an object containing properties to define how the height should be calculated.
+- `options` is an object containing options for how the height should be calculated.
     - `boxSize` is a number indicating the box sizing to calculate. Allowed values are *0* (no padding), *1* (padding), *2* (padding and border), *3* (padding, border and margin) and *4* (scroll area), and will default to *1*.
     - `outer` is a boolean indicating whether to use the window outer height, and will default to *false*.
 
@@ -974,7 +974,7 @@ The following constants can also be used as the `boxSize` for brevity.
 Get the computed width of the first node.
 
 - `selector` is a query selector string, a *HTMLElement*, *Document*, *Window*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
-- `options` is an object containing properties to define how the height should be calculated.
+- `options` is an object containing options for how the height should be calculated.
     - `boxSize` is a number indicating the box sizing to calculate. Allowed values are *0* (no padding), *1* (padding), *2* (padding and border), *3* (padding, border and margin) and *4* (scroll area), and will default to *1*.
     - `outer` is a boolean indicating whether to use the window outer width, and will default to *false*.
 
@@ -1064,7 +1064,7 @@ Set style properties for each node.
 - `selector` is a query selector string, a *HTMLElement*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
 - `style` is a string indicating the style property value to set.
 - `value` is the value you wish to set the style property to.
-- `options` is an object containing properties to define how the style should be applied.
+- `options` is an object containing options for how the style should be applied.
     - `important` is a boolean indicating the style should be set as important, and will default to *false*.
 
 ```javascript
@@ -1204,7 +1204,7 @@ Add events to each node.
 - `selector` is a query selector string, a *HTMLElement*, *ShadowRoot*, *Document*, *Window*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
 - `events` is a space-separated string of events to attach to the nodes.
 - `callback` is a function that accepts an `event` argument, which will be called when the event is triggered.
-- `options` is an object containing properties to define how the event should be added.
+- `options` is an object containing options for how the event should be added.
     - `capture` is a boolean indicating whether to use a capture event, and will default to *false*.
     - `passive` is a boolean indicating whether to use a passive event, and will default to *false*.
 
@@ -1220,7 +1220,7 @@ Add delegated events to each node.
 - `events` is a space-separated string of events to attach to the nodes.
 - `delegate` is a query selector string which will only trigger the event if it is propagated by a target matching the selector.
 - `callback` is a function that accepts an `event` argument, which will be called when the event is triggered.
-- `options` is an object containing properties to define how the event should be added.
+- `options` is an object containing options for how the event should be added.
     - `capture` is a boolean indicating whether to use a capture event, and will default to *false*.
     - `passive` is a boolean indicating whether to use a passive event, and will default to *false*.
 
@@ -1236,7 +1236,7 @@ Add self-destructing delegated events to each node.
 - `events` is a space-separated string of events to attach to the nodes.
 - `delegate` is a query selector string which will only trigger the event if it is propagated by a target matching the selector.
 - `callback` is a function that accepts an `event` argument, which will be called when the event is triggered.
-- `options` is an object containing properties to define how the event should be added.
+- `options` is an object containing options for how the event should be added.
     - `capture` is a boolean indicating whether to use a capture event, and will default to *false*.
     - `passive` is a boolean indicating whether to use a passive event, and will default to *false*.
 
@@ -1251,7 +1251,7 @@ Add self-destructing events to each node.
 - `selector` is a query selector string, a *HTMLElement*, *ShadowRoot*, *Document*, *Window*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
 - `events` is a space-separated string of events to attach to the nodes.
 - `callback` is a function that accepts an `event` argument, which will be called when the event is triggered.
-- `options` is an object containing properties to define how the event should be added.
+- `options` is an object containing options for how the event should be added.
     - `capture` is a boolean indicating whether to use a capture event, and will default to *false*.
     - `passive` is a boolean indicating whether to use a passive event, and will default to *false*.
 
@@ -1277,7 +1277,7 @@ Remove events from each node.
 - `selector` is a query selector string, a *HTMLElement*, *ShadowRoot*, *Document*, *Window*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
 - `events` is a space-separated string of events to remove from the nodes.
 - `callback` is a function that accepts an `event` argument, which will be called when the event is triggered.
-- `options` is an object containing properties to define how the event should be removed.
+- `options` is an object containing options for how the event should be removed.
     - `capture` is a boolean indicating whether to use a capture event, and will default to *null*.
 
 ```javascript
@@ -1294,7 +1294,7 @@ Remove delegated events from each node.
 - `events` is a space-separated string of events to remove from the nodes.
 - `delegate` is a query selector string which will only trigger the event if it is propagated by a target matching the selector.
 - `callback` is a function that accepts an `event` argument, which will be called when the event is triggered.
-- `options` is an object containing properties to define how the event should be removed.
+- `options` is an object containing options for how the event should be removed.
     - `capture` is a boolean indicating whether to use a capture event, and will default to *null*.
 
 ```javascript
@@ -1307,7 +1307,7 @@ Trigger events on each node.
 
 - `selector` is a query selector string, a *HTMLElement*, *ShadowRoot*, *Document*, *Window*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
 - `events` is a space-separated string of events to trigger on the nodes.
-- `options` is an object containing properties to define the new Event.
+- `options` is an object containing options for creating the new event.
     - `data` can be used to attach additional data to the event.
     - `detail` can be used to attach additional details to the event.
     - `bubbles` is a boolean indicating whether the event should bubble, and will default to *true*.
@@ -1323,7 +1323,7 @@ Trigger an event on the first node.
 
 - `selector` is a query selector string, a *HTMLElement*, *ShadowRoot*, *Document*, *Window*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
 - `event` is an event to trigger on the nodes.
-- `options` is an object containing properties to define the new Event.
+- `options` is an object containing options for creating the new event.
     - `data` can be used to attach additional data to the event.
     - `detail` can be used to attach additional details to the event.
     - `bubbles` is a boolean indicating whether the event should bubble, and will default to *true*.
@@ -1363,7 +1363,7 @@ This method also works with touch events.
 Clone each node (optionally deep, and with events and data).
 
 - `selector` is a query selector string, a *Node*, *HTMLElement*, *DocumentFragment*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
-- `options` is an object containing properties to define how to clone the nodes.
+- `options` is an object containing options for how to clone the nodes.
     - `deep` is a boolean indicating whether to also clone child nodes, and will default to *true*.
     - `events` is a boolean indicating whether to also clone events, and will default to *false*.
     - `data` is a boolean indicating whether to also clone data, and will default to *false*.
@@ -1444,7 +1444,7 @@ All events, data and animations will be removed from each node that is replaced.
 Attach a shadow DOM tree to the first node.
 
 - `selector` is a query selector string, a*HTMLElement*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
-- `options` is an object containing properties to define how the shadow should be attached.
+- `options` is an object containing options for how the shadow should be attached.
     - `open` is a boolean indicating whether the nodes are accessible from JavaScript outside the root, and will default to *true*.
 
 ```javascript
@@ -1456,7 +1456,7 @@ const shadow = $.attachShadow(selector, options);
 Create a new DOM element.
 
 - `tagName` is a string indicating the type of element you wish to create, and will default to "*div*".
-- `options` is an object containing properties to define the new node.
+- `options` is an object containing options for creating the new node.
     - `html` is a string that will become the HTML contents of the node.
     - `text` is a string that will become the text contents of the node.
     - `class` is an array of classes, or a space seperated string of class names.
@@ -1686,7 +1686,7 @@ If a node you are wrapping with is a *DocumentFragment*, the contents will be us
 Create a *Document* object from a string.
 
 - `input` is the input string.
-- `options` is an object containing properties to define how to parse the string.
+- `options` is an object containing options for how to parse the string.
     - `contentType` is a string representing the content type, and will default to "*text/html*".
 
 ```javascript
@@ -1711,7 +1711,7 @@ const nodes = $.parseHTML(html);
 Clear a queue of each node.
 
 - `selector` is a query selector string, a *HTMLElement*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
-- `options` is an object containing properties to define how the queue should be cleared.
+- `options` is an object containing options for how the queue should be cleared.
     - `queueName` is a string indicating the name of the queue to clear, and will default to "*null*".
 
 ```javascript
@@ -1726,7 +1726,7 @@ Queue a callback on each node.
 
 - `selector` is a query selector string, a *HTMLElement*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
 - `callback` is a function that accepts `node` as an argument, where node is a *HTMLElement*. The callback can return a *Promise* which will pause the queue until the promise is resolved.
-- `options` is an object containing properties to define how the queue should be added.
+- `options` is an object containing options for how the queue should be added.
     - `queueName` is a string indicating the name of the queue to use, and will default to "*default*".
 
 ```javascript
@@ -1744,7 +1744,7 @@ Load and execute a JavaScript file.
 
 - `script` is a string containing the URL for the script to load.
 - `attributes` is an object containing additional attributes on the `script` tag.
-- `options` is an object containing properties to define how the script should be loaded.
+- `options` is an object containing options for how the script should be loaded.
     - `cache` is a boolean indicating whether to cache the request, and will default to *true*.
 
 This method returns a *Promise* that resolves when the script is loaded, or rejects on failure.
@@ -1758,7 +1758,7 @@ const promise = $.loadScript(script, attributes, options);
 Load and execute multiple JavaScript files (in order).
 
 - `scripts` is a array of strings containing the URLs for the scripts to load, or an array of script attribute objects.
-- `options` is an object containing properties to define how the scripts should be loaded.
+- `options` is an object containing options for how the scripts should be loaded.
     - `cache` is a boolean indicating whether to cache the request, and will default to *true*.
 
 This method returns a *Promise* that resolves when the scripts are loaded, or rejects on failure.
@@ -1776,7 +1776,7 @@ Import A CSS Stylesheet file.
 
 - `stylesheet` is a string containing the URL for the stylesheet to load.
 - `attributes` is an object containing additional attributes on the `link` tag.
-- `options` is an object containing properties to define how the stylesheet should be loaded.
+- `options` is an object containing options for how the stylesheet should be loaded.
     - `cache` is a boolean indicating whether to cache the request, and will default to *true*.
 
 This method returns a *Promise* that resolves when the stylesheet is loaded, or rejects on failure.
@@ -1790,7 +1790,7 @@ const promise = $.loadStyle(stylesheet, attributes, options);
 Import multiple CSS Stylesheet files.
 
 - `stylesheets` is a array of strings containing the URLs for the stylesheets to load, or an array of link attribute objects.
-- `options` is an object containing properties to define how the stylesheets should be loaded.
+- `options` is an object containing options for how the stylesheets should be loaded.
     - `cache` is a boolean indicating whether to cache the request, and will default to *true*.
 
 This method returns a *Promise* that resolves when the stylesheets are loaded, or rejects on failure.
@@ -1884,7 +1884,7 @@ Find all next siblings for each node (optionally matching a filter, and before a
 - `selector` is a query selector string, a *Node*, *HTMLElement*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
 - `nodeFilter` is either a function that accepts a `node` argument, a query selector string, a *Node*, *HTMLElement*, *DocumentFragment*, *ShadowRoot*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes that the nodes will be filtered by, and will default to *false*.
 - `limitFilter` is either a function that accepts a `node` argument, a query selector string, a *Node*, *HTMLElement*, *DocumentFragment*, *ShadowRoot*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes that when matched will stop the search, and will default to *false*.
-- `options` is an object containing properties to define how the siblings should be traversed.
+- `options` is an object containing options for how the siblings should be traversed.
     - `first` is a boolean indicating whether to only return the first matching node for each node, and will default to *false*.
 
 ```javascript
@@ -1919,7 +1919,7 @@ Find all parents of each node (optionally matching a filter, and before a limit)
 - `selector` is a query selector string, a *Node*, *HTMLElement*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
 - `nodeFilter` is either a function that accepts a `node` argument, a query selector string, a *Node*, *HTMLElement*, *DocumentFragment*, *ShadowRoot*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes that the nodes will be filtered by, and will default to *false*.
 - `limitFilter` is either a function that accepts a `node` argument, a query selector string, a *Node*, *HTMLElement*, *DocumentFragment*, *ShadowRoot*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes that when matched will stop the search, and will default to *false*.
-- `options` is an object containing properties to define how the parents should be traversed.
+- `options` is an object containing options for how the parents should be traversed.
     - `first` is a boolean indicating whether to only return the first matching node for each node, and will default to *false*.
 
 ```javascript
@@ -1944,7 +1944,7 @@ Find all previous siblings for each node (optionally matching a filter, and befo
 - `selector` is a query selector string, a *Node*, *HTMLElement*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
 - `nodeFilter` is either a function that accepts a `node` argument, a query selector string, a *Node*, *HTMLElement*, *DocumentFragment*, *ShadowRoot*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes that the nodes will be filtered by, and will default to *false*.
 - `limitFilter` is either a function that accepts a `node` argument, a query selector string, a *Node*, *HTMLElement*, *DocumentFragment*, *ShadowRoot*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes that when matched will stop the search, and will default to *false*.
-- `options` is an object containing properties to define how the siblings should be traversed.
+- `options` is an object containing options for how the siblings should be traversed.
     - `first` is a boolean indicating whether to only return the first matching node for each node, and will default to *false*.
 
 ```javascript
@@ -1967,7 +1967,7 @@ Find all siblings for each node (optionally matching a filter).
 
 - `selector` is a query selector string, a *Node*, *HTMLElement*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
 - `nodeFilter` is either a function that accepts a `node` argument, a query selector string, a *Node*, *HTMLElement*, *DocumentFragment*, *ShadowRoot*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes that the nodes will be filtered by, and will default to *false*.
-- `options` is an object containing properties to define how the siblings should be traversed.
+- `options` is an object containing options for how the siblings should be traversed.
 -    `elementsOnly` is a boolean indicating whether to only return elements, and will default to *true*.
 
 ```javascript
