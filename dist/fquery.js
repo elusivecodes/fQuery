@@ -1406,6 +1406,11 @@
         'ul': [],
     };
 
+    const eventLookup = {
+        mousedown: ['mousemove', 'mouseup'],
+        touchstart: ['touchmove', 'touchend']
+    };
+
     const animations = new Map();
 
     const data = new WeakMap();
@@ -4226,12 +4231,13 @@
      * @param {DOM~eventCallback} move The callback to execute on mousemove.
      * @param {DOM~eventCallback} up The callback to execute on mouseup.
      * @param {object} [options] The options for the mouse drag event.
-     * @param {Boolean} [options.debounce] Whether to debounce the move event.
-     * @param {Boolean} [options.passive] Whether to use passive event listeners.
+     * @param {Boolean} [options.debounce=true] Whether to debounce the move event.
+     * @param {Boolean} [options.passive=true] Whether to use passive event listeners.
+     * @param {Boolean} [options.preventDefault=true] Whether to prevent the default event.
      * @param {number} [options.touches=1] The number of touches to trigger the event for.
      * @return {DOM~eventCallback} The mouse drag event callback.
      */
-    function mouseDragFactory(down, move, up, { debounce: debounce$1 = true, passive = true, touches = 1 } = {}) {
+    function mouseDragFactory(down, move, up, { debounce: debounce$1 = true, passive = true, preventDefault = true, touches = 1 } = {}) {
         if (move && debounce$1) {
             move = debounce(move);
 
@@ -4252,7 +4258,7 @@
                 return;
             }
 
-            if (isTouch) {
+            if (preventDefault) {
                 event.preventDefault();
             }
 
@@ -4260,13 +4266,17 @@
                 return;
             }
 
-            const moveEvent = isTouch ?
-                'touchmove' :
-                'mousemove';
+            const [moveEvent, upEvent] = event.type in eventLookup ?
+                eventLookup[event.type] :
+                eventLookup.mousedown;
 
             const realMove = (event) => {
                 if (isTouch && event.touches.length !== touches) {
                     return;
+                }
+
+                if (preventDefault && !passive) {
+                    event.preventDefault();
                 }
 
                 if (!move) {
@@ -4275,10 +4285,6 @@
 
                 move(event);
             };
-
-            const upEvent = isTouch ?
-                'touchend' :
-                'mouseup';
 
             const realUp = (event) => {
                 if (isTouch && event.touches.length !== touches - 1) {
@@ -4289,7 +4295,7 @@
                     return;
                 }
 
-                if (isTouch) {
+                if (preventDefault) {
                     event.preventDefault();
                 }
 

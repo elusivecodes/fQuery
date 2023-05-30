@@ -2,6 +2,7 @@ import { merge } from '@fr0st/core';
 import { addEvent, removeEvent } from './event-handlers.js';
 import { debounce as _debounce } from './../helpers.js';
 import { closest } from './../traversal/traversal.js';
+import { eventLookup } from './../vars.js';
 
 /**
  * DOM Event Factory
@@ -92,12 +93,13 @@ export function delegateFactory(node, selector, callback) {
  * @param {DOM~eventCallback} move The callback to execute on mousemove.
  * @param {DOM~eventCallback} up The callback to execute on mouseup.
  * @param {object} [options] The options for the mouse drag event.
- * @param {Boolean} [options.debounce] Whether to debounce the move event.
- * @param {Boolean} [options.passive] Whether to use passive event listeners.
+ * @param {Boolean} [options.debounce=true] Whether to debounce the move event.
+ * @param {Boolean} [options.passive=true] Whether to use passive event listeners.
+ * @param {Boolean} [options.preventDefault=true] Whether to prevent the default event.
  * @param {number} [options.touches=1] The number of touches to trigger the event for.
  * @return {DOM~eventCallback} The mouse drag event callback.
  */
-export function mouseDragFactory(down, move, up, { debounce = true, passive = true, touches = 1 } = {}) {
+export function mouseDragFactory(down, move, up, { debounce = true, passive = true, preventDefault = true, touches = 1 } = {}) {
     if (move && debounce) {
         move = _debounce(move);
 
@@ -118,7 +120,7 @@ export function mouseDragFactory(down, move, up, { debounce = true, passive = tr
             return;
         }
 
-        if (isTouch) {
+        if (preventDefault) {
             event.preventDefault();
         }
 
@@ -126,13 +128,17 @@ export function mouseDragFactory(down, move, up, { debounce = true, passive = tr
             return;
         }
 
-        const moveEvent = isTouch ?
-            'touchmove' :
-            'mousemove';
+        const [moveEvent, upEvent] = event.type in eventLookup ?
+            eventLookup[event.type] :
+            eventLookup.mousedown;
 
         const realMove = (event) => {
             if (isTouch && event.touches.length !== touches) {
                 return;
+            }
+
+            if (preventDefault && !passive) {
+                event.preventDefault();
             }
 
             if (!move) {
@@ -141,10 +147,6 @@ export function mouseDragFactory(down, move, up, { debounce = true, passive = tr
 
             move(event);
         };
-
-        const upEvent = isTouch ?
-            'touchend' :
-            'mouseup';
 
         const realUp = (event) => {
             if (isTouch && event.touches.length !== touches - 1) {
@@ -155,7 +157,7 @@ export function mouseDragFactory(down, move, up, { debounce = true, passive = tr
                 return;
             }
 
-            if (isTouch) {
+            if (preventDefault) {
                 event.preventDefault();
             }
 

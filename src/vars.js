@@ -41,6 +41,11 @@ export const allowedTags = {
     'ul': [],
 };
 
+export const eventLookup = {
+    mousedown: ['mousemove', 'mouseup'],
+    touchstart: ['touchmove', 'touchend']
+};
+
 export const animations = new Map();
 
 export const data = new WeakMap();
