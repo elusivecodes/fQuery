@@ -43,7 +43,7 @@ export const allowedTags = {
 
 export const eventLookup = {
     mousedown: ['mousemove', 'mouseup'],
-    touchstart: ['touchmove', 'touchend']
+    touchstart: ['touchmove', 'touchend'],
 };
 
 export const animations = new Map();

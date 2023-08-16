@@ -1408,7 +1408,7 @@
 
     const eventLookup = {
         mousedown: ['mousemove', 'mouseup'],
-        touchstart: ['touchmove', 'touchend']
+        touchstart: ['touchmove', 'touchend'],
     };
 
     const animations = new Map();

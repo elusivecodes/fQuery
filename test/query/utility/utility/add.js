@@ -300,8 +300,8 @@ describe('QuerySet #add', function() {
                     .map((node) => node.id);
             }),
             [
-                'shadow',
                 'parent1',
+                'shadow',
             ],
         );
     });
