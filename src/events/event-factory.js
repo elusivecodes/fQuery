@@ -75,17 +75,46 @@ export function delegateFactory(node, selector, callback) {
         }
 
         Object.defineProperty(event, 'currentTarget', {
-            value: delegate,
             configurable: true,
+            enumerable: true,
+            value: delegate,
         });
         Object.defineProperty(event, 'delegateTarget', {
-            value: node,
             configurable: true,
+            enumerable: true,
+            value: node,
         });
 
         return callback(event);
     };
 };
+
+/**
+ * Return a wrapped event callback that cleans up delegate events.
+ * @param {HTMLElement|ShadowRoot|Document} node The input node.
+ * @param {function} callback The event callback.
+ * @return {DOM~eventCallback} The cleaned event callback.
+ */
+export function delegateFactoryClean(node, callback) {
+    return (event) => {
+        if (!event.delegateTarget) {
+            return callback(event);
+        }
+
+        Object.defineProperty(event, 'currentTarget', {
+            configurable: true,
+            enumerable: true,
+            value: node,
+        });
+        Object.defineProperty(event, 'delegateTarget', {
+            writable: true,
+        });
+
+        delete event.delegateTarget;
+
+        return callback(event);
+    };
+}
 
 /**
  * Return a wrapped mouse drag event (optionally debounced).

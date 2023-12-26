@@ -1,4 +1,4 @@
-import { delegateFactory, namespaceFactory, preventFactory, selfDestructFactory } from './event-factory.js';
+import { delegateFactory, delegateFactoryClean, namespaceFactory, preventFactory, selfDestructFactory } from './event-factory.js';
 import { parseNode, parseNodes } from './../filters.js';
 import { eventNamespacedRegExp, parseEvent, parseEvents } from './../helpers.js';
 import { events } from './../vars.js';
@@ -55,6 +55,8 @@ export function addEvent(selector, eventNames, callback, { capture = false, dele
 
             if (delegate) {
                 realCallback = delegateFactory(node, delegate, realCallback);
+            } else {
+                realCallback = delegateFactoryClean(node, realCallback);
             }
 
             realCallback = namespaceFactory(eventName, realCallback);
