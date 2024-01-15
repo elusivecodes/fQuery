@@ -782,7 +782,7 @@ query.removeClass(...classes);
 
 Remove a style property from each node.
 
-- `style` is a string indicating the style property value to remove.
+- `style` is a string indicating the style property to remove.
 
 ```javascript
 query.removeStyle(style);

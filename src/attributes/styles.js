@@ -119,7 +119,7 @@ export function removeClass(selector, ...classes) {
 
 /**
  * Remove a style property from each node.
- * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} selector 
+ * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} selector
  * @param {string} style The style name.
  */
 export function removeStyle(selector, style) {

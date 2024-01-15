@@ -57,6 +57,7 @@ export function removeClass(...classes) {
 /**
  * Remove a style property from each node.
  * @param {string} style The style name.
+ * @return {QuerySet} The QuerySet object.
  */
 export function removeStyle(style) {
     _removeStyle(this, style);

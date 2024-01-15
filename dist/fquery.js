@@ -5455,7 +5455,7 @@
     }
     /**
      * Remove a style property from each node.
-     * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} selector 
+     * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} selector
      * @param {string} style The style name.
      */
     function removeStyle$1(selector, style) {
@@ -7210,6 +7210,7 @@
     /**
      * Remove a style property from each node.
      * @param {string} style The style name.
+     * @return {QuerySet} The QuerySet object.
      */
     function removeStyle(style) {
         removeStyle$1(this, style);

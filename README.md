@@ -1062,7 +1062,7 @@ $.removeClass(selector, ...classes);
 Remove a style property from each node.
 
 - `selector` is a query selector string, a *HTMLElement*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
-- `style` is a string indicating the style property value to remove.
+- `style` is a string indicating the style property to remove.
 
 ```javascript
 $.removeStyle(selector, style);
