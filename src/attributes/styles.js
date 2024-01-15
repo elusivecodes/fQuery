@@ -118,6 +118,21 @@ export function removeClass(selector, ...classes) {
 };
 
 /**
+ * Remove a style property from each node.
+ * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} selector 
+ * @param {string} style The style name.
+ */
+export function removeStyle(selector, style) {
+    const nodes = parseNodes(selector);
+
+    style = kebabCase(style);
+
+    for (const node of nodes) {
+        node.style.removeProperty(style);
+    }
+};
+
+/**
  * Set style properties for each node.
  * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
  * @param {string|object} style The style name, or an object containing styles.

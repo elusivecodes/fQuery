@@ -126,10 +126,12 @@ export function isConnected() {
 /**
  * Returns true if any of the nodes is considered equal to any of the other nodes.
  * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet} otherSelector The other node(s), or a query selector string.
+ * @param {object} options The options for performing the comparison.
+ * @param {Boolean} [options.shallow=true] Whether to do a shallow comparison.
  * @return {Boolean} TRUE if any of the nodes is considered equal to any of the other nodes, otherwise FALSE.
  */
-export function isEqual(otherSelector) {
-    return _isEqual(this, otherSelector);
+export function isEqual(otherSelector, { shallow = false } = {}) {
+    return _isEqual(this, otherSelector, { shallow });
 };
 
 /**

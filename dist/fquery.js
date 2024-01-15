@@ -5454,6 +5454,20 @@
         }
     }
     /**
+     * Remove a style property from each node.
+     * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} selector 
+     * @param {string} style The style name.
+     */
+    function removeStyle$1(selector, style) {
+        const nodes = parseNodes(selector);
+
+        style = kebabCase(style);
+
+        for (const node of nodes) {
+            node.style.removeProperty(style);
+        }
+    }
+    /**
      * Set style properties for each node.
      * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
      * @param {string|object} style The style name, or an object containing styles.
@@ -7194,6 +7208,15 @@
         return this;
     }
     /**
+     * Remove a style property from each node.
+     * @param {string} style The style name.
+     */
+    function removeStyle(style) {
+        removeStyle$1(this, style);
+
+        return this;
+    }
+    /**
      * Set style properties for each node.
      * @param {string|object} style The style name, or an object containing styles.
      * @param {string} [value] The style value.
@@ -8867,20 +8890,29 @@
      * Returns true if any of the nodes is considered equal to any of the other nodes.
      * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
      * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet} otherSelector The other node(s), or a query selector string.
+     * @param {object} options The options for performing the comparison.
+     * @param {Boolean} [options.shallow=true] Whether to do a shallow comparison.
      * @return {Boolean} TRUE if any of the nodes is considered equal to any of the other nodes, otherwise FALSE.
      */
-    function isEqual$1(selector, otherSelector) {
-        const others = parseNodes(otherSelector, {
+    function isEqual$1(selector, otherSelector, { shallow = false } = {}) {
+        let nodes = parseNodes(selector, {
             node: true,
             fragment: true,
             shadow: true,
         });
 
-        return parseNodes(selector, {
+        let others = parseNodes(otherSelector, {
             node: true,
             fragment: true,
             shadow: true,
-        }).some((node) =>
+        });
+
+        if (shallow) {
+            nodes = $.clone(nodes, { deep: false });
+            others = $.clone(others, { deep: false });
+        }
+
+        return nodes.some((node) =>
             others.some((other) => node.isEqualNode(other)),
         );
     }
@@ -9078,10 +9110,12 @@
     /**
      * Returns true if any of the nodes is considered equal to any of the other nodes.
      * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet} otherSelector The other node(s), or a query selector string.
+     * @param {object} options The options for performing the comparison.
+     * @param {Boolean} [options.shallow=true] Whether to do a shallow comparison.
      * @return {Boolean} TRUE if any of the nodes is considered equal to any of the other nodes, otherwise FALSE.
      */
-    function isEqual(otherSelector) {
-        return isEqual$1(this, otherSelector);
+    function isEqual(otherSelector, { shallow = false } = {}) {
+        return isEqual$1(this, otherSelector, { shallow });
     }
     /**
      * Returns true if any of the elements or a parent of any of the elements is "fixed".
@@ -9325,6 +9359,7 @@
     proto.removeEvent = removeEvent;
     proto.removeEventDelegate = removeEventDelegate;
     proto.removeProperty = removeProperty;
+    proto.removeStyle = removeStyle;
     proto.replaceAll = replaceAll;
     proto.replaceWith = replaceWith;
     proto.rotateIn = rotateIn;
@@ -9753,6 +9788,7 @@
         removeEvent: removeEvent$1,
         removeEventDelegate: removeEventDelegate$1,
         removeProperty: removeProperty$1,
+        removeStyle: removeStyle$1,
         replaceAll: replaceAll$1,
         replaceWith: replaceWith$1,
         rotateIn: rotateIn$1,

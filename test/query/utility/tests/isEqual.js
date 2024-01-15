@@ -15,7 +15,7 @@ describe('QuerySet #isEqual', function() {
                 '<span data-id="span3"></span>' +
                 '<span data-id="span4"></span>' +
                 '</div>' +
-                '<div id="parent2">' +
+                '<div id="parent3">' +
                 '<a data-id="a1"></a>' +
                 '<a data-id="a2"></a>' +
                 '<a data-id="a3"></a>' +
@@ -40,6 +40,16 @@ describe('QuerySet #isEqual', function() {
                     .isEqual('#parent3 a'),
             ),
             false,
+        );
+    });
+
+    it('works with shallow option', async function() {
+        assert.strictEqual(
+            await exec((_) =>
+                $('#parent1 span')
+                    .isEqual('#parent2 span', { shallow: true }),
+            ),
+            true,
         );
     });
 

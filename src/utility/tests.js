@@ -202,20 +202,29 @@ export function isConnected(selector) {
  * Returns true if any of the nodes is considered equal to any of the other nodes.
  * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
  * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet} otherSelector The other node(s), or a query selector string.
+ * @param {object} options The options for performing the comparison.
+ * @param {Boolean} [options.shallow=true] Whether to do a shallow comparison.
  * @return {Boolean} TRUE if any of the nodes is considered equal to any of the other nodes, otherwise FALSE.
  */
-export function isEqual(selector, otherSelector) {
-    const others = parseNodes(otherSelector, {
+export function isEqual(selector, otherSelector, { shallow = false } = {}) {
+    let nodes = parseNodes(selector, {
         node: true,
         fragment: true,
         shadow: true,
     });
 
-    return parseNodes(selector, {
+    let others = parseNodes(otherSelector, {
         node: true,
         fragment: true,
         shadow: true,
-    }).some((node) =>
+    });
+
+    if (shallow) {
+        nodes = $.clone(nodes, { deep: false });
+        others = $.clone(others, { deep: false });
+    }
+
+    return nodes.some((node) =>
         others.some((other) => node.isEqualNode(other)),
     );
 };

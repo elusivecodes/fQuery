@@ -14,7 +14,7 @@ import { cloneData, getData, removeData, setData } from './attributes/data.js';
 import { center, constrain, distTo, distToNode, nearestTo, nearestToNode, percentX, percentY, position, rect } from './attributes/position.js';
 import { getScrollX, getScrollY, setScroll, setScrollX, setScrollY } from './attributes/scroll.js';
 import { height, width } from './attributes/size.js';
-import { addClass, css, getStyle, hide, removeClass, setStyle, show, toggle, toggleClass } from './attributes/styles.js';
+import { addClass, css, getStyle, hide, removeClass, removeStyle, setStyle, show, toggle, toggleClass } from './attributes/styles.js';
 import { getCookie, removeCookie, setCookie } from './cookie/cookie.js';
 import { mouseDragFactory } from './events/event-factory.js';
 import { addEvent, addEventDelegate, addEventDelegateOnce, addEventOnce, cloneEvents, removeEvent, removeEventDelegate, triggerEvent, triggerOne } from './events/event-handlers.js';
@@ -193,6 +193,7 @@ Object.assign(query, {
     removeEvent,
     removeEventDelegate,
     removeProperty,
+    removeStyle,
     replaceAll,
     replaceWith,
     rotateIn,

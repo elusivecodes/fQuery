@@ -778,6 +778,16 @@ Remove a class or classes from each node.
 query.removeClass(...classes);
 ```
 
+**Remove Style**
+
+Remove a style property from each node.
+
+- `style` is a string indicating the style property value to remove.
+
+```javascript
+query.removeStyle(style);
+```
+
 **Set Style**
 
 Set style properties for each node.
@@ -2072,9 +2082,11 @@ const isConnected = query.isConnected();
 Returns *true* if any of the nodes is considered equal to any of the other nodes.
 
 - `otherSelector` is a query selector string, a *Node*, *HTMLElement*, *DocumentFragment*, *ShadowRoot*, *NodeList*, *HTMLCollection*, *QuerySet* or an array of nodes.
+- `options` is an object containing options for how to perform the comparison.
+    - `shallow` is a boolean indicating whether to perform a shallow comparison, and will default to *false*.
 
 ```javascript
-const isEqual = query.isEqual(otherSelector);
+const isEqual = query.isEqual(otherSelector, options);
 ```
 
 **Is Fixed**

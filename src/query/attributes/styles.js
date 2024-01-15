@@ -1,4 +1,4 @@
-import { addClass as _addClass, css as _css, getStyle as _getStyle, hide as _hide, removeClass as _removeClass, setStyle as _setStyle, show as _show, toggle as _toggle, toggleClass as _toggleClass } from './../../attributes/styles.js';
+import { addClass as _addClass, css as _css, getStyle as _getStyle, hide as _hide, removeClass as _removeClass, removeStyle as _removeStyle, setStyle as _setStyle, show as _show, toggle as _toggle, toggleClass as _toggleClass } from './../../attributes/styles.js';
 
 /**
  * QuerySet Styles
@@ -50,6 +50,16 @@ export function hide() {
  */
 export function removeClass(...classes) {
     _removeClass(this, ...classes);
+
+    return this;
+};
+
+/**
+ * Remove a style property from each node.
+ * @param {string} style The style name.
+ */
+export function removeStyle(style) {
+    _removeStyle(this, style);
 
     return this;
 };
