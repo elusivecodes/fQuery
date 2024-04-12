@@ -974,7 +974,7 @@ The following constants can also be used as the `boxSize` for brevity.
 Get the computed width of the first node.
 
 - `selector` is a query selector string, a *HTMLElement*, *Document*, *Window*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
-- `options` is an object containing options for how the height should be calculated.
+- `options` is an object containing options for how the width should be calculated.
     - `boxSize` is a number indicating the box sizing to calculate. Allowed values are *0* (no padding), *1* (padding), *2* (padding and border), *3* (padding, border and margin) and *4* (scroll area), and will default to *1*.
     - `outer` is a boolean indicating whether to use the window outer width, and will default to *false*.
 
