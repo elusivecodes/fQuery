@@ -1,6 +1,6 @@
 {
     "name": "@fr0st/query",
-    "version": "3.2.7",
+    "version": "3.2.8",
     "description": "fQuery is a free, open-source DOM manipulation library for JavaScript.",
     "keywords": [
         "dom",
@@ -41,11 +41,11 @@
         "eslint": "^8.56.0",
         "eslint-config-google": "^0.14.0",
         "mocha": "^10.4.0",
-        "puppeteer": "^21.7.0",
-        "rollup": "^4.14.2",
-        "terser": "^5.30.3"
+        "puppeteer": "^22.7.1",
+        "rollup": "^4.17.2",
+        "terser": "^5.31.0"
     },
     "dependencies": {
-        "@fr0st/core": "^2.1.3"
+        "@fr0st/core": "^2.1.4"
     }
 }
