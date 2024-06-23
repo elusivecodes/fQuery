@@ -2,7 +2,7 @@
  * MockXMLHttpRequest Class
  * @class
  */
-class MockXMLHttpRequest { // eslint-disable-line no-unused-vars
+class MockXMLHttpRequest {  
     /**
      * New MockXMLHttpRequest constructor.
      */

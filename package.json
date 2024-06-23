@@ -1,6 +1,6 @@
 {
     "name": "@fr0st/query",
-    "version": "3.2.8",
+    "version": "3.2.9",
     "description": "fQuery is a free, open-source DOM manipulation library for JavaScript.",
     "keywords": [
         "dom",
@@ -25,7 +25,7 @@
     "scripts": {
         "build": "npm run js-compile && npm run js-minify",
         "js-compile": "rollup --config",
-        "js-lint": "eslint --ext .js .",
+        "js-lint": "eslint",
         "js-minify": "terser --compress passes=2 --mangle --source-map \"content=dist/fquery.js.map\" --output dist/fquery.min.js dist/fquery.js",
         "test": "mocha test --recursive"
     },
@@ -37,15 +37,15 @@
     "license": "MIT",
     "private": false,
     "devDependencies": {
+        "@fr0st/eslint-config": "^1.0.0",
         "@rollup/plugin-node-resolve": "^15.2.3",
-        "eslint": "^8.56.0",
-        "eslint-config-google": "^0.14.0",
+        "eslint": "^9.5.0",
         "mocha": "^10.4.0",
-        "puppeteer": "^22.7.1",
-        "rollup": "^4.17.2",
-        "terser": "^5.31.0"
+        "puppeteer": "^22.12.0",
+        "rollup": "^4.18.0",
+        "terser": "^5.31.1"
     },
     "dependencies": {
-        "@fr0st/core": "^2.1.4"
+        "@fr0st/core": "^2.1.5"
     }
 }
