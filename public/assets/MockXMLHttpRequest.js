@@ -2,7 +2,7 @@
  * MockXMLHttpRequest Class
  * @class
  */
-class MockXMLHttpRequest {  
+class MockXMLHttpRequest {
     /**
      * New MockXMLHttpRequest constructor.
      */
