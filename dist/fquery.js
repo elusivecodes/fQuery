@@ -1182,8 +1182,6 @@
     };
 
     const config = {
-        ajaxDefaults,
-        animationDefaults,
         context: null,
         useTimeout: false,
         window: null,
