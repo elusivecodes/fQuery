@@ -1,5 +1,5 @@
-import { clone } from './manipulation.js';
 import { parseNodes } from './../filters.js';
+import { clone } from './manipulation.js';
 
 /**
  * DOM Move

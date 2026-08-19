@@ -1,5 +1,5 @@
-import QuerySet from './../query-set.js';
 import { attachShadow as _attachShadow } from './../../manipulation/create.js';
+import QuerySet from './../query-set.js';
 
 /**
  * QuerySet Create

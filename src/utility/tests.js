@@ -1,9 +1,9 @@
 import { camelCase, isDocument, isElement, isWindow } from '@fr0st/core';
+import { css } from './../attributes/styles.js';
 import { parseFilter, parseFilterContains, parseNodes } from './../filters.js';
 import { parseClasses } from './../helpers.js';
-import { animations, data } from './../vars.js';
-import { css } from './../attributes/styles.js';
 import { closest } from './../traversal/traversal.js';
+import { animations, data } from './../vars.js';
 
 /**
  * DOM Tests
@@ -105,7 +105,7 @@ export function hasData(selector, key) {
 
         const nodeData = data.get(node);
 
-        return nodeData.hasOwnProperty(key);
+        return Object.hasOwn(nodeData, key);
     });
 };
 
@@ -156,7 +156,7 @@ export function hasFragment(selector) {
  */
 export function hasProperty(selector, property) {
     return parseNodes(selector)
-        .some((node) => node.hasOwnProperty(property));
+        .some((node) => Object.hasOwn(node, property));
 };
 
 /**

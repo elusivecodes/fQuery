@@ -1,23 +1,44 @@
 {
     "name": "@fr0st/query",
     "version": "3.3.0",
-    "description": "fQuery is a free, open-source DOM manipulation library for JavaScript.",
+    "private": false,
+    "description": "Lightweight JavaScript library for DOM querying, traversal, manipulation, events, animation, AJAX, and browser utilities.",
     "keywords": [
-        "dom",
-        "document",
-        "query",
         "ajax",
-        "cookie"
+        "animation",
+        "dom",
+        "dom-manipulation",
+        "events",
+        "frost",
+        "javascript",
+        "query",
+        "traversal",
+        "utilities"
     ],
     "homepage": "https://github.com/elusivecodes/fQuery",
     "bugs": {
         "url": "https://github.com/elusivecodes/fQuery/issues",
         "email": "elusivecodes@gmail.com"
     },
-    "main": "src/index.js",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/elusivecodes/fQuery.git"
+    },
+    "license": "MIT",
+    "author": "Elusive",
     "type": "module",
+    "exports": {
+        ".": "./src/index.js",
+        "./dist/*": "./dist/*",
+        "./src/*": "./src/*",
+        "./package.json": "./package.json"
+    },
+    "main": "src/index.js",
+    "jsdelivr": "dist/fquery.min.js",
+    "unpkg": "dist/fquery.min.js",
     "files": [
         "dist",
+        "docs",
         "LICENSE",
         "README.md",
         "src"
@@ -26,26 +47,27 @@
         "build": "npm run js-compile && npm run js-minify",
         "js-compile": "rollup --config",
         "js-lint": "eslint",
-        "js-minify": "terser --compress passes=2 --mangle --source-map \"content=dist/fquery.js.map\" --output dist/fquery.min.js dist/fquery.js",
-        "test": "mocha test --recursive"
-    },
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/elusivecodes/fQuery.git"
-    },
-    "author": "Elusive",
-    "license": "MIT",
-    "private": false,
-    "devDependencies": {
-        "@fr0st/eslint-config": "^1.0.3",
-        "@rollup/plugin-node-resolve": "^16.0.1",
-        "eslint": "^9.26.0",
-        "mocha": "^11.2.2",
-        "puppeteer": "^24.8.2",
-        "rollup": "^4.40.2",
-        "terser": "^5.39.0"
+        "js-minify": "terser --compress passes=2 --mangle --source-map \"content=dist/fquery.js.map,url=fquery.min.js.map\" --output dist/fquery.min.js dist/fquery.js",
+        "test": "npm run build && npm run test:browser",
+        "test:browser": "PWTEST_CACHE_DIR=.tmp/playwright/cache playwright test --forbid-only",
+        "test:headed": "PWTEST_CACHE_DIR=.tmp/playwright/cache playwright test --forbid-only --headed",
+        "test:ui": "PWTEST_CACHE_DIR=.tmp/playwright/cache playwright test --ui"
     },
     "dependencies": {
-        "@fr0st/core": "^2.1.8"
+        "@fr0st/core": "^3.0.4"
+    },
+    "devDependencies": {
+        "@fr0st/eslint-config": "^4.0.0",
+        "@playwright/test": "^1.62.1",
+        "@rollup/plugin-node-resolve": "^16.0.3",
+        "eslint": "^10.8.1",
+        "rollup": "^4.62.4",
+        "terser": "^5.50.0"
+    },
+    "engines": {
+        "node": "^20.19.0 || ^22.13.0 || >=24"
+    },
+    "publishConfig": {
+        "access": "public"
     }
 }

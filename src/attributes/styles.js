@@ -50,7 +50,13 @@ export function css(selector, style) {
     const nodeStyles = styles.get(node);
 
     if (!style) {
-        return { ...nodeStyles };
+        const result = {};
+
+        for (const property of nodeStyles) {
+            result[property] = nodeStyles.getPropertyValue(property);
+        }
+
+        return result;
     }
 
     style = kebabCase(style);

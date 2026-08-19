@@ -18,7 +18,7 @@ export function find(selector, context = getContext()) {
     }
 
     // fast selector
-    const match = selector.match(/^([\#\.]?)([\w\-]+)$/);
+    const match = selector.match(/^([#.]?)([\w-]+)$/);
 
     if (match) {
         if (match[1] === '#') {
@@ -169,7 +169,7 @@ export function findOne(selector, context = getContext()) {
     }
 
     // fast selector
-    const match = selector.match(/^([\#\.]?)([\w\-]+)$/);
+    const match = selector.match(/^([#.]?)([\w-]+)$/);
 
     if (match) {
         if (match[1] === '#') {

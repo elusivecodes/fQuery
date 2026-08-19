@@ -1,0 +1,61 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - "**/*.md"
+  pull_request:
+    paths-ignore:
+      - "**/*.md"
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    strategy:
+      matrix:
+        include:
+          - node-version: 20
+            browser: chromium
+          - node-version: 22
+            browser: chromium
+          - node-version: 24
+            browser: chromium
+          - node-version: 24
+            browser: firefox
+          - node-version: 24
+            browser: webkit
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v6
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright browser
+        run: npx playwright install --with-deps ${{ matrix.browser }}
+
+      - name: Lint
+        run: npm run js-lint
+
+      - name: Build
+        run: npm run build
+
+      - name: Run tests
+        run: npm run test:browser -- --project=${{ matrix.browser }}
+
+      - name: Verify generated bundles are current
+        run: git diff --exit-code -- dist
+
+      - name: Validate package contents
+        run: npm pack --dry-run

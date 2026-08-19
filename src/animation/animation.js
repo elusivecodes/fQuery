@@ -1,7 +1,7 @@
 import { clamp } from '@fr0st/core';
-import { getTime } from './helpers.js';
 import { getAnimationDefaults } from './../config.js';
 import { animations } from './../vars.js';
+import { getTime } from './helpers.js';
 
 /**
  * Animation Class

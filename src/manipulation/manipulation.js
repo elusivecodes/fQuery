@@ -1,8 +1,8 @@
 import { isElement, isFragment, isNode, isShadow, merge } from '@fr0st/core';
-import { createFragment } from './create.js';
+import { addEvent } from './../events/event-handlers.js';
 import { parseNodes } from './../filters.js';
 import { animations as _animations, data as _data, events as _events, queues, styles } from './../vars.js';
-import { addEvent } from './../events/event-handlers.js';
+import { createFragment } from './create.js';
 
 /**
  * DOM Manipulation
@@ -121,7 +121,7 @@ export function empty(selector) {
 
         // Remove descendent elements
         for (const child of childNodes) {
-            if (isElement(node) || isFragment(node) || isShadow(node)) {
+            if (isElement(child) || isFragment(child) || isShadow(child)) {
                 removeNode(child);
             }
 

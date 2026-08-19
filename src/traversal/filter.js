@@ -1,9 +1,9 @@
 import { isDocument, isElement, isWindow } from '@fr0st/core';
+import { css } from './../attributes/styles.js';
 import { parseFilter, parseFilterContains, parseNodes } from './../filters.js';
 import { parseClasses } from './../helpers.js';
-import { animations, data } from './../vars.js';
-import { css } from './../attributes/styles.js';
 import { closest } from './../traversal/traversal.js';
+import { animations, data } from './../vars.js';
 
 /**
  * DOM Filter
@@ -302,7 +302,7 @@ export function withData(selector, key) {
 
         const nodeData = data.get(node);
 
-        return nodeData.hasOwnProperty(key);
+        return Object.hasOwn(nodeData, key);
     });
 };
 
@@ -331,6 +331,6 @@ export function withDescendent(selector, nodeFilter) {
 export function withProperty(selector, property) {
     return parseNodes(selector)
         .filter((node) =>
-            node.hasOwnProperty(property),
+            Object.hasOwn(node, property),
         );
 };

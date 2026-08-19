@@ -12,9 +12,7 @@ let animating = false;
  * @return {number} The current time.
  */
 export function getTime() {
-    return document.timeline ?
-        document.timeline.currentTime :
-        performance.now();
+    return performance.now();
 };
 
 /**

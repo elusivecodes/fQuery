@@ -1,7 +1,7 @@
 import { isDocument, isWindow } from '@fr0st/core';
-import { css } from './styles.js';
 import { parseNode } from './../filters.js';
 import { BORDER_BOX, CONTENT_BOX, MARGIN_BOX, PADDING_BOX, SCROLL_BOX } from './../vars.js';
+import { css } from './styles.js';
 
 /**
  * DOM Size

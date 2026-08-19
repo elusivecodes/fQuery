@@ -1,6 +1,6 @@
 
-import { PADDING_BOX } from './../../vars.js';
 import { height as _height, width as _width } from './../../attributes/size.js';
+import { PADDING_BOX } from './../../vars.js';
 
 /**
  * QuerySet Size

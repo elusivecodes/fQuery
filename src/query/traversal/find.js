@@ -1,5 +1,5 @@
-import QuerySet from './../query-set.js';
 import { find as _find, findByClass as _findByClass, findById as _findById, findByTag as _findByTag, findOne as _findOne, findOneByClass as _findOneByClass, findOneById as _findOneById, findOneByTag as _findOneByTag } from './../../traversal/find.js';
+import QuerySet from './../query-set.js';
 
 /**
  * QuerySet Find

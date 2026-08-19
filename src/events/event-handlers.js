@@ -1,7 +1,7 @@
-import { delegateFactory, delegateFactoryClean, namespaceFactory, preventFactory, selfDestructFactory } from './event-factory.js';
 import { parseNode, parseNodes } from './../filters.js';
 import { eventNamespacedRegExp, parseEvent, parseEvents } from './../helpers.js';
 import { events } from './../vars.js';
+import { delegateFactory, delegateFactoryClean, namespaceFactory, preventFactory, selfDestructFactory } from './event-factory.js';
 
 /**
  * DOM Event Handlers

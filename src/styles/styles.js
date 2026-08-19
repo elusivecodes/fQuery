@@ -1,6 +1,6 @@
 import { isString } from '@fr0st/core';
-import { getContext } from './../config.js';
 import { appendQueryString } from './../ajax/helpers.js';
+import { getContext } from './../config.js';
 
 /**
  * DOM AJAX Styles

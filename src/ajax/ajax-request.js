@@ -1,6 +1,6 @@
 import { extend, isObject } from '@fr0st/core';
-import { appendQueryString, getSearchParams, parseFormData, parseParams, setSearchParams } from './helpers.js';
 import { getAjaxDefaults, getWindow } from './../config.js';
+import { appendQueryString, getSearchParams, parseFormData, parseParams, setSearchParams } from './helpers.js';
 
 /**
  * AjaxRequest Class

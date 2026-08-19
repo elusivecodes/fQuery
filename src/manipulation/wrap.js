@@ -1,6 +1,6 @@
 import { isFragment, merge } from '@fr0st/core';
-import { clone, remove } from './manipulation.js';
 import { parseFilter, parseNodes } from './../filters.js';
+import { clone, remove } from './manipulation.js';
 
 /**
  * DOM Wrap

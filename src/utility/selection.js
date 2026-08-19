@@ -1,8 +1,8 @@
 import { isElement, merge, unique } from '@fr0st/core';
-import { sort } from './utility.js';
 import { getWindow } from './../config.js';
 import { parseNode, parseNodes } from './../filters.js';
 import { createRange } from './../manipulation/create.js';
+import { sort } from './utility.js';
 
 /**
  * DOM Selection

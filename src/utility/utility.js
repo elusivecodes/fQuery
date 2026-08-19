@@ -1,7 +1,7 @@
 import { isDocument, isElement, isFragment, isShadow, isWindow, merge } from '@fr0st/core';
+import { parseParams } from './../ajax/helpers.js';
 import { getContext } from './../config.js';
 import { parseFilter, parseNode, parseNodes } from './../filters.js';
-import { parseParams } from './../ajax/helpers.js';
 
 /**
  * DOM Utility
@@ -179,12 +179,33 @@ export function sort(selector) {
             return -1;
         }
 
-        if (isShadow(node)) {
+        const isNodeShadow = isShadow(node);
+        const isOtherShadow = isShadow(other);
+
+        if (isNodeShadow) {
             node = node.host;
         }
 
-        if (isShadow(other)) {
+        if (isOtherShadow) {
             other = other.host;
+        }
+
+        if (!node.isConnected || !other.isConnected) {
+            if (node.isConnected !== other.isConnected) {
+                if (isNodeShadow && !node.isConnected) {
+                    return 1;
+                }
+
+                if (isOtherShadow && !other.isConnected) {
+                    return -1;
+                }
+
+                return node.isConnected ?
+                    1 :
+                    -1;
+            }
+
+            return 0;
         }
 
         if (node.isSameNode(other)) {

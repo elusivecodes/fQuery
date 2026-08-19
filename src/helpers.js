@@ -102,7 +102,9 @@ export function parseDataset(value) {
         try {
             const result = JSON.parse(value);
             return result;
-        } catch (e) { }
+        } catch {
+            // Ignore malformed JSON-like strings.
+        }
     }
 
     return value;

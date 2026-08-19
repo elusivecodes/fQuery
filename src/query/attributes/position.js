@@ -1,5 +1,5 @@
-import QuerySet from './../query-set.js';
 import { center as _center, constrain as _constrain, distTo as _distTo, distToNode as _distToNode, nearestTo as _nearestTo, nearestToNode as _nearestToNode, percentX as _percentX, percentY as _percentY, position as _position, rect as _rect } from './../../attributes/position.js';
+import QuerySet from './../query-set.js';
 
 /**
  * QuerySet Position

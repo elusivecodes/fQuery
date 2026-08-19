@@ -1,13 +1,9 @@
 import * as _ from '@fr0st/core';
-import { getAjaxDefaults, getAnimationDefaults, getContext, getWindow, setAjaxDefaults, setAnimationDefaults, setContext, setWindow, useTimeout } from './config.js';
-import { noConflict } from './globals.js';
-import { debounce } from './helpers.js';
-import { BORDER_BOX, CONTENT_BOX, MARGIN_BOX, PADDING_BOX, SCROLL_BOX } from './vars.js';
 import { ajax, _delete, get, patch, post, put } from './ajax/ajax.js';
 import { parseFormData, parseParams } from './ajax/helpers.js';
 import { animate, stop } from './animation/animate.js';
-import Animation from './animation/animation.js';
 import AnimationSet from './animation/animation-set.js';
+import Animation from './animation/animation.js';
 import { dropIn, dropOut, fadeIn, fadeOut, rotateIn, rotateOut, slideIn, slideOut, squeezeIn, squeezeOut } from './animation/animations.js';
 import { getAttribute, getDataset, getHTML, getProperty, getText, getValue, removeAttribute, removeDataset, removeProperty, setAttribute, setDataset, setHTML, setProperty, setText, setValue } from './attributes/attributes.js';
 import { cloneData, getData, removeData, setData } from './attributes/data.js';
@@ -15,17 +11,20 @@ import { center, constrain, distTo, distToNode, nearestTo, nearestToNode, percen
 import { getScrollX, getScrollY, setScroll, setScrollX, setScrollY } from './attributes/scroll.js';
 import { height, width } from './attributes/size.js';
 import { addClass, css, getStyle, hide, removeClass, removeStyle, setStyle, show, toggle, toggleClass } from './attributes/styles.js';
+import { getAjaxDefaults, getAnimationDefaults, getContext, getWindow, setAjaxDefaults, setAnimationDefaults, setContext, setWindow, useTimeout } from './config.js';
 import { getCookie, removeCookie, setCookie } from './cookie/cookie.js';
 import { mouseDragFactory } from './events/event-factory.js';
 import { addEvent, addEventDelegate, addEventDelegateOnce, addEventOnce, cloneEvents, removeEvent, removeEventDelegate, triggerEvent, triggerOne } from './events/event-handlers.js';
 import { blur, click, focus, ready } from './events/events.js';
+import { noConflict } from './globals.js';
+import { debounce } from './helpers.js';
 import { attachShadow, create, createComment, createFragment, createRange, createText } from './manipulation/create.js';
 import { clone, detach, empty, remove, replaceAll, replaceWith } from './manipulation/manipulation.js';
 import { after, append, appendTo, before, insertAfter, insertBefore, prepend, prependTo } from './manipulation/move.js';
 import { unwrap, wrap, wrapAll, wrapInner } from './manipulation/wrap.js';
 import { parseDocument, parseHTML } from './parser/parser.js';
-import { query, queryOne } from './query/query.js';
 import QuerySet from './query/query-set.js';
+import { query, queryOne } from './query/query.js';
 import { clearQueue, queue } from './queue/queue.js';
 import { loadScript, loadScripts } from './scripts/scripts.js';
 import { loadStyle, loadStyles } from './styles/styles.js';
@@ -36,6 +35,7 @@ import { sanitize } from './utility/sanitize.js';
 import { afterSelection, beforeSelection, extractSelection, getSelection, select, selectAll, wrapSelection } from './utility/selection.js';
 import { hasAnimation, hasAttribute, hasChildren, hasClass, hasCSSAnimation, hasCSSTransition, hasData, hasDataset, hasDescendent, hasFragment, hasProperty, hasShadow, is, isConnected, isEqual, isFixed, isHidden, isSame, isVisible } from './utility/tests.js';
 import { exec, index, indexOf, normalize, serialize, serializeArray, sort, tagName } from './utility/utility.js';
+import { BORDER_BOX, CONTENT_BOX, MARGIN_BOX, PADDING_BOX, SCROLL_BOX } from './vars.js';
 
 Object.assign(query, {
     BORDER_BOX,

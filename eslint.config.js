@@ -1,8 +1,33 @@
-import frostConfig from '@fr0st/eslint-config';
-
-frostConfig.files.push('public/**/*.js');
-frostConfig.files.push('server/**/*.js');
+import frostConfig, { browserConfig, nodeConfig } from '@fr0st/eslint-config';
 
 export default [
+    {
+        ignores: [
+            '.tmp/**',
+            'dist/**',
+            'playwright-report/**',
+            'test-results/**',
+        ],
+    },
     frostConfig,
+    browserConfig,
+    {
+        ...nodeConfig,
+        files: [
+            '*.config.js',
+            'test/support/server/**/*.js',
+        ],
+    },
+    {
+        name: '@fr0st/query/browser-globals',
+        files: [
+            'src/**/*.js',
+            'test/**/*.js',
+        ],
+        languageOptions: {
+            globals: {
+                $: 'readonly',
+            },
+        },
+    },
 ];

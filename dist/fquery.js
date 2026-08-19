@@ -15,16 +15,16 @@
     const DOCUMENT_FRAGMENT_NODE = 11;
 
     /**
-     * Returns true if the value is an array.
+     * Checks whether a value is an array.
      * @param {*} value The value to test.
-     * @returns {Boolean} TRUE if the value is an array, otherwise FALSE.
+     * @returns {boolean} Whether the value is an array.
      */
     const isArray = Array.isArray;
 
     /**
-     * Returns true if the value is array-like.
+     * Checks whether a value is array-like.
      * @param {*} value The value to test.
-     * @return {Boolean} TRUE if the value is array-like, otherwise FALSE.
+     * @returns {boolean} Whether the value is array-like.
      */
     const isArrayLike = (value) =>
         isArray(value) ||
@@ -50,35 +50,35 @@
         );
 
     /**
-     * Returns true if the value is a Boolean.
+     * Checks whether a value is a boolean.
      * @param {*} value The value to test.
-     * @return {Boolean} TRUE if the value is boolean, otherwise FALSE.
+     * @returns {boolean} Whether the value is a boolean.
      */
     const isBoolean = (value) =>
         value === !!value;
 
     /**
-     * Returns true if the value is a Document.
+     * Checks whether a value is a Document.
      * @param {*} value The value to test.
-     * @return {Boolean} TRUE if the value is a Document, otherwise FALSE.
+     * @returns {boolean} Whether the value is a Document.
      */
     const isDocument = (value) =>
         !!value &&
         value.nodeType === DOCUMENT_NODE;
 
     /**
-     * Returns true if the value is a HTMLElement.
+     * Checks whether a value is an Element.
      * @param {*} value The value to test.
-     * @return {Boolean} TRUE if the value is a HTMLElement, otherwise FALSE.
+     * @returns {boolean} Whether the value is an Element.
      */
     const isElement = (value) =>
         !!value &&
         value.nodeType === ELEMENT_NODE;
 
     /**
-     * Returns true if the value is a DocumentFragment.
+     * Checks whether a value is a DocumentFragment (and not a ShadowRoot).
      * @param {*} value The value to test.
-     * @return {Boolean} TRUE if the value is a DocumentFragment, otherwise FALSE.
+     * @returns {boolean} Whether the value is a DocumentFragment.
      */
     const isFragment = (value) =>
         !!value &&
@@ -86,24 +86,24 @@
         !value.host;
 
     /**
-     * Returns true if the value is a function.
+     * Checks whether a value is a function.
      * @param {*} value The value to test.
-     * @return {Boolean} TRUE if the value is a function, otherwise FALSE.
+     * @returns {boolean} Whether the value is a function.
      */
     const isFunction = (value) =>
         typeof value === 'function';
 
     /**
-     * Returns true if the value is NaN.
+     * Checks whether a value is NaN.
      * @param {*} value The value to test.
-     * @returns {Boolean} TRUE if the value is NaN, otherwise FALSE.
+     * @returns {boolean} Whether the value is NaN.
      */
     const isNaN = Number.isNaN;
 
     /**
-     * Returns true if the value is a Node.
+     * Checks whether a value is an Element, Text node, or Comment node.
      * @param {*} value The value to test.
-     * @return {Boolean} TRUE if the value is a Node, otherwise FALSE.
+     * @returns {boolean} Whether the value is an Element, Text node, or Comment node.
      */
     const isNode = (value) =>
         !!value &&
@@ -114,44 +114,55 @@
         );
 
     /**
-     * Returns true if the value is null.
+     * Checks whether a value is null.
      * @param {*} value The value to test.
-     * @return {Boolean} TRUE if the value is null, otherwise FALSE.
+     * @returns {boolean} Whether the value is null.
      */
     const isNull = (value) =>
         value === null;
 
     /**
-     * Returns true if the value is numeric.
+     * Checks whether a value is numeric.
      * @param {*} value The value to test.
-     * @return {Boolean} TRUE if the value is numeric, otherwise FALSE.
+     * @returns {boolean} Whether the value is numeric.
      */
     const isNumeric = (value) =>
-        !isNaN(parseFloat(value)) &&
-        isFinite(value);
+        (() => {
+            try {
+                return (
+                    !isNaN(parseFloat(value)) &&
+                    isFinite(value)
+                );
+            } catch {
+                return false;
+            }
+        })();
 
     /**
-     * Returns true if the value is an object.
+     * Checks whether a value is an object-like reference, including arrays and functions.
      * @param {*} value The value to test.
-     * @return {Boolean} TRUE if the value is an object, otherwise FALSE.
+     * @returns {boolean} Whether the value is an object-like reference.
      */
     const isObject = (value) =>
         !!value &&
         value === Object(value);
 
     /**
-     * Returns true if the value is a plain object.
+     * Checks whether a value is a plain object.
      * @param {*} value The value to test.
-     * @return {Boolean} TRUE if the value is a plain object, otherwise FALSE.
+     * @returns {boolean} Whether the value is a plain object.
      */
     const isPlainObject = (value) =>
-        !!value &&
-        value.constructor === Object;
+        isObject(value) &&
+        (
+            Object.getPrototypeOf(value) === null ||
+            Object.getPrototypeOf(value) === Object.prototype
+        );
 
     /**
-     * Returns true if the value is a ShadowRoot.
+     * Checks whether a value is a ShadowRoot.
      * @param {*} value The value to test.
-     * @return {Boolean} TRUE if the value is a ShadowRoot, otherwise FALSE.
+     * @returns {boolean} Whether the value is a ShadowRoot.
      */
     const isShadow = (value) =>
         !!value &&
@@ -159,34 +170,34 @@
         !!value.host;
 
     /**
-     * Returns true if the value is a string.
+     * Checks whether a value is a string.
      * @param {*} value The value to test.
-     * @return {Boolean} TRUE is the value is a string, otherwise FALSE.
+     * @returns {boolean} Whether the value is a string.
      */
     const isString = (value) =>
-        value === `${value}`;
+        typeof value === 'string';
 
     /**
-     * Returns true if the value is a text Node.
+     * Checks whether a value is a text Node.
      * @param {*} value The value to test.
-     * @return {Boolean} TRUE if the value is a text Node, otherwise FALSE.
+     * @returns {boolean} Whether the value is a text Node.
      */
     const isText = (value) =>
         !!value &&
         value.nodeType === TEXT_NODE;
 
     /**
-     * Returns true if the value is undefined.
+     * Checks whether a value is undefined.
      * @param {*} value The value to test.
-     * @return {Boolean} TRUE if the value is undefined, otherwise FALSE.
+     * @returns {boolean} Whether the value is undefined.
      */
     const isUndefined = (value) =>
         value === undefined;
 
     /**
-     * Returns true if the value is a Window.
+     * Checks whether a value is a Window.
      * @param {*} value The value to test.
-     * @return {Boolean} TRUE is the value is a Window, otherwise FALSE.
+     * @returns {boolean} Whether the value is a Window.
      */
     const isWindow = (value) =>
         !!value &&
@@ -198,11 +209,22 @@
      */
 
     /**
-     * Clamp a value between a min and max.
+     * Gets the decimal precision represented by a number.
+     * @param {number} value The input number.
+     * @returns {number} The decimal precision.
+     */
+    const getDecimalPlaces = (value) => {
+        const [coefficient, exponent = 0] = `${value}`.toLowerCase().split('e');
+        const decimals = (coefficient.split('.')[1] || '').length;
+        return Math.max(0, decimals - Number(exponent));
+    };
+
+    /**
+     * Clamps a value between a minimum and a maximum.
      * @param {number} value The value to clamp.
      * @param {number} [min=0] The minimum value of the clamped range.
      * @param {number} [max=1] The maximum value of the clamped range.
-     * @return {number} The clamped value.
+     * @returns {number} The clamped value.
      */
     const clamp = (value, min = 0, max = 1) =>
         Math.max(
@@ -214,20 +236,20 @@
         );
 
     /**
-     * Clamp a value between 0 and 100.
+     * Clamps a value between 0 and 100.
      * @param {number} value The value to clamp.
-     * @return {number} The clamped value.
+     * @returns {number} The clamped value.
      */
     const clampPercent = (value) =>
         clamp(value, 0, 100);
 
     /**
-     * Get the distance between two vectors.
+     * Calculates the distance between two vectors.
      * @param {number} x1 The first vector X co-ordinate.
      * @param {number} y1 The first vector Y co-ordinate.
      * @param {number} x2 The second vector X co-ordinate.
      * @param {number} y2 The second vector Y co-ordinate.
-     * @return {number} The distance between the vectors.
+     * @returns {number} The distance between the vectors.
      */
     const dist = (x1, y1, x2, y2) =>
         len(
@@ -236,17 +258,17 @@
         );
 
     /**
-     * Inverse linear interpolation from one value to another.
+     * Calculates the inverse linear interpolation amount from one value to another.
      * @param {number} v1 The starting value.
      * @param {number} v2 The ending value.
      * @param {number} value The value to inverse interpolate.
-     * @return {number} The interpolated amount.
+     * @returns {number} The interpolated amount.
      */
     const inverseLerp = (v1, v2, value) =>
         (value - v1) / (v2 - v1);
 
     /**
-     * Get the length of an X,Y vector.
+     * Calculates the length of an X,Y vector.
      * @param {number} x The X co-ordinate.
      * @param {number} y The Y co-ordinate.
      * @returns {number} The length of the vector.
@@ -254,11 +276,11 @@
     const len = Math.hypot;
 
     /**
-     * Linear interpolation from one value to another.
+     * Calculates a linear interpolation from one value to another.
      * @param {number} v1 The starting value.
      * @param {number} v2 The ending value.
      * @param {number} amount The amount to interpolate.
-     * @return {number} The interpolated value.
+     * @returns {number} The interpolated value.
      */
     const lerp = (v1, v2, amount) =>
         v1 *
@@ -267,13 +289,13 @@
         amount;
 
     /**
-     * Map a value from one range to another.
+     * Maps a value from one range to another.
      * @param {number} value The value to map.
      * @param {number} fromMin The minimum value of the current range.
      * @param {number} fromMax The maximum value of the current range.
      * @param {number} toMin The minimum value of the target range.
      * @param {number} toMax The maximum value of the target range.
-     * @return {number} The mapped value.
+     * @returns {number} The mapped value.
      */
     const map = (value, fromMin, fromMax, toMin, toMax) =>
         (value - fromMin) *
@@ -282,10 +304,10 @@
         toMin;
 
     /**
-     * Return a random floating-point number.
-     * @param {number} [a=1] The minimum value (inclusive).
+     * Returns a random floating-point number.
+     * @param {number} [a=1] The upper bound (exclusive) when `b` is omitted; otherwise the minimum bound (inclusive).
      * @param {number} [b] The maximum value (exclusive).
-     * @return {number} A random number.
+     * @returns {number} A random number.
      */
     const random = (a = 1, b = null) =>
         isNull(b) ?
@@ -299,94 +321,118 @@
             );
 
     /**
-     * Return a random number.
-     * @param {number} [a=1] The minimum value (inclusive).
+     * Returns a random integer.
+     * @param {number} [a=1] The upper bound (exclusive) when `b` is omitted; otherwise the minimum bound (inclusive).
      * @param {number} [b] The maximum value (exclusive).
-     * @return {number} A random number.
+     * @returns {number} A random integer.
+     * @throws {RangeError} If the bounds contain no integer.
      */
-    const randomInt = (a = 1, b = null) =>
-        random(a, b) | 0;
+    const randomInt = (a = 1, b = null) => {
+        const min = Math.ceil(
+            Math.min(a, isNull(b) ? 0 : b),
+        );
+        const max = Math.ceil(
+            Math.max(a, isNull(b) ? 0 : b),
+        );
+
+        if (min >= max) {
+            throw new RangeError('The bounds do not contain an integer');
+        }
+
+        return Math.floor(random(min, max));
+    };
 
     /**
-     * Constrain a number to a specified step-size.
+     * Constrains a number to a specified step size.
      * @param {number} value The value to constrain.
-     * @param {number} step The minimum step-size.
-     * @return {number} The constrained value.
+     * @param {number} step The step size.
+     * @returns {number} The constrained value.
      */
-    const toStep = (value, step = 0.01) =>
-        parseFloat(
-            (
-                Math.round(value / step) *
-                step
-            ).toFixed(
-                `${step}`.replace(/\d*\.?/, '').length,
-            ),
+    const toStep = (value, step = 0.01) => {
+        if (step === 0) {
+            return value;
+        }
+
+        step = Math.abs(step);
+
+        const result = Math.round(value / step) * step;
+        const precision = getDecimalPlaces(step);
+
+        if (precision > 100) {
+            return result;
+        }
+
+        return parseFloat(
+            result.toFixed(precision),
         );
+    };
 
     /**
      * Array methods
      */
 
     /**
-     * Create a new array containing the values of the first array, that do not exist in any of the additional passed arrays.
-     * @param {array} array The input array.
-     * @param {...array} arrays The arrays to compare against.
-     * @return {array} The output array.
+     * Creates a new array containing values from the first array that do not exist in any of the additional arrays.
+     * @template T
+     * @param {T[]} array The input array.
+     * @param {...T[]} arrays The arrays to compare against.
+     * @returns {T[]} The filtered array.
      */
     const diff = (array, ...arrays) => {
-        arrays = arrays.map(unique);
+        const sets = arrays.map((other) => new Set(other));
         return array.filter(
-            (value) => !arrays
-                .some((other) => other.includes(value)),
+            (value) => !sets
+                .some((other) => other.has(value)),
         );
     };
 
     /**
-     * Create a new array containing the unique values that exist in all of the passed arrays.
-     * @param {...array} arrays The input arrays.
-     * @return {array} The output array.
+     * Creates a new array containing the unique values that exist in all of the provided arrays.
+     * @template T
+     * @param {...T[]} arrays The input arrays.
+     * @returns {T[]} The intersected array.
      */
-    const intersect = (...arrays) =>
-        unique(
-            arrays
-                .reduce(
-                    (acc, array, index) => {
-                        array = unique(array);
-                        return merge(
-                            acc,
-                            array.filter(
-                                (value) =>
-                                    arrays.every(
-                                        (other, otherIndex) =>
-                                            index == otherIndex ||
-                                            other.includes(value),
-                                    ),
-                            ),
-                        );
-                    },
-                    [],
-                ),
-        );
+    const intersect = (...arrays) => {
+        if (!arrays.length) {
+            return [];
+        }
+
+        const [array, ...others] = arrays;
+        const sets = others.map((other) => new Set(other));
+        return unique(array)
+            .filter(
+                (value) => sets.every((other) => other.has(value)),
+            );
+    };
 
     /**
-     * Merge the values from one or more arrays or array-like objects onto an array.
-     * @param {array} array The input array.
-     * @param {...array|object} arrays The arrays or array-like objects to merge.
-     * @return {array} The output array.
+     * Merges values from one or more arrays or array-like objects into an array.
+     * @template T
+     * @param {T[]} [array=[]] The array to merge into.
+     * @param {...ArrayLike<T>} arrays The arrays or array-like objects to merge.
+     * @returns {T[]} The merged array.
+     * @throws {RangeError} If an array-like length is infinite.
      */
-    const merge = (array = [], ...arrays) =>
-        arrays.reduce(
-            (acc, other) => {
-                Array.prototype.push.apply(acc, other);
-                return array;
-            },
-            array,
-        );
+    const merge = (array = [], ...arrays) => {
+        for (const other of arrays) {
+            const length = Math.max(0, Math.floor(Number(other.length) || 0));
+            if (!Number.isFinite(length)) {
+                throw new RangeError('Array-like length must be finite');
+            }
+
+            for (let i = 0; i < length; i++) {
+                array.push(other[i]);
+            }
+        }
+
+        return array;
+    };
 
     /**
-     * Return a random value from an array.
-     * @param {array} array The input array.
-     * @return {*} A random value from the array, or null if it is empty.
+     * Selects a random value from an array.
+     * @template T
+     * @param {T[]} array The input array.
+     * @returns {T|null} A random value from the array, or null if the array is empty.
      */
     const randomValue = (array) =>
         array.length ?
@@ -394,26 +440,33 @@
             null;
 
     /**
-     * Return an array containing a range of values.
+     * Creates an array containing a range of values.
      * @param {number} start The first value of the sequence.
-     * @param {number} end The value to end the sequence on.
-     * @param {number} [step=1] The increment between values in the sequence.
-     * @return {number[]} The array of values from start to end.
+     * @param {number} end The target value for the sequence. It is included only when the step lands on it exactly.
+     * @param {number} [step=1] The increment between values in the sequence. Negative values are treated as positive, and `0` returns an empty array.
+     * @returns {number[]} The array of values from start toward end.
      */
     const range = (start, end, step = 1) => {
+        if (step === 0) {
+            return [];
+        }
+
         const sign = Math.sign(end - start);
+        step = Math.abs(step);
+        const ratio = Math.abs(end - start) / step;
+        const nearest = Math.round(ratio);
+        const landsOnEnd = Math.abs(ratio - nearest) <= Number.EPSILON * Math.max(1, ratio);
+        const intervals = landsOnEnd ?
+            nearest :
+            Math.floor(ratio);
+
         return new Array(
-            (
-                (
-                    Math.abs(end - start) /
-                    step
-                ) +
-                1
-            ) | 0,
+            intervals + 1,
         )
             .fill()
             .map(
-                (_, i) =>
+                (_, i) => i === intervals && landsOnEnd ?
+                    end :
                     start + toStep(
                         (i * step * sign),
                         step,
@@ -422,9 +475,10 @@
     };
 
     /**
-     * Remove duplicate elements in an array.
-     * @param {array} array The input array.
-     * @return {array} The filtered array.
+     * Removes duplicate elements from an array.
+     * @template T
+     * @param {T[]} array The input array.
+     * @returns {T[]} The de-duplicated array.
      */
     const unique = (array) =>
         Array.from(
@@ -432,188 +486,240 @@
         );
 
     /**
-     * Create an array from any value.
-     * @param {*} value The input value.
-     * @return {array} The wrapped array.
+     * Creates an array from a value, copying iterable and array-like objects.
+     * @template T
+     * @param {T|T[]|ArrayLike<T>|Iterable<T>|undefined} value The input value.
+     * @returns {T[]} The wrapped array.
      */
-    const wrap$2 = (value) =>
-        isUndefined(value) ?
-            [] :
-            (
-                isArray(value) ?
-                    value :
-                    (
-                        isArrayLike(value) ?
-                            merge([], value) :
-                            [value]
-                    )
-            );
+    const wrap$2 = (value) => {
+        if (isUndefined(value)) {
+            return [];
+        }
+
+        if (isArray(value)) {
+            return value;
+        }
+
+        if (
+            isObject(value) &&
+            isFunction(value[Symbol.iterator])
+        ) {
+            return Array.from(value);
+        }
+
+        return isArrayLike(value) ?
+            merge([], value) :
+            [value];
+    };
 
     /**
      * Function methods
      */
 
+    /**
+     * A wrapped callback that exposes a `cancel()` method.
+     * @template {(...args: any[]) => any} T
+     * @typedef {((...args: Parameters<T>) => void) & { cancel: () => void }} CancelableWrapper
+     */
+
     const isBrowser = typeof window !== 'undefined' && 'requestAnimationFrame' in window;
 
     /**
-     * Execute a callback on the next animation frame
-     * @param {function} callback Callback function to execute.
-     * @return {number} The request ID.
+     * Schedules a callback on the next animation frame.
+     * @param {Function} callback The callback to execute.
+     * @returns {number} The request ID.
      */
     const _requestAnimationFrame = isBrowser ?
         (...args) => window.requestAnimationFrame(...args) :
         (callback) => setTimeout(callback, 1000 / 60);
 
     /**
-     * Create a wrapped version of a function that executes at most once per animation frame
+     * Creates a wrapped version of a function that executes at most once per animation frame
      * (using the most recent arguments passed to it).
-     * @param {function} callback Callback function to execute.
-     * @param {object} [options] The options for executing the function.
-     * @param {Boolean} [options.leading=false] Whether to execute on the leading edge of the animation frame.
-     * @return {function} The wrapped function.
+     * @template {(...args: any[]) => any} T
+     * @param {T} callback The function to wrap.
+     * @param {object} [options] Options for executing the function.
+     * @param {boolean} [options.leading=false] Whether to execute on the leading edge of the animation frame.
+     * @returns {CancelableWrapper<T>} The wrapped function.
      */
     const animation = (callback, { leading = false } = {}) => {
-        let animationReference;
+        let animationReference = null;
         let newArgs;
-        let running;
+        let newThis;
+        let running = false;
 
-        const animation = (...args) => {
+        const cancel = (_) => {
+            if (animationReference !== null) {
+                if (isBrowser) {
+                    window.cancelAnimationFrame(animationReference);
+                } else {
+                    clearTimeout(animationReference);
+                }
+            }
+
+            animationReference = null;
+            newArgs = null;
+            newThis = null;
+            running = false;
+        };
+
+        const animation = function(...args) {
             newArgs = args;
+            newThis = this;
 
             if (running) {
                 return;
             }
 
-            if (leading) {
-                callback(...newArgs);
-            }
-
             running = true;
             animationReference = _requestAnimationFrame((_) => {
-                if (!leading) {
-                    callback(...newArgs);
-                }
+                const args = newArgs;
+                const thisArg = newThis;
 
-                running = false;
                 animationReference = null;
+                newArgs = null;
+                newThis = null;
+                running = false;
+
+                if (!leading) {
+                    callback.apply(thisArg, args);
+                }
             });
+
+            if (leading) {
+                try {
+                    callback.apply(this, args);
+                } catch (error) {
+                    cancel();
+                    throw error;
+                }
+            }
         };
 
-        animation.cancel = (_) => {
-            if (!animationReference) {
-                return;
-            }
-
-            if (isBrowser) {
-                global.cancelAnimationFrame(animationReference);
-            } else {
-                clearTimeout(animationReference);
-            }
-
-            running = false;
-            animationReference = null;
-        };
+        animation.cancel = cancel;
 
         return animation;
     };
 
     /**
-     * Create a wrapped function that will execute each callback in reverse order,
+     * Creates a wrapped function that executes each callback in reverse order,
      * passing the result from each function to the previous.
-     * @param {...function} callbacks Callback functions to execute.
-     * @return {function} The wrapped function.
+     * @param {...((value: any) => any)} callbacks Callback functions to execute.
+     * @returns {(arg: any) => any} The wrapped function.
      */
     const compose = (...callbacks) =>
-        (arg) =>
-            callbacks.reduceRight(
+        function(arg) {
+            return callbacks.reduceRight(
                 (acc, callback) =>
-                    callback(acc),
+                    callback.call(this, acc),
                 arg,
             );
+        };
 
     /**
-     * Create a wrapped version of a function, that will return new functions
+     * Creates a wrapped version of a function that returns new functions
      * until the number of total arguments passed reaches the arguments length
      * of the original function (at which point the function will execute).
-     * @param {function} callback Callback function to execute.
-     * @return {function} The wrapped function.
+     * @template {(...args: any[]) => any} T
+     * @param {T} callback The function to wrap.
+     * @returns {Function} The wrapped function.
      */
     const curry = (callback) => {
-        const curried = (...args) =>
-            args.length >= callback.length ?
-                callback(...args) :
-                (...newArgs) =>
-                    curried(
-                        ...args.concat(newArgs),
-                    );
+        const curried = function(...args) {
+            const thisArg = this;
+            if (args.length >= callback.length) {
+                return callback.apply(thisArg, args);
+            }
+
+            return (...newArgs) =>
+                curried.apply(thisArg, args.concat(newArgs));
+        };
 
         return curried;
     };
 
     /**
-     * Create a wrapped version of a function that executes once per wait period
+     * Creates a wrapped version of a function that executes once per wait period
      * (using the most recent arguments passed to it).
-     * @param {function} callback Callback function to execute.
+     * @template {(...args: any[]) => any} T
+     * @param {T} callback The function to wrap.
      * @param {number} [wait=0] The number of milliseconds to wait until next execution.
-     * @param {object} [options] The options for executing the function.
-     * @param {Boolean} [options.leading=false] Whether to execute on the leading edge of the wait period.
-     * @param {Boolean} [options.trailing=true] Whether to execute on the trailing edge of the wait period.
-     * @return {function} The wrapped function.
+     * @param {object} [options] Options for executing the function.
+     * @param {boolean} [options.leading=false] Whether to execute on the leading edge of the wait period.
+     * @param {boolean} [options.trailing=true] Whether to execute on the trailing edge of the wait period.
+     * @returns {CancelableWrapper<T>} The wrapped function.
      */
     const debounce$1 = (callback, wait = 0, { leading = false, trailing = true } = {}) => {
-        let debounceReference;
-        let lastRan;
+        let debounceReference = null;
         let newArgs;
+        let newThis;
+        let trailingPending = false;
 
-        const debounced = (...args) => {
-            const now = Date.now();
-            const delta = lastRan ?
-                now - lastRan :
-                null;
-
-            if (leading && (delta === null || delta >= wait)) {
-                lastRan = now;
-                callback(...args);
-                return;
-            }
-
-            newArgs = args;
-            if (!trailing) {
-                return;
-            }
-
-            if (debounceReference) {
+        const cancel = (_) => {
+            if (debounceReference !== null) {
                 clearTimeout(debounceReference);
             }
 
-            debounceReference = setTimeout(
-                (_) => {
-                    lastRan = Date.now();
-                    callback(...newArgs);
-
-                    debounceReference = null;
-                },
-                wait,
-            );
+            debounceReference = null;
+            newArgs = null;
+            newThis = null;
+            trailingPending = false;
         };
 
-        debounced.cancel = (_) => {
-            if (!debounceReference) {
+        const debounced = function(...args) {
+            if (!leading && !trailing) {
                 return;
             }
 
-            clearTimeout(debounceReference);
+            const callLeading = leading && debounceReference === null;
+            if (debounceReference !== null) {
+                clearTimeout(debounceReference);
+                trailingPending = true;
+            } else {
+                trailingPending = false;
+            }
 
-            debounceReference = null;
+            newArgs = args;
+            newThis = this;
+
+            debounceReference = setTimeout(
+                (_) => {
+                    const args = newArgs;
+                    const thisArg = newThis;
+                    const callTrailing = trailing && (!leading || trailingPending);
+
+                    debounceReference = null;
+                    newArgs = null;
+                    newThis = null;
+                    trailingPending = false;
+
+                    if (callTrailing) {
+                        callback.apply(thisArg, args);
+                    }
+                },
+                wait,
+            );
+
+            if (callLeading) {
+                try {
+                    callback.apply(this, args);
+                } catch (error) {
+                    cancel();
+                    throw error;
+                }
+            }
         };
+
+        debounced.cancel = cancel;
 
         return debounced;
     };
 
     /**
-     * Evaluate a value from a function or value.
-     * @param {*} value The value to evaluate.
-     * @return {*} The evaluated value.
+     * Evaluates a value from a function or a value.
+     * @template T
+     * @param {T|(() => T)} value The value to evaluate.
+     * @returns {T} The evaluated value.
      */
     const evaluate = (value) =>
         isFunction(value) ?
@@ -621,35 +727,43 @@
             value;
 
     /**
-     * Create a wrapped version of a function that will only ever execute once.
-     * Subsequent calls to the wrapped function will return the result of the initial call.
-     * @param {function} callback Callback function to execute.
-     * @return {function} The wrapped function.
+     * Creates a wrapped version of a function that only ever executes once.
+     * Subsequent calls to the wrapped function will return the result of the first successful call.
+     * @template {(...args: any[]) => any} T
+     * @param {T} callback The function to wrap.
+     * @returns {(...args: Parameters<T>) => ReturnType<T>} The wrapped function.
      */
     const once = (callback) => {
-        let ran;
+        let ran = false;
         let result;
 
-        return (...args) => {
+        return function(...args) {
             if (ran) {
                 return result;
             }
 
             ran = true;
-            result = callback(...args);
-            return result;
+            try {
+                result = callback.apply(this, args);
+                return result;
+            } catch (error) {
+                ran = false;
+                throw error;
+            }
         };
     };
 
     /**
-     * Create a wrapped version of a function with predefined arguments.
-     * @param {function} callback Callback function to execute.
+     * Creates a wrapped version of a function with predefined arguments.
+     * @template {(...args: any[]) => any} T
+     * @param {T} callback The function to wrap.
      * @param {...*} [defaultArgs] Default arguments to pass to the function.
-     * @return {function} The wrapped function.
+     * @returns {(...args: any[]) => ReturnType<T>} The wrapped function.
      */
     const partial = (callback, ...defaultArgs) =>
-        (...args) =>
-            callback(
+        function(...args) {
+            return callback.call(
+                this,
                 ...(defaultArgs
                     .slice()
                     .map((v) =>
@@ -659,90 +773,119 @@
                     ).concat(args)
                 ),
             );
+        };
 
     /**
-     * Create a wrapped function that will execute each callback in order,
+     * Creates a wrapped function that executes each callback in order,
      * passing the result from each function to the next.
-     * @param {...function} callbacks Callback functions to execute.
-     * @return {function} The wrapped function.
+     * @param {...((value: any) => any)} callbacks Callback functions to execute.
+     * @returns {(arg: any) => any} The wrapped function.
      */
     const pipe = (...callbacks) =>
-        (arg) =>
-            callbacks.reduce(
+        function(arg) {
+            return callbacks.reduce(
                 (acc, callback) =>
-                    callback(acc),
+                    callback.call(this, acc),
                 arg,
             );
+        };
 
     /**
-     * Create a wrapped version of a function that executes at most once per wait period.
+     * Creates a wrapped version of a function that executes at most once per wait period.
      * (using the most recent arguments passed to it).
-     * @param {function} callback Callback function to execute.
+     * @template {(...args: any[]) => any} T
+     * @param {T} callback The function to wrap.
      * @param {number} [wait=0] The number of milliseconds to wait until next execution.
-     * @param {object} [options] The options for executing the function.
-     * @param {Boolean} [options.leading=true] Whether to execute on the leading edge of the wait period.
-     * @param {Boolean} [options.trailing=true] Whether to execute on the trailing edge of the wait period.
-     * @return {function} The wrapped function.
+     * @param {object} [options] Options for executing the function.
+     * @param {boolean} [options.leading=true] Whether to execute on the leading edge of the wait period.
+     * @param {boolean} [options.trailing=true] Whether to execute on the trailing edge of the wait period.
+     * @returns {CancelableWrapper<T>} The wrapped function.
      */
     const throttle = (callback, wait = 0, { leading = true, trailing = true } = {}) => {
-        let throttleReference;
+        let throttleReference = null;
         let lastRan;
         let newArgs;
-        let running;
+        let newThis;
 
-        const throttled = (...args) => {
+        const cancel = (_) => {
+            if (throttleReference !== null) {
+                clearTimeout(throttleReference);
+            }
+
+            throttleReference = null;
+            lastRan = undefined;
+            newArgs = null;
+            newThis = null;
+        };
+
+        const runTrailing = (_) => {
+            const args = newArgs;
+            const thisArg = newThis;
+
+            throttleReference = null;
+            newArgs = null;
+            newThis = null;
+            lastRan = Date.now();
+            callback.apply(thisArg, args);
+        };
+
+        const throttled = function(...args) {
             const now = Date.now();
-            const delta = lastRan ?
-                now - lastRan :
-                null;
+            const delta = lastRan === undefined ?
+                null :
+                now - lastRan;
 
             if (leading && (delta === null || delta >= wait)) {
+                if (throttleReference !== null) {
+                    clearTimeout(throttleReference);
+                    throttleReference = null;
+                }
+
+                newArgs = null;
+                newThis = null;
                 lastRan = now;
-                callback(...args);
+
+                try {
+                    callback.apply(this, args);
+                } catch (error) {
+                    cancel();
+                    throw error;
+                }
+                return;
+            }
+
+            if (!trailing) {
                 return;
             }
 
             newArgs = args;
-            if (running || !trailing) {
+            newThis = this;
+
+            if (throttleReference !== null) {
                 return;
             }
 
-            running = true;
             throttleReference = setTimeout(
-                (_) => {
-                    lastRan = Date.now();
-                    callback(...newArgs);
-
-                    running = false;
-                    throttleReference = null;
-                },
-                delta === null ?
+                runTrailing,
+                delta === null || (!leading && delta >= wait) ?
                     wait :
-                    wait - delta,
+                    Math.max(0, wait - delta),
             );
         };
 
-        throttled.cancel = (_) => {
-            if (!throttleReference) {
-                return;
-            }
-
-            clearTimeout(throttleReference);
-
-            running = false;
-            throttleReference = null;
-        };
+        throttled.cancel = cancel;
 
         return throttled;
     };
 
     /**
-     * Execute a function a specified number of times.
-     * @param {function} callback Callback function to execute.
-     * @param {number} amount The amount of times to execute the callback.
+     * Executes a function a specified number of times.
+     * @param {() => (boolean|void)} callback The callback function to execute.
+     * @param {number} amount The number of times to execute the callback.
+     * @returns {void} Nothing.
      */
     const times = (callback, amount) => {
-        while (amount--) {
+        while (amount-- > 0) {
             if (callback() === false) {
                 break;
             }
@@ -753,32 +896,125 @@
      * Object methods
      */
 
+    const hasOwn = (object, key) =>
+        Object.prototype.hasOwnProperty.call(object, key);
+
+    const assignOwn = (object, key, value) => {
+        if (hasOwn(object, key)) {
+            object[key] = value;
+            return;
+        }
+
+        Object.defineProperty(
+            object,
+            key,
+            {
+                configurable: true,
+                enumerable: true,
+                value,
+                writable: true,
+            },
+        );
+    };
+
+    const setDotSegments = (object, keys, value, overwrite) => {
+        const [key, ...remainingKeys] = keys;
+        if (!key) {
+            return;
+        }
+
+        if (key === '*') {
+            for (const childKey of Object.keys(object)) {
+                if (!remainingKeys.length) {
+                    if (overwrite) {
+                        assignOwn(object, childKey, value);
+                    }
+                    continue;
+                }
+
+                let child = object[childKey];
+                if (!isObject(child)) {
+                    if (!overwrite) {
+                        continue;
+                    }
+
+                    child = {};
+                    assignOwn(object, childKey, child);
+                }
+
+                setDotSegments(child, remainingKeys, value, overwrite);
+            }
+            return;
+        }
+
+        if (remainingKeys.length) {
+            let child = hasOwn(object, key) ?
+                object[key] :
+                undefined;
+
+            if (!isObject(child)) {
+                if (
+                    hasOwn(object, key) &&
+                    !overwrite
+                ) {
+                    return;
+                }
+
+                child = {};
+                assignOwn(object, key, child);
+            }
+
+            setDotSegments(child, remainingKeys, value, overwrite);
+        } else if (
+            overwrite ||
+            !hasOwn(object, key)
+        ) {
+            assignOwn(object, key, value);
+        }
+    };
+
     /**
-     * Merge the values from one or more objects onto an object (recursively).
+     * Merges values from one or more objects into an object (recursively).
      * @param {object} object The input object.
      * @param {...object} objects The objects to merge.
-     * @return {object} The output objects.
+     * @returns {object} The extended object.
      */
     const extend = (object, ...objects) =>
         objects.reduce(
             (acc, val) => {
-                for (const k in val) {
-                    if (isArray(val[k])) {
-                        acc[k] = extend(
-                            isArray(acc[k]) ?
-                                acc[k] :
-                                [],
-                            val[k],
+                if (val == null) {
+                    return acc;
+                }
+
+                for (const k of Object.keys(val)) {
+                    const value = val[k];
+                    const currentValue = hasOwn(acc, k) ?
+                        acc[k] :
+                        undefined;
+                    if (isArray(value)) {
+                        assignOwn(
+                            acc,
+                            k,
+                            extend(
+                                isArray(currentValue) ?
+                                    currentValue :
+                                    [],
+                                value,
+                            ),
                         );
-                    } else if (isPlainObject(val[k])) {
-                        acc[k] = extend(
-                            isPlainObject(acc[k]) ?
-                                acc[k] :
-                                {},
-                            val[k],
+                    } else if (isPlainObject(value)) {
+                        assignOwn(
+                            acc,
+                            k,
+                            extend(
+                                isPlainObject(currentValue) ?
+                                    currentValue :
+                                    {},
+                                value,
+                            ),
                         );
                     } else {
-                        acc[k] = val[k];
+                        assignOwn(acc, k, value);
                     }
                 }
                 return acc;
@@ -787,34 +1023,41 @@
         );
 
     /**
-     * Flatten an object using dot notation.
-     * @param {object} object input The object.
+     * Flattens an object using dot notation while preserving empty plain objects.
+     * @param {object} object The input object.
      * @param {string} [prefix] The key prefix.
-     * @return {object} The new object.
+     * @returns {object} The flattened object.
      */
     const flatten = (object, prefix = '') =>
         Object.keys(object).reduce((acc, key) => {
             const prefixedKey = `${prefix}${key}`;
-            if (isPlainObject(object[key])) {
-                Object.assign(acc, flatten(object[key], `${prefixedKey}.`));
+            if (
+                isPlainObject(object[key]) &&
+                Object.keys(object[key]).length
+            ) {
+                const flattened = flatten(object[key], `${prefixedKey}.`);
+                for (const flattenedKey of Object.keys(flattened)) {
+                    assignOwn(acc, flattenedKey, flattened[flattenedKey]);
+                }
             } else {
-                acc[prefixedKey] = object[key];
+                assignOwn(acc, prefixedKey, object[key]);
             }
 
             return acc;
         }, {});
 
     /**
-     * Remove a specified key from an object using dot notation.
+     * Removes a specified key from an object using dot notation.
      * @param {object} object The input object.
      * @param {string} key The key to remove from the object.
+     * @returns {void} Nothing.
      */
     const forgetDot = (object, key) => {
         const keys = key.split('.');
         while ((key = keys.shift())) {
             if (
                 !isObject(object) ||
-                !(key in object)
+                !hasOwn(object, key)
             ) {
                 break;
             }
@@ -828,18 +1071,18 @@
     };
 
     /**
-     * Retrieve the value of a specified key from an object using dot notation.
+     * Retrieves an own value of a specified key from an object using dot notation.
      * @param {object} object The input object.
      * @param {string} key The key to retrieve from the object.
      * @param {*} [defaultValue] The default value if key does not exist.
-     * @return {*} The value retrieved from the object.
+     * @returns {*} The value retrieved from the object.
      */
     const getDot = (object, key, defaultValue) => {
         const keys = key.split('.');
         while ((key = keys.shift())) {
             if (
                 !isObject(object) ||
-                !(key in object)
+                !hasOwn(object, key)
             ) {
                 return defaultValue;
             }
@@ -851,17 +1094,17 @@
     };
 
     /**
-     * Returns true if a specified key exists in an object using dot notation.
+     * Checks whether a specified own key exists in an object using dot notation.
      * @param {object} object The input object.
      * @param {string} key The key to test for in the object.
-     * @return {Boolean} TRUE if the key exists, otherwise FALSE.
+     * @returns {boolean} Whether the key exists.
      */
     const hasDot = (object, key) => {
         const keys = key.split('.');
         while ((key = keys.shift())) {
             if (
                 !isObject(object) ||
-                !(key in object)
+                !hasOwn(object, key)
             ) {
                 return false;
             }
@@ -873,11 +1116,11 @@
     };
 
     /**
-     * Retrieve values of a specified key from an array of objects using dot notation.
+     * Retrieves values of a specified key from an array of objects using dot notation.
      * @param {object[]} objects The input objects.
      * @param {string} key The key to retrieve from the objects.
      * @param {*} [defaultValue] The default value if key does not exist.
-     * @return {array} An array of values retrieved from the objects.
+     * @returns {Array<*>} An array of values retrieved from the objects.
      */
     const pluckDot = (objects, key, defaultValue) =>
         objects
@@ -886,49 +1129,16 @@
             );
 
     /**
-     * Set a specified value of a key for an object using dot notation.
+     * Sets a specified value of a key for an object using dot notation, including wildcard segments.
      * @param {object} object The input object.
      * @param {string} key The key to set in the object.
      * @param {*} value The value to set.
-     * @param {object} [options] The options for setting the value.
-     * @param {Boolean} [options.overwrite=true] Whether to overwrite, if the key already exists.
+     * @param {{overwrite?: boolean}} [options] Options for setting the value.
+     * @param {boolean} [options.overwrite=true] Whether to overwrite the value if the key already exists.
+     * @returns {void} Nothing.
      */
-    const setDot = (object, key, value, { overwrite = true } = {}) => {
-        const keys = key.split('.');
-        while ((key = keys.shift())) {
-            if (key === '*') {
-                for (const k in object) {
-                    if (!{}.hasOwnProperty.call(object, k)) {
-                        continue;
-                    }
-
-                    setDot(
-                        object,
-                        [k].concat(keys).join('.'),
-                        value,
-                        overwrite,
-                    );
-                }
-                return;
-            }
-
-            if (keys.length) {
-                if (
-                    !isObject(object[key]) ||
-                    !(key in object)
-                ) {
-                    object[key] = {};
-                }
-
-                object = object[key];
-            } else if (
-                overwrite ||
-                !(key in object)
-            ) {
-                object[key] = value;
-            }
-        }
-    };
+    const setDot = (object, key, value, { overwrite = true } = {}) =>
+        setDotSegments(object, key.split('.'), value, overwrite);
 
     // HTML escape characters
     const escapeChars = {
@@ -952,16 +1162,16 @@
      */
 
     /**
-     * Split a string into individual words.
+     * Splits a string into individual words.
      * @param {string} string The input string.
-     * @return {string[]} The split parts of the string.
+     * @returns {string[]} The split parts of the string.
      */
     const _splitString = (string) =>
         `${string}`
             .split(/[^a-zA-Z0-9']|(?=[A-Z])/)
             .reduce(
                 (acc, word) => {
-                    word = word.replace(/[^\w]/, '').toLowerCase();
+                    word = word.replace(/[^\w]/g, '').toLowerCase();
                     if (word) {
                         acc.push(word);
                     }
@@ -971,9 +1181,9 @@
             );
 
     /**
-     * Convert a string to camelCase.
+     * Converts a string to camelCase.
      * @param {string} string The input string.
-     * @return {string} The camelCased string.
+     * @returns {string} The camelCased string.
      */
     const camelCase = (string) =>
         _splitString(string)
@@ -986,18 +1196,18 @@
             .join('');
 
     /**
-     * Convert the first character of string to upper case and the remaining to lower case.
+     * Converts the first character of a string to upper case and the remaining to lower case.
      * @param {string} string The input string.
-     * @return {string} The capitalized string.
+     * @returns {string} The capitalized string.
      */
     const capitalize = (string) =>
         string.charAt(0).toUpperCase() +
         string.substring(1).toLowerCase();
 
     /**
-     * Convert HTML special characters in a string to their corresponding HTML entities.
+     * Escapes HTML special characters in a string using HTML entities.
      * @param {string} string The input string.
-     * @return {string} The escaped string.
+     * @returns {string} The escaped string.
      */
     const escape = (string) =>
         string.replace(
@@ -1007,17 +1217,22 @@
         );
 
     /**
-     * Escape RegExp special characters in a string.
+     * Escapes RegExp special characters in a string.
      * @param {string} string The input string.
-     * @return {string} The escaped string.
+     * @returns {string} The escaped string.
      */
     const escapeRegExp = (string) =>
-        string.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&');
+        string.replace(
+            /[-/\\^$*+?.()|[\]{}]/g,
+            (match) => match === '-' ?
+                '\\x2d' :
+                `\\${match}`,
+        );
 
     /**
-     * Convert a string to a humanized form.
+     * Converts a string to a humanized form.
      * @param {string} string The input string.
-     * @return {string} The humanized string.
+     * @returns {string} The humanized string.
      */
     const humanize = (string) =>
         capitalize(
@@ -1026,9 +1241,9 @@
         );
 
     /**
-     * Convert a string to kebab-case.
+     * Converts a string to kebab-case.
      * @param {string} string The input string.
-     * @return {string} The kebab-cased string.
+     * @returns {string} The kebab-cased string.
      */
     const kebabCase = (string) =>
         _splitString(string)
@@ -1036,9 +1251,9 @@
             .toLowerCase();
 
     /**
-     * Convert a string to PascalCase.
+     * Converts a string to PascalCase.
      * @param {string} string The input string.
-     * @return {string} The camelCased string.
+     * @returns {string} The PascalCased string.
      */
     const pascalCase = (string) =>
         _splitString(string)
@@ -1050,24 +1265,31 @@
             .join('');
 
     /**
-     * Return a random string.
-     * @param {number} [length=16] The length of the output string.
-     * @param {string} [chars=abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWYXZ0123456789] The characters to generate the string from.
-     * @return {string} The random string.
+     * Creates a random string.
+     * @param {number} [length=16] The number of characters in the output string.
+     * @param {string} [chars=abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789] The non-empty Unicode characters to generate the string from.
+     * @throws {TypeError} If chars is empty.
+     * @returns {string} The random string.
      */
-    const randomString = (length = 16, chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWYXZ0123456789') =>
-        new Array(length)
+    const randomString = (length = 16, chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789') => {
+        const characters = Array.from(chars);
+        if (!characters.length) {
+            throw new TypeError('chars must not be empty');
+        }
+
+        return new Array(length)
             .fill()
             .map(
                 (_) =>
-                    chars[random(chars.length) | 0],
+                    characters[randomInt(characters.length)],
             )
             .join('');
+    };
 
     /**
-     * Convert a string to snake_case.
+     * Converts a string to snake_case.
      * @param {string} string The input string.
-     * @return {string} The snake_cased string.
+     * @returns {string} The snake_cased string.
      */
     const snakeCase = (string) =>
         _splitString(string)
@@ -1075,9 +1297,9 @@
             .toLowerCase();
 
     /**
-     * Convert HTML entities in a string to their corresponding characters.
+     * Unescapes HTML entities in a string into their corresponding characters.
      * @param {string} string The input string.
-     * @return {string} The unescaped string.
+     * @returns {string} The unescaped string.
      */
     const unescape = (string) =>
         string.replace(
@@ -1258,188 +1480,6 @@
     function useTimeout(enable = true) {
         config.useTimeout = enable;
     }
-
-    /**
-     * DOM Helpers
-     */
-
-    /**
-     * Create a wrapped version of a function that executes once per tick.
-     * @param {function} callback Callback function to debounce.
-     * @return {function} The wrapped function.
-     */
-    function debounce(callback) {
-        let running;
-
-        return (...args) => {
-            if (running) {
-                return;
-            }
-
-            running = true;
-
-            Promise.resolve().then((_) => {
-                callback(...args);
-                running = false;
-            });
-        };
-    }
-    /**
-     * Return a RegExp for testing a namespaced event.
-     * @param {string} event The namespaced event.
-     * @return {RegExp} The namespaced event RegExp.
-     */
-    function eventNamespacedRegExp(event) {
-        return new RegExp(`^${escapeRegExp(event)}(?:\\.|$)`, 'i');
-    }
-    /**
-     * Return a single dimensional array of classes (from a multi-dimensional array or space-separated strings).
-     * @param {array} classList The classes to parse.
-     * @return {string[]} The parsed classes.
-     */
-    function parseClasses(classList) {
-        return classList
-            .flat()
-            .flatMap((val) => val.split(' '))
-            .filter((val) => !!val);
-    }
-    /**
-     * Return a data object from a key and value, or a data object.
-     * @param {string|object} key The data key, or an object containing data.
-     * @param {*} [value] The data value.
-     * @param {object} [options] The options for parsing data.
-     * @param {Boolean} [options.json=false] Whether to JSON encode the values.
-     * @return {object} The data object.
-     */
-    function parseData(key, value, { json = false } = {}) {
-        const result = isString(key) ?
-            { [key]: value } :
-            key;
-
-        if (!json) {
-            return result;
-        }
-
-        return Object.fromEntries(
-            Object.entries(result)
-                .map(([key, value]) => [key, isObject(value) || isArray(value) ? JSON.stringify(value) : value]),
-        );
-    }
-    /**
-     * Return a JS primitive from a dataset string.
-     * @param {string} value The input value.
-     * @return {*} The parsed value.
-     */
-    function parseDataset(value) {
-        if (isUndefined(value)) {
-            return value;
-        }
-
-        const lower = value.toLowerCase().trim();
-
-        if (['true', 'on'].includes(lower)) {
-            return true;
-        }
-
-        if (['false', 'off'].includes(lower)) {
-            return false;
-        }
-
-        if (lower === 'null') {
-            return null;
-        }
-
-        if (isNumeric(lower)) {
-            return parseFloat(lower);
-        }
-
-        if (['{', '['].includes(lower.charAt(0))) {
-            try {
-                const result = JSON.parse(value);
-                return result;
-            } catch (e) { }
-        }
-
-        return value;
-    }
-    /**
-     * Return a "real" event from a namespaced event.
-     * @param {string} event The namespaced event.
-     * @return {string} The real event.
-     */
-    function parseEvent(event) {
-        return event.split('.')
-            .shift();
-    }
-    /**
-     * Return an array of events from a space-separated string.
-     * @param {string} events The events.
-     * @return {array} The parsed events.
-     */
-    function parseEvents(events) {
-        return events.split(' ');
-    }
-
-    /**
-     * DOM Variables
-     */
-
-    const CONTENT_BOX = 0;
-    const PADDING_BOX = 1;
-    const BORDER_BOX = 2;
-    const MARGIN_BOX = 3;
-    const SCROLL_BOX = 4;
-
-    const allowedTags = {
-        '*': ['class', 'dir', 'id', 'lang', 'role', /^aria-[\w-]*$/i],
-        'a': ['target', 'href', 'title', 'rel'],
-        'area': [],
-        'b': [],
-        'br': [],
-        'col': [],
-        'code': [],
-        'div': [],
-        'dd': [],
-        'dl': [],
-        'dt': [],
-        'em': [],
-        'hr': [],
-        'h1': [],
-        'h2': [],
-        'h3': [],
-        'h4': [],
-        'h5': [],
-        'h6': [],
-        'i': [],
-        'img': ['src', 'alt', 'title', 'width', 'height'],
-        'li': [],
-        'ol': [],
-        'p': [],
-        'pre': [],
-        's': [],
-        'small': [],
-        'span': [],
-        'sub': [],
-        'sup': [],
-        'strong': [],
-        'u': [],
-        'ul': [],
-    };
-
-    const eventLookup = {
-        mousedown: ['mousemove', 'mouseup'],
-        touchstart: ['touchmove', 'touchend'],
-    };
-
-    const animations = new Map();
-
-    const data = new WeakMap();
-
-    const events = new WeakMap();
-
-    const queues = new WeakMap();
-
-    const styles = new WeakMap();
 
     /**
      * Ajax Helpers
@@ -1965,287 +2005,127 @@
     }
 
     /**
-     * Animation Helpers
+     * DOM Helpers
      */
-
-    let animating = false;
 
     /**
-     * Get the current time.
-     * @return {number} The current time.
+     * Create a wrapped version of a function that executes once per tick.
+     * @param {function} callback Callback function to debounce.
+     * @return {function} The wrapped function.
      */
-    function getTime() {
-        return document.timeline ?
-            document.timeline.currentTime :
-            performance.now();
-    }
-    /**
-     * Start the animation loop (if not already started).
-     */
-    function start() {
-        if (animating) {
-            return;
-        }
+    function debounce(callback) {
+        let running;
 
-        animating = true;
-        update();
-    }
-    /**
-     * Run a single frame of all animations, and then queue up the next frame.
-     */
-    function update() {
-        const time = getTime();
-
-        for (const [node, currentAnimations] of animations) {
-            const otherAnimations = currentAnimations.filter((animation) => !animation.update(time));
-
-            if (!otherAnimations.length) {
-                animations.delete(node);
-            } else {
-                animations.set(node, otherAnimations);
-            }
-        }
-
-        if (!animations.size) {
-            animating = false;
-        } else if (config.useTimeout) {
-            setTimeout(update, 1000 / 60);
-        } else {
-            getWindow().requestAnimationFrame(update);
-        }
-    }
-
-    /**
-     * Animation Class
-     * @class
-     */
-    class Animation {
-        /**
-         * New Animation constructor.
-         * @param {HTMLElement} node The input node.
-         * @param {DOM~animationCallback} callback The animation callback.
-         * @param {object} [options] The options to use for the animation.
-         * @param {string} [options.type=ease-in-out] The type of animation
-         * @param {number} [options.duration=1000] The duration the animation should last.
-         * @param {Boolean} [options.infinite] Whether to repeat the animation.
-         * @param {Boolean} [options.debug] Whether to set debugging info on the node.
-         */
-        constructor(node, callback, options) {
-            this._node = node;
-            this._callback = callback;
-
-            this._options = {
-                ...getAnimationDefaults(),
-                ...options,
-            };
-
-            if (!('start' in this._options)) {
-                this._options.start = getTime();
-            }
-
-            if (this._options.debug) {
-                this._node.dataset.animationStart = this._options.start;
-            }
-
-            this._promise = new Promise((resolve, reject) => {
-                this._resolve = resolve;
-                this._reject = reject;
-            });
-
-            if (!animations.has(node)) {
-                animations.set(node, []);
-            }
-
-            animations.get(node).push(this);
-        }
-
-        /**
-         * Execute a callback if the animation is rejected.
-         * @param {function} [onRejected] The callback to execute if the animation is rejected.
-         * @return {Promise} The promise.
-         */
-        catch(onRejected) {
-            return this._promise.catch(onRejected);
-        }
-
-        /**
-         * Clone the animation to a new node.
-         * @param {HTMLElement} node The input node.
-         * @return {Animation} The cloned Animation.
-         */
-        clone(node) {
-            return new Animation(node, this._callback, this._options);
-        }
-
-        /**
-         * Execute a callback once the animation is settled (resolved or rejected).
-         * @param {function} [onFinally] The callback to execute once the animation is settled.
-         * @return {Promise} The promise.
-         */
-        finally(onFinally) {
-            return this._promise.finally(onFinally);
-        }
-
-        /**
-         * Stop the animation.
-         * @param {object} [options] The options for stopping the animation.
-         * @param {Boolean} [options.finish=true] Whether to finish the animation.
-        */
-        stop({ finish = true } = {}) {
-            if (this._isStopped || this._isFinished) {
+        return (...args) => {
+            if (running) {
                 return;
             }
 
-            const otherAnimations = animations.get(this._node)
-                .filter((animation) => animation !== this);
+            running = true;
 
-            if (!otherAnimations.length) {
-                animations.delete(this._node);
-            } else {
-                animations.set(this._node, otherAnimations);
-            }
+            Promise.resolve().then((_) => {
+                callback(...args);
+                running = false;
+            });
+        };
+    }
+    /**
+     * Return a RegExp for testing a namespaced event.
+     * @param {string} event The namespaced event.
+     * @return {RegExp} The namespaced event RegExp.
+     */
+    function eventNamespacedRegExp(event) {
+        return new RegExp(`^${escapeRegExp(event)}(?:\\.|$)`, 'i');
+    }
+    /**
+     * Return a single dimensional array of classes (from a multi-dimensional array or space-separated strings).
+     * @param {array} classList The classes to parse.
+     * @return {string[]} The parsed classes.
+     */
+    function parseClasses(classList) {
+        return classList
+            .flat()
+            .flatMap((val) => val.split(' '))
+            .filter((val) => !!val);
+    }
+    /**
+     * Return a data object from a key and value, or a data object.
+     * @param {string|object} key The data key, or an object containing data.
+     * @param {*} [value] The data value.
+     * @param {object} [options] The options for parsing data.
+     * @param {Boolean} [options.json=false] Whether to JSON encode the values.
+     * @return {object} The data object.
+     */
+    function parseData(key, value, { json = false } = {}) {
+        const result = isString(key) ?
+            { [key]: value } :
+            key;
 
-            if (finish) {
-                this.update();
-            }
-
-            this._isStopped = true;
-
-            if (!finish) {
-                this._reject(this._node);
-            }
+        if (!json) {
+            return result;
         }
 
-        /**
-         * Execute a callback once the animation is resolved (or optionally rejected).
-         * @param {function} onFulfilled The callback to execute if the animation is resolved.
-         * @param {function} [onRejected] The callback to execute if the animation is rejected.
-         * @return {Promise} The promise.
-         */
-        then(onFulfilled, onRejected) {
-            return this._promise.then(onFulfilled, onRejected);
+        return Object.fromEntries(
+            Object.entries(result)
+                .map(([key, value]) => [key, isObject(value) || isArray(value) ? JSON.stringify(value) : value]),
+        );
+    }
+    /**
+     * Return a JS primitive from a dataset string.
+     * @param {string} value The input value.
+     * @return {*} The parsed value.
+     */
+    function parseDataset(value) {
+        if (isUndefined(value)) {
+            return value;
         }
 
-        /**
-         * Run a single frame of the animation.
-         * @param {number} [time] The current time.
-         * @return {Boolean} TRUE if the animation is finished, otherwise FALSE.
-         */
-        update(time = null) {
-            if (this._isStopped) {
-                return true;
-            }
+        const lower = value.toLowerCase().trim();
 
-            let progress;
-
-            if (time === null) {
-                progress = 1;
-            } else {
-                progress = (time - this._options.start) / this._options.duration;
-
-                if (this._options.infinite) {
-                    progress %= 1;
-                } else {
-                    progress = clamp(progress);
-                }
-
-                if (this._options.type === 'ease-in') {
-                    progress = progress ** 2;
-                } else if (this._options.type === 'ease-out') {
-                    progress = Math.sqrt(progress);
-                } else if (this._options.type === 'ease-in-out') {
-                    if (progress <= 0.5) {
-                        progress = progress ** 2 * 2;
-                    } else {
-                        progress = 1 - ((1 - progress) ** 2 * 2);
-                    }
-                }
-            }
-
-            if (this._options.debug) {
-                this._node.dataset.animationTime = time;
-                this._node.dataset.animationProgress = progress;
-            }
-
-            this._callback(this._node, progress, this._options);
-
-            if (progress < 1) {
-                return false;
-            }
-
-            if (this._options.debug) {
-                delete this._node.dataset.animationStart;
-                delete this._node.dataset.animationTime;
-                delete this._node.dataset.animationProgress;
-            }
-
-            if (!this._isFinished) {
-                this._isFinished = true;
-
-                this._resolve(this._node);
-            }
-
+        if (['true', 'on'].includes(lower)) {
             return true;
         }
-    }
 
-    Object.setPrototypeOf(Animation.prototype, Promise.prototype);
-
-    /**
-    * AnimationSet Class
-    * @class
-    */
-    class AnimationSet {
-        /**
-         * New AnimationSet constructor.
-         * @param {array} animations The animations.
-         */
-        constructor(animations) {
-            this._animations = animations;
-            this._promise = Promise.all(animations);
+        if (['false', 'off'].includes(lower)) {
+            return false;
         }
 
-        /**
-         * Execute a callback if any of the animations is rejected.
-         * @param {function} [onRejected] The callback to execute if an animation is rejected.
-         * @return {Promise} The promise.
-         */
-        catch(onRejected) {
-            return this._promise.catch(onRejected);
+        if (lower === 'null') {
+            return null;
         }
 
-        /**
-         * Execute a callback once the animation is settled (resolved or rejected).
-         * @param {function} [onFinally] The callback to execute once the animation is settled.
-         * @return {Promise} The promise.
-         */
-        finally(onFinally) {
-            return this._promise.finally(onFinally);
+        if (isNumeric(lower)) {
+            return parseFloat(lower);
         }
 
-        /**
-         * Stop the animations.
-         * @param {object} [options] The options for stopping the animation.
-         * @param {Boolean} [options.finish=true] Whether to finish the animations.
-        */
-        stop({ finish = true } = {}) {
-            for (const animation of this._animations) {
-                animation.stop({ finish });
+        if (['{', '['].includes(lower.charAt(0))) {
+            try {
+                const result = JSON.parse(value);
+                return result;
+            } catch {
+                // Ignore malformed JSON-like strings.
             }
         }
 
-        /**
-         * Execute a callback once the animation is resolved (or optionally rejected).
-         * @param {function} onFulfilled The callback to execute if the animation is resolved.
-         * @param {function} [onRejected] The callback to execute if the animation is rejected.
-         * @return {Promise} The promise.
-         */
-        then(onFulfilled, onRejected) {
-            return this._promise.then(onFulfilled, onRejected);
-        }
+        return value;
     }
-
-    Object.setPrototypeOf(AnimationSet.prototype, Promise.prototype);
+    /**
+     * Return a "real" event from a namespaced event.
+     * @param {string} event The namespaced event.
+     * @return {string} The real event.
+     */
+    function parseEvent(event) {
+        return event.split('.')
+            .shift();
+    }
+    /**
+     * Return an array of events from a space-separated string.
+     * @param {string} events The events.
+     * @return {array} The parsed events.
+     */
+    function parseEvents(events) {
+        return events.split(' ');
+    }
 
     /**
      * DOM Create
@@ -2497,7 +2377,7 @@
         }
 
         // fast selector
-        const match = selector.match(/^([\#\.]?)([\w\-]+)$/);
+        const match = selector.match(/^([#.]?)([\w-]+)$/);
 
         if (match) {
             if (match[1] === '#') {
@@ -2644,7 +2524,7 @@
         }
 
         // fast selector
-        const match = selector.match(/^([\#\.]?)([\w\-]+)$/);
+        const match = selector.match(/^([#.]?)([\w-]+)$/);
 
         if (match) {
             if (match[1] === '#') {
@@ -3027,6 +2907,348 @@
 
         return (node) => callbacks.some((callback) => callback(node));
     }
+
+    /**
+     * DOM Variables
+     */
+
+    const CONTENT_BOX = 0;
+    const PADDING_BOX = 1;
+    const BORDER_BOX = 2;
+    const MARGIN_BOX = 3;
+    const SCROLL_BOX = 4;
+
+    const allowedTags = {
+        '*': ['class', 'dir', 'id', 'lang', 'role', /^aria-[\w-]*$/i],
+        'a': ['target', 'href', 'title', 'rel'],
+        'area': [],
+        'b': [],
+        'br': [],
+        'col': [],
+        'code': [],
+        'div': [],
+        'dd': [],
+        'dl': [],
+        'dt': [],
+        'em': [],
+        'hr': [],
+        'h1': [],
+        'h2': [],
+        'h3': [],
+        'h4': [],
+        'h5': [],
+        'h6': [],
+        'i': [],
+        'img': ['src', 'alt', 'title', 'width', 'height'],
+        'li': [],
+        'ol': [],
+        'p': [],
+        'pre': [],
+        's': [],
+        'small': [],
+        'span': [],
+        'sub': [],
+        'sup': [],
+        'strong': [],
+        'u': [],
+        'ul': [],
+    };
+
+    const eventLookup = {
+        mousedown: ['mousemove', 'mouseup'],
+        touchstart: ['touchmove', 'touchend'],
+    };
+
+    const animations = new Map();
+
+    const data = new WeakMap();
+
+    const events = new WeakMap();
+
+    const queues = new WeakMap();
+
+    const styles = new WeakMap();
+
+    /**
+    * AnimationSet Class
+    * @class
+    */
+    class AnimationSet {
+        /**
+         * New AnimationSet constructor.
+         * @param {array} animations The animations.
+         */
+        constructor(animations) {
+            this._animations = animations;
+            this._promise = Promise.all(animations);
+        }
+
+        /**
+         * Execute a callback if any of the animations is rejected.
+         * @param {function} [onRejected] The callback to execute if an animation is rejected.
+         * @return {Promise} The promise.
+         */
+        catch(onRejected) {
+            return this._promise.catch(onRejected);
+        }
+
+        /**
+         * Execute a callback once the animation is settled (resolved or rejected).
+         * @param {function} [onFinally] The callback to execute once the animation is settled.
+         * @return {Promise} The promise.
+         */
+        finally(onFinally) {
+            return this._promise.finally(onFinally);
+        }
+
+        /**
+         * Stop the animations.
+         * @param {object} [options] The options for stopping the animation.
+         * @param {Boolean} [options.finish=true] Whether to finish the animations.
+        */
+        stop({ finish = true } = {}) {
+            for (const animation of this._animations) {
+                animation.stop({ finish });
+            }
+        }
+
+        /**
+         * Execute a callback once the animation is resolved (or optionally rejected).
+         * @param {function} onFulfilled The callback to execute if the animation is resolved.
+         * @param {function} [onRejected] The callback to execute if the animation is rejected.
+         * @return {Promise} The promise.
+         */
+        then(onFulfilled, onRejected) {
+            return this._promise.then(onFulfilled, onRejected);
+        }
+    }
+
+    Object.setPrototypeOf(AnimationSet.prototype, Promise.prototype);
+
+    /**
+     * Animation Helpers
+     */
+
+    let animating = false;
+
+    /**
+     * Get the current time.
+     * @return {number} The current time.
+     */
+    function getTime() {
+        return performance.now();
+    }
+    /**
+     * Start the animation loop (if not already started).
+     */
+    function start() {
+        if (animating) {
+            return;
+        }
+
+        animating = true;
+        update();
+    }
+    /**
+     * Run a single frame of all animations, and then queue up the next frame.
+     */
+    function update() {
+        const time = getTime();
+
+        for (const [node, currentAnimations] of animations) {
+            const otherAnimations = currentAnimations.filter((animation) => !animation.update(time));
+
+            if (!otherAnimations.length) {
+                animations.delete(node);
+            } else {
+                animations.set(node, otherAnimations);
+            }
+        }
+
+        if (!animations.size) {
+            animating = false;
+        } else if (config.useTimeout) {
+            setTimeout(update, 1000 / 60);
+        } else {
+            getWindow().requestAnimationFrame(update);
+        }
+    }
+
+    /**
+     * Animation Class
+     * @class
+     */
+    class Animation {
+        /**
+         * New Animation constructor.
+         * @param {HTMLElement} node The input node.
+         * @param {DOM~animationCallback} callback The animation callback.
+         * @param {object} [options] The options to use for the animation.
+         * @param {string} [options.type=ease-in-out] The type of animation
+         * @param {number} [options.duration=1000] The duration the animation should last.
+         * @param {Boolean} [options.infinite] Whether to repeat the animation.
+         * @param {Boolean} [options.debug] Whether to set debugging info on the node.
+         */
+        constructor(node, callback, options) {
+            this._node = node;
+            this._callback = callback;
+
+            this._options = {
+                ...getAnimationDefaults(),
+                ...options,
+            };
+
+            if (!('start' in this._options)) {
+                this._options.start = getTime();
+            }
+
+            if (this._options.debug) {
+                this._node.dataset.animationStart = this._options.start;
+            }
+
+            this._promise = new Promise((resolve, reject) => {
+                this._resolve = resolve;
+                this._reject = reject;
+            });
+
+            if (!animations.has(node)) {
+                animations.set(node, []);
+            }
+
+            animations.get(node).push(this);
+        }
+
+        /**
+         * Execute a callback if the animation is rejected.
+         * @param {function} [onRejected] The callback to execute if the animation is rejected.
+         * @return {Promise} The promise.
+         */
+        catch(onRejected) {
+            return this._promise.catch(onRejected);
+        }
+
+        /**
+         * Clone the animation to a new node.
+         * @param {HTMLElement} node The input node.
+         * @return {Animation} The cloned Animation.
+         */
+        clone(node) {
+            return new Animation(node, this._callback, this._options);
+        }
+
+        /**
+         * Execute a callback once the animation is settled (resolved or rejected).
+         * @param {function} [onFinally] The callback to execute once the animation is settled.
+         * @return {Promise} The promise.
+         */
+        finally(onFinally) {
+            return this._promise.finally(onFinally);
+        }
+
+        /**
+         * Stop the animation.
+         * @param {object} [options] The options for stopping the animation.
+         * @param {Boolean} [options.finish=true] Whether to finish the animation.
+        */
+        stop({ finish = true } = {}) {
+            if (this._isStopped || this._isFinished) {
+                return;
+            }
+
+            const otherAnimations = animations.get(this._node)
+                .filter((animation) => animation !== this);
+
+            if (!otherAnimations.length) {
+                animations.delete(this._node);
+            } else {
+                animations.set(this._node, otherAnimations);
+            }
+
+            if (finish) {
+                this.update();
+            }
+
+            this._isStopped = true;
+
+            if (!finish) {
+                this._reject(this._node);
+            }
+        }
+
+        /**
+         * Execute a callback once the animation is resolved (or optionally rejected).
+         * @param {function} onFulfilled The callback to execute if the animation is resolved.
+         * @param {function} [onRejected] The callback to execute if the animation is rejected.
+         * @return {Promise} The promise.
+         */
+        then(onFulfilled, onRejected) {
+            return this._promise.then(onFulfilled, onRejected);
+        }
+
+        /**
+         * Run a single frame of the animation.
+         * @param {number} [time] The current time.
+         * @return {Boolean} TRUE if the animation is finished, otherwise FALSE.
+         */
+        update(time = null) {
+            if (this._isStopped) {
+                return true;
+            }
+
+            let progress;
+
+            if (time === null) {
+                progress = 1;
+            } else {
+                progress = (time - this._options.start) / this._options.duration;
+
+                if (this._options.infinite) {
+                    progress %= 1;
+                } else {
+                    progress = clamp(progress);
+                }
+
+                if (this._options.type === 'ease-in') {
+                    progress = progress ** 2;
+                } else if (this._options.type === 'ease-out') {
+                    progress = Math.sqrt(progress);
+                } else if (this._options.type === 'ease-in-out') {
+                    if (progress <= 0.5) {
+                        progress = progress ** 2 * 2;
+                    } else {
+                        progress = 1 - ((1 - progress) ** 2 * 2);
+                    }
+                }
+            }
+
+            if (this._options.debug) {
+                this._node.dataset.animationTime = time;
+                this._node.dataset.animationProgress = progress;
+            }
+
+            this._callback(this._node, progress, this._options);
+
+            if (progress < 1) {
+                return false;
+            }
+
+            if (this._options.debug) {
+                delete this._node.dataset.animationStart;
+                delete this._node.dataset.animationTime;
+                delete this._node.dataset.animationProgress;
+            }
+
+            if (!this._isFinished) {
+                this._isFinished = true;
+
+                this._resolve(this._node);
+            }
+
+            return true;
+        }
+    }
+
+    Object.setPrototypeOf(Animation.prototype, Promise.prototype);
 
     /**
      * DOM Animate
@@ -3691,12 +3913,33 @@
                 return -1;
             }
 
-            if (isShadow(node)) {
+            const isNodeShadow = isShadow(node);
+            const isOtherShadow = isShadow(other);
+
+            if (isNodeShadow) {
                 node = node.host;
             }
 
-            if (isShadow(other)) {
+            if (isOtherShadow) {
                 other = other.host;
+            }
+
+            if (!node.isConnected || !other.isConnected) {
+                if (node.isConnected !== other.isConnected) {
+                    if (isNodeShadow && !node.isConnected) {
+                        return 1;
+                    }
+
+                    if (isOtherShadow && !other.isConnected) {
+                        return -1;
+                    }
+
+                    return node.isConnected ?
+                        1 :
+                        -1;
+                }
+
+                return 0;
             }
 
             if (node.isSameNode(other)) {
@@ -4218,7 +4461,7 @@
      * @return {DOM~eventCallback} The delegated event callback.
      */
     function delegateFactory(node, selector, callback) {
-        const getDelegate = selector.match(/(?:^\s*\:scope|\,(?=(?:(?:[^"']*["']){2})*[^"']*$)\s*\:scope)/) ?
+        const getDelegate = selector.match(/(?:^\s*:scope|,(?=(?:(?:[^"']*["']){2})*[^"']*$)\s*:scope)/) ?
             getDelegateContainsFactory(node, selector) :
             getDelegateMatchFactory(node, selector);
 
@@ -4833,7 +5076,7 @@
 
             // Remove descendent elements
             for (const child of childNodes) {
-                if (isElement(node) || isFragment(node) || isShadow(node)) {
+                if (isElement(child) || isFragment(child) || isShadow(child)) {
                     removeNode(child);
                 }
 
@@ -5410,7 +5653,13 @@
         const nodeStyles = styles.get(node);
 
         if (!style) {
-            return { ...nodeStyles };
+            const result = {};
+
+            for (const property of nodeStyles) {
+                result[property] = nodeStyles.getPropertyValue(property);
+            }
+
+            return result;
         }
 
         style = kebabCase(style);
@@ -8064,7 +8313,7 @@
 
             const nodeData = data.get(node);
 
-            return nodeData.hasOwnProperty(key);
+            return Object.hasOwn(nodeData, key);
         });
     }
     /**
@@ -8091,7 +8340,7 @@
     function withProperty$1(selector, property) {
         return parseNodes(selector)
             .filter((node) =>
-                node.hasOwnProperty(property),
+                Object.hasOwn(node, property),
             );
     }
 
@@ -8822,7 +9071,7 @@
 
             const nodeData = data.get(node);
 
-            return nodeData.hasOwnProperty(key);
+            return Object.hasOwn(nodeData, key);
         });
     }
     /**
@@ -8869,7 +9118,7 @@
      */
     function hasProperty$1(selector, property) {
         return parseNodes(selector)
-            .some((node) => node.hasOwnProperty(property));
+            .some((node) => Object.hasOwn(node, property));
     }
     /**
      * Returns true if any of the nodes has a ShadowRoot.
@@ -9484,6 +9733,27 @@
      */
 
     /**
+     * Return whether a boolean attribute should be enabled.
+     * @param {*} value The attribute value.
+     * @return {Boolean} True if the attribute should be enabled.
+     */
+    function isEnabled(value) {
+        return value !== false && value !== null && typeof value !== 'undefined';
+    }
+    /**
+     * Apply a script attribute if it should be serialized.
+     * @param {HTMLScriptElement} script The script element.
+     * @param {string} key The attribute key.
+     * @param {*} value The attribute value.
+     */
+    function setScriptAttribute(script, key, value) {
+        if (key === 'async' || !isEnabled(value)) {
+            return;
+        }
+
+        script.setAttribute(key, value === true ? '' : value);
+    }
+    /**
      * Load and execute a JavaScript file.
      * @param {string} url The URL of the script.
      * @param {object} [attributes] Additional attributes to set on the script tag.
@@ -9499,18 +9769,19 @@
             ...attributes,
         };
 
-        if (!('async' in attributes)) {
-            attributes.defer = '';
-        }
-
         if (!cache) {
             attributes.src = appendQueryString(attributes.src, '_', Date.now());
         }
 
         const script = context.createElement('script');
 
+        // Dynamically inserted scripts execute in insertion order only when async is disabled.
+        script.async = 'async' in attributes ?
+            isEnabled(attributes.async) :
+            false;
+
         for (const [key, value] of Object.entries(attributes)) {
-            script.setAttribute(key, value);
+            setScriptAttribute(script, key, value);
         }
 
         context.head.appendChild(script);

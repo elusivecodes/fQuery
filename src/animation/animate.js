@@ -1,8 +1,8 @@
-import Animation from './animation.js';
-import AnimationSet from './animation-set.js';
-import { start } from './helpers.js';
 import { parseNodes } from './../filters.js';
 import { animations } from './../vars.js';
+import AnimationSet from './animation-set.js';
+import Animation from './animation.js';
+import { start } from './helpers.js';
 
 /**
  * DOM Animate

@@ -1,8 +1,8 @@
 import { isFunction } from '@fr0st/core';
-import QuerySet from './proto.js';
 import { getContext } from './../config.js';
-import { parseNode, parseNodes } from './../filters.js';
 import { ready } from './../events/events.js';
+import { parseNode, parseNodes } from './../filters.js';
+import QuerySet from './proto.js';
 
 /**
  * DOM Query

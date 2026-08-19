@@ -1,8 +1,8 @@
 import { merge } from '@fr0st/core';
-import { addEvent, removeEvent } from './event-handlers.js';
 import { debounce as _debounce } from './../helpers.js';
 import { closest } from './../traversal/traversal.js';
 import { eventLookup } from './../vars.js';
+import { addEvent, removeEvent } from './event-handlers.js';
 
 /**
  * DOM Event Factory
@@ -59,7 +59,7 @@ function getDelegateMatchFactory(node, selector) {
  * @return {DOM~eventCallback} The delegated event callback.
  */
 export function delegateFactory(node, selector, callback) {
-    const getDelegate = selector.match(/(?:^\s*\:scope|\,(?=(?:(?:[^"']*["']){2})*[^"']*$)\s*\:scope)/) ?
+    const getDelegate = selector.match(/(?:^\s*:scope|,(?=(?:(?:[^"']*["']){2})*[^"']*$)\s*:scope)/) ?
         getDelegateContainsFactory(node, selector) :
         getDelegateMatchFactory(node, selector);
 

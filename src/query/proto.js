@@ -1,4 +1,3 @@
-import QuerySet from './query-set.js';
 import { animate, stop } from './animation/animate.js';
 import { dropIn, dropOut, fadeIn, fadeOut, rotateIn, rotateOut, slideIn, slideOut, squeezeIn, squeezeOut } from './animation/animations.js';
 import { getAttribute, getDataset, getHTML, getProperty, getText, getValue, removeAttribute, removeDataset, removeProperty, setAttribute, setDataset, setHTML, setProperty, setText, setValue } from './attributes/attributes.js';
@@ -13,6 +12,7 @@ import { attachShadow } from './manipulation/create.js';
 import { clone, detach, empty, remove, replaceAll, replaceWith } from './manipulation/manipulation.js';
 import { after, append, appendTo, before, insertAfter, insertBefore, prepend, prependTo } from './manipulation/move.js';
 import { unwrap, wrap, wrapAll, wrapInner } from './manipulation/wrap.js';
+import QuerySet from './query-set.js';
 import { clearQueue, delay, queue } from './queue/queue.js';
 import { connected, equal, filter, filterOne, fixed, hidden, not, notOne, same, visible, withAnimation, withAttribute, withChildren, withClass, withCSSAnimation, withCSSTransition, withData, withDescendent, withProperty } from './traversal/filter.js';
 import { find, findByClass, findById, findByTag, findOne, findOneByClass, findOneById, findOneByTag } from './traversal/find.js';
