@@ -204,10 +204,28 @@ test.describe('#mouseDragFactory', () => {
     });
 
     test('works with touch events', async ({ page }) => {
-        const hasTouch = await page.evaluate((_) =>
-            typeof Touch === 'function' && typeof TouchEvent === 'function');
+        const hasTouch = await page.evaluate((_) => {
+            if (typeof Touch !== 'function' || typeof TouchEvent !== 'function') {
+                return false;
+            }
 
-        test.skip(!hasTouch, 'Touch constructors are unavailable in this browser.');
+            try {
+                const touch = new Touch({
+                    identifier: 1,
+                    target: document.body,
+                });
+
+                new TouchEvent('touchstart', {
+                    touches: [touch],
+                });
+
+                return true;
+            } catch {
+                return false;
+            }
+        });
+
+        test.skip(!hasTouch, 'Touch constructors are not usable in this browser.');
 
         expect(await page.evaluate((_) => {
             const touch = new Touch({

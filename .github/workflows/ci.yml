@@ -52,7 +52,7 @@ jobs:
         run: npm run build
 
       - name: Run tests
-        run: npm run test:browser -- --project=${{ matrix.browser }}
+        run: npm run test:browser -- --project=${{ matrix.browser }} --workers=4
 
       - name: Verify generated bundles are current
         run: git diff --exit-code -- dist

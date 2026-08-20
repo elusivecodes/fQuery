@@ -36,7 +36,7 @@ jobs:
         run: npm run build
 
       - name: Run tests
-        run: npm run test:browser -- --project=chromium
+        run: npm run test:browser -- --project=chromium --workers=4
 
       - name: Validate package contents
         run: npm pack --dry-run

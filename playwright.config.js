@@ -1,9 +1,4 @@
-import os from 'node:os';
 import { defineConfig } from '@playwright/test';
-
-const availableWorkers = typeof os.availableParallelism === 'function' ?
-    os.availableParallelism() :
-    os.cpus().length;
 
 export default defineConfig({
     projects: [
@@ -22,9 +17,6 @@ export default defineConfig({
     ],
     testDir: './test/specs',
     testMatch: '**/*.spec.js',
-    workers: process.env.CI ?
-        4 :
-        Math.max(2, Math.min(4, Math.floor(availableWorkers / 2))),
     timeout: 30000,
     use: {
         baseURL: 'http://localhost:3001',

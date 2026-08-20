@@ -49,9 +49,9 @@
         "js-lint": "eslint",
         "js-minify": "terser --compress passes=2 --mangle --source-map \"content=dist/fquery.js.map,url=fquery.min.js.map\" --output dist/fquery.min.js dist/fquery.js",
         "test": "npm run build && npm run test:browser",
-        "test:browser": "PWTEST_CACHE_DIR=.tmp/playwright/cache playwright test --forbid-only",
-        "test:headed": "PWTEST_CACHE_DIR=.tmp/playwright/cache playwright test --forbid-only --headed",
-        "test:ui": "PWTEST_CACHE_DIR=.tmp/playwright/cache playwright test --ui"
+        "test:browser": "playwright test --forbid-only",
+        "test:headed": "playwright test --forbid-only --headed",
+        "test:ui": "playwright test --ui"
     },
     "dependencies": {
         "@fr0st/core": "^3.0.4"
