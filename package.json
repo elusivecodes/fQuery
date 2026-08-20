@@ -38,7 +38,6 @@
     "unpkg": "dist/fquery.min.js",
     "files": [
         "dist",
-        "docs",
         "LICENSE",
         "README.md",
         "src"

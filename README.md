@@ -1,2654 +1,477 @@
 # fQuery
 
-**fQuery** is a free, open-source DOM manipulation library for *JavaScript*.
+[![CI](https://github.com/elusivecodes/fQuery/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/elusivecodes/fQuery/actions/workflows/ci.yml)
+[![npm version](https://img.shields.io/npm/v/%40fr0st%2Fquery?style=flat-square)](https://www.npmjs.com/package/@fr0st/query)
+[![npm downloads](https://img.shields.io/npm/dm/%40fr0st%2Fquery?style=flat-square)](https://www.npmjs.com/package/@fr0st/query)
+[![minzipped size](https://img.shields.io/bundlejs/size/%40fr0st%2Fquery?format=minzip&style=flat-square)](https://bundlejs.com/?q=@fr0st/query)
+[![license](https://img.shields.io/github/license/elusivecodes/fQuery?style=flat-square)](./LICENSE)
 
-It is a lightweight (~16kb gzipped) and modern library, utilizing ES6 syntax and features including Promises.
+Lightweight JavaScript library for DOM querying, traversal, manipulation, events, animation, AJAX, and browser utilities.
 
+## Highlights
 
-## Table Of Contents
-- [Installation](#installation)
-- [Basic Usage](#basic-usage)
-     - [Core Methods](#core-methods)
-- [Ajax](#ajax)
-- [Animation](#animation)
-    - [Animations](#animations)
-- [Attributes](#attributes)
-    - [Custom Data](#custom-data)
-    - [Position](#position)
-    - [Scroll](#scroll)
-    - [Size](#size)
-    - [Styles](#styles)
-- [Cookie](#cookie)
-- [Events](#events)
-    - [Event Handlers](#event-handlers)
-    - [Event Factory](#event-factory)
-- [Manipulation](#manipulation)
-    - [Create](#create)
-    - [Move](#move)
-    - [Wrap](#wrap)
-- [Parsing](#parsing)
-- [Queue](#queue)
-- [Scripts](#scripts)
-- [Stylesheets](#stylesheets)
-- [Traversal](#traversal)
-    - [Filter](#filter)
-    - [Find](#find)
-- [Utility](#utility)
-    - [Sanitize](#sanitize)
-    - [Selection](#selection)
-    - [Tests](#tests)
-
-
+- Default ESM export for browser projects, bundlers, and DOM-enabled Node environments
+- Browser UMD bundle in `dist/` exposed as `globalThis.fQuery` and `globalThis.$`
+- Familiar, chainable `QuerySet` API alongside equivalent static functions
+- Querying across elements, documents, fragments, shadow roots, collections, and multiple contexts
+- DOM traversal, manipulation, attributes, styles, events, selection, and form helpers
+- Promise-like AJAX requests and animations, with animation queues and built-in effects
+- Dynamic script and stylesheet loading, sanitization, cookies, and browser utilities
+- [`@fr0st/core`](https://www.npmjs.com/package/@fr0st/core) helpers exposed with an `_` prefix
+- JSDoc-powered IntelliSense
 
 ## Installation
 
-**In Browser**
+### Browser projects and bundlers
 
-```html
-<script type="text/javascript" src="/path/to/fquery.min.js"></script>
-```
-
-**Using NPM**
-
-```
+```bash
 npm i @fr0st/query
 ```
 
-In Node.js:
+fQuery is an ES module. In a browser environment, importing it initializes the current `window` and `document`, assigns `window.$`, and returns the query function.
 
-```javascript
+```js
+import $ from '@fr0st/query';
+
+$('.card').addClass('is-ready');
+```
+
+### Browser (UMD)
+
+Load the bundle from your own copy or a CDN:
+
+```html
+<script src="/path/to/dist/fquery.min.js"></script>
+<!-- or -->
+<script src="https://cdn.jsdelivr.net/npm/@fr0st/query@latest/dist/fquery.min.js"></script>
+<script>
+    $('.card').addClass('is-ready');
+</script>
+```
+
+The UMD bundle exposes the same object as both `globalThis.fQuery` and `globalThis.$`. If another library already uses `$`, restore it while continuing to use `fQuery`:
+
+```js
+fQuery.noConflict();
+fQuery('.card').addClass('is-ready');
+```
+
+### Node and DOM implementations
+
+Outside a browser, the default export is an initializer. Pass it a `Window`, such as one created by JSDOM:
+
+```js
 import { JSDOM } from 'jsdom';
-import registerGlobals from '@fr0st/query';
+import register from '@fr0st/query';
 
-const window = new JSDOM('');
-const $ = registerGlobals(window);
-```
-
-
-## Basic Usage
-
-- `selector` is a query selector string, a *Node*, *HTMLElement*, *DocumentFragment*, *ShadowRoot*, *Document*, *Window*, *NodeList*, *HTMLCollection*, *QuerySet*, an array of nodes or a function to execute when the DOM is ready.
-- `context` is a query selector string, a *HTMLElement*, *DocumentFragment*, *ShadowRoot*, *Document*, *HTMLCollection*, *QuerySet* or an array of nodes, and will default to the *Document* context of the `dom`.
-
-```javascript
-const query = $(selector, context);
-```
-
-This method returns a [*QuerySet*](docs/QuerySet.md).
-
-**Query One**
-
-You can also query for a single node using the `queryOne` method.
-
-- `selector` is a query selector string, a *Node*, *HTMLElement*, *DocumentFragment*, *ShadowRoot*, *Document*, *Window*, *NodeList*, *HTMLCollection*, *QuerySet*, or an array of nodes.
-- `context` is a query selector string, a *HTMLElement*, *DocumentFragment*, *ShadowRoot*, *Document*, *HTMLCollection*, *QuerySet* or an array of nodes, and will default to the *Document* context of the `dom`.
-
-```javascript
-const query = $.queryOne(selector, context);
-```
-
-This method returns a [*QuerySet*](docs/QuerySet.md).
-
-**No Conflict**
-
-Reset the global `$` variable.
-
-```javascript
-$.noConflict();
-```
-
-You can continue to use this library by using the global `fQuery` variable.
-
-### Core Methods
-
-This library also includes all functions from the [*FrostCore*](https://github.com/elusivecodes/FrostCore) library, accessible from the `$` global variable (with an underscore prefix).
-
-```javascript
-const random = $._random();
-```
-
-
-## Ajax
-
-**Ajax**
-
-Perform an XHR request.
-
-- `options` is an object containing options for the request.
-    - `url` is a string containing the URL for the request, and will default to the current window location.
-    - `method` is a string containing the method to use for the request, and will default to "*GET*".
-    - `data` can be an object, array, string or *FormData* containing data to send with the request, and will default to *null*.
-    - `contentType` is a string containing the Content-Type header to send with the request, and will default to "*application/x-www-form-urlencoded*".
-    - `responseType` is a string containing the expected Content-Type header of the response.
-    - `mimeType` is a string containing the MIME type to use for the server response.
-    - `username` is a string containing the username to authenticate with.
-    - `password` is a string containing the password to authenticate with.
-    - `timeout` is a number indicating the number of milliseconds before the request will be terminated, and will default to *0*.
-    - `isLocal` is a boolean indicating whether the request will be treated as local.
-    - `cache` is a boolean indicating whether to cache the request, and will default to *true*.
-    - `processData` is a boolean indicating whether to process the data depending on the `contentType`, and will default to *true*.
-    - `rejectOnCancel` is a boolean indicating whether to reject the promise if the request is cancelled, and will default to *true*.
-    - `headers` is an object containing additional headers to send with the request.
-    - `afterSend` is a function that accepts an `xhr` argument, and will be called after the request is sent.
-    - `beforeSend` is a function that accepts an `xhr` argument, and will be called before the request is sent.
-    - `onProgress` is a function that accepts `progress`, `xhr` and `event` as arguments and will be called on XHR download progress.
-    - `onUploadProgress` is a function that accepts `progress`, `xhr` and `event` as arguments and will be called on XHR upload progress.
-
-This method returns an [*AjaxRequest*](docs/AjaxRequest.md) that resolves when the request is completed, or rejects on failure.
-
-```javascript
-const request = $.ajax(options);
-```
-
-**Delete**
-
-Perform an XHR DELETE request.
-
-- `url` is a string containing the URL for the request.
-- `options` is an object containing options for the request.
-    - `method` is a string containing the method to use for the request, and will default to "*DELETE*".
-    - `contentType` is a string containing the Content-Type header to send with the request, and will default to "*application/x-www-form-urlencoded*".
-    - `responseType` is a string containing the expected Content-Type header of the response.
-    - `mimeType` is a string containing the MIME type to use for the server response.
-    - `username` is a string containing the username to authenticate with.
-    - `password` is a string containing the password to authenticate with.
-    - `timeout` is a number indicating the number of milliseconds before the request will be terminated, and will default to *0*.
-    - `isLocal` is a boolean indicating whether the request will be treated as local.
-    - `cache` is a boolean indicating whether to cache the request, and will default to *true*.
-    - `processData` is a boolean indicating whether to process the data depending on the `contentType`, and will default to *true*.
-    - `rejectOnCancel` is a boolean indicating whether to reject the promise if the request is cancelled, and will default to *true*.
-    - `headers` is an object containing additional headers to send with the request.
-    - `afterSend` is a function that accepts an `xhr` argument, and will be called after the request is sent.
-    - `beforeSend` is a function that accepts an `xhr` argument, and will be called before the request is sent.
-    - `onProgress` is a function that accepts `progress`, `xhr` and `event` as arguments and will be called on XHR download progress.
-    - `onUploadProgress` is a function that accepts `progress`, `xhr` and `event` as arguments and will be called on XHR upload progress.
-
-This method returns an [*AjaxRequest*](docs/AjaxRequest.md) that resolves when the request is completed, or rejects on failure.
-
-```javascript
-const request = $.delete(url, options);
-```
-
-**Get**
-
-Perform an XHR GET request.
-
-- `url` is a string containing the URL for the request.
-- `data` can be an object, array, string containing data to send with the request, and will default to *null*.
-- `options` is an object containing options for the request.
-    - `method` is a string containing the method to use for the request, and will default to "*GET*".
-    - `contentType` is a string containing the Content-Type header to send with the request, and will default to "*application/x-www-form-urlencoded*".
-    - `responseType` is a string containing the expected Content-Type header of the response.
-    - `mimeType` is a string containing the MIME type to use for the server response.
-    - `username` is a string containing the username to authenticate with.
-    - `password` is a string containing the password to authenticate with.
-    - `timeout` is a number indicating the number of milliseconds before the request will be terminated, and will default to *0*.
-    - `isLocal` is a boolean indicating whether the request will be treated as local.
-    - `cache` is a boolean indicating whether to cache the request, and will default to *true*.
-    - `processData` is a boolean indicating whether to process the data depending on the `contentType`, and will default to *true*.
-    - `rejectOnCancel` is a boolean indicating whether to reject the promise if the request is cancelled, and will default to *true*.
-    - `headers` is an object containing additional headers to send with the request.
-    - `afterSend` is a function that accepts an `xhr` argument, and will be called after the request is sent.
-    - `beforeSend` is a function that accepts an `xhr` argument, and will be called before the request is sent.
-    - `onProgress` is a function that accepts `progress`, `xhr` and `event` as arguments and will be called on XHR download progress.
-    - `onUploadProgress` is a function that accepts `progress`, `xhr` and `event` as arguments and will be called on XHR upload progress.
-
-This method returns an [*AjaxRequest*](docs/AjaxRequest.md) that resolves when the request is completed, or rejects on failure.
-
-```javascript
-const request = $.get(url, data, options);
-```
-
-**Patch**
-
-Perform an XHR PATCH request.
-
-- `url` is a string containing the URL for the request.
-- `data` can be an object, array, string or *FormData* containing data to send with the request, and will default to *null*.
-- `options` is an object containing options for the request.
-    - `method` is a string containing the method to use for the request, and will default to "*PATCH*".
-    - `contentType` is a string containing the Content-Type header to send with the request, and will default to "*application/x-www-form-urlencoded*".
-    - `responseType` is a string containing the expected Content-Type header of the response.
-    - `mimeType` is a string containing the MIME type to use for the server response.
-    - `username` is a string containing the username to authenticate with.
-    - `password` is a string containing the password to authenticate with.
-    - `timeout` is a number indicating the number of milliseconds before the request will be terminated, and will default to *0*.
-    - `isLocal` is a boolean indicating whether the request will be treated as local.
-    - `cache` is a boolean indicating whether to cache the request, and will default to *true*.
-    - `processData` is a boolean indicating whether to process the data depending on the `contentType`, and will default to *true*.
-    - `rejectOnCancel` is a boolean indicating whether to reject the promise if the request is cancelled, and will default to *true*.
-    - `headers` is an object containing additional headers to send with the request.
-    - `afterSend` is a function that accepts an `xhr` argument, and will be called after the request is sent.
-    - `beforeSend` is a function that accepts an `xhr` argument, and will be called before the request is sent.
-    - `onProgress` is a function that accepts `progress`, `xhr` and `event` as arguments and will be called on XHR download progress.
-    - `onUploadProgress` is a function that accepts `progress`, `xhr` and `event` as arguments and will be called on XHR upload progress.
-
-This method returns an [*AjaxRequest*](docs/AjaxRequest.md) that resolves when the request is completed, or rejects on failure.
-
-```javascript
-const request = $.patch(url, data, options);
-```
-
-**Post**
-
-Perform an XHR POST request.
-
-- `url` is a string containing the URL for the request.
-- `data` can be an object, array, string or *FormData* containing data to send with the request, and will default to *null*.
-- `options` is an object containing options for the request.
-    - `method` is a string containing the method to use for the request, and will default to "*POST*".
-    - `contentType` is a string containing the Content-Type header to send with the request, and will default to "*application/x-www-form-urlencoded*".
-    - `responseType` is a string containing the expected Content-Type header of the response.
-    - `mimeType` is a string containing the MIME type to use for the server response.
-    - `username` is a string containing the username to authenticate with.
-    - `password` is a string containing the password to authenticate with.
-    - `timeout` is a number indicating the number of milliseconds before the request will be terminated, and will default to *0*.
-    - `isLocal` is a boolean indicating whether the request will be treated as local.
-    - `cache` is a boolean indicating whether to cache the request, and will default to *true*.
-    - `processData` is a boolean indicating whether to process the data depending on the `contentType`, and will default to *true*.
-    - `rejectOnCancel` is a boolean indicating whether to reject the promise if the request is cancelled, and will default to *true*.
-    - `headers` is an object containing additional headers to send with the request.
-    - `afterSend` is a function that accepts an `xhr` argument, and will be called after the request is sent.
-    - `beforeSend` is a function that accepts an `xhr` argument, and will be called before the request is sent.
-    - `onProgress` is a function that accepts `progress`, `xhr` and `event` as arguments and will be called on XHR download progress.
-    - `onUploadProgress` is a function that accepts `progress`, `xhr` and `event` as arguments and will be called on XHR upload progress.
-
-This method returns an [*AjaxRequest*](docs/AjaxRequest.md) that resolves when the request is completed, or rejects on failure.
-
-```javascript
-const request = $.post(url, data, options);
-```
-
-**Put**
-
-Perform an XHR PUT request.
-
-- `url` is a string containing the URL for the request.
-- `data` can be an object, array, string or *FormData* containing data to send with the request, and will default to *null*.
-- `options` is an object containing options for the request.
-    - `method` is a string containing the method to use for the request, and will default to "*PUT*".
-    - `contentType` is a string containing the Content-Type header to send with the request, and will default to "*application/x-www-form-urlencoded*".
-    - `responseType` is a string containing the expected Content-Type header of the response.
-    - `mimeType` is a string containing the MIME type to use for the server response.
-    - `username` is a string containing the username to authenticate with.
-    - `password` is a string containing the password to authenticate with.
-    - `timeout` is a number indicating the number of milliseconds before the request will be terminated, and will default to *0*.
-    - `isLocal` is a boolean indicating whether the request will be treated as local.
-    - `cache` is a boolean indicating whether to cache the request, and will default to *true*.
-    - `processData` is a boolean indicating whether to process the data depending on the `contentType`, and will default to *true*.
-    - `rejectOnCancel` is a boolean indicating whether to reject the promise if the request is cancelled, and will default to *true*.
-    - `headers` is an object containing additional headers to send with the request.
-    - `afterSend` is a function that accepts an `xhr` argument, and will be called after the request is sent.
-    - `beforeSend` is a function that accepts an `xhr` argument, and will be called before the request is sent.
-    - `onProgress` is a function that accepts `progress`, `xhr` and `event` as arguments and will be called on XHR download progress.
-    - `onUploadProgress` is a function that accepts `progress`, `xhr` and `event` as arguments and will be called on XHR upload progress.
-
-This method returns an [*AjaxRequest*](docs/AjaxRequest.md) that resolves when the request is completed, or rejects on failure.
-
-```javascript
-const request = $.put(url, data, options);
-```
-
-
-## Animation
-
-**Animate**
-
-Add an animation to each node.
-
-- `selector` is a query selector string, a *HTMLElement*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
-- `callback` is a function that accepts `node`, `progress` and `options` as arguments, where `node` is a *HTMLElement*, `progress` is a value between *0* and *1* and `options` is the `options` object passed to this method.
-- `options` is an object containing options for how the animation should be handled.
-    - `duration` is the number of milliseconds that the animation should last, and will default to *1000*.
-    - `type` is a string of either *ease-in*, *ease-out*, *ease-in-out* or *linear* indicating the type of animation to run, and will default to *ease-in-out*.
-    - `infinite` is a boolean indicating whether the animation should continue forever, and will default to *false*.
-
-This method returns an [*AnimationSet*](docs/Animation.md) that will resolve after the animation has completed.
-
-```javascript
-const animation = $.animate(selector, callback, options);
-```
-
-**Stop Animations**
-
-Stop all animations for each node.
-
-- `selector` is a query selector string, a *HTMLElement*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
-- `options` is an object containing options for how the animations should be stopped.
-    - `finish` is a boolean indicating whether to immediately finish the animation, and will default to *true*.
-
-```javascript
-$.stop(selector, options);
-```
-
-### Animations
-
-**Drop In**
-
-Drop each node into place.
-
-- `selector` is a query selector string, a *HTMLElement*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of node.
-- `options` is an object containing options for how the animation should be handled.
-    - `direction` is a string or function that returns either "*top*", "*right*", "*bottom*" or "*left*" indicating the direction to drop from, and will default to "*top*".
-    - `duration` is the number of milliseconds that the animation should last, and will default to *1000*.
-    - `type` is a string of either "*ease-in*", "*ease-out*", "*ease-in-out*" or "*linear*" indicating the type of animation to run, and will default to "*ease-in-out*".
-    - `infinite` is a boolean indicating whether the animation should continue forever, and will default to *false*.
-    - `useGpu` is a boolean indicating whether the animation should use GPU acceleration (CSS transform) and will default to *true*.
-
-This method returns an [*AnimationSet*](docs/Animation.md) that will resolve after the animation has completed.
-
-```javascript
-const animation = $.dropIn(selector, options);
-```
-
-**Drop Out**
-
-Drop each node out of place.
-
-- `selector` is a query selector string, a *HTMLElement*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
-- `options` is an object containing options for how the animation should be handled.
-    - `direction` is a string or function that returns either "*top*", "*right*", "*bottom*" or "*left*" indicating the direction to drop from, and will default to "*top*".
-    - `duration` is the number of milliseconds that the animation should last, and will default to *1000*.
-    - `type` is a string of either "*ease-in*", "*ease-out*", "*ease-in-out*" or "*linear*" indicating the type of animation to run, and will default to "*ease-in-out*".
-    - `infinite` is a boolean indicating whether the animation should continue forever, and will default to *false*.
-    - `useGpu` is a boolean indicating whether the animation should use GPU acceleration (CSS transform) and will default to *true*.
-
-This method returns an [*AnimationSet*](docs/Animation.md) that will resolve after the animation has completed.
-
-```javascript
-const animation = $.dropOut(selector, options);
-```
-
-**Fade In**
-
-Fade the opacity of each node in.
-
-- `selector` is a query selector string, a *HTMLElement*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
-- `options` is an object containing options for how the animation should be handled.
-    - `duration` is the number of milliseconds that the animation should last, and will default to *1000*.
-    - `type` is a string of either "*ease-in*", "*ease-out*", "*ease-in-out*" or "*linear*" indicating the type of animation to run, and will default to "*ease-in-out*".
-    - `infinite` is a boolean indicating whether the animation should continue forever, and will default to *false*.
-
-This method returns an [*AnimationSet*](docs/Animation.md) that will resolve after the animation has completed.
-
-```javascript
-const animation = $.fadeIn(selector, options);
-```
-
-**Fade Out**
-
-Fade the opacity of each node out.
-
-- `selector` is a query selector string, a *HTMLElement*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
-- `options` is an object containing options for how the animation should be handled.
-    - `duration` is the number of milliseconds that the animation should last, and will default to *1000*.
-    - `type` is a string of either "*ease-in*", "*ease-out*", "*ease-in-out*" or "*linear*" indicating the type of animation to run, and will default to "*ease-in-out*".
-    - `infinite` is a boolean indicating whether the animation should continue forever, and will default to *false*.
-
-This method returns an [*AnimationSet*](docs/Animation.md) that will resolve after the animation has completed.
-
-```javascript
-const animation = $.fadeOut(selector, options);
-```
-
-**Rotate In**
-
-Rotate each node in on an X, Y or Z.
-
-- `selector` is a query selector string, a *HTMLElement*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
-- `options` is an object containing options for how the animation should be handled.
-    - `x` is the amount of rotation to apply to the X axis, and will default to *0*.
-    - `y` is the amount of rotation to apply to the Y axis, and will default to *1*.
-    - `z` is the amount of rotation to apply to the Z axis, and will default to *0*.
-    - `inverse` is a boolean indicating whether to rotate in the opposite direction, and will default to *false*.
-    - `duration` is the number of milliseconds that the animation should last, and will default to *1000*.
-    - `type` is a string of either "*ease-in*", "*ease-out*", "*ease-in-out*" or "*linear*" indicating the type of animation to run, and will default to "*ease-in-out*".
-    - `infinite` is a boolean indicating whether the animation should continue forever, and will default to *false*.
-
-This method returns an [*AnimationSet*](docs/Animation.md) that will resolve after the animation has completed.
-
-```javascript
-const animation = $.rotateIn(selector, options);
-```
-
-**Rotate Out**
-
-Rotate each node out on an X, Y or Z.
-
-- `selector` is a query selector string, a *HTMLElement*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
-- `options` is an object containing options for how the animation should be handled.
-    - `x` is the amount of rotation to apply to the X axis, and will default to *0*.
-    - `y` is the amount of rotation to apply to the Y axis, and will default to *1*.
-    - `z` is the amount of rotation to apply to the Z axis, and will default to *0*.
-    - `inverse` is a boolean indicating whether to rotate in the opposite direction, and will default to *false*.
-    - `duration` is the number of milliseconds that the animation should last, and will default to *1000*.
-    - `type` is a string of either "*ease-in*", "*ease-out*", "*ease-in-out*" or "*linear*" indicating the type of animation to run, and will default to "*ease-in-out*".
-    - `infinite` is a boolean indicating whether the animation should continue forever, and will default to *false*.
-
-This method returns an [*AnimationSet*](docs/Animation.md) that will resolve after the animation has completed.
-
-```javascript
-const animation = $.rotateOut(selector, options);
-```
-
-**Slide In**
-
-Slide each node into place to a direction.
-
-- `selector` is a query selector string, a *HTMLElement*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
-- `options` is an object containing options for how the animation should be handled.
-    - `direction` is a string or function that returns either "*top*", "*right*", "*bottom*" or "*left*" indicating the direction to slide from, and will default to "*top*".
-    - `duration` is the number of milliseconds that the animation should last, and will default to *1000*.
-    - `type` is a string of either "*ease-in*", "*ease-out*", "*ease-in-out*" or "*linear*" indicating the type of animation to run, and will default to "*ease-in-out*".
-    - `infinite` is a boolean indicating whether the animation should continue forever, and will default to *false*.
-    - `useGpu` is a boolean indicating whether the animation should use GPU acceleration (CSS transform) and will default to *true*.
-
-This method returns an [*AnimationSet*](docs/Animation.md) that will resolve after the animation has completed.
-
-```javascript
-const animation = $.slideIn(selector, options);
-```
-
-**Slide Out**
-
-Slide each node out of place from a direction.
-
-- `selector` is a query selector string, a *HTMLElement*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
-- `options` is an object containing options for how the animation should be handled.
-    - `direction` is a string or function that returns either "*top*", "*right*", "*bottom*" or "*left*" indicating the direction to slide from, and will default to "*top*".
-    - `duration` is the number of milliseconds that the animation should last, and will default to *1000*.
-    - `type` is a string of either "*ease-in*", "*ease-out*", "*ease-in-out*" or "*linear*" indicating the type of animation to run, and will default to "*ease-in-out*".
-    - `infinite` is a boolean indicating whether the animation should continue forever, and will default to *false*.
-    - `useGpu` is a boolean indicating whether the animation should use GPU acceleration (CSS transform) and will default to *true*.
-
-This method returns an [*AnimationSet*](docs/Animation.md) that will resolve after the animation has completed.
-
-```javascript
-const animation = $.slideOut(selector, options);
-```
-
-**Squeeze In**
-
-Squeeze each node into place to a direction.
-
-- `selector` is a query selector string, a *HTMLElement*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
-- `options` is an object containing options for how the animation should be handled.
-    - `direction` is a string or function that returns either "*top*", "*right*", "*bottom*" or "*left*" indicating the direction to squeeze from, and will default to "*top*".
-    - `duration` is the number of milliseconds that the animation should last, and will default to *1000*.
-    - `type` is a string of either "*ease-in*", "*ease-out*", "*ease-in-out*" or "*linear*" indicating the type of animation to run, and will default to "*ease-in-out*".
-    - `infinite` is a boolean indicating whether the animation should continue forever, and will default to *false*.
-    - `useGpu` is a boolean indicating whether the animation should use GPU acceleration (CSS transform) and will default to *true*.
-
-This method returns an [*AnimationSet*](docs/Animation.md) that will resolve after the animation has completed.
-
-```javascript
-const animation = $.squeezeIn(selector, options);
-```
-
-**Squeeze Out**
-
-Squeeze each node out of place from a direction.
-
-- `selector` is a query selector string, a *HTMLElement*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
-- `options` is an object containing options for how the animation should be handled.
-    - `direction` is a string or function that returns either "*top*", "*right*", "*bottom*" or "*left*" indicating the direction to squeeze from, and will default to "*top*".
-    - `duration` is the number of milliseconds that the animation should last, and will default to *1000*.
-    - `type` is a string of either "*ease-in*", "*ease-out*", "*ease-in-out*" or "*linear*" indicating the type of animation to run, and will default to "*ease-in-out*".
-    - `infinite` is a boolean indicating whether the animation should continue forever, and will default to *false*.
-    - `useGpu` is a boolean indicating whether the animation should use GPU acceleration (CSS transform) and will default to *true*.
-
-This method returns an [*AnimationSet*](docs/Animation.md) that will resolve after the animation has completed.
-
-```javascript
-const animation = $.squeezeOut(selector, options);
-```
-
-
-## Attributes
-
-**Get Attribute**
-
-Get an attribute value for the first node.
-
-- `selector` is a query selector string, a *HTMLElement*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
-- `attribute` is a string indicating the attribute value to return.
-
-```javascript
-const value = $.getAttribute(selector, attribute);
-```
-
-If the `attribute` argument is omitted, an object containing all attribute values will be returned instead.
-
-```javascript
-const attributes = $.getAttribute(selector);
-```
-
-**Get Dataset**
-
-Get a dataset value for the first node.
-
-- `selector` is a query selector string, a *HTMLElement*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
-- `key` is a string indicating the dataset value to return.
-
-```javascript
-const value = $.getDataset(selector, key);
-```
-
-If the `key` argument is omitted, an object containing all dataset values will be returned instead.
-
-```javascript
-const dataset = $.getDataset(selector);
-```
-
-This method will attempt to convert string values to JS primitives (including booleans, numbers, objects, arrays and null).
-
-**Get HTML**
-
-Get the HTML contents of the first node.
-
-- `selector` is a query selector string, a *HTMLElement*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
-
-```javascript
-const html = $.getHTML(selector);
-```
-
-**Get Property**
-
-Get a property value for the first node.
-
-- `selector` is a query selector string, a *HTMLElement*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
-- `property` is a string indicating the property value to return.
-
-```javascript
-const value = $.getProperty(selector, property);
-```
-
-**Get Text**
-
-Get the text contents of the first node.
-
-- `selector` is a query selector string, a *HTMLElement*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
-
-```javascript
-const text = $.getText(selector);
-```
-
-**Get Value**
-
-Get the value property of the first node.
-
-- `selector` is a query selector string, a *HTMLElement*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
-
-```javascript
-const value = $.getValue(selector);
-```
-
-**Remove Attribute**
-
-Remove an attribute from each node.
-
-- `selector` is a query selector string, a *HTMLElement*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
-- `attribute` is a string indicating the attribute value to remove.
-
-```javascript
-$.removeAttribute(selector, attribute);
-```
-
-**Remove Dataset**
-
-Remove a dataset value from each node.
-
-- `selector` is a query selector string, a *HTMLElement*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
-- `key` is a string indicating the dataset value to remove.
-
-```javascript
-$.removeDataset(selector, key);
-```
-
-**Remove Property**
-
-Remove a property from each node.
-
-- `selector` is a query selector string, a *HTMLElement*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
-- `property` is a string indicating the property value to remove.
-
-```javascript
-$.removeProperty(selector, property);
-```
-
-**Set Attribute**
-
-Set attributes for each node.
-
-- `selector` is a query selector string, a *HTMLElement*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
-- `attribute` is a string indicating the attribute value to set.
-- `value` is the value you want to set the attribute to.
-
-```javascript
-$.setAttribute(selector, attribute, value);
-```
-
-Alternatively, you can set multiple attributes by passing a single `attributes` object as the argument with key/value pairs of the attributes to set.
-
-```javascript
-$.setAttribute(selector, attributes);
-```
-
-**Set Dataset**
-
-Set dataset values for each node.
-
-- `selector` is a query selector string, a *HTMLElement*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
-- `key` is a string indicating the dataset value to set.
-- `value` is the value you want to set the dataset to.
-
-```javascript
-$.setDataset(selector, key, value);
-```
-
-Alternatively, you can set multiple dataset properties by passing a single `dataset` object as the argument with key/value pairs of the properties to set.
-
-```javascript
-$.setDataset(selector, dataset);
-```
-
-This method will convert object and array values to JSON strings.
-
-**Set HTML**
-
-Set the HTML contents for each node.
+const { window } = new JSDOM('<main><p class="message">Hello</p></main>');
+const $ = register(window);
 
-- `selector` is a query selector string, a *HTMLElement*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of node.
-- `html` is a string that will become the HTML contents of the node.
-
-```javascript
-$.setHTML(selector, html);
-```
-
-**Set Property**
-
-Set property values for each node.
-
-- `selector` is a query selector string, a *HTMLElement*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
-- `property` is a string indicating the property value to set.
-- `value` is the value you want to set the property to.
-
-```javascript
-$.setProperty(selector, property, value);
-```
-
-Alternatively, you can set multiple properties by passing a single `properties` object as the argument with key/value pairs of the properties to set.
-
-```javascript
-$.setProperty(selector, properties);
-```
-
-**Set Text**
-
-Set the text contents for each node.
-
-- `selector` is a query selector string, a *HTMLElement*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
-- `text` is a string that will become the text contents of the node.
-
-```javascript
-$.setText(selector, text);
-```
-
-**Set Value**
-
-Set the value property for each node.
-
-- `selector` is a query selector string, a *HTMLElement*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
-- `value` is a string that will become the value of the node.
-
-```javascript
-$.setValue(selector, value);
-```
-
-### Custom Data
-
-**Clone Data**
-
-Clone custom data from each node to each other node.
-
-- `selector` is a query selector string, a *HTMLElement*, *DocumentFragment*, *ShadowRoot*, *Document*, *Window*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
-- `otherSelector` is a query selector string, a *HTMLElement*, *DocumentFragment*, *ShadowRoot*, *Document*, *Window*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
-
-```javascript
-$.cloneData(selector, otherSelector);
-```
-
-**Get Data**
-
-Get custom data for the first node.
-
-- `selector` is a query selector string, a *HTMLElement*, *DocumentFragment*, *ShadowRoot*, *Document*, *Window*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
-- `key` is a string indicating the custom data value to return.
-
-```javascript
-const value = $.getData(selector, key);
-```
-
-If the `key` argument is omitted, an object containing all custom data values will be returned instead.
-
-```javascript
-const data = $.getData(selector);
-```
-
-**Remove Data**
-
-Remove custom data for each node.
-
-- `selector` is a query selector string, a *HTMLElement*, *DocumentFragment*, *ShadowRoot*, *Document*, *Window*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
-- `key` is a string indicating the custom data value to remove.
-
-```javascript
-$.removeData(selector, key);
-```
-
-**Set Data**
-
-Set custom data for each node.
-
-- `selector` is a query selector string, a *HTMLElement*, *DocumentFragment*, *ShadowRoot*, *Document*, *Window*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
-- `key` is a string indicating the custom data value to set.
-- `value` is the value you want to set the attribute to.
-
-```javascript
-$.setData(selector, key, value);
-```
-
-Alternatively, you can set multiple data values by passing a single `data` object as the argument with key/value pairs of the data to set.
-
-```javascript
-$.setData(selector, data);
-```
-
-### Position
-
-**Center**
-
-Get the X,Y co-ordinates for the center of the first node.
-
-- `selector` is a query selector string, a *HTMLElement*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
-- `options` is an object containing options for how the position should be calculated.
-    - `offset` is a boolean indicating whether the co-ordinates should be offset from the top left of the document, and will default to *false*.
-
-```javascript
-const center = $.center(selector, options);
-```
-
-**Constrain**
-
-Constrain each node to a container node.
-
-- `selector` is a query selector string, a *HTMLElement*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
-- `containerSelector` is a query selector string, a *HTMLElement*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
-
-```javascript
-$.constrain(selector, containerSelector);
-```
-
-**Distance To**
-
-Get the distance of the first node to an X,Y position.
-
-- `selector` is a query selector string, a *HTMLElement*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
-- `x` is a distance (in pixels) along the X axis.
-- `y` is a distance (in pixels) along the Y axis.
-- `options` is an object containing options for how the distance should be calculated.
-    - `offset` is a boolean indicating whether the co-ordinates should be offset from the top left of the document, and will default to *false*.
-
-```javascript
-const dist = $.distTo(selector, x, y, options);
-```
-
-**Distance To Node**
-
-Get the distance between two nodes.
-
-- `selector` is a query selector string, a *HTMLElement*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
-- `otherSelector` is a query selector string, a *HTMLElement*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
-
-```javascript
-const dist = $.distToNode(selector, otherSelector);
-```
-
-**Nearest To**
-
-Get the nearest node to an X,Y position.
-
-- `selector` is a query selector string, a *HTMLElement*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
-- `x` is a distance (in pixels) along the X axis.
-- `y` is a distance (in pixels) along the Y axis.
-- `options` is an object containing options for how the distance should be calculated.
-    - `offset` is a boolean indicating whether the co-ordinates should be offset from the top left of the document, and will default to *false*.
-
-```javascript
-const nearest = $.nearestTo(selector, x, y, options);
-```
-
-**Nearest To Node**
-
-Get the nearest node to another node.
-
-- `selector` is a query selector string, a *HTMLElement*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
-- `otherSelector` is a query selector string, a *HTMLElement*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
-
-```javascript
-const nearest = $.nearestToNode(selector, otherSelector);
-```
-
-**Percent X**
-
-Get the percentage of an X co-ordinate relative to the first node.
-
-- `selector` is a query selector string, a *HTMLElement*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
-- `x` is a distance (in pixels) along the X axis.
-- `options` is an object containing options for how the percent should be calculated.
-    - `offset` is a boolean indicating whether the co-ordinates should be offset from the top left of the document, and will default to *false*.
-    - `clamp` is a boolean indicating whether to clamp the percent betwen *0* and *100*, and will default to *true*.
-
-```javascript
-const percentX = $.percentX(selector, x, options);
-```
-
-**Percent Y**
-
-Get the percentage of a Y co-ordinate relative to the first node.
-
-- `selector` is a query selector string, a *HTMLElement*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
-- `y` is a distance (in pixels) along the Y axis.
-- `options` is an object containing options for how the percent should be calculated.
-    - `offset` is a boolean indicating whether the co-ordinates should be offset from the top left of the document, and will default to *false*.
-    - `clamp` is a boolean indicating whether to clamp the percent betwen *0* and *100*, and will default to *true*.
-
-```javascript
-const percentY = $.percentY(selector, y, options);
-```
-
-**Position**
-
-Get the X,Y position for the top/left of the first node.
-
-- `selector` is a query selector string, a *HTMLElement*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
-- `options` is an object containing options for how the position should be calculated.
-    - `offset` is a boolean indicating whether the co-ordinates should be offset from the top left of the document, and will default to *false*.
-
-```javascript
-const position = $.position(selector, options);
-```
-
-**Rectangle**
-
-Get the computed bounding rectangle of the first node.
-
-- `selector` is a query selector string, a *HTMLElement*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
-- `options` is an object containing options for how the bounding rectangle should be calculated.
-    - `offset` is a boolean indicating whether the rectangle should be offset from the top left of the document, and will default to *false*.
-
-```javascript
-const rect = $.rect(selector, options);
-```
-
-### Scroll
-
-**Get Scroll X**
-
-Get the scroll X position of the first node.
-
-- `selector` is a query selector string, a *HTMLElement*, *Document*, *Window*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
-
-```javascript
-const scrollX = $.getScrollX(selector);
-```
-
-**Get Scroll Y**
-
-Get the scroll Y position of the first node.
-
-- `selector` is a query selector string, a *HTMLElement*, *Document*, *Window*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
-
-```javascript
-const scrollY = $.getScrollY(selector);
-```
-
-**Set Scroll**
-
-Scroll each node to an X,Y position.
-
-- `selector` is a query selector string, a *HTMLElement*, *Document*, *Window*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
-- `x` is a distance (in pixels) along the X axis to scroll to.
-- `y` is a distance (in pixels) along the Y axis to scroll to.
-
-```javascript
-$.setScroll(selector, x, y);
-```
-
-**Set Scroll X**
-
-Scroll each node to an X position.
-
-- `selector` is a query selector string, a *HTMLElement*, *Document*, *Window*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
-- `x` is a distance (in pixels) along the X axis to scroll to.
-
-```javascript
-$.setScrollX(selector, x);
-```
-
-**Set Scroll Y**
-
-Scroll each node to a Y position.
-
-- `selector` is a query selector string, a *HTMLElement*, *Document*, *Window*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
-- `y` is a distance (in pixels) along the Y axis to scroll to.
-
-```javascript
-$.setScrollY(selector, y);
-```
-
-### Size
-
-**Height**
-
-Get the computed height of the first node.
-
-- `selector` is a query selector string, a *HTMLElement*, *Document*, *Window*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
-- `options` is an object containing options for how the height should be calculated.
-    - `boxSize` is a number indicating the box sizing to calculate. Allowed values are *0* (no padding), *1* (padding), *2* (padding and border), *3* (padding, border and margin) and *4* (scroll area), and will default to *1*.
-    - `outer` is a boolean indicating whether to use the window outer height, and will default to *false*.
-
-```javascript
-const height = $.height(selector, options);
-```
-
-The following constants can also be used as the `boxSize` for brevity.
-- `$.CONTENT_BOX`
-- `$.PADDING_BOX`
-- `$.BORDER_BOX`
-- `$.MARGIN_BOX`
-- `$.SCROLL_BOX`
-
-**Width**
-
-Get the computed width of the first node.
-
-- `selector` is a query selector string, a *HTMLElement*, *Document*, *Window*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
-- `options` is an object containing options for how the width should be calculated.
-    - `boxSize` is a number indicating the box sizing to calculate. Allowed values are *0* (no padding), *1* (padding), *2* (padding and border), *3* (padding, border and margin) and *4* (scroll area), and will default to *1*.
-    - `outer` is a boolean indicating whether to use the window outer width, and will default to *false*.
-
-```javascript
-const width = $.width(selector, options);
-```
-
-The following constants can also be used as the `boxSize` for brevity.
-- `$.CONTENT_BOX`
-- `$.PADDING_BOX`
-- `$.BORDER_BOX`
-- `$.MARGIN_BOX`
-- `$.SCROLL_BOX`
-
-### Styles
-
-**Add Class**
-
-Add a class or classes to each node.
-
-- `selector` is a query selector string, a *HTMLElement*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
-- `classes` is an array of classes, or a space seperated string of class names.
-
-```javascript
-$.addClass(selector, ...classes);
-```
-
-**Computed Style**
-
-Get a computed CSS style value for the first node.
-
-- `selector` is a query selector string, a *HTMLElement*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
-- `style` is a string indicating the computed style property value to return.
-
-```javascript
-const value = $.css(selector, style);
-```
-
-If the `style` argument is omitted, an object containing all computed style values will be returned instead.
-
-```javascript
-const css = $.css(selector);
-```
-
-**Get Style**
-
-Get a style property for the first node.
-
-- `selector` is a query selector string, a *HTMLElement*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
-- `style` is a string indicating the style property value to return.
-
-```javascript
-const value = $.getStyle(selector, style);
-```
-
-If the `style` argument is omitted, an object containing all style values will be returned instead.
-
-```javascript
-const styles = $.getStyle(selector);
-```
-
-**Hide**
-
-Hide each node from display.
-
-- `selector` is a query selector string, a *HTMLElement*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
-
-```javascript
-$.hide(selector);
+$('.message').setText('Hello from fQuery');
 ```
-
-**Remove Class**
 
-Remove a class or classes from each node.
+The DOM implementation is supplied by the application and is not a dependency of fQuery.
 
-- `selector` is a query selector string, a *HTMLElement*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
-- `classes` is an array of classes, or a space seperated string of class names.
+## Quick Start
 
-```javascript
-$.removeClass(selector, ...classes);
-```
+Query existing nodes and chain operations:
 
-**Remove Style**
+```js
+const cards = $('.card')
+    .addClass('is-ready')
+    .setAttribute('aria-busy', 'false');
 
-Remove a style property from each node.
+cards.find('.title').setText('Ready');
 
-- `selector` is a query selector string, a *HTMLElement*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
-- `style` is a string indicating the style property to remove.
-
-```javascript
-$.removeStyle(selector, style);
+cards.addEvent('click.cards', (event) => {
+    $(event.currentTarget).toggleClass('is-active');
+});
 ```
-
-**Set Style**
 
-Set style properties for each node.
-
-- `selector` is a query selector string, a *HTMLElement*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
-- `style` is a string indicating the style property value to set.
-- `value` is the value you wish to set the style property to.
-- `options` is an object containing options for how the style should be applied.
-    - `important` is a boolean indicating the style should be set as important, and will default to *false*.
-
-```javascript
-$.setStyle(selector, style, value, options);
-```
+Create nodes from HTML and insert them into the document:
 
-Alternatively, you can set multiple style properties by passing a single `styles` object as the argument with key/value pairs of the styles to set.
+```js
+const notice = $('<aside class="notice">Saved</aside>');
 
-```javascript
-$.setStyle(selector, styles);
+notice
+    .appendTo(document.body)
+    .fadeIn({ duration: 200 });
 ```
 
-**Show**
+Run code when the document is ready:
 
-Display each hidden node.
-
-- `selector` is a query selector string, a *HTMLElement*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
-
-```javascript
-$.show(selector);
+```js
+$(() => {
+    $('[data-autofocus]').focus();
+});
 ```
-
-**Toggle**
 
-Toggle the visibility of each node.
+## Query Model
 
-- `selector` is a query selector string, a *HTMLElement*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
+`$(selector, context?)` and `$.query(selector, context?)` return a `QuerySet`. `$.queryOne(selector, context?)` returns a `QuerySet` containing at most one node.
 
-```javascript
-$.toggle(selector);
-```
+A selector can be:
 
-**Toggle Class**
+- a CSS selector string;
+- an HTML string beginning with `<`;
+- a `Node`, `DocumentFragment`, `ShadowRoot`, `Document`, or `Window`;
+- a `NodeList`, `HTMLCollection`, `QuerySet`, or array of nodes; or
+- for `$()` only, a callback to run when the document is ready.
 
-Toggle a class or classes for each node.
+The optional context can be a selector or one or more element, fragment, shadow-root, or document contexts. It defaults to the configured document.
 
-- `selector` is a query selector string, a *HTMLElement*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
-- `classes` is an array of classes, or a space seperated string of class names.
+```js
+const formFields = $('input, select', '#account-form');
+const firstError = $.queryOne('.error', formFields);
 
-```javascript
-$.toggleClass(selector, ...classes);
+console.log(formFields.length);
+console.log(firstError.get(0));
 ```
-
-
-## Cookie
 
-**Get Cookie**
+### QuerySet
 
-Get a cookie value.
+A `QuerySet` is iterable and keeps an ordered collection of nodes. Traversal and filtering methods return new sets; DOM mutation methods are chainable and generally return the current set.
 
-- `name` is a string containing the name of the cookie value to retrieve.
+- `new $.QuerySet(nodes?)`: construct a set directly.
+- `query.length`: return the number of nodes.
+- `query.get(index?)`: return one node, including negative indexes, or all nodes when no index is given.
+- `query.each(callback)`: run a callback for each node and return the current set.
+- `query.map(callback)`: map the nodes into a new `QuerySet`.
+- `query.slice(begin?, end?)`: return a sliced `QuerySet`.
+- `query.add(selector, context?)`: add nodes and return a new sorted, deduplicated set.
+- `query.eq(index)`: return the node at an index as a new set.
+- `query.first()` / `query.last()`: return the first or last node as a new set.
+- `query[Symbol.iterator]()`: iterate over the contained nodes.
 
-```javascript
-const value = $.getCookie(name);
-```
-
-**Remove Cookie**
-
-Remove a cookie.
+## DOM API
 
-- `name` is a string containing the name of the cookie value to remove.
-- `options` is an object containing configuration options for the cookie.
-    - `expires` is a number indicating the number of seconds until the cookie will expire, and will default to *-1*.
-    - `path` is a string indicating the path to use for the cookie.
-    - `secure` is a boolean indicating whether only set the cookie for secure requests, and will default to *false*.
+Most operations are available in two forms:
 
-```javascript
-$.removeCookie(name, options);
+```js
+$.addClass(selector, 'active');
+$(selector).addClass('active');
 ```
 
-**Set Cookie**
+Unless an entry shows full signatures, the static form takes the target selector as its first argument and the `QuerySet` form omits that argument. A `nodeFilter` can be a CSS selector, node, node collection, `QuerySet`, array, or callback.
 
-Set a cookie value.
-
-- `name` is a string containing the name of the cookie value to set.
-- `value` is the value you wish to set the cookie to.
-- `options` is an object containing configuration options for the cookie.
-    - `expires` is a number indicating the number of seconds until the cookie will expire.
-    - `path` is a string indicating the path to use for the cookie.
-    - `secure` is a boolean indicating whether only set the cookie for secure requests, and will default to *false*.
-
-```javascript
-$.setCookie(name, value, options);
-```
+### Finding
 
+- `$.find(selector, context?)` / `query.find(selector)`: find all matching descendants.
+- `$.findOne(selector, context?)` / `query.findOne(selector)`: find the first matching descendant.
+- `$.findByClass(className, context?)` / `query.findByClass(className)`: find descendants by class.
+- `$.findOneByClass(className, context?)` / `query.findOneByClass(className)`: find the first descendant by class.
+- `$.findById(id, context?)` / `query.findById(id)`: find descendants by ID.
+- `$.findOneById(id, context?)` / `query.findOneById(id)`: find the first descendant by ID.
+- `$.findByTag(tagName, context?)` / `query.findByTag(tagName)`: find descendants by tag name.
+- `$.findOneByTag(tagName, context?)` / `query.findOneByTag(tagName)`: find the first descendant by tag name.
+
+### Traversal
+
+- `child(nodeFilter?)`: return the first matching child.
+- `children(nodeFilter?, { elementsOnly? })`: return matching children.
+- `contents()`: return children including text and comment nodes.
+- `closest(nodeFilter?, limitFilter?)`: return the closest matching ancestor.
+- `parent(nodeFilter?)`: return matching direct parents.
+- `parents(nodeFilter?, limitFilter?)`: return matching ancestors up to an optional limit.
+- `next(nodeFilter?)` / `prev(nodeFilter?)`: return the next or previous matching sibling.
+- `nextAll(nodeFilter?, limitFilter?)` / `prevAll(nodeFilter?, limitFilter?)`: return following or preceding matching siblings.
+- `siblings(nodeFilter?, { elementsOnly? })`: return matching siblings.
+- `commonAncestor()`: return the common ancestor of all nodes.
+- `offsetParent()`: return the first node's positioned offset parent.
+- `fragment()`: return the first node's `DocumentFragment`.
+- `shadow()`: return the first node's `ShadowRoot`.
+
+The static forms of `children`, `nextAll`, `parents`, and `prevAll` also accept `{ first }`; their singular QuerySet counterparts provide the first-result behavior.
+
+### Filtering
+
+Filtering methods return matching nodes; their `is...` and `has...` counterparts return booleans.
+
+- `filter(nodeFilter)` / `filterOne(nodeFilter)`: nodes matching a filter.
+- `not(nodeFilter)` / `notOne(nodeFilter)`: nodes not matching a filter.
+- `connected()` / `isConnected()`: connection to the configured document.
+- `equal(otherSelector)` / `isEqual(otherSelector, { shallow? })`: DOM equality.
+- `same(otherSelector)` / `isSame(otherSelector)`: node identity.
+- `fixed()` / `isFixed()`: fixed positioning on a node or ancestor.
+- `hidden()` / `visible()`: visibility filters.
+- `isHidden()` / `isVisible()`: visibility tests.
+- `is(nodeFilter)`: whether any node matches a filter.
+- `withAnimation()` / `hasAnimation()`: active fQuery animations.
+- `withAttribute(attribute)` / `hasAttribute(attribute)`: attribute presence.
+- `withChildren()` / `hasChildren()`: child-node presence.
+- `$.withClass(selector, ...classes)` / `query.withClass(classes)`: return nodes with any specified class.
+- `hasClass(...classes)`: class presence.
+- `withCSSAnimation()` / `hasCSSAnimation()`: computed CSS animations.
+- `withCSSTransition()` / `hasCSSTransition()`: computed CSS transitions.
+- `withData(key?)` / `hasData(key?)`: fQuery custom data.
+- `hasDataset(key)`: dataset presence.
+- `withDescendent(nodeFilter)` / `hasDescendent(nodeFilter)`: matching descendants.
+- `withProperty(property)` / `hasProperty(property)`: property presence.
+- `hasFragment()` / `hasShadow()`: fragment or shadow-root presence.
+
+### Attributes and content
+
+Getter methods read the first matching node. Setter and removal methods apply to each matching node.
+
+- `getAttribute(attribute)` / `setAttribute(attribute, value)` / `removeAttribute(attribute)`: attributes.
+- `getProperty(property)` / `setProperty(property, value)` / `removeProperty(property)`: JavaScript properties.
+- `getDataset(key)` / `setDataset(key, value)` / `removeDataset(key)`: serialized `dataset` values.
+- `getHTML()` / `setHTML(html)`: HTML content.
+- `getText()` / `setText(text)`: text content.
+- `getValue()` / `setValue(value)`: form-control values.
+
+### Custom data
+
+Custom data is stored separately from DOM attributes and `dataset`.
+
+- `getData(key?)`: read one value or the full data object from the first node.
+- `setData(key, value)`: set a custom value on every node.
+- `removeData(key?)`: remove one value or all custom data.
+- `cloneData(otherSelector)`: copy custom data to other nodes.
+
+### Classes and styles
+
+- `addClass(...classes)` / `removeClass(...classes)` / `toggleClass(...classes)`: change classes. Arrays and space-separated strings are accepted.
+- `css(style)`: read one or more computed CSS values from the first node.
+- `getStyle(style)`: read inline style values from the first node.
+- `setStyle(style, value, { important? })`: set one or more inline styles.
+- `removeStyle(style)`: remove one or more inline styles.
+- `hide()` / `show()` / `toggle()`: change element visibility.
+
+### Size, position, and scrolling
+
+`height()` and `width()` accept `{ boxSize, outer }`. Use `$.CONTENT_BOX`, `$.PADDING_BOX`, `$.BORDER_BOX`, `$.MARGIN_BOX`, or `$.SCROLL_BOX` for `boxSize`.
+
+- `height(options?)` / `width(options?)`: read the first node's computed dimensions.
+- `center({ offset? })`: return center coordinates.
+- `position({ offset? })`: return positioned coordinates.
+- `rect({ offset? })`: return the bounding rectangle.
+- `constrain(containerSelector)`: keep nodes within a container.
+- `distTo(x, y, { offset? })` / `distToNode(otherSelector)`: calculate distances.
+- `nearestTo(x, y, { offset? })` / `nearestToNode(otherSelector)`: return the nearest node.
+- `percentX(x, { offset?, clamp? })` / `percentY(y, { offset?, clamp? })`: convert a coordinate to a percentage of the node.
+- `getScrollX()` / `getScrollY()`: read scroll coordinates.
+- `setScroll(x, y)` / `setScrollX(x)` / `setScrollY(y)`: set scroll coordinates.
+
+### Manipulation
+
+Methods accepting `otherSelector` also accept nodes, collections, QuerySets, arrays, and—where creation is supported—HTML strings.
+
+- `append(otherSelector)` / `prepend(otherSelector)`: insert content inside each target.
+- `appendTo(otherSelector)` / `prependTo(otherSelector)`: insert each target inside another node.
+- `before(otherSelector)` / `after(otherSelector)`: insert content adjacent to each target.
+- `insertBefore(otherSelector)` / `insertAfter(otherSelector)`: insert each target adjacent to another node.
+- `replaceWith(otherSelector)` / `replaceAll(otherSelector)`: replace targets or other nodes.
+- `wrap(otherSelector)` / `wrapAll(otherSelector)` / `wrapInner(otherSelector)`: wrap nodes or their contents.
+- `unwrap(nodeFilter?)`: remove matching parents while preserving their contents.
+- `clone({ deep?, events?, data?, animations? })`: clone nodes and optionally their fQuery state.
+- `detach()`: remove nodes while preserving associated state.
+- `remove()`: remove nodes and their associated state.
+- `empty()`: remove all child nodes and their associated state.
+- `attachShadow({ open? })`: attach a shadow root to the first node.
+
+Create nodes without a target:
+
+- `$.create(tagName?, options?)`: create an element with optional `html`, `text`, `class`, `style`, `value`, `attributes`, `properties`, and `dataset`.
+- `$.createComment(comment)`: create a comment node.
+- `$.createText(text)`: create a text node.
+- `$.createFragment()`: create a document fragment.
+- `$.createRange()`: create a range.
 
 ## Events
 
-**Blur**
+Event names may include namespaces such as `click.menu`. Returning `false` from an event callback prevents the default action.
 
-Trigger a blur event on the first node.
+- `addEvent(events, callback, options?)`: add one or more event handlers.
+- `addEventOnce(events, callback, options?)`: add self-removing handlers.
+- `addEventDelegate(events, delegate, callback, options?)`: add delegated handlers.
+- `addEventDelegateOnce(events, delegate, callback, options?)`: add self-removing delegated handlers.
+- `removeEvent(events?, callback?, options?)`: remove matching handlers.
+- `removeEventDelegate(events?, delegate?, callback?, options?)`: remove matching delegated handlers.
+- `cloneEvents(otherSelector)`: copy registered handlers to other nodes.
+- `triggerEvent(events, options?)`: trigger events on every node.
+- `triggerOne(event, options?)`: trigger an event on the first node.
+- `blur()` / `click()` / `focus()`: invoke the native action on the first node.
 
-- `selector` is a query selector string, a *HTMLElement*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
+Listener options include `capture` and `passive`; the static `$.addEvent()` form also accepts `delegate` and `selfDestruct`. Trigger options include `data`, `detail`, `bubbles`, and `cancelable`.
 
-```javascript
-$.blur(selector);
-```
-
-**Click**
-
-Trigger a click event on the first node.
-
-- `selector` is a query selector string, a *HTMLElement*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
-
-```javascript
-$.click(selector);
-```
-
-**Focus**
-
-Trigger a focus event on the first node.
-
-- `selector` is a query selector string, a *HTMLElement*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
-
-```javascript
-$.focus(selector);
-```
-
-**Ready**
-
-Add a function to the ready queue.
-
-- `callback` is a function that will execute once the DOM has finished loading.
-
-If the DOM is already loaded, `callback` will execute immediately.
-
-```javascript
-$.ready(callback);
-```
-
-### Event Handlers
-
-**Add Event**
-
-Add events to each node.
-
-- `selector` is a query selector string, a *HTMLElement*, *ShadowRoot*, *Document*, *Window*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
-- `events` is a space-separated string of events to attach to the nodes.
-- `callback` is a function that accepts an `event` argument, which will be called when the event is triggered.
-- `options` is an object containing options for how the event should be added.
-    - `capture` is a boolean indicating whether to use a capture event, and will default to *false*.
-    - `passive` is a boolean indicating whether to use a passive event, and will default to *false*.
-
-```javascript
-$.addEvent(selector, events, callback, options);
-```
-
-**Add Event Delegate**
-
-Add delegated events to each node.
-
-- `selector` is a query selector string, a *HTMLElement*, *ShadowRoot*, *Document*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
-- `events` is a space-separated string of events to attach to the nodes.
-- `delegate` is a query selector string which will only trigger the event if it is propagated by a target matching the selector.
-- `callback` is a function that accepts an `event` argument, which will be called when the event is triggered.
-- `options` is an object containing options for how the event should be added.
-    - `capture` is a boolean indicating whether to use a capture event, and will default to *false*.
-    - `passive` is a boolean indicating whether to use a passive event, and will default to *false*.
-
-```javascript
-$.addEventDelegate(selector, events, delegate, callback, options);
-```
-
-**Add Event Delegate Once**
-
-Add self-destructing delegated events to each node.
-
-- `selector` is a query selector string, a *HTMLElement*, *ShadowRoot*, *Document*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
-- `events` is a space-separated string of events to attach to the nodes.
-- `delegate` is a query selector string which will only trigger the event if it is propagated by a target matching the selector.
-- `callback` is a function that accepts an `event` argument, which will be called when the event is triggered.
-- `options` is an object containing options for how the event should be added.
-    - `capture` is a boolean indicating whether to use a capture event, and will default to *false*.
-    - `passive` is a boolean indicating whether to use a passive event, and will default to *false*.
-
-```javascript
-$.addEventDelegateOnce(selector, events, delegate, callback, options);
-```
-
-**Add Event Once**
-
-Add self-destructing events to each node.
-
-- `selector` is a query selector string, a *HTMLElement*, *ShadowRoot*, *Document*, *Window*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
-- `events` is a space-separated string of events to attach to the nodes.
-- `callback` is a function that accepts an `event` argument, which will be called when the event is triggered.
-- `options` is an object containing options for how the event should be added.
-    - `capture` is a boolean indicating whether to use a capture event, and will default to *false*.
-    - `passive` is a boolean indicating whether to use a passive event, and will default to *false*.
-
-```javascript
-$.addEventOnce(selector, events, callback, options);
-```
-
-**Clone Events**
-
-Clone all events from each node to other nodes.
-
-- `selector` is a query selector string, a *HTMLElement*, *ShadowRoot*, *Document*, *Window*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
-- `otherSelector` is a query selector string, a *HTMLElement*, *ShadowRoot*, *Document*, *Window*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
-
-```javascript
-$.cloneEvents(selector, otherSelector);
-```
-
-**Remove Event**
-
-Remove events from each node.
-
-- `selector` is a query selector string, a *HTMLElement*, *ShadowRoot*, *Document*, *Window*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
-- `events` is a space-separated string of events to remove from the nodes.
-- `callback` is a function that accepts an `event` argument, which will be called when the event is triggered.
-- `options` is an object containing options for how the event should be removed.
-    - `capture` is a boolean indicating whether to use a capture event, and will default to *null*.
-
-```javascript
-$.removeEvent(selector, events, callback, options);
-```
-
-If the `events`, `callback` or `capture` arguments are omitted, this method will remove all matching events from each node.
-
-**Remove Event Delegate**
-
-Remove delegated events from each node.
-
-- `selector` is a query selector string, a *HTMLElement*, *ShadowRoot*, *Document*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
-- `events` is a space-separated string of events to remove from the nodes.
-- `delegate` is a query selector string which will only trigger the event if it is propagated by a target matching the selector.
-- `callback` is a function that accepts an `event` argument, which will be called when the event is triggered.
-- `options` is an object containing options for how the event should be removed.
-    - `capture` is a boolean indicating whether to use a capture event, and will default to *null*.
-
-```javascript
-$.removeEventDelegate(selector, events, delegate, callback, options);
-```
-
-**Trigger Event**
-
-Trigger events on each node.
-
-- `selector` is a query selector string, a *HTMLElement*, *ShadowRoot*, *Document*, *Window*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
-- `events` is a space-separated string of events to trigger on the nodes.
-- `options` is an object containing options for creating the new event.
-    - `data` can be used to attach additional data to the event.
-    - `detail` can be used to attach additional details to the event.
-    - `bubbles` is a boolean indicating whether the event should bubble, and will default to *true*.
-    - `cancelable` is a boolean indicating whether the event is cancelable, and will default to *true*.
-
-```javascript
-$.triggerEvent(selector, events, options);
-```
-
-**Trigger One**
-
-Trigger an event on the first node.
-
-- `selector` is a query selector string, a *HTMLElement*, *ShadowRoot*, *Document*, *Window*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
-- `event` is an event to trigger on the nodes.
-- `options` is an object containing options for creating the new event.
-    - `data` can be used to attach additional data to the event.
-    - `detail` can be used to attach additional details to the event.
-    - `bubbles` is a boolean indicating whether the event should bubble, and will default to *true*.
-    - `cancelable` is a boolean indicating whether the event is cancelable, and will default to *true*.
-
-```javascript
-const cancelled = !$.triggerOne(selector, event, options);
-```
-
-This method returns *false* if the event was cancelled, otherwise returns *true*.
-
-### Event Factory
-
-**Mouse Drag Event Factory**
-
-Create a mouse drag event (optionally limited by animation frame).
-
-- `down` is a function that accepts an *event* argument, which will be called when the event is started.
-- `move` is a function that accepts an *event* argument, which will be called when the mouse is moved during the event.
-- `up` is a function that accepts an *event* argument, which will be called when the event has ended (mouse button has been released).
-- `options` is an object containing configuration options for the drag event.
-    - `debounce` is a boolean indicating whether to debounce the move event, and will default to *true*.
-    - `passive` is a boolean indicating whether to use passive event listeners, and will default to *true*.
-    - `preventDefault` is a boolean indicating whether to prevent the default events, and will default to *true*.
-    - `touches` is a number indicating the number of touches to trigger the event for, and will default to *1*.
-
-```javascript
-const drag = $.mouseDragFactory(down, move, up, options);
-```
-
-This method also works with touch events.
-
-
-## Manipulation
-
-**Clone**
-
-Clone each node (optionally deep, and with events and data).
-
-- `selector` is a query selector string, a *Node*, *HTMLElement*, *DocumentFragment*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
-- `options` is an object containing options for how to clone the nodes.
-    - `deep` is a boolean indicating whether to also clone child nodes, and will default to *true*.
-    - `events` is a boolean indicating whether to also clone events, and will default to *false*.
-    - `data` is a boolean indicating whether to also clone data, and will default to *false*.
-    - `animations` is a boolean indicating whether to also clone animations, and will default to *false*.
-
-```javascript
-const clones = $.clone(selector, options);
-```
-
-**Detach**
-
-Detach each node from the DOM.
-
-- `selector` is a query selector string, a *Node*, *HTMLElement*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
-
-```javascript
-const detached = $.detach(selector);
-```
-
-**Empty**
-
-Remove all children of each node from the DOM.
-
-- `selector` is a query selector string, a *HTMLElement*, *DocumentFragment*, *ShadowRoot*, *Document*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
-
-```javascript
-$.empty(selector);
-```
-
-**Remove**
-
-Remove each node from the DOM.
-
-- `selector` is a query selector string, a *Node*, *HTMLElement*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
-
-```javascript
-$.remove(selector);
-```
-
-**Replace All**
-
-Replace each other node with nodes.
-
-- `selector` is a query selector string, a HTML string, a *Node*, *HTMLElement*, *DocumentFragment*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
-- `otherSelector` is a query selector string, a *Node*, *HTMLElement* *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
-
-```javascript
-$.replaceAll(selector, otherSelector);
-```
-
-If a node you are replacing with is a *DocumentFragment*, the fragment contents will be used as a replacement.
-
-If multiple nodes are being replaced, cloned nodes will be created for each except for the last one.
-
-All events, data and animations will be removed from each node that is replaced.
-
-**Replace With**
-
-Replace each node with other nodes.
-
-- `selector` is a query selector string, a *Node*, *HTMLElement*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
-- `otherSelector` is a query selector string, a HTML string, a *Node*, *HTMLElement*, *DocumentFragment*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
-
-```javascript
-$.replaceWith(selector, otherSelector);
-```
-
-If a node you are replacing with is a *DocumentFragment*, the fragment contents will be used as a replacement.
-
-If multiple nodes are being replaced, cloned nodes will be created for each except for the last one.
-
-All events, data and animations will be removed from each node that is replaced.
-
-### Create
-
-**Attach Shadow**
-
-Attach a shadow DOM tree to the first node.
-
-- `selector` is a query selector string, a*HTMLElement*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
-- `options` is an object containing options for how the shadow should be attached.
-    - `open` is a boolean indicating whether the nodes are accessible from JavaScript outside the root, and will default to *true*.
-
-```javascript
-const shadow = $.attachShadow(selector, options);
-```
-
-**Create**
-
-Create a new DOM element.
-
-- `tagName` is a string indicating the type of element you wish to create, and will default to "*div*".
-- `options` is an object containing options for creating the new node.
-    - `html` is a string that will become the HTML contents of the node.
-    - `text` is a string that will become the text contents of the node.
-    - `class` is an array of classes, or a space seperated string of class names.
-    - `style` is an object containing style values to set.
-    - `value` is a string that will become the value of the node.
-    - `attributes` is an object containing attribute values to set.
-    - `properties` is an object containing property values to set.
-    - `dataset` is an object containing dataset values to set.
-
-```javascript
-const element = $.create(tagName, options);
-```
-
-**Create Comment**
-
-Create a new comment node.
-
-- `comment` is a string indicating the comment.
-
-```javascript
-const commentNode = $.createComment(comment);
-```
-
-**Create Fragment**
-
-Create a new document fragment.
-
-```javascript
-const fragment = $.createFragment();
-```
-
-**Create Range**
-
-Create a new range object.
-
-```javascript
-const range = $.createRange();
-```
-
-**Create Text**
-
-Create a new text node.
-
-- `text` is a string indicating the text.
-
-```javascript
-const textNode = $.createText(text);
-```
-
-### Move
-
-**After**
-
-Insert each other node after each node.
-
-- `selector` is a query selector string, a *Node*, *HTMLElement*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
-- `otherSelector` is a query selector string, a HTML string, a *Node*, *HTMLElement*, *DocumentFragment*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
-
-```javascript
-$.after(selector, otherSelector);
-```
-
-If a node you are moving is a *DocumentFragment*, the contents will be moved instead.
-
-If multiple copies of the nodes are being moved, cloned nodes will be created for each except for the last one.
-
-**Append**
-
-Append each other node to each node.
-
-- `selector` is a query selector string, a *HTMLElement*, *DocumentFragment*, *ShadowRoot*, *Document*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
-- `otherSelector` is a query selector string, a HTML string, a *Node*, *HTMLElement*, *DocumentFragment*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
-
-```javascript
-$.append(selector, otherSelector);
-```
-
-If a node you are moving is a *DocumentFragment*, the contents will be moved instead.
-
-If multiple copies of the nodes are being moved, cloned nodes will be created for each except for the last one.
-
-**Append To**
-
-Append each node to each other node.
-
-- `selector` is a query selector string, a HTML string, a *Node*, *HTMLElement*, *DocumentFragment*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
-- `otherSelector` is a query selector string, a *HTMLElement*, *DocumentFragment*, *ShadowRoot*, *Document*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
-
-```javascript
-$.appendTo(selector, otherSelector);
-```
-
-If a node you are moving is a *DocumentFragment*, the contents will be moved instead.
-
-If multiple copies of the nodes are being moved, cloned nodes will be created for each except for the last one.
-
-**Before**
-
-Insert each other node before each node.
-
-- `selector` is a query selector string, a *Node*, *HTMLElement*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
-- `otherSelector` is a query selector string, a HTML string, a *Node*, *HTMLElement*, *DocumentFragment*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
-
-```javascript
-$.before(selector, otherSelector);
-```
-
-If a node you are moving is a *DocumentFragment*, the contents will be moved instead.
-
-If multiple copies of the nodes are being moved, cloned nodes will be created for each except for the last one.
-
-**Insert After**
-
-Insert each node after each other node.
-
-- `selector` is a query selector string, a HTML string, a *Node*, *HTMLElement*, *DocumentFragment*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
-- `otherSelector` is a query selector string, a *Node*, *HTMLElement*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
-
-```javascript
-$.insertAfter(selector, otherSelector);
-```
-
-If a node you are moving is a *DocumentFragment*, the contents will be moved instead.
-
-If multiple copies of the nodes are being moved, cloned nodes will be created for each except for the last one.
-
-**Insert Before**
-
-Insert each node before each other node.
-
-- `selector` is a query selector string, a HTML string, a *Node*, *HTMLElement*, *DocumentFragment*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
-- `otherSelector` is a query selector string, a *Node*, *HTMLElement*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
-
-```javascript
-$.insertBefore(selector, otherSelector);
-```
-
-If a node you are moving is a *DocumentFragment*, the contents will be moved instead.
-
-If multiple copies of the nodes are being moved, cloned nodes will be created for each except for the last one.
-
-**Prepend**
-
-Prepend each other node to each node.
-
-- `selector` is a query selector string, a *HTMLElement*, *DocumentFragment*, *ShadowRoot*, *Document*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
-- `otherSelector` is a query selector string, a HTML string, a *Node*, *HTMLElement*, *DocumentFragment*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
-
-```javascript
-$.prepend(selector, otherSelector);
-```
-
-If a node you are moving is a *DocumentFragment*, the contents will be moved instead.
-
-If multiple copies of the nodes are being moved, cloned nodes will be created for each except for the last one.
-
-**Prepend To**
-
-Prepend each node to each other node.
-
-- `selector` is a query selector string, a HTML string, a *Node*, *HTMLElement*, *DocumentFragment*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
-- `otherSelector` is a query selector string, a *HTMLElement*, *DocumentFragment*, *ShadowRoot*, *Document*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
-
-```javascript
-$.prependTo(selector, otherSelector);
-```
-
-If a node you are moving is a *DocumentFragment*, the contents will be moved instead.
-
-If multiple copies of the nodes are being moved, cloned nodes will be created for each except for the last one.
-
-### Wrap
-
-**Unwrap**
-
-Unwrap each node.
-
-- `selector` is a query selector string, a *Node*, *HTMLElement*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
-- `nodeFilter` is either a function that accepts a `node` argument, a query selector string, a *Node*, *HTMLElement*, *DocumentFragment*, *ShadowRoot*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes that must match the parent of each node for it to be unwrapped.
-
-```javascript
-$.unwrap(selector, nodeFilter);
-```
-
-**Wrap**
-
-Wrap each node with other nodes.
-
-- `selector` is a query selector string, a *Node*, *HTMLElement*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
-- `otherSelector` is a query selector string, a HTML string, a *HTMLElement*, *DocumentFragment*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
-
-```javascript
-$.wrap(selector, otherSelector);
-```
-
-If a node you are wrapping with is a *DocumentFragment*, the contents will be used to wrap instead.
-
-**Wrap All**
-
-Wrap all nodes with other nodes.
-
-- `selector` is a query selector string, a *Node*, *HTMLElement*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
-- `otherSelector` is a query selector string, a HTML string, a *HTMLElement*, *DocumentFragment*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
-
-```javascript
-$.wrapAll(selector, otherSelector);
-```
-
-**Wrap Inner**
-
-Wrap the contents of each node with other nodes.
-
-- `selector` is a query selector string, a *Node*, *HTMLElement*, *DocumentFragment*, *ShadowRoot*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
-- `otherSelector` is a query selector string, a HTML string, a *HTMLElement*, *DocumentFragment*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
-
-```javascript
-$.wrapInner(selector, otherSelector);
-```
-
-If a node you are wrapping with is a *DocumentFragment*, the contents will be used to wrap instead.
-
-
-## Parsing
-
-**Parse Document**
-
-Create a *Document* object from a string.
-
-- `input` is the input string.
-- `options` is an object containing options for how to parse the string.
-    - `contentType` is a string representing the content type, and will default to "*text/html*".
-
-```javascript
-const doc = $.parseDocument(input, options);
-```
-
-**Parse HTML**
-
-Return an array containing nodes parsed from a HTML string.
-
-- `html` is a string containing the HTML data to parse.
-
-```javascript
-const nodes = $.parseHTML(html);
-```
-
-
-## Queue
-
-**Clear Queue**
-
-Clear a queue of each node.
-
-- `selector` is a query selector string, a *HTMLElement*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
-- `options` is an object containing options for how the queue should be cleared.
-    - `queueName` is a string indicating the name of the queue to clear, and will default to "*null*".
-
-```javascript
-$.clearQueue(selector, options);
-```
-
-If the `queueName` is set to *null*, then all queues will be cleared.
-
-**Queue**
-
-Queue a callback on each node.
-
-- `selector` is a query selector string, a *HTMLElement*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
-- `callback` is a function that accepts `node` as an argument, where node is a *HTMLElement*. The callback can return a *Promise* which will pause the queue until the promise is resolved.
-- `options` is an object containing options for how the queue should be added.
-    - `queueName` is a string indicating the name of the queue to use, and will default to "*default*".
-
-```javascript
-$.queue(selector, callback, options);
-```
-
-If an item in the queue returns a *Promise* that rejects, the queue will be cleared.
-
-
-## Scripts
-
-**Load Script**
-
-Load and execute a JavaScript file.
-
-- `script` is a string containing the URL for the script to load.
-- `attributes` is an object containing additional attributes on the `script` tag.
-- `options` is an object containing options for how the script should be loaded.
-    - `cache` is a boolean indicating whether to cache the request, and will default to *true*.
-
-This method returns a *Promise* that resolves when the script is loaded, or rejects on failure.
+`$.mouseDragFactory(down, move?, up?, options?)` creates a mouse/touch drag callback. Options include `debounce`, `passive`, `preventDefault`, and the required number of `touches`.
 
-```javascript
-const promise = $.loadScript(script, attributes, options);
-```
-
-**Load Scripts**
-
-Load and execute multiple JavaScript files (in order).
-
-- `scripts` is a array of strings containing the URLs for the scripts to load, or an array of script attribute objects.
-- `options` is an object containing options for how the scripts should be loaded.
-    - `cache` is a boolean indicating whether to cache the request, and will default to *true*.
-
-This method returns a *Promise* that resolves when the scripts are loaded, or rejects on failure.
-
-```javascript
-const promise = $.loadScripts(scripts, options);
-```
-
-
-## Stylesheets
-
-**Load Stylesheet**
-
-Import A CSS Stylesheet file.
-
-- `stylesheet` is a string containing the URL for the stylesheet to load.
-- `attributes` is an object containing additional attributes on the `link` tag.
-- `options` is an object containing options for how the stylesheet should be loaded.
-    - `cache` is a boolean indicating whether to cache the request, and will default to *true*.
-
-This method returns a *Promise* that resolves when the stylesheet is loaded, or rejects on failure.
-
-```javascript
-const promise = $.loadStyle(stylesheet, attributes, options);
-```
-
-**Load Stylesheets**
-
-Import multiple CSS Stylesheet files.
-
-- `stylesheets` is a array of strings containing the URLs for the stylesheets to load, or an array of link attribute objects.
-- `options` is an object containing options for how the stylesheets should be loaded.
-    - `cache` is a boolean indicating whether to cache the request, and will default to *true*.
-
-This method returns a *Promise* that resolves when the stylesheets are loaded, or rejects on failure.
-
-```javascript
-const promise = $.loadStyles(stylesheets, options);
-```
-
-
-## Traversal
-
-**Child**
-
-Find the first child of each node (optionally matching a filter).
-
-- `selector` is a query selector string, a *HTMLElement*, *DocumentFragment*, *ShadowRoot*, *Document*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
-- `nodeFilter` is either a function that accepts a `node` argument, a query selector string, a *Node*, *HTMLElement*, *DocumentFragment*, *ShadowRoot*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes that the nodes will be filtered by, and will default to *false*.
-
-```javascript
-const child = $.child(selector, nodeFilter);
-```
-
-**Children**
-
-Find all children of each node (optionally matching a filter).
-
-- `selector` is a query selector string, a *HTMLElement*, *DocumentFragment*, *ShadowRoot*, *Document*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
-- `nodeFilter` is either a function that accepts a `node` argument, a query selector string, a *Node*, *HTMLElement*, *DocumentFragment*, *ShadowRoot*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes that the nodes will be filtered by, and will default to *false*.
-
-```javascript
-const children = $.children(selector, nodeFilter);
-```
-
-**Closest**
-
-Find the closest ancestor to each node (optionally matching a filter, and before a limit).
-
-- `selector` is a query selector string, a *Node*, *HTMLElement*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
-- `nodeFilter` is either a function that accepts a `node` argument, a query selector string, a *Node*, *HTMLElement*, *DocumentFragment*, *ShadowRoot*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes that the nodes will be filtered by, and will default to *false*.
-- `limitFilter` is either a function that accepts a `node` argument, a query selector string, a *Node*, *HTMLElement*, *DocumentFragment*, *ShadowRoot*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes that when matched will stop the search, and will default to *false*.
-
-```javascript
-const closest = $.closest(selector, nodeFilter, limitFilter);
-```
-
-**Common Ancestor**
-
-Find the common ancestor of all nodes.
-
-- `selector` is a query selector string, a *Node*, *HTMLElement*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
-
-```javascript
-const commonAncestor = $.commonAncestor(selector);
-```
-
-**Contents**
-
-Find all children of each node (including text and comment nodes).
-
-- `selector` is a query selector string, a *HTMLElement*, *DocumentFragment*, *ShadowRoot*, *Document*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
-
-```javascript
-const contents = $.contents(selector);
-```
-
-**Fragment**
-
-Return the *DocumentFragment* of the first node.
-
-- `selector` is a query selector string, a *HTMLElement*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
-
-```javascript
-const fragment = $.fragment(selector);
-```
-
-**Next**
-
-Find the next sibling for each node (optionally matching a filter).
-
-- `selector` is a query selector string, a *Node*, *HTMLElement*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
-- `nodeFilter` is either a function that accepts a `node` argument, a query selector string, a *Node*, *HTMLElement*, *DocumentFragment*, *ShadowRoot*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes that the nodes will be filtered by, and will default to *false*.
-
-```javascript
-const next = $.next(selector, nodeFilter);
-```
-
-**Next All**
-
-Find all next siblings for each node (optionally matching a filter, and before a limit).
-
-- `selector` is a query selector string, a *Node*, *HTMLElement*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
-- `nodeFilter` is either a function that accepts a `node` argument, a query selector string, a *Node*, *HTMLElement*, *DocumentFragment*, *ShadowRoot*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes that the nodes will be filtered by, and will default to *false*.
-- `limitFilter` is either a function that accepts a `node` argument, a query selector string, a *Node*, *HTMLElement*, *DocumentFragment*, *ShadowRoot*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes that when matched will stop the search, and will default to *false*.
-- `options` is an object containing options for how the siblings should be traversed.
-    - `first` is a boolean indicating whether to only return the first matching node for each node, and will default to *false*.
-
-```javascript
-const nextAll = $.nextAll(selector, nodeFilter, limitFilter, options);
-```
-
-**Offset Parent**
-
-Find the offset parent (relatively positioned) of the first node.
-
-- `selector` is a query selector string, a *Node*, *HTMLElement*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
-
-```javascript
-const offsetParent = $.offsetParent(selector);
-```
-
-**Parent**
-
-Find the parent of each node (optionally matching a filter).
-
-- `selector` is a query selector string, a *Node*, *HTMLElement*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
-- `nodeFilter` is either a function that accepts a `node` argument, a query selector string, a *Node*, *HTMLElement*, *DocumentFragment*, *ShadowRoot*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes that the nodes will be filtered by, and will default to *false*.
-
-```javascript
-const parent = $.parent(selector, nodeFilter);
-```
-
-**Parents**
-
-Find all parents of each node (optionally matching a filter, and before a limit).
-
-- `selector` is a query selector string, a *Node*, *HTMLElement*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
-- `nodeFilter` is either a function that accepts a `node` argument, a query selector string, a *Node*, *HTMLElement*, *DocumentFragment*, *ShadowRoot*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes that the nodes will be filtered by, and will default to *false*.
-- `limitFilter` is either a function that accepts a `node` argument, a query selector string, a *Node*, *HTMLElement*, *DocumentFragment*, *ShadowRoot*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes that when matched will stop the search, and will default to *false*.
-- `options` is an object containing options for how the parents should be traversed.
-    - `first` is a boolean indicating whether to only return the first matching node for each node, and will default to *false*.
-
-```javascript
-const parents = $.parents(selector, nodeFilter, limitFilter, options);
-```
-
-**Previous**
-
-Find the previous sibling for each node (optionally matching a filter).
-
-- `selector` is a query selector string, a *Node*, *HTMLElement*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
-- `nodeFilter` is either a function that accepts a `node` argument, a query selector string, a *Node*, *HTMLElement*, *DocumentFragment*, *ShadowRoot*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes that the nodes will be filtered by, and will default to *false*.
-
-```javascript
-const prev = $.prev(selector, nodeFilter);
-```
-
-**Previous All**
-
-Find all previous siblings for each node (optionally matching a filter, and before a limit).
-
-- `selector` is a query selector string, a *Node*, *HTMLElement*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
-- `nodeFilter` is either a function that accepts a `node` argument, a query selector string, a *Node*, *HTMLElement*, *DocumentFragment*, *ShadowRoot*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes that the nodes will be filtered by, and will default to *false*.
-- `limitFilter` is either a function that accepts a `node` argument, a query selector string, a *Node*, *HTMLElement*, *DocumentFragment*, *ShadowRoot*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes that when matched will stop the search, and will default to *false*.
-- `options` is an object containing options for how the siblings should be traversed.
-    - `first` is a boolean indicating whether to only return the first matching node for each node, and will default to *false*.
-
-```javascript
-const prevAll = $.prevAll(selector, nodeFilter, limitFilter, options);
-```
-
-**Shadow**
-
-Return the *ShadowRoot* of the first node.
-
-- `selector` is a query selector string, a *HTMLElement*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
-
-```javascript
-const shadow = $.shadow(selector);
-```
-
-**Siblings**
-
-Find all siblings for each node (optionally matching a filter).
-
-- `selector` is a query selector string, a *Node*, *HTMLElement*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
-- `nodeFilter` is either a function that accepts a `node` argument, a query selector string, a *Node*, *HTMLElement*, *DocumentFragment*, *ShadowRoot*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes that the nodes will be filtered by, and will default to *false*.
-- `options` is an object containing options for how the siblings should be traversed.
--    `elementsOnly` is a boolean indicating whether to only return elements, and will default to *true*.
-
-```javascript
-const siblings = $.siblings(selector, nodeFilter, options);
-```
-
-### Filter
-
-**Connected**
-
-Return all nodes connected to the DOM.
-
-- `selector` is a query selector string, a *Node*, *HTMLElement*, *DocumentFragment*, *ShadowRoot*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
-
-```javascript
-const connected = $.connected(selector);
-```
-
-**Equal**
-
-Return all nodes considered equal to any of the other nodes.
-
-- `selector` is a query selector string, a *Node*, *HTMLElement*, *DocumentFragment*, *ShadowRoot*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
-- `otherSelector` is a query selector string, a *Node*, *HTMLElement*, *DocumentFragment*, *ShadowRoot*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
-
-```javascript
-const equal = $.equal(selector, otherSelector);
-```
-
-**Filter**
-
-Return all nodes matching a filter.
-
-- `selector` is a query selector string, a *Node*, *HTMLElement*, *DocumentFragment*, *ShadowRoot*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
-- `nodeFilter` is either a function that accepts a `node` argument, a query selector string, a *Node*, *HTMLElement*, *DocumentFragment*, *ShadowRoot*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes that the nodes will be filtered by.
-
-```javascript
-const filtered = $.filter(selector, nodeFilter);
-```
-
-**Filter One**
-
-Return the first node matching a filter.
-
-- `selector` is a query selector string, a *Node*, *HTMLElement*, *DocumentFragment*, *ShadowRoot*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
-- `nodeFilter` is either a function that accepts a `node` argument, a query selector string, a *Node*, *HTMLElement*, *DocumentFragment*, *ShadowRoot*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes that the nodes will be filtered by.
-
-```javascript
-const filteredOne = $.filterOne(selector, nodeFilter);
-```
-
-**Fixed**
-
-Return all "fixed" nodes.
-
-- `selector` is a query selector string, a *Node*, *HTMLElement*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
-
-```javascript
-const fixed = $.fixed(selector);
-```
+## Animation and Queues
 
-**Hidden**
+### Animation
 
-Return all hidden nodes.
+```js
+await $.fadeIn('.panel', { duration: 200 });
 
-- `selector` is a query selector string, a *Node*, *HTMLElement*, *Document*, *Window*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
-
-```javascript
-const hidden = $.hidden(selector);
-```
-
-**Not**
-
-Return all nodes not matching a filter.
-
-- `selector` is a query selector string, a *Node*, *HTMLElement*, *DocumentFragment*, *ShadowRoot*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
-- `nodeFilter` is either a function that accepts a `node` argument, a query selector string, a *Node*, *HTMLElement*, *DocumentFragment*, *ShadowRoot*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes that the nodes will be filtered by.
-
-```javascript
-const not = $.not(selector, nodeFilter);
-```
-
-**Not One**
-
-Return the first node not matching a filter.
-
-- `selector` is a query selector string, a *Node*, *HTMLElement*, *DocumentFragment*, *ShadowRoot*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
-- `nodeFilter` is either a function that accepts a `node` argument, a query selector string, a *Node*, *HTMLElement*, *DocumentFragment*, *ShadowRoot*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes that the nodes will be filtered by.
-
-```javascript
-const notOne = $.notOne(selector, nodeFilter);
-```
-
-**Same**
-
-Return all nodes considered identical to any of the other nodes.
-
-- `selector` is a query selector string, a *Node*, *HTMLElement*, *DocumentFragment*, *ShadowRoot*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
-- `otherSelector` is a query selector string, a *Node*, *HTMLElement*, *DocumentFragment*, *ShadowRoot*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
-
-```javascript
-const same = $.same(selector, otherSelector);
-```
-
-**Visible**
-
-Return all visible nodes.
-
-- `selector` is a query selector string, a *Node*, *HTMLElement*, *Document*, *Window*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
-
-```javascript
-const visible = $.visible(selector);
-```
-
-**With Animation**
-
-Return all nodes with an animation.
-
-- `selector` is a query selector string, a *HTMLElement*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
-
-```javascript
-const withAnimation = $.withAnimation(selector);
-```
-
-**With Attribute**
-
-Return all nodes with a specified attribute.
-
-- `selector` is a query selector string, a *HTMLElement*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
-- `attribute` is a string indicating the attribute value to test for.
-
-```javascript
-const withAttribute = $.withAttribute(selector, attribute);
-```
-
-**With Children**
-
-Return all nodes with child elements.
-
-- `selector` is a query selector string, a *HTMLElement*, *DocumentFragment*, *ShadowRoot*, *Document*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
-
-```javascript
-const withChildren = $.withChildren(selector);
-```
-
-**With Class**
-
-Return all nodes with any of the specified classes.
-
-- `selector` is a query selector string, a *HTMLElement*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
-- `classes` is an array of classes, or a space seperated string of class names to test for.
-
-```javascript
-const withClass = $.withClass(selector, classes);
-```
-
-**With CSS Animation**
-
-Return all nodes with a CSS animation.
-
-- `selector` is a query selector string, a *HTMLElement*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
-
-```javascript
-const withCSSAnimation = $.withCSSAnimation(selector);
-```
-
-**With CSS Transition**
-
-Return all nodes with a CSS transition.
-
-- `selector` is a query selector string, a *HTMLElement*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
-
-```javascript
-const withCSSTransition = $.withCSSTransition(selector);
-```
-
-**With Data**
-
-Return all nodes with custom data.
-
-- `selector` is a query selector string, a *HTMLElement*, *DocumentFragment*, *ShadowRoot*, *Document*, *Window*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
-- `key` is a string indicating the custom data value to test for.
-
-```javascript
-const withData = $.withData(selector, key);
-```
-
-If the `key` argument is omitted, this method will return all nodes with any custom data.
-
-```javascript
-const withData = $.withData(selector);
-```
-
-**With Descendent**
-
-Return all nodes with a descendent matching a filter.
-
-- `selector` is a query selector string, a *HTMLElement*, *DocumentFragment*, *ShadowRoot*, *Document*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
-- `nodeFilter` is either a function that accepts a `node` argument, a query selector string, a *Node*, *HTMLElement*, *DocumentFragment*, *ShadowRoot*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes that the nodes will be filtered by.
-
-```javascript
-const withDescendent = $.withDescendent(selector, nodeFilter);
-```
-
-**With Property**
-
-Return all nodes with a specified property.
-
-- `selector` is a query selector string, a *HTMLElement*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
-- `property` is a string indicating the property value to test for.
-
-```javascript
-const withProperty = $.withProperty(selector, property);
-```
-
-### Find
-
-**Find**
-
-Find all nodes matching a selector.
-
-- `selector` is a query selector string to search for.
-- `context` is a query selector string, a *HTMLElement*, *DocumentFragment*, *ShadowRoot*, *Document*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes, and will default to the *Document* context.
-
-```javascript
-const elements = $.find(selector, context);
-```
-
-**Find By Class**
-
-Find all nodes with a specific class.
-
-- `className` is a string indicating the class name to search for.
-- `context` is a query selector string, a *HTMLElement*, *DocumentFragment*, *ShadowRoot*, *Document*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes, and will default to the *Document* context.
-
-```javascript
-const elements = $.findByClass(className, context);
-```
-
-**Find By ID**
-
-Find all nodes with a specific ID.
-
-- `id` is a string indicating the id to search for.
-- `context` is a query selector string, a *HTMLElement*, *DocumentFragment*, *ShadowRoot*, *Document*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes, and will default to the *Document* context.
-
-```javascript
-const elements = $.findById(id, context);
-```
-
-**Find By Tag**
-
-Find all nodes with a specific tag.
-
-- `tagName` is a string indicating the tag name to search for.
-- `context` is a query selector string, a *HTMLElement*, *DocumentFragment*, *ShadowRoot*, *Document*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes, and will default to the *Document* context.
-
-```javascript
-const elements = $.findByTag(tagName, context);
-```
-
-**Find One**
-
-Find the first node matching a selector.
-
-- `selector` is a query selector string to search for.
-- `context` is a query selector string, a *HTMLElement*, *DocumentFragment*, *ShadowRoot*, *Document*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes, and will default to the *Document* context.
-
-```javascript
-const element = $.findOne(selector, context);
-```
-
-**Find One By Class**
-
-Find the first node with a specific class.
-
-- `className` is a string indicating the class name to search for.
-- `context` is a query selector string, a *HTMLElement*, *DocumentFragment*, *ShadowRoot*, *Document*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes, and will default to the *Document* context.
-
-```javascript
-const element = $.findOneByClass(className, context);
-```
-
-**Find One By ID**
-
-Find the first node with a specific ID.
-
-- `id` is a string indicating the id to search for.
-- `context` is a query selector string, a *HTMLElement*, *DocumentFragment*, *ShadowRoot*, *Document*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes, and will default to the *Document* context.
-
-```javascript
-const element = $.findOneById(id, context);
-```
-
-**Find One By Tag**
-
-Find the first node with a specific tag.
-
-- `tagName` is a string indicating the tag name to search for.
-- `context` is a query selector string, a *HTMLElement*, *DocumentFragment*, *ShadowRoot*, *Document*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes, and will default to the *Document* context.
-
-```javascript
-const element = $.findOneByTag(tagName, context);
+$('.meter').animate((node, progress) => {
+    node.style.width = `${progress * 100}%`;
+}, { duration: 500 });
 ```
-
-
-## Utility
 
-**Index**
+Common animation options are:
 
-Get the index of the first node relative to it's parent node.
+| Option | Default | Description |
+| --- | --- | --- |
+| `duration` | `1000` | Duration in milliseconds. |
+| `type` | `'ease-in-out'` | One of `linear`, `ease-in`, `ease-out`, or `ease-in-out`. |
+| `infinite` | `false` | Repeat indefinitely. |
+| `debug` | `false` | Expose timing values through `dataset`. |
+| `queueName` | `'default'` | Queue used by QuerySet animation methods. |
 
-- `selector` is a query selector string, a *Node*, *HTMLElement*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
+- `animate(callback, options?)`: run a custom progress callback.
+- `dropIn(options?)` / `dropOut(options?)`: drop nodes from or toward a direction.
+- `fadeIn(options?)` / `fadeOut(options?)`: animate opacity.
+- `rotateIn(options?)` / `rotateOut(options?)`: animate a 3D rotation.
+- `slideIn(options?)` / `slideOut(options?)`: slide nodes from or toward a direction.
+- `squeezeIn(options?)` / `squeezeOut(options?)`: animate dimensions from or toward a direction.
+- `stop({ finish? })`: stop active animations, finishing them by default.
 
-```javascript
-const index = $.index(selector);
-```
+The static forms return an `AnimationSet`. QuerySet forms queue the work and return the current set.
 
-**Index Of**
+`new $.Animation(node, callback, options?)` creates one promise-like animation. It supports `then`, `catch`, `finally`, `clone(node)`, `stop({ finish? })`, and `update(time?)`. `new $.AnimationSet(animations)` combines animations and supports `then`, `catch`, `finally`, and `stop({ finish? })`.
 
-Get the index of the first node matching a filter.
+Use `$.getAnimationDefaults()` and `$.setAnimationDefaults(options)` to inspect or change defaults. `$.useTimeout(true)` selects the timer fallback instead of animation frames.
 
-- `selector` is a query selector string, a *Node*, *HTMLElement*, *DocumentFragment*, *ShadowRoot*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
-- `nodeFilter` is either a function that accepts a `node` argument, a query selector string, a *Node*, *HTMLElement*, *DocumentFragment*, *ShadowRoot*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes that the nodes will be tested for.
+### Queues
 
-```javascript
-const indexOf = $.indexOf(selector, nodeFilter);
+```js
+$('.notice')
+    .fadeIn({ duration: 150 })
+    .delay(500)
+    .fadeOut({ duration: 150 });
 ```
-
-**Normalize**
-
-Normalize nodes (remove empty text nodes, and join adjacent text nodes).
-
-- `selector` is a query selector string, a *Node*, *HTMLElement*, *DocumentFragment*, *ShadowRoot*, *Document*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md)  or an array of nodes.
 
-```javascript
-$.normalize(selector);
-```
+- `$.queue(selector, callback, { queueName? })` and `query.queue(callback, { queueName? })` queue callbacks.
+- `$.clearQueue(selector, { queueName? })` and `query.clearQueue({ queueName? })` clear one or all queues.
+- `query.delay(duration, { queueName? })` queues a delay.
 
-**Serialize**
+## AJAX
 
-Return a serialized string containing names and values of all form nodes.
+fQuery uses `XMLHttpRequest` and returns a promise-like `AjaxRequest`:
 
-- `selector` is a query selector string, a *HTMLElement*, *DocumentFragment*, *ShadowRoot*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
+```js
+const request = $.get('/api/items', { page: 2 }, {
+    responseType: 'json',
+});
 
-```javascript
-const serialized = $.serialize(selector);
+const { response, xhr } = await request;
 ```
-
-**Serialize Array**
-
-Return a serialized array containing names and values of all form nodes.
-
-- `selector` is a query selector string, a *HTMLElement*, *DocumentFragment*, *ShadowRoot*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
 
-```javascript
-const serializedArray = $.serializeArray(selector);
-```
+- `$.ajax(options?)`: create a request with explicit options.
+- `$.get(url, data?, options?)`: send a GET request.
+- `$.post(url, data?, options?)`: send a POST request.
+- `$.put(url, data?, options?)`: send a PUT request.
+- `$.patch(url, data?, options?)`: send a PATCH request.
+- `$.delete(url, options?)`: send a DELETE request.
 
-**Sort**
+Request options include:
 
-Sort nodes by their position in the document
+| Option | Default | Description |
+| --- | --- | --- |
+| `url` | Current location | Request URL. |
+| `method` | `'GET'` | HTTP method. |
+| `data` | `null` | String, array, object, boolean, or `FormData` payload. |
+| `contentType` | `'application/x-www-form-urlencoded'` | Request content type, or `false` to omit it. |
+| `responseType` / `mimeType` | `null` | Expected response type or MIME override. |
+| `username` / `password` | — | HTTP authentication values. |
+| `timeout` | `0` | Timeout in milliseconds. |
+| `cache` | `true` | Add a cache-busting query value when disabled. |
+| `processData` | `true` | Encode object data according to `contentType`. |
+| `isLocal` | Auto-detected | Treat the request as local. |
+| `rejectOnCancel` | `true` | Reject when `cancel()` is called. |
+| `headers` | `{}` | Additional request headers. |
+| `beforeSend` / `afterSend` | `null` | Hooks receiving the `XMLHttpRequest`. |
+| `onProgress` / `onUploadProgress` | `null` | Hooks receiving `(progress, xhr, event)`. |
 
-- `selector` is a query selector string, a *Node*, *HTMLElement*, *DocumentFragment*, *ShadowRoot*, *Document*, *Window*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
+`AjaxRequest` exposes its `xhr`, implements `then`, `catch`, and `finally`, and can be cancelled with `request.cancel(reason?)`. Use `$.getAjaxDefaults()` and `$.setAjaxDefaults(options)` to inspect or change request defaults.
 
-```javascript
-const sorted = $.sort(selector);
-```
+`$.parseParams(data)` produces URL-encoded parameters and `$.parseFormData(data)` produces a `FormData` object.
 
-**Tag Name**
+## Scripts, Stylesheets, and Cookies
 
-Return the tag name (lowercase) of the first node.
+- `$.loadScript(url, attributes?, options?)`: load one script. Scripts default to ordered execution.
+- `$.loadScripts(urls, options?)`: load multiple scripts. Entries can be URLs or attribute objects.
+- `$.loadStyle(url, attributes?, options?)`: load one stylesheet.
+- `$.loadStyles(urls, options?)`: load multiple stylesheets. Entries can be URLs or attribute objects.
 
-- `selector` is a query selector string, a *HTMLElement*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
+Loader options include `cache` and an alternate document `context`. Each function returns a `Promise`.
 
-```javascript
-const tagName = $.tagName(selector);
-```
+Cookie helpers are `$.getCookie(name)`, `$.setCookie(name, value, { expires?, path?, secure? })`, and `$.removeCookie(name, { path?, secure? })`. Cookie expiration is specified in seconds.
 
-### Sanitize
+## Parsing, Selection, and Utilities
 
-Sanitize a HTML string.
+### Parsing and sanitization
 
-- `html` is the HTML string.
-- `allowedTags` is an object containing allowed tags and attributes.
+- `$.parseHTML(html)`: parse HTML into an array of nodes.
+- `$.parseDocument(input, { contentType? })`: parse text into a `Document`.
+- `$.sanitize(html, allowedTags?)`: remove disallowed elements and attributes from HTML.
 
-```javascript
-const sanitized = $.sanitize(html, allowedTags);
-```
+The sanitizer's `allowedTags` argument maps lowercase tag names to arrays of allowed attribute names or regular expressions. The `'*'` entry applies attributes to every allowed tag.
 
 ### Selection
 
-**After Selection**
+- `select()` / `selectAll()`: select the first node or all target nodes.
+- `beforeSelection()` / `afterSelection()`: insert nodes before or after the current selection.
+- `wrapSelection()`: wrap the current selection with the target nodes.
 
-Insert each node after the selection.
+Static-only helpers are `$.getSelection()` and `$.extractSelection()`.
 
-- `selector` is a query selector string, a HTML string, a *Node*, *HTMLElement*, *DocumentFragment*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
+### Forms and general utilities
 
-```javascript
-$.afterSelection(selector);
+- `serialize()`: serialize successful form controls into a query string.
+- `serializeArray()`: serialize successful form controls into `{ name, value }` entries.
+- `index()`: return the first node's index within its parent.
+- `indexOf(nodeFilter?)`: return the first matching index within the set.
+- `normalize()`: join adjacent text nodes and remove empty text nodes.
+- `sort()`: sort nodes by document position.
+- `tagName()`: return the first node's lowercase tag name.
+
+Additional static utilities are:
+
+- `$.debounce(callback)` to allow one callback execution per microtask;
+- `$.exec(command, value?)` to call `document.execCommand()`;
+- `$.ready(callback)` to run after DOM readiness; and
+- `$.noConflict()` to restore the previous global `$`.
+
+## Configuration and FrostCore
+
+The active DOM environment can be inspected with `$.getWindow()` and `$.getContext()`, or changed with `$.setWindow(window)` and `$.setContext(document)`. Registering fQuery configures both automatically.
+
+Every export from [`@fr0st/core`](https://www.npmjs.com/package/@fr0st/core) is exposed with an underscore prefix:
+
+```js
+const id = $._randomString(12);
+const values = $._unique([1, 1, 2]);
 ```
 
-If a node you are moving is a *DocumentFragment*, the contents will be moved instead.
+These prefixed helpers follow the installed FrostCore version. Consult FrostCore for its complete API.
 
-**Before Selection**
+## Behavior Notes
 
-Insert each node before the selection.
+- Selector-based operations use the configured document unless an explicit context is supplied.
+- `QuerySet` getter methods generally inspect the first node; mutations generally apply to every node.
+- `queryOne()` and `findOne...()` QuerySet methods return sets containing zero or one node.
+- HTML strings are recognized by query and creation-aware manipulation APIs when the trimmed string begins with `<`.
+- Custom data, registered events, queues, and animations are tracked outside the DOM and can be cloned or cleaned up by fQuery manipulation methods.
+- Event namespaces affect fQuery handler registration and removal; native event dispatch still uses the underlying event name.
+- Ajax uses `XMLHttpRequest`, not `fetch`.
+- fQuery requires a browser DOM or a compatible DOM implementation.
 
-- `selector` is a query selector string, a HTML string, a *Node*, *HTMLElement*, *DocumentFragment*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
+## Development
 
-```javascript
-$.beforeSelection(selector);
+fQuery supports Node.js `^20.19.0`, `^22.13.0`, or `>=24`.
+
+```bash
+npm ci
+npm test
+npm run js-lint
+npm run build
+npm pack --dry-run
 ```
 
-If a node you are moving is a *DocumentFragment*, the contents will be moved instead.
+CI runs the Playwright suite in Chromium, Firefox, and WebKit, tests supported Node.js release lines, rebuilds the UMD bundles, verifies that `dist/` is current, and validates the package contents.
 
-**Extract Selection**
+## License
 
-Extract selected nodes from the DOM.
-
-```javascript
-const extracted = $.extractSelection();
-```
-
-**Get Selection**
-
-Return all selected nodes.
-
-```javascript
-const selected = $.getSelection();
-```
-
-**Select**
-
-Create a selection on the first node.
-
-- `selector` is a query selector string, a *Node*, *HTMLElement*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
-
-```javascript
-$.select(selector);
-```
-
-**Select All**
-
-Create a selection on all nodes.
-
-- `selector` is a query selector string, a *Node*, *HTMLElement*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
-
-```javascript
-$.selectAll(selector);
-```
-
-**Wrap Selection**
-
-Wrap selected nodes with other nodes.
-
-- `selector` is a query selector string, a HTML string, a *HTMLElement*, *DocumentFragment*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
-
-```javascript
-$.wrapSelection(selector);
-```
-
-If a node you are wrapping with is a *DocumentFragment*, the contents will be used to wrap instead.
-
-### Tests
-
-**Has Animation**
-
-Returns *true* if any of the nodes has an animation.
-
-- `selector` is a query selector string, a *HTMLElement*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
-
-```javascript
-const hasAnimation = $.hasAnimation(selector);
-```
-
-**Has Attribute**
-
-Returns *true* if any of the nodes has a specified attribute.
-
-- `selector` is a query selector string, a *HTMLElement*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
-- `attribute` is a string indicating the attribute value to test for.
-
-```javascript
-const hasAttribute = $.hasAttribute(selector, attribute);
-```
-
-**Has Children**
-
-Returns *true* if any of the nodes has child nodes.
-
-- `selector` is a query selector string, a *HTMLElement*, *DocumentFragment*, *ShadowRoot*, *Document*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
-
-```javascript
-const hasChildren = $.hasChildren(selector);
-```
-
-**Has Class**
-
-Returns *true* if any of the nodes has any of the specified classes.
-
-- `selector` is a query selector string, a *HTMLElement*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
-- `classes` is an array of classes, or a space seperated string of class names to test for.
-
-```javascript
-const hasClass = $.hasClass(selector, ...classes);
-```
-
-**Has CSS Animation**
-
-Returns *true* if any of the nodes has a CSS animation.
-
-- `selector` is a query selector string, a *HTMLElement*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
-
-```javascript
-const hasCSSAnimation = $.hasCSSAnimation(selector);
-```
-
-**Has CSS Transition**
-
-Returns *true* if any of the nodes has a CSS transition.
-
-- `selector` is a query selector string, a *HTMLElement*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
-
-```javascript
-const hasCSSTransition = $.hasCSSTransition(selector);
-```
-
-**Has Data**
-
-Returns *true* if any of the nodes has custom data.
-
-- `selector` is a query selector string, a *HTMLElement*, *DocumentFragment*, *ShadowRoot*, *Document*, *Window*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
-- `key` is a string indicating the custom data value to test for.
-
-```javascript
-const hasData = $.hasData(selector, key);
-```
-
-If the `key` argument is omitted, this method will return *true* if any of the nodes has any custom data.
-
-```javascript
-$.hasData(selector);
-```
-
-**Has Dataset**
-
-Returns *true* if any of the nodes has a specified dataset value.
-
-- `selector` is a query selector string, a *HTMLElement*, *DocumentFragment*, *ShadowRoot*, *Document*, *Window*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
-- `key` is a string indicating the custom dataset value to test for.
-
-```javascript
-const hasDataset = $.hasDataset(selector, key);
-```
-
-**Has Descendent**
-
-Returns *true* if any of the nodes contains a descendent matching a filter.
-
-- `selector` is a query selector string, a *HTMLElement*, *DocumentFragment*, *ShadowRoot*, *Document*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
-- `nodeFilter` is either a function that accepts a `node` argument, a query selector string, a *Node*, *HTMLElement*, *DocumentFragment*, *ShadowRoot*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes that the nodes will be tested for.
-
-```javascript
-const hasDescendent = $.hasDescendent(selector, nodeFilter);
-```
-
-**Has Fragment**
-
-Returns *true* if any of the nodes has a *DocumentFragment*.
-
-- `selector` is a query selector string, a *HTMLElement*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
-
-```javascript
-const hasFragment = $.hasFragment(selector);
-```
-
-**Has Property**
-
-Returns *true* if any of the nodes has a specified property.
-
-- `selector` is a query selector string, a *HTMLElement*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
-- `property` is a string indicating the property value to test for.
-
-```javascript
-const hasProperty = $.hasProperty(selector, property);
-```
-
-**Has Shadow**
-
-Returns *true* if any of the nodes has a *ShadowRoot*.
-
-- `selector` is a query selector string, a *HTMLElement*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
-
-```javascript
-const hasShadow = $.hasShadow(selector);
-```
-
-**Is**
-
-Returns *true* if any of the nodes matches a filter.
-
-- `selector` is a query selector string, a *Node*, *HTMLElement*, *DocumentFragment*, *ShadowRoot*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
-- `nodeFilter` is either a function that accepts a `node` argument, a query selector string, a *Node*, *HTMLElement*, *DocumentFragment*, *ShadowRoot*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes that the nodes will be tested for.
-
-```javascript
-const is = $.is(selector, nodeFilter);
-```
-
-**Is Connected**
-
-Returns *true* if any of the nodes is connected to the DOM.
-
-- `selector` is a query selector string, a *Node*, *HTMLElement*, *DocumentFragment*, *ShadowRoot*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
-
-```javascript
-const isConnected = $.isConnected(selector);
-```
-
-**Is Equal**
-
-Returns *true* if any of the nodes is considered equal to any of the other nodes.
-
-- `selector` is a query selector string, a *Node*, *HTMLElement*, *DocumentFragment*, *ShadowRoot*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
-- `otherSelector` is a query selector string, a *Node*, *HTMLElement*, *DocumentFragment*, *ShadowRoot*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
-- `options` is an object containing options for how to perform the comparison.
-    - `shallow` is a boolean indicating whether to perform a shallow comparison, and will default to *false*.
-
-```javascript
-const isEqual = $.isEqual(selector, otherSelector, options);
-```
-
-**Is Fixed**
-
-Returns *true* if any of the nodes or a parent of any of the nodes is "fixed".
-
-- `selector` is a query selector string, a *Node*, *HTMLElement*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
-
-```javascript
-const isFixed = $.isFixed(selector);
-```
-
-**Is Hidden**
-
-Returns *true* if any of the nodes is hidden.
-
-- `selector` is a query selector string, a *Node*, *HTMLElement*, *Document*, *Window*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
-
-```javascript
-const isHidden = $.isHidden(selector);
-```
-
-**Is Same**
-
-Returns *true* if any of the nodes is considered identical to any of the other nodes.
-
-- `selector` is a query selector string, a *Node*, *HTMLElement*, *DocumentFragment*, *ShadowRoot*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
-- `otherSelector` is a query selector string, a *Node*, *HTMLElement*, *DocumentFragment*, *ShadowRoot*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
-
-```javascript
-const isSame = $.isSame(selector, otherSelector);
-```
-
-**Is Visible**
-
-Returns *true* if any of the nodes is visible.
-
-- `selector` is a query selector string, a *Node*, *HTMLElement*, *Document*, *Window*, *NodeList*, *HTMLCollection*, [*QuerySet*](docs/QuerySet.md) or an array of nodes.
-
-```javascript
-const isVisible = $.isVisible(selector);
-```
+fQuery is released under the [MIT License](./LICENSE).
