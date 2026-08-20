@@ -1,5 +1,5 @@
 import { expect, test } from '@playwright/test';
-import { resetPage } from '../../../../setup/browser.js';
+import { advanceClock, resetPage, setupClock } from '../../../../setup/browser.js';
 
 const NESTED_HTML =
     '<div id="outer1">' +
@@ -226,6 +226,8 @@ test.describe('QuerySet #remove', () => {
     });
 
     test('removes queue recursively', async ({ page }) => {
+        await setupClock(page);
+
         await page.evaluate(() => {
             document.documentElement.removeAttribute('data-queue-checkpoint');
 
@@ -245,6 +247,7 @@ test.describe('QuerySet #remove', () => {
             });
         });
 
+        await advanceClock(page, 10);
         await expect.poll(async () => await page.locator('#test1').getAttribute('data-queue-state')).toBe('running');
 
         await page.evaluate(() => {
@@ -257,7 +260,8 @@ test.describe('QuerySet #remove', () => {
             }
         });
 
-        await expect.poll(async () => await page.locator('html').getAttribute('data-queue-checkpoint')).toBe('done');
+        await advanceClock(page, 120);
+        await expect(page.locator('html')).toHaveAttribute('data-queue-checkpoint', 'done');
         expect(await page.locator('#test1').getAttribute('data-test')).toBeNull();
         expect(await page.locator('#test2').getAttribute('data-test')).toBeNull();
         expect(await page.locator('#test3').getAttribute('data-test')).toBeNull();

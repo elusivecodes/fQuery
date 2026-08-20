@@ -1,9 +1,10 @@
 import { expect, test } from '@playwright/test';
-import { resetPage } from '../../../../setup/browser.js';
+import { advanceClock, resetPage, resumeClock, setupClock } from '../../../../setup/browser.js';
 import { expectAnimationData, expectSqueezeOutData, expectSqueezeOutPair, expectAnimation, expectNoAnimation, expectNoStyle, expectSqueezeOut } from '../../../../support/assertions/animation.js';
 import { easeIn, easeInOut, easeOut, getActiveAnimationData, linear, waitForActiveAnimationStyles } from '../../../../support/utils/animation.js';
 
 test.beforeEach(async ({ page }) => {
+    await setupClock(page);
     await resetPage(page);
 });
 
@@ -25,7 +26,7 @@ test.describe('#squeezeOut', () => {
                 debug: true,
             });
         });
-        await page.waitForTimeout(100);
+        await advanceClock(page, 100);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test3');
         await expectNoStyle(page, '#test1');
@@ -36,7 +37,7 @@ test.describe('#squeezeOut', () => {
         expectAnimationData(test4Data, easeInOut);
         expectSqueezeOutData(test2Data);
         expectSqueezeOutData(test4Data);
-        await page.waitForTimeout(150);
+        await advanceClock(page, 150);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test2');
         await expectNoAnimation(page, '#test3');
@@ -54,7 +55,7 @@ test.describe('#squeezeOut', () => {
                 debug: true,
             });
         });
-        await page.waitForTimeout(50);
+        await advanceClock(page, 50);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test3');
         await expectNoStyle(page, '#test1');
@@ -65,7 +66,7 @@ test.describe('#squeezeOut', () => {
         expectAnimationData(test4Data, easeInOut, 100);
         expectSqueezeOutData(test2Data);
         expectSqueezeOutData(test4Data);
-        await page.waitForTimeout(100);
+        await advanceClock(page, 100);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test2');
         await expectNoAnimation(page, '#test3');
@@ -84,7 +85,7 @@ test.describe('#squeezeOut', () => {
                 debug: true,
             });
         });
-        await page.waitForTimeout(50);
+        await advanceClock(page, 50);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test3');
         await expectNoStyle(page, '#test1');
@@ -95,7 +96,7 @@ test.describe('#squeezeOut', () => {
         expectAnimationData(test4Data, easeInOut, 100);
         expectSqueezeOutData(test2Data, 'height', 'Y');
         expectSqueezeOutData(test4Data, 'height', 'Y');
-        await page.waitForTimeout(100);
+        await advanceClock(page, 100);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test2');
         await expectNoAnimation(page, '#test3');
@@ -114,7 +115,7 @@ test.describe('#squeezeOut', () => {
                 debug: true,
             });
         });
-        await page.waitForTimeout(50);
+        await advanceClock(page, 50);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test3');
         await expectNoStyle(page, '#test1');
@@ -125,7 +126,7 @@ test.describe('#squeezeOut', () => {
         expectAnimationData(test4Data, easeInOut, 100);
         expectSqueezeOutData(test2Data, 'width');
         expectSqueezeOutData(test4Data, 'width');
-        await page.waitForTimeout(100);
+        await advanceClock(page, 100);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test2');
         await expectNoAnimation(page, '#test3');
@@ -144,7 +145,7 @@ test.describe('#squeezeOut', () => {
                 debug: true,
             });
         });
-        await page.waitForTimeout(50);
+        await advanceClock(page, 50);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test3');
         await expectNoStyle(page, '#test1');
@@ -155,7 +156,7 @@ test.describe('#squeezeOut', () => {
         expectAnimationData(test4Data, easeInOut, 100);
         expectSqueezeOutData(test2Data);
         expectSqueezeOutData(test4Data);
-        await page.waitForTimeout(100);
+        await advanceClock(page, 100);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test2');
         await expectNoAnimation(page, '#test3');
@@ -174,7 +175,7 @@ test.describe('#squeezeOut', () => {
                 debug: true,
             });
         });
-        await page.waitForTimeout(50);
+        await advanceClock(page, 50);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test3');
         await expectNoStyle(page, '#test1');
@@ -185,7 +186,7 @@ test.describe('#squeezeOut', () => {
         expectAnimationData(test4Data, easeInOut, 100);
         expectSqueezeOutData(test2Data, 'width', 'X');
         expectSqueezeOutData(test4Data, 'width', 'X');
-        await page.waitForTimeout(100);
+        await advanceClock(page, 100);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test2');
         await expectNoAnimation(page, '#test3');
@@ -204,7 +205,7 @@ test.describe('#squeezeOut', () => {
                 debug: true,
             });
         });
-        await page.waitForTimeout(50);
+        await advanceClock(page, 50);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test3');
         await expectNoStyle(page, '#test1');
@@ -212,7 +213,7 @@ test.describe('#squeezeOut', () => {
         await expectSqueezeOutPair(page, easeInOut, {
             duration: 100,
         });
-        await page.waitForTimeout(100);
+        await advanceClock(page, 100);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test2');
         await expectNoAnimation(page, '#test3');
@@ -231,7 +232,7 @@ test.describe('#squeezeOut', () => {
                 debug: true,
             });
         });
-        await page.waitForTimeout(50);
+        await advanceClock(page, 50);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test3');
         await expectNoStyle(page, '#test1');
@@ -239,7 +240,7 @@ test.describe('#squeezeOut', () => {
         await expectSqueezeOutPair(page, easeInOut, {
             duration: 100,
         });
-        await page.waitForTimeout(100);
+        await advanceClock(page, 100);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test2');
         await expectNoAnimation(page, '#test3');
@@ -259,7 +260,7 @@ test.describe('#squeezeOut', () => {
                 debug: true,
             });
         });
-        await page.waitForTimeout(50);
+        await advanceClock(page, 50);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test3');
         await expectNoStyle(page, '#test1');
@@ -269,7 +270,7 @@ test.describe('#squeezeOut', () => {
             translate: null,
             translateStyle: 'marginTop',
         });
-        await page.waitForTimeout(100);
+        await advanceClock(page, 100);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test2');
         await expectNoAnimation(page, '#test3');
@@ -289,7 +290,7 @@ test.describe('#squeezeOut', () => {
                 debug: true,
             });
         });
-        await page.waitForTimeout(50);
+        await advanceClock(page, 50);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test3');
         await expectNoStyle(page, '#test1');
@@ -299,7 +300,7 @@ test.describe('#squeezeOut', () => {
             style: 'width',
             translateStyle: 'marginLeft',
         });
-        await page.waitForTimeout(100);
+        await advanceClock(page, 100);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test2');
         await expectNoAnimation(page, '#test3');
@@ -319,7 +320,7 @@ test.describe('#squeezeOut', () => {
                 debug: true,
             });
         });
-        await page.waitForTimeout(50);
+        await advanceClock(page, 50);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test3');
         await expectNoStyle(page, '#test1');
@@ -328,7 +329,7 @@ test.describe('#squeezeOut', () => {
             duration: 100,
             translateStyle: 'marginTop',
         });
-        await page.waitForTimeout(100);
+        await advanceClock(page, 100);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test2');
         await expectNoAnimation(page, '#test3');
@@ -348,7 +349,7 @@ test.describe('#squeezeOut', () => {
                 debug: true,
             });
         });
-        await page.waitForTimeout(50);
+        await advanceClock(page, 50);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test3');
         await expectNoStyle(page, '#test1');
@@ -359,7 +360,7 @@ test.describe('#squeezeOut', () => {
             translate: null,
             translateStyle: 'marginLeft',
         });
-        await page.waitForTimeout(100);
+        await advanceClock(page, 100);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test2');
         await expectNoAnimation(page, '#test3');
@@ -378,7 +379,7 @@ test.describe('#squeezeOut', () => {
                 debug: true,
             });
         });
-        await page.waitForTimeout(50);
+        await advanceClock(page, 50);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test3');
         await expectNoStyle(page, '#test1');
@@ -386,7 +387,7 @@ test.describe('#squeezeOut', () => {
         await expectSqueezeOutPair(page, linear, {
             duration: 100,
         });
-        await page.waitForTimeout(100);
+        await advanceClock(page, 100);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test2');
         await expectNoAnimation(page, '#test3');
@@ -405,7 +406,7 @@ test.describe('#squeezeOut', () => {
                 debug: true,
             });
         });
-        await page.waitForTimeout(50);
+        await advanceClock(page, 50);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test3');
         await expectNoStyle(page, '#test1');
@@ -413,7 +414,7 @@ test.describe('#squeezeOut', () => {
         await expectSqueezeOutPair(page, easeIn, {
             duration: 100,
         });
-        await page.waitForTimeout(100);
+        await advanceClock(page, 100);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test2');
         await expectNoAnimation(page, '#test3');
@@ -432,7 +433,7 @@ test.describe('#squeezeOut', () => {
                 debug: true,
             });
         });
-        await page.waitForTimeout(50);
+        await advanceClock(page, 50);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test3');
         await expectNoStyle(page, '#test1');
@@ -440,7 +441,7 @@ test.describe('#squeezeOut', () => {
         await expectSqueezeOutPair(page, easeOut, {
             duration: 100,
         });
-        await page.waitForTimeout(100);
+        await advanceClock(page, 100);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test2');
         await expectNoAnimation(page, '#test3');
@@ -460,7 +461,7 @@ test.describe('#squeezeOut', () => {
                 debug: true,
             });
         });
-        await page.waitForTimeout(50);
+        await advanceClock(page, 50);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test3');
         await expectNoStyle(page, '#test1');
@@ -469,7 +470,7 @@ test.describe('#squeezeOut', () => {
             duration: 100,
             infinite: true,
         });
-        await page.waitForTimeout(50);
+        await advanceClock(page, 50);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test3');
         await expectNoStyle(page, '#test1');
@@ -478,7 +479,7 @@ test.describe('#squeezeOut', () => {
             duration: 100,
             infinite: true,
         });
-        await page.waitForTimeout(50);
+        await advanceClock(page, 50);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test3');
         await expectNoStyle(page, '#test1');
@@ -490,6 +491,7 @@ test.describe('#squeezeOut', () => {
     });
 
     test('can be stopped', async ({ page }) => {
+        await resumeClock(page);
         await page.evaluate(async (_) => {
             const animation = $.squeezeOut('.animate', {
                 duration: 100,
@@ -513,6 +515,7 @@ test.describe('#squeezeOut', () => {
     });
 
     test('can be stopped (without finishing)', async ({ page }) => {
+        await resumeClock(page);
         await page.evaluate(async (_) => {
             const animation = $.squeezeOut('.animate', {
                 duration: 100,
@@ -537,7 +540,7 @@ test.describe('#squeezeOut', () => {
             await expectSqueezeOut(page, '#test2');
             await expectSqueezeOut(page, '#test4');
         });
-        await page.waitForTimeout(100);
+        await advanceClock(page, 100);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test3');
         await expectNoStyle(page, '#test1');
@@ -549,6 +552,7 @@ test.describe('#squeezeOut', () => {
     });
 
     test('resolves when the animation is stopped', async ({ page }) => {
+        await resumeClock(page);
         await page.evaluate(async (_) => {
             const animation = $.squeezeOut('.animate', {
                 duration: 100,
@@ -565,6 +569,7 @@ test.describe('#squeezeOut', () => {
     });
 
     test('throws when the animation is stopped (without finishing)', async ({ page }) => {
+        await resumeClock(page);
         expect(await page.evaluate(async (_) => {
             try {
                 const animation = $.squeezeOut('.animate', {
@@ -581,6 +586,7 @@ test.describe('#squeezeOut', () => {
     });
 
     test('does not stop all animations', async ({ page }) => {
+        await resumeClock(page);
         await page.evaluate(async (_) => {
             const animation = $.squeezeOut('.animate', {
                 duration: 100,
@@ -611,6 +617,7 @@ test.describe('#squeezeOut', () => {
     });
 
     test('resolves when the animation is completed', async ({ page }) => {
+        await resumeClock(page);
         await page.evaluate(async (_) => {
             await $.squeezeOut('.animate', {
                 duration: 100,
@@ -629,6 +636,7 @@ test.describe('#squeezeOut', () => {
     });
 
     test('throws when all animation are stopped (without finishing)', async ({ page }) => {
+        await resumeClock(page);
         expect(await page.evaluate(async (_) => {
             try {
                 const animation = $.squeezeOut('.animate', {
@@ -654,7 +662,7 @@ test.describe('#squeezeOut', () => {
                 },
             );
         });
-        await page.waitForTimeout(50);
+        await advanceClock(page, 50);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test3');
         await expectNoAnimation(page, '#test4');
@@ -663,7 +671,7 @@ test.describe('#squeezeOut', () => {
         await expectNoStyle(page, '#test4');
         await expectAnimation(page, '#test2', easeInOut, 100);
         await expectSqueezeOut(page, '#test2');
-        await page.waitForTimeout(100);
+        await advanceClock(page, 100);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test2');
         await expectNoAnimation(page, '#test3');
@@ -696,7 +704,7 @@ test.describe('#squeezeOut', () => {
         await expectAnimation(page, '#test4', easeInOut, 100);
         await expectSqueezeOut(page, '#test2');
         await expectSqueezeOut(page, '#test4');
-        await page.waitForTimeout(100);
+        await advanceClock(page, 100);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test2');
         await expectNoAnimation(page, '#test3');
@@ -731,7 +739,7 @@ test.describe('#squeezeOut', () => {
         await expectSqueezeOut(page, '#test2');
         await expectSqueezeOut(page, '#test3');
         await expectSqueezeOut(page, '#test4');
-        await page.waitForTimeout(100);
+        await advanceClock(page, 100);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test2');
         await expectNoAnimation(page, '#test3');
@@ -752,7 +760,7 @@ test.describe('#squeezeOut', () => {
                 debug: true,
             });
         });
-        await page.waitForTimeout(50);
+        await advanceClock(page, 50);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test3');
         await expectNoStyle(page, '#test1');
@@ -761,7 +769,7 @@ test.describe('#squeezeOut', () => {
         await expectAnimation(page, '#test4', easeInOut, 100);
         await expectSqueezeOut(page, '#test2');
         await expectSqueezeOut(page, '#test4');
-        await page.waitForTimeout(100);
+        await advanceClock(page, 100);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test2');
         await expectNoAnimation(page, '#test3');

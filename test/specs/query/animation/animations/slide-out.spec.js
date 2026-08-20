@@ -1,9 +1,10 @@
 import { expect, test } from '@playwright/test';
-import { resetPage } from '../../../../setup/browser.js';
+import { advanceClock, resetPage, setupClock } from '../../../../setup/browser.js';
 import { expectAnimation, expectNoAnimation, expectNoStyle, expectSlideOut } from '../../../../support/assertions/animation.js';
 import { easeIn, easeInOut, easeOut, linear } from '../../../../support/utils/animation.js';
 
 test.beforeEach(async ({ page }) => {
+    await setupClock(page);
     await resetPage(page);
 });
 
@@ -26,7 +27,7 @@ test.describe('QuerySet #slideOut', () => {
                     debug: true,
                 });
         });
-        await page.waitForTimeout(100);
+        await advanceClock(page, 100);
         await expectAnimation(page, '#test2', easeInOut);
         await expectAnimation(page, '#test4', easeInOut);
         await expectSlideOut(page, '#test2');
@@ -35,7 +36,7 @@ test.describe('QuerySet #slideOut', () => {
         await expectNoAnimation(page, '#test3');
         await expectNoStyle(page, '#test1');
         await expectNoStyle(page, '#test3');
-        await page.waitForTimeout(150);
+        await advanceClock(page, 150);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test2');
         await expectNoAnimation(page, '#test3');
@@ -54,7 +55,7 @@ test.describe('QuerySet #slideOut', () => {
                     debug: true,
                 });
         });
-        await page.waitForTimeout(50);
+        await advanceClock(page, 50);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test3');
         await expectNoStyle(page, '#test1');
@@ -63,7 +64,7 @@ test.describe('QuerySet #slideOut', () => {
         await expectAnimation(page, '#test4', easeInOut, 100);
         await expectSlideOut(page, '#test2');
         await expectSlideOut(page, '#test4');
-        await page.waitForTimeout(100);
+        await advanceClock(page, 100);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test2');
         await expectNoAnimation(page, '#test3');
@@ -83,7 +84,7 @@ test.describe('QuerySet #slideOut', () => {
                     debug: true,
                 });
         });
-        await page.waitForTimeout(50);
+        await advanceClock(page, 50);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test3');
         await expectNoStyle(page, '#test1');
@@ -92,7 +93,7 @@ test.describe('QuerySet #slideOut', () => {
         await expectAnimation(page, '#test4', easeInOut, 100);
         await expectSlideOut(page, '#test2', 'Y', -1);
         await expectSlideOut(page, '#test4', 'Y', -1);
-        await page.waitForTimeout(100);
+        await advanceClock(page, 100);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test2');
         await expectNoAnimation(page, '#test3');
@@ -112,7 +113,7 @@ test.describe('QuerySet #slideOut', () => {
                     debug: true,
                 });
         });
-        await page.waitForTimeout(50);
+        await advanceClock(page, 50);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test3');
         await expectNoStyle(page, '#test1');
@@ -121,7 +122,7 @@ test.describe('QuerySet #slideOut', () => {
         await expectAnimation(page, '#test4', easeInOut, 100);
         await expectSlideOut(page, '#test2', 'X');
         await expectSlideOut(page, '#test4', 'X');
-        await page.waitForTimeout(100);
+        await advanceClock(page, 100);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test2');
         await expectNoAnimation(page, '#test3');
@@ -141,7 +142,7 @@ test.describe('QuerySet #slideOut', () => {
                     debug: true,
                 });
         });
-        await page.waitForTimeout(50);
+        await advanceClock(page, 50);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test3');
         await expectNoStyle(page, '#test1');
@@ -150,7 +151,7 @@ test.describe('QuerySet #slideOut', () => {
         await expectAnimation(page, '#test4', easeInOut, 100);
         await expectSlideOut(page, '#test2');
         await expectSlideOut(page, '#test4');
-        await page.waitForTimeout(100);
+        await advanceClock(page, 100);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test2');
         await expectNoAnimation(page, '#test3');
@@ -170,7 +171,7 @@ test.describe('QuerySet #slideOut', () => {
                     debug: true,
                 });
         });
-        await page.waitForTimeout(50);
+        await advanceClock(page, 50);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test3');
         await expectNoStyle(page, '#test1');
@@ -179,7 +180,7 @@ test.describe('QuerySet #slideOut', () => {
         await expectAnimation(page, '#test4', easeInOut, 100);
         await expectSlideOut(page, '#test2', 'X', -1);
         await expectSlideOut(page, '#test4', 'X', -1);
-        await page.waitForTimeout(100);
+        await advanceClock(page, 100);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test2');
         await expectNoAnimation(page, '#test3');
@@ -199,7 +200,7 @@ test.describe('QuerySet #slideOut', () => {
                     debug: true,
                 });
         });
-        await page.waitForTimeout(50);
+        await advanceClock(page, 50);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test3');
         await expectNoStyle(page, '#test1');
@@ -208,7 +209,7 @@ test.describe('QuerySet #slideOut', () => {
         await expectAnimation(page, '#test4', easeInOut, 100);
         await expectSlideOut(page, '#test2', 'Y', -1);
         await expectSlideOut(page, '#test4', 'Y', -1);
-        await page.waitForTimeout(100);
+        await advanceClock(page, 100);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test2');
         await expectNoAnimation(page, '#test3');
@@ -228,7 +229,7 @@ test.describe('QuerySet #slideOut', () => {
                     debug: true,
                 });
         });
-        await page.waitForTimeout(50);
+        await advanceClock(page, 50);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test3');
         await expectNoStyle(page, '#test1');
@@ -237,7 +238,7 @@ test.describe('QuerySet #slideOut', () => {
         await expectAnimation(page, '#test4', easeInOut, 100);
         await expectSlideOut(page, '#test2', null, 1, 'marginTop');
         await expectSlideOut(page, '#test4', null, 1, 'marginTop');
-        await page.waitForTimeout(100);
+        await advanceClock(page, 100);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test2');
         await expectNoAnimation(page, '#test3');
@@ -258,7 +259,7 @@ test.describe('QuerySet #slideOut', () => {
                     debug: true,
                 });
         });
-        await page.waitForTimeout(50);
+        await advanceClock(page, 50);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test3');
         await expectNoStyle(page, '#test1');
@@ -267,7 +268,7 @@ test.describe('QuerySet #slideOut', () => {
         await expectAnimation(page, '#test4', easeInOut, 100);
         await expectSlideOut(page, '#test2', null, -1, 'marginTop');
         await expectSlideOut(page, '#test4', null, -1, 'marginTop');
-        await page.waitForTimeout(100);
+        await advanceClock(page, 100);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test2');
         await expectNoAnimation(page, '#test3');
@@ -288,7 +289,7 @@ test.describe('QuerySet #slideOut', () => {
                     debug: true,
                 });
         });
-        await page.waitForTimeout(50);
+        await advanceClock(page, 50);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test3');
         await expectNoStyle(page, '#test1');
@@ -297,7 +298,7 @@ test.describe('QuerySet #slideOut', () => {
         await expectAnimation(page, '#test4', easeInOut, 100);
         await expectSlideOut(page, '#test2', null, 1, 'marginLeft');
         await expectSlideOut(page, '#test4', null, 1, 'marginLeft');
-        await page.waitForTimeout(100);
+        await advanceClock(page, 100);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test2');
         await expectNoAnimation(page, '#test3');
@@ -318,7 +319,7 @@ test.describe('QuerySet #slideOut', () => {
                     debug: true,
                 });
         });
-        await page.waitForTimeout(50);
+        await advanceClock(page, 50);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test3');
         await expectNoStyle(page, '#test1');
@@ -327,7 +328,7 @@ test.describe('QuerySet #slideOut', () => {
         await expectAnimation(page, '#test4', easeInOut, 100);
         await expectSlideOut(page, '#test2', null, 1, 'marginTop');
         await expectSlideOut(page, '#test4', null, 1, 'marginTop');
-        await page.waitForTimeout(100);
+        await advanceClock(page, 100);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test2');
         await expectNoAnimation(page, '#test3');
@@ -348,7 +349,7 @@ test.describe('QuerySet #slideOut', () => {
                     debug: true,
                 });
         });
-        await page.waitForTimeout(50);
+        await advanceClock(page, 50);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test3');
         await expectNoStyle(page, '#test1');
@@ -357,7 +358,7 @@ test.describe('QuerySet #slideOut', () => {
         await expectAnimation(page, '#test4', easeInOut, 100);
         await expectSlideOut(page, '#test2', null, -1, 'marginLeft');
         await expectSlideOut(page, '#test4', null, -1, 'marginLeft');
-        await page.waitForTimeout(100);
+        await advanceClock(page, 100);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test2');
         await expectNoAnimation(page, '#test3');
@@ -377,7 +378,7 @@ test.describe('QuerySet #slideOut', () => {
                     debug: true,
                 });
         });
-        await page.waitForTimeout(50);
+        await advanceClock(page, 50);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test3');
         await expectNoStyle(page, '#test1');
@@ -386,7 +387,7 @@ test.describe('QuerySet #slideOut', () => {
         await expectAnimation(page, '#test4', linear, 100);
         await expectSlideOut(page, '#test2');
         await expectSlideOut(page, '#test4');
-        await page.waitForTimeout(100);
+        await advanceClock(page, 100);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test2');
         await expectNoAnimation(page, '#test3');
@@ -406,7 +407,7 @@ test.describe('QuerySet #slideOut', () => {
                     debug: true,
                 });
         });
-        await page.waitForTimeout(50);
+        await advanceClock(page, 50);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test3');
         await expectNoStyle(page, '#test1');
@@ -415,7 +416,7 @@ test.describe('QuerySet #slideOut', () => {
         await expectAnimation(page, '#test4', easeIn, 100);
         await expectSlideOut(page, '#test2');
         await expectSlideOut(page, '#test4');
-        await page.waitForTimeout(100);
+        await advanceClock(page, 100);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test2');
         await expectNoAnimation(page, '#test3');
@@ -435,7 +436,7 @@ test.describe('QuerySet #slideOut', () => {
                     debug: true,
                 });
         });
-        await page.waitForTimeout(50);
+        await advanceClock(page, 50);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test3');
         await expectNoStyle(page, '#test1');
@@ -444,7 +445,7 @@ test.describe('QuerySet #slideOut', () => {
         await expectAnimation(page, '#test4', easeOut, 100);
         await expectSlideOut(page, '#test2');
         await expectSlideOut(page, '#test4');
-        await page.waitForTimeout(100);
+        await advanceClock(page, 100);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test2');
         await expectNoAnimation(page, '#test3');
@@ -465,7 +466,7 @@ test.describe('QuerySet #slideOut', () => {
                     debug: true,
                 });
         });
-        await page.waitForTimeout(50);
+        await advanceClock(page, 50);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test3');
         await expectNoStyle(page, '#test1');
@@ -474,7 +475,7 @@ test.describe('QuerySet #slideOut', () => {
         await expectAnimation(page, '#test4', linear, 100, true);
         await expectSlideOut(page, '#test2');
         await expectSlideOut(page, '#test4');
-        await page.waitForTimeout(50);
+        await advanceClock(page, 50);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test3');
         await expectNoStyle(page, '#test1');
@@ -483,7 +484,7 @@ test.describe('QuerySet #slideOut', () => {
         await expectAnimation(page, '#test4', linear, 100, true);
         await expectSlideOut(page, '#test2');
         await expectSlideOut(page, '#test4');
-        await page.waitForTimeout(50);
+        await advanceClock(page, 50);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test3');
         await expectNoStyle(page, '#test1');
@@ -510,12 +511,12 @@ test.describe('QuerySet #slideOut', () => {
                     },
                 );
         });
-        await page.waitForTimeout(50);
+        await advanceClock(page, 50);
         expect(await page.evaluate((_) => document.body.innerHTML)).toBe('<div id="test1"></div>' +
                 '<div id="test2" class="animate"></div>' +
                 '<div id="test3"></div>' +
                 '<div id="test4" class="animate"></div>');
-        await page.waitForTimeout(100);
+        await advanceClock(page, 100);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test3');
         await expectNoStyle(page, '#test1');

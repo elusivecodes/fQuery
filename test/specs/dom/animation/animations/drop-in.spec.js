@@ -1,9 +1,10 @@
 import { expect, test } from '@playwright/test';
-import { resetPage } from '../../../../setup/browser.js';
+import { advanceClock, resetPage, resumeClock, setupClock } from '../../../../setup/browser.js';
 import { expectAnimation, expectDropIn, expectDropInPair, expectNoAnimation, expectNoStyle } from '../../../../support/assertions/animation.js';
 import { easeIn, easeInOut, easeOut, linear } from '../../../../support/utils/animation.js';
 
 test.beforeEach(async ({ page }) => {
+    await setupClock(page);
     await resetPage(page);
 });
 
@@ -25,13 +26,13 @@ test.describe('#dropIn', () => {
                 debug: true,
             });
         });
-        await page.waitForTimeout(100);
+        await advanceClock(page, 100);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test3');
         await expectNoStyle(page, '#test1');
         await expectNoStyle(page, '#test3');
         await expectDropInPair(page, easeInOut);
-        await page.waitForTimeout(150);
+        await advanceClock(page, 150);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test2');
         await expectNoAnimation(page, '#test3');
@@ -49,13 +50,13 @@ test.describe('#dropIn', () => {
                 debug: true,
             });
         });
-        await page.waitForTimeout(50);
+        await advanceClock(page, 50);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test3');
         await expectNoStyle(page, '#test1');
         await expectNoStyle(page, '#test3');
         await expectDropInPair(page, easeInOut, { duration: 100 });
-        await page.waitForTimeout(100);
+        await advanceClock(page, 100);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test2');
         await expectNoAnimation(page, '#test3');
@@ -74,13 +75,13 @@ test.describe('#dropIn', () => {
                 debug: true,
             });
         });
-        await page.waitForTimeout(50);
+        await advanceClock(page, 50);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test3');
         await expectNoStyle(page, '#test1');
         await expectNoStyle(page, '#test3');
         await expectDropInPair(page, easeInOut, { duration: 100 });
-        await page.waitForTimeout(100);
+        await advanceClock(page, 100);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test2');
         await expectNoAnimation(page, '#test3');
@@ -99,7 +100,7 @@ test.describe('#dropIn', () => {
                 debug: true,
             });
         });
-        await page.waitForTimeout(50);
+        await advanceClock(page, 50);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test3');
         await expectNoStyle(page, '#test1');
@@ -109,7 +110,7 @@ test.describe('#dropIn', () => {
             translate: 'X',
             inverse: 1,
         });
-        await page.waitForTimeout(100);
+        await advanceClock(page, 100);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test2');
         await expectNoAnimation(page, '#test3');
@@ -128,7 +129,7 @@ test.describe('#dropIn', () => {
                 debug: true,
             });
         });
-        await page.waitForTimeout(50);
+        await advanceClock(page, 50);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test3');
         await expectNoStyle(page, '#test1');
@@ -137,7 +138,7 @@ test.describe('#dropIn', () => {
             duration: 100,
             inverse: 1,
         });
-        await page.waitForTimeout(100);
+        await advanceClock(page, 100);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test2');
         await expectNoAnimation(page, '#test3');
@@ -156,7 +157,7 @@ test.describe('#dropIn', () => {
                 debug: true,
             });
         });
-        await page.waitForTimeout(50);
+        await advanceClock(page, 50);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test3');
         await expectNoStyle(page, '#test1');
@@ -166,7 +167,7 @@ test.describe('#dropIn', () => {
             translate: 'X',
             inverse: -1,
         });
-        await page.waitForTimeout(100);
+        await advanceClock(page, 100);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test2');
         await expectNoAnimation(page, '#test3');
@@ -185,7 +186,7 @@ test.describe('#dropIn', () => {
                 debug: true,
             });
         });
-        await page.waitForTimeout(50);
+        await advanceClock(page, 50);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test3');
         await expectNoStyle(page, '#test1');
@@ -194,7 +195,7 @@ test.describe('#dropIn', () => {
             duration: 100,
             inverse: 1,
         });
-        await page.waitForTimeout(100);
+        await advanceClock(page, 100);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test2');
         await expectNoAnimation(page, '#test3');
@@ -213,7 +214,7 @@ test.describe('#dropIn', () => {
                 debug: true,
             });
         });
-        await page.waitForTimeout(50);
+        await advanceClock(page, 50);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test3');
         await expectNoStyle(page, '#test1');
@@ -224,7 +225,7 @@ test.describe('#dropIn', () => {
             inverse: -1,
             style: 'marginTop',
         });
-        await page.waitForTimeout(100);
+        await advanceClock(page, 100);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test2');
         await expectNoAnimation(page, '#test3');
@@ -244,7 +245,7 @@ test.describe('#dropIn', () => {
                 debug: true,
             });
         });
-        await page.waitForTimeout(50);
+        await advanceClock(page, 50);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test3');
         await expectNoStyle(page, '#test1');
@@ -255,7 +256,7 @@ test.describe('#dropIn', () => {
             inverse: -1,
             style: 'marginTop',
         });
-        await page.waitForTimeout(100);
+        await advanceClock(page, 100);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test2');
         await expectNoAnimation(page, '#test3');
@@ -275,7 +276,7 @@ test.describe('#dropIn', () => {
                 debug: true,
             });
         });
-        await page.waitForTimeout(50);
+        await advanceClock(page, 50);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test3');
         await expectNoStyle(page, '#test1');
@@ -286,7 +287,7 @@ test.describe('#dropIn', () => {
             inverse: 1,
             style: 'marginLeft',
         });
-        await page.waitForTimeout(100);
+        await advanceClock(page, 100);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test2');
         await expectNoAnimation(page, '#test3');
@@ -306,7 +307,7 @@ test.describe('#dropIn', () => {
                 debug: true,
             });
         });
-        await page.waitForTimeout(50);
+        await advanceClock(page, 50);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test3');
         await expectNoStyle(page, '#test1');
@@ -317,7 +318,7 @@ test.describe('#dropIn', () => {
             inverse: 1,
             style: 'marginTop',
         });
-        await page.waitForTimeout(100);
+        await advanceClock(page, 100);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test2');
         await expectNoAnimation(page, '#test3');
@@ -337,7 +338,7 @@ test.describe('#dropIn', () => {
                 debug: true,
             });
         });
-        await page.waitForTimeout(50);
+        await advanceClock(page, 50);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test3');
         await expectNoStyle(page, '#test1');
@@ -348,7 +349,7 @@ test.describe('#dropIn', () => {
             inverse: -1,
             style: 'marginLeft',
         });
-        await page.waitForTimeout(100);
+        await advanceClock(page, 100);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test2');
         await expectNoAnimation(page, '#test3');
@@ -367,13 +368,13 @@ test.describe('#dropIn', () => {
                 debug: true,
             });
         });
-        await page.waitForTimeout(50);
+        await advanceClock(page, 50);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test3');
         await expectNoStyle(page, '#test1');
         await expectNoStyle(page, '#test3');
         await expectDropInPair(page, linear, { duration: 100 });
-        await page.waitForTimeout(100);
+        await advanceClock(page, 100);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test2');
         await expectNoAnimation(page, '#test3');
@@ -392,13 +393,13 @@ test.describe('#dropIn', () => {
                 debug: true,
             });
         });
-        await page.waitForTimeout(50);
+        await advanceClock(page, 50);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test3');
         await expectNoStyle(page, '#test1');
         await expectNoStyle(page, '#test3');
         await expectDropInPair(page, easeIn, { duration: 100 });
-        await page.waitForTimeout(100);
+        await advanceClock(page, 100);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test2');
         await expectNoAnimation(page, '#test3');
@@ -417,13 +418,13 @@ test.describe('#dropIn', () => {
                 debug: true,
             });
         });
-        await page.waitForTimeout(50);
+        await advanceClock(page, 50);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test3');
         await expectNoStyle(page, '#test1');
         await expectNoStyle(page, '#test3');
         await expectDropInPair(page, easeOut, { duration: 100 });
-        await page.waitForTimeout(100);
+        await advanceClock(page, 100);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test2');
         await expectNoAnimation(page, '#test3');
@@ -443,19 +444,19 @@ test.describe('#dropIn', () => {
                 debug: true,
             });
         });
-        await page.waitForTimeout(50);
+        await advanceClock(page, 50);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test3');
         await expectNoStyle(page, '#test1');
         await expectNoStyle(page, '#test3');
         await expectDropInPair(page, linear, { duration: 100, infinite: true });
-        await page.waitForTimeout(50);
+        await advanceClock(page, 50);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test3');
         await expectNoStyle(page, '#test1');
         await expectNoStyle(page, '#test3');
         await expectDropInPair(page, linear, { duration: 100, infinite: true });
-        await page.waitForTimeout(50);
+        await advanceClock(page, 50);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test3');
         await expectNoStyle(page, '#test1');
@@ -464,6 +465,7 @@ test.describe('#dropIn', () => {
     });
 
     test('can be stopped', async ({ page }) => {
+        await resumeClock(page);
         await page.evaluate(async (_) => {
             const animation = $.dropIn('.animate', {
                 duration: 100,
@@ -487,6 +489,7 @@ test.describe('#dropIn', () => {
     });
 
     test('can be stopped (without finishing)', async ({ page }) => {
+        await resumeClock(page);
         await page.evaluate(async (_) => {
             const animation = $.dropIn('.animate', {
                 duration: 100,
@@ -508,7 +511,7 @@ test.describe('#dropIn', () => {
             await expectNoStyle(page, '#test3');
             await expectDropInPair(page, easeInOut, { duration: 100 });
         });
-        await page.waitForTimeout(100);
+        await advanceClock(page, 100);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test3');
         await expectNoStyle(page, '#test1');
@@ -517,6 +520,7 @@ test.describe('#dropIn', () => {
     });
 
     test('resolves when the animation is stopped', async ({ page }) => {
+        await resumeClock(page);
         await page.evaluate(async (_) => {
             const animation = $.dropIn('.animate', {
                 duration: 100,
@@ -533,6 +537,7 @@ test.describe('#dropIn', () => {
     });
 
     test('throws when the animation is stopped (without finishing)', async ({ page }) => {
+        await resumeClock(page);
         expect(await page.evaluate(async (_) => {
             try {
                 const animation = $.dropIn('.animate', {
@@ -549,6 +554,7 @@ test.describe('#dropIn', () => {
     });
 
     test('does not stop all animations', async ({ page }) => {
+        await resumeClock(page);
         await page.evaluate(async (_) => {
             const animation = $.dropIn('.animate', {
                 duration: 100,
@@ -579,6 +585,7 @@ test.describe('#dropIn', () => {
     });
 
     test('resolves when the animation is completed', async ({ page }) => {
+        await resumeClock(page);
         await page.evaluate(async (_) => {
             await $.dropIn('.animate', {
                 duration: 100,
@@ -597,6 +604,7 @@ test.describe('#dropIn', () => {
     });
 
     test('throws when all animations are stopped (without finishing)', async ({ page }) => {
+        await resumeClock(page);
         expect(await page.evaluate(async (_) => {
             try {
                 const animation = $.dropIn('.animate', {
@@ -622,7 +630,7 @@ test.describe('#dropIn', () => {
                 },
             );
         });
-        await page.waitForTimeout(50);
+        await advanceClock(page, 50);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test3');
         await expectNoAnimation(page, '#test4');
@@ -631,7 +639,7 @@ test.describe('#dropIn', () => {
         await expectNoStyle(page, '#test4');
         await expectAnimation(page, '#test2', easeInOut, 100);
         await expectDropIn(page, '#test2', 'Y', -1);
-        await page.waitForTimeout(100);
+        await advanceClock(page, 100);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test2');
         await expectNoAnimation(page, '#test3');
@@ -652,7 +660,7 @@ test.describe('#dropIn', () => {
                 },
             );
         });
-        await page.waitForTimeout(50);
+        await advanceClock(page, 50);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test3');
         await expectAnimation(page, '#test2', easeInOut, 100);
@@ -660,7 +668,7 @@ test.describe('#dropIn', () => {
         await expectNoStyle(page, '#test1');
         await expectNoStyle(page, '#test3');
         await expectDropInPair(page, easeInOut, { duration: 100 });
-        await page.waitForTimeout(100);
+        await advanceClock(page, 100);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test2');
         await expectNoAnimation(page, '#test3');
@@ -681,7 +689,7 @@ test.describe('#dropIn', () => {
                 },
             );
         });
-        await page.waitForTimeout(50);
+        await advanceClock(page, 50);
         await expectAnimation(page, '#test1', easeInOut, 100);
         await expectAnimation(page, '#test2', easeInOut, 100);
         await expectAnimation(page, '#test3', easeInOut, 100);
@@ -690,7 +698,7 @@ test.describe('#dropIn', () => {
         await expectDropIn(page, '#test2', 'Y', -1);
         await expectDropIn(page, '#test3', 'Y', -1);
         await expectDropIn(page, '#test4', 'Y', -1);
-        await page.waitForTimeout(100);
+        await advanceClock(page, 100);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test2');
         await expectNoAnimation(page, '#test3');
@@ -711,13 +719,13 @@ test.describe('#dropIn', () => {
                 debug: true,
             });
         });
-        await page.waitForTimeout(50);
+        await advanceClock(page, 50);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test3');
         await expectNoStyle(page, '#test1');
         await expectNoStyle(page, '#test3');
         await expectDropInPair(page, easeInOut, { duration: 100 });
-        await page.waitForTimeout(100);
+        await advanceClock(page, 100);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test2');
         await expectNoAnimation(page, '#test3');

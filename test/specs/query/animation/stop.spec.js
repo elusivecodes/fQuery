@@ -1,9 +1,10 @@
 import { expect, test } from '@playwright/test';
-import { resetPage } from '../../../setup/browser.js';
+import { advanceClock, resetPage, setupClock } from '../../../setup/browser.js';
 import { expectAnimation, expectNoAnimation } from '../../../support/assertions/animation.js';
 import { easeInOut } from '../../../support/utils/animation.js';
 
 test.beforeEach(async ({ page }) => {
+    await setupClock(page);
     await resetPage(page);
 });
 
@@ -29,7 +30,7 @@ test.describe('QuerySet #stop', () => {
                 },
             );
         });
-        await page.waitForTimeout(25);
+        await advanceClock(page, 25);
         await page.evaluate((_) => {
             $('.animate')
                     .stop();
@@ -51,7 +52,7 @@ test.describe('QuerySet #stop', () => {
                 },
             );
         });
-        await page.waitForTimeout(25);
+        await advanceClock(page, 25);
         const testHtml = await page.evaluate((_) => {
             $('.animate')
                     .stop({ finish: false });
@@ -61,7 +62,7 @@ test.describe('QuerySet #stop', () => {
         await expectNoAnimation(page, '#test3');
         await expectAnimation(page, '#test2', easeInOut, 100);
         await expectAnimation(page, '#test4', easeInOut, 100);
-        await page.waitForTimeout(25);
+        await advanceClock(page, 25);
         const html = await page.evaluate((_) => document.body.innerHTML);
         expect(html).toBe(testHtml);
     });

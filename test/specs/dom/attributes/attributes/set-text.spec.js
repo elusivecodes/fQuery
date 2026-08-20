@@ -1,5 +1,5 @@
 import { expect, test } from '@playwright/test';
-import { resetPage } from '../../../../setup/browser.js';
+import { advanceClock, resetPage, setupClock } from '../../../../setup/browser.js';
 
 const bodyMarkup = '<div id="test1"><div><span id="inner">Test 1</span></div></div><div id="test2"></div>';
 const replacementText = 'Test 2';
@@ -95,6 +95,8 @@ test.describe('#setText', () => {
     });
 
     test('removes queue recursively', async ({ page }) => {
+        await setupClock(page);
+
         await page.evaluate(() => {
             window.innerQueueStartedAt = null;
 
@@ -108,6 +110,7 @@ test.describe('#setText', () => {
             });
         });
 
+        await advanceClock(page, 10);
         await expect.poll(async () =>
             await page.evaluate(() => window.innerQueueStartedAt !== null)).toBe(true);
 
@@ -118,8 +121,7 @@ test.describe('#setText', () => {
             document.body.appendChild(node);
         }, replacementText);
 
-        await expect.poll(async () =>
-            await page.evaluate(() => performance.now() - window.innerQueueStartedAt)).toBeGreaterThanOrEqual(120);
+        await advanceClock(page, 120);
 
         await expect(page.locator('#test1')).toHaveText(replacementText);
         await expect(page.locator('#test2')).toHaveText(replacementText);

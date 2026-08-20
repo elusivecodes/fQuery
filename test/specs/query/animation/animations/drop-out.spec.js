@@ -1,9 +1,10 @@
 import { expect, test } from '@playwright/test';
-import { resetPage } from '../../../../setup/browser.js';
+import { advanceClock, resetPage, setupClock } from '../../../../setup/browser.js';
 import { expectAnimationData, expectDropOut, expectNoAnimation, expectNoStyle, expectTranslateAnimationData } from '../../../../support/assertions/animation.js';
 import { easeIn, easeInOut, easeOut, linear } from '../../../../support/utils/animation.js';
 
 test.beforeEach(async ({ page }) => {
+    await setupClock(page);
     await resetPage(page);
 });
 
@@ -26,7 +27,7 @@ test.describe('QuerySet #dropOut', () => {
                     debug: true,
                 });
         });
-        await page.waitForTimeout(100);
+        await advanceClock(page, 100);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test3');
         await expectNoStyle(page, '#test1');
@@ -35,7 +36,7 @@ test.describe('QuerySet #dropOut', () => {
         const test4Data = await expectDropOut(page, '#test4', 'Y', -1);
         expectAnimationData(test2Data, easeInOut);
         expectAnimationData(test4Data, easeInOut);
-        await page.waitForTimeout(150);
+        await advanceClock(page, 150);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test2');
         await expectNoAnimation(page, '#test3');
@@ -56,7 +57,7 @@ test.describe('QuerySet #dropOut', () => {
                     debug: true,
                 });
         });
-        await page.waitForTimeout(50);
+        await advanceClock(page, 50);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test3');
         await expectNoStyle(page, '#test1');
@@ -91,7 +92,7 @@ test.describe('QuerySet #dropOut', () => {
         });
         expectAnimationData(test2Data, easeInOut, 100);
         expectAnimationData(test4Data, easeInOut, 100);
-        await page.waitForTimeout(100);
+        await advanceClock(page, 100);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test2');
         await expectNoAnimation(page, '#test3');
@@ -111,7 +112,7 @@ test.describe('QuerySet #dropOut', () => {
                     debug: true,
                 });
         });
-        await page.waitForTimeout(50);
+        await advanceClock(page, 50);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test3');
         await expectNoStyle(page, '#test1');
@@ -120,7 +121,7 @@ test.describe('QuerySet #dropOut', () => {
         const test4Data = await expectDropOut(page, '#test4', 'Y', -1);
         expectAnimationData(test2Data, easeInOut, 100);
         expectAnimationData(test4Data, easeInOut, 100);
-        await page.waitForTimeout(100);
+        await advanceClock(page, 100);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test2');
         await expectNoAnimation(page, '#test3');
@@ -140,7 +141,7 @@ test.describe('QuerySet #dropOut', () => {
                     debug: true,
                 });
         });
-        await page.waitForTimeout(50);
+        await advanceClock(page, 50);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test3');
         await expectNoStyle(page, '#test1');
@@ -149,7 +150,7 @@ test.describe('QuerySet #dropOut', () => {
         const test4Data = await expectDropOut(page, '#test4', 'X');
         expectAnimationData(test2Data, easeInOut, 100);
         expectAnimationData(test4Data, easeInOut, 100);
-        await page.waitForTimeout(100);
+        await advanceClock(page, 100);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test2');
         await expectNoAnimation(page, '#test3');
@@ -169,7 +170,7 @@ test.describe('QuerySet #dropOut', () => {
                     debug: true,
                 });
         });
-        await page.waitForTimeout(50);
+        await advanceClock(page, 50);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test3');
         await expectNoStyle(page, '#test1');
@@ -178,7 +179,7 @@ test.describe('QuerySet #dropOut', () => {
         const test4Data = await expectDropOut(page, '#test4');
         expectAnimationData(test2Data, easeInOut, 100);
         expectAnimationData(test4Data, easeInOut, 100);
-        await page.waitForTimeout(100);
+        await advanceClock(page, 100);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test2');
         await expectNoAnimation(page, '#test3');
@@ -198,7 +199,7 @@ test.describe('QuerySet #dropOut', () => {
                     debug: true,
                 });
         });
-        await page.waitForTimeout(50);
+        await advanceClock(page, 50);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test3');
         await expectNoStyle(page, '#test1');
@@ -207,7 +208,7 @@ test.describe('QuerySet #dropOut', () => {
         const test4Data = await expectDropOut(page, '#test4', 'X', -1);
         expectAnimationData(test2Data, easeInOut, 100);
         expectAnimationData(test4Data, easeInOut, 100);
-        await page.waitForTimeout(100);
+        await advanceClock(page, 100);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test2');
         await expectNoAnimation(page, '#test3');
@@ -227,7 +228,7 @@ test.describe('QuerySet #dropOut', () => {
                     debug: true,
                 });
         });
-        await page.waitForTimeout(50);
+        await advanceClock(page, 50);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test3');
         await expectNoStyle(page, '#test1');
@@ -236,7 +237,7 @@ test.describe('QuerySet #dropOut', () => {
         const test4Data = await expectDropOut(page, '#test4');
         expectAnimationData(test2Data, easeInOut, 100);
         expectAnimationData(test4Data, easeInOut, 100);
-        await page.waitForTimeout(100);
+        await advanceClock(page, 100);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test2');
         await expectNoAnimation(page, '#test3');
@@ -256,7 +257,7 @@ test.describe('QuerySet #dropOut', () => {
                     debug: true,
                 });
         });
-        await page.waitForTimeout(50);
+        await advanceClock(page, 50);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test3');
         await expectNoStyle(page, '#test1');
@@ -265,7 +266,7 @@ test.describe('QuerySet #dropOut', () => {
         const test4Data = await expectDropOut(page, '#test4', null, -1, 'marginTop');
         expectAnimationData(test2Data, easeInOut, 100);
         expectAnimationData(test4Data, easeInOut, 100);
-        await page.waitForTimeout(100);
+        await advanceClock(page, 100);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test2');
         await expectNoAnimation(page, '#test3');
@@ -286,7 +287,7 @@ test.describe('QuerySet #dropOut', () => {
                     debug: true,
                 });
         });
-        await page.waitForTimeout(50);
+        await advanceClock(page, 50);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test3');
         await expectNoStyle(page, '#test1');
@@ -295,7 +296,7 @@ test.describe('QuerySet #dropOut', () => {
         const test4Data = await expectDropOut(page, '#test4', null, -1, 'marginTop');
         expectAnimationData(test2Data, easeInOut, 100);
         expectAnimationData(test4Data, easeInOut, 100);
-        await page.waitForTimeout(100);
+        await advanceClock(page, 100);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test2');
         await expectNoAnimation(page, '#test3');
@@ -316,7 +317,7 @@ test.describe('QuerySet #dropOut', () => {
                     debug: true,
                 });
         });
-        await page.waitForTimeout(50);
+        await advanceClock(page, 50);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test3');
         await expectNoStyle(page, '#test1');
@@ -325,7 +326,7 @@ test.describe('QuerySet #dropOut', () => {
         const test4Data = await expectDropOut(page, '#test4', null, 1, 'marginLeft');
         expectAnimationData(test2Data, easeInOut, 100);
         expectAnimationData(test4Data, easeInOut, 100);
-        await page.waitForTimeout(100);
+        await advanceClock(page, 100);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test2');
         await expectNoAnimation(page, '#test3');
@@ -346,7 +347,7 @@ test.describe('QuerySet #dropOut', () => {
                     debug: true,
                 });
         });
-        await page.waitForTimeout(50);
+        await advanceClock(page, 50);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test3');
         await expectNoStyle(page, '#test1');
@@ -355,7 +356,7 @@ test.describe('QuerySet #dropOut', () => {
         const test4Data = await expectDropOut(page, '#test4', null, 1, 'marginTop');
         expectAnimationData(test2Data, easeInOut, 100);
         expectAnimationData(test4Data, easeInOut, 100);
-        await page.waitForTimeout(100);
+        await advanceClock(page, 100);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test2');
         await expectNoAnimation(page, '#test3');
@@ -376,7 +377,7 @@ test.describe('QuerySet #dropOut', () => {
                     debug: true,
                 });
         });
-        await page.waitForTimeout(50);
+        await advanceClock(page, 50);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test3');
         await expectNoStyle(page, '#test1');
@@ -385,7 +386,7 @@ test.describe('QuerySet #dropOut', () => {
         const test4Data = await expectDropOut(page, '#test4', null, -1, 'marginLeft');
         expectAnimationData(test2Data, easeInOut, 100);
         expectAnimationData(test4Data, easeInOut, 100);
-        await page.waitForTimeout(100);
+        await advanceClock(page, 100);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test2');
         await expectNoAnimation(page, '#test3');
@@ -405,7 +406,7 @@ test.describe('QuerySet #dropOut', () => {
                     debug: true,
                 });
         });
-        await page.waitForTimeout(50);
+        await advanceClock(page, 50);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test3');
         await expectNoStyle(page, '#test1');
@@ -414,7 +415,7 @@ test.describe('QuerySet #dropOut', () => {
         const test4Data = await expectDropOut(page, '#test4', 'Y', -1);
         expectAnimationData(test2Data, linear, 100);
         expectAnimationData(test4Data, linear, 100);
-        await page.waitForTimeout(100);
+        await advanceClock(page, 100);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test2');
         await expectNoAnimation(page, '#test3');
@@ -434,7 +435,7 @@ test.describe('QuerySet #dropOut', () => {
                     debug: true,
                 });
         });
-        await page.waitForTimeout(50);
+        await advanceClock(page, 50);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test3');
         await expectNoStyle(page, '#test1');
@@ -443,7 +444,7 @@ test.describe('QuerySet #dropOut', () => {
         const test4Data = await expectDropOut(page, '#test4', 'Y', -1);
         expectAnimationData(test2Data, easeIn, 100);
         expectAnimationData(test4Data, easeIn, 100);
-        await page.waitForTimeout(100);
+        await advanceClock(page, 100);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test2');
         await expectNoAnimation(page, '#test3');
@@ -463,7 +464,7 @@ test.describe('QuerySet #dropOut', () => {
                     debug: true,
                 });
         });
-        await page.waitForTimeout(50);
+        await advanceClock(page, 50);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test3');
         await expectNoStyle(page, '#test1');
@@ -472,7 +473,7 @@ test.describe('QuerySet #dropOut', () => {
         const test4Data = await expectDropOut(page, '#test4', 'Y', -1);
         expectAnimationData(test2Data, easeOut, 100);
         expectAnimationData(test4Data, easeOut, 100);
-        await page.waitForTimeout(100);
+        await advanceClock(page, 100);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test2');
         await expectNoAnimation(page, '#test3');
@@ -496,7 +497,7 @@ test.describe('QuerySet #dropOut', () => {
                     debug: true,
                 });
         });
-        await page.waitForTimeout(50);
+        await advanceClock(page, 50);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test3');
         await expectNoStyle(page, '#test1');
@@ -505,7 +506,7 @@ test.describe('QuerySet #dropOut', () => {
         test4Data = await expectDropOut(page, '#test4', 'Y', -1);
         expectAnimationData(test2Data, linear, 100, true);
         expectAnimationData(test4Data, linear, 100, true);
-        await page.waitForTimeout(50);
+        await advanceClock(page, 50);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test3');
         await expectNoStyle(page, '#test1');
@@ -514,7 +515,7 @@ test.describe('QuerySet #dropOut', () => {
         test4Data = await expectDropOut(page, '#test4', 'Y', -1);
         expectAnimationData(test2Data, linear, 100, true);
         expectAnimationData(test4Data, linear, 100, true);
-        await page.waitForTimeout(50);
+        await advanceClock(page, 50);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test3');
         await expectNoStyle(page, '#test1');
@@ -541,12 +542,12 @@ test.describe('QuerySet #dropOut', () => {
                     },
                 );
         });
-        await page.waitForTimeout(50);
+        await advanceClock(page, 50);
         expect(await page.evaluate((_) => document.body.innerHTML)).toBe('<div id="test1"></div>' +
                 '<div id="test2" class="animate"></div>' +
                 '<div id="test3"></div>' +
                 '<div id="test4" class="animate"></div>');
-        await page.waitForTimeout(100);
+        await advanceClock(page, 100);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test3');
         await expectNoStyle(page, '#test1');

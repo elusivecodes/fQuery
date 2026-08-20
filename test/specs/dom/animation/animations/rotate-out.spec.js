@@ -1,9 +1,10 @@
 import { expect, test } from '@playwright/test';
-import { resetPage } from '../../../../setup/browser.js';
+import { advanceClock, resetPage, resumeClock, setupClock } from '../../../../setup/browser.js';
 import { expectAnimation, expectNoAnimation, expectNoStyle, expectRotateOut } from '../../../../support/assertions/animation.js';
 import { easeIn, easeInOut, easeOut, linear } from '../../../../support/utils/animation.js';
 
 test.beforeEach(async ({ page }) => {
+    await setupClock(page);
     await resetPage(page);
 });
 
@@ -25,7 +26,7 @@ test.describe('#rotateOut', () => {
                 debug: true,
             });
         });
-        await page.waitForTimeout(100);
+        await advanceClock(page, 100);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test3');
         await expectNoStyle(page, '#test1');
@@ -34,7 +35,7 @@ test.describe('#rotateOut', () => {
         await expectAnimation(page, '#test4', easeInOut);
         await expectRotateOut(page, '#test2');
         await expectRotateOut(page, '#test4');
-        await page.waitForTimeout(150);
+        await advanceClock(page, 150);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test2');
         await expectNoAnimation(page, '#test3');
@@ -52,7 +53,7 @@ test.describe('#rotateOut', () => {
                 debug: true,
             });
         });
-        await page.waitForTimeout(50);
+        await advanceClock(page, 50);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test3');
         await expectNoStyle(page, '#test1');
@@ -61,7 +62,7 @@ test.describe('#rotateOut', () => {
         await expectAnimation(page, '#test4', easeInOut, 100);
         await expectRotateOut(page, '#test2');
         await expectRotateOut(page, '#test4');
-        await page.waitForTimeout(100);
+        await advanceClock(page, 100);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test2');
         await expectNoAnimation(page, '#test3');
@@ -81,7 +82,7 @@ test.describe('#rotateOut', () => {
                 debug: true,
             });
         });
-        await page.waitForTimeout(50);
+        await advanceClock(page, 50);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test3');
         await expectNoStyle(page, '#test1');
@@ -90,7 +91,7 @@ test.describe('#rotateOut', () => {
         await expectAnimation(page, '#test4', easeInOut, 100);
         await expectRotateOut(page, '#test2', 1, 0);
         await expectRotateOut(page, '#test4', 1, 0);
-        await page.waitForTimeout(100);
+        await advanceClock(page, 100);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test2');
         await expectNoAnimation(page, '#test3');
@@ -110,7 +111,7 @@ test.describe('#rotateOut', () => {
                 debug: true,
             });
         });
-        await page.waitForTimeout(50);
+        await advanceClock(page, 50);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test3');
         await expectNoStyle(page, '#test1');
@@ -119,7 +120,7 @@ test.describe('#rotateOut', () => {
         await expectAnimation(page, '#test4', easeInOut, 100);
         await expectRotateOut(page, '#test2');
         await expectRotateOut(page, '#test4');
-        await page.waitForTimeout(100);
+        await advanceClock(page, 100);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test2');
         await expectNoAnimation(page, '#test3');
@@ -138,7 +139,7 @@ test.describe('#rotateOut', () => {
                 debug: true,
             });
         });
-        await page.waitForTimeout(50);
+        await advanceClock(page, 50);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test3');
         await expectNoStyle(page, '#test1');
@@ -147,7 +148,7 @@ test.describe('#rotateOut', () => {
         await expectAnimation(page, '#test4', easeInOut, 100);
         await expectRotateOut(page, '#test2');
         await expectRotateOut(page, '#test4');
-        await page.waitForTimeout(100);
+        await advanceClock(page, 100);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test2');
         await expectNoAnimation(page, '#test3');
@@ -167,7 +168,7 @@ test.describe('#rotateOut', () => {
                 debug: true,
             });
         });
-        await page.waitForTimeout(50);
+        await advanceClock(page, 50);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test3');
         await expectNoStyle(page, '#test1');
@@ -176,7 +177,7 @@ test.describe('#rotateOut', () => {
         await expectAnimation(page, '#test4', easeInOut, 100);
         await expectRotateOut(page, '#test2', 0, 0, 1);
         await expectRotateOut(page, '#test4', 0, 0, 1);
-        await page.waitForTimeout(100);
+        await advanceClock(page, 100);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test2');
         await expectNoAnimation(page, '#test3');
@@ -197,7 +198,7 @@ test.describe('#rotateOut', () => {
                 debug: true,
             });
         });
-        await page.waitForTimeout(50);
+        await advanceClock(page, 50);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test3');
         await expectNoStyle(page, '#test1');
@@ -206,7 +207,7 @@ test.describe('#rotateOut', () => {
         await expectAnimation(page, '#test4', easeInOut, 100);
         await expectRotateOut(page, '#test2', 1, 1, 1);
         await expectRotateOut(page, '#test4', 1, 1, 1);
-        await page.waitForTimeout(100);
+        await advanceClock(page, 100);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test2');
         await expectNoAnimation(page, '#test3');
@@ -225,7 +226,7 @@ test.describe('#rotateOut', () => {
                 debug: true,
             });
         });
-        await page.waitForTimeout(50);
+        await advanceClock(page, 50);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test3');
         await expectNoStyle(page, '#test1');
@@ -234,7 +235,7 @@ test.describe('#rotateOut', () => {
         await expectAnimation(page, '#test4', easeInOut, 100);
         await expectRotateOut(page, '#test2', 0, 1, 0, -1);
         await expectRotateOut(page, '#test4', 0, 1, 0, -1);
-        await page.waitForTimeout(100);
+        await advanceClock(page, 100);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test2');
         await expectNoAnimation(page, '#test3');
@@ -253,7 +254,7 @@ test.describe('#rotateOut', () => {
                 debug: true,
             });
         });
-        await page.waitForTimeout(50);
+        await advanceClock(page, 50);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test3');
         await expectNoStyle(page, '#test1');
@@ -262,7 +263,7 @@ test.describe('#rotateOut', () => {
         await expectAnimation(page, '#test4', linear, 100);
         await expectRotateOut(page, '#test2');
         await expectRotateOut(page, '#test4');
-        await page.waitForTimeout(100);
+        await advanceClock(page, 100);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test2');
         await expectNoAnimation(page, '#test3');
@@ -281,7 +282,7 @@ test.describe('#rotateOut', () => {
                 debug: true,
             });
         });
-        await page.waitForTimeout(50);
+        await advanceClock(page, 50);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test3');
         await expectNoStyle(page, '#test1');
@@ -290,7 +291,7 @@ test.describe('#rotateOut', () => {
         await expectAnimation(page, '#test4', easeIn, 100);
         await expectRotateOut(page, '#test2');
         await expectRotateOut(page, '#test4');
-        await page.waitForTimeout(100);
+        await advanceClock(page, 100);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test2');
         await expectNoAnimation(page, '#test3');
@@ -309,7 +310,7 @@ test.describe('#rotateOut', () => {
                 debug: true,
             });
         });
-        await page.waitForTimeout(50);
+        await advanceClock(page, 50);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test3');
         await expectNoStyle(page, '#test1');
@@ -318,7 +319,7 @@ test.describe('#rotateOut', () => {
         await expectAnimation(page, '#test4', easeOut, 100);
         await expectRotateOut(page, '#test2');
         await expectRotateOut(page, '#test4');
-        await page.waitForTimeout(100);
+        await advanceClock(page, 100);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test2');
         await expectNoAnimation(page, '#test3');
@@ -338,7 +339,7 @@ test.describe('#rotateOut', () => {
                 debug: true,
             });
         });
-        await page.waitForTimeout(50);
+        await advanceClock(page, 50);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test3');
         await expectNoStyle(page, '#test1');
@@ -347,7 +348,7 @@ test.describe('#rotateOut', () => {
         await expectAnimation(page, '#test4', linear, 100, true);
         await expectRotateOut(page, '#test2');
         await expectRotateOut(page, '#test4');
-        await page.waitForTimeout(50);
+        await advanceClock(page, 50);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test3');
         await expectNoStyle(page, '#test1');
@@ -356,7 +357,7 @@ test.describe('#rotateOut', () => {
         await expectAnimation(page, '#test4', linear, 100, true);
         await expectRotateOut(page, '#test2');
         await expectRotateOut(page, '#test4');
-        await page.waitForTimeout(50);
+        await advanceClock(page, 50);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test3');
         await expectNoStyle(page, '#test1');
@@ -368,6 +369,7 @@ test.describe('#rotateOut', () => {
     });
 
     test('can be stopped', async ({ page }) => {
+        await resumeClock(page);
         await page.evaluate(async (_) => {
             const animation = $.rotateOut('.animate', {
                 duration: 100,
@@ -391,6 +393,7 @@ test.describe('#rotateOut', () => {
     });
 
     test('can be stopped (without finishing)', async ({ page }) => {
+        await resumeClock(page);
         await page.evaluate(async (_) => {
             const animation = $.rotateOut('.animate', {
                 duration: 100,
@@ -415,7 +418,7 @@ test.describe('#rotateOut', () => {
             await expectRotateOut(page, '#test2');
             await expectRotateOut(page, '#test4');
         });
-        await page.waitForTimeout(100);
+        await advanceClock(page, 100);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test3');
         await expectNoStyle(page, '#test1');
@@ -427,6 +430,7 @@ test.describe('#rotateOut', () => {
     });
 
     test('resolves when the animation is stopped', async ({ page }) => {
+        await resumeClock(page);
         await page.evaluate(async (_) => {
             const animation = $.rotateOut('.animate', {
                 duration: 100,
@@ -443,6 +447,7 @@ test.describe('#rotateOut', () => {
     });
 
     test('throws when the animation is stopped (without finishing)', async ({ page }) => {
+        await resumeClock(page);
         expect(await page.evaluate(async (_) => {
             try {
                 const animation = $.rotateOut('.animate', {
@@ -459,6 +464,7 @@ test.describe('#rotateOut', () => {
     });
 
     test('does not stop all animations', async ({ page }) => {
+        await resumeClock(page);
         await page.evaluate(async (_) => {
             const animation = $.rotateOut('.animate', {
                 duration: 100,
@@ -489,6 +495,7 @@ test.describe('#rotateOut', () => {
     });
 
     test('resolves when the animation is completed', async ({ page }) => {
+        await resumeClock(page);
         await page.evaluate(async (_) => {
             await $.rotateOut('.animate', {
                 duration: 100,
@@ -507,6 +514,7 @@ test.describe('#rotateOut', () => {
     });
 
     test('throws when all animations are stopped (without finishing)', async ({ page }) => {
+        await resumeClock(page);
         expect(await page.evaluate(async (_) => {
             try {
                 const animation = $.rotateOut('.animate', {
@@ -532,7 +540,7 @@ test.describe('#rotateOut', () => {
                 },
             );
         });
-        await page.waitForTimeout(50);
+        await advanceClock(page, 50);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test3');
         await expectNoAnimation(page, '#test4');
@@ -541,7 +549,7 @@ test.describe('#rotateOut', () => {
         await expectNoStyle(page, '#test4');
         await expectAnimation(page, '#test2', easeInOut, 100);
         await expectRotateOut(page, '#test2');
-        await page.waitForTimeout(100);
+        await advanceClock(page, 100);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test2');
         await expectNoAnimation(page, '#test3');
@@ -562,7 +570,7 @@ test.describe('#rotateOut', () => {
                 },
             );
         });
-        await page.waitForTimeout(50);
+        await advanceClock(page, 50);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test3');
         await expectNoStyle(page, '#test1');
@@ -571,7 +579,7 @@ test.describe('#rotateOut', () => {
         await expectAnimation(page, '#test4', easeInOut, 100);
         await expectRotateOut(page, '#test2');
         await expectRotateOut(page, '#test4');
-        await page.waitForTimeout(100);
+        await advanceClock(page, 100);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test2');
         await expectNoAnimation(page, '#test3');
@@ -592,7 +600,7 @@ test.describe('#rotateOut', () => {
                 },
             );
         });
-        await page.waitForTimeout(50);
+        await advanceClock(page, 50);
         await expectAnimation(page, '#test1', easeInOut, 100);
         await expectAnimation(page, '#test2', easeInOut, 100);
         await expectAnimation(page, '#test3', easeInOut, 100);
@@ -601,7 +609,7 @@ test.describe('#rotateOut', () => {
         await expectRotateOut(page, '#test2');
         await expectRotateOut(page, '#test3');
         await expectRotateOut(page, '#test4');
-        await page.waitForTimeout(100);
+        await advanceClock(page, 100);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test2');
         await expectNoAnimation(page, '#test3');
@@ -622,7 +630,7 @@ test.describe('#rotateOut', () => {
                 debug: true,
             });
         });
-        await page.waitForTimeout(50);
+        await advanceClock(page, 50);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test3');
         await expectNoStyle(page, '#test1');
@@ -631,7 +639,7 @@ test.describe('#rotateOut', () => {
         await expectAnimation(page, '#test4', easeInOut, 100);
         await expectRotateOut(page, '#test2');
         await expectRotateOut(page, '#test4');
-        await page.waitForTimeout(100);
+        await advanceClock(page, 100);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test2');
         await expectNoAnimation(page, '#test3');
