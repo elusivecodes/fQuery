@@ -1,7 +1,7 @@
 import { getWindow, setContext, setWindow } from './config.js';
-import $ from './fquery.js';
 
 let _$;
+let fQuery;
 
 /**
  * Reset the global $ variable.
@@ -9,7 +9,7 @@ let _$;
 export function noConflict() {
     const window = getWindow();
 
-    if (window.$ === $) {
+    if (fQuery && window.$ === fQuery) {
         window.$ = _$;
     }
 };
@@ -18,14 +18,17 @@ export function noConflict() {
  * Register the global variables.
  * @param {Window} window The window.
  * @param {Document} [document] The document.
+ * @param {object} query The fQuery object.
  * @return {object} The fQuery object.
  */
-export function registerGlobals(window, document) {
+export function registerGlobals(window, document, query) {
+    fQuery = query;
+
     setWindow(window);
     setContext(document || window.document);
 
     _$ = window.$;
-    window.$ = $;
+    window.$ = fQuery;
 
-    return $;
+    return fQuery;
 };

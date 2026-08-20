@@ -2005,9 +2005,144 @@
     }
 
     /**
+     * QuerySet Class
+     * @class
+     */
+    class QuerySet {
+        /**
+         * New DOM constructor.
+         * @param {array} nodes The input nodes.
+         */
+        constructor(nodes = []) {
+            this._nodes = nodes;
+        }
+
+        /**
+         * Get the number of nodes.
+         * @return {number} The number of nodes.
+         */
+        get length() {
+            return this._nodes.length;
+        }
+
+        /**
+         * Execute a function for each node in the set.
+         * @param {function} callback The callback to execute
+         * @return {QuerySet} The QuerySet object.
+         */
+        each(callback) {
+            this._nodes.forEach(
+                (v, i) => callback(v, i),
+            );
+
+            return this;
+        }
+
+        /**
+         * Retrieve the DOM node(s) contained in the QuerySet.
+         * @param {number} [index=null] The index of the node.
+         * @return {array|Node|Document|Window} The node(s).
+         */
+        get(index = null) {
+            if (index === null) {
+                return this._nodes;
+            }
+
+            return index < 0 ?
+                this._nodes[index + this._nodes.length] :
+                this._nodes[index];
+        }
+
+        /**
+         * Execute a function for each node in the set.
+         * @param {function} callback The callback to execute
+         * @return {QuerySet} A new QuerySet object.
+         */
+        map(callback) {
+            const nodes = this._nodes.map(callback);
+
+            return new QuerySet(nodes);
+        }
+
+        /**
+         * Reduce the set of matched nodes to a subset specified by a range of indices.
+         * @param {number} [begin] The index to slice from.
+         * @param {number} [end]  The index to slice to.
+         * @return {QuerySet} A new QuerySet object.
+         */
+        slice(begin, end) {
+            const nodes = this._nodes.slice(begin, end);
+
+            return new QuerySet(nodes);
+        }
+
+        /**
+         * Return an iterable from the nodes.
+         * @return {ArrayIterator} The iterator object.
+         */
+        [Symbol.iterator]() {
+            return this._nodes.values();
+        }
+    }
+
+    /**
      * DOM Helpers
      */
 
+    /**
+     * Resolve a single node.
+     * @param {string|Node|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector or HTML string.
+     * @param {function} stringCallback The callback used to resolve strings.
+     * @param {DOM~nodeCallback} nodeFilter The callback used to filter nodes.
+     * @return {Node|HTMLElement|DocumentFragment|ShadowRoot|Document|Window} The resolved node.
+     */
+    function resolveNode(nodes, stringCallback, nodeFilter) {
+        if (isString(nodes)) {
+            return stringCallback(nodes);
+        }
+
+        if (nodeFilter(nodes)) {
+            return nodes;
+        }
+
+        if (nodes instanceof QuerySet) {
+            const node = nodes.get(0);
+
+            return nodeFilter(node) ? node : undefined;
+        }
+
+        if (nodes instanceof HTMLCollection || nodes instanceof NodeList) {
+            const node = nodes.item(0);
+
+            return nodeFilter(node) ? node : undefined;
+        }
+    }
+    /**
+     * Resolve multiple nodes.
+     * @param {string|Node|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector or HTML string.
+     * @param {function} stringCallback The callback used to resolve strings.
+     * @param {DOM~nodeCallback} nodeFilter The callback used to filter nodes.
+     * @return {array} The resolved nodes.
+     */
+    function resolveNodes(nodes, stringCallback, nodeFilter) {
+        if (isString(nodes)) {
+            return stringCallback(nodes);
+        }
+
+        if (nodeFilter(nodes)) {
+            return [nodes];
+        }
+
+        if (nodes instanceof QuerySet) {
+            return nodes.get().filter(nodeFilter);
+        }
+
+        if (nodes instanceof HTMLCollection || nodes instanceof NodeList) {
+            return merge([], nodes).filter(nodeFilter);
+        }
+
+        return [];
+    }
     /**
      * Create a wrapped version of a function that executes once per tick.
      * @param {function} callback Callback function to debounce.
@@ -2128,130 +2263,6 @@
     }
 
     /**
-     * DOM Create
-     */
-
-    /**
-     * Attach a shadow DOM tree to the first node.
-     * @param {string|array|HTMLElement|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
-     * @param {object} [options] The options for attaching the shadow DOM.
-     * @param {Boolean} [options.open=true] Whether the elements are accessible from JavaScript outside the root.
-     * @return {ShadowRoot} The new ShadowRoot.
-     */
-    function attachShadow$1(selector, { open = true } = {}) {
-        const node = parseNode(selector);
-
-        if (!node) {
-            return;
-        }
-
-        return node.attachShadow({
-            mode: open ?
-                'open' :
-                'closed',
-        });
-    }
-    /**
-     * Create a new DOM element.
-     * @param {string} [tagName=div] The type of HTML element to create.
-     * @param {object} [options] The options to use for creating the element.
-     * @param {string} [options.html] The HTML contents.
-     * @param {string} [options.text] The text contents.
-     * @param {string|array} [options.class] The classes.
-     * @param {object} [options.style] An object containing style properties.
-     * @param {string} [options.value] The value.
-     * @param {object} [options.attributes] An object containing attributes.
-     * @param {object} [options.properties] An object containing properties.
-     * @param {object} [options.dataset] An object containing dataset values.
-     * @return {HTMLElement} The new HTMLElement.
-     */
-    function create(tagName = 'div', options = {}) {
-        const node = getContext().createElement(tagName);
-
-        if ('html' in options) {
-            node.innerHTML = options.html;
-        } else if ('text' in options) {
-            node.textContent = options.text;
-        }
-
-        if ('class' in options) {
-            const classes = parseClasses(wrap$2(options.class));
-
-            node.classList.add(...classes);
-        }
-
-        if ('style' in options) {
-            for (let [style, value] of Object.entries(options.style)) {
-                style = kebabCase(style);
-
-                // if value is numeric and property doesn't support number values, add px
-                if (value && isNumeric(value) && !CSS.supports(style, value)) {
-                    value += 'px';
-                }
-
-                node.style.setProperty(style, value);
-            }
-        }
-
-        if ('value' in options) {
-            node.value = options.value;
-        }
-
-        if ('attributes' in options) {
-            for (const [key, value] of Object.entries(options.attributes)) {
-                node.setAttribute(key, value);
-            }
-        }
-
-        if ('properties' in options) {
-            for (const [key, value] of Object.entries(options.properties)) {
-                node[key] = value;
-            }
-        }
-
-        if ('dataset' in options) {
-            const dataset = parseData(options.dataset, null, { json: true });
-
-            for (let [key, value] of Object.entries(dataset)) {
-                key = camelCase(key);
-                node.dataset[key] = value;
-            }
-        }
-
-        return node;
-    }
-    /**
-     * Create a new comment node.
-     * @param {string} comment The comment contents.
-     * @return {Node} The new comment node.
-     */
-    function createComment(comment) {
-        return getContext().createComment(comment);
-    }
-    /**
-     * Create a new document fragment.
-     * @return {DocumentFragment} The new DocumentFragment.
-     */
-    function createFragment() {
-        return getContext().createDocumentFragment();
-    }
-    /**
-     * Create a new range object.
-     * @return {Range} The new Range.
-     */
-    function createRange() {
-        return getContext().createRange();
-    }
-    /**
-     * Create a new text node.
-     * @param {string} text The text contents.
-     * @return {Node} The new text node.
-     */
-    function createText(text) {
-        return getContext().createTextNode(text);
-    }
-
-    /**
      * DOM Parser
      */
 
@@ -2273,7 +2284,8 @@
      * @return {array} An array of nodes.
      */
     function parseHTML(html) {
-        const childNodes = createRange()
+        const childNodes = getContext()
+            .createRange()
             .createContextualFragment(html)
             .children;
 
@@ -2281,90 +2293,27 @@
     }
 
     /**
-     * QuerySet Class
-     * @class
-     */
-    class QuerySet {
-        /**
-         * New DOM constructor.
-         * @param {array} nodes The input nodes.
-         */
-        constructor(nodes = []) {
-            this._nodes = nodes;
-        }
-
-        /**
-         * Get the number of nodes.
-         * @return {number} The number of nodes.
-         */
-        get length() {
-            return this._nodes.length;
-        }
-
-        /**
-         * Execute a function for each node in the set.
-         * @param {function} callback The callback to execute
-         * @return {QuerySet} The QuerySet object.
-         */
-        each(callback) {
-            this._nodes.forEach(
-                (v, i) => callback(v, i),
-            );
-
-            return this;
-        }
-
-        /**
-         * Retrieve the DOM node(s) contained in the QuerySet.
-         * @param {number} [index=null] The index of the node.
-         * @return {array|Node|Document|Window} The node(s).
-         */
-        get(index = null) {
-            if (index === null) {
-                return this._nodes;
-            }
-
-            return index < 0 ?
-                this._nodes[index + this._nodes.length] :
-                this._nodes[index];
-        }
-
-        /**
-         * Execute a function for each node in the set.
-         * @param {function} callback The callback to execute
-         * @return {QuerySet} A new QuerySet object.
-         */
-        map(callback) {
-            const nodes = this._nodes.map(callback);
-
-            return new QuerySet(nodes);
-        }
-
-        /**
-         * Reduce the set of matched nodes to a subset specified by a range of indices.
-         * @param {number} [begin] The index to slice from.
-         * @param {number} [end]  The index to slice to.
-         * @return {QuerySet} A new QuerySet object.
-         */
-        slice(begin, end) {
-            const nodes = this._nodes.slice(begin, end);
-
-            return new QuerySet(nodes);
-        }
-
-        /**
-         * Return an iterable from the nodes.
-         * @return {ArrayIterator} The iterator object.
-         */
-        [Symbol.iterator]() {
-            return this._nodes.values();
-        }
-    }
-
-    /**
      * DOM Find
      */
 
+    /**
+     * Resolve one or more find contexts without using the higher-level node parser.
+     * @param {*} context The input context.
+     * @return {array} The resolved contexts.
+     */
+    function resolveContexts(context) {
+        const nodeFilter = (node) => isDocument(node) || isElement(node) || isFragment(node) || isShadow(node);
+
+        if (!isArray(context)) {
+            return resolveNodes(context, find$1, nodeFilter);
+        }
+
+        const results = context.flatMap((node) => resolveNodes(node, find$1, nodeFilter));
+
+        return context.length > 1 && results.length > 1 ?
+            unique(results) :
+            results;
+    }
     /**
      * Return all nodes matching a selector.
      * @param {string} selector The query selector.
@@ -2395,11 +2344,7 @@
             return merge([], context.querySelectorAll(selector));
         }
 
-        const nodes = parseNodes(context, {
-            fragment: true,
-            shadow: true,
-            document: true,
-        });
+        const nodes = resolveContexts(context);
 
         const results = [];
 
@@ -2428,11 +2373,7 @@
             return merge([], context.querySelectorAll(`.${className}`));
         }
 
-        const nodes = parseNodes(context, {
-            fragment: true,
-            shadow: true,
-            document: true,
-        });
+        const nodes = resolveContexts(context);
 
         const results = [];
 
@@ -2459,11 +2400,7 @@
             return merge([], context.querySelectorAll(`#${id}`));
         }
 
-        const nodes = parseNodes(context, {
-            fragment: true,
-            shadow: true,
-            document: true,
-        });
+        const nodes = resolveContexts(context);
 
         const results = [];
 
@@ -2492,11 +2429,7 @@
             return merge([], context.querySelectorAll(tagName));
         }
 
-        const nodes = parseNodes(context, {
-            fragment: true,
-            shadow: true,
-            document: true,
-        });
+        const nodes = resolveContexts(context);
 
         const results = [];
 
@@ -2542,11 +2475,7 @@
             return context.querySelector(selector);
         }
 
-        const nodes = parseNodes(context, {
-            fragment: true,
-            shadow: true,
-            document: true,
-        });
+        const nodes = resolveContexts(context);
 
         if (!nodes.length) {
             return;
@@ -2577,11 +2506,7 @@
             return context.querySelector(`.${className}`);
         }
 
-        const nodes = parseNodes(context, {
-            fragment: true,
-            shadow: true,
-            document: true,
-        });
+        const nodes = resolveContexts(context);
 
         if (!nodes.length) {
             return;
@@ -2614,11 +2539,7 @@
             return context.querySelector(`#${id}`);
         }
 
-        const nodes = parseNodes(context, {
-            fragment: true,
-            shadow: true,
-            document: true,
-        });
+        const nodes = resolveContexts(context);
 
         if (!nodes.length) {
             return;
@@ -2651,11 +2572,7 @@
             return context.querySelector(tagName);
         }
 
-        const nodes = parseNodes(context, {
-            fragment: true,
-            shadow: true,
-            document: true,
-        });
+        const nodes = resolveContexts(context);
 
         if (!nodes.length) {
             return;
@@ -2678,70 +2595,6 @@
      * DOM Filters
      */
 
-    /**
-     * Recursively parse nodes.
-     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector or HTML string.
-     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|NodeList|HTMLCollection|QuerySet} context The context node(s), or a query selector string.
-     * @param {DOM~nodeCallback} [nodeFilter] The callback to use for filtering nodes.
-     * @param {Boolean} [first=false] Whether to only return the first result.
-     * @return {array|Node|DocumentFragment|ShadowRoot|Document|Window} The parsed node(s).
-     */
-    function _parseNode(nodes, context, nodeFilter, { html = false } = {}) {
-        if (isString(nodes)) {
-            if (html && nodes.trim().charAt(0) === '<') {
-                return parseHTML(nodes).shift();
-            }
-
-            return findOne$1(nodes, context);
-        }
-
-        if (nodeFilter(nodes)) {
-            return nodes;
-        }
-
-        if (nodes instanceof QuerySet) {
-            const node = nodes.get(0);
-
-            return nodeFilter(node) ? node : undefined;
-        }
-
-        if (nodes instanceof HTMLCollection || nodes instanceof NodeList) {
-            const node = nodes.item(0);
-
-            return nodeFilter(node) ? node : undefined;
-        }
-    }
-    /**
-     * Recursively parse nodes.
-     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector or HTML string.
-     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|NodeList|HTMLCollection|QuerySet} context The context node(s), or a query selector string.
-     * @param {DOM~nodeCallback} [nodeFilter] The callback to use for filtering nodes.
-     * @param {Boolean} [first=false] Whether to only return the first result.
-     * @return {array|Node|DocumentFragment|ShadowRoot|Document|Window} The parsed node(s).
-     */
-    function _parseNodes(nodes, context, nodeFilter, { html = false } = {}) {
-        if (isString(nodes)) {
-            if (html && nodes.trim().charAt(0) === '<') {
-                return parseHTML(nodes);
-            }
-
-            return find$1(nodes, context);
-        }
-
-        if (nodeFilter(nodes)) {
-            return [nodes];
-        }
-
-        if (nodes instanceof QuerySet) {
-            return nodes.get().filter(nodeFilter);
-        }
-
-        if (nodes instanceof HTMLCollection || nodes instanceof NodeList) {
-            return merge([], nodes).filter(nodeFilter);
-        }
-
-        return [];
-    }
     /**
      * Return a node filter callback.
      * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet|DOM~filterCallback} filter The filter node(s), a query selector string or custom filter function.
@@ -2827,13 +2680,17 @@
      */
     function parseNode(nodes, options = {}) {
         const filter = parseNodesFilter(options);
+        const context = options.context || getContext();
+        const stringCallback = (node) => options.html && node.trim().charAt(0) === '<' ?
+            parseHTML(node).shift() :
+            findOne$1(node, context);
 
         if (!isArray(nodes)) {
-            return _parseNode(nodes, options.context || getContext(), filter, options);
+            return resolveNode(nodes, stringCallback, filter);
         }
 
         for (const node of nodes) {
-            const result = _parseNode(node, options.context || getContext(), filter, options);
+            const result = resolveNode(node, stringCallback, filter);
 
             if (result) {
                 return result;
@@ -2855,12 +2712,16 @@
      */
     function parseNodes(nodes, options = {}) {
         const filter = parseNodesFilter(options);
+        const context = options.context || getContext();
+        const stringCallback = (node) => options.html && node.trim().charAt(0) === '<' ?
+            parseHTML(node) :
+            find$1(node, context);
 
         if (!isArray(nodes)) {
-            return _parseNodes(nodes, options.context || getContext(), filter, options);
+            return resolveNodes(nodes, stringCallback, filter);
         }
 
-        const results = nodes.flatMap((node) => _parseNodes(node, options.context || getContext(), filter, options));
+        const results = nodes.flatMap((node) => resolveNodes(node, stringCallback, filter));
 
         return nodes.length > 1 && results.length > 1 ?
             unique(results) :
@@ -3743,6 +3604,130 @@
     }
 
     /**
+     * DOM Create
+     */
+
+    /**
+     * Attach a shadow DOM tree to the first node.
+     * @param {string|array|HTMLElement|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
+     * @param {object} [options] The options for attaching the shadow DOM.
+     * @param {Boolean} [options.open=true] Whether the elements are accessible from JavaScript outside the root.
+     * @return {ShadowRoot} The new ShadowRoot.
+     */
+    function attachShadow$1(selector, { open = true } = {}) {
+        const node = parseNode(selector);
+
+        if (!node) {
+            return;
+        }
+
+        return node.attachShadow({
+            mode: open ?
+                'open' :
+                'closed',
+        });
+    }
+    /**
+     * Create a new DOM element.
+     * @param {string} [tagName=div] The type of HTML element to create.
+     * @param {object} [options] The options to use for creating the element.
+     * @param {string} [options.html] The HTML contents.
+     * @param {string} [options.text] The text contents.
+     * @param {string|array} [options.class] The classes.
+     * @param {object} [options.style] An object containing style properties.
+     * @param {string} [options.value] The value.
+     * @param {object} [options.attributes] An object containing attributes.
+     * @param {object} [options.properties] An object containing properties.
+     * @param {object} [options.dataset] An object containing dataset values.
+     * @return {HTMLElement} The new HTMLElement.
+     */
+    function create(tagName = 'div', options = {}) {
+        const node = getContext().createElement(tagName);
+
+        if ('html' in options) {
+            node.innerHTML = options.html;
+        } else if ('text' in options) {
+            node.textContent = options.text;
+        }
+
+        if ('class' in options) {
+            const classes = parseClasses(wrap$2(options.class));
+
+            node.classList.add(...classes);
+        }
+
+        if ('style' in options) {
+            for (let [style, value] of Object.entries(options.style)) {
+                style = kebabCase(style);
+
+                // if value is numeric and property doesn't support number values, add px
+                if (value && isNumeric(value) && !CSS.supports(style, value)) {
+                    value += 'px';
+                }
+
+                node.style.setProperty(style, value);
+            }
+        }
+
+        if ('value' in options) {
+            node.value = options.value;
+        }
+
+        if ('attributes' in options) {
+            for (const [key, value] of Object.entries(options.attributes)) {
+                node.setAttribute(key, value);
+            }
+        }
+
+        if ('properties' in options) {
+            for (const [key, value] of Object.entries(options.properties)) {
+                node[key] = value;
+            }
+        }
+
+        if ('dataset' in options) {
+            const dataset = parseData(options.dataset, null, { json: true });
+
+            for (let [key, value] of Object.entries(dataset)) {
+                key = camelCase(key);
+                node.dataset[key] = value;
+            }
+        }
+
+        return node;
+    }
+    /**
+     * Create a new comment node.
+     * @param {string} comment The comment contents.
+     * @return {Node} The new comment node.
+     */
+    function createComment(comment) {
+        return getContext().createComment(comment);
+    }
+    /**
+     * Create a new document fragment.
+     * @return {DocumentFragment} The new DocumentFragment.
+     */
+    function createFragment() {
+        return getContext().createDocumentFragment();
+    }
+    /**
+     * Create a new range object.
+     * @return {Range} The new Range.
+     */
+    function createRange() {
+        return getContext().createRange();
+    }
+    /**
+     * Create a new text node.
+     * @param {string} text The text contents.
+     * @return {Node} The new text node.
+     */
+    function createText(text) {
+        return getContext().createTextNode(text);
+    }
+
+    /**
      * DOM Utility
      */
 
@@ -4409,7 +4394,7 @@
     }
 
     /**
-     * DOM Event Factory
+     * DOM Event Wrappers
      */
 
     /**
@@ -4516,89 +4501,6 @@
             return callback(event);
         };
     }
-
-    /**
-     * Return a wrapped mouse drag event (optionally debounced).
-     * @param {DOM~eventCallback} down The callback to execute on mousedown.
-     * @param {DOM~eventCallback} move The callback to execute on mousemove.
-     * @param {DOM~eventCallback} up The callback to execute on mouseup.
-     * @param {object} [options] The options for the mouse drag event.
-     * @param {Boolean} [options.debounce=true] Whether to debounce the move event.
-     * @param {Boolean} [options.passive=true] Whether to use passive event listeners.
-     * @param {Boolean} [options.preventDefault=true] Whether to prevent the default event.
-     * @param {number} [options.touches=1] The number of touches to trigger the event for.
-     * @return {DOM~eventCallback} The mouse drag event callback.
-     */
-    function mouseDragFactory(down, move, up, { debounce: debounce$1 = true, passive = true, preventDefault = true, touches = 1 } = {}) {
-        if (move && debounce$1) {
-            move = debounce(move);
-
-            // needed to make sure up callback executes after final move callback
-            if (up) {
-                up = debounce(up);
-            }
-        }
-
-        return (event) => {
-            const isTouch = event.type === 'touchstart';
-
-            if (isTouch && event.touches.length !== touches) {
-                return;
-            }
-
-            if (down && down(event) === false) {
-                return;
-            }
-
-            if (preventDefault) {
-                event.preventDefault();
-            }
-
-            if (!move && !up) {
-                return;
-            }
-
-            const [moveEvent, upEvent] = event.type in eventLookup ?
-                eventLookup[event.type] :
-                eventLookup.mousedown;
-
-            const realMove = (event) => {
-                if (isTouch && event.touches.length !== touches) {
-                    return;
-                }
-
-                if (preventDefault && !passive) {
-                    event.preventDefault();
-                }
-
-                if (!move) {
-                    return;
-                }
-
-                move(event);
-            };
-
-            const realUp = (event) => {
-                if (isTouch && event.touches.length !== touches - 1) {
-                    return;
-                }
-
-                if (up && up(event) === false) {
-                    return;
-                }
-
-                if (preventDefault) {
-                    event.preventDefault();
-                }
-
-                removeEvent$1(window, moveEvent, realMove);
-                removeEvent$1(window, upEvent, realUp);
-            };
-
-            addEvent$1(window, moveEvent, realMove, { passive });
-            addEvent$1(window, upEvent, realUp);
-        };
-    }
     /**
      * Return a wrapped event callback that checks for a namespace match.
      * @param {string} eventName The namespaced event name.
@@ -4627,18 +4529,14 @@
         };
     }
     /**
-     * Return a wrapped event callback that removes itself after execution.
-     * @param {HTMLElement|ShadowRoot|Document|Window} node The input node.
-     * @param {string} eventName The event name.
+     * Return a wrapped callback that performs cleanup before its first execution.
      * @param {DOM~eventCallback} callback The callback to execute.
-     * @param {object} [options] The options for the event.
-     * @param {Boolean} [options.capture] Whether to use a capture event.
-     * @param {string} [optoins.delegate] The delegate selector.
+     * @param {function} cleanup The cleanup callback.
      * @return {DOM~eventCallback} The wrapped event callback.
      */
-    function selfDestructFactory(node, eventName, callback, { capture = null, delegate = null } = {}) {
+    function selfDestructCallbackFactory(callback, cleanup) {
         return (event) => {
-            removeEvent$1(node, eventName, callback, { capture, delegate });
+            cleanup();
             return callback(event);
         };
     }
@@ -4688,7 +4586,10 @@
                 let realCallback = callback;
 
                 if (selfDestruct) {
-                    realCallback = selfDestructFactory(node, eventName, realCallback, { capture, delegate });
+                    realCallback = selfDestructCallbackFactory(
+                        realCallback,
+                        (_) => removeEvent$1(node, eventName, callback, { capture, delegate }),
+                    );
                 }
 
                 realCallback = preventFactory(realCallback);
@@ -6402,6 +6303,93 @@
     }
 
     /**
+     * DOM Event Factory
+     */
+
+    /**
+     * Return a wrapped mouse drag event (optionally debounced).
+     * @param {DOM~eventCallback} down The callback to execute on mousedown.
+     * @param {DOM~eventCallback} move The callback to execute on mousemove.
+     * @param {DOM~eventCallback} up The callback to execute on mouseup.
+     * @param {object} [options] The options for the mouse drag event.
+     * @param {Boolean} [options.debounce=true] Whether to debounce the move event.
+     * @param {Boolean} [options.passive=true] Whether to use passive event listeners.
+     * @param {Boolean} [options.preventDefault=true] Whether to prevent the default event.
+     * @param {number} [options.touches=1] The number of touches to trigger the event for.
+     * @return {DOM~eventCallback} The mouse drag event callback.
+     */
+    function mouseDragFactory(down, move, up, { debounce: debounce$1 = true, passive = true, preventDefault = true, touches = 1 } = {}) {
+        if (move && debounce$1) {
+            move = debounce(move);
+
+            // needed to make sure up callback executes after final move callback
+            if (up) {
+                up = debounce(up);
+            }
+        }
+
+        return (event) => {
+            const isTouch = event.type === 'touchstart';
+
+            if (isTouch && event.touches.length !== touches) {
+                return;
+            }
+
+            if (down && down(event) === false) {
+                return;
+            }
+
+            if (preventDefault) {
+                event.preventDefault();
+            }
+
+            if (!move && !up) {
+                return;
+            }
+
+            const [moveEvent, upEvent] = event.type in eventLookup ?
+                eventLookup[event.type] :
+                eventLookup.mousedown;
+
+            const realMove = (event) => {
+                if (isTouch && event.touches.length !== touches) {
+                    return;
+                }
+
+                if (preventDefault && !passive) {
+                    event.preventDefault();
+                }
+
+                if (!move) {
+                    return;
+                }
+
+                move(event);
+            };
+
+            const realUp = (event) => {
+                if (isTouch && event.touches.length !== touches - 1) {
+                    return;
+                }
+
+                if (up && up(event) === false) {
+                    return;
+                }
+
+                if (preventDefault) {
+                    event.preventDefault();
+                }
+
+                removeEvent$1(window, moveEvent, realMove);
+                removeEvent$1(window, upEvent, realUp);
+            };
+
+            addEvent$1(window, moveEvent, realMove, { passive });
+            addEvent$1(window, upEvent, realUp);
+        };
+    }
+
+    /**
      * DOM Events
      */
 
@@ -6454,6 +6442,38 @@
         } else {
             getWindow().addEventListener('DOMContentLoaded', callback, { once: true });
         }
+    }
+
+    let _$;
+    let fQuery;
+
+    /**
+     * Reset the global $ variable.
+     */
+    function noConflict() {
+        const window = getWindow();
+
+        if (fQuery && window.$ === fQuery) {
+            window.$ = _$;
+        }
+    }
+    /**
+     * Register the global variables.
+     * @param {Window} window The window.
+     * @param {Document} [document] The document.
+     * @param {object} query The fQuery object.
+     * @return {object} The fQuery object.
+     */
+    function registerGlobals(window, document, query) {
+        fQuery = query;
+
+        setWindow(window);
+        setContext(document || window.document);
+
+        _$ = window.$;
+        window.$ = fQuery;
+
+        return fQuery;
     }
 
     /**
@@ -9428,7 +9448,16 @@
      * @return {QuerySet} The QuerySet object.
      */
     function add(selector, context = null) {
-        const nodes = sort$1(unique(merge([], this.get(), query(selector, context).get())));
+        const otherNodes = parseNodes(selector, {
+            node: true,
+            fragment: true,
+            shadow: true,
+            document: true,
+            window: true,
+            html: true,
+            context: context || getContext(),
+        });
+        const nodes = sort$1(unique(merge([], this.get(), otherNodes)));
 
         return new QuerySet(nodes);
     }
@@ -10144,35 +10173,11 @@
         query[`_${key}`] = value;
     }
 
-    let _$;
+    const register = (window, document) => registerGlobals(window, document, query);
 
-    /**
-     * Reset the global $ variable.
-     */
-    function noConflict() {
-        const window = getWindow();
-
-        if (window.$ === query) {
-            window.$ = _$;
-        }
-    }
-    /**
-     * Register the global variables.
-     * @param {Window} window The window.
-     * @param {Document} [document] The document.
-     * @return {object} The fQuery object.
-     */
-    function registerGlobals(window, document) {
-        setWindow(window);
-        setContext(document || window.document);
-
-        _$ = window.$;
-        window.$ = query;
-
-        return query;
-    }
-
-    var index = isWindow(globalThis) ? registerGlobals(globalThis) : registerGlobals;
+    var index = isWindow(globalThis) ?
+        register(globalThis) :
+        register;
 
     return index;
 

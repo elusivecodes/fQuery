@@ -1,7 +1,7 @@
 import { parseNode, parseNodes } from './../filters.js';
 import { eventNamespacedRegExp, parseEvent, parseEvents } from './../helpers.js';
 import { events } from './../vars.js';
-import { delegateFactory, delegateFactoryClean, namespaceFactory, preventFactory, selfDestructFactory } from './event-factory.js';
+import { delegateFactory, delegateFactoryClean, namespaceFactory, preventFactory, selfDestructCallbackFactory } from './event-wrappers.js';
 
 /**
  * DOM Event Handlers
@@ -48,7 +48,10 @@ export function addEvent(selector, eventNames, callback, { capture = false, dele
             let realCallback = callback;
 
             if (selfDestruct) {
-                realCallback = selfDestructFactory(node, eventName, realCallback, { capture, delegate });
+                realCallback = selfDestructCallbackFactory(
+                    realCallback,
+                    (_) => removeEvent(node, eventName, callback, { capture, delegate }),
+                );
             }
 
             realCallback = preventFactory(realCallback);

@@ -1,78 +1,12 @@
 import { isArray, isDocument, isElement, isFragment, isFunction, isNode, isShadow, isString, isWindow, merge, unique } from '@fr0st/core';
 import { getContext } from './config.js';
+import { resolveNode, resolveNodes } from './helpers.js';
 import { parseHTML } from './parser/parser.js';
-import QuerySet from './query/query-set.js';
 import { find, findOne } from './traversal/find.js';
 
 /**
  * DOM Filters
  */
-
-/**
- * Recursively parse nodes.
- * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector or HTML string.
- * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|NodeList|HTMLCollection|QuerySet} context The context node(s), or a query selector string.
- * @param {DOM~nodeCallback} [nodeFilter] The callback to use for filtering nodes.
- * @param {Boolean} [first=false] Whether to only return the first result.
- * @return {array|Node|DocumentFragment|ShadowRoot|Document|Window} The parsed node(s).
- */
-function _parseNode(nodes, context, nodeFilter, { html = false } = {}) {
-    if (isString(nodes)) {
-        if (html && nodes.trim().charAt(0) === '<') {
-            return parseHTML(nodes).shift();
-        }
-
-        return findOne(nodes, context);
-    }
-
-    if (nodeFilter(nodes)) {
-        return nodes;
-    }
-
-    if (nodes instanceof QuerySet) {
-        const node = nodes.get(0);
-
-        return nodeFilter(node) ? node : undefined;
-    }
-
-    if (nodes instanceof HTMLCollection || nodes instanceof NodeList) {
-        const node = nodes.item(0);
-
-        return nodeFilter(node) ? node : undefined;
-    }
-};
-
-/**
- * Recursively parse nodes.
- * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector or HTML string.
- * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|NodeList|HTMLCollection|QuerySet} context The context node(s), or a query selector string.
- * @param {DOM~nodeCallback} [nodeFilter] The callback to use for filtering nodes.
- * @param {Boolean} [first=false] Whether to only return the first result.
- * @return {array|Node|DocumentFragment|ShadowRoot|Document|Window} The parsed node(s).
- */
-function _parseNodes(nodes, context, nodeFilter, { html = false } = {}) {
-    if (isString(nodes)) {
-        if (html && nodes.trim().charAt(0) === '<') {
-            return parseHTML(nodes);
-        }
-
-        return find(nodes, context);
-    }
-
-    if (nodeFilter(nodes)) {
-        return [nodes];
-    }
-
-    if (nodes instanceof QuerySet) {
-        return nodes.get().filter(nodeFilter);
-    }
-
-    if (nodes instanceof HTMLCollection || nodes instanceof NodeList) {
-        return merge([], nodes).filter(nodeFilter);
-    }
-
-    return [];
-};
 
 /**
  * Return a node filter callback.
@@ -161,13 +95,17 @@ export function parseFilterContains(filter, defaultValue = true) {
  */
 export function parseNode(nodes, options = {}) {
     const filter = parseNodesFilter(options);
+    const context = options.context || getContext();
+    const stringCallback = (node) => options.html && node.trim().charAt(0) === '<' ?
+        parseHTML(node).shift() :
+        findOne(node, context);
 
     if (!isArray(nodes)) {
-        return _parseNode(nodes, options.context || getContext(), filter, options);
+        return resolveNode(nodes, stringCallback, filter);
     }
 
     for (const node of nodes) {
-        const result = _parseNode(node, options.context || getContext(), filter, options);
+        const result = resolveNode(node, stringCallback, filter);
 
         if (result) {
             return result;
@@ -190,12 +128,16 @@ export function parseNode(nodes, options = {}) {
  */
 export function parseNodes(nodes, options = {}) {
     const filter = parseNodesFilter(options);
+    const context = options.context || getContext();
+    const stringCallback = (node) => options.html && node.trim().charAt(0) === '<' ?
+        parseHTML(node) :
+        find(node, context);
 
     if (!isArray(nodes)) {
-        return _parseNodes(nodes, options.context || getContext(), filter, options);
+        return resolveNodes(nodes, stringCallback, filter);
     }
 
-    const results = nodes.flatMap((node) => _parseNodes(node, options.context || getContext(), filter, options));
+    const results = nodes.flatMap((node) => resolveNodes(node, stringCallback, filter));
 
     return nodes.length > 1 && results.length > 1 ?
         unique(results) :

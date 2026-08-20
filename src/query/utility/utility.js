@@ -1,7 +1,8 @@
 import { merge, unique } from '@fr0st/core';
+import { getContext } from './../../config.js';
+import { parseNodes } from './../../filters.js';
 import { index as _index, indexOf as _indexOf, normalize as _normalize, serialize as _serialize, serializeArray as _serializeArray, sort as _sort, tagName as _tagName } from './../../utility/utility.js';
 import QuerySet from './../query-set.js';
-import { query } from './../query.js';
 
 /**
  * QuerySet Utility
@@ -14,7 +15,16 @@ import { query } from './../query.js';
  * @return {QuerySet} The QuerySet object.
  */
 export function add(selector, context = null) {
-    const nodes = _sort(unique(merge([], this.get(), query(selector, context).get())));
+    const otherNodes = parseNodes(selector, {
+        node: true,
+        fragment: true,
+        shadow: true,
+        document: true,
+        window: true,
+        html: true,
+        context: context || getContext(),
+    });
+    const nodes = _sort(unique(merge([], this.get(), otherNodes)));
 
     return new QuerySet(nodes);
 };

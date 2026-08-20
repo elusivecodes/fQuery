@@ -1,6 +1,6 @@
 
 import { merge } from '@fr0st/core';
-import { createRange } from './../manipulation/create.js';
+import { getContext } from './../config.js';
 
 /**
  * DOM Parser
@@ -25,7 +25,8 @@ export function parseDocument(input, { contentType = 'text/html' } = {}) {
  * @return {array} An array of nodes.
  */
 export function parseHTML(html) {
-    const childNodes = createRange()
+    const childNodes = getContext()
+        .createRange()
         .createContextualFragment(html)
         .children;
 

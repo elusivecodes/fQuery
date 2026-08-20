@@ -1,10 +1,29 @@
-import { isDocument, isElement, isFragment, isShadow, merge, unique } from '@fr0st/core';
+import { isArray, isDocument, isElement, isFragment, isShadow, merge, unique } from '@fr0st/core';
 import { getContext } from './../config.js';
-import { parseNodes } from './../filters.js';
+import { resolveNodes } from './../helpers.js';
 
 /**
  * DOM Find
  */
+
+/**
+ * Resolve one or more find contexts without using the higher-level node parser.
+ * @param {*} context The input context.
+ * @return {array} The resolved contexts.
+ */
+function resolveContexts(context) {
+    const nodeFilter = (node) => isDocument(node) || isElement(node) || isFragment(node) || isShadow(node);
+
+    if (!isArray(context)) {
+        return resolveNodes(context, find, nodeFilter);
+    }
+
+    const results = context.flatMap((node) => resolveNodes(node, find, nodeFilter));
+
+    return context.length > 1 && results.length > 1 ?
+        unique(results) :
+        results;
+};
 
 /**
  * Return all nodes matching a selector.
@@ -36,11 +55,7 @@ export function find(selector, context = getContext()) {
         return merge([], context.querySelectorAll(selector));
     }
 
-    const nodes = parseNodes(context, {
-        fragment: true,
-        shadow: true,
-        document: true,
-    });
+    const nodes = resolveContexts(context);
 
     const results = [];
 
@@ -70,11 +85,7 @@ export function findByClass(className, context = getContext()) {
         return merge([], context.querySelectorAll(`.${className}`));
     }
 
-    const nodes = parseNodes(context, {
-        fragment: true,
-        shadow: true,
-        document: true,
-    });
+    const nodes = resolveContexts(context);
 
     const results = [];
 
@@ -102,11 +113,7 @@ export function findById(id, context = getContext()) {
         return merge([], context.querySelectorAll(`#${id}`));
     }
 
-    const nodes = parseNodes(context, {
-        fragment: true,
-        shadow: true,
-        document: true,
-    });
+    const nodes = resolveContexts(context);
 
     const results = [];
 
@@ -136,11 +143,7 @@ export function findByTag(tagName, context = getContext()) {
         return merge([], context.querySelectorAll(tagName));
     }
 
-    const nodes = parseNodes(context, {
-        fragment: true,
-        shadow: true,
-        document: true,
-    });
+    const nodes = resolveContexts(context);
 
     const results = [];
 
@@ -187,11 +190,7 @@ export function findOne(selector, context = getContext()) {
         return context.querySelector(selector);
     }
 
-    const nodes = parseNodes(context, {
-        fragment: true,
-        shadow: true,
-        document: true,
-    });
+    const nodes = resolveContexts(context);
 
     if (!nodes.length) {
         return;
@@ -223,11 +222,7 @@ export function findOneByClass(className, context = getContext()) {
         return context.querySelector(`.${className}`);
     }
 
-    const nodes = parseNodes(context, {
-        fragment: true,
-        shadow: true,
-        document: true,
-    });
+    const nodes = resolveContexts(context);
 
     if (!nodes.length) {
         return;
@@ -261,11 +256,7 @@ export function findOneById(id, context = getContext()) {
         return context.querySelector(`#${id}`);
     }
 
-    const nodes = parseNodes(context, {
-        fragment: true,
-        shadow: true,
-        document: true,
-    });
+    const nodes = resolveContexts(context);
 
     if (!nodes.length) {
         return;
@@ -299,11 +290,7 @@ export function findOneByTag(tagName, context = getContext()) {
         return context.querySelector(tagName);
     }
 
-    const nodes = parseNodes(context, {
-        fragment: true,
-        shadow: true,
-        document: true,
-    });
+    const nodes = resolveContexts(context);
 
     if (!nodes.length) {
         return;

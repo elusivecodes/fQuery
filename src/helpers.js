@@ -1,8 +1,65 @@
-import { escapeRegExp, isArray, isNumeric, isObject, isString, isUndefined } from '@fr0st/core';
+import { escapeRegExp, isArray, isNumeric, isObject, isString, isUndefined, merge } from '@fr0st/core';
+import QuerySet from './query/query-set.js';
 
 /**
  * DOM Helpers
  */
+
+/**
+ * Resolve a single node.
+ * @param {string|Node|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector or HTML string.
+ * @param {function} stringCallback The callback used to resolve strings.
+ * @param {DOM~nodeCallback} nodeFilter The callback used to filter nodes.
+ * @return {Node|HTMLElement|DocumentFragment|ShadowRoot|Document|Window} The resolved node.
+ */
+export function resolveNode(nodes, stringCallback, nodeFilter) {
+    if (isString(nodes)) {
+        return stringCallback(nodes);
+    }
+
+    if (nodeFilter(nodes)) {
+        return nodes;
+    }
+
+    if (nodes instanceof QuerySet) {
+        const node = nodes.get(0);
+
+        return nodeFilter(node) ? node : undefined;
+    }
+
+    if (nodes instanceof HTMLCollection || nodes instanceof NodeList) {
+        const node = nodes.item(0);
+
+        return nodeFilter(node) ? node : undefined;
+    }
+};
+
+/**
+ * Resolve multiple nodes.
+ * @param {string|Node|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector or HTML string.
+ * @param {function} stringCallback The callback used to resolve strings.
+ * @param {DOM~nodeCallback} nodeFilter The callback used to filter nodes.
+ * @return {array} The resolved nodes.
+ */
+export function resolveNodes(nodes, stringCallback, nodeFilter) {
+    if (isString(nodes)) {
+        return stringCallback(nodes);
+    }
+
+    if (nodeFilter(nodes)) {
+        return [nodes];
+    }
+
+    if (nodes instanceof QuerySet) {
+        return nodes.get().filter(nodeFilter);
+    }
+
+    if (nodes instanceof HTMLCollection || nodes instanceof NodeList) {
+        return merge([], nodes).filter(nodeFilter);
+    }
+
+    return [];
+};
 
 /**
  * Create a wrapped version of a function that executes once per tick.
