@@ -1,5 +1,5 @@
 import { expect, test } from '@playwright/test';
-import { resetPage } from '../../../setup/browser.js';
+import { advanceClock, resetPage, setupClock } from '../../../setup/browser.js';
 
 const QUEUE_HTML =
     '<div id="test1"></div>' +
@@ -13,6 +13,8 @@ test.beforeEach(async ({ page }) => {
 
 test.describe('QuerySet #delay', () => {
     test.beforeEach(async ({ page }) => {
+        await setupClock(page);
+
         await page.evaluate((html) => {
             document.body.innerHTML = html;
         }, QUEUE_HTML);
@@ -31,6 +33,8 @@ test.describe('QuerySet #delay', () => {
         expect(await page.locator('#test3').getAttribute('data-test')).toBeNull();
         expect(await page.locator('#test4').getAttribute('data-test')).toBeNull();
 
+        await advanceClock(page, 100);
+
         await expect(page.locator('#test2')).toHaveAttribute('data-test', 'Test');
         await expect(page.locator('#test4')).toHaveAttribute('data-test', 'Test');
     });
@@ -45,6 +49,8 @@ test.describe('QuerySet #delay', () => {
                 node.dataset.test2 = 'Test';
             }, { queueName: 'test' });
         });
+
+        await advanceClock(page, 1);
 
         await expect(page.locator('#test2')).toHaveAttribute('data-test1', 'Test');
         await expect(page.locator('#test4')).toHaveAttribute('data-test1', 'Test');
