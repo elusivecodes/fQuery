@@ -1,14 +1,15 @@
 import { clearQueue as _clearQueue, queue as _queue } from './../../queue/queue.js';
 
 /**
- * QuerySet Queue
+ * @typedef {import('../../queue/queue.js').QueueCallback} QueueCallback
+ * @typedef {import('../../queue/queue.js').QueueOptions} QueueOptions
+ * @typedef {import('../query-set.js').default} QuerySet
  */
 
 /**
- * Clear the queue of each node.
- * @param {object} [options] The options for clearing the queue.
- * @param {string} [options.queueName=default] The name of the queue to clear.
- * @return {QuerySet} The QuerySet object.
+ * Clears the queue of each node.
+ * @param {QueueOptions} [options] The queue options.
+ * @returns {QuerySet} The QuerySet object.
  */
 export function clearQueue({ queueName = 'default' } = {}) {
     _clearQueue(this, { queueName });
@@ -17,11 +18,10 @@ export function clearQueue({ queueName = 'default' } = {}) {
 };
 
 /**
- * Delay execution of subsequent items in the queue for each node.
+ * Delays execution of subsequent items in the queue for each node.
  * @param {number} duration The number of milliseconds to delay execution by.
- * @param {object} [options] The options for clearing the queue.
- * @param {string} [options.queueName=default] The name of the queue to use.
- * @return {QuerySet} The QuerySet object.
+ * @param {QueueOptions} [options] The queue options.
+ * @returns {QuerySet} The QuerySet object.
  */
 export function delay(duration, { queueName = 'default' } = {}) {
     return this.queue((_) =>
@@ -33,11 +33,10 @@ export function delay(duration, { queueName = 'default' } = {}) {
 };
 
 /**
- * Queue a callback on each node.
- * @param {DOM~queueCallback} callback The callback to queue.
- * @param {object} [options] The options for clearing the queue.
- * @param {string} [options.queueName=default] The name of the queue to use.
- * @return {QuerySet} The QuerySet object.
+ * Queues a callback on each node.
+ * @param {QueueCallback} callback The callback to queue.
+ * @param {QueueOptions} [options] The queue options.
+ * @returns {QuerySet} The QuerySet object.
  */
 export function queue(callback, { queueName = 'default' } = {}) {
     _queue(this, callback, { queueName });

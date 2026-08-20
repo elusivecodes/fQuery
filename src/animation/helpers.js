@@ -1,22 +1,18 @@
 import { config, getWindow } from './../config.js';
 import { animations } from './../vars.js';
 
-/**
- * Animation Helpers
- */
-
 let animating = false;
 
 /**
- * Get the current time.
- * @return {number} The current time.
+ * Gets the current time.
+ * @returns {number} The current time.
  */
 export function getTime() {
     return performance.now();
 };
 
 /**
- * Start the animation loop (if not already started).
+ * Starts the animation loop (if not already started).
  */
 export function start() {
     if (animating) {
@@ -28,7 +24,7 @@ export function start() {
 };
 
 /**
- * Run a single frame of all animations, and then queue up the next frame.
+ * Runs a single frame of all animations, and then queue up the next frame.
  */
 function update() {
     const time = getTime();

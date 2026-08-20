@@ -6,13 +6,16 @@ import { closest } from './../traversal/traversal.js';
 import { animations, data } from './../vars.js';
 
 /**
- * DOM Filter
+ * @typedef {import('../filters.js').NodeFilterInput} NodeFilterInput
+ * @typedef {import('../helpers.js').ElementInput} ElementInput
+ * @typedef {import('../helpers.js').NodeInput} NodeInput
+ * @typedef {import('../helpers.js').QueryInput} QueryInput
  */
 
 /**
- * Return all nodes connected to the DOM.
- * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
- * @return {array} The filtered nodes.
+ * Returns all nodes connected to the DOM.
+ * @param {NodeInput} selector The input node(s), or a query selector string.
+ * @returns {Node[]} The filtered nodes.
  */
 export function connected(selector) {
     return parseNodes(selector, {
@@ -23,10 +26,10 @@ export function connected(selector) {
 };
 
 /**
- * Return all nodes considered equal to any of the other nodes.
- * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
- * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet} otherSelector The other node(s), or a query selector string.
- * @return {array} The filtered nodes.
+ * Returns all nodes considered equal to any of the other nodes.
+ * @param {NodeInput} selector The input node(s), or a query selector string.
+ * @param {NodeInput} otherSelector The other node(s), or a query selector string.
+ * @returns {Node[]} The filtered nodes.
  */
 export function equal(selector, otherSelector) {
     const others = parseNodes(otherSelector, {
@@ -47,10 +50,10 @@ export function equal(selector, otherSelector) {
 };
 
 /**
- * Return all nodes matching a filter.
- * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
- * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet|DOM~filterCallback} [nodeFilter] The filter node(s), a query selector string or custom filter function.
- * @return {array} The filtered nodes.
+ * Returns all nodes matching a filter.
+ * @param {NodeInput} selector The input node(s), or a query selector string.
+ * @param {NodeFilterInput} [nodeFilter] The filter node(s), a query selector string or custom filter function.
+ * @returns {Node[]} The filtered nodes.
  */
 export function filter(selector, nodeFilter) {
     nodeFilter = parseFilter(nodeFilter);
@@ -63,10 +66,10 @@ export function filter(selector, nodeFilter) {
 };
 
 /**
- * Return the first node matching a filter.
- * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
- * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet|DOM~filterCallback} [nodeFilter] The filter node(s), a query selector string or custom filter function.
- * @return {Node|HTMLElement|DocumentFragment|ShadowRoot} The filtered node.
+ * Returns the first node matching a filter.
+ * @param {NodeInput} selector The input node(s), or a query selector string.
+ * @param {NodeFilterInput} [nodeFilter] The filter node(s), a query selector string or custom filter function.
+ * @returns {Node|null} The matching node, or null when none matches.
  */
 export function filterOne(selector, nodeFilter) {
     nodeFilter = parseFilter(nodeFilter);
@@ -79,9 +82,9 @@ export function filterOne(selector, nodeFilter) {
 };
 
 /**
- * Return all "fixed" nodes.
- * @param {string|array|Node|HTMLElement|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
- * @return {array} The filtered nodes.
+ * Returns all "fixed" nodes.
+ * @param {NodeInput} selector The input node(s), or a query selector string.
+ * @returns {Node[]} The filtered nodes.
  */
 export function fixed(selector) {
     return parseNodes(selector, {
@@ -96,9 +99,9 @@ export function fixed(selector) {
 };
 
 /**
- * Return all hidden nodes.
- * @param {string|array|Node|HTMLElement|Document|Window|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
- * @return {array} The filtered nodes.
+ * Returns all hidden nodes.
+ * @param {QueryInput} selector The input node(s), or a query selector string.
+ * @returns {Array<Node|Window>} The filtered nodes.
  */
 export function hidden(selector) {
     return parseNodes(selector, {
@@ -119,10 +122,10 @@ export function hidden(selector) {
 };
 
 /**
- * Return all nodes not matching a filter.
- * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
- * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet|DOM~filterCallback} [nodeFilter] The filter node(s), a query selector string or custom filter function.
- * @return {array} The filtered nodes.
+ * Returns all nodes not matching a filter.
+ * @param {NodeInput} selector The input node(s), or a query selector string.
+ * @param {NodeFilterInput} [nodeFilter] The filter node(s), a query selector string or custom filter function.
+ * @returns {Node[]} The filtered nodes.
  */
 export function not(selector, nodeFilter) {
     nodeFilter = parseFilter(nodeFilter);
@@ -135,10 +138,10 @@ export function not(selector, nodeFilter) {
 };
 
 /**
- * Return the first node not matching a filter.
- * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
- * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet|DOM~filterCallback} [nodeFilter] The filter node(s), a query selector string or custom filter function.
- * @return {Node|HTMLElement|DocumentFragment|ShadowRoot} The filtered node.
+ * Returns the first node not matching a filter.
+ * @param {NodeInput} selector The input node(s), or a query selector string.
+ * @param {NodeFilterInput} [nodeFilter] The filter node(s), a query selector string or custom filter function.
+ * @returns {Node|null} The matching node, or null when none matches.
  */
 export function notOne(selector, nodeFilter) {
     nodeFilter = parseFilter(nodeFilter);
@@ -151,10 +154,10 @@ export function notOne(selector, nodeFilter) {
 };
 
 /**
- * Return all nodes considered identical to any of the other nodes.
- * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
- * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet} otherSelector The other node(s), or a query selector string.
- * @return {array} The filtered nodes.
+ * Returns all nodes considered identical to any of the other nodes.
+ * @param {NodeInput} selector The input node(s), or a query selector string.
+ * @param {NodeInput} otherSelector The other node(s), or a query selector string.
+ * @returns {Node[]} The filtered nodes.
  */
 export function same(selector, otherSelector) {
     const others = parseNodes(otherSelector, {
@@ -175,9 +178,9 @@ export function same(selector, otherSelector) {
 };
 
 /**
- * Return all visible nodes.
- * @param {string|array|Node|HTMLElement|Document|Window|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
- * @return {array} The filtered nodes.
+ * Returns all visible nodes.
+ * @param {QueryInput} selector The input node(s), or a query selector string.
+ * @returns {Array<Node|Window>} The filtered nodes.
  */
 export function visible(selector) {
     return parseNodes(selector, {
@@ -198,9 +201,9 @@ export function visible(selector) {
 };
 
 /**
- * Return all nodes with an animation.
- * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
- * @return {array} The filtered nodes.
+ * Returns all nodes with an animation.
+ * @param {ElementInput} selector The input node(s), or a query selector string.
+ * @returns {Node[]} The filtered nodes.
  */
 export function withAnimation(selector) {
     return parseNodes(selector)
@@ -210,10 +213,10 @@ export function withAnimation(selector) {
 };
 
 /**
- * Return all nodes with a specified attribute.
- * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
+ * Returns all nodes with a specified attribute.
+ * @param {ElementInput} selector The input node(s), or a query selector string.
  * @param {string} attribute The attribute name.
- * @return {array} The filtered nodes.
+ * @returns {Node[]} The filtered nodes.
  */
 export function withAttribute(selector, attribute) {
     return parseNodes(selector)
@@ -223,9 +226,9 @@ export function withAttribute(selector, attribute) {
 };
 
 /**
- * Return all nodes with child elements.
- * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
- * @return {array} The filtered nodes.
+ * Returns all nodes with child elements.
+ * @param {NodeInput} selector The input node(s), or a query selector string.
+ * @returns {Node[]} The filtered nodes.
  */
 export function withChildren(selector) {
     return parseNodes(selector, {
@@ -238,10 +241,10 @@ export function withChildren(selector) {
 };
 
 /**
- * Return all nodes with any of the specified classes.
- * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
+ * Returns all nodes with any of the specified classes.
+ * @param {ElementInput} selector The input node(s), or a query selector string.
  * @param {...string|string[]} classes The classes.
- * @return {array} The filtered nodes.
+ * @returns {Node[]} The filtered nodes.
  */
 export function withClass(selector, ...classes) {
     classes = parseClasses(classes);
@@ -255,9 +258,9 @@ export function withClass(selector, ...classes) {
 };
 
 /**
- * Return all nodes with a CSS animation.
- * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
- * @return {array} The filtered nodes.
+ * Returns all nodes with a CSS animation.
+ * @param {ElementInput} selector The input node(s), or a query selector string.
+ * @returns {Node[]} The filtered nodes.
  */
 export function withCSSAnimation(selector) {
     return parseNodes(selector)
@@ -267,9 +270,9 @@ export function withCSSAnimation(selector) {
 };
 
 /**
- * Return all nodes with a CSS transition.
- * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
- * @return {array} The filtered nodes.
+ * Returns all nodes with a CSS transition.
+ * @param {ElementInput} selector The input node(s), or a query selector string.
+ * @returns {Node[]} The filtered nodes.
  */
 export function withCSSTransition(selector) {
     return parseNodes(selector)
@@ -279,10 +282,10 @@ export function withCSSTransition(selector) {
 };
 
 /**
- * Return all nodes with custom data.
- * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
+ * Returns all nodes with custom data.
+ * @param {QueryInput} selector The input node(s), or a query selector string.
  * @param {string} [key] The data key.
- * @return {array} The filtered nodes.
+ * @returns {Array<Node|Window>} The filtered nodes.
  */
 export function withData(selector, key) {
     return parseNodes(selector, {
@@ -307,10 +310,10 @@ export function withData(selector, key) {
 };
 
 /**
- * Return all nodes with a descendent matching a filter.
- * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
- * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet|DOM~filterCallback} [nodeFilter] The filter node(s), a query selector string or custom filter function.
- * @return {array} The filtered nodes.
+ * Returns all nodes with a descendant matching a filter.
+ * @param {NodeInput} selector The input node(s), or a query selector string.
+ * @param {NodeFilterInput} [nodeFilter] The filter node(s), a query selector string or custom filter function.
+ * @returns {Node[]} The filtered nodes.
  */
 export function withDescendent(selector, nodeFilter) {
     nodeFilter = parseFilterContains(nodeFilter);
@@ -323,10 +326,10 @@ export function withDescendent(selector, nodeFilter) {
 };
 
 /**
- * Return all nodes with a specified property.
- * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
+ * Returns all nodes with a specified property.
+ * @param {ElementInput} selector The input node(s), or a query selector string.
  * @param {string} property The property name.
- * @return {array} The filtered nodes.
+ * @returns {Node[]} The filtered nodes.
  */
 export function withProperty(selector, property) {
     return parseNodes(selector)

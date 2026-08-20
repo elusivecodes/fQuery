@@ -1,28 +1,27 @@
 /**
- * QuerySet Class
- * @class
+ * Represents an ordered, chainable collection of DOM nodes.
  */
 export default class QuerySet {
     /**
-     * New DOM constructor.
-     * @param {array} nodes The input nodes.
+     * Creates a QuerySet.
+     * @param {Array<Node|Window>} [nodes=[]] The input nodes.
      */
     constructor(nodes = []) {
         this._nodes = nodes;
     }
 
     /**
-     * Get the number of nodes.
-     * @return {number} The number of nodes.
+     * Gets the number of nodes.
+     * @returns {number} The number of nodes.
      */
     get length() {
         return this._nodes.length;
     }
 
     /**
-     * Execute a function for each node in the set.
-     * @param {function} callback The callback to execute
-     * @return {QuerySet} The QuerySet object.
+     * Executes a function for each node in the set.
+     * @param {((node: Node|Window, index: number) => void)} callback The callback to execute.
+     * @returns {this} The current QuerySet.
      */
     each(callback) {
         this._nodes.forEach(
@@ -33,9 +32,9 @@ export default class QuerySet {
     }
 
     /**
-     * Retrieve the DOM node(s) contained in the QuerySet.
+     * Retrieves the DOM node(s) contained in the QuerySet.
      * @param {number} [index=null] The index of the node.
-     * @return {array|Node|Document|Window} The node(s).
+     * @returns {Array<Node|Window>|Node|Window|undefined} The nodes, or the node at the specified index.
      */
     get(index = null) {
         if (index === null) {
@@ -48,9 +47,9 @@ export default class QuerySet {
     }
 
     /**
-     * Execute a function for each node in the set.
-     * @param {function} callback The callback to execute
-     * @return {QuerySet} A new QuerySet object.
+     * Executes a function for each node in the set.
+     * @param {((node: Node|Window, index: number) => (Node|Window))} callback The callback to execute.
+     * @returns {QuerySet} A new QuerySet object.
      */
     map(callback) {
         const nodes = this._nodes.map(callback);
@@ -59,10 +58,10 @@ export default class QuerySet {
     }
 
     /**
-     * Reduce the set of matched nodes to a subset specified by a range of indices.
+     * Reduces the set of matched nodes to a subset specified by a range of indices.
      * @param {number} [begin] The index to slice from.
      * @param {number} [end]  The index to slice to.
-     * @return {QuerySet} A new QuerySet object.
+     * @returns {QuerySet} A new QuerySet object.
      */
     slice(begin, end) {
         const nodes = this._nodes.slice(begin, end);
@@ -71,8 +70,8 @@ export default class QuerySet {
     }
 
     /**
-     * Return an iterable from the nodes.
-     * @return {ArrayIterator} The iterator object.
+     * Returns an iterable from the nodes.
+     * @returns {IterableIterator<Node|Window>} The node iterator.
      */
     [Symbol.iterator]() {
         return this._nodes.values();

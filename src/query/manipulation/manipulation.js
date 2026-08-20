@@ -2,17 +2,14 @@ import { clone as _clone, detach as _detach, empty as _empty, remove as _remove,
 import QuerySet from './../query-set.js';
 
 /**
- * QuerySet Manipulation
+ * @typedef {import('../../helpers.js').NodeInput} NodeInput
+ * @typedef {import('../../manipulation/manipulation.js').CloneOptions} CloneOptions
  */
 
 /**
- * Clone each node.
- * @param {object} options The options for cloning the node.
- * @param {Boolean} [options.deep=true] Whether to also clone all descendent nodes.
- * @param {Boolean} [options.events] Whether to also clone events.
- * @param {Boolean} [options.data] Whether to also clone custom data.
- * @param {Boolean} [options.animations] Whether to also clone animations.
- * @return {QuerySet} A new QuerySet object.
+ * Clones each node.
+ * @param {CloneOptions} [options] The cloning options.
+ * @returns {QuerySet} A new QuerySet object.
  */
 export function clone(options) {
     const clones = _clone(this, options);
@@ -21,8 +18,8 @@ export function clone(options) {
 };
 
 /**
- * Detach each node from the DOM.
- * @return {QuerySet} The QuerySet object.
+ * Detaches each node from the DOM.
+ * @returns {QuerySet} The QuerySet object.
  */
 export function detach() {
     _detach(this);
@@ -31,8 +28,8 @@ export function detach() {
 };
 
 /**
- * Remove all children of each node from the DOM.
- * @return {QuerySet} The QuerySet object.
+ * Removes all children of each node from the DOM.
+ * @returns {QuerySet} The QuerySet object.
  */
 export function empty() {
     _empty(this);
@@ -41,8 +38,8 @@ export function empty() {
 };
 
 /**
- * Remove each node from the DOM.
- * @return {QuerySet} The QuerySet object.
+ * Removes each node from the DOM.
+ * @returns {QuerySet} The QuerySet object.
  */
 export function remove() {
     _remove(this);
@@ -51,9 +48,9 @@ export function remove() {
 };
 
 /**
- * Replace each other node with nodes.
- * @param {string|array|Node|HTMLElement|NodeList|HTMLCollection|QuerySet} otherSelector The input node(s), or a query selector string.
- * @return {QuerySet} The QuerySet object.
+ * Replaces each other node with nodes.
+ * @param {NodeInput} otherSelector The input node(s), or a query selector string.
+ * @returns {QuerySet} The QuerySet object.
  */
 export function replaceAll(otherSelector) {
     _replaceAll(this, otherSelector);
@@ -62,9 +59,9 @@ export function replaceAll(otherSelector) {
 };
 
 /**
- * Replace each node with other nodes.
- * @param {string|array|Node|HTMLElement|DocumentFragment|NodeList|HTMLCollection|QuerySet} otherSelector The input node(s), or a query selector or HTML string.
- * @return {QuerySet} The QuerySet object.
+ * Replaces each node with other nodes.
+ * @param {NodeInput} otherSelector The input node(s), or a query selector or HTML string.
+ * @returns {QuerySet} The QuerySet object.
  */
 export function replaceWith(otherSelector) {
     _replaceWith(this, otherSelector);

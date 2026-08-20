@@ -4,13 +4,11 @@ import { parseNode, parseNodes } from './../filters.js';
 import { createRange } from './../manipulation/create.js';
 import { sort } from './utility.js';
 
-/**
- * DOM Selection
- */
+/** @typedef {import('../helpers.js').NodeInput} NodeInput */
 
 /**
- * Insert each node after the selection.
- * @param {string|array|Node|HTMLElement|DocumentFragment|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector or HTML string.
+ * Inserts each node after the selection.
+ * @param {NodeInput} selector The input node(s), or a query selector or HTML string.
  */
 export function afterSelection(selector) {
     // ShadowRoot nodes can not be moved
@@ -37,8 +35,8 @@ export function afterSelection(selector) {
 };
 
 /**
- * Insert each node before the selection.
- * @param {string|array|Node|HTMLElement|DocumentFragment|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector or HTML string.
+ * Inserts each node before the selection.
+ * @param {NodeInput} selector The input node(s), or a query selector or HTML string.
  */
 export function beforeSelection(selector) {
     // ShadowRoot nodes can not be moved
@@ -64,8 +62,8 @@ export function beforeSelection(selector) {
 };
 
 /**
- * Extract selected nodes from the DOM.
- * @return {array} The selected nodes.
+ * Extracts selected nodes from the DOM.
+ * @returns {Node[]} The selected nodes.
  */
 export function extractSelection() {
     const selection = getWindow().getSelection();
@@ -84,8 +82,8 @@ export function extractSelection() {
 };
 
 /**
- * Return all selected nodes.
- * @return {array} The selected nodes.
+ * Returns all selected nodes.
+ * @returns {Node[]} The selected nodes.
  */
 export function getSelection() {
     const selection = getWindow().getSelection();
@@ -136,8 +134,8 @@ export function getSelection() {
 };
 
 /**
- * Create a selection on the first node.
- * @param {string|array|Node|HTMLElement|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
+ * Creates a selection on the first node.
+ * @param {NodeInput} selector The input node(s), or a query selector string.
  */
 export function select(selector) {
     const node = parseNode(selector, {
@@ -165,8 +163,8 @@ export function select(selector) {
 };
 
 /**
- * Create a selection containing all of the nodes.
- * @param {string|array|Node|HTMLElement|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
+ * Creates a selection containing all of the nodes.
+ * @param {NodeInput} selector The input node(s), or a query selector string.
  */
 export function selectAll(selector) {
     const nodes = sort(selector);
@@ -194,8 +192,8 @@ export function selectAll(selector) {
 };
 
 /**
- * Wrap selected nodes with other nodes.
- * @param {string|array|HTMLElement|DocumentFragment|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector or HTML string.
+ * Wraps selected nodes with other nodes.
+ * @param {NodeInput} selector The input node(s), or a query selector or HTML string.
  */
 export function wrapSelection(selector) {
     // ShadowRoot nodes can not be cloned

@@ -2,12 +2,13 @@ import { getContext, getWindow } from './../config.js';
 import { parseNode } from './../filters.js';
 
 /**
- * DOM Events
+ * @typedef {import('../helpers.js').ElementInput} ElementInput
+ * @typedef {import('./event-handlers.js').EventCallback} EventCallback
  */
 
 /**
- * Trigger a blur event on the first node.
- * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
+ * Triggers a blur event on the first node.
+ * @param {ElementInput} selector The input node(s), or a query selector string.
  */
 export function blur(selector) {
     const node = parseNode(selector);
@@ -20,8 +21,8 @@ export function blur(selector) {
 };
 
 /**
- * Trigger a click event on the first node.
- * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
+ * Triggers a click event on the first node.
+ * @param {ElementInput} selector The input node(s), or a query selector string.
  */
 export function click(selector) {
     const node = parseNode(selector);
@@ -34,8 +35,8 @@ export function click(selector) {
 };
 
 /**
- * Trigger a focus event on the first node.
- * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
+ * Triggers a focus event on the first node.
+ * @param {ElementInput} selector The input node(s), or a query selector string.
  */
 export function focus(selector) {
     const node = parseNode(selector);
@@ -48,8 +49,8 @@ export function focus(selector) {
 };
 
 /**
- * Add a function to the ready queue.
- * @param {DOM~eventCallback} callback The callback to execute.
+ * Adds a function to the ready queue.
+ * @param {EventCallback} callback The callback to execute.
  */
 export function ready(callback) {
     if (getContext().readyState === 'complete') {

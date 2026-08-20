@@ -2,15 +2,13 @@ import { merge } from '@fr0st/core';
 import { getContext } from './../config.js';
 import { allowedTags as _allowedTags } from './../vars.js';
 
-/**
- * DOM Utility
- */
+/** @typedef {Record<string, Array<string|RegExp>>} AllowedTags */
 
 /**
- * Sanitize a HTML string.
+ * Sanitizes a HTML string.
  * @param {string} html The input HTML string.
- * @param {object} [allowedTags] An object containing allowed tags and attributes.
- * @return {string} The sanitized HTML string.
+ * @param {AllowedTags} [allowedTags] The allowed tags and attributes.
+ * @returns {string} The sanitized HTML string.
  */
 export function sanitize(html, allowedTags = _allowedTags) {
     const template = getContext().createElement('template');
@@ -26,9 +24,9 @@ export function sanitize(html, allowedTags = _allowedTags) {
 };
 
 /**
- * Sanitize a single node.
- * @param {HTMLElement} node The input node.
- * @param {object} [allowedTags] An object containing allowed tags and attributes.
+ * Sanitizes a single node.
+ * @param {Element} node The input node.
+ * @param {AllowedTags} [allowedTags] The allowed tags and attributes.
  */
 function sanitizeNode(node, allowedTags = _allowedTags) {
     // check node

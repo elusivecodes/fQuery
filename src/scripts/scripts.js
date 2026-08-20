@@ -2,21 +2,27 @@ import { isString } from '@fr0st/core';
 import { appendQueryString } from './../ajax/helpers.js';
 import { getContext } from './../config.js';
 
+/** @typedef {Record<string, *>} ScriptAttributes */
+
+/** @typedef {string|ScriptAttributes} ScriptSource */
+
 /**
- * DOM AJAX Scripts
+ * @typedef {object} ScriptLoadOptions
+ * @property {boolean} [cache=true] Whether to cache the request.
+ * @property {Document} [context] The document context. Defaults to the configured context.
  */
 
 /**
- * Return whether a boolean attribute should be enabled.
+ * Checks whether a boolean attribute should be enabled.
  * @param {*} value The attribute value.
- * @return {Boolean} True if the attribute should be enabled.
+ * @returns {boolean} True if the attribute should be enabled.
  */
 function isEnabled(value) {
     return value !== false && value !== null && typeof value !== 'undefined';
 };
 
 /**
- * Apply a script attribute if it should be serialized.
+ * Applies a script attribute if it should be serialized.
  * @param {HTMLScriptElement} script The script element.
  * @param {string} key The attribute key.
  * @param {*} value The attribute value.
@@ -30,13 +36,11 @@ function setScriptAttribute(script, key, value) {
 };
 
 /**
- * Load and execute a JavaScript file.
- * @param {string} url The URL of the script.
- * @param {object} [attributes] Additional attributes to set on the script tag.
- * @param {object} [options] The options for loading the script.
- * @param {Boolean} [options.cache=true] Whether to cache the request.
- * @param {Document} [options.context=getContext()] The document context.
- * @return {Promise} A new Promise that resolves when the script is loaded, or rejects on failure.
+ * Loads and executes a JavaScript file.
+ * @param {string|null} url The URL of the script.
+ * @param {ScriptAttributes} [attributes] Additional attributes to set on the script element.
+ * @param {ScriptLoadOptions} [options] The loading options.
+ * @returns {Promise<void>} A promise that resolves when the script loads, or rejects on failure.
  */
 export function loadScript(url, attributes, { cache = true, context = getContext() } = {}) {
     attributes = {
@@ -69,12 +73,10 @@ export function loadScript(url, attributes, { cache = true, context = getContext
 };
 
 /**
- * Load and executes multiple JavaScript files (in order).
- * @param {array} urls An array of script URLs or attribute objects.
- * @param {object} [options] The options for loading the scripts.
- * @param {Boolean} [options.cache=true] Whether to cache the request.
- * @param {Document} [options.context=getContext()] The document context.
- * @return {Promise} A new Promise that resolves when the request is completed, or rejects on failure.
+ * Loads and executes multiple JavaScript files (in order).
+ * @param {ScriptSource[]} urls The script URLs or attribute objects.
+ * @param {ScriptLoadOptions} [options] The loading options.
+ * @returns {Promise<void[]>} A promise that resolves when every script loads, or rejects on failure.
  */
 export function loadScripts(urls, { cache = true, context = getContext() } = {}) {
     return Promise.all(

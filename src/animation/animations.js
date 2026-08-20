@@ -6,20 +6,15 @@ import Animation from './animation.js';
 import { start } from './helpers.js';
 
 /**
- * DOM Animations
+ * @typedef {import('../helpers.js').ElementInput} ElementInput
+ * @typedef {import('./animation.js').AnimationOptions} AnimationOptions
  */
 
 /**
- * Drop each node into place.
- * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
- * @param {object} [options] The options to use for animating.
- * @param {string|function} [options.direction=top] The direction to drop the node from.
- * @param {number} [options.duration=1000] The duration of the animation.
- * @param {string} [options.type=ease-in-out] The type of animation.
- * @param {Boolean} [options.infinite] Whether the animation should run forever.
- * @param {Boolean} [options.useGpu=true] Whether the animation should use GPU acceleration.
- * @param {Boolean} [options.debug] Whether to set debugging info on the node.
- * @return {AnimationSet} A new AnimationSet that resolves when the animation has completed.
+ * Drops each node into place.
+ * @param {ElementInput} selector The input node(s), or a query selector string.
+ * @param {AnimationOptions} [options] The animation options.
+ * @returns {AnimationSet} A new AnimationSet that resolves when the animation has completed.
  */
 export function dropIn(selector, options) {
     return slideIn(
@@ -32,16 +27,10 @@ export function dropIn(selector, options) {
 };
 
 /**
- * Drop each node out of place.
- * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
- * @param {object} [options] The options to use for animating.
- * @param {string|function} [options.direction=top] The direction to drop the node to.
- * @param {number} [options.duration=1000] The duration of the animation.
- * @param {string} [options.type=ease-in-out] The type of animation.
- * @param {Boolean} [options.infinite] Whether the animation should run forever.
- * @param {Boolean} [options.useGpu=true] Whether the animation should use GPU acceleration.
- * @param {Boolean} [options.debug] Whether to set debugging info on the node.
- * @return {AnimationSet} A new AnimationSet that resolves when the animation has completed.
+ * Drops each node out of place.
+ * @param {ElementInput} selector The input node(s), or a query selector string.
+ * @param {AnimationOptions} [options] The animation options.
+ * @returns {AnimationSet} A new AnimationSet that resolves when the animation has completed.
  */
 export function dropOut(selector, options) {
     return slideOut(
@@ -54,14 +43,10 @@ export function dropOut(selector, options) {
 };
 
 /**
- * Fade the opacity of each node in.
- * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
- * @param {object} [options] The options to use for animating.
- * @param {number} [options.duration=1000] The duration of the animation.
- * @param {string} [options.type=ease-in-out] The type of animation.
- * @param {Boolean} [options.infinite] Whether the animation should run forever.
- * @param {Boolean} [options.debug] Whether to set debugging info on the node.
- * @return {AnimationSet} A new AnimationSet that resolves when the animation has completed.
+ * Fades the opacity of each node in.
+ * @param {ElementInput} selector The input node(s), or a query selector string.
+ * @param {AnimationOptions} [options] The animation options.
+ * @returns {AnimationSet} A new AnimationSet that resolves when the animation has completed.
  */
 export function fadeIn(selector, options) {
     return animate(
@@ -78,14 +63,10 @@ export function fadeIn(selector, options) {
 };
 
 /**
- * Fade the opacity of each node out.
- * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
- * @param {object} [options] The options to use for animating.
- * @param {number} [options.duration=1000] The duration of the animation.
- * @param {string} [options.type=ease-in-out] The type of animation.
- * @param {Boolean} [options.infinite] Whether the animation should run forever.
- * @param {Boolean} [options.debug] Whether to set debugging info on the node.
- * @return {AnimationSet} A new AnimationSet that resolves when the animation has completed.
+ * Fades the opacity of each node out.
+ * @param {ElementInput} selector The input node(s), or a query selector string.
+ * @param {AnimationOptions} [options] The animation options.
+ * @returns {AnimationSet} A new AnimationSet that resolves when the animation has completed.
  */
 export function fadeOut(selector, options) {
     return animate(
@@ -102,18 +83,10 @@ export function fadeOut(selector, options) {
 };
 
 /**
- * Rotate each node in on an X, Y or Z.
- * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
- * @param {object} [options] The options to use for animating.
- * @param {number} [options.x=0] The amount to rotate on the X-axis.
- * @param {number} [options.y=1] The amount to rotate on the Y-axis.
- * @param {number} [options.z=1] The amount to rotate on the Z-axis.
- * @param {Boolean} [options.inverse] Whether to invert the rotation.
- * @param {number} [options.duration=1000] The duration of the animation.
- * @param {string} [options.type=ease-in-out] The type of animation.
- * @param {Boolean} [options.infinite] Whether the animation should run forever.
- * @param {Boolean} [options.debug] Whether to set debugging info on the node.
- * @return {AnimationSet} A new AnimationSet that resolves when the animation has completed.
+ * Rotates each node in on an X, Y or Z.
+ * @param {ElementInput} selector The input node(s), or a query selector string.
+ * @param {AnimationOptions} [options] The animation options.
+ * @returns {AnimationSet} A new AnimationSet that resolves when the animation has completed.
  */
 export function rotateIn(selector, options) {
     return animate(
@@ -137,18 +110,10 @@ export function rotateIn(selector, options) {
 };
 
 /**
- * Rotate each node out on an X, Y or Z.
- * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
- * @param {object} [options] The options to use for animating.
- * @param {number} [options.x=0] The amount to rotate on the X-axis.
- * @param {number} [options.y=1] The amount to rotate on the Y-axis.
- * @param {number} [options.z=1] The amount to rotate on the Z-axis.
- * @param {Boolean} [options.inverse] Whether to invert the rotation.
- * @param {number} [options.duration=1000] The duration of the animation.
- * @param {string} [options.type=ease-in-out] The type of animation.
- * @param {Boolean} [options.infinite] Whether the animation should run forever.
- * @param {Boolean} [options.debug] Whether to set debugging info on the node.
- * @return {AnimationSet} A new AnimationSet that resolves when the animation has completed.
+ * Rotates each node out on an X, Y or Z.
+ * @param {ElementInput} selector The input node(s), or a query selector string.
+ * @param {AnimationOptions} [options] The animation options.
+ * @returns {AnimationSet} A new AnimationSet that resolves when the animation has completed.
  */
 export function rotateOut(selector, options) {
     return animate(
@@ -172,16 +137,10 @@ export function rotateOut(selector, options) {
 };
 
 /**
- * Slide each node in from a direction.
- * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
- * @param {object} [options] The options to use for animating.
- * @param {string|function} [options.direction=bottom] The direction to slide from.
- * @param {number} [options.duration=1000] The duration of the animation.
- * @param {string} [options.type=ease-in-out] The type of animation.
- * @param {Boolean} [options.infinite] Whether the animation should run forever.
- * @param {Boolean} [options.useGpu=true] Whether the animation should use GPU acceleration.
- * @param {Boolean} [options.debug] Whether to set debugging info on the node.
- * @return {AnimationSet} A new AnimationSet that resolves when the animation has completed.
+ * Slides each node in from a direction.
+ * @param {ElementInput} selector The input node(s), or a query selector string.
+ * @param {AnimationOptions} [options] The animation options.
+ * @returns {AnimationSet} A new AnimationSet that resolves when the animation has completed.
  */
 export function slideIn(selector, options) {
     return animate(
@@ -231,16 +190,10 @@ export function slideIn(selector, options) {
 };
 
 /**
- * Slide each node out from a direction.
- * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
- * @param {object} [options] The options to use for animating.
- * @param {string|function} [options.direction=bottom] The direction to slide to.
- * @param {number} [options.duration=1000] The duration of the animation.
- * @param {string} [options.type=ease-in-out] The type of animation.
- * @param {Boolean} [options.infinite] Whether the animation should run forever.
- * @param {Boolean} [options.useGpu=true] Whether the animation should use GPU acceleration.
- * @param {Boolean} [options.debug] Whether to set debugging info on the node.
- * @return {AnimationSet} A new AnimationSet that resolves when the animation has completed.
+ * Slides each node out from a direction.
+ * @param {ElementInput} selector The input node(s), or a query selector string.
+ * @param {AnimationOptions} [options] The animation options.
+ * @returns {AnimationSet} A new AnimationSet that resolves when the animation has completed.
  */
 export function slideOut(selector, options) {
     return animate(
@@ -290,16 +243,10 @@ export function slideOut(selector, options) {
 };
 
 /**
- * Squeeze each node in from a direction.
- * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
- * @param {object} [options] The options to use for animating.
- * @param {string|function} [options.direction=bottom] The direction to squeeze from.
- * @param {number} [options.duration=1000] The duration of the animation.
- * @param {string} [options.type=ease-in-out] The type of animation.
- * @param {Boolean} [options.infinite] Whether the animation should run forever.
- * @param {Boolean} [options.useGpu=true] Whether the animation should use GPU acceleration.
- * @param {Boolean} [options.debug] Whether to set debugging info on the node.
- * @return {AnimationSet} A new AnimationSet that resolves when the animation has completed.
+ * Squeezes each node in from a direction.
+ * @param {ElementInput} selector The input node(s), or a query selector string.
+ * @param {AnimationOptions} [options] The animation options.
+ * @returns {AnimationSet} A new AnimationSet that resolves when the animation has completed.
  */
 export function squeezeIn(selector, options) {
     const nodes = parseNodes(selector);
@@ -376,16 +323,10 @@ export function squeezeIn(selector, options) {
 };
 
 /**
- * Squeeze each node out from a direction.
- * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
- * @param {object} [options] The options to use for animating.
- * @param {string|function} [options.direction=bottom] The direction to squeeze to.
- * @param {number} [options.duration=1000] The duration of the animation.
- * @param {string} [options.type=ease-in-out] The type of animation.
- * @param {Boolean} [options.infinite] Whether the animation should run forever.
- * @param {Boolean} [options.useGpu=true] Whether the animation should use GPU acceleration.
- * @param {Boolean} [options.debug] Whether to set debugging info on the node.
- * @return {AnimationSet} A new AnimationSet that resolves when the animation has completed.
+ * Squeezes each node out from a direction.
+ * @param {ElementInput} selector The input node(s), or a query selector string.
+ * @param {AnimationOptions} [options] The animation options.
+ * @returns {AnimationSet} A new AnimationSet that resolves when the animation has completed.
  */
 export function squeezeOut(selector, options) {
     const nodes = parseNodes(selector);

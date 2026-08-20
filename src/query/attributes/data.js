@@ -1,13 +1,14 @@
 import { cloneData as _cloneData, getData as _getData, removeData as _removeData, setData as _setData } from './../../attributes/data.js';
 
 /**
- * QuerySet Data
+ * @typedef {import('../../helpers.js').QueryInput} QueryInput
+ * @typedef {import('../query-set.js').default} QuerySet
  */
 
 /**
- * Clone custom data from each node to each other node.
- * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|NodeList|HTMLCollection|QuerySet} otherSelector The other node(s), or a query selector string.
- * @return {QuerySet} The QuerySet object.
+ * Clones custom data from each node to each other node.
+ * @param {QueryInput} otherSelector The other node(s), or a query selector string.
+ * @returns {QuerySet} The QuerySet object.
  */
 export function cloneData(otherSelector) {
     _cloneData(this, otherSelector);
@@ -16,18 +17,18 @@ export function cloneData(otherSelector) {
 };
 
 /**
- * Get custom data for the first node.
+ * Gets custom data for the first node.
  * @param {string} [key] The data key.
- * @return {*} The data value.
+ * @returns {*|undefined} The data value, all custom data, or `undefined` if none exists.
  */
 export function getData(key) {
     return _getData(this, key);
 };
 
 /**
- * Remove custom data from each node.
+ * Removes custom data from each node.
  * @param {string} [key] The data key.
- * @return {QuerySet} The QuerySet object.
+ * @returns {QuerySet} The QuerySet object.
  */
 export function removeData(key) {
     _removeData(this, key);
@@ -36,10 +37,10 @@ export function removeData(key) {
 };
 
 /**
- * Set custom data for each node.
- * @param {string|object} key The data key, or an object containing data.
+ * Sets custom data for each node.
+ * @param {string|Record<string, *>} key The data key, or an object containing data.
  * @param {*} [value] The data value.
- * @return {QuerySet} The QuerySet object.
+ * @returns {QuerySet} The QuerySet object.
  */
 export function setData(key, value) {
     _setData(this, key, value);

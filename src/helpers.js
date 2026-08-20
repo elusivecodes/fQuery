@@ -2,15 +2,29 @@ import { escapeRegExp, isArray, isNumeric, isObject, isString, isUndefined, merg
 import QuerySet from './query/query-set.js';
 
 /**
- * DOM Helpers
+ * @typedef {string|Element|Array<string|Element>|NodeList|HTMLCollection|QuerySet} ElementInput
  */
 
 /**
- * Resolve a single node.
- * @param {string|Node|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector or HTML string.
- * @param {function} stringCallback The callback used to resolve strings.
- * @param {DOM~nodeCallback} nodeFilter The callback used to filter nodes.
- * @return {Node|HTMLElement|DocumentFragment|ShadowRoot|Document|Window} The resolved node.
+ * @typedef {string|Node|Array<string|Node>|NodeList|HTMLCollection|QuerySet} NodeInput
+ */
+
+/**
+ * @typedef {string|Node|Window|Array<string|Node|Window>|NodeList|HTMLCollection|QuerySet} QueryInput
+ */
+
+/**
+ * @callback NodeFilterCallback
+ * @param {Node|Window} node The node to test.
+ * @returns {boolean} Whether the node matches.
+ */
+
+/**
+ * Resolves a single node.
+ * @param {QueryInput} nodes The input node(s), or a query selector or HTML string.
+ * @param {((value: string) => (Node|Window|null|undefined))} stringCallback The callback used to resolve strings.
+ * @param {NodeFilterCallback} nodeFilter The callback used to filter nodes.
+ * @returns {Node|Window|null|undefined} The resolved node, or `undefined` if none matches.
  */
 export function resolveNode(nodes, stringCallback, nodeFilter) {
     if (isString(nodes)) {
@@ -35,11 +49,11 @@ export function resolveNode(nodes, stringCallback, nodeFilter) {
 };
 
 /**
- * Resolve multiple nodes.
- * @param {string|Node|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector or HTML string.
- * @param {function} stringCallback The callback used to resolve strings.
- * @param {DOM~nodeCallback} nodeFilter The callback used to filter nodes.
- * @return {array} The resolved nodes.
+ * Resolves multiple nodes.
+ * @param {QueryInput} nodes The input node(s), or a query selector or HTML string.
+ * @param {((value: string) => Array<Node|Window>)} stringCallback The callback used to resolve strings.
+ * @param {NodeFilterCallback} nodeFilter The callback used to filter nodes.
+ * @returns {Array<Node|Window>} The resolved nodes.
  */
 export function resolveNodes(nodes, stringCallback, nodeFilter) {
     if (isString(nodes)) {
@@ -62,9 +76,10 @@ export function resolveNodes(nodes, stringCallback, nodeFilter) {
 };
 
 /**
- * Create a wrapped version of a function that executes once per tick.
- * @param {function} callback Callback function to debounce.
- * @return {function} The wrapped function.
+ * Creates a wrapped version of a function that executes once per tick.
+ * @template {(...args: any[]) => any} T
+ * @param {T} callback The callback to debounce.
+ * @returns {(...args: Parameters<T>) => void} The wrapped function.
  */
 export function debounce(callback) {
     let running;
@@ -84,18 +99,18 @@ export function debounce(callback) {
 };
 
 /**
- * Return a RegExp for testing a namespaced event.
+ * Returns a RegExp for testing a namespaced event.
  * @param {string} event The namespaced event.
- * @return {RegExp} The namespaced event RegExp.
+ * @returns {RegExp} The namespaced event RegExp.
  */
 export function eventNamespacedRegExp(event) {
     return new RegExp(`^${escapeRegExp(event)}(?:\\.|$)`, 'i');
 };
 
 /**
- * Return a single dimensional array of classes (from a multi-dimensional array or space-separated strings).
- * @param {array} classList The classes to parse.
- * @return {string[]} The parsed classes.
+ * Returns a one-dimensional array of classes from nested arrays or space-separated strings.
+ * @param {Array<string|string[]>} classList The classes to parse.
+ * @returns {string[]} The parsed classes.
  */
 export function parseClasses(classList) {
     return classList
@@ -105,12 +120,11 @@ export function parseClasses(classList) {
 };
 
 /**
- * Return a data object from a key and value, or a data object.
- * @param {string|object} key The data key, or an object containing data.
+ * Normalizes a key and value, or an existing data object, into a data object.
+ * @param {string|Record<string, *>} key The data key, or an object containing data.
  * @param {*} [value] The data value.
- * @param {object} [options] The options for parsing data.
- * @param {Boolean} [options.json=false] Whether to JSON encode the values.
- * @return {object} The data object.
+ * @param {{json?: boolean}} [options] The options for parsing data.
+ * @returns {Record<string, *>} The data object.
  */
 export function parseData(key, value, { json = false } = {}) {
     const result = isString(key) ?
@@ -128,9 +142,9 @@ export function parseData(key, value, { json = false } = {}) {
 };
 
 /**
- * Return a JS primitive from a dataset string.
+ * Parses a dataset string into a JavaScript value.
  * @param {string} value The input value.
- * @return {*} The parsed value.
+ * @returns {boolean|number|Record<string, *>|Array<*>|string|null|undefined} The parsed value.
  */
 export function parseDataset(value) {
     if (isUndefined(value)) {
@@ -168,9 +182,9 @@ export function parseDataset(value) {
 };
 
 /**
- * Return a "real" event from a namespaced event.
+ * Returns the base event name from a namespaced event.
  * @param {string} event The namespaced event.
- * @return {string} The real event.
+ * @returns {string} The real event.
  */
 export function parseEvent(event) {
     return event.split('.')
@@ -178,9 +192,9 @@ export function parseEvent(event) {
 };
 
 /**
- * Return an array of events from a space-separated string.
+ * Returns an array of events from a space-separated string.
  * @param {string} events The events.
- * @return {array} The parsed events.
+ * @returns {string[]} The parsed events.
  */
 export function parseEvents(events) {
     return events.split(' ');

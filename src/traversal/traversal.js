@@ -4,27 +4,26 @@ import { createRange } from './../manipulation/create.js';
 import { sort } from './../utility/utility.js';
 
 /**
- * DOM Traversal
+ * @typedef {import('../filters.js').NodeFilterInput} NodeFilterInput
+ * @typedef {import('../helpers.js').NodeInput} NodeInput
  */
 
 /**
- * Return the first child of each node (optionally matching a filter).
- * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
- * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet|DOM~filterCallback} [nodeFilter] The filter node(s), a query selector string or custom filter function.
- * @return {array} The matching nodes.
+ * Returns the first child of each node (optionally matching a filter).
+ * @param {NodeInput} selector The input node(s), or a query selector string.
+ * @param {NodeFilterInput} [nodeFilter] The filter node(s), a query selector string or custom filter function.
+ * @returns {Node[]} The matching nodes.
  */
 export function child(selector, nodeFilter) {
     return children(selector, nodeFilter, { first: true });
 };
 
 /**
- * Return all children of each node (optionally matching a filter).
- * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
- * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet|DOM~filterCallback} [nodeFilter] The filter node(s), a query selector string or custom filter function.
- * @param {object} [options] The options for filtering the nodes.
- * @param {Boolean} [options.first=false] Whether to only return the first matching node for each node.
- * @param {Boolean} [options.elementsOnly=true] Whether to only return element nodes.
- * @return {array} The matching nodes.
+ * Returns all children of each node (optionally matching a filter).
+ * @param {NodeInput} selector The input node(s), or a query selector string.
+ * @param {NodeFilterInput} [nodeFilter] The filter node(s), a query selector string or custom filter function.
+ * @param {{first?: boolean, elementsOnly?: boolean}} [options] The filtering options.
+ * @returns {Node[]} The matching nodes.
  */
 export function children(selector, nodeFilter, { first = false, elementsOnly = true } = {}) {
     nodeFilter = parseFilter(nodeFilter);
@@ -61,20 +60,20 @@ export function children(selector, nodeFilter, { first = false, elementsOnly = t
 };
 
 /**
- * Return the closest ancestor to each node (optionally matching a filter, and before a limit).
- * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
- * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet|DOM~filterCallback} [nodeFilter] The filter node(s), a query selector string or custom filter function.
- * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet|DOM~filterCallback} [limitFilter] The limit node(s), a query selector string or custom filter function.
- * @return {array} The matching nodes.
+ * Returns the closest ancestor to each node (optionally matching a filter, and before a limit).
+ * @param {NodeInput} selector The input node(s), or a query selector string.
+ * @param {NodeFilterInput} [nodeFilter] The filter node(s), a query selector string or custom filter function.
+ * @param {NodeFilterInput} [limitFilter] The limit node(s), a query selector string or custom filter function.
+ * @returns {Node[]} The matching nodes.
  */
 export function closest(selector, nodeFilter, limitFilter) {
     return parents(selector, nodeFilter, limitFilter, { first: true });
 };
 
 /**
- * Return the common ancestor of all nodes.
- * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
- * @return {HTMLElement} The common ancestor.
+ * Returns the common ancestor of all nodes.
+ * @param {NodeInput} selector The input node(s), or a query selector string.
+ * @returns {Node|undefined} The common ancestor, or `undefined` if it cannot be resolved.
  */
 export function commonAncestor(selector) {
     const nodes = sort(selector);
@@ -101,18 +100,18 @@ export function commonAncestor(selector) {
 };
 
 /**
- * Return all children of each node (including text and comment nodes).
- * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
- * @return {array} The matching nodes.
+ * Returns all children of each node (including text and comment nodes).
+ * @param {NodeInput} selector The input node(s), or a query selector string.
+ * @returns {Node[]} The matching nodes.
  */
 export function contents(selector) {
     return children(selector, false, { elementsOnly: false });
 };
 
 /**
- * Return the DocumentFragment of the first node.
- * @param {string|array|Node|HTMLElement|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
- * @return {DocumentFragment} The DocumentFragment.
+ * Returns the DocumentFragment of the first node.
+ * @param {NodeInput} selector The input node(s), or a query selector string.
+ * @returns {DocumentFragment|undefined} The DocumentFragment, or `undefined` if none exists.
  */
 export function fragment(selector) {
     const node = parseNode(selector);
@@ -125,10 +124,10 @@ export function fragment(selector) {
 };
 
 /**
- * Return the next sibling for each node (optionally matching a filter).
- * @param {string|array|Node|HTMLElement|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
- * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet|DOM~filterCallback} [nodeFilter] The filter node(s), a query selector string or custom filter function.
- * @return {array} The matching nodes.
+ * Returns the next sibling for each node (optionally matching a filter).
+ * @param {NodeInput} selector The input node(s), or a query selector string.
+ * @param {NodeFilterInput} [nodeFilter] The filter node(s), a query selector string or custom filter function.
+ * @returns {Node[]} The matching nodes.
  */
 export function next(selector, nodeFilter) {
     nodeFilter = parseFilter(nodeFilter);
@@ -160,12 +159,12 @@ export function next(selector, nodeFilter) {
 };
 
 /**
- * Return all next siblings for each node (optionally matching a filter, and before a limit).
- * @param {string|array|Node|HTMLElement|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
- * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet|DOM~filterCallback} [nodeFilter] The filter node(s), a query selector string or custom filter function.
- * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet|DOM~filterCallback} [limitFilter] The limit node(s), a query selector string or custom filter function.
- * @param {Boolean} [first=false] Whether to only return the first matching node for each node.
- * @return {array} The matching nodes.
+ * Returns all next siblings for each node (optionally matching a filter, and before a limit).
+ * @param {NodeInput} selector The input node(s), or a query selector string.
+ * @param {NodeFilterInput} [nodeFilter] The filter node(s), a query selector string or custom filter function.
+ * @param {NodeFilterInput} [limitFilter] The limit node(s), a query selector string or custom filter function.
+ * @param {{first?: boolean}} [options] The filtering options.
+ * @returns {Node[]} The matching nodes.
  */
 export function nextAll(selector, nodeFilter, limitFilter, { first = false } = {}) {
     nodeFilter = parseFilter(nodeFilter);
@@ -206,9 +205,9 @@ export function nextAll(selector, nodeFilter, limitFilter, { first = false } = {
 };
 
 /**
- * Return the offset parent (relatively positioned) of the first node.
- * @param {string|array|Node|HTMLElement|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
- * @return {HTMLElement} The offset parent.
+ * Returns the offset parent (relatively positioned) of the first node.
+ * @param {NodeInput} selector The input node(s), or a query selector string.
+ * @returns {Element|null|undefined} The offset parent, or `undefined` if no node matches.
  */
 export function offsetParent(selector) {
     const node = parseNode(selector);
@@ -221,10 +220,10 @@ export function offsetParent(selector) {
 };
 
 /**
- * Return the parent of each node (optionally matching a filter).
- * @param {string|array|Node|HTMLElement|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
- * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet|DOM~filterCallback} [nodeFilter] The filter node(s), a query selector string or custom filter function.
- * @return {array} The matching nodes.
+ * Returns the parent of each node (optionally matching a filter).
+ * @param {NodeInput} selector The input node(s), or a query selector string.
+ * @param {NodeFilterInput} [nodeFilter] The filter node(s), a query selector string or custom filter function.
+ * @returns {Node[]} The matching nodes.
  */
 export function parent(selector, nodeFilter) {
     nodeFilter = parseFilter(nodeFilter);
@@ -256,12 +255,12 @@ export function parent(selector, nodeFilter) {
 };
 
 /**
- * Return all parents of each node (optionally matching a filter, and before a limit).
- * @param {string|array|Node|HTMLElement|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
- * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet|DOM~filterCallback} [nodeFilter] The filter node(s), a query selector string or custom filter function.
- * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet|DOM~filterCallback} [limitFilter] The limit node(s), a query selector string or custom filter function.
- * @param {Boolean} [first=false] Whether to only return the first matching node for each node.
- * @return {array} The matching nodes.
+ * Returns all parents of each node (optionally matching a filter, and before a limit).
+ * @param {NodeInput} selector The input node(s), or a query selector string.
+ * @param {NodeFilterInput} [nodeFilter] The filter node(s), a query selector string or custom filter function.
+ * @param {NodeFilterInput} [limitFilter] The limit node(s), a query selector string or custom filter function.
+ * @param {{first?: boolean}} [options] The filtering options.
+ * @returns {Node[]} The matching nodes.
  */
 export function parents(selector, nodeFilter, limitFilter, { first = false } = {}) {
     nodeFilter = parseFilter(nodeFilter);
@@ -305,10 +304,10 @@ export function parents(selector, nodeFilter, limitFilter, { first = false } = {
 };
 
 /**
- * Return the previous sibling for each node (optionally matching a filter).
- * @param {string|array|Node|HTMLElement|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
- * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet|DOM~filterCallback} [nodeFilter] The filter node(s), a query selector string or custom filter function.
- * @return {array} The matching nodes.
+ * Returns the previous sibling for each node (optionally matching a filter).
+ * @param {NodeInput} selector The input node(s), or a query selector string.
+ * @param {NodeFilterInput} [nodeFilter] The filter node(s), a query selector string or custom filter function.
+ * @returns {Node[]} The matching nodes.
  */
 export function prev(selector, nodeFilter) {
     nodeFilter = parseFilter(nodeFilter);
@@ -340,12 +339,12 @@ export function prev(selector, nodeFilter) {
 };
 
 /**
- * Return all previous siblings for each node (optionally matching a filter, and before a limit).
- * @param {string|array|Node|HTMLElement|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
- * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet|DOM~filterCallback} [nodeFilter] The filter node(s), a query selector string or custom filter function.
- * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet|DOM~filterCallback} [limitFilter] The limit node(s), a query selector string or custom filter function.
- * @param {Boolean} [first=false] Whether to only return the first matching node for each node.
- * @return {array} The matching nodes.
+ * Returns all previous siblings for each node (optionally matching a filter, and before a limit).
+ * @param {NodeInput} selector The input node(s), or a query selector string.
+ * @param {NodeFilterInput} [nodeFilter] The filter node(s), a query selector string or custom filter function.
+ * @param {NodeFilterInput} [limitFilter] The limit node(s), a query selector string or custom filter function.
+ * @param {{first?: boolean}} [options] The filtering options.
+ * @returns {Node[]} The matching nodes.
  */
 export function prevAll(selector, nodeFilter, limitFilter, { first = false } = {}) {
     nodeFilter = parseFilter(nodeFilter);
@@ -389,9 +388,9 @@ export function prevAll(selector, nodeFilter, limitFilter, { first = false } = {
 };
 
 /**
- * Return the ShadowRoot of the first node.
- * @param {string|array|Node|HTMLElement|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
- * @return {ShadowRoot} The ShadowRoot.
+ * Returns the ShadowRoot of the first node.
+ * @param {NodeInput} selector The input node(s), or a query selector string.
+ * @returns {ShadowRoot|null|undefined} The ShadowRoot, or `undefined` if no node matches.
  */
 export function shadow(selector) {
     const node = parseNode(selector);
@@ -404,12 +403,11 @@ export function shadow(selector) {
 };
 
 /**
- * Return all siblings for each node (optionally matching a filter).
- * @param {string|array|Node|HTMLElement|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
- * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet|DOM~filterCallback} [nodeFilter] The filter node(s), a query selector string or custom filter function.
- * @param {object} [options] The options for filtering the nodes.
- * @param {Boolean} [options.elementsOnly=true] Whether to only return element nodes.
- * @return {array} The matching nodes.
+ * Returns all siblings for each node (optionally matching a filter).
+ * @param {NodeInput} selector The input node(s), or a query selector string.
+ * @param {NodeFilterInput} [nodeFilter] The filter node(s), a query selector string or custom filter function.
+ * @param {{elementsOnly?: boolean}} [options] The filtering options.
+ * @returns {Node[]} The matching nodes.
  */
 export function siblings(selector, nodeFilter, { elementsOnly = true } = {}) {
     nodeFilter = parseFilter(nodeFilter);

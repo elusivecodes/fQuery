@@ -1,13 +1,14 @@
 import { after as _after, append as _append, appendTo as _appendTo, before as _before, insertAfter as _insertAfter, insertBefore as _insertBefore, prepend as _prepend, prependTo as _prependTo } from './../../manipulation/move.js';
 
 /**
- * QuerySet Move
+ * @typedef {import('../../helpers.js').NodeInput} NodeInput
+ * @typedef {import('../query-set.js').default} QuerySet
  */
 
 /**
- * Insert each other node after the first node.
- * @param {string|array|Node|HTMLElement|DocumentFragment|NodeList|HTMLCollection|QuerySet} otherSelector The other node(s), or a query selector or HTML string.
- * @return {QuerySet} The QuerySet object.
+ * Inserts each other node after the first node.
+ * @param {NodeInput} otherSelector The other node(s), or a query selector or HTML string.
+ * @returns {QuerySet} The QuerySet object.
  */
 export function after(otherSelector) {
     _after(this, otherSelector);
@@ -16,9 +17,9 @@ export function after(otherSelector) {
 };
 
 /**
- * Append each other node to the first node.
- * @param {string|array|Node|HTMLElement|DocumentFragment|NodeList|HTMLCollection|QuerySet} otherSelector The other node(s), or a query selector or HTML string.
- * @return {QuerySet} The QuerySet object.
+ * Appends each other node to the first node.
+ * @param {NodeInput} otherSelector The other node(s), or a query selector or HTML string.
+ * @returns {QuerySet} The QuerySet object.
  */
 export function append(otherSelector) {
     _append(this, otherSelector);
@@ -27,9 +28,9 @@ export function append(otherSelector) {
 };
 
 /**
- * Append each node to the first other node.
- * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|NodeList|HTMLCollection|QuerySet} otherSelector The other node(s), or a query selector string.
- * @return {QuerySet} The QuerySet object.
+ * Appends each node to the first other node.
+ * @param {NodeInput} otherSelector The other node(s), or a query selector string.
+ * @returns {QuerySet} The QuerySet object.
  */
 export function appendTo(otherSelector) {
     _appendTo(this, otherSelector);
@@ -38,9 +39,9 @@ export function appendTo(otherSelector) {
 };
 
 /**
- * Insert each other node before the first node.
- * @param {string|array|Node|HTMLElement|DocumentFragment|NodeList|HTMLCollection|QuerySet} otherSelector The other node(s), or a query selector or HTML string.
- * @return {QuerySet} The QuerySet object.
+ * Inserts each other node before the first node.
+ * @param {NodeInput} otherSelector The other node(s), or a query selector or HTML string.
+ * @returns {QuerySet} The QuerySet object.
  */
 export function before(otherSelector) {
     _before(this, otherSelector);
@@ -49,9 +50,9 @@ export function before(otherSelector) {
 };
 
 /**
- * Insert each node after the first other node.
- * @param {string|array|Node|HTMLElement|NodeList|HTMLCollection|QuerySet} otherSelector The other node(s), or a query selector string.
- * @return {QuerySet} The QuerySet object.
+ * Inserts each node after the first other node.
+ * @param {NodeInput} otherSelector The other node(s), or a query selector string.
+ * @returns {QuerySet} The QuerySet object.
  */
 export function insertAfter(otherSelector) {
     _insertAfter(this, otherSelector);
@@ -60,9 +61,9 @@ export function insertAfter(otherSelector) {
 };
 
 /**
- * Insert each node before the first other node.
- * @param {string|array|Node|HTMLElement|NodeList|HTMLCollection|QuerySet} otherSelector The other node(s), or a query selector string.
- * @return {QuerySet} The QuerySet object.
+ * Inserts each node before the first other node.
+ * @param {NodeInput} otherSelector The other node(s), or a query selector string.
+ * @returns {QuerySet} The QuerySet object.
  */
 export function insertBefore(otherSelector) {
     _insertBefore(this, otherSelector);
@@ -71,9 +72,9 @@ export function insertBefore(otherSelector) {
 };
 
 /**
- * Prepend each other node to the first node.
- * @param {string|array|Node|HTMLElement|DocumentFragment|NodeList|HTMLCollection|QuerySet} otherSelector The other node(s), or a query selector or HTML string.
- * @return {QuerySet} The QuerySet object.
+ * Prepends each other node to the first node.
+ * @param {NodeInput} otherSelector The other node(s), or a query selector or HTML string.
+ * @returns {QuerySet} The QuerySet object.
  */
 export function prepend(otherSelector) {
     _prepend(this, otherSelector);
@@ -82,9 +83,9 @@ export function prepend(otherSelector) {
 };
 
 /**
- * Prepend each node to the first other node.
- * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|NodeList|HTMLCollection|QuerySet} otherSelector The other node(s), or a query selector string.
- * @return {QuerySet} The QuerySet object.
+ * Prepends each node to the first other node.
+ * @param {NodeInput} otherSelector The other node(s), or a query selector string.
+ * @returns {QuerySet} The QuerySet object.
  */
 export function prependTo(otherSelector) {
     _prependTo(this, otherSelector);

@@ -2,14 +2,12 @@ import { parseNode, parseNodes } from './../filters.js';
 import { parseData } from './../helpers.js';
 import { data } from './../vars.js';
 
-/**
- * DOM Data
- */
+/** @typedef {import('../helpers.js').QueryInput} QueryInput */
 
 /**
- * Clone custom data from each node to each other node.
- * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
- * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|NodeList|HTMLCollection|QuerySet} otherSelector The other node(s), or a query selector string.
+ * Clones custom data from each node to each other node.
+ * @param {QueryInput} selector The input node(s), or a query selector string.
+ * @param {QueryInput} otherSelector The other node(s), or a query selector string.
  */
 export function cloneData(selector, otherSelector) {
     const nodes = parseNodes(selector, {
@@ -37,10 +35,10 @@ export function cloneData(selector, otherSelector) {
 };
 
 /**
- * Get custom data for the first node.
- * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
+ * Gets custom data for the first node.
+ * @param {QueryInput} selector The input node(s), or a query selector string.
  * @param {string} [key] The data key.
- * @return {*} The data value.
+ * @returns {*|undefined} The data value, all custom data, or `undefined` if none exists.
  */
 export function getData(selector, key) {
     const node = parseNode(selector, {
@@ -62,8 +60,8 @@ export function getData(selector, key) {
 };
 
 /**
- * Remove custom data from each node.
- * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
+ * Removes custom data from each node.
+ * @param {QueryInput} selector The input node(s), or a query selector string.
  * @param {string} [key] The data key.
  */
 export function removeData(selector, key) {
@@ -92,9 +90,9 @@ export function removeData(selector, key) {
 };
 
 /**
- * Set custom data for each node.
- * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
- * @param {string|object} key The data key, or an object containing data.
+ * Sets custom data for each node.
+ * @param {QueryInput} selector The input node(s), or a query selector string.
+ * @param {string|Record<string, *>} key The data key, or an object containing data.
  * @param {*} [value] The data value.
  */
 export function setData(selector, key, value) {

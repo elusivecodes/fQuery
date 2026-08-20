@@ -2,18 +2,22 @@ import { isString } from '@fr0st/core';
 import { appendQueryString } from './../ajax/helpers.js';
 import { getContext } from './../config.js';
 
+/** @typedef {Record<string, *>} StyleAttributes */
+
+/** @typedef {string|StyleAttributes} StyleSource */
+
 /**
- * DOM AJAX Styles
+ * @typedef {object} StyleLoadOptions
+ * @property {boolean} [cache=true] Whether to cache the request.
+ * @property {Document} [context] The document context. Defaults to the configured context.
  */
 
 /**
- * Import a CSS Stylesheet file.
- * @param {string} url The URL of the stylesheet.
- * @param {object} [attributes] Additional attributes to set on the style tag.
- * @param {object} [options] The options for loading the stylesheet.
- * @param {Boolean} [options.cache=true] Whether to cache the request.
- * @param {Document} [options.context=getContext()] The document context.
- * @return {Promise} A new Promise that resolves when the stylesheet is loaded, or rejects on failure.
+ * Imports a CSS stylesheet.
+ * @param {string|null} url The URL of the stylesheet.
+ * @param {StyleAttributes} [attributes] Additional attributes to set on the link element.
+ * @param {StyleLoadOptions} [options] The loading options.
+ * @returns {Promise<void>} A promise that resolves when the stylesheet loads, or rejects on failure.
  */
 export function loadStyle(url, attributes, { cache = true, context = getContext() } = {}) {
     attributes = {
@@ -41,12 +45,10 @@ export function loadStyle(url, attributes, { cache = true, context = getContext(
 };
 
 /**
- * Import multiple CSS Stylesheet files.
- * @param {array} urls An array of stylesheet URLs or attribute objects.
- * @param {object} [options] The options for loading the stylesheets.
- * @param {Boolean} [options.cache=true] Whether to cache the request.
- * @param {Document} [options.context=getContext()] The document context.
- * @return {Promise} A new Promise that resolves when the request is completed, or rejects on failure.
+ * Imports multiple CSS stylesheets.
+ * @param {StyleSource[]} urls The stylesheet URLs or attribute objects.
+ * @param {StyleLoadOptions} [options] The loading options.
+ * @returns {Promise<void[]>} A promise that resolves when every stylesheet loads, or rejects on failure.
  */
 export function loadStyles(urls, { cache = true, context = getContext() } = {}) {
     return Promise.all(

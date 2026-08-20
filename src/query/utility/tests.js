@@ -1,167 +1,168 @@
 import { hasAnimation as _hasAnimation, hasAttribute as _hasAttribute, hasChildren as _hasChildren, hasClass as _hasClass, hasCSSAnimation as _hasCSSAnimation, hasCSSTransition as _hasCSSTransition, hasData as _hasData, hasDataset as _hasDataset, hasDescendent as _hasDescendent, hasFragment as _hasFragment, hasProperty as _hasProperty, hasShadow as _hasShadow, is as _is, isConnected as _isConnected, isEqual as _isEqual, isFixed as _isFixed, isHidden as _isHidden, isSame as _isSame, isVisible as _isVisible } from './../../utility/tests.js';
 
 /**
- * QuerySet Tests
+ * @typedef {import('../../filters.js').NodeFilterInput} NodeFilterInput
+ * @typedef {import('../../helpers.js').NodeInput} NodeInput
+ * @typedef {import('../query-set.js').default} QuerySet
  */
 
 /**
- * Returns true if any of the nodes has an animation.
- * @return {Boolean} TRUE if any of the nodes has an animation, otherwise FALSE.
+ * Checks whether any of the nodes has an animation.
+ * @returns {boolean} Whether any of the nodes has an animation.
  */
 export function hasAnimation() {
     return _hasAnimation(this);
 };
 
 /**
- * Returns true if any of the nodes has a specified attribute.
+ * Checks whether any of the nodes has a specified attribute.
  * @param {string} attribute The attribute name.
- * @return {Boolean} TRUE if any of the nodes has the attribute, otherwise FALSE.
+ * @returns {boolean} Whether any of the nodes has the attribute.
  */
 export function hasAttribute(attribute) {
     return _hasAttribute(this, attribute);
 };
 
 /**
- * Returns true if any of the nodes has child nodes.
- * @return {Boolean} TRUE if the any of the nodes has child nodes, otherwise FALSE.
+ * Checks whether any of the nodes has child nodes.
+ * @returns {boolean} Whether any of the nodes has child nodes.
  */
 export function hasChildren() {
     return _hasChildren(this);
 };
 
 /**
- * Returns true if any of the nodes has any of the specified classes.
+ * Checks whether any of the nodes has any of the specified classes.
  * @param {...string|string[]} classes The classes.
- * @return {Boolean} TRUE if any of the nodes has any of the classes, otherwise FALSE.
+ * @returns {boolean} Whether any of the nodes has any of the classes.
  */
 export function hasClass(...classes) {
     return _hasClass(this, ...classes);
 };
 
 /**
- * Returns true if any of the nodes has a CSS animation.
- * @return {Boolean} TRUE if any of the nodes has a CSS animation, otherwise FALSE.
+ * Checks whether any of the nodes has a CSS animation.
+ * @returns {boolean} Whether any of the nodes has a CSS animation.
  */
 export function hasCSSAnimation() {
     return _hasCSSAnimation(this);
 };
 
 /**
- * Returns true if any of the nodes has a CSS transition.
- * @return {Boolean} TRUE if any of the nodes has a CSS transition, otherwise FALSE.
+ * Checks whether any of the nodes has a CSS transition.
+ * @returns {boolean} Whether any of the nodes has a CSS transition.
  */
 export function hasCSSTransition() {
     return _hasCSSTransition(this);
 };
 
 /**
- * Returns true if any of the nodes has custom data.
+ * Checks whether any of the nodes has custom data.
  * @param {string} [key] The data key.
- * @return {Boolean} TRUE if any of the nodes has custom data, otherwise FALSE.
+ * @returns {boolean} Whether any of the nodes has custom data.
  */
 export function hasData(key) {
     return _hasData(this, key);
 };
 
 /**
- * Returns true if any of the nodes has the specified dataset value.
+ * Checks whether any of the nodes has the specified dataset value.
  * @param {string} [key] The dataset key.
- * @return {Boolean} TRUE if any of the nodes has the dataset value, otherwise FALSE.
+ * @returns {boolean} Whether any of the nodes has the dataset value.
  */
 export function hasDataset(key) {
     return _hasDataset(this, key);
 };
 
 /**
- * Returns true if any of the nodes contains a descendent matching a filter.
- * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet|DOM~filterCallback} [nodeFilter] The filter node(s), a query selector string or custom filter function.
- * @return {Boolean} TRUE if any of the nodes contains a descendent matching the filter, otherwise FALSE.
+ * Checks whether any of the nodes contains a descendant matching a filter.
+ * @param {NodeFilterInput} [nodeFilter] The filter node(s), a query selector string or custom filter function.
+ * @returns {boolean} Whether any of the nodes contains a descendant matching the filter.
  */
 export function hasDescendent(nodeFilter) {
     return _hasDescendent(this, nodeFilter);
 };
 
 /**
- * Returns true if any of the nodes has a DocumentFragment.
- * @return {Boolean} TRUE if any of the nodes has a DocumentFragment, otherwise FALSE.
+ * Checks whether any of the nodes has a DocumentFragment.
+ * @returns {boolean} Whether any of the nodes has a DocumentFragment.
  */
 export function hasFragment() {
     return _hasFragment(this);
 };
 
 /**
- * Returns true if any of the nodes has a specified property.
+ * Checks whether any of the nodes has a specified property.
  * @param {string} property The property name.
- * @return {Boolean} TRUE if any of the nodes has the property, otherwise FALSE.
+ * @returns {boolean} Whether any of the nodes has the property.
  */
 export function hasProperty(property) {
     return _hasProperty(this, property);
 };
 
 /**
- * Returns true if any of the nodes has a ShadowRoot.
- * @return {Boolean} TRUE if any of the nodes has a ShadowRoot, otherwise FALSE.
+ * Checks whether any of the nodes has a ShadowRoot.
+ * @returns {boolean} Whether any of the nodes has a ShadowRoot.
  */
 export function hasShadow() {
     return _hasShadow(this);
 };
 
 /**
- * Returns true if any of the nodes matches a filter.
- * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet|DOM~filterCallback} [nodeFilter] The filter node(s), a query selector string or custom filter function.
- * @return {Boolean} TRUE if any of the nodes matches the filter, otherwise FALSE.
+ * Checks whether any of the nodes matches a filter.
+ * @param {NodeFilterInput} [nodeFilter] The filter node(s), a query selector string or custom filter function.
+ * @returns {boolean} Whether any of the nodes matches the filter.
  */
 export function is(nodeFilter) {
     return _is(this, nodeFilter);
 };
 
 /**
- * Returns true if any of the nodes is connected to the DOM.
- * @return {Boolean} TRUE if any of the nodes is connected to the DOM, otherwise FALSE.
+ * Checks whether any of the nodes is connected to the DOM.
+ * @returns {boolean} Whether any of the nodes is connected to the DOM.
  */
 export function isConnected() {
     return _isConnected(this);
 };
 
 /**
- * Returns true if any of the nodes is considered equal to any of the other nodes.
- * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet} otherSelector The other node(s), or a query selector string.
- * @param {object} options The options for performing the comparison.
- * @param {Boolean} [options.shallow=true] Whether to do a shallow comparison.
- * @return {Boolean} TRUE if any of the nodes is considered equal to any of the other nodes, otherwise FALSE.
+ * Checks whether any of the nodes is considered equal to any of the other nodes.
+ * @param {NodeInput} otherSelector The other node(s), or a query selector string.
+ * @param {{shallow?: boolean}} [options] The comparison options.
+ * @returns {boolean} Whether any of the nodes is considered equal to any of the other nodes.
  */
 export function isEqual(otherSelector, { shallow = false } = {}) {
     return _isEqual(this, otherSelector, { shallow });
 };
 
 /**
- * Returns true if any of the elements or a parent of any of the elements is "fixed".
- * @return {Boolean} TRUE if any of the nodes is "fixed", otherwise FALSE.
+ * Checks whether any of the elements or a parent of any of the elements is "fixed".
+ * @returns {boolean} Whether any of the nodes is "fixed".
  */
 export function isFixed() {
     return _isFixed(this);
 };
 
 /**
- * Returns true if any of the nodes is hidden.
- * @return {Boolean} TRUE if any of the nodes is hidden, otherwise FALSE.
+ * Checks whether any of the nodes is hidden.
+ * @returns {boolean} Whether any of the nodes is hidden.
  */
 export function isHidden() {
     return _isHidden(this);
 };
 
 /**
- * Returns true if any of the nodes is considered identical to any of the other nodes.
- * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet} otherSelector The other node(s), or a query selector string.
- * @return {Boolean} TRUE if any of the nodes is considered identical to any of the other nodes, otherwise FALSE.
+ * Checks whether any of the nodes is considered identical to any of the other nodes.
+ * @param {NodeInput} otherSelector The other node(s), or a query selector string.
+ * @returns {boolean} Whether any of the nodes is considered identical to any of the other nodes.
  */
 export function isSame(otherSelector) {
     return _isSame(this, otherSelector);
 };
 
 /**
- * Returns true if any of the nodes is visible.
- * @return {Boolean} TRUE if any of the nodes is visible, otherwise FALSE.
+ * Checks whether any of the nodes is visible.
+ * @returns {boolean} Whether any of the nodes is visible.
  */
 export function isVisible() {
     return _isVisible(this);

@@ -5,14 +5,15 @@ import { parseNode, parseNodes } from './../filters.js';
 import QuerySet from './proto.js';
 
 /**
- * DOM Query
+ * @typedef {import('../helpers.js').QueryInput} QueryInput
+ * @typedef {import('../traversal/find.js').QueryContextInput} QueryContextInput
  */
 
 /**
- * Add a function to the ready queue or return a QuerySet.
- * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|NodeList|HTMLCollection|QuerySet|function} selector The input selector.
- * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|NodeList|HTMLCollection|QuerySet} [context] The context to search in.
- * @return {QuerySet} The new QuerySet object.
+ * Adds a function to the ready queue or returns a QuerySet.
+ * @param {(() => void)|QueryInput} selector The ready callback or input selector.
+ * @param {QueryContextInput} [context] The context to search in.
+ * @returns {QuerySet|undefined} A new QuerySet, or `undefined` when registering a ready callback.
  */
 export function query(selector, context = null) {
     if (isFunction(selector)) {
@@ -33,10 +34,10 @@ export function query(selector, context = null) {
 };
 
 /**
- * Return a QuerySet for the first node.
- * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|NodeList|HTMLCollection|QuerySet} selector The input selector.
- * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|NodeList|HTMLCollection|QuerySet} [context] The context to search in.
- * @return {QuerySet} The new QuerySet object.
+ * Returns a QuerySet for the first node.
+ * @param {QueryInput} selector The input selector.
+ * @param {QueryContextInput} [context] The context to search in.
+ * @returns {QuerySet} The new QuerySet object.
  */
 export function queryOne(selector, context = null) {
     const node = parseNode(selector, {

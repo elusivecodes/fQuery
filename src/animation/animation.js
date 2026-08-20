@@ -4,19 +4,54 @@ import { animations } from './../vars.js';
 import { getTime } from './helpers.js';
 
 /**
- * Animation Class
- * @class
+ * @typedef {'linear'|'ease-in'|'ease-out'|'ease-in-out'} AnimationType
+ */
+
+/**
+ * @typedef {'top'|'right'|'bottom'|'left'|(() => string)} AnimationDirection
+ */
+
+/**
+ * @typedef {object} AnimationOptions
+ * @property {number} [duration=1000] The duration in milliseconds.
+ * @property {AnimationType} [type='ease-in-out'] The easing type.
+ * @property {boolean} [infinite=false] Whether to repeat indefinitely.
+ * @property {boolean} [debug=false] Whether to expose timing data on the element.
+ * @property {AnimationDirection} [direction] The animation direction.
+ * @property {boolean} [useGpu=true] Whether to use GPU-accelerated transforms.
+ * @property {number} [x=0] The X-axis rotation component.
+ * @property {number} [y=1] The Y-axis rotation component.
+ * @property {number} [z=0] The Z-axis rotation component.
+ * @property {boolean} [inverse=false] Whether to invert the rotation.
+ * @property {number} [start] The animation start time.
+ */
+
+/**
+ * @typedef {AnimationOptions & {queueName?: string}} QueuedAnimationOptions
+ */
+
+/**
+ * @typedef {object} StopAnimationOptions
+ * @property {boolean} [finish=true] Whether to finish the animation.
+ */
+
+/**
+ * @callback AnimationCallback
+ * @param {HTMLElement} node The animated element.
+ * @param {number} progress The animation progress from 0 to 1.
+ * @param {AnimationOptions} options The resolved animation options.
+ * @returns {void} Nothing.
+ */
+
+/**
+ * Represents a single Promise-compatible element animation.
  */
 export default class Animation {
     /**
-     * New Animation constructor.
+     * Creates an animation.
      * @param {HTMLElement} node The input node.
-     * @param {DOM~animationCallback} callback The animation callback.
-     * @param {object} [options] The options to use for the animation.
-     * @param {string} [options.type=ease-in-out] The type of animation
-     * @param {number} [options.duration=1000] The duration the animation should last.
-     * @param {Boolean} [options.infinite] Whether to repeat the animation.
-     * @param {Boolean} [options.debug] Whether to set debugging info on the node.
+     * @param {AnimationCallback} callback The animation callback.
+     * @param {AnimationOptions} [options] The animation options.
      */
     constructor(node, callback, options) {
         this._node = node;
@@ -48,37 +83,36 @@ export default class Animation {
     }
 
     /**
-     * Execute a callback if the animation is rejected.
-     * @param {function} [onRejected] The callback to execute if the animation is rejected.
-     * @return {Promise} The promise.
+     * Executes a callback if the animation is rejected.
+     * @param {((reason: HTMLElement) => *)} [onRejected] The callback to execute if the animation is rejected.
+     * @returns {Promise<*>} The resulting promise.
      */
     catch(onRejected) {
         return this._promise.catch(onRejected);
     }
 
     /**
-     * Clone the animation to a new node.
+     * Clones the animation to a new node.
      * @param {HTMLElement} node The input node.
-     * @return {Animation} The cloned Animation.
+     * @returns {Animation} The cloned Animation.
      */
     clone(node) {
         return new Animation(node, this._callback, this._options);
     }
 
     /**
-     * Execute a callback once the animation is settled (resolved or rejected).
-     * @param {function} [onFinally] The callback to execute once the animation is settled.
-     * @return {Promise} The promise.
+     * Executes a callback once the animation is settled (resolved or rejected).
+     * @param {(() => void)} [onFinally] The callback to execute once the animation is settled.
+     * @returns {Promise<*>} The resulting promise.
      */
     finally(onFinally) {
         return this._promise.finally(onFinally);
     }
 
     /**
-     * Stop the animation.
-     * @param {object} [options] The options for stopping the animation.
-     * @param {Boolean} [options.finish=true] Whether to finish the animation.
-    */
+     * Stops the animation.
+     * @param {StopAnimationOptions} [options] The stopping options.
+     */
     stop({ finish = true } = {}) {
         if (this._isStopped || this._isFinished) {
             return;
@@ -105,19 +139,19 @@ export default class Animation {
     }
 
     /**
-     * Execute a callback once the animation is resolved (or optionally rejected).
-     * @param {function} onFulfilled The callback to execute if the animation is resolved.
-     * @param {function} [onRejected] The callback to execute if the animation is rejected.
-     * @return {Promise} The promise.
+     * Executes a callback once the animation is resolved (or optionally rejected).
+     * @param {((value: HTMLElement) => *)} onFulfilled The callback to execute if the animation is resolved.
+     * @param {((reason: HTMLElement) => *)} [onRejected] The callback to execute if the animation is rejected.
+     * @returns {Promise<*>} The resulting promise.
      */
     then(onFulfilled, onRejected) {
         return this._promise.then(onFulfilled, onRejected);
     }
 
     /**
-     * Run a single frame of the animation.
+     * Runs a single frame of the animation.
      * @param {number} [time] The current time.
-     * @return {Boolean} TRUE if the animation is finished, otherwise FALSE.
+     * @returns {boolean} Whether the animation is finished.
      */
     update(time = null) {
         if (this._isStopped) {

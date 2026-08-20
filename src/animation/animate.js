@@ -5,19 +5,18 @@ import Animation from './animation.js';
 import { start } from './helpers.js';
 
 /**
- * DOM Animate
+ * @typedef {import('../helpers.js').ElementInput} ElementInput
+ * @typedef {import('./animation.js').AnimationCallback} AnimationCallback
+ * @typedef {import('./animation.js').AnimationOptions} AnimationOptions
+ * @typedef {import('./animation.js').StopAnimationOptions} StopAnimationOptions
  */
 
 /**
- * Add an animation to each node.
- * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
- * @param {DOM~animationCallback} callback The animation callback.
- * @param {object} [options] The options to use for animating.
- * @param {number} [options.duration=1000] The duration of the animation.
- * @param {string} [options.type=ease-in-out] The type of animation.
- * @param {Boolean} [options.infinite] Whether the animation should run forever.
- * @param {Boolean} [options.debug] Whether to set debugging info on the node.
- * @return {AnimationSet} A new AnimationSet that resolves when the animation has completed.
+ * Adds an animation to each node.
+ * @param {ElementInput} selector The input node(s), or a query selector string.
+ * @param {AnimationCallback} callback The animation callback.
+ * @param {AnimationOptions} [options] The animation options.
+ * @returns {AnimationSet} A new AnimationSet that resolves when the animation has completed.
  */
 export function animate(selector, callback, options) {
     const nodes = parseNodes(selector);
@@ -30,10 +29,9 @@ export function animate(selector, callback, options) {
 };
 
 /**
- * Stop all animations for each node.
- * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
- * @param {object} [options] The options for stopping the animation.
- * @param {Boolean} [options.finish=true] Whether to complete all current animations.
+ * Stops all animations for each node.
+ * @param {ElementInput} selector The input node(s), or a query selector string.
+ * @param {StopAnimationOptions} [options] The stopping options.
  */
 export function stop(selector, { finish = true } = {}) {
     const nodes = parseNodes(selector);

@@ -3,20 +3,50 @@ import { eventNamespacedRegExp, parseEvent, parseEvents } from './../helpers.js'
 import { events } from './../vars.js';
 import { delegateFactory, delegateFactoryClean, namespaceFactory, preventFactory, selfDestructCallbackFactory } from './event-wrappers.js';
 
+/** @typedef {import('../query/query-set.js').default} QuerySet */
+
 /**
- * DOM Event Handlers
+ * @typedef {Element|Document|ShadowRoot|Window} EventTargetNode
  */
 
 /**
- * Add events to each node.
- * @param {string|array|HTMLElement|ShadowRoot|Document|Window|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
+ * @typedef {string|EventTargetNode|Array<string|EventTargetNode>|NodeList|HTMLCollection|QuerySet} EventTargetInput
+ */
+
+/**
+ * @callback EventCallback
+ * @param {Event} event The event object.
+ * @returns {*} The callback result.
+ */
+
+/**
+ * @typedef {object} EventOptions
+ * @property {boolean} [capture=false] Whether to use event capture.
+ * @property {string|null} [delegate=null] The delegate selector.
+ * @property {boolean} [passive=false] Whether to use a passive listener.
+ * @property {boolean} [selfDestruct=false] Whether to remove the listener before its first execution.
+ */
+
+/**
+ * @typedef {object} RemoveEventOptions
+ * @property {boolean|null} [capture=null] Whether to match event capture. Null matches either mode.
+ * @property {string|null} [delegate=null] The delegate selector.
+ */
+
+/**
+ * @typedef {object} TriggerEventOptions
+ * @property {Record<string, *>} [data={}] Additional data assigned to the event.
+ * @property {*} [detail] Additional event details.
+ * @property {boolean} [bubbles=true] Whether the event bubbles.
+ * @property {boolean} [cancelable=true] Whether the event can be cancelled.
+ */
+
+/**
+ * Adds events to each node.
+ * @param {EventTargetInput} selector The input node(s), or a query selector string.
  * @param {string} eventNames The event names.
- * @param {DOM~eventCallback} callback The callback to execute.
- * @param {object} [options] The options for the event.
- * @param {Boolean} [options.capture] Whether to use a capture event.
- * @param {string} [options.delegate] The delegate selector.
- * @param {Boolean} [options.passive] Whether to use a passive event.
- * @param {Boolean} [options.selfDestruct] Whether to use a self-destructing event.
+ * @param {EventCallback} callback The callback to execute.
+ * @param {EventOptions} [options] The event options.
  */
 export function addEvent(selector, eventNames, callback, { capture = false, delegate = null, passive = false, selfDestruct = false } = {}) {
     const nodes = parseNodes(selector, {
@@ -80,50 +110,44 @@ export function addEvent(selector, eventNames, callback, { capture = false, dele
 };
 
 /**
- * Add delegated events to each node.
- * @param {string|array|HTMLElement|ShadowRoot|Document|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
+ * Adds delegated events to each node.
+ * @param {EventTargetInput} selector The input node(s), or a query selector string.
  * @param {string} events The event names.
  * @param {string} delegate The delegate selector.
- * @param {DOM~eventCallback} callback The callback to execute.
- * @param {object} [options] The options for the event.
- * @param {Boolean} [options.capture] Whether to use a capture event.
- * @param {Boolean} [options.passive] Whether to use a passive event.
+ * @param {EventCallback} callback The callback to execute.
+ * @param {EventOptions} [options] The event options.
  */
 export function addEventDelegate(selector, events, delegate, callback, { capture = false, passive = false } = {}) {
     addEvent(selector, events, callback, { capture, delegate, passive });
 };
 
 /**
- * Add self-destructing delegated events to each node.
- * @param {string|array|HTMLElement|ShadowRoot|Document|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
+ * Adds self-destructing delegated events to each node.
+ * @param {EventTargetInput} selector The input node(s), or a query selector string.
  * @param {string} events The event names.
  * @param {string} delegate The delegate selector.
- * @param {DOM~eventCallback} callback The callback to execute.
- * @param {object} [options] The options for the event.
- * @param {Boolean} [options.capture] Whether to use a capture event.
- * @param {Boolean} [options.passive] Whether to use a passive event.
+ * @param {EventCallback} callback The callback to execute.
+ * @param {EventOptions} [options] The event options.
  */
 export function addEventDelegateOnce(selector, events, delegate, callback, { capture = false, passive = false } = {}) {
     addEvent(selector, events, callback, { capture, delegate, passive, selfDestruct: true });
 };
 
 /**
- * Add self-destructing events to each node.
- * @param {string|array|HTMLElement|ShadowRoot|Document|Window|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
+ * Adds self-destructing events to each node.
+ * @param {EventTargetInput} selector The input node(s), or a query selector string.
  * @param {string} events The event names.
- * @param {DOM~eventCallback} callback The callback to execute.
- * @param {object} [options] The options for the event.
- * @param {Boolean} [options.capture] Whether to use a capture event.
- * @param {Boolean} [options.passive] Whether to use a passive event.
+ * @param {EventCallback} callback The callback to execute.
+ * @param {EventOptions} [options] The event options.
  */
 export function addEventOnce(selector, events, callback, { capture = false, passive = false } = {}) {
     addEvent(selector, events, callback, { capture, passive, selfDestruct: true });
 };
 
 /**
- * Clone all events from each node to other nodes.
- * @param {string|array|HTMLElement|ShadowRoot|Document|Window|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
- * @param {string|array|HTMLElement|ShadowRoot|Document|Window|HTMLCollection|QuerySet} otherSelector The other node(s), or a query selector string.
+ * Clones all events from each node to other nodes.
+ * @param {EventTargetInput} selector The input node(s), or a query selector string.
+ * @param {EventTargetInput} otherSelector The other node(s), or a query selector string.
  */
 export function cloneEvents(selector, otherSelector) {
     const nodes = parseNodes(selector, {
@@ -154,13 +178,11 @@ export function cloneEvents(selector, otherSelector) {
 };
 
 /**
- * Remove events from each node.
- * @param {string|array|HTMLElement|ShadowRoot|Document|Window|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
+ * Removes events from each node.
+ * @param {EventTargetInput} selector The input node(s), or a query selector string.
  * @param {string} [eventNames] The event names.
- * @param {DOM~eventCallback} [callback] The callback to remove.
- * @param {object} [options] The options for the event.
- * @param {Boolean} [options.capture] Whether to use a capture event.
- * @param {string} [options.delegate] The delegate selector.
+ * @param {EventCallback} [callback] The callback to remove.
+ * @param {RemoveEventOptions} [options] The removal options.
  */
 export function removeEvent(selector, eventNames, callback, { capture = null, delegate = null } = {}) {
     const nodes = parseNodes(selector, {
@@ -240,27 +262,22 @@ export function removeEvent(selector, eventNames, callback, { capture = null, de
 };
 
 /**
- * Remove delegated events from each node.
- * @param {string|array|HTMLElement|ShadowRoot|Document|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
+ * Removes delegated events from each node.
+ * @param {EventTargetInput} selector The input node(s), or a query selector string.
  * @param {string} [events] The event names.
  * @param {string} [delegate] The delegate selector.
- * @param {DOM~eventCallback} [callback] The callback to remove.
- * @param {object} [options] The options for the event.
- * @param {Boolean} [options.capture] Whether to use a capture event.
+ * @param {EventCallback} [callback] The callback to remove.
+ * @param {RemoveEventOptions} [options] The removal options.
  */
 export function removeEventDelegate(selector, events, delegate, callback, { capture = null } = {}) {
     removeEvent(selector, events, callback, { capture, delegate });
 };
 
 /**
- * Trigger events on each node.
- * @param {string|array|HTMLElement|ShadowRoot|Document|Window|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
+ * Triggers events on each node.
+ * @param {EventTargetInput} selector The input node(s), or a query selector string.
  * @param {string} events The event names.
- * @param {object} [options] The options to use for the Event.
- * @param {object} [options.data] Additional data to attach to the event.
- * @param {*} [options.detail] Additional details to attach to the event.
- * @param {Boolean} [options.bubbles=true] Whether the event will bubble.
- * @param {Boolean} [options.cancelable=true] Whether the event is cancelable.
+ * @param {TriggerEventOptions} [options] The event options.
  */
 export function triggerEvent(selector, events, { data = null, detail = null, bubbles = true, cancelable = true } = {}) {
     const nodes = parseNodes(selector, {
@@ -296,15 +313,11 @@ export function triggerEvent(selector, events, { data = null, detail = null, bub
 };
 
 /**
- * Trigger an event for the first node.
- * @param {string|array|HTMLElement|ShadowRoot|Document|Window|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
+ * Triggers an event for the first node.
+ * @param {EventTargetInput} selector The input node(s), or a query selector string.
  * @param {string} event The event name.
- * @param {object} [options] The options to use for the Event.
- * @param {object} [options.data] Additional data to attach to the event.
- * @param {*} [options.detail] Additional details to attach to the event.
- * @param {Boolean} [options.bubbles=true] Whether the event will bubble.
- * @param {Boolean} [options.cancelable=true] Whether the event is cancelable.
- * @return {Boolean} FALSE if the event was cancelled, otherwise TRUE.
+ * @param {TriggerEventOptions} [options] The event options.
+ * @returns {boolean} Whether the event was dispatched without cancellation.
  */
 export function triggerOne(selector, event, { data = null, detail = null, bubbles = true, cancelable = true } = {}) {
     const node = parseNode(selector, {

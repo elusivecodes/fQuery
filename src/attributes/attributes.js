@@ -3,15 +3,17 @@ import { parseNode, parseNodes } from './../filters.js';
 import { parseData, parseDataset } from './../helpers.js';
 import { removeNode } from './../manipulation/manipulation.js';
 
+/** @typedef {import('../helpers.js').ElementInput} ElementInput */
+
 /**
- * DOM Attributes
+ * @typedef {Record<string, *>} AttributeValues
  */
 
 /**
- * Get attribute value(s) for the first node.
- * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
+ * Gets attribute value(s) for the first node.
+ * @param {ElementInput} selector The input node(s), or a query selector string.
  * @param {string} [attribute] The attribute name.
- * @return {string|object} The attribute value, or an object containing attributes.
+ * @returns {string|null|Record<string, string|null>|undefined} The attribute value, all attributes, or `undefined` if no element matches.
  */
 export function getAttribute(selector, attribute) {
     const node = parseNode(selector);
@@ -31,10 +33,10 @@ export function getAttribute(selector, attribute) {
 };
 
 /**
- * Get dataset value(s) for the first node.
- * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
+ * Gets dataset value(s) for the first node.
+ * @param {ElementInput} selector The input node(s), or a query selector string.
  * @param {string} [key] The dataset key.
- * @return {*} The dataset value, or an object containing the dataset.
+ * @returns {*|undefined} The dataset value, all dataset values, or `undefined` if no element matches.
  */
 export function getDataset(selector, key) {
     const node = parseNode(selector);
@@ -56,19 +58,19 @@ export function getDataset(selector, key) {
 };
 
 /**
- * Get the HTML contents of the first node.
- * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
- * @return {string} The HTML contents.
+ * Gets the HTML contents of the first node.
+ * @param {ElementInput} selector The input node(s), or a query selector string.
+ * @returns {string|undefined} The HTML contents, or `undefined` if no element matches.
  */
 export function getHTML(selector) {
     return getProperty(selector, 'innerHTML');
 };
 
 /**
- * Get a property value for the first node.
- * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
+ * Gets a property value for the first node.
+ * @param {ElementInput} selector The input node(s), or a query selector string.
  * @param {string} property The property name.
- * @return {string} The property value.
+ * @returns {*|undefined} The property value, or `undefined` if no element matches.
  */
 export function getProperty(selector, property) {
     const node = parseNode(selector);
@@ -81,26 +83,26 @@ export function getProperty(selector, property) {
 };
 
 /**
- * Get the text contents of the first node.
- * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
- * @return {string} The text contents.
+ * Gets the text contents of the first node.
+ * @param {ElementInput} selector The input node(s), or a query selector string.
+ * @returns {string|null|undefined} The text contents, or `undefined` if no element matches.
  */
 export function getText(selector) {
     return getProperty(selector, 'textContent');
 };
 
 /**
- * Get the value property of the first node.
- * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
- * @return {string} The value.
+ * Gets the value property of the first node.
+ * @param {ElementInput} selector The input node(s), or a query selector string.
+ * @returns {*|undefined} The value, or `undefined` if no element matches.
  */
 export function getValue(selector) {
     return getProperty(selector, 'value');
 };
 
 /**
- * Remove an attribute from each node.
- * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
+ * Removes an attribute from each node.
+ * @param {ElementInput} selector The input node(s), or a query selector string.
  * @param {string} attribute The attribute name.
  */
 export function removeAttribute(selector, attribute) {
@@ -112,8 +114,8 @@ export function removeAttribute(selector, attribute) {
 };
 
 /**
- * Remove a dataset value from each node.
- * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
+ * Removes a dataset value from each node.
+ * @param {ElementInput} selector The input node(s), or a query selector string.
  * @param {string} key The dataset key.
  */
 export function removeDataset(selector, key) {
@@ -127,8 +129,8 @@ export function removeDataset(selector, key) {
 };
 
 /**
- * Remove a property from each node.
- * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
+ * Removes a property from each node.
+ * @param {ElementInput} selector The input node(s), or a query selector string.
  * @param {string} property The property name.
  */
 export function removeProperty(selector, property) {
@@ -140,10 +142,10 @@ export function removeProperty(selector, property) {
 };
 
 /**
- * Set an attribute value for each node.
- * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
- * @param {string|object} attribute The attribute name, or an object containing attributes.
- * @param {string} [value] The attribute value.
+ * Sets an attribute value for each node.
+ * @param {ElementInput} selector The input node(s), or a query selector string.
+ * @param {string|AttributeValues} attribute The attribute name, or an object containing attributes.
+ * @param {*} [value] The attribute value.
  */
 export function setAttribute(selector, attribute, value) {
     const nodes = parseNodes(selector);
@@ -158,9 +160,9 @@ export function setAttribute(selector, attribute, value) {
 };
 
 /**
- * Set a dataset value for each node.
- * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
- * @param {string|object} key The dataset key, or an object containing dataset values.
+ * Sets a dataset value for each node.
+ * @param {ElementInput} selector The input node(s), or a query selector string.
+ * @param {string|Record<string, *>} key The dataset key, or an object containing dataset values.
  * @param {*} [value] The dataset value.
  */
 export function setDataset(selector, key, value) {
@@ -177,8 +179,8 @@ export function setDataset(selector, key, value) {
 };
 
 /**
- * Set the HTML contents of each node.
- * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
+ * Sets the HTML contents of each node.
+ * @param {ElementInput} selector The input node(s), or a query selector string.
  * @param {string} html The HTML contents.
  */
 export function setHTML(selector, html) {
@@ -206,10 +208,10 @@ export function setHTML(selector, html) {
 };
 
 /**
- * Set a property value for each node.
- * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
- * @param {string|object} property The property name, or an object containing properties.
- * @param {string} [value] The property value.
+ * Sets a property value for each node.
+ * @param {ElementInput} selector The input node(s), or a query selector string.
+ * @param {string|Record<string, *>} property The property name, or an object containing properties.
+ * @param {*} [value] The property value.
  */
 export function setProperty(selector, property, value) {
     const nodes = parseNodes(selector);
@@ -224,8 +226,8 @@ export function setProperty(selector, property, value) {
 };
 
 /**
- * Set the text contents of each node.
- * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
+ * Sets the text contents of each node.
+ * @param {ElementInput} selector The input node(s), or a query selector string.
  * @param {string} text The text contents.
  */
 export function setText(selector, text) {
@@ -253,8 +255,8 @@ export function setText(selector, text) {
 };
 
 /**
- * Set the value property of each node.
- * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
+ * Sets the value property of each node.
+ * @param {ElementInput} selector The input node(s), or a query selector string.
  * @param {string} value The value.
  */
 export function setValue(selector, value) {

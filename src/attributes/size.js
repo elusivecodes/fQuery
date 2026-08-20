@@ -3,17 +3,19 @@ import { parseNode } from './../filters.js';
 import { BORDER_BOX, CONTENT_BOX, MARGIN_BOX, PADDING_BOX, SCROLL_BOX } from './../vars.js';
 import { css } from './styles.js';
 
+/** @typedef {import('../helpers.js').QueryInput} QueryInput */
+
 /**
- * DOM Size
+ * @typedef {object} SizeOptions
+ * @property {number} [boxSize=PADDING_BOX] The box sizing to calculate.
+ * @property {boolean} [outer=false] Whether to use the Window outer dimension.
  */
 
 /**
- * Get the computed height of the first node.
- * @param {string|array|HTMLElement|Document|Window|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
- * @param {object} [options] The options for calculating the height.
- * @param {number} [options.boxSize=PADDING_BOX] The box sizing to calculate.
- * @param {Boolean} [options.outer] Whether to use the window outer height.
- * @return {number} The height.
+ * Gets the computed height of the first node.
+ * @param {QueryInput} selector The input node(s), or a query selector string.
+ * @param {SizeOptions} [options] The sizing options.
+ * @returns {number|undefined} The height, or `undefined` if no node matches.
  */
 export function height(selector, { boxSize = PADDING_BOX, outer = false } = {}) {
     let node = parseNode(selector, {
@@ -60,12 +62,10 @@ export function height(selector, { boxSize = PADDING_BOX, outer = false } = {}) 
 };
 
 /**
- * Get the computed width of the first node.
- * @param {string|array|HTMLElement|Document|Window|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
- * @param {object} [options] The options for calculating the width.
- * @param {number} [options.boxSize=PADDING_BOX] The box sizing to calculate.
- * @param {Boolean} [options.outer] Whether to use the window outer width.
- * @return {number} The width.
+ * Gets the computed width of the first node.
+ * @param {QueryInput} selector The input node(s), or a query selector string.
+ * @param {SizeOptions} [options] The sizing options.
+ * @returns {number|undefined} The width, or `undefined` if no node matches.
  */
 export function width(selector, { boxSize = PADDING_BOX, outer = false } = {}) {
     let node = parseNode(selector, {

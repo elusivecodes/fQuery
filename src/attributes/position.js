@@ -3,16 +3,28 @@ import { getContext, getWindow } from './../config.js';
 import { parseNode, parseNodes } from './../filters.js';
 import { css } from './styles.js';
 
+/** @typedef {import('../helpers.js').ElementInput} ElementInput */
+
 /**
- * DOM Position
+ * @typedef {object} Coordinates
+ * @property {number} x The X co-ordinate.
+ * @property {number} y The Y co-ordinate.
  */
 
 /**
- * Get the X,Y co-ordinates for the center of the first node.
- * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
- * @param {object} [options] The options for calculating the co-ordinates.
- * @param {Boolean} [options.offset] Whether to offset from the top-left of the Document.
- * @return {object} An object with the x and y co-ordinates.
+ * @typedef {object} OffsetOptions
+ * @property {boolean} [offset=false] Whether to offset from the top-left of the Document.
+ */
+
+/**
+ * @typedef {OffsetOptions & {clamp?: boolean}} PercentOptions
+ */
+
+/**
+ * Gets the X,Y co-ordinates for the center of the first node.
+ * @param {ElementInput} selector The input node(s), or a query selector string.
+ * @param {OffsetOptions} [options] The positioning options.
+ * @returns {Coordinates|undefined} The center co-ordinates, or `undefined` if no element matches.
  */
 export function center(selector, { offset = false } = {}) {
     const nodeBox = rect(selector, { offset });
@@ -28,9 +40,9 @@ export function center(selector, { offset = false } = {}) {
 };
 
 /**
- * Contrain each node to a container node.
- * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
- * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} containerSelector The container node, or a query selector string.
+ * Constrains each node to a container node.
+ * @param {ElementInput} selector The input node(s), or a query selector string.
+ * @param {ElementInput} containerSelector The container node, or a query selector string.
  */
 export function constrain(selector, containerSelector) {
     const containerBox = rect(containerSelector);
@@ -100,13 +112,12 @@ export function constrain(selector, containerSelector) {
 };
 
 /**
- * Get the distance of a node to an X,Y position in the Window.
- * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
+ * Gets the distance of a node to an X,Y position in the Window.
+ * @param {ElementInput} selector The input node(s), or a query selector string.
  * @param {number} x The X co-ordinate.
  * @param {number} y The Y co-ordinate.
- * @param {object} [options] The options for calculating the distance.
- * @param {Boolean} [options.offset] Whether to offset from the top-left of the Document.
- * @return {number} The distance to the element.
+ * @param {OffsetOptions} [options] The positioning options.
+ * @returns {number|undefined} The distance to the element, or `undefined` if no element matches.
  */
 export function distTo(selector, x, y, { offset = false } = {}) {
     const nodeCenter = center(selector, { offset });
@@ -119,10 +130,10 @@ export function distTo(selector, x, y, { offset = false } = {}) {
 };
 
 /**
- * Get the distance between two nodes.
- * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
- * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} otherSelector The node to compare, or a query selector string.
- * @return {number} The distance between the nodes.
+ * Gets the distance between two nodes.
+ * @param {ElementInput} selector The input node(s), or a query selector string.
+ * @param {ElementInput} otherSelector The node to compare, or a query selector string.
+ * @returns {number|undefined} The distance between the nodes, or `undefined` if either element does not match.
  */
 export function distToNode(selector, otherSelector) {
     const otherCenter = center(otherSelector);
@@ -135,13 +146,12 @@ export function distToNode(selector, otherSelector) {
 };
 
 /**
- * Get the nearest node to an X,Y position in the Window.
- * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
+ * Gets the nearest node to an X,Y position in the Window.
+ * @param {ElementInput} selector The input node(s), or a query selector string.
  * @param {number} x The X co-ordinate.
  * @param {number} y The Y co-ordinate.
- * @param {object} [options] The options for calculating the distance.
- * @param {Boolean} [options.offset] Whether to offset from the top-left of the Document.
- * @return {HTMLElement} The nearest node.
+ * @param {OffsetOptions} [options] The positioning options.
+ * @returns {Element|undefined} The nearest element, or `undefined` if none matches.
  */
 export function nearestTo(selector, x, y, { offset = false } = {}) {
     let closest;
@@ -161,10 +171,10 @@ export function nearestTo(selector, x, y, { offset = false } = {}) {
 };
 
 /**
- * Get the nearest node to another node.
- * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
- * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} otherSelector The node to compare, or a query selector string.
- * @return {HTMLElement} The nearest node.
+ * Gets the nearest node to another node.
+ * @param {ElementInput} selector The input node(s), or a query selector string.
+ * @param {ElementInput} otherSelector The node to compare, or a query selector string.
+ * @returns {Element|undefined} The nearest element, or `undefined` if none matches.
  */
 export function nearestToNode(selector, otherSelector) {
     const otherCenter = center(otherSelector);
@@ -177,13 +187,11 @@ export function nearestToNode(selector, otherSelector) {
 };
 
 /**
- * Get the percentage of an X co-ordinate relative to a node's width.
- * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
+ * Gets the percentage of an X co-ordinate relative to a node's width.
+ * @param {ElementInput} selector The input node(s), or a query selector string.
  * @param {number} x The X co-ordinate.
- * @param {object} [options] The options for calculating the percentage.
- * @param {Boolean} [options.offset] Whether to offset from the top-left of the Document.
- * @param {Boolean} [options.clamp=true] Whether to clamp the percent between 0 and 100.
- * @return {number} The percent.
+ * @param {PercentOptions} [options] The percentage options.
+ * @returns {number|undefined} The percentage, or `undefined` if no element matches.
  */
 export function percentX(selector, x, { offset = false, clamp = true } = {}) {
     const nodeBox = rect(selector, { offset });
@@ -202,13 +210,11 @@ export function percentX(selector, x, { offset = false, clamp = true } = {}) {
 };
 
 /**
- * Get the percentage of a Y co-ordinate relative to a node's height.
- * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
+ * Gets the percentage of a Y co-ordinate relative to a node's height.
+ * @param {ElementInput} selector The input node(s), or a query selector string.
  * @param {number} y The Y co-ordinate.
- * @param {object} [options] The options for calculating the percentage.
- * @param {Boolean} [options.offset] Whether to offset from the top-left of the Document.
- * @param {Boolean} [options.clamp=true] Whether to clamp the percent between 0 and 100.
- * @return {number} The percent.
+ * @param {PercentOptions} [options] The percentage options.
+ * @returns {number|undefined} The percentage, or `undefined` if no element matches.
  */
 export function percentY(selector, y, { offset = false, clamp = true } = {}) {
     const nodeBox = rect(selector, { offset });
@@ -227,11 +233,10 @@ export function percentY(selector, y, { offset = false, clamp = true } = {}) {
 };
 
 /**
- * Get the position of the first node relative to the Window or Document.
- * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
- * @param {object} [options] The options for calculating the position.
- * @param {Boolean} [options.offset] Whether to offset from the top-left of the Document.
- * @return {object} An object with the X and Y co-ordinates.
+ * Gets the position of the first node relative to the Window or Document.
+ * @param {ElementInput} selector The input node(s), or a query selector string.
+ * @param {OffsetOptions} [options] The positioning options.
+ * @returns {Coordinates|undefined} The co-ordinates, or `undefined` if no element matches.
  */
 export function position(selector, { offset = false } = {}) {
     const node = parseNode(selector);
@@ -258,11 +263,10 @@ export function position(selector, { offset = false } = {}) {
 };
 
 /**
- * Get the computed bounding rectangle of the first node.
- * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
- * @param {object} [options] The options for calculating the bounding rectangle.
- * @param {Boolean} [options.offset] Whether to offset from the top-left of the Document.
- * @return {DOMRect} The computed bounding rectangle.
+ * Gets the computed bounding rectangle of the first node.
+ * @param {ElementInput} selector The input node(s), or a query selector string.
+ * @param {OffsetOptions} [options] The positioning options.
+ * @returns {DOMRect|undefined} The computed bounding rectangle, or `undefined` if no element matches.
  */
 export function rect(selector, { offset = false } = {}) {
     const node = parseNode(selector);

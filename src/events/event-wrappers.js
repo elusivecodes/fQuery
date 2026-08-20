@@ -1,15 +1,19 @@
 import { merge } from '@fr0st/core';
 import { closest } from './../traversal/traversal.js';
 
+/** @typedef {import('./event-handlers.js').EventCallback} EventCallback */
+
 /**
- * DOM Event Wrappers
+ * @callback DelegateCallback
+ * @param {Element} target The event target to test.
+ * @returns {Element|false|undefined} The matching delegate element, or no match.
  */
 
 /**
- * Return a function for matching a delegate target to a custom selector.
- * @param {HTMLElement|ShadowRoot|Document} node The input node.
+ * Returns a function for matching a delegate target to a custom selector.
+ * @param {Element|ShadowRoot|Document} node The input node.
  * @param {string} selector The delegate query selector.
- * @return {DOM~delegateCallback} The callback for finding the matching delegate.
+ * @returns {DelegateCallback} The callback for finding the matching delegate.
  */
 function getDelegateContainsFactory(node, selector) {
     return (target) => {
@@ -32,10 +36,10 @@ function getDelegateContainsFactory(node, selector) {
 };
 
 /**
- * Return a function for matching a delegate target to a standard selector.
- * @param {HTMLElement|ShadowRoot|Document} node The input node.
+ * Returns a function for matching a delegate target to a standard selector.
+ * @param {Element|ShadowRoot|Document} node The input node.
  * @param {string} selector The delegate query selector.
- * @return {DOM~delegateCallback} The callback for finding the matching delegate.
+ * @returns {DelegateCallback} The callback for finding the matching delegate.
  */
 function getDelegateMatchFactory(node, selector) {
     return (target) =>
@@ -49,11 +53,11 @@ function getDelegateMatchFactory(node, selector) {
 };
 
 /**
- * Return a wrapped event callback that executes on a delegate selector.
- * @param {HTMLElement|ShadowRoot|Document} node The input node.
+ * Returns a wrapped event callback that executes on a delegate selector.
+ * @param {Element|ShadowRoot|Document} node The input node.
  * @param {string} selector The delegate query selector.
- * @param {function} callback The event callback.
- * @return {DOM~eventCallback} The delegated event callback.
+ * @param {EventCallback} callback The event callback.
+ * @returns {EventCallback} The delegated event callback.
  */
 export function delegateFactory(node, selector, callback) {
     const getDelegate = selector.match(/(?:^\s*:scope|,(?=(?:(?:[^"']*["']){2})*[^"']*$)\s*:scope)/) ?
@@ -87,10 +91,10 @@ export function delegateFactory(node, selector, callback) {
 };
 
 /**
- * Return a wrapped event callback that cleans up delegate events.
- * @param {HTMLElement|ShadowRoot|Document} node The input node.
- * @param {function} callback The event callback.
- * @return {DOM~eventCallback} The cleaned event callback.
+ * Returns a wrapped event callback that cleans up delegate events.
+ * @param {Element|ShadowRoot|Document} node The input node.
+ * @param {EventCallback} callback The event callback.
+ * @returns {EventCallback} The cleaned event callback.
  */
 export function delegateFactoryClean(node, callback) {
     return (event) => {
@@ -114,10 +118,10 @@ export function delegateFactoryClean(node, callback) {
 };
 
 /**
- * Return a wrapped event callback that checks for a namespace match.
+ * Returns a wrapped event callback that checks for a namespace match.
  * @param {string} eventName The namespaced event name.
- * @param {DOM~eventCallback} callback The callback to execute.
- * @return {DOM~eventCallback} The wrapped event callback.
+ * @param {EventCallback} callback The callback to execute.
+ * @returns {EventCallback} The wrapped event callback.
  */
 export function namespaceFactory(eventName, callback) {
     return (event) => {
@@ -130,9 +134,9 @@ export function namespaceFactory(eventName, callback) {
 };
 
 /**
- * Return a wrapped event callback that checks for a return false for preventing default.
- * @param {DOM~eventCallback} callback The callback to execute.
- * @return {DOM~eventCallback} The wrapped event callback.
+ * Returns a wrapped event callback that prevents the default action when the callback returns false.
+ * @param {EventCallback} callback The callback to execute.
+ * @returns {EventCallback} The wrapped event callback.
  */
 export function preventFactory(callback) {
     return (event) => {
@@ -143,10 +147,10 @@ export function preventFactory(callback) {
 };
 
 /**
- * Return a wrapped callback that performs cleanup before its first execution.
- * @param {DOM~eventCallback} callback The callback to execute.
- * @param {function} cleanup The cleanup callback.
- * @return {DOM~eventCallback} The wrapped event callback.
+ * Returns a wrapped callback that performs cleanup before its first execution.
+ * @param {EventCallback} callback The callback to execute.
+ * @param {() => void} cleanup The cleanup callback.
+ * @returns {EventCallback} The wrapped event callback.
  */
 export function selfDestructCallbackFactory(callback, cleanup) {
     return (event) => {

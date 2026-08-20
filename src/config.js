@@ -1,7 +1,8 @@
 import { extend, isDocument, isWindow } from '@fr0st/core';
 
 /**
- * DOM Config
+ * @typedef {import('./ajax/ajax-request.js').AjaxOptions} AjaxOptions
+ * @typedef {import('./animation/animation.js').AnimationOptions} AnimationOptions
  */
 
 const ajaxDefaults = {
@@ -38,56 +39,57 @@ export const config = {
 };
 
 /**
- * Get the AJAX defaults.
- * @return {object} The AJAX defaults.
+ * Gets the AJAX defaults.
+ * @returns {AjaxOptions} The AJAX defaults.
  */
 export function getAjaxDefaults() {
     return ajaxDefaults;
 };
 
 /**
- * Get the animation defaults.
- * @return {object} The animation defaults.
+ * Gets the animation defaults.
+ * @returns {AnimationOptions} The animation defaults.
  */
 export function getAnimationDefaults() {
     return animationDefaults;
 };
 
 /**
- * Get the document context.
- * @return {Document} The document context.
+ * Gets the document context.
+ * @returns {Document} The document context.
  */
 export function getContext() {
     return config.context;
 };
 
 /**
- * Get the window.
- * @return {Window} The window.
+ * Gets the window.
+ * @returns {Window} The window.
  */
 export function getWindow() {
     return config.window;
 };
 
 /**
- * Set the AJAX defaults.
- * @param {object} options The ajax default options.
+ * Sets the AJAX defaults.
+ * @param {Partial<AjaxOptions>} options The AJAX default options.
  */
 export function setAjaxDefaults(options) {
     extend(ajaxDefaults, options);
 };
 
 /**
- * Set the animation defaults.
- * @param {object} options The animation default options.
+ * Sets the animation defaults.
+ * @param {Partial<AnimationOptions>} options The animation default options.
  */
 export function setAnimationDefaults(options) {
     extend(animationDefaults, options);
 };
 
 /**
- * Set the document context.
+ * Sets the document context.
  * @param {Document} context The document context.
+ * @throws {Error} When context is not a Document.
  */
 export function setContext(context) {
     if (!isDocument(context)) {
@@ -98,8 +100,9 @@ export function setContext(context) {
 };
 
 /**
- * Set the window.
+ * Sets the window.
  * @param {Window} window The window.
+ * @throws {Error} When window is not a Window.
  */
 export function setWindow(window) {
     if (!isWindow(window)) {
@@ -110,8 +113,8 @@ export function setWindow(window) {
 };
 
 /**
- * Set whether animations should use setTimeout.
- * @param {Boolean} [enable=true] Whether animations should use setTimeout.
+ * Sets whether animations should use setTimeout.
+ * @param {boolean} [enable=true] Whether animations should use setTimeout.
  */
 export function useTimeout(enable = true) {
     config.useTimeout = enable;

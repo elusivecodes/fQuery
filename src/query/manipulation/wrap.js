@@ -1,13 +1,15 @@
 import { unwrap as _unwrap, wrap as _wrap, wrapAll as _wrapAll, wrapInner as _wrapInner } from './../../manipulation/wrap.js';
 
 /**
- * QuerySet Wrap
+ * @typedef {import('../../filters.js').NodeFilterInput} NodeFilterInput
+ * @typedef {import('../../helpers.js').NodeInput} NodeInput
+ * @typedef {import('../query-set.js').default} QuerySet
  */
 
 /**
- * Unwrap each node.
- * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet|DOM~filterCallback} [nodeFilter] The filter node(s), a query selector string or custom filter function.
- * @return {QuerySet} The QuerySet object.
+ * Unwraps each node.
+ * @param {NodeFilterInput} [nodeFilter] The filter node(s), a query selector string or custom filter function.
+ * @returns {QuerySet} The QuerySet object.
  */
 export function unwrap(nodeFilter) {
     _unwrap(this, nodeFilter);
@@ -16,9 +18,9 @@ export function unwrap(nodeFilter) {
 };
 
 /**
- * Wrap each nodes with other nodes.
- * @param {string|array|HTMLElement|DocumentFragment|NodeList|HTMLCollection|QuerySet} otherSelector The other node(s), or a query selector or HTML string.
- * @return {QuerySet} The QuerySet object.
+ * Wraps each nodes with other nodes.
+ * @param {NodeInput} otherSelector The other node(s), or a query selector or HTML string.
+ * @returns {QuerySet} The QuerySet object.
  */
 export function wrap(otherSelector) {
     _wrap(this, otherSelector);
@@ -27,9 +29,9 @@ export function wrap(otherSelector) {
 };
 
 /**
- * Wrap all nodes with other nodes.
- * @param {string|array|HTMLElement|DocumentFragment|NodeList|HTMLCollection|QuerySet} otherSelector The other node(s), or a query selector or HTML string.
- * @return {QuerySet} The QuerySet object.
+ * Wraps all nodes with other nodes.
+ * @param {NodeInput} otherSelector The other node(s), or a query selector or HTML string.
+ * @returns {QuerySet} The QuerySet object.
  */
 export function wrapAll(otherSelector) {
     _wrapAll(this, otherSelector);
@@ -38,9 +40,9 @@ export function wrapAll(otherSelector) {
 };
 
 /**
- * Wrap the contents of each node with other nodes.
- * @param {string|array|HTMLElement|DocumentFragment|NodeList|HTMLCollection|QuerySet} otherSelector The other node(s), or a query selector or HTML string.
- * @return {QuerySet} The QuerySet object.
+ * Wraps the contents of each node with other nodes.
+ * @param {NodeInput} otherSelector The other node(s), or a query selector or HTML string.
+ * @returns {QuerySet} The QuerySet object.
  */
 export function wrapInner(otherSelector) {
     _wrapInner(this, otherSelector);

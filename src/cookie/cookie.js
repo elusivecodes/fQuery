@@ -1,13 +1,9 @@
 import { getContext } from './../config.js';
 
 /**
- * DOM Cookie
- */
-
-/**
- * Get a cookie value.
+ * Gets a cookie value.
  * @param {string} name The cookie name.
- * @return {*} The cookie value.
+ * @returns {string|null} The cookie value, or `null` if it does not exist.
  */
 export function getCookie(name) {
     const cookie = getContext().cookie
@@ -29,11 +25,9 @@ export function getCookie(name) {
 };
 
 /**
- * Remove a cookie.
+ * Removes a cookie.
  * @param {string} name The cookie name.
- * @param {object} [options] The options to use for the cookie.
- * @param {string} [options.path] The cookie path.
- * @param {Boolean} [options.secure] Whether the cookie is secure.
+ * @param {{path?: string, secure?: boolean}} [options] The cookie options.
  */
 export function removeCookie(name, { path = null, secure = false } = {}) {
     if (!name) {
@@ -54,13 +48,10 @@ export function removeCookie(name, { path = null, secure = false } = {}) {
 };
 
 /**
- * Set a cookie value.
+ * Sets a cookie value.
  * @param {string} name The cookie name.
  * @param {*} value The cookie value.
- * @param {object} [options] The options to use for the cookie.
- * @param {number} [options.expires] The number of seconds until the cookie will expire.
- * @param {string} [options.path] The path to use for the cookie.
- * @param {Boolean} [options.secure] Whether the cookie is secure.
+ * @param {{expires?: number, path?: string, secure?: boolean}} [options] The cookie options.
  */
 export function setCookie(name, value, { expires = null, path = null, secure = false } = {}) {
     if (!name) {

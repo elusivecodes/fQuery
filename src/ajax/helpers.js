@@ -1,16 +1,18 @@
 import { isArray, isObject, isUndefined } from '@fr0st/core';
 import { getWindow } from './../config.js';
 
-/**
- * Ajax Helpers
- */
+/** @typedef {{name: string, value: *}} FormEntry */
+
+/** @typedef {FormEntry[]|Record<string, *>} FormInput */
+
+/** @typedef {[string, *]} ParamEntry */
 
 /**
- * Append a query string to a URL.
+ * Appends a query string to a URL.
  * @param {string} url The input URL.
  * @param {string} key The query string key.
- * @param {string} value The query string value.
- * @return {string} The new URL.
+ * @param {string|number} value The query string value.
+ * @returns {string} The new URL.
  */
 export function appendQueryString(url, key, value) {
     const searchParams = getSearchParams(url);
@@ -21,18 +23,18 @@ export function appendQueryString(url, key, value) {
 };
 
 /**
- * Get the URLSearchParams from a URL string.
+ * Gets the URLSearchParams from a URL string.
  * @param {string} url The URL.
- * @return {URLSearchParams} The URLSearchParams.
+ * @returns {URLSearchParams} The URLSearchParams.
  */
 export function getSearchParams(url) {
     return getURL(url).searchParams;
 };
 
 /**
- * Get the URL from a URL string.
+ * Gets the URL from a URL string.
  * @param {string} url The URL.
- * @return {URL} The URL.
+ * @returns {URL} The URL.
  */
 function getURL(url) {
     const window = getWindow();
@@ -42,9 +44,9 @@ function getURL(url) {
 };
 
 /**
- * Return a FormData object from an array or object.
- * @param {array|object} data The input data.
- * @return {FormData} The FormData object.
+ * Returns a FormData object from form entries or a data object.
+ * @param {FormInput} data The input data.
+ * @returns {FormData} The parsed FormData object.
  */
 export function parseFormData(data) {
     const values = parseValues(data);
@@ -63,9 +65,9 @@ export function parseFormData(data) {
 };
 
 /**
- * Return a URI-encoded attribute string from an array or object.
- * @param {array|object} data The input data.
- * @return {string} The URI-encoded attribute string.
+ * Returns a URI-encoded attribute string from form entries or a data object.
+ * @param {FormInput} data The input data.
+ * @returns {string} The URI-encoded attribute string.
  */
 export function parseParams(data) {
     const values = parseValues(data);
@@ -78,10 +80,10 @@ export function parseParams(data) {
 };
 
 /**
- * Return an attributes array, or a flat array of attributes from a key and value.
+ * Returns flattened parameter entries for a key and value.
  * @param {string} key The input key.
- * @param {array|object|string} [value] The input value.
- * @return {array} The parsed attributes.
+ * @param {*} [value] The input value.
+ * @returns {ParamEntry[]} The parsed parameter entries.
  */
 function parseValue(key, value) {
     if (value === null || isUndefined(value)) {
@@ -105,9 +107,9 @@ function parseValue(key, value) {
 };
 
 /**
- * Return an attributes array from a data array or data object.
- * @param {array|object} data The input data.
- * @return {array} The parsed attributes.
+ * Returns flattened parameter entries from form entries or a data object.
+ * @param {FormInput} data The input data.
+ * @returns {ParamEntry[]} The parsed parameter entries.
  */
 function parseValues(data) {
     if (isArray(data)) {
@@ -123,10 +125,10 @@ function parseValues(data) {
 };
 
 /**
- * Set the URLSearchParams for a URL string.
+ * Sets the URLSearchParams for a URL string.
  * @param {string} url The URL.
  * @param {URLSearchParams} searchParams The URLSearchParams.
- * @return {string} The new URL string.
+ * @returns {string} The new URL string.
  */
 export function setSearchParams(url, searchParams) {
     const urlData = getURL(url);

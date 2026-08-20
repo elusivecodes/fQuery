@@ -6,13 +6,16 @@ import { closest } from './../traversal/traversal.js';
 import { animations, data } from './../vars.js';
 
 /**
- * DOM Tests
+ * @typedef {import('../filters.js').NodeFilterInput} NodeFilterInput
+ * @typedef {import('../helpers.js').ElementInput} ElementInput
+ * @typedef {import('../helpers.js').NodeInput} NodeInput
+ * @typedef {import('../helpers.js').QueryInput} QueryInput
  */
 
 /**
- * Returns true if any of the nodes has an animation.
- * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
- * @return {Boolean} TRUE if any of the nodes has an animation, otherwise FALSE.
+ * Checks whether any of the nodes has an animation.
+ * @param {ElementInput} selector The input node(s), or a query selector string.
+ * @returns {boolean} Whether any of the nodes has an animation.
  */
 export function hasAnimation(selector) {
     return parseNodes(selector)
@@ -20,10 +23,10 @@ export function hasAnimation(selector) {
 };
 
 /**
- * Returns true if any of the nodes has a specified attribute.
- * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
+ * Checks whether any of the nodes has a specified attribute.
+ * @param {ElementInput} selector The input node(s), or a query selector string.
  * @param {string} attribute The attribute name.
- * @return {Boolean} TRUE if any of the nodes has the attribute, otherwise FALSE.
+ * @returns {boolean} Whether any of the nodes has the attribute.
  */
 export function hasAttribute(selector, attribute) {
     return parseNodes(selector)
@@ -31,9 +34,9 @@ export function hasAttribute(selector, attribute) {
 };
 
 /**
- * Returns true if any of the nodes has child nodes.
- * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
- * @return {Boolean} TRUE if the any of the nodes has child nodes, otherwise FALSE.
+ * Checks whether any of the nodes has child nodes.
+ * @param {NodeInput} selector The input node(s), or a query selector string.
+ * @returns {boolean} Whether any of the nodes has child nodes.
  */
 export function hasChildren(selector) {
     return parseNodes(selector, {
@@ -44,10 +47,10 @@ export function hasChildren(selector) {
 };
 
 /**
- * Returns true if any of the nodes has any of the specified classes.
- * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
+ * Checks whether any of the nodes has any of the specified classes.
+ * @param {ElementInput} selector The input node(s), or a query selector string.
  * @param {...string|string[]} classes The classes.
- * @return {Boolean} TRUE if any of the nodes has any of the classes, otherwise FALSE.
+ * @returns {boolean} Whether any of the nodes has any of the classes.
  */
 export function hasClass(selector, ...classes) {
     classes = parseClasses(classes);
@@ -59,9 +62,9 @@ export function hasClass(selector, ...classes) {
 };
 
 /**
- * Returns true if any of the nodes has a CSS animation.
- * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
- * @return {Boolean} TRUE if any of the nodes has a CSS animation, otherwise FALSE.
+ * Checks whether any of the nodes has a CSS animation.
+ * @param {ElementInput} selector The input node(s), or a query selector string.
+ * @returns {boolean} Whether any of the nodes has a CSS animation.
  */
 export function hasCSSAnimation(selector) {
     return parseNodes(selector)
@@ -71,9 +74,9 @@ export function hasCSSAnimation(selector) {
 };
 
 /**
- * Returns true if any of the nodes has a CSS transition.
- * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
- * @return {Boolean} TRUE if any of the nodes has a CSS transition, otherwise FALSE.
+ * Checks whether any of the nodes has a CSS transition.
+ * @param {ElementInput} selector The input node(s), or a query selector string.
+ * @returns {boolean} Whether any of the nodes has a CSS transition.
  */
 export function hasCSSTransition(selector) {
     return parseNodes(selector)
@@ -83,10 +86,10 @@ export function hasCSSTransition(selector) {
 };
 
 /**
- * Returns true if any of the nodes has custom data.
- * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
+ * Checks whether any of the nodes has custom data.
+ * @param {QueryInput} selector The input node(s), or a query selector string.
  * @param {string} [key] The data key.
- * @return {Boolean} TRUE if any of the nodes has custom data, otherwise FALSE.
+ * @returns {boolean} Whether any of the nodes has custom data.
  */
 export function hasData(selector, key) {
     return parseNodes(selector, {
@@ -110,10 +113,10 @@ export function hasData(selector, key) {
 };
 
 /**
- * Returns true if any of the nodes has the specified dataset value.
- * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
+ * Checks whether any of the nodes has the specified dataset value.
+ * @param {QueryInput} selector The input node(s), or a query selector string.
  * @param {string} [key] The dataset key.
- * @return {Boolean} TRUE if any of the nodes has the dataset value, otherwise FALSE.
+ * @returns {boolean} Whether any of the nodes has the dataset value.
  */
 export function hasDataset(selector, key) {
     key = camelCase(key);
@@ -123,10 +126,10 @@ export function hasDataset(selector, key) {
 };
 
 /**
- * Returns true if any of the nodes contains a descendent matching a filter.
- * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
- * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet|DOM~filterCallback} [nodeFilter] The filter node(s), a query selector string or custom filter function.
- * @return {Boolean} TRUE if any of the nodes contains a descendent matching the filter, otherwise FALSE.
+ * Checks whether any of the nodes contains a descendant matching a filter.
+ * @param {NodeInput} selector The input node(s), or a query selector string.
+ * @param {NodeFilterInput} [nodeFilter] The filter node(s), a query selector string or custom filter function.
+ * @returns {boolean} Whether any of the nodes contains a descendant matching the filter.
  */
 export function hasDescendent(selector, nodeFilter) {
     nodeFilter = parseFilterContains(nodeFilter);
@@ -139,9 +142,9 @@ export function hasDescendent(selector, nodeFilter) {
 };
 
 /**
- * Returns true if any of the nodes has a DocumentFragment.
- * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
- * @return {Boolean} TRUE if any of the nodes has a DocumentFragment, otherwise FALSE.
+ * Checks whether any of the nodes has a DocumentFragment.
+ * @param {ElementInput} selector The input node(s), or a query selector string.
+ * @returns {boolean} Whether any of the nodes has a DocumentFragment.
  */
 export function hasFragment(selector) {
     return parseNodes(selector)
@@ -149,10 +152,10 @@ export function hasFragment(selector) {
 };
 
 /**
- * Returns true if any of the nodes has a specified property.
- * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
+ * Checks whether any of the nodes has a specified property.
+ * @param {ElementInput} selector The input node(s), or a query selector string.
  * @param {string} property The property name.
- * @return {Boolean} TRUE if any of the nodes has the property, otherwise FALSE.
+ * @returns {boolean} Whether any of the nodes has the property.
  */
 export function hasProperty(selector, property) {
     return parseNodes(selector)
@@ -160,9 +163,9 @@ export function hasProperty(selector, property) {
 };
 
 /**
- * Returns true if any of the nodes has a ShadowRoot.
- * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
- * @return {Boolean} TRUE if any of the nodes has a ShadowRoot, otherwise FALSE.
+ * Checks whether any of the nodes has a ShadowRoot.
+ * @param {ElementInput} selector The input node(s), or a query selector string.
+ * @returns {boolean} Whether any of the nodes has a ShadowRoot.
  */
 export function hasShadow(selector) {
     return parseNodes(selector)
@@ -170,10 +173,10 @@ export function hasShadow(selector) {
 };
 
 /**
- * Returns true if any of the nodes matches a filter.
- * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
- * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet|DOM~filterCallback} [nodeFilter] The filter node(s), a query selector string or custom filter function.
- * @return {Boolean} TRUE if any of the nodes matches the filter, otherwise FALSE.
+ * Checks whether any of the nodes matches a filter.
+ * @param {NodeInput} selector The input node(s), or a query selector string.
+ * @param {NodeFilterInput} [nodeFilter] The filter node(s), a query selector string or custom filter function.
+ * @returns {boolean} Whether any of the nodes matches the filter.
  */
 export function is(selector, nodeFilter) {
     nodeFilter = parseFilter(nodeFilter);
@@ -186,9 +189,9 @@ export function is(selector, nodeFilter) {
 };
 
 /**
- * Returns true if any of the nodes is connected to the DOM.
- * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
- * @return {Boolean} TRUE if any of the nodes is connected to the DOM, otherwise FALSE.
+ * Checks whether any of the nodes is connected to the DOM.
+ * @param {NodeInput} selector The input node(s), or a query selector string.
+ * @returns {boolean} Whether any of the nodes is connected to the DOM.
  */
 export function isConnected(selector) {
     return parseNodes(selector, {
@@ -199,12 +202,11 @@ export function isConnected(selector) {
 };
 
 /**
- * Returns true if any of the nodes is considered equal to any of the other nodes.
- * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
- * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet} otherSelector The other node(s), or a query selector string.
- * @param {object} options The options for performing the comparison.
- * @param {Boolean} [options.shallow=true] Whether to do a shallow comparison.
- * @return {Boolean} TRUE if any of the nodes is considered equal to any of the other nodes, otherwise FALSE.
+ * Checks whether any of the nodes is considered equal to any of the other nodes.
+ * @param {NodeInput} selector The input node(s), or a query selector string.
+ * @param {NodeInput} otherSelector The other node(s), or a query selector string.
+ * @param {{shallow?: boolean}} [options] The comparison options.
+ * @returns {boolean} Whether any of the nodes is considered equal to any of the other nodes.
  */
 export function isEqual(selector, otherSelector, { shallow = false } = {}) {
     let nodes = parseNodes(selector, {
@@ -230,9 +232,9 @@ export function isEqual(selector, otherSelector, { shallow = false } = {}) {
 };
 
 /**
- * Returns true if any of the nodes or a parent of any of the nodes is "fixed".
- * @param {string|array|Node|HTMLElement|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
- * @return {Boolean} TRUE if any of the nodes is "fixed", otherwise FALSE.
+ * Checks whether any of the nodes or a parent of any of the nodes is "fixed".
+ * @param {NodeInput} selector The input node(s), or a query selector string.
+ * @returns {boolean} Whether any of the nodes is "fixed".
  */
 export function isFixed(selector) {
     return parseNodes(selector, {
@@ -247,9 +249,9 @@ export function isFixed(selector) {
 };
 
 /**
- * Returns true if any of the nodes is hidden.
- * @param {string|array|Node|HTMLElement|Document|Window|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
- * @return {Boolean} TRUE if any of the nodes is hidden, otherwise FALSE.
+ * Checks whether any of the nodes is hidden.
+ * @param {QueryInput} selector The input node(s), or a query selector string.
+ * @returns {boolean} Whether any of the nodes is hidden.
  */
 export function isHidden(selector) {
     return parseNodes(selector, {
@@ -270,10 +272,10 @@ export function isHidden(selector) {
 };
 
 /**
- * Returns true if any of the nodes is considered identical to any of the other nodes.
- * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
- * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet} otherSelector The other node(s), or a query selector string.
- * @return {Boolean} TRUE if any of the nodes is considered identical to any of the other nodes, otherwise FALSE.
+ * Checks whether any of the nodes is considered identical to any of the other nodes.
+ * @param {NodeInput} selector The input node(s), or a query selector string.
+ * @param {NodeInput} otherSelector The other node(s), or a query selector string.
+ * @returns {boolean} Whether any of the nodes is considered identical to any of the other nodes.
  */
 export function isSame(selector, otherSelector) {
     const others = parseNodes(otherSelector, {
@@ -292,9 +294,9 @@ export function isSame(selector, otherSelector) {
 };
 
 /**
- * Returns true if any of the nodes is visible.
- * @param {string|array|Node|HTMLElement|Document|Window|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
- * @return {Boolean} TRUE if any of the nodes is visible, otherwise FALSE.
+ * Checks whether any of the nodes is visible.
+ * @param {QueryInput} selector The input node(s), or a query selector string.
+ * @returns {boolean} Whether any of the nodes is visible.
  */
 export function isVisible(selector) {
     return parseNodes(selector, {

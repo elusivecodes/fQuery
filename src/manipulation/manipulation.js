@@ -5,18 +5,22 @@ import { animations as _animations, data as _data, events as _events, queues, st
 import { createFragment } from './create.js';
 
 /**
- * DOM Manipulation
+ * @typedef {import('../helpers.js').NodeInput} NodeInput
  */
 
 /**
- * Clone each node.
- * @param {string|array|Node|HTMLElement|DocumentFragment|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
- * @param {object} options The options for cloning the node.
- * @param {Boolean} [options.deep=true] Whether to also clone all descendent nodes.
- * @param {Boolean} [options.events] Whether to also clone events.
- * @param {Boolean} [options.data] Whether to also clone custom data.
- * @param {Boolean} [options.animations] Whether to also clone animations.
- * @return {array} The cloned nodes.
+ * @typedef {object} CloneOptions
+ * @property {boolean} [deep=true] Whether to also clone all descendant nodes.
+ * @property {boolean} [events=false] Whether to also clone events.
+ * @property {boolean} [data=false] Whether to also clone custom data.
+ * @property {boolean} [animations=false] Whether to also clone animations.
+ */
+
+/**
+ * Clones each node.
+ * @param {NodeInput} selector The input node(s), or a query selector string.
+ * @param {CloneOptions} [options] The cloning options.
+ * @returns {Node[]} The cloned nodes.
  */
 export function clone(selector, { deep = true, events = false, data = false, animations = false } = {}) {
     // ShadowRoot nodes can not be cloned
@@ -37,14 +41,10 @@ export function clone(selector, { deep = true, events = false, data = false, ani
 };
 
 /**
- * Deep clone a single node.
- * @param {Node|HTMLElement|DocumentFragment} node The node.
- * @param {Node|HTMLElement|DocumentFragment} clone The clone.
- * @param {object} options The options for cloning the node.
- * @param {Boolean} [options.deep=true] Whether to also clone all descendent nodes.
- * @param {Boolean} [options.events] Whether to also clone events.
- * @param {Boolean} [options.data] Whether to also clone custom data.
- * @param {Boolean} [options.animations] Whether to also clone animations.
+ * Deep-clones a single node.
+ * @param {Node|DocumentFragment} node The node.
+ * @param {Node|DocumentFragment} clone The clone.
+ * @param {CloneOptions} [options] The cloning options.
  */
 function deepClone(node, clone, { deep = true, events = false, data = false, animations = false } = {}) {
     if (events && _events.has(node)) {
@@ -88,9 +88,9 @@ function deepClone(node, clone, { deep = true, events = false, data = false, ani
 };
 
 /**
- * Detach each node from the DOM.
- * @param {string|array|Node|HTMLElement|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
- * @return {array} The detached nodes.
+ * Detaches each node from the DOM.
+ * @param {NodeInput} selector The input node(s), or a query selector string.
+ * @returns {Node[]} The detached nodes.
  */
 export function detach(selector) {
     // DocumentFragment and ShadowRoot nodes can not be detached
@@ -106,8 +106,8 @@ export function detach(selector) {
 };
 
 /**
- * Remove all children of each node from the DOM.
- * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
+ * Removes all children of each node from the DOM.
+ * @param {NodeInput} selector The input node(s), or a query selector string.
  */
 export function empty(selector) {
     const nodes = parseNodes(selector, {
@@ -119,7 +119,7 @@ export function empty(selector) {
     for (const node of nodes) {
         const childNodes = merge([], node.childNodes);
 
-        // Remove descendent elements
+        // Remove descendant elements
         for (const child of childNodes) {
             if (isElement(child) || isFragment(child) || isShadow(child)) {
                 removeNode(child);
@@ -141,8 +141,8 @@ export function empty(selector) {
 };
 
 /**
- * Remove each node from the DOM.
- * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
+ * Removes each node from the DOM.
+ * @param {NodeInput} selector The input node(s), or a query selector string.
  */
 export function remove(selector) {
     const nodes = parseNodes(selector, {
@@ -164,8 +164,8 @@ export function remove(selector) {
 };
 
 /**
- * Remove all data for a single node.
- * @param {Node|HTMLElement|DocumentFragment|ShadowRoot} node The node.
+ * Removes all data for a single node.
+ * @param {Node} node The node.
  */
 export function removeNode(node) {
     if (_events.has(node)) {
@@ -208,7 +208,7 @@ export function removeNode(node) {
         _data.delete(node);
     }
 
-    // Remove descendent elements
+    // Remove descendant elements
     const childNodes = merge([], node.children);
 
     for (const child of childNodes) {
@@ -227,18 +227,18 @@ export function removeNode(node) {
 };
 
 /**
- * Replace each other node with nodes.
- * @param {string|array|Node|HTMLElement|DocumentFragment|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector or HTML string.
- * @param {string|array|Node|HTMLElement|NodeList|HTMLCollection|QuerySet} otherSelector The input node(s), or a query selector string.
+ * Replaces each other node with nodes.
+ * @param {NodeInput} selector The input node(s), or a query selector or HTML string.
+ * @param {NodeInput} otherSelector The input node(s), or a query selector string.
  */
 export function replaceAll(selector, otherSelector) {
     replaceWith(otherSelector, selector);
 };
 
 /**
- * Replace each node with other nodes.
- * @param {string|array|Node|HTMLElement|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
- * @param {string|array|Node|HTMLElement|DocumentFragment|NodeList|HTMLCollection|QuerySet} otherSelector The input node(s), or a query selector or HTML string.
+ * Replaces each node with other nodes.
+ * @param {NodeInput} selector The input node(s), or a query selector string.
+ * @param {NodeInput} otherSelector The input node(s), or a query selector or HTML string.
  */
 export function replaceWith(selector, otherSelector) {
     // DocumentFragment and ShadowRoot nodes can not be removed

@@ -3,31 +3,68 @@ import { getAjaxDefaults, getWindow } from './../config.js';
 import { appendQueryString, getSearchParams, parseFormData, parseParams, setSearchParams } from './helpers.js';
 
 /**
- * AjaxRequest Class
- * @class
+ * @typedef {boolean|string|Array<*>|Record<string, *>|FormData|null} AjaxData
+ */
+
+/**
+ * @callback AjaxHook
+ * @param {XMLHttpRequest} xhr The request object.
+ * @returns {void} Nothing.
+ */
+
+/**
+ * @callback AjaxProgressCallback
+ * @param {number} progress The completion ratio from 0 to 1.
+ * @param {XMLHttpRequest} xhr The request object.
+ * @param {ProgressEvent} event The progress event.
+ * @returns {void} Nothing.
+ */
+
+/**
+ * @typedef {object} AjaxOptions
+ * @property {string} [url] The request URL. Defaults to the current location.
+ * @property {string} [method='GET'] The HTTP method.
+ * @property {AjaxData} [data=null] The request data.
+ * @property {string|false} [contentType='application/x-www-form-urlencoded'] The request content type, or false to omit it.
+ * @property {XMLHttpRequestResponseType|null} [responseType=null] The response type.
+ * @property {string} [mimeType] The MIME type override.
+ * @property {string} [username] The authentication username.
+ * @property {string} [password] The authentication password.
+ * @property {number} [timeout=0] The timeout in milliseconds.
+ * @property {boolean|null} [isLocal=null] Whether to treat the request as local. Null enables automatic detection.
+ * @property {boolean} [cache=true] Whether to cache the request.
+ * @property {boolean} [processData=true] Whether to encode the request data.
+ * @property {boolean} [rejectOnCancel=true] Whether cancellation rejects the request promise.
+ * @property {Record<string, string>} [headers={}] Additional request headers.
+ * @property {AjaxHook|null} [afterSend=null] The callback invoked after sending.
+ * @property {AjaxHook|null} [beforeSend=null] The callback invoked before sending.
+ * @property {AjaxProgressCallback|null} [onProgress=null] The download progress callback.
+ * @property {AjaxProgressCallback|null} [onUploadProgress=null] The upload progress callback.
+ * @property {() => XMLHttpRequest} [xhr] The request factory.
+ */
+
+/**
+ * @typedef {object} AjaxResult
+ * @property {*} response The response value.
+ * @property {XMLHttpRequest} xhr The request object.
+ * @property {ProgressEvent} event The load event.
+ */
+
+/**
+ * @typedef {object} AjaxError
+ * @property {number} status The HTTP status.
+ * @property {XMLHttpRequest} xhr The request object.
+ * @property {ProgressEvent} [event] The failure event.
+ * @property {string} [reason] The cancellation reason.
+ */
+
+/**
+ * Represents a cancellable XMLHttpRequest with Promise-compatible methods.
  */
 export default class AjaxRequest {
     /**
-     * New AjaxRequest constructor.
-     * @param {object} [options] The options to use for the request.
-     * @param {string} [options.url=window.location] The URL of the request.
-     * @param {string} [options.method=GET] The HTTP method of the request.
-     * @param {Boolean|string|array|object|FormData} [options.data=null] The data to send with the request.
-     * @param {Boolean|string} [options.contentType=application/x-www-form-urlencoded] The content type of the request.
-     * @param {Boolean|string} [options.responseType] The content type of the response.
-     * @param {string} [options.mimeType] The MIME type to use.
-     * @param {string} [options.username] The username to authenticate with.
-     * @param {string} [options.password] The password to authenticate with.
-     * @param {number} [options.timeout] The number of milliseconds before the request will be terminated.
-     * @param {Boolean} [options.isLocal] Whether to treat the request as a local request.
-     * @param {Boolean} [options.cache=true] Whether to cache the request.
-     * @param {Boolean} [options.processData=true] Whether to process the data based on the content type.
-     * @param {Boolean} [options.rejectOnCancel=true] Whether to reject the promise if the request is cancelled.
-     * @param {object} [options.headers] Additional headers to send with the request.
-     * @param {Boolean|function} [options.afterSend=null] A callback to execute after making the request.
-     * @param {Boolean|function} [options.beforeSend=null] A callback to execute before making the request.
-     * @param {Boolean|function} [options.onProgress=null] A callback to execute on download progress.
-     * @param {Boolean|function} [options.onUploadProgress=null] A callback to execute on upload progress.
+     * Creates an AJAX request.
+     * @param {AjaxOptions} [options] The request options.
      */
     constructor(options) {
         this._options = extend(
@@ -159,8 +196,8 @@ export default class AjaxRequest {
     }
 
     /**
-     * Cancel a pending request.
-     * @param {string} [reason=Request was cancelled] The reason for cancelling the request.
+     * Cancels a pending request.
+     * @param {string} [reason='Request was cancelled'] The cancellation reason.
      */
     cancel(reason = 'Request was cancelled') {
         if (this._isResolved || this._isRejected || this._isCancelled) {
@@ -181,28 +218,28 @@ export default class AjaxRequest {
     }
 
     /**
-     * Execute a callback if the request is rejected.
-     * @param {function} [onRejected] The callback to execute if the request is rejected.
-     * @return {Promise} The promise.
+     * Executes a callback if the request is rejected.
+     * @param {((reason: AjaxError) => *)} [onRejected] The callback to execute if the request is rejected.
+     * @returns {Promise<*>} The resulting promise.
      */
     catch(onRejected) {
         return this._promise.catch(onRejected);
     }
 
     /**
-     * Execute a callback once the request is settled (resolved or rejected).
-     * @param {function} [onFinally] The callback to execute once the request is settled.
-     * @return {Promise} The promise.
+     * Executes a callback once the request is settled (resolved or rejected).
+     * @param {(() => void)} [onFinally] The callback to execute once the request is settled.
+     * @returns {Promise<*>} The resulting promise.
      */
     finally(onFinally) {
         return this._promise.finally(onFinally);
     }
 
     /**
-     * Execute a callback once the request is resolved (or optionally rejected).
-     * @param {function} onFulfilled The callback to execute if the request is resolved.
-     * @param {function} [onRejected] The callback to execute if the request is rejected.
-     * @return {Promise} The promise.
+     * Executes a callback once the request is resolved (or optionally rejected).
+     * @param {((value: AjaxResult) => *)} onFulfilled The callback to execute if the request is resolved.
+     * @param {((reason: AjaxError) => *)} [onRejected] The callback to execute if the request is rejected.
+     * @returns {Promise<*>} The resulting promise.
      */
     then(onFulfilled, onRejected) {
         return this._promise.then(onFulfilled, onRejected);

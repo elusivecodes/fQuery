@@ -2,39 +2,40 @@ import { connected as _connected, equal as _equal, filter as _filter, filterOne 
 import QuerySet from './../query-set.js';
 
 /**
- * QuerySet Filter
+ * @typedef {import('../../filters.js').NodeFilterInput} NodeFilterInput
+ * @typedef {import('../../helpers.js').NodeInput} NodeInput
  */
 
 /**
- * Return all nodes connected to the DOM.
- * @return {QuerySet} The QuerySet object.
+ * Returns all nodes connected to the DOM.
+ * @returns {QuerySet} The QuerySet object.
  */
 export function connected() {
     return new QuerySet(_connected(this));
 };
 
 /**
- * Return all nodes considered equal to any of the other nodes.
- * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet} otherSelector The other node(s), or a query selector string.
- * @return {QuerySet} The QuerySet object.
+ * Returns all nodes considered equal to any of the other nodes.
+ * @param {NodeInput} otherSelector The other node(s), or a query selector string.
+ * @returns {QuerySet} The QuerySet object.
  */
 export function equal(otherSelector) {
     return new QuerySet(_equal(this, otherSelector));
 };
 
 /**
- * Return all nodes matching a filter.
- * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet|DOM~filterCallback} [nodeFilter] The filter node(s), a query selector string or custom filter function.
- * @return {QuerySet} The QuerySet object.
+ * Returns all nodes matching a filter.
+ * @param {NodeFilterInput} [nodeFilter] The filter node(s), a query selector string or custom filter function.
+ * @returns {QuerySet} The QuerySet object.
  */
 export function filter(nodeFilter) {
     return new QuerySet(_filter(this, nodeFilter));
 };
 
 /**
- * Return the first node matching a filter.
- * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet|DOM~filterCallback} [nodeFilter] The filter node(s), a query selector string or custom filter function.
- * @return {QuerySet} The QuerySet object.
+ * Returns the first node matching a filter.
+ * @param {NodeFilterInput} [nodeFilter] The filter node(s), a query selector string or custom filter function.
+ * @returns {QuerySet} The QuerySet object.
  */
 export function filterOne(nodeFilter) {
     const node = _filterOne(this, nodeFilter);
@@ -43,34 +44,34 @@ export function filterOne(nodeFilter) {
 };
 
 /**
- * Return all "fixed" nodes.
- * @return {QuerySet} The QuerySet object.
+ * Returns all "fixed" nodes.
+ * @returns {QuerySet} The QuerySet object.
  */
 export function fixed() {
     return new QuerySet(_fixed(this));
 };
 
 /**
- * Return all hidden nodes.
- * @return {QuerySet} The QuerySet object.
+ * Returns all hidden nodes.
+ * @returns {QuerySet} The QuerySet object.
  */
 export function hidden() {
     return new QuerySet(_hidden(this));
 };
 
 /**
- * Return all nodes not matching a filter.
- * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet|DOM~filterCallback} [nodeFilter] The filter node(s), a query selector string or custom filter function.
- * @return {QuerySet} The QuerySet object.
+ * Returns all nodes not matching a filter.
+ * @param {NodeFilterInput} [nodeFilter] The filter node(s), a query selector string or custom filter function.
+ * @returns {QuerySet} The QuerySet object.
  */
 export function not(nodeFilter) {
     return new QuerySet(_not(this, nodeFilter));
 };
 
 /**
- * Return the first node not matching a filter.
- * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet|DOM~filterCallback} [nodeFilter] The filter node(s), a query selector string or custom filter function.
- * @return {QuerySet} The QuerySet object.
+ * Returns the first node not matching a filter.
+ * @param {NodeFilterInput} [nodeFilter] The filter node(s), a query selector string or custom filter function.
+ * @returns {QuerySet} The QuerySet object.
  */
 export function notOne(nodeFilter) {
     const node = _notOne(this, nodeFilter);
@@ -79,94 +80,94 @@ export function notOne(nodeFilter) {
 };
 
 /**
- * Return all nodes considered identical to any of the other nodes.
- * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet} otherSelector The other node(s), or a query selector string.
- * @return {QuerySet} The QuerySet object.
+ * Returns all nodes considered identical to any of the other nodes.
+ * @param {NodeInput} otherSelector The other node(s), or a query selector string.
+ * @returns {QuerySet} The QuerySet object.
  */
 export function same(otherSelector) {
     return new QuerySet(_same(this, otherSelector));
 };
 
 /**
- * Return all visible nodes.
- * @return {QuerySet} The QuerySet object.
+ * Returns all visible nodes.
+ * @returns {QuerySet} The QuerySet object.
  */
 export function visible() {
     return new QuerySet(_visible(this));
 };
 
 /**
- * Return all nodes with an animation.
- * @return {QuerySet} The QuerySet object.
+ * Returns all nodes with an animation.
+ * @returns {QuerySet} The QuerySet object.
 */
 export function withAnimation() {
     return new QuerySet(_withAnimation(this));
 };
 
 /**
- * Return all nodes with a specified attribute.
+ * Returns all nodes with a specified attribute.
  * @param {string} attribute The attribute name.
- * @return {QuerySet} The QuerySet object.
+ * @returns {QuerySet} The QuerySet object.
  */
 export function withAttribute(attribute) {
     return new QuerySet(_withAttribute(this, attribute));
 };
 
 /**
- * Return all nodes with child elements.
- * @return {QuerySet} The QuerySet object.
+ * Returns all nodes with child elements.
+ * @returns {QuerySet} The QuerySet object.
  */
 export function withChildren() {
     return new QuerySet(_withChildren(this));
 };
 
 /**
- * Return all nodes with any of the specified classes.
+ * Returns all nodes with any of the specified classes.
  * @param {...string|string[]} classes The classes.
- * @return {QuerySet} The QuerySet object.
+ * @returns {QuerySet} The QuerySet object.
  */
 export function withClass(classes) {
     return new QuerySet(_withClass(this, classes));
 };
 
 /**
- * Return all nodes with a CSS animation.
- * @return {QuerySet} The QuerySet object.
+ * Returns all nodes with a CSS animation.
+ * @returns {QuerySet} The QuerySet object.
 */
 export function withCSSAnimation() {
     return new QuerySet(_withCSSAnimation(this));
 };
 
 /**
- * Return all nodes with a CSS transition.
- * @return {QuerySet} The QuerySet object.
+ * Returns all nodes with a CSS transition.
+ * @returns {QuerySet} The QuerySet object.
  */
 export function withCSSTransition() {
     return new QuerySet(_withCSSTransition(this));
 };
 
 /**
- * Return all nodes with custom data.
+ * Returns all nodes with custom data.
  * @param {string} [key] The data key.
- * @return {QuerySet} The QuerySet object.
+ * @returns {QuerySet} The QuerySet object.
  */
 export function withData(key) {
     return new QuerySet(_withData(this, key));
 };
 
 /**
- * Return all elements with a descendent matching a filter.
- * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet|DOM~filterCallback} [nodeFilter] The filter node(s), a query selector string or custom filter function.
- * @return {QuerySet} The QuerySet object.
+ * Returns all elements with a descendant matching a filter.
+ * @param {NodeFilterInput} [nodeFilter] The filter node(s), a query selector string or custom filter function.
+ * @returns {QuerySet} The QuerySet object.
  */
 export function withDescendent(nodeFilter) {
     return new QuerySet(_withDescendent(this, nodeFilter));
 };
 
 /**
- * Return all nodes with a specified property.
+ * Returns all nodes with a specified property.
  * @param {string} property The property name.
- * @return {QuerySet} The QuerySet object.
+ * @returns {QuerySet} The QuerySet object.
  */
 export function withProperty(property) {
     return new QuerySet(_withProperty(this, property));

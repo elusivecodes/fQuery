@@ -4,23 +4,26 @@ import { getContext } from './../config.js';
 import { parseFilter, parseNode, parseNodes } from './../filters.js';
 
 /**
- * DOM Utility
+ * @typedef {import('../filters.js').NodeFilterInput} NodeFilterInput
+ * @typedef {import('../helpers.js').ElementInput} ElementInput
+ * @typedef {import('../helpers.js').NodeInput} NodeInput
+ * @typedef {import('../helpers.js').QueryInput} QueryInput
  */
 
 /**
- * Execute a command in the document context.
+ * Executes a command in the document context.
  * @param {string} command The command to execute.
  * @param {string} [value] The value to give the command.
- * @return {Boolean} TRUE if the command was executed, otherwise FALSE.
+ * @returns {boolean} Whether the command was executed.
  */
 export function exec(command, value = null) {
     return getContext().execCommand(command, false, value);
 };
 
 /**
- * Get the index of the first node relative to it's parent.
- * @param {string|array|Node|HTMLElement|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
- * @return {number} The index.
+ * Gets the index of the first node relative to its parent.
+ * @param {NodeInput} selector The input node(s), or a query selector string.
+ * @returns {number|undefined} The index, or `undefined` if no node or parent matches.
  */
 export function index(selector) {
     const node = parseNode(selector, {
@@ -35,10 +38,10 @@ export function index(selector) {
 };
 
 /**
- * Get the index of the first node matching a filter.
- * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
- * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet|DOM~filterCallback} [nodeFilter] The filter node(s), a query selector string or custom filter function.
- * @return {number} The index.
+ * Gets the index of the first node matching a filter.
+ * @param {NodeInput} selector The input node(s), or a query selector string.
+ * @param {NodeFilterInput} [nodeFilter] The filter node(s), a query selector string or custom filter function.
+ * @returns {number} The index.
  */
 export function indexOf(selector, nodeFilter) {
     nodeFilter = parseFilter(nodeFilter);
@@ -51,8 +54,8 @@ export function indexOf(selector, nodeFilter) {
 };
 
 /**
- * Normalize nodes (remove empty text nodes, and join adjacent text nodes).
- * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|Document|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
+ * Normalizes nodes (remove empty text nodes, and join adjacent text nodes).
+ * @param {NodeInput} selector The input node(s), or a query selector string.
  */
 export function normalize(selector) {
     const nodes = parseNodes(selector, {
@@ -68,9 +71,9 @@ export function normalize(selector) {
 };
 
 /**
- * Return a serialized string containing names and values of all form nodes.
- * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
- * @return {string} The serialized string.
+ * Returns a serialized string containing names and values of all form nodes.
+ * @param {NodeInput} selector The input node(s), or a query selector string.
+ * @returns {string} The serialized string.
  */
 export function serialize(selector) {
     return parseParams(
@@ -79,9 +82,9 @@ export function serialize(selector) {
 };
 
 /**
- * Return a serialized array containing names and values of all form nodes.
- * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
- * @return {array} The serialized array.
+ * Returns a serialized array containing names and values of all form nodes.
+ * @param {NodeInput} selector The input node(s), or a query selector string.
+ * @returns {Array<{name: string, value: string}>} The serialized entries.
  */
 export function serializeArray(selector) {
     return parseNodes(selector, {
@@ -143,9 +146,9 @@ export function serializeArray(selector) {
 }
 
 /**
- * Sort nodes by their position in the document.
- * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
- * @return {array} The sorted array of nodes.
+ * Sorts nodes by their position in the document.
+ * @param {QueryInput} selector The input node(s), or a query selector string.
+ * @returns {Array<Node|Window>} The sorted nodes.
  */
 export function sort(selector) {
     return parseNodes(selector, {
@@ -227,9 +230,9 @@ export function sort(selector) {
 };
 
 /**
- * Return the tag name (lowercase) of the first node.
- * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
- * @return {string} The nodes tag name (lowercase).
+ * Returns the tag name (lowercase) of the first node.
+ * @param {ElementInput} selector The input node(s), or a query selector string.
+ * @returns {string|undefined} The node's lowercase tag name, or `undefined` if no element matches.
  */
 export function tagName(selector) {
     const node = parseNode(selector);

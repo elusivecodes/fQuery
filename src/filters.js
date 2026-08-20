@@ -5,14 +5,32 @@ import { parseHTML } from './parser/parser.js';
 import { find, findOne } from './traversal/find.js';
 
 /**
- * DOM Filters
+ * @typedef {import('./helpers.js').NodeFilterCallback} NodeFilterCallback
+ * @typedef {import('./helpers.js').NodeInput} NodeInput
+ * @typedef {import('./helpers.js').QueryInput} QueryInput
+ * @typedef {import('./traversal/find.js').QueryContextInput} QueryContextInput
  */
 
 /**
- * Return a node filter callback.
- * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet|DOM~filterCallback} filter The filter node(s), a query selector string or custom filter function.
- * @param {Boolean} [defaultValue=true] The default return value.
- * @return {DOM~filterCallback} The node filter callback.
+ * @typedef {NodeInput|NodeFilterCallback} NodeFilterInput
+ */
+
+/**
+ * @typedef {object} NodeParseOptions
+ * @property {boolean} [node=false] Whether to allow text and comment nodes.
+ * @property {boolean} [fragment=false] Whether to allow DocumentFragment.
+ * @property {boolean} [shadow=false] Whether to allow ShadowRoot.
+ * @property {boolean} [document=false] Whether to allow Document.
+ * @property {boolean} [window=false] Whether to allow Window.
+ * @property {boolean} [html=false] Whether to allow HTML strings.
+ * @property {QueryContextInput} [context] The query context.
+ */
+
+/**
+ * Returns a node filter callback.
+ * @param {NodeFilterInput} filter The filter node(s), a query selector string or custom filter function.
+ * @param {boolean} [defaultValue=true] The default return value.
+ * @returns {NodeFilterCallback} The node filter callback.
  */
 export function parseFilter(filter, defaultValue = true) {
     if (!filter) {
@@ -45,10 +63,10 @@ export function parseFilter(filter, defaultValue = true) {
 };
 
 /**
- * Return a node contains filter callback.
- * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet|DOM~filterCallback} filter The filter node(s), a query selector string or custom filter function.
- * @param {Boolean} [defaultValue=true] The default return value.
- * @return {DOM~filterCallback} The node contains filter callback.
+ * Returns a node-containment filter callback.
+ * @param {NodeFilterInput} filter The filter node(s), a query selector string or custom filter function.
+ * @param {boolean} [defaultValue=true] The default return value.
+ * @returns {NodeFilterCallback} The node contains filter callback.
  */
 export function parseFilterContains(filter, defaultValue = true) {
     if (!filter) {
@@ -81,17 +99,10 @@ export function parseFilterContains(filter, defaultValue = true) {
 };
 
 /**
- * Return the first node matching a filter.
- * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector or HTML string.
- * @param {object} [options] The options for filtering.
- * @param {Boolean} [options.node=false] Whether to allow text and comment nodes.
- * @param {Boolean} [options.fragment=false] Whether to allow DocumentFragment.
- * @param {Boolean} [options.shadow=false] Whether to allow ShadowRoot.
- * @param {Boolean} [options.document=false] Whether to allow Document.
- * @param {Boolean} [options.window=false] Whether to allow Window.
- * @param {Boolean} [options.html=false] Whether to allow HTML strings.
- * @param {HTMLElement|Document} [options.context=getContext()] The Document context.
- * @return {Node|HTMLElement|DocumentFragment|ShadowRoot|Document|Window} The matching node.
+ * Returns the first node matching a filter.
+ * @param {QueryInput} nodes The input node(s), or a query selector or HTML string.
+ * @param {NodeParseOptions} [options] The parsing options.
+ * @returns {Node|Window|null|undefined} The matching node, or `undefined` if none matches.
  */
 export function parseNode(nodes, options = {}) {
     const filter = parseNodesFilter(options);
@@ -114,17 +125,10 @@ export function parseNode(nodes, options = {}) {
 };
 
 /**
- * Return a filtered array of nodes.
- * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector or HTML string.
- * @param {object} [options] The options for filtering.
- * @param {Boolean} [options.node=false] Whether to allow text and comment nodes.
- * @param {Boolean} [options.fragment=false] Whether to allow DocumentFragment.
- * @param {Boolean} [options.shadow=false] Whether to allow ShadowRoot.
- * @param {Boolean} [options.document=false] Whether to allow Document.
- * @param {Boolean} [options.window=false] Whether to allow Window.
- * @param {Boolean} [options.html=false] Whether to allow HTML strings.
- * @param {HTMLElement|DocumentFragment|ShadowRoot|Document} [options.context=getContext()] The Document context.
- * @return {array} The filtered array of nodes.
+ * Returns a filtered array of nodes.
+ * @param {QueryInput} nodes The input node(s), or a query selector or HTML string.
+ * @param {NodeParseOptions} [options] The parsing options.
+ * @returns {Array<Node|Window>} The filtered array of nodes.
  */
 export function parseNodes(nodes, options = {}) {
     const filter = parseNodesFilter(options);
@@ -145,14 +149,9 @@ export function parseNodes(nodes, options = {}) {
 };
 
 /**
- * Return a function for filtering nodes.
- * @param {object} [options] The options for filtering.
- * @param {Boolean} [options.node=false] Whether to allow text and comment nodes.
- * @param {Boolean} [options.fragment=false] Whether to allow DocumentFragment.
- * @param {Boolean} [options.shadow=false] Whether to allow ShadowRoot.
- * @param {Boolean} [options.document=false] Whether to allow Document.
- * @param {Boolean} [options.window=false] Whether to allow Window.
- * @return {DOM~nodeCallback} The node filter function.
+ * Returns a function for filtering nodes.
+ * @param {NodeParseOptions} [options] The parsing options.
+ * @returns {NodeFilterCallback} The node filter function.
  */
 function parseNodesFilter(options) {
     if (!options) {

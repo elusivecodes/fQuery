@@ -1,30 +1,28 @@
 import { getScrollX as _getScrollX, getScrollY as _getScrollY, setScroll as _setScroll, setScrollX as _setScrollX, setScrollY as _setScrollY } from './../../attributes/scroll.js';
 
-/**
- * QuerySet Scroll
- */
+/** @typedef {import('../query-set.js').default} QuerySet */
 
 /**
- * Get the scroll X position of the first node.
- * @return {number} The scroll X position.
+ * Gets the scroll X position of the first node.
+ * @returns {number|undefined} The scroll X position, or `undefined` if no node matches.
  */
 export function getScrollX() {
     return _getScrollX(this);
 };
 
 /**
- * Get the scroll Y position of the first node.
- * @return {number} The scroll Y position.
+ * Gets the scroll Y position of the first node.
+ * @returns {number|undefined} The scroll Y position, or `undefined` if no node matches.
  */
 export function getScrollY() {
     return _getScrollY(this);
 };
 
 /**
- * Scroll each node to an X,Y position.
+ * Scrolls each node to an X,Y position.
  * @param {number} x The scroll X position.
  * @param {number} y The scroll Y position.
- * @return {QuerySet} The QuerySet object.
+ * @returns {QuerySet} The QuerySet object.
  */
 export function setScroll(x, y) {
     _setScroll(this, x, y);
@@ -33,9 +31,9 @@ export function setScroll(x, y) {
 };
 
 /**
- * Scroll each node to an X position.
+ * Scrolls each node to an X position.
  * @param {number} x The scroll X position.
- * @return {QuerySet} The QuerySet object.
+ * @returns {QuerySet} The QuerySet object.
  */
 export function setScrollX(x) {
     _setScrollX(this, x);
@@ -44,9 +42,9 @@ export function setScrollX(x) {
 };
 
 /**
- * Scroll each node to a Y position.
+ * Scrolls each node to a Y position.
  * @param {number} y The scroll Y position.
- * @return {QuerySet} The QuerySet object.
+ * @returns {QuerySet} The QuerySet object.
  */
 export function setScrollY(y) {
     _setScrollY(this, y);

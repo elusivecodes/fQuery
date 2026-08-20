@@ -2,21 +2,15 @@ import { debounce as _debounce } from './../helpers.js';
 import { eventLookup } from './../vars.js';
 import { addEvent, removeEvent } from './event-handlers.js';
 
-/**
- * DOM Event Factory
- */
+/** @typedef {import('./event-handlers.js').EventCallback} EventCallback */
 
 /**
- * Return a wrapped mouse drag event (optionally debounced).
- * @param {DOM~eventCallback} down The callback to execute on mousedown.
- * @param {DOM~eventCallback} move The callback to execute on mousemove.
- * @param {DOM~eventCallback} up The callback to execute on mouseup.
- * @param {object} [options] The options for the mouse drag event.
- * @param {Boolean} [options.debounce=true] Whether to debounce the move event.
- * @param {Boolean} [options.passive=true] Whether to use passive event listeners.
- * @param {Boolean} [options.preventDefault=true] Whether to prevent the default event.
- * @param {number} [options.touches=1] The number of touches to trigger the event for.
- * @return {DOM~eventCallback} The mouse drag event callback.
+ * Returns a wrapped mouse drag event (optionally debounced).
+ * @param {EventCallback} down The callback to execute on mousedown.
+ * @param {EventCallback} move The callback to execute on mousemove.
+ * @param {EventCallback} up The callback to execute on mouseup.
+ * @param {{debounce?: boolean, passive?: boolean, preventDefault?: boolean, touches?: number}} [options] The mouse drag options.
+ * @returns {EventCallback} The mouse drag event callback.
  */
 export function mouseDragFactory(down, move, up, { debounce = true, passive = true, preventDefault = true, touches = 1 } = {}) {
     if (move && debounce) {

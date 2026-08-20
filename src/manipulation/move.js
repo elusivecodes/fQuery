@@ -1,14 +1,12 @@
 import { parseNodes } from './../filters.js';
 import { clone } from './manipulation.js';
 
-/**
- * DOM Move
- */
+/** @typedef {import('../helpers.js').NodeInput} NodeInput */
 
 /**
- * Insert each other node after each node.
- * @param {string|array|Node|HTMLElement|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
- * @param {string|array|Node|HTMLElement|DocumentFragment|NodeList|HTMLCollection|QuerySet} otherSelector The other node(s), or a query selector or HTML string.
+ * Inserts each other node after each node.
+ * @param {NodeInput} selector The input node(s), or a query selector string.
+ * @param {NodeInput} otherSelector The other node(s), or a query selector or HTML string.
  */
 export function after(selector, otherSelector) {
     // DocumentFragment and ShadowRoot nodes can not have siblings
@@ -48,9 +46,9 @@ export function after(selector, otherSelector) {
 };
 
 /**
- * Append each other node to each node.
- * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
- * @param {string|array|Node|HTMLElement|DocumentFragment|NodeList|HTMLCollection|QuerySet} otherSelector The other node(s), or a query selector or HTML string.
+ * Appends each other node to each node.
+ * @param {NodeInput} selector The input node(s), or a query selector string.
+ * @param {NodeInput} otherSelector The other node(s), or a query selector or HTML string.
  */
 export function append(selector, otherSelector) {
     const nodes = parseNodes(selector, {
@@ -85,18 +83,18 @@ export function append(selector, otherSelector) {
 };
 
 /**
- * Append each node to each other node.
- * @param {string|array|Node|HTMLElement|DocumentFragment|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector or HTML string.
- * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|NodeList|HTMLCollection|QuerySet} otherSelector The other node(s), or a query selector string.
+ * Appends each node to each other node.
+ * @param {NodeInput} selector The input node(s), or a query selector or HTML string.
+ * @param {NodeInput} otherSelector The other node(s), or a query selector string.
  */
 export function appendTo(selector, otherSelector) {
     append(otherSelector, selector);
 };
 
 /**
- * Insert each other node before each node.
- * @param {string|array|Node|HTMLElement|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
- * @param {string|array|Node|HTMLElement|DocumentFragment|NodeList|HTMLCollection|QuerySet} otherSelector The other node(s), or a query selector or HTML string.
+ * Inserts each other node before each node.
+ * @param {NodeInput} selector The input node(s), or a query selector string.
+ * @param {NodeInput} otherSelector The other node(s), or a query selector or HTML string.
  */
 export function before(selector, otherSelector) {
     // DocumentFragment and ShadowRoot nodes can not have siblings
@@ -136,27 +134,27 @@ export function before(selector, otherSelector) {
 };
 
 /**
- * Insert each node after each other node.
- * @param {string|array|Node|HTMLElement|DocumentFragment|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector or HTML string.
- * @param {string|array|Node|HTMLElement|NodeList|HTMLCollection|QuerySet} otherSelector The other node(s), or a query selector string.
+ * Inserts each node after each other node.
+ * @param {NodeInput} selector The input node(s), or a query selector or HTML string.
+ * @param {NodeInput} otherSelector The other node(s), or a query selector string.
  */
 export function insertAfter(selector, otherSelector) {
     after(otherSelector, selector);
 };
 
 /**
- * Insert each node before each other node.
- * @param {string|array|Node|HTMLElement|DocumentFragment|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector or HTML string.
- * @param {string|array|Node|HTMLElement|NodeList|HTMLCollection|QuerySet} otherSelector The other node(s), or a query selector string.
+ * Inserts each node before each other node.
+ * @param {NodeInput} selector The input node(s), or a query selector or HTML string.
+ * @param {NodeInput} otherSelector The other node(s), or a query selector string.
  */
 export function insertBefore(selector, otherSelector) {
     before(otherSelector, selector);
 };
 
 /**
- * Prepend each other node to each node.
- * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
- * @param {string|array|Node|HTMLElement|DocumentFragment|NodeList|HTMLCollection} otherSelector The other node(s), or a query selector or HTML string.
+ * Prepends each other node to each node.
+ * @param {NodeInput} selector The input node(s), or a query selector string.
+ * @param {NodeInput} otherSelector The other node(s), or a query selector or HTML string.
  */
 export function prepend(selector, otherSelector) {
     const nodes = parseNodes(selector, {
@@ -193,9 +191,9 @@ export function prepend(selector, otherSelector) {
 };
 
 /**
- * Prepend each node to each other node.
- * @param {string|array|Node|HTMLElement|DocumentFragment|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector or HTML string.
- * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|NodeList|HTMLCollection|QuerySet} otherSelector The other node(s), or a query selector string.
+ * Prepends each node to each other node.
+ * @param {NodeInput} selector The input node(s), or a query selector or HTML string.
+ * @param {NodeInput} otherSelector The other node(s), or a query selector string.
  */
 export function prependTo(selector, otherSelector) {
     prepend(otherSelector, selector);

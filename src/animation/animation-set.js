@@ -1,11 +1,15 @@
 /**
-* AnimationSet Class
-* @class
-*/
+ * @typedef {import('./animation.js').default} Animation
+ * @typedef {import('./animation.js').StopAnimationOptions} StopAnimationOptions
+ */
+
+/**
+ * Represents a Promise-compatible collection of animations.
+ */
 export default class AnimationSet {
     /**
-     * New AnimationSet constructor.
-     * @param {array} animations The animations.
+     * Creates an animation set.
+     * @param {Animation[]} animations The animations.
      */
     constructor(animations) {
         this._animations = animations;
@@ -13,28 +17,27 @@ export default class AnimationSet {
     }
 
     /**
-     * Execute a callback if any of the animations is rejected.
-     * @param {function} [onRejected] The callback to execute if an animation is rejected.
-     * @return {Promise} The promise.
+     * Executes a callback if any of the animations is rejected.
+     * @param {((reason: HTMLElement) => *)} [onRejected] The callback to execute if an animation is rejected.
+     * @returns {Promise<*>} The resulting promise.
      */
     catch(onRejected) {
         return this._promise.catch(onRejected);
     }
 
     /**
-     * Execute a callback once the animation is settled (resolved or rejected).
-     * @param {function} [onFinally] The callback to execute once the animation is settled.
-     * @return {Promise} The promise.
+     * Executes a callback once the animation is settled (resolved or rejected).
+     * @param {(() => void)} [onFinally] The callback to execute once the animation set is settled.
+     * @returns {Promise<*>} The resulting promise.
      */
     finally(onFinally) {
         return this._promise.finally(onFinally);
     }
 
     /**
-     * Stop the animations.
-     * @param {object} [options] The options for stopping the animation.
-     * @param {Boolean} [options.finish=true] Whether to finish the animations.
-    */
+     * Stops the animations.
+     * @param {StopAnimationOptions} [options] The stopping options.
+     */
     stop({ finish = true } = {}) {
         for (const animation of this._animations) {
             animation.stop({ finish });
@@ -42,10 +45,10 @@ export default class AnimationSet {
     }
 
     /**
-     * Execute a callback once the animation is resolved (or optionally rejected).
-     * @param {function} onFulfilled The callback to execute if the animation is resolved.
-     * @param {function} [onRejected] The callback to execute if the animation is rejected.
-     * @return {Promise} The promise.
+     * Executes a callback once the animation is resolved (or optionally rejected).
+     * @param {((value: HTMLElement[]) => *)} onFulfilled The callback to execute if the animations resolve.
+     * @param {((reason: HTMLElement) => *)} [onRejected] The callback to execute if an animation is rejected.
+     * @returns {Promise<*>} The resulting promise.
      */
     then(onFulfilled, onRejected) {
         return this._promise.then(onFulfilled, onRejected);

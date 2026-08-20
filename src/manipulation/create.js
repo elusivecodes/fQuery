@@ -3,16 +3,25 @@ import { getContext } from './../config.js';
 import { parseNode } from './../filters.js';
 import { parseClasses, parseData } from './../helpers.js';
 
+/** @typedef {import('../helpers.js').ElementInput} ElementInput */
+
 /**
- * DOM Create
+ * @typedef {object} CreateOptions
+ * @property {string} [html] The HTML contents.
+ * @property {string} [text] The text contents.
+ * @property {string|string[]} [class] The classes.
+ * @property {Record<string, string|number>} [style] The style properties.
+ * @property {*} [value] The value.
+ * @property {Record<string, *>} [attributes] The attributes.
+ * @property {Record<string, *>} [properties] The properties.
+ * @property {Record<string, *>} [dataset] The dataset values.
  */
 
 /**
- * Attach a shadow DOM tree to the first node.
- * @param {string|array|HTMLElement|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
- * @param {object} [options] The options for attaching the shadow DOM.
- * @param {Boolean} [options.open=true] Whether the elements are accessible from JavaScript outside the root.
- * @return {ShadowRoot} The new ShadowRoot.
+ * Attaches a shadow DOM tree to the first node.
+ * @param {ElementInput} selector The input node(s), or a query selector string.
+ * @param {{open?: boolean}} [options] The shadow DOM options.
+ * @returns {ShadowRoot|undefined} The new ShadowRoot, or `undefined` if no element matches.
  */
 export function attachShadow(selector, { open = true } = {}) {
     const node = parseNode(selector);
@@ -29,18 +38,10 @@ export function attachShadow(selector, { open = true } = {}) {
 };
 
 /**
- * Create a new DOM element.
- * @param {string} [tagName=div] The type of HTML element to create.
- * @param {object} [options] The options to use for creating the element.
- * @param {string} [options.html] The HTML contents.
- * @param {string} [options.text] The text contents.
- * @param {string|array} [options.class] The classes.
- * @param {object} [options.style] An object containing style properties.
- * @param {string} [options.value] The value.
- * @param {object} [options.attributes] An object containing attributes.
- * @param {object} [options.properties] An object containing properties.
- * @param {object} [options.dataset] An object containing dataset values.
- * @return {HTMLElement} The new HTMLElement.
+ * Creates a new DOM element.
+ * @param {string} [tagName='div'] The type of HTML element to create.
+ * @param {CreateOptions} [options] The element options.
+ * @returns {HTMLElement} The new HTMLElement.
  */
 export function create(tagName = 'div', options = {}) {
     const node = getContext().createElement(tagName);
@@ -99,34 +100,34 @@ export function create(tagName = 'div', options = {}) {
 };
 
 /**
- * Create a new comment node.
+ * Creates a new comment node.
  * @param {string} comment The comment contents.
- * @return {Node} The new comment node.
+ * @returns {Node} The new comment node.
  */
 export function createComment(comment) {
     return getContext().createComment(comment);
 };
 
 /**
- * Create a new document fragment.
- * @return {DocumentFragment} The new DocumentFragment.
+ * Creates a new document fragment.
+ * @returns {DocumentFragment} The new DocumentFragment.
  */
 export function createFragment() {
     return getContext().createDocumentFragment();
 };
 
 /**
- * Create a new range object.
- * @return {Range} The new Range.
+ * Creates a new range object.
+ * @returns {Range} The new Range.
  */
 export function createRange() {
     return getContext().createRange();
 };
 
 /**
- * Create a new text node.
+ * Creates a new text node.
  * @param {string} text The text contents.
- * @return {Node} The new text node.
+ * @returns {Node} The new text node.
  */
 export function createText(text) {
     return getContext().createTextNode(text);

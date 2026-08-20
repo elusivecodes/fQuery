@@ -1,12 +1,10 @@
 import { afterSelection as _afterSelection, beforeSelection as _beforeSelection, select as _select, selectAll as _selectAll, wrapSelection as _wrapSelection } from './../../utility/selection.js';
 
-/**
- * QuerySet Selection
- */
+/** @typedef {import('../query-set.js').default} QuerySet */
 
 /**
- * Insert each node after the selection.
- * @return {QuerySet} The QuerySet object.
+ * Inserts each node after the selection.
+ * @returns {QuerySet} The QuerySet object.
  */
 export function afterSelection() {
     _afterSelection(this);
@@ -15,8 +13,8 @@ export function afterSelection() {
 };
 
 /**
- * Insert each node before the selection.
- * @return {QuerySet} The QuerySet object.
+ * Inserts each node before the selection.
+ * @returns {QuerySet} The QuerySet object.
  */
 export function beforeSelection() {
     _beforeSelection(this);
@@ -25,8 +23,8 @@ export function beforeSelection() {
 };
 
 /**
- * Create a selection on the first node.
- * @return {QuerySet} The QuerySet object.
+ * Creates a selection on the first node.
+ * @returns {QuerySet} The QuerySet object.
  */
 export function select() {
     _select(this);
@@ -35,8 +33,8 @@ export function select() {
 };
 
 /**
- * Create a selection containing all of the nodes.
- * @return {QuerySet} The QuerySet object.
+ * Creates a selection containing all of the nodes.
+ * @returns {QuerySet} The QuerySet object.
  */
 export function selectAll() {
     _selectAll(this);
@@ -45,8 +43,8 @@ export function selectAll() {
 };
 
 /**
- * Wrap selected nodes with other nodes.
- * @return {QuerySet} The QuerySet object.
+ * Wraps selected nodes with other nodes.
+ * @returns {QuerySet} The QuerySet object.
  */
 export function wrapSelection() {
     _wrapSelection(this);

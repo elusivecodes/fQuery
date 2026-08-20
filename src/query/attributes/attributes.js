@@ -1,64 +1,65 @@
 import { getAttribute as _getAttribute, getDataset as _getDataset, getHTML as _getHTML, getProperty as _getProperty, getText as _getText, getValue as _getValue, removeAttribute as _removeAttribute, removeDataset as _removeDataset, removeProperty as _removeProperty, setAttribute as _setAttribute, setDataset as _setDataset, setHTML as _setHTML, setProperty as _setProperty, setText as _setText, setValue as _setValue } from './../../attributes/attributes.js';
 
 /**
- * QuerySet Attributes
+ * @typedef {import('../../attributes/attributes.js').AttributeValues} AttributeValues
+ * @typedef {import('../query-set.js').default} QuerySet
  */
 
 /**
- * Get attribute value(s) for the first node.
+ * Gets attribute value(s) for the first node.
  * @param {string} [attribute] The attribute name.
- * @return {string} The attribute value.
+ * @returns {string|null|Record<string, string|null>|undefined} The attribute value, all attributes, or `undefined` if no element matches.
  */
 export function getAttribute(attribute) {
     return _getAttribute(this, attribute);
 };
 
 /**
- * Get dataset value(s) for the first node.
+ * Gets dataset value(s) for the first node.
  * @param {string} [key] The dataset key.
- * @return {*} The dataset value, or an object containing the dataset.
+ * @returns {*|undefined} The dataset value, all dataset values, or `undefined` if no element matches.
  */
 export function getDataset(key) {
     return _getDataset(this, key);
 };
 
 /**
- * Get the HTML contents of the first node.
- * @return {string} The HTML contents.
+ * Gets the HTML contents of the first node.
+ * @returns {string|undefined} The HTML contents, or `undefined` if no element matches.
  */
 export function getHTML() {
     return _getHTML(this);
 };
 
 /**
- * Get a property value for the first node.
+ * Gets a property value for the first node.
  * @param {string} property The property name.
- * @return {string} The property value.
+ * @returns {*|undefined} The property value, or `undefined` if no element matches.
  */
 export function getProperty(property) {
     return _getProperty(this, property);
 };
 
 /**
- * Get the text contents of the first node.
- * @return {string} The text contents.
+ * Gets the text contents of the first node.
+ * @returns {string|null|undefined} The text contents, or `undefined` if no element matches.
  */
 export function getText() {
     return _getText(this);
 };
 
 /**
- * Get the value property of the first node.
- * @return {string} The value.
+ * Gets the value property of the first node.
+ * @returns {*|undefined} The value, or `undefined` if no element matches.
  */
 export function getValue() {
     return _getValue(this);
 };
 
 /**
- * Remove an attribute from each node.
+ * Removes an attribute from each node.
  * @param {string} attribute The attribute name.
- * @return {QuerySet} The QuerySet object.
+ * @returns {QuerySet} The QuerySet object.
  */
 export function removeAttribute(attribute) {
     _removeAttribute(this, attribute);
@@ -67,9 +68,9 @@ export function removeAttribute(attribute) {
 };
 
 /**
- * Remove a dataset value from each node.
+ * Removes a dataset value from each node.
  * @param {string} key The dataset key.
- * @return {QuerySet} The QuerySet object.
+ * @returns {QuerySet} The QuerySet object.
  */
 export function removeDataset(key) {
     _removeDataset(this, key);
@@ -78,9 +79,9 @@ export function removeDataset(key) {
 };
 
 /**
- * Remove a property from each node.
+ * Removes a property from each node.
  * @param {string} property The property name.
- * @return {QuerySet} The QuerySet object.
+ * @returns {QuerySet} The QuerySet object.
  */
 export function removeProperty(property) {
     _removeProperty(this, property);
@@ -89,10 +90,10 @@ export function removeProperty(property) {
 };
 
 /**
- * Set an attribute value for each node.
- * @param {string|object} attribute The attribute name, or an object containing attributes.
- * @param {string} [value] The attribute value.
- * @return {QuerySet} The QuerySet object.
+ * Sets an attribute value for each node.
+ * @param {string|AttributeValues} attribute The attribute name, or an object containing attributes.
+ * @param {*} [value] The attribute value.
+ * @returns {QuerySet} The QuerySet object.
  */
 export function setAttribute(attribute, value) {
     _setAttribute(this, attribute, value);
@@ -101,10 +102,10 @@ export function setAttribute(attribute, value) {
 };
 
 /**
- * Set a dataset value for each node.
- * @param {string|object} key The dataset key, or an object containing dataset values.
+ * Sets a dataset value for each node.
+ * @param {string|Record<string, *>} key The dataset key, or an object containing dataset values.
  * @param {*} [value] The dataset value.
- * @return {QuerySet} The QuerySet object.
+ * @returns {QuerySet} The QuerySet object.
  */
 export function setDataset(key, value) {
     _setDataset(this, key, value);
@@ -113,9 +114,9 @@ export function setDataset(key, value) {
 };
 
 /**
- * Set the HTML contents of each node.
+ * Sets the HTML contents of each node.
  * @param {string} html The HTML contents.
- * @return {QuerySet} The QuerySet object.
+ * @returns {QuerySet} The QuerySet object.
  */
 export function setHTML(html) {
     _setHTML(this, html);
@@ -124,10 +125,10 @@ export function setHTML(html) {
 };
 
 /**
- * Set a property value for each node.
- * @param {string|object} property The property name, or an object containing properties.
- * @param {string} [value] The property value.
- * @return {QuerySet} The QuerySet object.
+ * Sets a property value for each node.
+ * @param {string|Record<string, *>} property The property name, or an object containing properties.
+ * @param {*} [value] The property value.
+ * @returns {QuerySet} The QuerySet object.
  */
 export function setProperty(property, value) {
     _setProperty(this, property, value);
@@ -136,9 +137,9 @@ export function setProperty(property, value) {
 };
 
 /**
- * Set the text contents of each node.
+ * Sets the text contents of each node.
  * @param {string} text The text contents.
- * @return {QuerySet} The QuerySet object.
+ * @returns {QuerySet} The QuerySet object.
  */
 export function setText(text) {
     _setText(this, text);
@@ -147,9 +148,9 @@ export function setText(text) {
 };
 
 /**
- * Set the value property of each node.
+ * Sets the value property of each node.
  * @param {string} value The value.
- * @return {QuerySet} The QuerySet object.
+ * @returns {QuerySet} The QuerySet object.
  */
 export function setValue(value) {
     _setValue(this, value);

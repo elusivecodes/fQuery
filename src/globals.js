@@ -4,7 +4,7 @@ let _$;
 let fQuery;
 
 /**
- * Reset the global $ variable.
+ * Resets the global $ variable.
  */
 export function noConflict() {
     const window = getWindow();
@@ -15,11 +15,11 @@ export function noConflict() {
 };
 
 /**
- * Register the global variables.
+ * Registers the global variables.
  * @param {Window} window The window.
  * @param {Document} [document] The document.
- * @param {object} query The fQuery object.
- * @return {object} The fQuery object.
+ * @param {Function} query The fQuery function.
+ * @returns {Function} The fQuery function.
  */
 export function registerGlobals(window, document, query) {
     fQuery = query;

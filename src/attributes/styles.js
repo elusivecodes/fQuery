@@ -4,13 +4,13 @@ import { parseNode, parseNodes } from './../filters.js';
 import { parseClasses, parseData } from './../helpers.js';
 import { styles } from './../vars.js';
 
-/**
- * DOM Styles
- */
+/** @typedef {import('../helpers.js').ElementInput} ElementInput */
+
+/** @typedef {Record<string, string|number>} StyleValues */
 
 /**
- * Add classes to each node.
- * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
+ * Adds classes to each node.
+ * @param {ElementInput} selector The input node(s), or a query selector string.
  * @param {...string|string[]} classes The classes.
  */
 export function addClass(selector, ...classes) {
@@ -28,10 +28,10 @@ export function addClass(selector, ...classes) {
 };
 
 /**
- * Get computed CSS style value(s) for the first node.
- * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
+ * Gets computed CSS style value(s) for the first node.
+ * @param {ElementInput} selector The input node(s), or a query selector string.
  * @param {string} [style] The CSS style name.
- * @return {string|object} The CSS style value, or an object containing the computed CSS style properties.
+ * @returns {string|Record<string, string>|undefined} The CSS style value, all computed styles, or `undefined` if no element matches.
  */
 export function css(selector, style) {
     const node = parseNode(selector);
@@ -65,10 +65,10 @@ export function css(selector, style) {
 };
 
 /**
- * Get style properties for the first node.
- * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
+ * Gets style properties for the first node.
+ * @param {ElementInput} selector The input node(s), or a query selector string.
  * @param {string} [style] The style name.
- * @return {string|object} The style value, or an object containing the style properties.
+ * @returns {string|Record<string, string>|undefined} The style value, all inline styles, or `undefined` if no element matches.
  */
 export function getStyle(selector, style) {
     const node = parseNode(selector);
@@ -93,8 +93,8 @@ export function getStyle(selector, style) {
 };
 
 /**
- * Hide each node from display.
- * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
+ * Hides each node from display.
+ * @param {ElementInput} selector The input node(s), or a query selector string.
  */
 export function hide(selector) {
     const nodes = parseNodes(selector);
@@ -105,8 +105,8 @@ export function hide(selector) {
 };
 
 /**
- * Remove classes from each node.
- * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
+ * Removes classes from each node.
+ * @param {ElementInput} selector The input node(s), or a query selector string.
  * @param {...string|string[]} classes The classes.
  */
 export function removeClass(selector, ...classes) {
@@ -124,8 +124,8 @@ export function removeClass(selector, ...classes) {
 };
 
 /**
- * Remove a style property from each node.
- * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} selector
+ * Removes a style property from each node.
+ * @param {ElementInput} selector The input node(s), or a query selector string.
  * @param {string} style The style name.
  */
 export function removeStyle(selector, style) {
@@ -139,12 +139,11 @@ export function removeStyle(selector, style) {
 };
 
 /**
- * Set style properties for each node.
- * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
- * @param {string|object} style The style name, or an object containing styles.
- * @param {string} [value] The style value.
- * @param {object} [options] The options for setting the style.
- * @param {Boolean} [options.important] Whether the style should be !important.
+ * Sets style properties for each node.
+ * @param {ElementInput} selector The input node(s), or a query selector string.
+ * @param {string|StyleValues} style The style name, or an object containing styles.
+ * @param {string|number} [value] The style value.
+ * @param {{important?: boolean}} [options] The style options.
  */
 export function setStyle(selector, style, value, { important = false } = {}) {
     const nodes = parseNodes(selector);
@@ -172,8 +171,8 @@ export function setStyle(selector, style, value, { important = false } = {}) {
 };
 
 /**
- * Display each hidden node.
- * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
+ * Displays each hidden node.
+ * @param {ElementInput} selector The input node(s), or a query selector string.
  */
 export function show(selector) {
     const nodes = parseNodes(selector);
@@ -184,8 +183,8 @@ export function show(selector) {
 };
 
 /**
- * Toggle the visibility of each node.
- * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
+ * Toggles the visibility of each node.
+ * @param {ElementInput} selector The input node(s), or a query selector string.
  */
 export function toggle(selector) {
     const nodes = parseNodes(selector);
@@ -201,8 +200,8 @@ export function toggle(selector) {
 };
 
 /**
- * Toggle classes for each node.
- * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
+ * Toggles classes for each node.
+ * @param {ElementInput} selector The input node(s), or a query selector string.
  * @param {...string|string[]} classes The classes.
  */
 export function toggleClass(selector, ...classes) {

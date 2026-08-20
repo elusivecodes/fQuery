@@ -3,13 +3,14 @@ import { parseFilter, parseNodes } from './../filters.js';
 import { clone, remove } from './manipulation.js';
 
 /**
- * DOM Wrap
+ * @typedef {import('../filters.js').NodeFilterInput} NodeFilterInput
+ * @typedef {import('../helpers.js').NodeInput} NodeInput
  */
 
 /**
- * Unwrap each node.
- * @param {string|array|Node|HTMLElement|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
- * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet|DOM~filterCallback} [nodeFilter] The filter node(s), a query selector string or custom filter function.
+ * Unwraps each node.
+ * @param {NodeInput} selector The input node(s), or a query selector string.
+ * @param {NodeFilterInput} [nodeFilter] The filter node(s), a query selector string or custom filter function.
  */
 export function unwrap(selector, nodeFilter) {
     // DocumentFragment and ShadowRoot nodes can not be unwrapped
@@ -57,9 +58,9 @@ export function unwrap(selector, nodeFilter) {
 };
 
 /**
- * Wrap each nodes with other nodes.
- * @param {string|array|Node|HTMLElement|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
- * @param {string|array|HTMLElement|DocumentFragment|NodeList|HTMLCollection|QuerySet} otherSelector The other node(s), or a query selector or HTML string.
+ * Wraps each nodes with other nodes.
+ * @param {NodeInput} selector The input node(s), or a query selector string.
+ * @param {NodeInput} otherSelector The other node(s), or a query selector or HTML string.
  */
 export function wrap(selector, otherSelector) {
     // DocumentFragment and ShadowRoot nodes can not be wrapped
@@ -102,9 +103,9 @@ export function wrap(selector, otherSelector) {
 };
 
 /**
- * Wrap all nodes with other nodes.
- * @param {string|array|Node|HTMLElement|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
- * @param {string|array|HTMLElement|DocumentFragment|NodeList|HTMLCollection|QuerySet} otherSelector The other node(s), or a query selector or HTML string.
+ * Wraps all nodes with other nodes.
+ * @param {NodeInput} selector The input node(s), or a query selector string.
+ * @param {NodeInput} otherSelector The other node(s), or a query selector or HTML string.
  */
 export function wrapAll(selector, otherSelector) {
     // DocumentFragment and ShadowRoot nodes can not be wrapped
@@ -153,9 +154,9 @@ export function wrapAll(selector, otherSelector) {
 };
 
 /**
- * Wrap the contents of each node with other nodes.
- * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
- * @param {string|array|HTMLElement|DocumentFragment|NodeList|HTMLCollection|QuerySet} otherSelector The other node(s), or a query selector or HTML string.
+ * Wraps the contents of each node with other nodes.
+ * @param {NodeInput} selector The input node(s), or a query selector string.
+ * @param {NodeInput} otherSelector The other node(s), or a query selector or HTML string.
  */
 export function wrapInner(selector, otherSelector) {
     const nodes = parseNodes(selector, {

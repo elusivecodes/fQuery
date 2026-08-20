@@ -1,7 +1,3 @@
-/**
- * DOM Variables
- */
-
 export const CONTENT_BOX = 0;
 export const PADDING_BOX = 1;
 export const BORDER_BOX = 2;

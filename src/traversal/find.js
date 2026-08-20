@@ -2,14 +2,21 @@ import { isArray, isDocument, isElement, isFragment, isShadow, merge, unique } f
 import { getContext } from './../config.js';
 import { resolveNodes } from './../helpers.js';
 
+/** @typedef {import('../query/query-set.js').default} QuerySet */
+
 /**
- * DOM Find
+ * @typedef {Element|Document|DocumentFragment|ShadowRoot} QueryContext
  */
 
 /**
- * Resolve one or more find contexts without using the higher-level node parser.
- * @param {*} context The input context.
- * @return {array} The resolved contexts.
+ * @typedef {string|QueryContext|Array<string|QueryContext>|NodeList|HTMLCollection|QuerySet} QueryContextInput
+ * A query context, collection of query contexts, QuerySet, or selector string.
+ */
+
+/**
+ * Resolves one or more find contexts without using the higher-level node parser.
+ * @param {QueryContextInput} context The input context.
+ * @returns {QueryContext[]} The resolved contexts.
  */
 function resolveContexts(context) {
     const nodeFilter = (node) => isDocument(node) || isElement(node) || isFragment(node) || isShadow(node);
@@ -26,10 +33,10 @@ function resolveContexts(context) {
 };
 
 /**
- * Return all nodes matching a selector.
+ * Returns all nodes matching a selector.
  * @param {string} selector The query selector.
- * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|NodeList|HTMLCollection|QuerySet} [context=getContext()] The input node(s), or a query selector string.
- * @return {array} The matching nodes.
+ * @param {QueryContextInput} [context=getContext()] The query context.
+ * @returns {Element[]} The matching nodes.
  */
 export function find(selector, context = getContext()) {
     if (!selector) {
@@ -71,10 +78,10 @@ export function find(selector, context = getContext()) {
 };
 
 /**
- * Return all nodes with a specific class.
+ * Returns all nodes with a specific class.
  * @param {string} className The class name.
- * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|NodeList|HTMLCollection|QuerySet} [context=getContext()] The input node(s), or a query selector string.
- * @return {array} The matching nodes.
+ * @param {QueryContextInput} [context=getContext()] The query context.
+ * @returns {Element[]} The matching nodes.
  */
 export function findByClass(className, context = getContext()) {
     if (isDocument(context) || isElement(context)) {
@@ -103,10 +110,10 @@ export function findByClass(className, context = getContext()) {
 };
 
 /**
- * Return all nodes with a specific ID.
+ * Returns all nodes with a specific ID.
  * @param {string} id The id.
- * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|NodeList|HTMLCollection|QuerySet} [context=getContext()] The input node(s), or a query selector string.
- * @return {array} The matching nodes.
+ * @param {QueryContextInput} [context=getContext()] The query context.
+ * @returns {Element[]} The matching nodes.
  */
 export function findById(id, context = getContext()) {
     if (isDocument(context) || isElement(context) || isFragment(context) || isShadow(context)) {
@@ -129,10 +136,10 @@ export function findById(id, context = getContext()) {
 };
 
 /**
- * Return all nodes with a specific tag.
+ * Returns all nodes with a specific tag.
  * @param {string} tagName The tag name.
- * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|NodeList|HTMLCollection|QuerySet} [context=getContext()] The input node(s), or a query selector string.
- * @return {array} The matching nodes.
+ * @param {QueryContextInput} [context=getContext()] The query context.
+ * @returns {Element[]} The matching nodes.
  */
 export function findByTag(tagName, context = getContext()) {
     if (isDocument(context) || isElement(context)) {
@@ -161,10 +168,10 @@ export function findByTag(tagName, context = getContext()) {
 };
 
 /**
- * Return a single node matching a selector.
+ * Returns a single node matching a selector.
  * @param {string} selector The query selector.
- * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|NodeList|HTMLCollection|QuerySet} [context=getContext()] The input node(s), or a query selector string.
- * @return {HTMLElement} The matching node.
+ * @param {QueryContextInput} [context=getContext()] The query context.
+ * @returns {Element|null|undefined} The matching element, or `undefined` if none matches.
  */
 export function findOne(selector, context = getContext()) {
     if (!selector) {
@@ -208,10 +215,10 @@ export function findOne(selector, context = getContext()) {
 };
 
 /**
- * Return a single node with a specific class.
+ * Returns a single node with a specific class.
  * @param {string} className The class name.
- * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|NodeList|HTMLCollection|QuerySet} [context=getContext()] The input node(s), or a query selector string.
- * @return {HTMLElement} The matching node.
+ * @param {QueryContextInput} [context=getContext()] The query context.
+ * @returns {Element|null|undefined} The matching element, or `undefined` if none matches.
  */
 export function findOneByClass(className, context = getContext()) {
     if (isDocument(context) || isElement(context)) {
@@ -242,10 +249,10 @@ export function findOneByClass(className, context = getContext()) {
 };
 
 /**
- * Return a single node with a specific ID.
+ * Returns a single node with a specific ID.
  * @param {string} id The id.
- * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|NodeList|HTMLCollection|QuerySet} [context=getContext()] The input node(s), or a query selector string.
- * @return {HTMLElement} The matching element.
+ * @param {QueryContextInput} [context=getContext()] The query context.
+ * @returns {Element|null|undefined} The matching element, or `undefined` if none matches.
  */
 export function findOneById(id, context = getContext()) {
     if (isDocument(context)) {
@@ -276,10 +283,10 @@ export function findOneById(id, context = getContext()) {
 };
 
 /**
- * Return a single node with a specific tag.
+ * Returns a single node with a specific tag.
  * @param {string} tagName The tag name.
- * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|NodeList|HTMLCollection|QuerySet} [context=getContext()] The input node(s), or a query selector string.
- * @return {HTMLElement} The matching node.
+ * @param {QueryContextInput} [context=getContext()] The query context.
+ * @returns {Element|null|undefined} The matching element, or `undefined` if none matches.
  */
 export function findOneByTag(tagName, context = getContext()) {
     if (isDocument(context) || isElement(context)) {

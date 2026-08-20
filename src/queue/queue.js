@@ -1,15 +1,28 @@
 import { parseNodes } from './../filters.js';
 import { queues } from './../vars.js';
 
+/** @typedef {import('../helpers.js').ElementInput} ElementInput */
+
 /**
- * DOM Queue
+ * @callback QueueCallback
+ * @param {Element} node The queued element.
+ * @returns {*|Promise<*>} The callback result.
  */
 
 /**
- * Clear the queue of each node.
- * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
- * @param {object} [options] The options for clearing the queue.
- * @param {string} [options.queueName] The name of the queue to use.
+ * @typedef {object} QueueOptions
+ * @property {string} [queueName='default'] The queue name.
+ */
+
+/**
+ * @typedef {object} ClearQueueOptions
+ * @property {string|null} [queueName=null] The queue name. Null addresses every queue.
+ */
+
+/**
+ * Clears the queue of each node.
+ * @param {ElementInput} selector The input node(s), or a query selector string.
+ * @param {ClearQueueOptions} [options] The queue clearing options.
  */
 export function clearQueue(selector, { queueName = null } = {}) {
     const nodes = parseNodes(selector);
@@ -32,10 +45,9 @@ export function clearQueue(selector, { queueName = null } = {}) {
 };
 
 /**
- * Run the next callback for a single node.
- * @param {HTMLElement} node The input node.
- * @param {object} [options] The options for clearing the queue.
- * @param {string} [options.queueName=default] The name of the queue to use.
+ * Runs the next callback for a single node.
+ * @param {Element} node The input node.
+ * @param {QueueOptions} [options] The queue options.
  */
 function dequeue(node, { queueName = 'default' } = {}) {
     const queue = queues.get(node);
@@ -60,11 +72,10 @@ function dequeue(node, { queueName = 'default' } = {}) {
 };
 
 /**
- * Queue a callback on each node.
- * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
- * @param {DOM~queueCallback} callback The callback to queue.
- * @param {object} [options] The options for clearing the queue.
- * @param {string} [options.queueName=default] The name of the queue to use.
+ * Queues a callback on each node.
+ * @param {ElementInput} selector The input node(s), or a query selector string.
+ * @param {QueueCallback} callback The callback to queue.
+ * @param {QueueOptions} [options] The queue options.
  */
 export function queue(selector, callback, { queueName = 'default' } = {}) {
     const nodes = parseNodes(selector);
