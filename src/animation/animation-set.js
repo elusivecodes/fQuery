@@ -18,7 +18,7 @@ export default class AnimationSet {
 
     /**
      * Executes a callback if any of the animations is rejected.
-     * @param {((reason: HTMLElement) => *)} [onRejected] The callback to execute if an animation is rejected.
+     * @param {((reason: *) => *)} [onRejected] The callback to execute if an animation is rejected.
      * @returns {Promise<*>} The resulting promise.
      */
     catch(onRejected) {
@@ -47,7 +47,7 @@ export default class AnimationSet {
     /**
      * Executes a callback once the animation is resolved (or optionally rejected).
      * @param {((value: HTMLElement[]) => *)} onFulfilled The callback to execute if the animations resolve.
-     * @param {((reason: HTMLElement) => *)} [onRejected] The callback to execute if an animation is rejected.
+     * @param {((reason: *) => *)} [onRejected] The callback to execute if an animation is rejected.
      * @returns {Promise<*>} The resulting promise.
      */
     then(onFulfilled, onRejected) {

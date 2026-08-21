@@ -375,6 +375,56 @@ test.describe('#animate', () => {
         ]);
     });
 
+    test('rejects callback errors without freezing later animations', async ({ page }) => {
+        await page.evaluate((_) => {
+            window.animationError = null;
+
+            $.animate(
+                '#test2',
+                (_) => {
+                    throw new Error('Test error');
+                },
+                {
+                    duration: 100,
+                    debug: true,
+                },
+            ).catch((error) => {
+                window.animationError = error.message;
+            });
+
+            $.animate(
+                '#test4',
+                (node, progress) => {
+                    node.dataset.test = progress;
+                },
+                {
+                    duration: 100,
+                    type: 'linear',
+                    debug: true,
+                },
+            );
+        });
+
+        await expect.poll(async () => await page.evaluate(() => window.animationError)).toBe('Test error');
+        await advanceClock(page, 50);
+        await expectAnimationState(page, [
+            {
+                selectors: ['#test1', '#test2', '#test3'],
+            },
+            {
+                selectors: ['#test4'],
+                progress: 0.5,
+            },
+        ]);
+        await advanceClock(page, 100);
+        await expectAnimationState(page, [
+            {
+                selectors: ['#test1', '#test2', '#test3', '#test4'],
+            },
+        ]);
+        await expect(page.locator('#test4')).toHaveAttribute('data-test', '1');
+    });
+
     test('throws when all animations are stopped (without finishing)', async ({ page }) => {
         expect(await page.evaluate(async (_) => {
             try {
