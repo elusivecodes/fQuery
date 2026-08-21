@@ -20,7 +20,10 @@ const ajaxDefaults = {
     rejectOnCancel: true,
     responseType: null,
     url: null,
-    xhr: (_) => new XMLHttpRequest,
+    xhr: (_) => {
+        const { XMLHttpRequest } = getWindow();
+        return new XMLHttpRequest;
+    },
 };
 
 const animationDefaults = {

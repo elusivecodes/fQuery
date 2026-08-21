@@ -23,24 +23,35 @@ export function appendQueryString(url, key, value) {
 };
 
 /**
+ * Creates URLSearchParams from input data.
+ * @param {*} data The input data.
+ * @returns {URLSearchParams} The URLSearchParams.
+ */
+export function createSearchParams(data) {
+    const { URLSearchParams } = getWindow();
+
+    return new URLSearchParams(data);
+};
+
+/**
+ * Creates a URL from a URL string.
+ * @param {string} url The URL.
+ * @returns {URL} The URL.
+ */
+export function createUrl(url) {
+    const { location, URL } = getWindow();
+    const baseHref = (location.origin + location.pathname).replace(/\/$/, '');
+
+    return new URL(url, baseHref);
+};
+
+/**
  * Gets the URLSearchParams from a URL string.
  * @param {string} url The URL.
  * @returns {URLSearchParams} The URLSearchParams.
  */
 export function getSearchParams(url) {
-    return getURL(url).searchParams;
-};
-
-/**
- * Gets the URL from a URL string.
- * @param {string} url The URL.
- * @returns {URL} The URL.
- */
-function getURL(url) {
-    const window = getWindow();
-    const baseHref = (window.location.origin + window.location.pathname).replace(/\/$/, '');
-
-    return new URL(url, baseHref);
+    return createUrl(url).searchParams;
 };
 
 /**
@@ -49,6 +60,7 @@ function getURL(url) {
  * @returns {FormData} The parsed FormData object.
  */
 export function parseFormData(data) {
+    const { FormData } = getWindow();
     const values = parseValues(data);
 
     const formData = new FormData;
@@ -131,7 +143,7 @@ function parseValues(data) {
  * @returns {string} The new URL string.
  */
 export function setSearchParams(url, searchParams) {
-    const urlData = getURL(url);
+    const urlData = createUrl(url);
 
     urlData.search = searchParams.toString();
 

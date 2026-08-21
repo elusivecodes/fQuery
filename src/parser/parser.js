@@ -1,8 +1,6 @@
 
 import { merge } from '@fr0st/core';
-import { getContext } from './../config.js';
-
-const parser = new DOMParser();
+import { getContext, getWindow } from './../config.js';
 
 /**
  * Creates a Document object from a string.
@@ -11,6 +9,9 @@ const parser = new DOMParser();
  * @returns {Document} A new Document object.
  */
 export function parseDocument(input, { contentType = 'text/html' } = {}) {
+    const { DOMParser } = getWindow();
+    const parser = new DOMParser;
+
     return parser.parseFromString(input, contentType);
 };
 

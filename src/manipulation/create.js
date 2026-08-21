@@ -1,7 +1,7 @@
-import { camelCase, isNumeric, kebabCase, wrap } from '@fr0st/core';
+import { camelCase, kebabCase, wrap } from '@fr0st/core';
 import { getContext } from './../config.js';
 import { parseNode } from './../filters.js';
-import { parseClasses, parseData } from './../helpers.js';
+import { normalizeCssValue, parseClasses, parseData } from './../helpers.js';
 
 /** @typedef {import('../helpers.js').ElementInput} ElementInput */
 
@@ -61,11 +61,7 @@ export function create(tagName = 'div', options = {}) {
     if ('style' in options) {
         for (let [style, value] of Object.entries(options.style)) {
             style = kebabCase(style);
-
-            // if value is numeric and property doesn't support number values, add px
-            if (value && isNumeric(value) && !CSS.supports(style, value)) {
-                value += 'px';
-            }
+            value = normalizeCssValue(style, value);
 
             node.style.setProperty(style, value);
         }

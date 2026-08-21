@@ -1,5 +1,5 @@
 import { parseNode, parseNodes } from './../filters.js';
-import { eventNamespacedRegExp, parseEvent, parseEvents } from './../helpers.js';
+import { createEvent, eventNamespacedRegExp, parseEvent, parseEvents } from './../helpers.js';
 import { events } from './../vars.js';
 import { delegateFactory, delegateFactoryClean, namespaceFactory, preventFactory, selfDestructCallbackFactory } from './event-wrappers.js';
 
@@ -295,7 +295,7 @@ export function triggerEvent(selector, events, { data = null, detail = null, bub
     for (const event of events) {
         const realEvent = parseEvent(event);
 
-        const eventData = new CustomEvent(realEvent, {
+        const eventData = createEvent(realEvent, {
             detail,
             bubbles,
             cancelable,
@@ -332,7 +332,7 @@ export function triggerOne(selector, event, { data = null, detail = null, bubble
 
     const realEvent = parseEvent(event);
 
-    const eventData = new CustomEvent(realEvent, {
+    const eventData = createEvent(realEvent, {
         detail,
         bubbles,
         cancelable,

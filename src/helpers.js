@@ -21,6 +21,18 @@ import QuerySet from './query/query-set.js';
  */
 
 /**
+ * Creates a custom event.
+ * @param {string} type The event type.
+ * @param {CustomEventInit} [options] The event options.
+ * @returns {CustomEvent} The custom event.
+ */
+export function createEvent(type, options) {
+    const { CustomEvent } = getWindow();
+
+    return new CustomEvent(type, options);
+};
+
+/**
  * Creates a wrapped version of a function that executes once per tick.
  * @template {(...args: any[]) => any} T
  * @param {T} callback The callback to debounce.
@@ -62,6 +74,24 @@ export function escapeCSS(value) {
  */
 export function eventNamespacedRegExp(event) {
     return new RegExp(`^${escapeRegExp(event)}(?:\\.|$)`, 'i');
+};
+
+/**
+ * Normalizes a CSS property value.
+ * @param {string} style The CSS property name.
+ * @param {string|number} value The CSS property value.
+ * @returns {string|number} The normalized CSS property value.
+ */
+export function normalizeCssValue(style, value) {
+    if (!value || !isNumeric(value)) {
+        return value;
+    }
+
+    const { CSS } = getWindow();
+
+    return !CSS.supports(style, value) ?
+        `${value}px` :
+        value;
 };
 
 /**

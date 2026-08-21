@@ -1,3 +1,4 @@
+import { getWindow } from './../config.js';
 import { parseNodes } from './../filters.js';
 import { queues } from './../vars.js';
 
@@ -92,6 +93,7 @@ function dequeue(node, { queueName = 'default' } = {}) {
  * @param {QueueOptions} [options] The queue options.
  */
 export function queue(selector, callback, { queueName = 'default' } = {}) {
+    const { setTimeout } = getWindow();
     const nodes = parseNodes(selector);
 
     for (const node of nodes) {

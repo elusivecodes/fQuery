@@ -1,6 +1,7 @@
 import { isElement, isFragment, isNode, isShadow, merge } from '@fr0st/core';
 import { addEvent } from './../events/event-handlers.js';
 import { parseNodes } from './../filters.js';
+import { createEvent } from './../helpers.js';
 import { animations as _animations, data as _data, events as _events, queues, styles } from './../vars.js';
 import { createFragment } from './create.js';
 
@@ -173,7 +174,7 @@ export function removeNode(node) {
         const nodeEvents = _events.get(node);
 
         if ('remove' in nodeEvents) {
-            const eventData = new CustomEvent('remove', {
+            const eventData = createEvent('remove', {
                 bubbles: false,
                 cancelable: false,
             });

@@ -1,6 +1,6 @@
 import { extend, isObject } from '@fr0st/core';
 import { getAjaxDefaults, getWindow } from './../config.js';
-import { appendQueryString, getSearchParams, parseFormData, parseParams, setSearchParams } from './helpers.js';
+import { appendQueryString, createSearchParams, getSearchParams, parseFormData, parseParams, setSearchParams } from './helpers.js';
 
 /**
  * @typedef {boolean|string|Array<*>|Record<string, *>|FormData|null} AjaxData
@@ -67,6 +67,8 @@ export default class AjaxRequest {
      * @param {AjaxOptions} [options] The request options.
      */
     constructor(options) {
+        const { location } = getWindow();
+
         this._options = extend(
             {},
             getAjaxDefaults(),
@@ -77,7 +79,7 @@ export default class AjaxRequest {
         const isFormData = Object.prototype.toString.call(this._options.data) === '[object FormData]';
 
         if (!this._options.url) {
-            this._options.url = getWindow().location.href;
+            this._options.url = location.href;
         }
 
         if (!this._options.cache) {
@@ -122,7 +124,7 @@ export default class AjaxRequest {
             }
 
             if (this._options.method === 'GET') {
-                const dataParams = new URLSearchParams(this._options.data);
+                const dataParams = createSearchParams(this._options.data);
 
                 const searchParams = getSearchParams(this._options.url);
                 for (const [key, value] of dataParams.entries()) {

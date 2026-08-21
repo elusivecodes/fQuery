@@ -1394,7 +1394,10 @@
         rejectOnCancel: true,
         responseType: null,
         url: null,
-        xhr: (_) => new XMLHttpRequest,
+        xhr: (_) => {
+            const { XMLHttpRequest } = getWindow();
+            return new XMLHttpRequest;
+        },
     };
 
     const animationDefaults = {
@@ -1505,23 +1508,33 @@
         return setSearchParams(url, searchParams);
     }
     /**
+     * Creates URLSearchParams from input data.
+     * @param {*} data The input data.
+     * @returns {URLSearchParams} The URLSearchParams.
+     */
+    function createSearchParams(data) {
+        const { URLSearchParams } = getWindow();
+
+        return new URLSearchParams(data);
+    }
+    /**
+     * Creates a URL from a URL string.
+     * @param {string} url The URL.
+     * @returns {URL} The URL.
+     */
+    function createUrl(url) {
+        const { location, URL } = getWindow();
+        const baseHref = (location.origin + location.pathname).replace(/\/$/, '');
+
+        return new URL(url, baseHref);
+    }
+    /**
      * Gets the URLSearchParams from a URL string.
      * @param {string} url The URL.
      * @returns {URLSearchParams} The URLSearchParams.
      */
     function getSearchParams(url) {
-        return getURL(url).searchParams;
-    }
-    /**
-     * Gets the URL from a URL string.
-     * @param {string} url The URL.
-     * @returns {URL} The URL.
-     */
-    function getURL(url) {
-        const window = getWindow();
-        const baseHref = (window.location.origin + window.location.pathname).replace(/\/$/, '');
-
-        return new URL(url, baseHref);
+        return createUrl(url).searchParams;
     }
     /**
      * Returns a FormData object from form entries or a data object.
@@ -1529,6 +1542,7 @@
      * @returns {FormData} The parsed FormData object.
      */
     function parseFormData(data) {
+        const { FormData } = getWindow();
         const values = parseValues(data);
 
         const formData = new FormData;
@@ -1607,7 +1621,7 @@
      * @returns {string} The new URL string.
      */
     function setSearchParams(url, searchParams) {
-        const urlData = getURL(url);
+        const urlData = createUrl(url);
 
         urlData.search = searchParams.toString();
 
@@ -1682,6 +1696,8 @@
          * @param {AjaxOptions} [options] The request options.
          */
         constructor(options) {
+            const { location } = getWindow();
+
             this._options = extend(
                 {},
                 getAjaxDefaults(),
@@ -1692,7 +1708,7 @@
             const isFormData = Object.prototype.toString.call(this._options.data) === '[object FormData]';
 
             if (!this._options.url) {
-                this._options.url = getWindow().location.href;
+                this._options.url = location.href;
             }
 
             if (!this._options.cache) {
@@ -1737,7 +1753,7 @@
                 }
 
                 if (this._options.method === 'GET') {
-                    const dataParams = new URLSearchParams(this._options.data);
+                    const dataParams = createSearchParams(this._options.data);
 
                     const searchParams = getSearchParams(this._options.url);
                     for (const [key, value] of dataParams.entries()) {
@@ -2058,6 +2074,17 @@
      */
 
     /**
+     * Creates a custom event.
+     * @param {string} type The event type.
+     * @param {CustomEventInit} [options] The event options.
+     * @returns {CustomEvent} The custom event.
+     */
+    function createEvent(type, options) {
+        const { CustomEvent } = getWindow();
+
+        return new CustomEvent(type, options);
+    }
+    /**
      * Creates a wrapped version of a function that executes once per tick.
      * @template {(...args: any[]) => any} T
      * @param {T} callback The callback to debounce.
@@ -2097,6 +2124,23 @@
      */
     function eventNamespacedRegExp(event) {
         return new RegExp(`^${escapeRegExp(event)}(?:\\.|$)`, 'i');
+    }
+    /**
+     * Normalizes a CSS property value.
+     * @param {string} style The CSS property name.
+     * @param {string|number} value The CSS property value.
+     * @returns {string|number} The normalized CSS property value.
+     */
+    function normalizeCssValue(style, value) {
+        if (!value || !isNumeric(value)) {
+            return value;
+        }
+
+        const { CSS } = getWindow();
+
+        return !CSS.supports(style, value) ?
+            `${value}px` :
+            value;
     }
     /**
      * Returns a one-dimensional array of classes from nested arrays or space-separated strings.
@@ -2241,8 +2285,6 @@
         return [];
     }
 
-    const parser = new DOMParser();
-
     /**
      * Creates a Document object from a string.
      * @param {string} input The input string.
@@ -2250,6 +2292,9 @@
      * @returns {Document} A new Document object.
      */
     function parseDocument(input, { contentType = 'text/html' } = {}) {
+        const { DOMParser } = getWindow();
+        const parser = new DOMParser;
+
         return parser.parseFromString(input, contentType);
     }
     /**
@@ -2893,6 +2938,8 @@
      * @returns {number} The current time.
      */
     function getTime() {
+        const { performance } = getWindow();
+
         return performance.now();
     }
     /**
@@ -2910,6 +2957,7 @@
      * Runs a single frame of all animations, and then queue up the next frame.
      */
     function update() {
+        const { requestAnimationFrame, setTimeout } = getWindow();
         const time = getTime();
 
         for (const [node, currentAnimations] of animations) {
@@ -2927,7 +2975,7 @@
         } else if (config.useTimeout) {
             setTimeout(update, 1000 / 60);
         } else {
-            getWindow().requestAnimationFrame(update);
+            requestAnimationFrame(update);
         }
     }
 
@@ -3632,11 +3680,7 @@
         if ('style' in options) {
             for (let [style, value] of Object.entries(options.style)) {
                 style = kebabCase(style);
-
-                // if value is numeric and property doesn't support number values, add px
-                if (value && isNumeric(value) && !CSS.supports(style, value)) {
-                    value += 'px';
-                }
+                value = normalizeCssValue(style, value);
 
                 node.style.setProperty(style, value);
             }
@@ -3843,6 +3887,8 @@
      * @returns {Array<Node|Window>} The sorted nodes.
      */
     function sort$1(selector) {
+        const { Node } = getWindow();
+
         return parseNodes(selector, {
             node: true,
             fragment: true,
@@ -4804,7 +4850,7 @@
         for (const event of events) {
             const realEvent = parseEvent(event);
 
-            const eventData = new CustomEvent(realEvent, {
+            const eventData = createEvent(realEvent, {
                 detail,
                 bubbles,
                 cancelable,
@@ -4840,7 +4886,7 @@
 
         const realEvent = parseEvent(event);
 
-        const eventData = new CustomEvent(realEvent, {
+        const eventData = createEvent(realEvent, {
             detail,
             bubbles,
             cancelable,
@@ -5022,7 +5068,7 @@
             const nodeEvents = events.get(node);
 
             if ('remove' in nodeEvents) {
-                const eventData = new CustomEvent('remove', {
+                const eventData = createEvent('remove', {
                     bubbles: false,
                     cancelable: false,
                 });
@@ -5647,11 +5693,7 @@
 
         for (let [style, value] of Object.entries(styles)) {
             style = kebabCase(style);
-
-            // if value is numeric and property doesn't support number values, add px
-            if (value && isNumeric(value) && !CSS.supports(style, value)) {
-                value += 'px';
-            }
+            value = normalizeCssValue(style, value);
 
             for (const node of nodes) {
                 node.style.setProperty(
@@ -7896,6 +7938,7 @@
      * @param {QueueOptions} [options] The queue options.
      */
     function queue$1(selector, callback, { queueName = 'default' } = {}) {
+        const { setTimeout } = getWindow();
         const nodes = parseNodes(selector);
 
         for (const node of nodes) {
@@ -7945,6 +7988,8 @@
      * @returns {QuerySet} The QuerySet object.
      */
     function delay(duration, { queueName = 'default' } = {}) {
+        const { setTimeout } = getWindow();
+
         return this.queue((_) =>
             new Promise((resolve) =>
                 setTimeout(resolve, duration),

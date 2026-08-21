@@ -1,7 +1,7 @@
-import { isNumeric, kebabCase } from '@fr0st/core';
+import { kebabCase } from '@fr0st/core';
 import { getWindow } from './../config.js';
 import { parseNode, parseNodes } from './../filters.js';
-import { parseClasses, parseData } from './../helpers.js';
+import { normalizeCssValue, parseClasses, parseData } from './../helpers.js';
 import { styles } from './../vars.js';
 
 /** @typedef {import('../helpers.js').ElementInput} ElementInput */
@@ -152,11 +152,7 @@ export function setStyle(selector, style, value, { important = false } = {}) {
 
     for (let [style, value] of Object.entries(styles)) {
         style = kebabCase(style);
-
-        // if value is numeric and property doesn't support number values, add px
-        if (value && isNumeric(value) && !CSS.supports(style, value)) {
-            value += 'px';
-        }
+        value = normalizeCssValue(style, value);
 
         for (const node of nodes) {
             node.style.setProperty(

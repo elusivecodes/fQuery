@@ -1,6 +1,6 @@
 import { isDocument, isElement, isFragment, isShadow, isWindow, merge } from '@fr0st/core';
 import { parseParams } from './../ajax/helpers.js';
-import { getContext } from './../config.js';
+import { getContext, getWindow } from './../config.js';
 import { parseFilter, parseNode, parseNodes } from './../filters.js';
 
 /**
@@ -151,6 +151,8 @@ export function serializeArray(selector) {
  * @returns {Array<Node|Window>} The sorted nodes.
  */
 export function sort(selector) {
+    const { Node } = getWindow();
+
     return parseNodes(selector, {
         node: true,
         fragment: true,

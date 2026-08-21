@@ -1,3 +1,4 @@
+import { getWindow } from './../../config.js';
 import { clearQueue as _clearQueue, queue as _queue } from './../../queue/queue.js';
 
 /**
@@ -24,6 +25,8 @@ export function clearQueue({ queueName = 'default' } = {}) {
  * @returns {QuerySet} The QuerySet object.
  */
 export function delay(duration, { queueName = 'default' } = {}) {
+    const { setTimeout } = getWindow();
+
     return this.queue((_) =>
         new Promise((resolve) =>
             setTimeout(resolve, duration),

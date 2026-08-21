@@ -8,6 +8,8 @@ let animating = false;
  * @returns {number} The current time.
  */
 export function getTime() {
+    const { performance } = getWindow();
+
     return performance.now();
 };
 
@@ -27,6 +29,7 @@ export function start() {
  * Runs a single frame of all animations, and then queue up the next frame.
  */
 function update() {
+    const { requestAnimationFrame, setTimeout } = getWindow();
     const time = getTime();
 
     for (const [node, currentAnimations] of animations) {
@@ -44,6 +47,6 @@ function update() {
     } else if (config.useTimeout) {
         setTimeout(update, 1000 / 60);
     } else {
-        getWindow().requestAnimationFrame(update);
+        requestAnimationFrame(update);
     }
 };
