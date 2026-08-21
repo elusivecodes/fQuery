@@ -40,6 +40,19 @@ export const allowedTags = {
     'ul': [],
 };
 
+export const uriAttributes = new Set([
+    'action',
+    'background',
+    'cite',
+    'formaction',
+    'href',
+    'itemtype',
+    'longdesc',
+    'poster',
+    'src',
+    'xlink:href',
+]);
+
 export const eventLookup = {
     mousedown: ['mousemove', 'mouseup'],
     touchstart: ['touchmove', 'touchend'],

@@ -1,6 +1,6 @@
 import { merge } from '@fr0st/core';
-import { getContext } from './../config.js';
-import { allowedTags as _allowedTags } from './../vars.js';
+import { getContext, getWindow } from './../config.js';
+import { allowedTags as _allowedTags, uriAttributes } from './../vars.js';
 
 /** @typedef {Record<string, Array<string|RegExp>>} AllowedTags */
 
@@ -24,6 +24,32 @@ export function sanitize(html, allowedTags = _allowedTags) {
 };
 
 /**
+ * Checks whether an attribute is allowed.
+ * @param {Attr} attribute The input attribute.
+ * @param {Array<string|RegExp>} allowedAttributes The allowed attributes.
+ * @returns {boolean} Whether the attribute is allowed.
+ */
+function isAllowedAttribute(attribute, allowedAttributes) {
+    const name = attribute.nodeName.toLowerCase();
+    const isAllowed = allowedAttributes.some((test) =>
+        typeof test === 'string' ?
+            test === name :
+            test instanceof RegExp && test.test(name),
+    );
+
+    if (!isAllowed || !uriAttributes.has(name)) {
+        return isAllowed;
+    }
+
+    try {
+        const { URL } = getWindow();
+        return new URL(attribute.nodeValue, getContext().baseURI).protocol !== 'javascript:';
+    } catch {
+        return false;
+    }
+};
+
+/**
  * Sanitizes a single node.
  * @param {Element} node The input node.
  * @param {AllowedTags} [allowedTags] The allowed tags and attributes.
@@ -32,7 +58,7 @@ function sanitizeNode(node, allowedTags = _allowedTags) {
     // check node
     const name = node.tagName.toLowerCase();
 
-    if (!(name in allowedTags)) {
+    if (!Object.hasOwn(allowedTags, name)) {
         node.remove();
         return;
     }
@@ -40,7 +66,7 @@ function sanitizeNode(node, allowedTags = _allowedTags) {
     // check node attributes
     const allowedAttributes = [];
 
-    if ('*' in allowedTags) {
+    if (Object.hasOwn(allowedTags, '*')) {
         allowedAttributes.push(...allowedTags['*']);
     }
 
@@ -49,7 +75,7 @@ function sanitizeNode(node, allowedTags = _allowedTags) {
     const attributes = merge([], node.attributes);
 
     for (const attribute of attributes) {
-        if (!allowedAttributes.find((test) => attribute.nodeName.match(test))) {
+        if (!isAllowedAttribute(attribute, allowedAttributes)) {
             node.removeAttribute(attribute.nodeName);
         }
     }
