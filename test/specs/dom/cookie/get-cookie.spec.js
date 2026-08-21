@@ -35,4 +35,37 @@ test.describe('#getCookie', () => {
             'Test 3',
         ]);
     });
+
+    test('returns null when the cookie does not exist', async ({ page }) => {
+        expect(await page.evaluate((_) => {
+            const myDoc = {
+                cookie: 'test1=Test 1',
+                nodeType: Node.DOCUMENT_NODE,
+            };
+            $.setContext(myDoc);
+            return $.getCookie('test');
+        })).toBeNull();
+    });
+
+    test('matches the exact cookie name', async ({ page }) => {
+        expect(await page.evaluate((_) => {
+            const myDoc = {
+                cookie: 'test1=Test 1; test=Test 2',
+                nodeType: Node.DOCUMENT_NODE,
+            };
+            $.setContext(myDoc);
+            return $.getCookie('test');
+        })).toBe('Test 2');
+    });
+
+    test('decodes the cookie value', async ({ page }) => {
+        expect(await page.evaluate((_) => {
+            const myDoc = {
+                cookie: 'test=Test%20value%3B%20100%25',
+                nodeType: Node.DOCUMENT_NODE,
+            };
+            $.setContext(myDoc);
+            return $.getCookie('test');
+        })).toBe('Test value; 100%');
+    });
 });

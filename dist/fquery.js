@@ -6168,21 +6168,21 @@
      * @returns {string|null} The cookie value, or `null` if it does not exist.
      */
     function getCookie(name) {
+        const prefix = `${name}=`;
         const cookie = getContext().cookie
             .split(';')
             .find((cookie) =>
                 cookie
                     .trimStart()
-                    .substring(0, name.length) === name,
-            )
-            .trimStart();
+                    .startsWith(prefix),
+            );
 
         if (!cookie) {
             return null;
         }
 
         return decodeURIComponent(
-            cookie.substring(name.length + 1),
+            cookie.trimStart().substring(prefix.length),
         );
     }
     /**
@@ -6218,7 +6218,7 @@
             return;
         }
 
-        let cookie = `${name}=${value}`;
+        let cookie = `${name}=${encodeURIComponent(value)}`;
 
         if (expires) {
             const date = new Date;

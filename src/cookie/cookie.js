@@ -6,21 +6,21 @@ import { getContext } from './../config.js';
  * @returns {string|null} The cookie value, or `null` if it does not exist.
  */
 export function getCookie(name) {
+    const prefix = `${name}=`;
     const cookie = getContext().cookie
         .split(';')
         .find((cookie) =>
             cookie
                 .trimStart()
-                .substring(0, name.length) === name,
-        )
-        .trimStart();
+                .startsWith(prefix),
+        );
 
     if (!cookie) {
         return null;
     }
 
     return decodeURIComponent(
-        cookie.substring(name.length + 1),
+        cookie.trimStart().substring(prefix.length),
     );
 };
 
@@ -58,7 +58,7 @@ export function setCookie(name, value, { expires = null, path = null, secure = f
         return;
     }
 
-    let cookie = `${name}=${value}`;
+    let cookie = `${name}=${encodeURIComponent(value)}`;
 
     if (expires) {
         const date = new Date;

@@ -18,6 +18,18 @@ test.describe('#setCookie', () => {
         })).toBe('test=Test');
     });
 
+    test('encodes the cookie value', async ({ page }) => {
+        expect(await page.evaluate((_) => {
+            const myDoc = {
+                cookie: '',
+                nodeType: Node.DOCUMENT_NODE,
+            };
+            $.setContext(myDoc);
+            $.setCookie('test', 'Test value; 100%');
+            return myDoc.cookie;
+        })).toBe('test=Test%20value%3B%20100%25');
+    });
+
     test('sets a cookie with expiration', async ({ page }) => {
         const cookie = await page.evaluate((_) => {
             const myDoc = {
