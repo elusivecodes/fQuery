@@ -73,10 +73,10 @@ export function parseParams(data) {
     const values = parseValues(data);
 
     const paramString = values
-        .map(([key, value]) => `${key}=${value}`)
+        .map(([key, value]) => `${encodeURIComponent(key)}=${encodeURIComponent(value)}`)
         .join('&');
 
-    return encodeURI(paramString);
+    return paramString;
 };
 
 /**

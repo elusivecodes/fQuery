@@ -362,6 +362,71 @@ test.describe('#ajax', () => {
         });
     });
 
+    test('normalizes the request method', async ({ page }) => {
+        expect(await page.evaluate(async (_) => {
+            const response = await $.ajax({
+                method: 'get',
+            });
+            return response.xhr.data.method;
+        })).toBe('GET');
+    });
+
+    test('moves false GET data to the query string', async ({ page }) => {
+        expect(await page.evaluate(async (_) => {
+            const response = await $.ajax({ data: false });
+            return {
+                body: response.xhr.data.body,
+                url: response.xhr.data.url,
+            };
+        })).toEqual({
+            body: null,
+            url: 'http://localhost:3001/?false=',
+        });
+    });
+
+    test('encodes parameter names and values', async ({ page }) => {
+        expect(await page.evaluate(async (_) => {
+            const response = await $.ajax({
+                data: {
+                    'test&key': 'Test&value=1',
+                },
+            });
+            return response.xhr.data.url;
+        })).toBe('http://localhost:3001/?test%26key=Test%26value%3D1');
+    });
+
+    test('preserves FormData', async ({ page }) => {
+        expect(await page.evaluate(async (_) => {
+            const data = new FormData;
+            data.append('test', 'Test');
+
+            const response = await $.ajax({
+                data,
+                method: 'POST',
+            });
+            response.xhr = response.xhr.data;
+            response.xhr.body = [...response.xhr.body.entries()];
+            return response;
+        })).toEqual({
+            event: {
+                isTrusted: false,
+            },
+            response: 'Test',
+            xhr: {
+                async: true,
+                body: [
+                    ['test', 'Test'],
+                ],
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                },
+                method: 'POST',
+                status: 200,
+                url: 'http://localhost:3001/',
+            },
+        });
+    });
+
     test('performs an AJAX request with content type', async ({ page }) => {
         expect(await page.evaluate(async (_) => {
             const response = await $.ajax({
@@ -774,11 +839,11 @@ test.describe('#ajax', () => {
         });
     });
 
-    test('throws on status error', async ({ page }) => {
+    test('throws on timeout', async ({ page }) => {
         expect(await page.evaluate(async (_) => {
             try {
                 const ajax = $.ajax();
-                ajax.xhr.status = 404;
+                ajax.xhr.ontimeout(new Event('timeout'));
                 await ajax;
                 return false;
             } catch (error) {
@@ -789,7 +854,7 @@ test.describe('#ajax', () => {
             event: {
                 isTrusted: false,
             },
-            status: 404,
+            status: 200,
             xhr: {
                 async: true,
                 body: null,
@@ -798,7 +863,36 @@ test.describe('#ajax', () => {
                     'X-Requested-With': 'XMLHttpRequest',
                 },
                 method: 'GET',
-                status: 404,
+                url: 'http://localhost:3001/',
+            },
+        });
+    });
+
+    test('throws on status error', async ({ page }) => {
+        expect(await page.evaluate(async (_) => {
+            try {
+                const ajax = $.ajax();
+                ajax.xhr.status = 400;
+                await ajax;
+                return false;
+            } catch (error) {
+                error.xhr = error.xhr.data;
+                return error;
+            }
+        })).toEqual({
+            event: {
+                isTrusted: false,
+            },
+            status: 400,
+            xhr: {
+                async: true,
+                body: null,
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                    'X-Requested-With': 'XMLHttpRequest',
+                },
+                method: 'GET',
+                status: 400,
                 url: 'http://localhost:3001/',
             },
         });

@@ -1552,10 +1552,10 @@
         const values = parseValues(data);
 
         const paramString = values
-            .map(([key, value]) => `${key}=${value}`)
+            .map(([key, value]) => `${encodeURIComponent(key)}=${encodeURIComponent(value)}`)
             .join('&');
 
-        return encodeURI(paramString);
+        return paramString;
     }
     /**
      * Returns flattened parameter entries for a key and value.
@@ -1687,6 +1687,9 @@
                 getAjaxDefaults(),
                 options,
             );
+            this._options.method = this._options.method.toUpperCase();
+
+            const isFormData = Object.prototype.toString.call(this._options.data) === '[object FormData]';
 
             if (!this._options.url) {
                 this._options.url = getWindow().location.href;
@@ -1696,7 +1699,7 @@
                 this._options.url = appendQueryString(this._options.url, '_', Date.now());
             }
 
-            if (!('Content-Type' in this._options.headers) && this._options.contentType) {
+            if (!isFormData && !('Content-Type' in this._options.headers) && this._options.contentType) {
                 this._options.headers['Content-Type'] = this._options.contentType;
             }
 
@@ -1722,8 +1725,8 @@
 
             this.xhr = this._options.xhr();
 
-            if (this._options.data) {
-                if (this._options.processData && isObject(this._options.data)) {
+            if (this._options.data !== null && this._options.data !== undefined) {
+                if (!isFormData && this._options.processData && isObject(this._options.data)) {
                     if (this._options.contentType === 'application/json') {
                         this._options.data = JSON.stringify(this._options.data);
                     } else if (this._options.contentType === 'application/x-www-form-urlencoded') {
@@ -1765,7 +1768,7 @@
             }
 
             this.xhr.onload = (e) => {
-                if (this.xhr.status > 400) {
+                if (this.xhr.status >= 400) {
                     this._reject({
                         status: this.xhr.status,
                         xhr: this.xhr,
@@ -1788,6 +1791,13 @@
                         event: e,
                     });
             }
+
+            this.xhr.ontimeout = (e) =>
+                this._reject({
+                    status: this.xhr.status,
+                    xhr: this.xhr,
+                    event: e,
+                });
 
             if (this._options.onProgress) {
                 this.xhr.onprogress = (e) =>
