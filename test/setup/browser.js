@@ -18,14 +18,14 @@ export async function resumeClock(page) {
 }
 
 /**
- * Deterministically advance the browser clock, including a one-millisecond
- * margin so a frame on the requested boundary is processed.
+ * Deterministically advance the browser clock, including enough margin for a
+ * queued start and a frame on the requested boundary to be processed.
  * @param {import('@playwright/test').Page} page The Playwright page.
  * @param {number} milliseconds The duration to advance.
  * @return {Promise<void>} The promise.
  */
 export async function advanceClock(page, milliseconds) {
-    await page.clock.runFor(milliseconds + 1);
+    await page.clock.runFor(milliseconds + 2);
 }
 
 /**

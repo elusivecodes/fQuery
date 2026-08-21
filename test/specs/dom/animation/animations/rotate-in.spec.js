@@ -1,7 +1,7 @@
 import { expect, test } from '@playwright/test';
 import { advanceClock, resetPage, resumeClock, setupClock } from '../../../../setup/browser.js';
-import { expectAnimation, expectNoAnimation, expectNoStyle, expectRotateIn } from '../../../../support/assertions/animation.js';
-import { easeIn, easeInOut, easeOut, getAnimationStyle, linear } from '../../../../support/utils/animation.js';
+import { expectAnimation, expectAnimationProgress, expectNoAnimation, expectNoStyle, expectRotateIn, expectStyle } from '../../../../support/assertions/animation.js';
+import { easeInOut } from '../../../../support/utils/animation.js';
 
 test.beforeEach(async ({ page }) => {
     await setupClock(page);
@@ -31,10 +31,10 @@ test.describe('#rotateIn', () => {
         await expectNoAnimation(page, '#test3');
         await expectNoStyle(page, '#test1');
         await expectNoStyle(page, '#test3');
-        await expectAnimation(page, '#test2', easeInOut);
-        await expectAnimation(page, '#test4', easeInOut);
-        await expectRotateIn(page, '#test2');
-        await expectRotateIn(page, '#test4');
+        await expectAnimationProgress(page, '#test2', 0.5);
+        await expectAnimationProgress(page, '#test4', 0.5);
+        await expectStyle(page, '#test2', { transform: 'rotate3d(0, 1, 0, 45deg)' });
+        await expectStyle(page, '#test4', { transform: 'rotate3d(0, 1, 0, 45deg)' });
         await advanceClock(page, 150);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test2');
@@ -58,10 +58,10 @@ test.describe('#rotateIn', () => {
         await expectNoAnimation(page, '#test3');
         await expectNoStyle(page, '#test1');
         await expectNoStyle(page, '#test3');
-        await expectAnimation(page, '#test2', easeInOut, 100);
-        await expectAnimation(page, '#test4', easeInOut, 100);
-        await expectRotateIn(page, '#test2');
-        await expectRotateIn(page, '#test4');
+        await expectAnimationProgress(page, '#test2', 0.5);
+        await expectAnimationProgress(page, '#test4', 0.5);
+        await expectStyle(page, '#test2', { transform: 'rotate3d(0, 1, 0, 45deg)' });
+        await expectStyle(page, '#test4', { transform: 'rotate3d(0, 1, 0, 45deg)' });
         await advanceClock(page, 100);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test2');
@@ -87,16 +87,10 @@ test.describe('#rotateIn', () => {
         await expectNoAnimation(page, '#test3');
         await expectNoStyle(page, '#test1');
         await expectNoStyle(page, '#test3');
-        await expectAnimation(page, '#test2', easeInOut, 100);
-        await expectAnimation(page, '#test4', easeInOut, 100);
-        await expect.poll(async () =>
-            (await getAnimationStyle(page, '#test2', 'transform')).transform,
-        ).not.toBe('');
-        await expect.poll(async () =>
-            (await getAnimationStyle(page, '#test4', 'transform')).transform,
-        ).not.toBe('');
-        await expectRotateIn(page, '#test2', 1, 0);
-        await expectRotateIn(page, '#test4', 1, 0);
+        await expectAnimationProgress(page, '#test2', 0.5);
+        await expectAnimationProgress(page, '#test4', 0.5);
+        await expectStyle(page, '#test2', { transform: 'rotate3d(1, 0, 0, 45deg)' });
+        await expectStyle(page, '#test4', { transform: 'rotate3d(1, 0, 0, 45deg)' });
         await advanceClock(page, 100);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test2');
@@ -121,16 +115,10 @@ test.describe('#rotateIn', () => {
         await expectNoAnimation(page, '#test3');
         await expectNoStyle(page, '#test1');
         await expectNoStyle(page, '#test3');
-        await expectAnimation(page, '#test2', easeInOut, 100);
-        await expectAnimation(page, '#test4', easeInOut, 100);
-        await expect.poll(async () =>
-            (await getAnimationStyle(page, '#test2', 'transform')).transform,
-        ).not.toBe('');
-        await expect.poll(async () =>
-            (await getAnimationStyle(page, '#test4', 'transform')).transform,
-        ).not.toBe('');
-        await expectRotateIn(page, '#test2');
-        await expectRotateIn(page, '#test4');
+        await expectAnimationProgress(page, '#test2', 0.5);
+        await expectAnimationProgress(page, '#test4', 0.5);
+        await expectStyle(page, '#test2', { transform: 'rotate3d(0, 1, 0, 45deg)' });
+        await expectStyle(page, '#test4', { transform: 'rotate3d(0, 1, 0, 45deg)' });
         await advanceClock(page, 100);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test2');
@@ -156,10 +144,10 @@ test.describe('#rotateIn', () => {
         await expectNoAnimation(page, '#test3');
         await expectNoStyle(page, '#test1');
         await expectNoStyle(page, '#test3');
-        await expectAnimation(page, '#test2', easeInOut, 100);
-        await expectAnimation(page, '#test4', easeInOut, 100);
-        await expectRotateIn(page, '#test2', 0, 0, 1);
-        await expectRotateIn(page, '#test4', 0, 0, 1);
+        await expectAnimationProgress(page, '#test2', 0.5);
+        await expectAnimationProgress(page, '#test4', 0.5);
+        await expectStyle(page, '#test2', { transform: 'rotate3d(0, 0, 1, 45deg)' });
+        await expectStyle(page, '#test4', { transform: 'rotate3d(0, 0, 1, 45deg)' });
         await advanceClock(page, 100);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test2');
@@ -186,10 +174,10 @@ test.describe('#rotateIn', () => {
         await expectNoAnimation(page, '#test3');
         await expectNoStyle(page, '#test1');
         await expectNoStyle(page, '#test3');
-        await expectAnimation(page, '#test2', easeInOut, 100);
-        await expectAnimation(page, '#test4', easeInOut, 100);
-        await expectRotateIn(page, '#test2', 1, 1, 1);
-        await expectRotateIn(page, '#test4', 1, 1, 1);
+        await expectAnimationProgress(page, '#test2', 0.5);
+        await expectAnimationProgress(page, '#test4', 0.5);
+        await expectStyle(page, '#test2', { transform: 'rotate3d(1, 1, 1, 45deg)' });
+        await expectStyle(page, '#test4', { transform: 'rotate3d(1, 1, 1, 45deg)' });
         await advanceClock(page, 100);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test2');
@@ -214,10 +202,10 @@ test.describe('#rotateIn', () => {
         await expectNoAnimation(page, '#test3');
         await expectNoStyle(page, '#test1');
         await expectNoStyle(page, '#test3');
-        await expectAnimation(page, '#test2', easeInOut, 100);
-        await expectAnimation(page, '#test4', easeInOut, 100);
-        await expectRotateIn(page, '#test2', 0, 1, 0, -1);
-        await expectRotateIn(page, '#test4', 0, 1, 0, -1);
+        await expectAnimationProgress(page, '#test2', 0.5);
+        await expectAnimationProgress(page, '#test4', 0.5);
+        await expectStyle(page, '#test2', { transform: 'rotate3d(0, 1, 0, -45deg)' });
+        await expectStyle(page, '#test4', { transform: 'rotate3d(0, 1, 0, -45deg)' });
         await advanceClock(page, 100);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test2');
@@ -242,10 +230,10 @@ test.describe('#rotateIn', () => {
         await expectNoAnimation(page, '#test3');
         await expectNoStyle(page, '#test1');
         await expectNoStyle(page, '#test3');
-        await expectAnimation(page, '#test2', linear, 100);
-        await expectAnimation(page, '#test4', linear, 100);
-        await expectRotateIn(page, '#test2');
-        await expectRotateIn(page, '#test4');
+        await expectAnimationProgress(page, '#test2', 0.5);
+        await expectAnimationProgress(page, '#test4', 0.5);
+        await expectStyle(page, '#test2', { transform: 'rotate3d(0, 1, 0, 45deg)' });
+        await expectStyle(page, '#test4', { transform: 'rotate3d(0, 1, 0, 45deg)' });
         await advanceClock(page, 100);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test2');
@@ -270,16 +258,10 @@ test.describe('#rotateIn', () => {
         await expectNoAnimation(page, '#test3');
         await expectNoStyle(page, '#test1');
         await expectNoStyle(page, '#test3');
-        await expectAnimation(page, '#test2', easeIn, 100);
-        await expectAnimation(page, '#test4', easeIn, 100);
-        await expect.poll(async () =>
-            (await getAnimationStyle(page, '#test2', 'transform')).transform,
-        ).not.toBe('');
-        await expect.poll(async () =>
-            (await getAnimationStyle(page, '#test4', 'transform')).transform,
-        ).not.toBe('');
-        await expectRotateIn(page, '#test2');
-        await expectRotateIn(page, '#test4');
+        await expectAnimationProgress(page, '#test2', 0.25);
+        await expectAnimationProgress(page, '#test4', 0.25);
+        await expectStyle(page, '#test2', { transform: 'rotate3d(0, 1, 0, 67.5deg)' });
+        await expectStyle(page, '#test4', { transform: 'rotate3d(0, 1, 0, 67.5deg)' });
         await advanceClock(page, 100);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test2');
@@ -304,10 +286,10 @@ test.describe('#rotateIn', () => {
         await expectNoAnimation(page, '#test3');
         await expectNoStyle(page, '#test1');
         await expectNoStyle(page, '#test3');
-        await expectAnimation(page, '#test2', easeOut, 100);
-        await expectAnimation(page, '#test4', easeOut, 100);
-        await expectRotateIn(page, '#test2');
-        await expectRotateIn(page, '#test4');
+        await expectAnimationProgress(page, '#test2', 0.7071067812);
+        await expectAnimationProgress(page, '#test4', 0.7071067812);
+        await expectStyle(page, '#test2', { transform: 'rotate3d(0, 1, 0, 26.36deg)' });
+        await expectStyle(page, '#test4', { transform: 'rotate3d(0, 1, 0, 26.36deg)' });
         await advanceClock(page, 100);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test2');
@@ -333,28 +315,28 @@ test.describe('#rotateIn', () => {
         await expectNoAnimation(page, '#test3');
         await expectNoStyle(page, '#test1');
         await expectNoStyle(page, '#test3');
-        await expectAnimation(page, '#test2', linear, 100, true);
-        await expectAnimation(page, '#test4', linear, 100, true);
-        await expectRotateIn(page, '#test2');
-        await expectRotateIn(page, '#test4');
+        await expectAnimationProgress(page, '#test2', 0.5);
+        await expectAnimationProgress(page, '#test4', 0.5);
+        await expectStyle(page, '#test2', { transform: 'rotate3d(0, 1, 0, 45deg)' });
+        await expectStyle(page, '#test4', { transform: 'rotate3d(0, 1, 0, 45deg)' });
         await advanceClock(page, 50);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test3');
         await expectNoStyle(page, '#test1');
         await expectNoStyle(page, '#test3');
-        await expectAnimation(page, '#test2', linear, 100, true);
-        await expectAnimation(page, '#test4', linear, 100, true);
-        await expectRotateIn(page, '#test2');
-        await expectRotateIn(page, '#test4');
+        await expectAnimationProgress(page, '#test2', 0);
+        await expectAnimationProgress(page, '#test4', 0);
+        await expectStyle(page, '#test2', { transform: 'rotate3d(0, 1, 0, 90deg)' });
+        await expectStyle(page, '#test4', { transform: 'rotate3d(0, 1, 0, 90deg)' });
         await advanceClock(page, 50);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test3');
         await expectNoStyle(page, '#test1');
         await expectNoStyle(page, '#test3');
-        await expectAnimation(page, '#test2', linear, 100, true);
-        await expectAnimation(page, '#test4', linear, 100, true);
-        await expectRotateIn(page, '#test2');
-        await expectRotateIn(page, '#test4');
+        await expectAnimationProgress(page, '#test2', 0.5);
+        await expectAnimationProgress(page, '#test4', 0.5);
+        await expectStyle(page, '#test2', { transform: 'rotate3d(0, 1, 0, 45deg)' });
+        await expectStyle(page, '#test4', { transform: 'rotate3d(0, 1, 0, 45deg)' });
     });
 
     test('can be stopped', async ({ page }) => {
@@ -530,8 +512,8 @@ test.describe('#rotateIn', () => {
             );
         });
         await advanceClock(page, 50);
-        await expectAnimation(page, '#test2', easeInOut, 100);
-        await expectRotateIn(page, '#test2');
+        await expectAnimationProgress(page, '#test2', 0.5);
+        await expectStyle(page, '#test2', { transform: 'rotate3d(0, 1, 0, 45deg)' });
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test3');
         await expectNoAnimation(page, '#test4');
@@ -560,10 +542,10 @@ test.describe('#rotateIn', () => {
             );
         });
         await advanceClock(page, 50);
-        await expectAnimation(page, '#test2', easeInOut, 100);
-        await expectAnimation(page, '#test4', easeInOut, 100);
-        await expectRotateIn(page, '#test2');
-        await expectRotateIn(page, '#test4');
+        await expectAnimationProgress(page, '#test2', 0.5);
+        await expectAnimationProgress(page, '#test4', 0.5);
+        await expectStyle(page, '#test2', { transform: 'rotate3d(0, 1, 0, 45deg)' });
+        await expectStyle(page, '#test4', { transform: 'rotate3d(0, 1, 0, 45deg)' });
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test3');
         await expectNoStyle(page, '#test1');
@@ -590,14 +572,14 @@ test.describe('#rotateIn', () => {
             );
         });
         await advanceClock(page, 50);
-        await expectAnimation(page, '#test1', easeInOut, 100);
-        await expectAnimation(page, '#test2', easeInOut, 100);
-        await expectAnimation(page, '#test3', easeInOut, 100);
-        await expectAnimation(page, '#test4', easeInOut, 100);
-        await expectRotateIn(page, '#test1');
-        await expectRotateIn(page, '#test2');
-        await expectRotateIn(page, '#test3');
-        await expectRotateIn(page, '#test4');
+        await expectAnimationProgress(page, '#test1', 0.5);
+        await expectAnimationProgress(page, '#test2', 0.5);
+        await expectAnimationProgress(page, '#test3', 0.5);
+        await expectAnimationProgress(page, '#test4', 0.5);
+        await expectStyle(page, '#test1', { transform: 'rotate3d(0, 1, 0, 45deg)' });
+        await expectStyle(page, '#test2', { transform: 'rotate3d(0, 1, 0, 45deg)' });
+        await expectStyle(page, '#test3', { transform: 'rotate3d(0, 1, 0, 45deg)' });
+        await expectStyle(page, '#test4', { transform: 'rotate3d(0, 1, 0, 45deg)' });
         await advanceClock(page, 100);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test2');
@@ -620,10 +602,10 @@ test.describe('#rotateIn', () => {
             });
         });
         await advanceClock(page, 50);
-        await expectAnimation(page, '#test2', easeInOut, 100);
-        await expectAnimation(page, '#test4', easeInOut, 100);
-        await expectRotateIn(page, '#test2');
-        await expectRotateIn(page, '#test4');
+        await expectAnimationProgress(page, '#test2', 0.5);
+        await expectAnimationProgress(page, '#test4', 0.5);
+        await expectStyle(page, '#test2', { transform: 'rotate3d(0, 1, 0, 45deg)' });
+        await expectStyle(page, '#test4', { transform: 'rotate3d(0, 1, 0, 45deg)' });
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test3');
         await expectNoStyle(page, '#test1');

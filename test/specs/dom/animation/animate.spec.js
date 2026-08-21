@@ -1,7 +1,7 @@
 import { expect, test } from '@playwright/test';
 import { advanceClock, resetPage, resumeClock, setupClock } from '../../../setup/browser.js';
-import { expectAnimation, expectNoAnimation } from '../../../support/assertions/animation.js';
-import { easeIn, easeInOut, easeOut, linear } from '../../../support/utils/animation.js';
+import { expectAnimation, expectAnimationProgress, expectNoAnimation } from '../../../support/assertions/animation.js';
+import { easeInOut } from '../../../support/utils/animation.js';
 
 test.beforeEach(async ({ page }) => {
     await setupClock(page);
@@ -32,8 +32,8 @@ test.describe('#animate', () => {
         await advanceClock(page, 100);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test3');
-        await expectAnimation(page, '#test2', easeInOut);
-        await expectAnimation(page, '#test4', easeInOut);
+        await expectAnimationProgress(page, '#test2', 0.5);
+        await expectAnimationProgress(page, '#test4', 0.5);
         await advanceClock(page, 150);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test2');
@@ -55,8 +55,8 @@ test.describe('#animate', () => {
         await advanceClock(page, 50);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test3');
-        await expectAnimation(page, '#test2', easeInOut, 100);
-        await expectAnimation(page, '#test4', easeInOut, 100);
+        await expectAnimationProgress(page, '#test2', 0.5);
+        await expectAnimationProgress(page, '#test4', 0.5);
         await advanceClock(page, 100);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test2');
@@ -79,8 +79,8 @@ test.describe('#animate', () => {
         await advanceClock(page, 50);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test3');
-        await expectAnimation(page, '#test2', linear, 100);
-        await expectAnimation(page, '#test4', linear, 100);
+        await expectAnimationProgress(page, '#test2', 0.5);
+        await expectAnimationProgress(page, '#test4', 0.5);
         await advanceClock(page, 100);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test2');
@@ -103,8 +103,8 @@ test.describe('#animate', () => {
         await advanceClock(page, 50);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test3');
-        await expectAnimation(page, '#test2', easeIn, 100);
-        await expectAnimation(page, '#test4', easeIn, 100);
+        await expectAnimationProgress(page, '#test2', 0.25);
+        await expectAnimationProgress(page, '#test4', 0.25);
         await advanceClock(page, 100);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test2');
@@ -127,8 +127,8 @@ test.describe('#animate', () => {
         await advanceClock(page, 50);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test3');
-        await expectAnimation(page, '#test2', easeOut, 100);
-        await expectAnimation(page, '#test4', easeOut, 100);
+        await expectAnimationProgress(page, '#test2', 0.7071067812);
+        await expectAnimationProgress(page, '#test4', 0.7071067812);
         await advanceClock(page, 100);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test2');
@@ -152,18 +152,18 @@ test.describe('#animate', () => {
         await advanceClock(page, 50);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test3');
-        await expectAnimation(page, '#test2', linear, 100, true);
-        await expectAnimation(page, '#test4', linear, 100, true);
+        await expectAnimationProgress(page, '#test2', 0.5);
+        await expectAnimationProgress(page, '#test4', 0.5);
         await advanceClock(page, 50);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test3');
-        await expectAnimation(page, '#test2', linear, 100, true);
-        await expectAnimation(page, '#test4', linear, 100, true);
+        await expectAnimationProgress(page, '#test2', 0);
+        await expectAnimationProgress(page, '#test4', 0);
         await advanceClock(page, 50);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test3');
-        await expectAnimation(page, '#test2', linear, 100, true);
-        await expectAnimation(page, '#test4', linear, 100, true);
+        await expectAnimationProgress(page, '#test2', 0.5);
+        await expectAnimationProgress(page, '#test4', 0.5);
     });
 
     test('can be stopped', async ({ page }) => {
@@ -359,7 +359,7 @@ test.describe('#animate', () => {
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test3');
         await expectNoAnimation(page, '#test4');
-        await expectAnimation(page, '#test2', easeInOut, 100);
+        await expectAnimationProgress(page, '#test2', 0.5);
         await advanceClock(page, 100);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test2');
@@ -381,8 +381,8 @@ test.describe('#animate', () => {
         await advanceClock(page, 50);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test3');
-        await expectAnimation(page, '#test2', easeInOut, 100);
-        await expectAnimation(page, '#test4', easeInOut, 100);
+        await expectAnimationProgress(page, '#test2', 0.5);
+        await expectAnimationProgress(page, '#test4', 0.5);
         await advanceClock(page, 100);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test2');
@@ -402,10 +402,10 @@ test.describe('#animate', () => {
             );
         });
         await advanceClock(page, 50);
-        await expectAnimation(page, '#test1', easeInOut, 100);
-        await expectAnimation(page, '#test2', easeInOut, 100);
-        await expectAnimation(page, '#test3', easeInOut, 100);
-        await expectAnimation(page, '#test4', easeInOut, 100);
+        await expectAnimationProgress(page, '#test1', 0.5);
+        await expectAnimationProgress(page, '#test2', 0.5);
+        await expectAnimationProgress(page, '#test3', 0.5);
+        await expectAnimationProgress(page, '#test4', 0.5);
         await advanceClock(page, 100);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test2');
@@ -430,8 +430,8 @@ test.describe('#animate', () => {
         await advanceClock(page, 50);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test3');
-        await expectAnimation(page, '#test2', easeInOut, 100);
-        await expectAnimation(page, '#test4', easeInOut, 100);
+        await expectAnimationProgress(page, '#test2', 0.5);
+        await expectAnimationProgress(page, '#test4', 0.5);
         await advanceClock(page, 100);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test2');

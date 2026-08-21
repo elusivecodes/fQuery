@@ -51,6 +51,21 @@ export async function expectAnimation(page, selector, callback, duration = 200, 
 }
 
 /**
+ * Expect animation progress on the matched node.
+ * @param {import('@playwright/test').Page} page The Playwright page.
+ * @param {string} selector The selector.
+ * @param {number} progress The expected progress.
+ * @returns {Promise<void>} The promise.
+ */
+export async function expectAnimationProgress(page, selector, progress) {
+    const actual = await page.locator(selector).evaluate((node) =>
+        Number(node.dataset.animationProgress),
+    );
+
+    expect(actual).toBeCloseTo(progress, 10);
+}
+
+/**
  * Expect no animation data on the matched node.
  * @param {import('@playwright/test').Page} page The Playwright page.
  * @param {string} selector The selector.
@@ -64,6 +79,24 @@ export async function expectNoAnimation(page, selector) {
         start: undefined,
         time: undefined,
     });
+}
+
+/**
+ * Expect inline styles on the matched node.
+ * @param {import('@playwright/test').Page} page The Playwright page.
+ * @param {string} selector The selector.
+ * @param {Record<string, string>} styles The expected styles.
+ * @returns {Promise<void>} The promise.
+ */
+export async function expectStyle(page, selector, styles) {
+    const properties = Object.keys(styles);
+    const actual = await page.locator(selector).evaluate((node, properties) => {
+        return Object.fromEntries(
+            properties.map((property) => [property, node.style[property]]),
+        );
+    }, properties);
+
+    expect(actual).toEqual(styles);
 }
 
 /**

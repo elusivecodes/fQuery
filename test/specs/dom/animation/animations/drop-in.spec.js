@@ -1,7 +1,7 @@
 import { expect, test } from '@playwright/test';
 import { advanceClock, resetPage, resumeClock, setupClock } from '../../../../setup/browser.js';
-import { expectAnimation, expectDropIn, expectDropInPair, expectNoAnimation, expectNoStyle } from '../../../../support/assertions/animation.js';
-import { easeIn, easeInOut, easeOut, linear } from '../../../../support/utils/animation.js';
+import { expectAnimation, expectAnimationProgress, expectDropInPair, expectNoAnimation, expectNoStyle, expectStyle } from '../../../../support/assertions/animation.js';
+import { easeInOut } from '../../../../support/utils/animation.js';
 
 test.beforeEach(async ({ page }) => {
     await setupClock(page);
@@ -31,7 +31,10 @@ test.describe('#dropIn', () => {
         await expectNoAnimation(page, '#test3');
         await expectNoStyle(page, '#test1');
         await expectNoStyle(page, '#test3');
-        await expectDropInPair(page, easeInOut);
+        await expectStyle(page, '#test2', { transform: 'translateY(-50px)' });
+        await expectAnimationProgress(page, '#test2', 0.5);
+        await expectStyle(page, '#test4', { transform: 'translateY(-50px)' });
+        await expectAnimationProgress(page, '#test4', 0.5);
         await advanceClock(page, 150);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test2');
@@ -55,7 +58,10 @@ test.describe('#dropIn', () => {
         await expectNoAnimation(page, '#test3');
         await expectNoStyle(page, '#test1');
         await expectNoStyle(page, '#test3');
-        await expectDropInPair(page, easeInOut, { duration: 100 });
+        await expectStyle(page, '#test2', { transform: 'translateY(-50px)' });
+        await expectAnimationProgress(page, '#test2', 0.5);
+        await expectStyle(page, '#test4', { transform: 'translateY(-50px)' });
+        await expectAnimationProgress(page, '#test4', 0.5);
         await advanceClock(page, 100);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test2');
@@ -80,7 +86,10 @@ test.describe('#dropIn', () => {
         await expectNoAnimation(page, '#test3');
         await expectNoStyle(page, '#test1');
         await expectNoStyle(page, '#test3');
-        await expectDropInPair(page, easeInOut, { duration: 100 });
+        await expectStyle(page, '#test2', { transform: 'translateY(-50px)' });
+        await expectAnimationProgress(page, '#test2', 0.5);
+        await expectStyle(page, '#test4', { transform: 'translateY(-50px)' });
+        await expectAnimationProgress(page, '#test4', 0.5);
         await advanceClock(page, 100);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test2');
@@ -105,11 +114,10 @@ test.describe('#dropIn', () => {
         await expectNoAnimation(page, '#test3');
         await expectNoStyle(page, '#test1');
         await expectNoStyle(page, '#test3');
-        await expectDropInPair(page, easeInOut, {
-            duration: 100,
-            translate: 'X',
-            inverse: 1,
-        });
+        await expectStyle(page, '#test2', { transform: 'translateX(50px)' });
+        await expectAnimationProgress(page, '#test2', 0.5);
+        await expectStyle(page, '#test4', { transform: 'translateX(50px)' });
+        await expectAnimationProgress(page, '#test4', 0.5);
         await advanceClock(page, 100);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test2');
@@ -134,10 +142,10 @@ test.describe('#dropIn', () => {
         await expectNoAnimation(page, '#test3');
         await expectNoStyle(page, '#test1');
         await expectNoStyle(page, '#test3');
-        await expectDropInPair(page, easeInOut, {
-            duration: 100,
-            inverse: 1,
-        });
+        await expectStyle(page, '#test2', { transform: 'translateY(50px)' });
+        await expectAnimationProgress(page, '#test2', 0.5);
+        await expectStyle(page, '#test4', { transform: 'translateY(50px)' });
+        await expectAnimationProgress(page, '#test4', 0.5);
         await advanceClock(page, 100);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test2');
@@ -162,11 +170,10 @@ test.describe('#dropIn', () => {
         await expectNoAnimation(page, '#test3');
         await expectNoStyle(page, '#test1');
         await expectNoStyle(page, '#test3');
-        await expectDropInPair(page, easeInOut, {
-            duration: 100,
-            translate: 'X',
-            inverse: -1,
-        });
+        await expectStyle(page, '#test2', { transform: 'translateX(-50px)' });
+        await expectAnimationProgress(page, '#test2', 0.5);
+        await expectStyle(page, '#test4', { transform: 'translateX(-50px)' });
+        await expectAnimationProgress(page, '#test4', 0.5);
         await advanceClock(page, 100);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test2');
@@ -191,10 +198,10 @@ test.describe('#dropIn', () => {
         await expectNoAnimation(page, '#test3');
         await expectNoStyle(page, '#test1');
         await expectNoStyle(page, '#test3');
-        await expectDropInPair(page, easeInOut, {
-            duration: 100,
-            inverse: 1,
-        });
+        await expectStyle(page, '#test2', { transform: 'translateY(50px)' });
+        await expectAnimationProgress(page, '#test2', 0.5);
+        await expectStyle(page, '#test4', { transform: 'translateY(50px)' });
+        await expectAnimationProgress(page, '#test4', 0.5);
         await advanceClock(page, 100);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test2');
@@ -219,12 +226,10 @@ test.describe('#dropIn', () => {
         await expectNoAnimation(page, '#test3');
         await expectNoStyle(page, '#test1');
         await expectNoStyle(page, '#test3');
-        await expectDropInPair(page, easeInOut, {
-            duration: 100,
-            translate: null,
-            inverse: -1,
-            style: 'marginTop',
-        });
+        await expectStyle(page, '#test2', { marginTop: '-50px' });
+        await expectAnimationProgress(page, '#test2', 0.5);
+        await expectStyle(page, '#test4', { marginTop: '-50px' });
+        await expectAnimationProgress(page, '#test4', 0.5);
         await advanceClock(page, 100);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test2');
@@ -250,12 +255,10 @@ test.describe('#dropIn', () => {
         await expectNoAnimation(page, '#test3');
         await expectNoStyle(page, '#test1');
         await expectNoStyle(page, '#test3');
-        await expectDropInPair(page, easeInOut, {
-            duration: 100,
-            translate: null,
-            inverse: -1,
-            style: 'marginTop',
-        });
+        await expectStyle(page, '#test2', { marginTop: '-50px' });
+        await expectAnimationProgress(page, '#test2', 0.5);
+        await expectStyle(page, '#test4', { marginTop: '-50px' });
+        await expectAnimationProgress(page, '#test4', 0.5);
         await advanceClock(page, 100);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test2');
@@ -281,12 +284,10 @@ test.describe('#dropIn', () => {
         await expectNoAnimation(page, '#test3');
         await expectNoStyle(page, '#test1');
         await expectNoStyle(page, '#test3');
-        await expectDropInPair(page, easeInOut, {
-            duration: 100,
-            translate: null,
-            inverse: 1,
-            style: 'marginLeft',
-        });
+        await expectStyle(page, '#test2', { marginLeft: '50px' });
+        await expectAnimationProgress(page, '#test2', 0.5);
+        await expectStyle(page, '#test4', { marginLeft: '50px' });
+        await expectAnimationProgress(page, '#test4', 0.5);
         await advanceClock(page, 100);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test2');
@@ -312,12 +313,10 @@ test.describe('#dropIn', () => {
         await expectNoAnimation(page, '#test3');
         await expectNoStyle(page, '#test1');
         await expectNoStyle(page, '#test3');
-        await expectDropInPair(page, easeInOut, {
-            duration: 100,
-            translate: null,
-            inverse: 1,
-            style: 'marginTop',
-        });
+        await expectStyle(page, '#test2', { marginTop: '50px' });
+        await expectAnimationProgress(page, '#test2', 0.5);
+        await expectStyle(page, '#test4', { marginTop: '50px' });
+        await expectAnimationProgress(page, '#test4', 0.5);
         await advanceClock(page, 100);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test2');
@@ -343,12 +342,10 @@ test.describe('#dropIn', () => {
         await expectNoAnimation(page, '#test3');
         await expectNoStyle(page, '#test1');
         await expectNoStyle(page, '#test3');
-        await expectDropInPair(page, easeInOut, {
-            duration: 100,
-            translate: null,
-            inverse: -1,
-            style: 'marginLeft',
-        });
+        await expectStyle(page, '#test2', { marginLeft: '-50px' });
+        await expectAnimationProgress(page, '#test2', 0.5);
+        await expectStyle(page, '#test4', { marginLeft: '-50px' });
+        await expectAnimationProgress(page, '#test4', 0.5);
         await advanceClock(page, 100);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test2');
@@ -373,7 +370,10 @@ test.describe('#dropIn', () => {
         await expectNoAnimation(page, '#test3');
         await expectNoStyle(page, '#test1');
         await expectNoStyle(page, '#test3');
-        await expectDropInPair(page, linear, { duration: 100 });
+        await expectStyle(page, '#test2', { transform: 'translateY(-50px)' });
+        await expectAnimationProgress(page, '#test2', 0.5);
+        await expectStyle(page, '#test4', { transform: 'translateY(-50px)' });
+        await expectAnimationProgress(page, '#test4', 0.5);
         await advanceClock(page, 100);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test2');
@@ -398,7 +398,10 @@ test.describe('#dropIn', () => {
         await expectNoAnimation(page, '#test3');
         await expectNoStyle(page, '#test1');
         await expectNoStyle(page, '#test3');
-        await expectDropInPair(page, easeIn, { duration: 100 });
+        await expectStyle(page, '#test2', { transform: 'translateY(-75px)' });
+        await expectAnimationProgress(page, '#test2', 0.25);
+        await expectStyle(page, '#test4', { transform: 'translateY(-75px)' });
+        await expectAnimationProgress(page, '#test4', 0.25);
         await advanceClock(page, 100);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test2');
@@ -423,7 +426,10 @@ test.describe('#dropIn', () => {
         await expectNoAnimation(page, '#test3');
         await expectNoStyle(page, '#test1');
         await expectNoStyle(page, '#test3');
-        await expectDropInPair(page, easeOut, { duration: 100 });
+        await expectStyle(page, '#test2', { transform: 'translateY(-29.29px)' });
+        await expectAnimationProgress(page, '#test2', 0.7071067812);
+        await expectStyle(page, '#test4', { transform: 'translateY(-29.29px)' });
+        await expectAnimationProgress(page, '#test4', 0.7071067812);
         await advanceClock(page, 100);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test2');
@@ -449,19 +455,28 @@ test.describe('#dropIn', () => {
         await expectNoAnimation(page, '#test3');
         await expectNoStyle(page, '#test1');
         await expectNoStyle(page, '#test3');
-        await expectDropInPair(page, linear, { duration: 100, infinite: true });
+        await expectStyle(page, '#test2', { transform: 'translateY(-50px)' });
+        await expectAnimationProgress(page, '#test2', 0.5);
+        await expectStyle(page, '#test4', { transform: 'translateY(-50px)' });
+        await expectAnimationProgress(page, '#test4', 0.5);
         await advanceClock(page, 50);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test3');
         await expectNoStyle(page, '#test1');
         await expectNoStyle(page, '#test3');
-        await expectDropInPair(page, linear, { duration: 100, infinite: true });
+        await expectStyle(page, '#test2', { transform: 'translateY(-100px)' });
+        await expectAnimationProgress(page, '#test2', 0);
+        await expectStyle(page, '#test4', { transform: 'translateY(-100px)' });
+        await expectAnimationProgress(page, '#test4', 0);
         await advanceClock(page, 50);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test3');
         await expectNoStyle(page, '#test1');
         await expectNoStyle(page, '#test3');
-        await expectDropInPair(page, linear, { duration: 100, infinite: true });
+        await expectStyle(page, '#test2', { transform: 'translateY(-50px)' });
+        await expectAnimationProgress(page, '#test2', 0.5);
+        await expectStyle(page, '#test4', { transform: 'translateY(-50px)' });
+        await expectAnimationProgress(page, '#test4', 0.5);
     });
 
     test('can be stopped', async ({ page }) => {
@@ -637,8 +652,8 @@ test.describe('#dropIn', () => {
         await expectNoStyle(page, '#test1');
         await expectNoStyle(page, '#test3');
         await expectNoStyle(page, '#test4');
-        await expectAnimation(page, '#test2', easeInOut, 100);
-        await expectDropIn(page, '#test2', 'Y', -1);
+        await expectAnimationProgress(page, '#test2', 0.5);
+        await expectStyle(page, '#test2', { transform: 'translateY(-50px)' });
         await advanceClock(page, 100);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test2');
@@ -663,11 +678,12 @@ test.describe('#dropIn', () => {
         await advanceClock(page, 50);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test3');
-        await expectAnimation(page, '#test2', easeInOut, 100);
-        await expectAnimation(page, '#test4', easeInOut, 100);
         await expectNoStyle(page, '#test1');
         await expectNoStyle(page, '#test3');
-        await expectDropInPair(page, easeInOut, { duration: 100 });
+        await expectStyle(page, '#test2', { transform: 'translateY(-50px)' });
+        await expectAnimationProgress(page, '#test2', 0.5);
+        await expectStyle(page, '#test4', { transform: 'translateY(-50px)' });
+        await expectAnimationProgress(page, '#test4', 0.5);
         await advanceClock(page, 100);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test2');
@@ -690,14 +706,14 @@ test.describe('#dropIn', () => {
             );
         });
         await advanceClock(page, 50);
-        await expectAnimation(page, '#test1', easeInOut, 100);
-        await expectAnimation(page, '#test2', easeInOut, 100);
-        await expectAnimation(page, '#test3', easeInOut, 100);
-        await expectAnimation(page, '#test4', easeInOut, 100);
-        await expectDropIn(page, '#test1', 'Y', -1);
-        await expectDropIn(page, '#test2', 'Y', -1);
-        await expectDropIn(page, '#test3', 'Y', -1);
-        await expectDropIn(page, '#test4', 'Y', -1);
+        await expectAnimationProgress(page, '#test1', 0.5);
+        await expectAnimationProgress(page, '#test2', 0.5);
+        await expectAnimationProgress(page, '#test3', 0.5);
+        await expectAnimationProgress(page, '#test4', 0.5);
+        await expectStyle(page, '#test1', { transform: 'translateY(-50px)' });
+        await expectStyle(page, '#test2', { transform: 'translateY(-50px)' });
+        await expectStyle(page, '#test3', { transform: 'translateY(-50px)' });
+        await expectStyle(page, '#test4', { transform: 'translateY(-50px)' });
         await advanceClock(page, 100);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test2');
@@ -724,7 +740,10 @@ test.describe('#dropIn', () => {
         await expectNoAnimation(page, '#test3');
         await expectNoStyle(page, '#test1');
         await expectNoStyle(page, '#test3');
-        await expectDropInPair(page, easeInOut, { duration: 100 });
+        await expectStyle(page, '#test2', { transform: 'translateY(-50px)' });
+        await expectAnimationProgress(page, '#test2', 0.5);
+        await expectStyle(page, '#test4', { transform: 'translateY(-50px)' });
+        await expectAnimationProgress(page, '#test4', 0.5);
         await advanceClock(page, 100);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test2');

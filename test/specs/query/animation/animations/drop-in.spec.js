@@ -1,7 +1,6 @@
 import { expect, test } from '@playwright/test';
 import { advanceClock, resetPage, setupClock } from '../../../../setup/browser.js';
-import { expectAnimationData, expectDropIn, expectNoAnimation, expectNoStyle, expectTranslateAnimationData } from '../../../../support/assertions/animation.js';
-import { easeIn, easeInOut, easeOut, linear } from '../../../../support/utils/animation.js';
+import { expectAnimationProgress, expectNoAnimation, expectNoStyle, expectStyle } from '../../../../support/assertions/animation.js';
 
 test.beforeEach(async ({ page }) => {
     await setupClock(page);
@@ -32,10 +31,10 @@ test.describe('QuerySet #dropIn', () => {
         await expectNoAnimation(page, '#test3');
         await expectNoStyle(page, '#test1');
         await expectNoStyle(page, '#test3');
-        const test2Data = await expectDropIn(page, '#test2', 'Y', -1);
-        const test4Data = await expectDropIn(page, '#test4', 'Y', -1);
-        expectAnimationData(test2Data, easeInOut);
-        expectAnimationData(test4Data, easeInOut);
+        await expectStyle(page, '#test2', { transform: 'translateY(-50px)' });
+        await expectStyle(page, '#test4', { transform: 'translateY(-50px)' });
+        await expectAnimationProgress(page, '#test2', 0.5);
+        await expectAnimationProgress(page, '#test4', 0.5);
         await advanceClock(page, 150);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test2');
@@ -48,8 +47,6 @@ test.describe('QuerySet #dropIn', () => {
     });
 
     test('adds a drop-in animation to each node with duration', async ({ page }) => {
-        let animatedNodes;
-
         await page.evaluate((_) => {
             $('.animate')
                 .dropIn({
@@ -62,36 +59,10 @@ test.describe('QuerySet #dropIn', () => {
         await expectNoAnimation(page, '#test3');
         await expectNoStyle(page, '#test1');
         await expectNoStyle(page, '#test3');
-        await expect.poll(async () => {
-            animatedNodes = await page.evaluate((selectors) => {
-                return selectors.map((selector) => {
-                    const div = document.querySelector(selector);
-
-                    return {
-                        progress: div?.dataset.animationProgress,
-                        start: div?.dataset.animationStart,
-                        time: div?.dataset.animationTime,
-                        transform: div?.style.transform ?? '',
-                    };
-                });
-            }, ['#test2', '#test4']);
-
-            return animatedNodes.every((data) => data.progress !== undefined && data.transform !== '');
-        }).toBe(true);
-        const [test2Data, test4Data] = animatedNodes;
-
-        expectTranslateAnimationData(test2Data, {
-            mode: 'in',
-            translate: 'Y',
-            inverse: -1,
-        });
-        expectTranslateAnimationData(test4Data, {
-            mode: 'in',
-            translate: 'Y',
-            inverse: -1,
-        });
-        expectAnimationData(test2Data, easeInOut, 100);
-        expectAnimationData(test4Data, easeInOut, 100);
+        await expectStyle(page, '#test2', { transform: 'translateY(-50px)' });
+        await expectAnimationProgress(page, '#test2', 0.5);
+        await expectStyle(page, '#test4', { transform: 'translateY(-50px)' });
+        await expectAnimationProgress(page, '#test4', 0.5);
         await advanceClock(page, 100);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test2');
@@ -117,10 +88,10 @@ test.describe('QuerySet #dropIn', () => {
         await expectNoAnimation(page, '#test3');
         await expectNoStyle(page, '#test1');
         await expectNoStyle(page, '#test3');
-        const test2Data = await expectDropIn(page, '#test2', 'Y', -1);
-        const test4Data = await expectDropIn(page, '#test4', 'Y', -1);
-        expectAnimationData(test2Data, easeInOut, 100);
-        expectAnimationData(test4Data, easeInOut, 100);
+        await expectStyle(page, '#test2', { transform: 'translateY(-50px)' });
+        await expectStyle(page, '#test4', { transform: 'translateY(-50px)' });
+        await expectAnimationProgress(page, '#test2', 0.5);
+        await expectAnimationProgress(page, '#test4', 0.5);
         await advanceClock(page, 100);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test2');
@@ -146,10 +117,10 @@ test.describe('QuerySet #dropIn', () => {
         await expectNoAnimation(page, '#test3');
         await expectNoStyle(page, '#test1');
         await expectNoStyle(page, '#test3');
-        const test2Data = await expectDropIn(page, '#test2', 'X');
-        const test4Data = await expectDropIn(page, '#test4', 'X');
-        expectAnimationData(test2Data, easeInOut, 100);
-        expectAnimationData(test4Data, easeInOut, 100);
+        await expectStyle(page, '#test2', { transform: 'translateX(50px)' });
+        await expectStyle(page, '#test4', { transform: 'translateX(50px)' });
+        await expectAnimationProgress(page, '#test2', 0.5);
+        await expectAnimationProgress(page, '#test4', 0.5);
         await advanceClock(page, 100);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test2');
@@ -175,10 +146,10 @@ test.describe('QuerySet #dropIn', () => {
         await expectNoAnimation(page, '#test3');
         await expectNoStyle(page, '#test1');
         await expectNoStyle(page, '#test3');
-        const test2Data = await expectDropIn(page, '#test2');
-        const test4Data = await expectDropIn(page, '#test4');
-        expectAnimationData(test2Data, easeInOut, 100);
-        expectAnimationData(test4Data, easeInOut, 100);
+        await expectStyle(page, '#test2', { transform: 'translateY(50px)' });
+        await expectStyle(page, '#test4', { transform: 'translateY(50px)' });
+        await expectAnimationProgress(page, '#test2', 0.5);
+        await expectAnimationProgress(page, '#test4', 0.5);
         await advanceClock(page, 100);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test2');
@@ -204,10 +175,10 @@ test.describe('QuerySet #dropIn', () => {
         await expectNoAnimation(page, '#test3');
         await expectNoStyle(page, '#test1');
         await expectNoStyle(page, '#test3');
-        const test2Data = await expectDropIn(page, '#test2', 'X', -1);
-        const test4Data = await expectDropIn(page, '#test4', 'X', -1);
-        expectAnimationData(test2Data, easeInOut, 100);
-        expectAnimationData(test4Data, easeInOut, 100);
+        await expectStyle(page, '#test2', { transform: 'translateX(-50px)' });
+        await expectStyle(page, '#test4', { transform: 'translateX(-50px)' });
+        await expectAnimationProgress(page, '#test2', 0.5);
+        await expectAnimationProgress(page, '#test4', 0.5);
         await advanceClock(page, 100);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test2');
@@ -233,10 +204,10 @@ test.describe('QuerySet #dropIn', () => {
         await expectNoAnimation(page, '#test3');
         await expectNoStyle(page, '#test1');
         await expectNoStyle(page, '#test3');
-        const test2Data = await expectDropIn(page, '#test2');
-        const test4Data = await expectDropIn(page, '#test4');
-        expectAnimationData(test2Data, easeInOut, 100);
-        expectAnimationData(test4Data, easeInOut, 100);
+        await expectStyle(page, '#test2', { transform: 'translateY(50px)' });
+        await expectStyle(page, '#test4', { transform: 'translateY(50px)' });
+        await expectAnimationProgress(page, '#test2', 0.5);
+        await expectAnimationProgress(page, '#test4', 0.5);
         await advanceClock(page, 100);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test2');
@@ -262,10 +233,10 @@ test.describe('QuerySet #dropIn', () => {
         await expectNoAnimation(page, '#test3');
         await expectNoStyle(page, '#test1');
         await expectNoStyle(page, '#test3');
-        const test2Data = await expectDropIn(page, '#test2', null, -1, 'marginTop');
-        const test4Data = await expectDropIn(page, '#test4', null, -1, 'marginTop');
-        expectAnimationData(test2Data, easeInOut, 100);
-        expectAnimationData(test4Data, easeInOut, 100);
+        await expectStyle(page, '#test2', { marginTop: '-50px' });
+        await expectStyle(page, '#test4', { marginTop: '-50px' });
+        await expectAnimationProgress(page, '#test2', 0.5);
+        await expectAnimationProgress(page, '#test4', 0.5);
         await advanceClock(page, 100);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test2');
@@ -292,10 +263,10 @@ test.describe('QuerySet #dropIn', () => {
         await expectNoAnimation(page, '#test3');
         await expectNoStyle(page, '#test1');
         await expectNoStyle(page, '#test3');
-        const test2Data = await expectDropIn(page, '#test2', null, -1, 'marginTop');
-        const test4Data = await expectDropIn(page, '#test4', null, -1, 'marginTop');
-        expectAnimationData(test2Data, easeInOut, 100);
-        expectAnimationData(test4Data, easeInOut, 100);
+        await expectStyle(page, '#test2', { marginTop: '-50px' });
+        await expectStyle(page, '#test4', { marginTop: '-50px' });
+        await expectAnimationProgress(page, '#test2', 0.5);
+        await expectAnimationProgress(page, '#test4', 0.5);
         await advanceClock(page, 100);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test2');
@@ -322,10 +293,10 @@ test.describe('QuerySet #dropIn', () => {
         await expectNoAnimation(page, '#test3');
         await expectNoStyle(page, '#test1');
         await expectNoStyle(page, '#test3');
-        const test2Data = await expectDropIn(page, '#test2', null, 1, 'marginLeft');
-        const test4Data = await expectDropIn(page, '#test4', null, 1, 'marginLeft');
-        expectAnimationData(test2Data, easeInOut, 100);
-        expectAnimationData(test4Data, easeInOut, 100);
+        await expectStyle(page, '#test2', { marginLeft: '50px' });
+        await expectStyle(page, '#test4', { marginLeft: '50px' });
+        await expectAnimationProgress(page, '#test2', 0.5);
+        await expectAnimationProgress(page, '#test4', 0.5);
         await advanceClock(page, 100);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test2');
@@ -352,10 +323,10 @@ test.describe('QuerySet #dropIn', () => {
         await expectNoAnimation(page, '#test3');
         await expectNoStyle(page, '#test1');
         await expectNoStyle(page, '#test3');
-        const test2Data = await expectDropIn(page, '#test2', null, 1, 'marginTop');
-        const test4Data = await expectDropIn(page, '#test4', null, 1, 'marginTop');
-        expectAnimationData(test2Data, easeInOut, 100);
-        expectAnimationData(test4Data, easeInOut, 100);
+        await expectStyle(page, '#test2', { marginTop: '50px' });
+        await expectStyle(page, '#test4', { marginTop: '50px' });
+        await expectAnimationProgress(page, '#test2', 0.5);
+        await expectAnimationProgress(page, '#test4', 0.5);
         await advanceClock(page, 100);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test2');
@@ -382,10 +353,10 @@ test.describe('QuerySet #dropIn', () => {
         await expectNoAnimation(page, '#test3');
         await expectNoStyle(page, '#test1');
         await expectNoStyle(page, '#test3');
-        const test2Data = await expectDropIn(page, '#test2', null, -1, 'marginLeft');
-        const test4Data = await expectDropIn(page, '#test4', null, -1, 'marginLeft');
-        expectAnimationData(test2Data, easeInOut, 100);
-        expectAnimationData(test4Data, easeInOut, 100);
+        await expectStyle(page, '#test2', { marginLeft: '-50px' });
+        await expectStyle(page, '#test4', { marginLeft: '-50px' });
+        await expectAnimationProgress(page, '#test2', 0.5);
+        await expectAnimationProgress(page, '#test4', 0.5);
         await advanceClock(page, 100);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test2');
@@ -411,10 +382,10 @@ test.describe('QuerySet #dropIn', () => {
         await expectNoAnimation(page, '#test3');
         await expectNoStyle(page, '#test1');
         await expectNoStyle(page, '#test3');
-        const test2Data = await expectDropIn(page, '#test2', 'Y', -1);
-        const test4Data = await expectDropIn(page, '#test4', 'Y', -1);
-        expectAnimationData(test2Data, linear, 100);
-        expectAnimationData(test4Data, linear, 100);
+        await expectStyle(page, '#test2', { transform: 'translateY(-50px)' });
+        await expectStyle(page, '#test4', { transform: 'translateY(-50px)' });
+        await expectAnimationProgress(page, '#test2', 0.5);
+        await expectAnimationProgress(page, '#test4', 0.5);
         await advanceClock(page, 100);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test2');
@@ -440,10 +411,10 @@ test.describe('QuerySet #dropIn', () => {
         await expectNoAnimation(page, '#test3');
         await expectNoStyle(page, '#test1');
         await expectNoStyle(page, '#test3');
-        const test2Data = await expectDropIn(page, '#test2', 'Y', -1);
-        const test4Data = await expectDropIn(page, '#test4', 'Y', -1);
-        expectAnimationData(test2Data, easeIn, 100);
-        expectAnimationData(test4Data, easeIn, 100);
+        await expectStyle(page, '#test2', { transform: 'translateY(-75px)' });
+        await expectStyle(page, '#test4', { transform: 'translateY(-75px)' });
+        await expectAnimationProgress(page, '#test2', 0.25);
+        await expectAnimationProgress(page, '#test4', 0.25);
         await advanceClock(page, 100);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test2');
@@ -469,10 +440,10 @@ test.describe('QuerySet #dropIn', () => {
         await expectNoAnimation(page, '#test3');
         await expectNoStyle(page, '#test1');
         await expectNoStyle(page, '#test3');
-        const test2Data = await expectDropIn(page, '#test2', 'Y', -1);
-        const test4Data = await expectDropIn(page, '#test4', 'Y', -1);
-        expectAnimationData(test2Data, easeOut, 100);
-        expectAnimationData(test4Data, easeOut, 100);
+        await expectStyle(page, '#test2', { transform: 'translateY(-29.29px)' });
+        await expectStyle(page, '#test4', { transform: 'translateY(-29.29px)' });
+        await expectAnimationProgress(page, '#test2', 0.7071067812);
+        await expectAnimationProgress(page, '#test4', 0.7071067812);
         await advanceClock(page, 100);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test2');
@@ -485,9 +456,6 @@ test.describe('QuerySet #dropIn', () => {
     });
 
     test('adds a drop-in animation to each node (infinite)', async ({ page }) => {
-        let test2Data;
-        let test4Data;
-
         await page.evaluate((_) => {
             $('.animate')
                 .dropIn({
@@ -502,28 +470,28 @@ test.describe('QuerySet #dropIn', () => {
         await expectNoAnimation(page, '#test3');
         await expectNoStyle(page, '#test1');
         await expectNoStyle(page, '#test3');
-        test2Data = await expectDropIn(page, '#test2', 'Y', -1);
-        test4Data = await expectDropIn(page, '#test4', 'Y', -1);
-        expectAnimationData(test2Data, linear, 100, true);
-        expectAnimationData(test4Data, linear, 100, true);
+        await expectStyle(page, '#test2', { transform: 'translateY(-50px)' });
+        await expectStyle(page, '#test4', { transform: 'translateY(-50px)' });
+        await expectAnimationProgress(page, '#test2', 0.5);
+        await expectAnimationProgress(page, '#test4', 0.5);
         await advanceClock(page, 50);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test3');
         await expectNoStyle(page, '#test1');
         await expectNoStyle(page, '#test3');
-        test2Data = await expectDropIn(page, '#test2', 'Y', -1);
-        test4Data = await expectDropIn(page, '#test4', 'Y', -1);
-        expectAnimationData(test2Data, linear, 100, true);
-        expectAnimationData(test4Data, linear, 100, true);
+        await expectStyle(page, '#test2', { transform: 'translateY(-100px)' });
+        await expectStyle(page, '#test4', { transform: 'translateY(-100px)' });
+        await expectAnimationProgress(page, '#test2', 0);
+        await expectAnimationProgress(page, '#test4', 0);
         await advanceClock(page, 50);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test3');
         await expectNoStyle(page, '#test1');
         await expectNoStyle(page, '#test3');
-        test2Data = await expectDropIn(page, '#test2', 'Y', -1);
-        test4Data = await expectDropIn(page, '#test4', 'Y', -1);
-        expectAnimationData(test2Data, linear, 100, true);
-        expectAnimationData(test4Data, linear, 100, true);
+        await expectStyle(page, '#test2', { transform: 'translateY(-50px)' });
+        await expectStyle(page, '#test4', { transform: 'translateY(-50px)' });
+        await expectAnimationProgress(page, '#test2', 0.5);
+        await expectAnimationProgress(page, '#test4', 0.5);
     });
 
     test('adds the animation to the queue', async ({ page }) => {
@@ -552,10 +520,10 @@ test.describe('QuerySet #dropIn', () => {
         await expectNoAnimation(page, '#test3');
         await expectNoStyle(page, '#test1');
         await expectNoStyle(page, '#test3');
-        const test2Data = await expectDropIn(page, '#test2', 'Y', -1);
-        const test4Data = await expectDropIn(page, '#test4', 'Y', -1);
-        expectAnimationData(test2Data, easeInOut, 100);
-        expectAnimationData(test4Data, easeInOut, 100);
+        await expectStyle(page, '#test2', { transform: 'translateY(-50px)' });
+        await expectStyle(page, '#test4', { transform: 'translateY(-50px)' });
+        await expectAnimationProgress(page, '#test2', 0.5);
+        await expectAnimationProgress(page, '#test4', 0.5);
     });
 
     test('returns the QuerySet', async ({ page }) => {

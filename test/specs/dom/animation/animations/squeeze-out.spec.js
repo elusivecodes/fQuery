@@ -1,7 +1,7 @@
 import { expect, test } from '@playwright/test';
 import { advanceClock, resetPage, resumeClock, setupClock } from '../../../../setup/browser.js';
-import { expectAnimationData, expectSqueezeOutData, expectSqueezeOutPair, expectAnimation, expectNoAnimation, expectNoStyle, expectSqueezeOut } from '../../../../support/assertions/animation.js';
-import { easeIn, easeInOut, easeOut, getActiveAnimationData, linear, waitForActiveAnimationStyles } from '../../../../support/utils/animation.js';
+import { expectAnimation, expectAnimationProgress, expectNoAnimation, expectNoStyle, expectSqueezeOut, expectStyle } from '../../../../support/assertions/animation.js';
+import { easeInOut } from '../../../../support/utils/animation.js';
 
 test.beforeEach(async ({ page }) => {
     await setupClock(page);
@@ -31,12 +31,10 @@ test.describe('#squeezeOut', () => {
         await expectNoAnimation(page, '#test3');
         await expectNoStyle(page, '#test1');
         await expectNoStyle(page, '#test3');
-        const test2Data = await getActiveAnimationData(page, '#test2', 'height', 'transform');
-        const test4Data = await getActiveAnimationData(page, '#test4', 'height', 'transform');
-        expectAnimationData(test2Data, easeInOut);
-        expectAnimationData(test4Data, easeInOut);
-        expectSqueezeOutData(test2Data);
-        expectSqueezeOutData(test4Data);
+        await expectStyle(page, '#test2', { overflow: 'hidden', height: '50px' });
+        await expectAnimationProgress(page, '#test2', 0.5);
+        await expectStyle(page, '#test4', { overflow: 'hidden', height: '50px' });
+        await expectAnimationProgress(page, '#test4', 0.5);
         await advanceClock(page, 150);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test2');
@@ -60,12 +58,10 @@ test.describe('#squeezeOut', () => {
         await expectNoAnimation(page, '#test3');
         await expectNoStyle(page, '#test1');
         await expectNoStyle(page, '#test3');
-        const test2Data = await getActiveAnimationData(page, '#test2', 'height', 'transform');
-        const test4Data = await getActiveAnimationData(page, '#test4', 'height', 'transform');
-        expectAnimationData(test2Data, easeInOut, 100);
-        expectAnimationData(test4Data, easeInOut, 100);
-        expectSqueezeOutData(test2Data);
-        expectSqueezeOutData(test4Data);
+        await expectStyle(page, '#test2', { overflow: 'hidden', height: '50px' });
+        await expectAnimationProgress(page, '#test2', 0.5);
+        await expectStyle(page, '#test4', { overflow: 'hidden', height: '50px' });
+        await expectAnimationProgress(page, '#test4', 0.5);
         await advanceClock(page, 100);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test2');
@@ -90,12 +86,10 @@ test.describe('#squeezeOut', () => {
         await expectNoAnimation(page, '#test3');
         await expectNoStyle(page, '#test1');
         await expectNoStyle(page, '#test3');
-        const test2Data = await getActiveAnimationData(page, '#test2', 'height', 'transform');
-        const test4Data = await getActiveAnimationData(page, '#test4', 'height', 'transform');
-        expectAnimationData(test2Data, easeInOut, 100);
-        expectAnimationData(test4Data, easeInOut, 100);
-        expectSqueezeOutData(test2Data, 'height', 'Y');
-        expectSqueezeOutData(test4Data, 'height', 'Y');
+        await expectStyle(page, '#test2', { overflow: 'hidden', height: '50px', transform: 'translateY(50px)' });
+        await expectAnimationProgress(page, '#test2', 0.5);
+        await expectStyle(page, '#test4', { overflow: 'hidden', height: '50px', transform: 'translateY(50px)' });
+        await expectAnimationProgress(page, '#test4', 0.5);
         await advanceClock(page, 100);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test2');
@@ -120,12 +114,10 @@ test.describe('#squeezeOut', () => {
         await expectNoAnimation(page, '#test3');
         await expectNoStyle(page, '#test1');
         await expectNoStyle(page, '#test3');
-        const test2Data = await getActiveAnimationData(page, '#test2', 'width', 'transform');
-        const test4Data = await getActiveAnimationData(page, '#test4', 'width', 'transform');
-        expectAnimationData(test2Data, easeInOut, 100);
-        expectAnimationData(test4Data, easeInOut, 100);
-        expectSqueezeOutData(test2Data, 'width');
-        expectSqueezeOutData(test4Data, 'width');
+        await expectStyle(page, '#test2', { overflow: 'hidden', width: '50px' });
+        await expectAnimationProgress(page, '#test2', 0.5);
+        await expectStyle(page, '#test4', { overflow: 'hidden', width: '50px' });
+        await expectAnimationProgress(page, '#test4', 0.5);
         await advanceClock(page, 100);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test2');
@@ -150,12 +142,10 @@ test.describe('#squeezeOut', () => {
         await expectNoAnimation(page, '#test3');
         await expectNoStyle(page, '#test1');
         await expectNoStyle(page, '#test3');
-        const test2Data = await getActiveAnimationData(page, '#test2', 'height', 'transform');
-        const test4Data = await getActiveAnimationData(page, '#test4', 'height', 'transform');
-        expectAnimationData(test2Data, easeInOut, 100);
-        expectAnimationData(test4Data, easeInOut, 100);
-        expectSqueezeOutData(test2Data);
-        expectSqueezeOutData(test4Data);
+        await expectStyle(page, '#test2', { overflow: 'hidden', height: '50px' });
+        await expectAnimationProgress(page, '#test2', 0.5);
+        await expectStyle(page, '#test4', { overflow: 'hidden', height: '50px' });
+        await expectAnimationProgress(page, '#test4', 0.5);
         await advanceClock(page, 100);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test2');
@@ -180,12 +170,10 @@ test.describe('#squeezeOut', () => {
         await expectNoAnimation(page, '#test3');
         await expectNoStyle(page, '#test1');
         await expectNoStyle(page, '#test3');
-        const test2Data = await getActiveAnimationData(page, '#test2', 'width', 'transform');
-        const test4Data = await getActiveAnimationData(page, '#test4', 'width', 'transform');
-        expectAnimationData(test2Data, easeInOut, 100);
-        expectAnimationData(test4Data, easeInOut, 100);
-        expectSqueezeOutData(test2Data, 'width', 'X');
-        expectSqueezeOutData(test4Data, 'width', 'X');
+        await expectStyle(page, '#test2', { overflow: 'hidden', width: '50px', transform: 'translateX(50px)' });
+        await expectAnimationProgress(page, '#test2', 0.5);
+        await expectStyle(page, '#test4', { overflow: 'hidden', width: '50px', transform: 'translateX(50px)' });
+        await expectAnimationProgress(page, '#test4', 0.5);
         await advanceClock(page, 100);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test2');
@@ -210,9 +198,10 @@ test.describe('#squeezeOut', () => {
         await expectNoAnimation(page, '#test3');
         await expectNoStyle(page, '#test1');
         await expectNoStyle(page, '#test3');
-        await expectSqueezeOutPair(page, easeInOut, {
-            duration: 100,
-        });
+        await expectStyle(page, '#test2', { overflow: 'hidden', height: '50px' });
+        await expectAnimationProgress(page, '#test2', 0.5);
+        await expectStyle(page, '#test4', { overflow: 'hidden', height: '50px' });
+        await expectAnimationProgress(page, '#test4', 0.5);
         await advanceClock(page, 100);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test2');
@@ -237,9 +226,10 @@ test.describe('#squeezeOut', () => {
         await expectNoAnimation(page, '#test3');
         await expectNoStyle(page, '#test1');
         await expectNoStyle(page, '#test3');
-        await expectSqueezeOutPair(page, easeInOut, {
-            duration: 100,
-        });
+        await expectStyle(page, '#test2', { overflow: 'hidden', height: '50px' });
+        await expectAnimationProgress(page, '#test2', 0.5);
+        await expectStyle(page, '#test4', { overflow: 'hidden', height: '50px' });
+        await expectAnimationProgress(page, '#test4', 0.5);
         await advanceClock(page, 100);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test2');
@@ -265,11 +255,10 @@ test.describe('#squeezeOut', () => {
         await expectNoAnimation(page, '#test3');
         await expectNoStyle(page, '#test1');
         await expectNoStyle(page, '#test3');
-        await expectSqueezeOutPair(page, easeInOut, {
-            duration: 100,
-            translate: null,
-            translateStyle: 'marginTop',
-        });
+        await expectStyle(page, '#test2', { overflow: 'hidden', height: '50px', marginTop: '50px' });
+        await expectAnimationProgress(page, '#test2', 0.5);
+        await expectStyle(page, '#test4', { overflow: 'hidden', height: '50px', marginTop: '50px' });
+        await expectAnimationProgress(page, '#test4', 0.5);
         await advanceClock(page, 100);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test2');
@@ -295,11 +284,10 @@ test.describe('#squeezeOut', () => {
         await expectNoAnimation(page, '#test3');
         await expectNoStyle(page, '#test1');
         await expectNoStyle(page, '#test3');
-        await expectSqueezeOutPair(page, easeInOut, {
-            duration: 100,
-            style: 'width',
-            translateStyle: 'marginLeft',
-        });
+        await expectStyle(page, '#test2', { overflow: 'hidden', width: '50px' });
+        await expectAnimationProgress(page, '#test2', 0.5);
+        await expectStyle(page, '#test4', { overflow: 'hidden', width: '50px' });
+        await expectAnimationProgress(page, '#test4', 0.5);
         await advanceClock(page, 100);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test2');
@@ -325,10 +313,10 @@ test.describe('#squeezeOut', () => {
         await expectNoAnimation(page, '#test3');
         await expectNoStyle(page, '#test1');
         await expectNoStyle(page, '#test3');
-        await expectSqueezeOutPair(page, easeInOut, {
-            duration: 100,
-            translateStyle: 'marginTop',
-        });
+        await expectStyle(page, '#test2', { overflow: 'hidden', height: '50px' });
+        await expectAnimationProgress(page, '#test2', 0.5);
+        await expectStyle(page, '#test4', { overflow: 'hidden', height: '50px' });
+        await expectAnimationProgress(page, '#test4', 0.5);
         await advanceClock(page, 100);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test2');
@@ -354,12 +342,10 @@ test.describe('#squeezeOut', () => {
         await expectNoAnimation(page, '#test3');
         await expectNoStyle(page, '#test1');
         await expectNoStyle(page, '#test3');
-        await expectSqueezeOutPair(page, easeInOut, {
-            duration: 100,
-            style: 'width',
-            translate: null,
-            translateStyle: 'marginLeft',
-        });
+        await expectStyle(page, '#test2', { overflow: 'hidden', width: '50px', marginLeft: '50px' });
+        await expectAnimationProgress(page, '#test2', 0.5);
+        await expectStyle(page, '#test4', { overflow: 'hidden', width: '50px', marginLeft: '50px' });
+        await expectAnimationProgress(page, '#test4', 0.5);
         await advanceClock(page, 100);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test2');
@@ -384,9 +370,10 @@ test.describe('#squeezeOut', () => {
         await expectNoAnimation(page, '#test3');
         await expectNoStyle(page, '#test1');
         await expectNoStyle(page, '#test3');
-        await expectSqueezeOutPair(page, linear, {
-            duration: 100,
-        });
+        await expectStyle(page, '#test2', { overflow: 'hidden', height: '50px' });
+        await expectAnimationProgress(page, '#test2', 0.5);
+        await expectStyle(page, '#test4', { overflow: 'hidden', height: '50px' });
+        await expectAnimationProgress(page, '#test4', 0.5);
         await advanceClock(page, 100);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test2');
@@ -411,9 +398,10 @@ test.describe('#squeezeOut', () => {
         await expectNoAnimation(page, '#test3');
         await expectNoStyle(page, '#test1');
         await expectNoStyle(page, '#test3');
-        await expectSqueezeOutPair(page, easeIn, {
-            duration: 100,
-        });
+        await expectStyle(page, '#test2', { overflow: 'hidden', height: '75px' });
+        await expectAnimationProgress(page, '#test2', 0.25);
+        await expectStyle(page, '#test4', { overflow: 'hidden', height: '75px' });
+        await expectAnimationProgress(page, '#test4', 0.25);
         await advanceClock(page, 100);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test2');
@@ -438,9 +426,10 @@ test.describe('#squeezeOut', () => {
         await expectNoAnimation(page, '#test3');
         await expectNoStyle(page, '#test1');
         await expectNoStyle(page, '#test3');
-        await expectSqueezeOutPair(page, easeOut, {
-            duration: 100,
-        });
+        await expectStyle(page, '#test2', { overflow: 'hidden', height: '29.29px' });
+        await expectAnimationProgress(page, '#test2', 0.7071067812);
+        await expectStyle(page, '#test4', { overflow: 'hidden', height: '29.29px' });
+        await expectAnimationProgress(page, '#test4', 0.7071067812);
         await advanceClock(page, 100);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test2');
@@ -466,28 +455,28 @@ test.describe('#squeezeOut', () => {
         await expectNoAnimation(page, '#test3');
         await expectNoStyle(page, '#test1');
         await expectNoStyle(page, '#test3');
-        await expectSqueezeOutPair(page, linear, {
-            duration: 100,
-            infinite: true,
-        });
+        await expectStyle(page, '#test2', { overflow: 'hidden', height: '50px' });
+        await expectAnimationProgress(page, '#test2', 0.5);
+        await expectStyle(page, '#test4', { overflow: 'hidden', height: '50px' });
+        await expectAnimationProgress(page, '#test4', 0.5);
         await advanceClock(page, 50);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test3');
         await expectNoStyle(page, '#test1');
         await expectNoStyle(page, '#test3');
-        await expectSqueezeOutPair(page, linear, {
-            duration: 100,
-            infinite: true,
-        });
+        await expectStyle(page, '#test2', { overflow: 'hidden', height: '100px' });
+        await expectAnimationProgress(page, '#test2', 0);
+        await expectStyle(page, '#test4', { overflow: 'hidden', height: '100px' });
+        await expectAnimationProgress(page, '#test4', 0);
         await advanceClock(page, 50);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test3');
         await expectNoStyle(page, '#test1');
         await expectNoStyle(page, '#test3');
-        await expectSqueezeOutPair(page, linear, {
-            duration: 100,
-            infinite: true,
-        });
+        await expectStyle(page, '#test2', { overflow: 'hidden', height: '50px' });
+        await expectAnimationProgress(page, '#test2', 0.5);
+        await expectStyle(page, '#test4', { overflow: 'hidden', height: '50px' });
+        await expectAnimationProgress(page, '#test4', 0.5);
     });
 
     test('can be stopped', async ({ page }) => {
@@ -669,8 +658,8 @@ test.describe('#squeezeOut', () => {
         await expectNoStyle(page, '#test1');
         await expectNoStyle(page, '#test3');
         await expectNoStyle(page, '#test4');
-        await expectAnimation(page, '#test2', easeInOut, 100);
-        await expectSqueezeOut(page, '#test2');
+        await expectAnimationProgress(page, '#test2', 0.5);
+        await expectStyle(page, '#test2', { overflow: 'hidden', height: '50px' });
         await advanceClock(page, 100);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test2');
@@ -692,18 +681,15 @@ test.describe('#squeezeOut', () => {
                 },
             );
         });
-        await waitForActiveAnimationStyles(page, [
-            '#test2',
-            '#test4',
-        ], 'height');
+        await advanceClock(page, 50);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test3');
         await expectNoStyle(page, '#test1');
         await expectNoStyle(page, '#test3');
-        await expectAnimation(page, '#test2', easeInOut, 100);
-        await expectAnimation(page, '#test4', easeInOut, 100);
-        await expectSqueezeOut(page, '#test2');
-        await expectSqueezeOut(page, '#test4');
+        await expectAnimationProgress(page, '#test2', 0.5);
+        await expectAnimationProgress(page, '#test4', 0.5);
+        await expectStyle(page, '#test2', { overflow: 'hidden', height: '50px' });
+        await expectStyle(page, '#test4', { overflow: 'hidden', height: '50px' });
         await advanceClock(page, 100);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test2');
@@ -725,20 +711,15 @@ test.describe('#squeezeOut', () => {
                 },
             );
         });
-        await waitForActiveAnimationStyles(page, [
-            '#test1',
-            '#test2',
-            '#test3',
-            '#test4',
-        ], 'height');
-        await expectAnimation(page, '#test1', easeInOut, 100);
-        await expectAnimation(page, '#test2', easeInOut, 100);
-        await expectAnimation(page, '#test3', easeInOut, 100);
-        await expectAnimation(page, '#test4', easeInOut, 100);
-        await expectSqueezeOut(page, '#test1');
-        await expectSqueezeOut(page, '#test2');
-        await expectSqueezeOut(page, '#test3');
-        await expectSqueezeOut(page, '#test4');
+        await advanceClock(page, 50);
+        await expectAnimationProgress(page, '#test1', 0.5);
+        await expectAnimationProgress(page, '#test2', 0.5);
+        await expectAnimationProgress(page, '#test3', 0.5);
+        await expectAnimationProgress(page, '#test4', 0.5);
+        await expectStyle(page, '#test1', { overflow: 'hidden', height: '50px' });
+        await expectStyle(page, '#test2', { overflow: 'hidden', height: '50px' });
+        await expectStyle(page, '#test3', { overflow: 'hidden', height: '50px' });
+        await expectStyle(page, '#test4', { overflow: 'hidden', height: '50px' });
         await advanceClock(page, 100);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test2');
@@ -765,10 +746,10 @@ test.describe('#squeezeOut', () => {
         await expectNoAnimation(page, '#test3');
         await expectNoStyle(page, '#test1');
         await expectNoStyle(page, '#test3');
-        await expectAnimation(page, '#test2', easeInOut, 100);
-        await expectAnimation(page, '#test4', easeInOut, 100);
-        await expectSqueezeOut(page, '#test2');
-        await expectSqueezeOut(page, '#test4');
+        await expectAnimationProgress(page, '#test2', 0.5);
+        await expectAnimationProgress(page, '#test4', 0.5);
+        await expectStyle(page, '#test2', { overflow: 'hidden', height: '50px' });
+        await expectStyle(page, '#test4', { overflow: 'hidden', height: '50px' });
         await advanceClock(page, 100);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test2');

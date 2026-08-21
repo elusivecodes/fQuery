@@ -1,7 +1,6 @@
 import { expect, test } from '@playwright/test';
 import { advanceClock, resetPage, setupClock } from '../../../../setup/browser.js';
-import { expectAnimation, expectFadeIn, expectNoAnimation, expectNoStyle } from '../../../../support/assertions/animation.js';
-import { easeIn, easeInOut, easeOut, linear } from '../../../../support/utils/animation.js';
+import { expectAnimationProgress, expectNoAnimation, expectNoStyle, expectStyle } from '../../../../support/assertions/animation.js';
 
 test.beforeEach(async ({ page }) => {
     await setupClock(page);
@@ -31,9 +30,10 @@ test.describe('QuerySet #fadeIn', () => {
         await expectNoAnimation(page, '#test3');
         await expectNoStyle(page, '#test1');
         await expectNoStyle(page, '#test3');
-        await expectAnimation(page, '#test2', easeInOut);
-        await expectAnimation(page, '#test4', easeInOut);
-        await expectFadeIn(page, '#test2');
+        await expectAnimationProgress(page, '#test2', 0.5);
+        await expectAnimationProgress(page, '#test4', 0.5);
+        await expectStyle(page, '#test2', { opacity: '0.5' });
+        await expectStyle(page, '#test4', { opacity: '0.5' });
         await advanceClock(page, 150);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test2');
@@ -58,9 +58,10 @@ test.describe('QuerySet #fadeIn', () => {
         await expectNoAnimation(page, '#test3');
         await expectNoStyle(page, '#test1');
         await expectNoStyle(page, '#test3');
-        await expectAnimation(page, '#test2', easeInOut, 100);
-        await expectAnimation(page, '#test4', easeInOut, 100);
-        await expectFadeIn(page, '#test2');
+        await expectAnimationProgress(page, '#test2', 0.5);
+        await expectAnimationProgress(page, '#test4', 0.5);
+        await expectStyle(page, '#test2', { opacity: '0.5' });
+        await expectStyle(page, '#test4', { opacity: '0.5' });
         await advanceClock(page, 100);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test2');
@@ -86,9 +87,10 @@ test.describe('QuerySet #fadeIn', () => {
         await expectNoAnimation(page, '#test3');
         await expectNoStyle(page, '#test1');
         await expectNoStyle(page, '#test3');
-        await expectAnimation(page, '#test2', linear, 100);
-        await expectAnimation(page, '#test4', linear, 100);
-        await expectFadeIn(page, '#test2');
+        await expectAnimationProgress(page, '#test2', 0.5);
+        await expectAnimationProgress(page, '#test4', 0.5);
+        await expectStyle(page, '#test2', { opacity: '0.5' });
+        await expectStyle(page, '#test4', { opacity: '0.5' });
         await advanceClock(page, 100);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test2');
@@ -114,9 +116,10 @@ test.describe('QuerySet #fadeIn', () => {
         await expectNoAnimation(page, '#test3');
         await expectNoStyle(page, '#test1');
         await expectNoStyle(page, '#test3');
-        await expectAnimation(page, '#test2', easeIn, 100);
-        await expectAnimation(page, '#test4', easeIn, 100);
-        await expectFadeIn(page, '#test2');
+        await expectAnimationProgress(page, '#test2', 0.25);
+        await expectAnimationProgress(page, '#test4', 0.25);
+        await expectStyle(page, '#test2', { opacity: '0.25' });
+        await expectStyle(page, '#test4', { opacity: '0.25' });
         await advanceClock(page, 100);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test2');
@@ -142,9 +145,10 @@ test.describe('QuerySet #fadeIn', () => {
         await expectNoAnimation(page, '#test3');
         await expectNoStyle(page, '#test1');
         await expectNoStyle(page, '#test3');
-        await expectAnimation(page, '#test2', easeOut, 100);
-        await expectAnimation(page, '#test4', easeOut, 100);
-        await expectFadeIn(page, '#test2');
+        await expectAnimationProgress(page, '#test2', 0.7071067812);
+        await expectAnimationProgress(page, '#test4', 0.7071067812);
+        await expectStyle(page, '#test2', { opacity: '0.71' });
+        await expectStyle(page, '#test4', { opacity: '0.71' });
         await advanceClock(page, 100);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test2');
@@ -171,25 +175,28 @@ test.describe('QuerySet #fadeIn', () => {
         await expectNoAnimation(page, '#test3');
         await expectNoStyle(page, '#test1');
         await expectNoStyle(page, '#test3');
-        await expectAnimation(page, '#test2', linear, 100, true);
-        await expectAnimation(page, '#test4', linear, 100, true);
-        await expectFadeIn(page, '#test2');
+        await expectAnimationProgress(page, '#test2', 0.5);
+        await expectAnimationProgress(page, '#test4', 0.5);
+        await expectStyle(page, '#test2', { opacity: '0.5' });
+        await expectStyle(page, '#test4', { opacity: '0.5' });
         await advanceClock(page, 50);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test3');
         await expectNoStyle(page, '#test1');
         await expectNoStyle(page, '#test3');
-        await expectAnimation(page, '#test2', linear, 100, true);
-        await expectAnimation(page, '#test4', linear, 100, true);
-        await expectFadeIn(page, '#test2');
+        await expectAnimationProgress(page, '#test2', 0);
+        await expectAnimationProgress(page, '#test4', 0);
+        await expectStyle(page, '#test2', { opacity: '0' });
+        await expectStyle(page, '#test4', { opacity: '0' });
         await advanceClock(page, 50);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test3');
         await expectNoStyle(page, '#test1');
         await expectNoStyle(page, '#test3');
-        await expectAnimation(page, '#test2', linear, 100, true);
-        await expectAnimation(page, '#test4', linear, 100, true);
-        await expectFadeIn(page, '#test2');
+        await expectAnimationProgress(page, '#test2', 0.5);
+        await expectAnimationProgress(page, '#test4', 0.5);
+        await expectStyle(page, '#test2', { opacity: '0.5' });
+        await expectStyle(page, '#test4', { opacity: '0.5' });
     });
 
     test('adds the animation to the queue', async ({ page }) => {
@@ -218,9 +225,10 @@ test.describe('QuerySet #fadeIn', () => {
         await expectNoAnimation(page, '#test3');
         await expectNoStyle(page, '#test1');
         await expectNoStyle(page, '#test3');
-        await expectAnimation(page, '#test2', easeInOut, 100);
-        await expectAnimation(page, '#test4', easeInOut, 100);
-        await expectFadeIn(page, '#test2');
+        await expectAnimationProgress(page, '#test2', 0.5);
+        await expectAnimationProgress(page, '#test4', 0.5);
+        await expectStyle(page, '#test2', { opacity: '0.5' });
+        await expectStyle(page, '#test4', { opacity: '0.5' });
     });
 
     test('returns the QuerySet', async ({ page }) => {

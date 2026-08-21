@@ -1,7 +1,6 @@
 import { expect, test } from '@playwright/test';
 import { advanceClock, resetPage, setupClock } from '../../../setup/browser.js';
-import { expectAnimation, expectNoAnimation } from '../../../support/assertions/animation.js';
-import { easeInOut } from '../../../support/utils/animation.js';
+import { expectAnimationProgress, expectNoAnimation } from '../../../support/assertions/animation.js';
 
 test.beforeEach(async ({ page }) => {
     await setupClock(page);
@@ -52,7 +51,7 @@ test.describe('QuerySet #stop', () => {
                 },
             );
         });
-        await advanceClock(page, 25);
+        await advanceClock(page, 50);
         const testHtml = await page.evaluate((_) => {
             $('.animate')
                     .stop({ finish: false });
@@ -60,8 +59,8 @@ test.describe('QuerySet #stop', () => {
         });
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test3');
-        await expectAnimation(page, '#test2', easeInOut, 100);
-        await expectAnimation(page, '#test4', easeInOut, 100);
+        await expectAnimationProgress(page, '#test2', 0.5);
+        await expectAnimationProgress(page, '#test4', 0.5);
         await advanceClock(page, 25);
         const html = await page.evaluate((_) => document.body.innerHTML);
         expect(html).toBe(testHtml);
