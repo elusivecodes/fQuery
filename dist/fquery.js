@@ -2048,60 +2048,6 @@
      */
 
     /**
-     * Resolves a single node.
-     * @param {QueryInput} nodes The input node(s), or a query selector or HTML string.
-     * @param {((value: string) => (Node|Window|null|undefined))} stringCallback The callback used to resolve strings.
-     * @param {NodeFilterCallback} nodeFilter The callback used to filter nodes.
-     * @returns {Node|Window|null|undefined} The resolved node, or `undefined` if none matches.
-     */
-    function resolveNode(nodes, stringCallback, nodeFilter) {
-        if (isString(nodes)) {
-            return stringCallback(nodes);
-        }
-
-        if (nodeFilter(nodes)) {
-            return nodes;
-        }
-
-        if (nodes instanceof QuerySet) {
-            const node = nodes.get(0);
-
-            return nodeFilter(node) ? node : undefined;
-        }
-
-        if (nodes instanceof HTMLCollection || nodes instanceof NodeList) {
-            const node = nodes.item(0);
-
-            return nodeFilter(node) ? node : undefined;
-        }
-    }
-    /**
-     * Resolves multiple nodes.
-     * @param {QueryInput} nodes The input node(s), or a query selector or HTML string.
-     * @param {((value: string) => Array<Node|Window>)} stringCallback The callback used to resolve strings.
-     * @param {NodeFilterCallback} nodeFilter The callback used to filter nodes.
-     * @returns {Array<Node|Window>} The resolved nodes.
-     */
-    function resolveNodes(nodes, stringCallback, nodeFilter) {
-        if (isString(nodes)) {
-            return stringCallback(nodes);
-        }
-
-        if (nodeFilter(nodes)) {
-            return [nodes];
-        }
-
-        if (nodes instanceof QuerySet) {
-            return nodes.get().filter(nodeFilter);
-        }
-
-        if (nodes instanceof HTMLCollection || nodes instanceof NodeList) {
-            return merge([], nodes).filter(nodeFilter);
-        }
-
-        return [];
-    }
-    /**
      * Creates a wrapped version of a function that executes once per tick.
      * @template {(...args: any[]) => any} T
      * @param {T} callback The callback to debounce.
@@ -2118,10 +2064,21 @@
             running = true;
 
             Promise.resolve().then((_) => {
-                callback(...args);
-                running = false;
+                try {
+                    callback(...args);
+                } finally {
+                    running = false;
+                }
             });
         };
+    }
+    /**
+     * Escapes a string for use as a CSS identifier.
+     * @param {string} value The value to escape.
+     * @returns {string} The escaped value.
+     */
+    function escapeCSS(value) {
+        return getWindow().CSS.escape(value);
     }
     /**
      * Returns a RegExp for testing a namespaced event.
@@ -2218,6 +2175,60 @@
      */
     function parseEvents(events) {
         return events.split(' ');
+    }
+    /**
+     * Resolves a single node.
+     * @param {QueryInput} nodes The input node(s), or a query selector or HTML string.
+     * @param {((value: string) => (Node|Window|null|undefined))} stringCallback The callback used to resolve strings.
+     * @param {NodeFilterCallback} nodeFilter The callback used to filter nodes.
+     * @returns {Node|Window|null|undefined} The resolved node, or `undefined` if none matches.
+     */
+    function resolveNode(nodes, stringCallback, nodeFilter) {
+        if (isString(nodes)) {
+            return stringCallback(nodes);
+        }
+
+        if (nodeFilter(nodes)) {
+            return nodes;
+        }
+
+        if (nodes instanceof QuerySet) {
+            const node = nodes.get(0);
+
+            return nodeFilter(node) ? node : undefined;
+        }
+
+        if (nodes && typeof nodes.item === 'function') {
+            const node = nodes.item(0);
+
+            return nodeFilter(node) ? node : undefined;
+        }
+    }
+    /**
+     * Resolves multiple nodes.
+     * @param {QueryInput} nodes The input node(s), or a query selector or HTML string.
+     * @param {((value: string) => Array<Node|Window>)} stringCallback The callback used to resolve strings.
+     * @param {NodeFilterCallback} nodeFilter The callback used to filter nodes.
+     * @returns {Array<Node|Window>} The resolved nodes.
+     */
+    function resolveNodes(nodes, stringCallback, nodeFilter) {
+        if (isString(nodes)) {
+            return stringCallback(nodes);
+        }
+
+        if (nodeFilter(nodes)) {
+            return [nodes];
+        }
+
+        if (nodes instanceof QuerySet) {
+            return nodes.get().filter(nodeFilter);
+        }
+
+        if (nodes && typeof nodes.item === 'function') {
+            return merge([], nodes).filter(nodeFilter);
+        }
+
+        return [];
     }
 
     const parser = new DOMParser();
@@ -2329,8 +2340,10 @@
             return merge([], context.getElementsByClassName(className));
         }
 
+        const selector = `.${escapeCSS(className)}`;
+
         if (isFragment(context) || isShadow(context)) {
-            return merge([], context.querySelectorAll(`.${className}`));
+            return merge([], context.querySelectorAll(selector));
         }
 
         const nodes = resolveContexts(context);
@@ -2339,7 +2352,7 @@
 
         for (const node of nodes) {
             const newNodes = isFragment(node) || isShadow(node) ?
-                node.querySelectorAll(`.${className}`) :
+                node.querySelectorAll(selector) :
                 node.getElementsByClassName(className);
 
             results.push(...newNodes);
@@ -2356,8 +2369,10 @@
      * @returns {Element[]} The matching nodes.
      */
     function findById$1(id, context = getContext()) {
+        const selector = `#${escapeCSS(id)}`;
+
         if (isDocument(context) || isElement(context) || isFragment(context) || isShadow(context)) {
-            return merge([], context.querySelectorAll(`#${id}`));
+            return merge([], context.querySelectorAll(selector));
         }
 
         const nodes = resolveContexts(context);
@@ -2365,7 +2380,7 @@
         const results = [];
 
         for (const node of nodes) {
-            const newNodes = node.querySelectorAll(`#${id}`);
+            const newNodes = node.querySelectorAll(selector);
 
             results.push(...newNodes);
         }
@@ -2462,8 +2477,10 @@
             return context.getElementsByClassName(className).item(0);
         }
 
+        const selector = `.${escapeCSS(className)}`;
+
         if (isFragment(context) || isShadow(context)) {
-            return context.querySelector(`.${className}`);
+            return context.querySelector(selector);
         }
 
         const nodes = resolveContexts(context);
@@ -2474,7 +2491,7 @@
 
         for (const node of nodes) {
             const result = isFragment(node) || isShadow(node) ?
-                node.querySelector(`.${className}`) :
+                node.querySelector(selector) :
                 node.getElementsByClassName(className).item(0);
 
             if (result) {
@@ -2495,8 +2512,10 @@
             return context.getElementById(id);
         }
 
+        const selector = `#${escapeCSS(id)}`;
+
         if (isElement(context) || isFragment(context) || isShadow(context)) {
-            return context.querySelector(`#${id}`);
+            return context.querySelector(selector);
         }
 
         const nodes = resolveContexts(context);
@@ -2508,7 +2527,7 @@
         for (const node of nodes) {
             const result = isDocument(node) ?
                 node.getElementById(id) :
-                node.querySelector(`#${id}`);
+                node.querySelector(selector);
 
             if (result) {
                 return result;
@@ -5738,14 +5757,21 @@
         const preScrollY = getScrollY();
 
         for (const node of nodes) {
-            const nodeBox = rect$1(node);
+            let nodeBox = rect$1(node);
+            let resized = false;
 
             if (nodeBox.height > containerBox.height) {
                 node.style.setProperty('height', `${containerBox.height}px`);
+                resized = true;
             }
 
             if (nodeBox.width > containerBox.width) {
                 node.style.setProperty('width', `${containerBox.width}px`);
+                resized = true;
+            }
+
+            if (resized) {
+                nodeBox = rect$1(node);
             }
 
             let leftOffset;
@@ -5834,7 +5860,7 @@
 
         for (const node of nodes) {
             const dist = distTo$1(node, x, y, { offset });
-            if (dist && dist < closestDistance) {
+            if (dist < closestDistance) {
                 closestDistance = dist;
                 closest = node;
             }
@@ -8684,10 +8710,16 @@
         }
 
         const range = selection.getRangeAt(0);
-        const nodes = merge([], range.commonAncestorContainer.querySelectorAll('*'));
+        const commonAncestor = range.commonAncestorContainer;
+
+        if (typeof commonAncestor.querySelectorAll !== 'function') {
+            return [commonAncestor];
+        }
+
+        const nodes = merge([], commonAncestor.querySelectorAll('*'));
 
         if (!nodes.length) {
-            return [range.commonAncestorContainer];
+            return [commonAncestor];
         }
 
         if (nodes.length === 1) {

@@ -1,4 +1,5 @@
 import { escapeRegExp, isArray, isNumeric, isObject, isString, isUndefined, merge } from '@fr0st/core';
+import { getWindow } from './config.js';
 import QuerySet from './query/query-set.js';
 
 /**
@@ -20,62 +21,6 @@ import QuerySet from './query/query-set.js';
  */
 
 /**
- * Resolves a single node.
- * @param {QueryInput} nodes The input node(s), or a query selector or HTML string.
- * @param {((value: string) => (Node|Window|null|undefined))} stringCallback The callback used to resolve strings.
- * @param {NodeFilterCallback} nodeFilter The callback used to filter nodes.
- * @returns {Node|Window|null|undefined} The resolved node, or `undefined` if none matches.
- */
-export function resolveNode(nodes, stringCallback, nodeFilter) {
-    if (isString(nodes)) {
-        return stringCallback(nodes);
-    }
-
-    if (nodeFilter(nodes)) {
-        return nodes;
-    }
-
-    if (nodes instanceof QuerySet) {
-        const node = nodes.get(0);
-
-        return nodeFilter(node) ? node : undefined;
-    }
-
-    if (nodes instanceof HTMLCollection || nodes instanceof NodeList) {
-        const node = nodes.item(0);
-
-        return nodeFilter(node) ? node : undefined;
-    }
-};
-
-/**
- * Resolves multiple nodes.
- * @param {QueryInput} nodes The input node(s), or a query selector or HTML string.
- * @param {((value: string) => Array<Node|Window>)} stringCallback The callback used to resolve strings.
- * @param {NodeFilterCallback} nodeFilter The callback used to filter nodes.
- * @returns {Array<Node|Window>} The resolved nodes.
- */
-export function resolveNodes(nodes, stringCallback, nodeFilter) {
-    if (isString(nodes)) {
-        return stringCallback(nodes);
-    }
-
-    if (nodeFilter(nodes)) {
-        return [nodes];
-    }
-
-    if (nodes instanceof QuerySet) {
-        return nodes.get().filter(nodeFilter);
-    }
-
-    if (nodes instanceof HTMLCollection || nodes instanceof NodeList) {
-        return merge([], nodes).filter(nodeFilter);
-    }
-
-    return [];
-};
-
-/**
  * Creates a wrapped version of a function that executes once per tick.
  * @template {(...args: any[]) => any} T
  * @param {T} callback The callback to debounce.
@@ -92,10 +37,22 @@ export function debounce(callback) {
         running = true;
 
         Promise.resolve().then((_) => {
-            callback(...args);
-            running = false;
+            try {
+                callback(...args);
+            } finally {
+                running = false;
+            }
         });
     };
+};
+
+/**
+ * Escapes a string for use as a CSS identifier.
+ * @param {string} value The value to escape.
+ * @returns {string} The escaped value.
+ */
+export function escapeCSS(value) {
+    return getWindow().CSS.escape(value);
 };
 
 /**
@@ -198,4 +155,60 @@ export function parseEvent(event) {
  */
 export function parseEvents(events) {
     return events.split(' ');
+};
+
+/**
+ * Resolves a single node.
+ * @param {QueryInput} nodes The input node(s), or a query selector or HTML string.
+ * @param {((value: string) => (Node|Window|null|undefined))} stringCallback The callback used to resolve strings.
+ * @param {NodeFilterCallback} nodeFilter The callback used to filter nodes.
+ * @returns {Node|Window|null|undefined} The resolved node, or `undefined` if none matches.
+ */
+export function resolveNode(nodes, stringCallback, nodeFilter) {
+    if (isString(nodes)) {
+        return stringCallback(nodes);
+    }
+
+    if (nodeFilter(nodes)) {
+        return nodes;
+    }
+
+    if (nodes instanceof QuerySet) {
+        const node = nodes.get(0);
+
+        return nodeFilter(node) ? node : undefined;
+    }
+
+    if (nodes && typeof nodes.item === 'function') {
+        const node = nodes.item(0);
+
+        return nodeFilter(node) ? node : undefined;
+    }
+};
+
+/**
+ * Resolves multiple nodes.
+ * @param {QueryInput} nodes The input node(s), or a query selector or HTML string.
+ * @param {((value: string) => Array<Node|Window>)} stringCallback The callback used to resolve strings.
+ * @param {NodeFilterCallback} nodeFilter The callback used to filter nodes.
+ * @returns {Array<Node|Window>} The resolved nodes.
+ */
+export function resolveNodes(nodes, stringCallback, nodeFilter) {
+    if (isString(nodes)) {
+        return stringCallback(nodes);
+    }
+
+    if (nodeFilter(nodes)) {
+        return [nodes];
+    }
+
+    if (nodes instanceof QuerySet) {
+        return nodes.get().filter(nodeFilter);
+    }
+
+    if (nodes && typeof nodes.item === 'function') {
+        return merge([], nodes).filter(nodeFilter);
+    }
+
+    return [];
 };

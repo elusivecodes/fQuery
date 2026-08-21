@@ -62,6 +62,16 @@ test.describe('#findById', () => {
         ]);
     });
 
+    test('finds elements with special characters in the ID', async ({ page }) => {
+        expect(await page.evaluate(() => {
+            const node = document.createElement('div');
+            node.id = 'test:1';
+            document.body.appendChild(node);
+
+            return $.findById('test:1').length;
+        })).toBe(1);
+    });
+
     test('returns an empty array for non-matching id', async ({ page }) => {
         const ids = await page.evaluate(() => $.findById('invalid').map((node) => node.dataset.id));
 

@@ -93,10 +93,16 @@ export function getSelection() {
     }
 
     const range = selection.getRangeAt(0);
-    const nodes = merge([], range.commonAncestorContainer.querySelectorAll('*'));
+    const commonAncestor = range.commonAncestorContainer;
+
+    if (typeof commonAncestor.querySelectorAll !== 'function') {
+        return [commonAncestor];
+    }
+
+    const nodes = merge([], commonAncestor.querySelectorAll('*'));
 
     if (!nodes.length) {
-        return [range.commonAncestorContainer];
+        return [commonAncestor];
     }
 
     if (nodes.length === 1) {

@@ -62,6 +62,17 @@ test.describe('#findByClass', () => {
         ]);
     });
 
+    test('finds elements with special characters in the class name', async ({ page }) => {
+        expect(await page.evaluate(() => {
+            const fragment = document.createDocumentFragment();
+            const node = document.createElement('div');
+            node.classList.add('test:1');
+            fragment.appendChild(node);
+
+            return $.findByClass('test:1', fragment).length;
+        })).toBe(1);
+    });
+
     test('returns an empty array for non-matching class', async ({ page }) => {
         const ids = await page.evaluate(() => $.findByClass('invalid').map((node) => node.id));
 

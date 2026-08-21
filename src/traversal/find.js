@@ -1,6 +1,6 @@
 import { isArray, isDocument, isElement, isFragment, isShadow, merge, unique } from '@fr0st/core';
 import { getContext } from './../config.js';
-import { resolveNodes } from './../helpers.js';
+import { escapeCSS, resolveNodes } from './../helpers.js';
 
 /** @typedef {import('../query/query-set.js').default} QuerySet */
 
@@ -88,8 +88,10 @@ export function findByClass(className, context = getContext()) {
         return merge([], context.getElementsByClassName(className));
     }
 
+    const selector = `.${escapeCSS(className)}`;
+
     if (isFragment(context) || isShadow(context)) {
-        return merge([], context.querySelectorAll(`.${className}`));
+        return merge([], context.querySelectorAll(selector));
     }
 
     const nodes = resolveContexts(context);
@@ -98,7 +100,7 @@ export function findByClass(className, context = getContext()) {
 
     for (const node of nodes) {
         const newNodes = isFragment(node) || isShadow(node) ?
-            node.querySelectorAll(`.${className}`) :
+            node.querySelectorAll(selector) :
             node.getElementsByClassName(className);
 
         results.push(...newNodes);
@@ -116,8 +118,10 @@ export function findByClass(className, context = getContext()) {
  * @returns {Element[]} The matching nodes.
  */
 export function findById(id, context = getContext()) {
+    const selector = `#${escapeCSS(id)}`;
+
     if (isDocument(context) || isElement(context) || isFragment(context) || isShadow(context)) {
-        return merge([], context.querySelectorAll(`#${id}`));
+        return merge([], context.querySelectorAll(selector));
     }
 
     const nodes = resolveContexts(context);
@@ -125,7 +129,7 @@ export function findById(id, context = getContext()) {
     const results = [];
 
     for (const node of nodes) {
-        const newNodes = node.querySelectorAll(`#${id}`);
+        const newNodes = node.querySelectorAll(selector);
 
         results.push(...newNodes);
     }
@@ -225,8 +229,10 @@ export function findOneByClass(className, context = getContext()) {
         return context.getElementsByClassName(className).item(0);
     }
 
+    const selector = `.${escapeCSS(className)}`;
+
     if (isFragment(context) || isShadow(context)) {
-        return context.querySelector(`.${className}`);
+        return context.querySelector(selector);
     }
 
     const nodes = resolveContexts(context);
@@ -237,7 +243,7 @@ export function findOneByClass(className, context = getContext()) {
 
     for (const node of nodes) {
         const result = isFragment(node) || isShadow(node) ?
-            node.querySelector(`.${className}`) :
+            node.querySelector(selector) :
             node.getElementsByClassName(className).item(0);
 
         if (result) {
@@ -259,8 +265,10 @@ export function findOneById(id, context = getContext()) {
         return context.getElementById(id);
     }
 
+    const selector = `#${escapeCSS(id)}`;
+
     if (isElement(context) || isFragment(context) || isShadow(context)) {
-        return context.querySelector(`#${id}`);
+        return context.querySelector(selector);
     }
 
     const nodes = resolveContexts(context);
@@ -272,7 +280,7 @@ export function findOneById(id, context = getContext()) {
     for (const node of nodes) {
         const result = isDocument(node) ?
             node.getElementById(id) :
-            node.querySelector(`#${id}`);
+            node.querySelector(selector);
 
         if (result) {
             return result;

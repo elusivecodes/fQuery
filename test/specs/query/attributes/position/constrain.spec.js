@@ -27,7 +27,7 @@ test.describe('QuerySet #constrain', () => {
             return document.body.innerHTML;
         })).toBe('<div id="fromParent">' +
             '<div id="test1" data-toggle="from" style="display: block; width: 500px; height: 500px; left: 292px; top: 292px; position: relative;"></div>' +
-            '<div id="test2" data-toggle="from" style="display: block; width: 500px; height: 500px; left: 292px; top: -308px; position: relative;"></div>' +
+            '<div id="test2" data-toggle="from" style="display: block; width: 500px; height: 500px; left: 292px; top: -208px; position: relative;"></div>' +
             '</div>' +
             '<div id="toParent">' +
             '<div id="test3" data-toggle="to" style="position: absolute; top: 300px; left: 300px; width: 500px; height: 500px;"></div>' +
@@ -51,7 +51,7 @@ test.describe('QuerySet #constrain', () => {
             return document.body.innerHTML;
         })).toBe('<div id="fromParent">' +
             '<div id="test1" data-toggle="from" style="display: block; width: 500px; height: 500px; left: 292px; top: 292px; position: relative;"></div>' +
-            '<div id="test2" data-toggle="from" style="display: block; width: 500px; height: 500px; left: 292px; top: -308px; position: relative;"></div>' +
+            '<div id="test2" data-toggle="from" style="display: block; width: 500px; height: 500px; left: 292px; top: -208px; position: relative;"></div>' +
             '</div>' +
             '<div id="toParent">' +
             '<div id="test3" data-toggle="to" style="position: absolute; top: 300px; left: 300px; width: 500px; height: 500px;"></div>' +
@@ -68,7 +68,7 @@ test.describe('QuerySet #constrain', () => {
             return document.body.innerHTML;
         })).toBe('<div id="fromParent">' +
             '<div id="test1" data-toggle="from" style="display: block; width: 500px; height: 500px; left: 292px; top: 292px; position: relative;"></div>' +
-            '<div id="test2" data-toggle="from" style="display: block; width: 500px; height: 500px; left: 292px; top: -308px; position: relative;"></div>' +
+            '<div id="test2" data-toggle="from" style="display: block; width: 500px; height: 500px; left: 292px; top: -208px; position: relative;"></div>' +
             '</div>' +
             '<div id="toParent">' +
             '<div id="test3" data-toggle="to" style="position: absolute; top: 300px; left: 300px; width: 500px; height: 500px;"></div>' +
@@ -85,7 +85,7 @@ test.describe('QuerySet #constrain', () => {
             return document.body.innerHTML;
         })).toBe('<div id="fromParent">' +
             '<div id="test1" data-toggle="from" style="display: block; width: 500px; height: 500px; left: 292px; top: 292px; position: relative;"></div>' +
-            '<div id="test2" data-toggle="from" style="display: block; width: 500px; height: 500px; left: 292px; top: -308px; position: relative;"></div>' +
+            '<div id="test2" data-toggle="from" style="display: block; width: 500px; height: 500px; left: 292px; top: -208px; position: relative;"></div>' +
             '</div>' +
             '<div id="toParent">' +
             '<div id="test3" data-toggle="to" style="position: absolute; top: 300px; left: 300px; width: 500px; height: 500px;"></div>' +
@@ -103,7 +103,7 @@ test.describe('QuerySet #constrain', () => {
             return document.body.innerHTML;
         })).toBe('<div id="fromParent">' +
             '<div id="test1" data-toggle="from" style="display: block; width: 500px; height: 500px; left: 292px; top: 292px; position: relative;"></div>' +
-            '<div id="test2" data-toggle="from" style="display: block; width: 500px; height: 500px; left: 292px; top: -308px; position: relative;"></div>' +
+            '<div id="test2" data-toggle="from" style="display: block; width: 500px; height: 500px; left: 292px; top: -208px; position: relative;"></div>' +
             '</div>' +
             '<div id="toParent">' +
             '<div id="test3" data-toggle="to" style="position: absolute; top: 300px; left: 300px; width: 500px; height: 500px;"></div>' +
@@ -119,7 +119,7 @@ test.describe('QuerySet #constrain', () => {
             return document.body.innerHTML;
         })).toBe('<div id="fromParent">' +
             '<div id="test1" data-toggle="from" style="display: block; width: 500px; height: 500px; left: 292px; top: 292px; position: relative;"></div>' +
-            '<div id="test2" data-toggle="from" style="display: block; width: 500px; height: 500px; left: 292px; top: -308px; position: relative;"></div>' +
+            '<div id="test2" data-toggle="from" style="display: block; width: 500px; height: 500px; left: 292px; top: -208px; position: relative;"></div>' +
             '</div>' +
             '<div id="toParent">' +
             '<div id="test3" data-toggle="to" style="position: absolute; top: 300px; left: 300px; width: 500px; height: 500px;"></div>' +

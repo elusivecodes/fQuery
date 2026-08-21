@@ -62,14 +62,21 @@ export function constrain(selector, containerSelector) {
     const preScrollY = getScrollY();
 
     for (const node of nodes) {
-        const nodeBox = rect(node);
+        let nodeBox = rect(node);
+        let resized = false;
 
         if (nodeBox.height > containerBox.height) {
             node.style.setProperty('height', `${containerBox.height}px`);
+            resized = true;
         }
 
         if (nodeBox.width > containerBox.width) {
             node.style.setProperty('width', `${containerBox.width}px`);
+            resized = true;
+        }
+
+        if (resized) {
+            nodeBox = rect(node);
         }
 
         let leftOffset;
@@ -161,7 +168,7 @@ export function nearestTo(selector, x, y, { offset = false } = {}) {
 
     for (const node of nodes) {
         const dist = distTo(node, x, y, { offset });
-        if (dist && dist < closestDistance) {
+        if (dist < closestDistance) {
             closestDistance = dist;
             closest = node;
         }

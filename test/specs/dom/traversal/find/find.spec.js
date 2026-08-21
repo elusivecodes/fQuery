@@ -232,6 +232,21 @@ test.describe('#find', () => {
         ]);
     });
 
+    test('works with collections from another window', async ({ page }) => {
+        expect(await page.evaluate(() => {
+            const iframe = document.createElement('iframe');
+            document.body.appendChild(iframe);
+
+            const context = iframe.contentDocument;
+            context.body.innerHTML = '<div><span></span></div>';
+
+            return [
+                $.find('span', context.querySelectorAll('div')).length,
+                $.find('span', context.body.children).length,
+            ];
+        })).toEqual([1, 1]);
+    });
+
     test('works with DocumentFragment nodes', async ({ page }) => {
         const ids = await page.evaluate((markup) => {
             const fragment = document.createRange().createContextualFragment(markup);

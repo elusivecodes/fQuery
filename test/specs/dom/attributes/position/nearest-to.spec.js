@@ -22,6 +22,15 @@ test.describe('#nearestTo', () => {
         })).toBe('test2');
     });
 
+    test('returns a node centred on the position', async ({ page }) => {
+        expect(await page.evaluate((_) => {
+            const node = document.getElementById('test1');
+            const center = $.center(node);
+
+            return $.nearestTo('div', center.x, center.y).id;
+        })).toBe('test1');
+    });
+
     test('returns the nearest node to a position with offset', async ({ page }) => {
         expect(await page.evaluate((_) => {
             const nearest = $.nearestTo('div', 1000, 1000, { offset: true });
