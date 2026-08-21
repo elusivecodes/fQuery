@@ -9,10 +9,12 @@ import { expect } from '@playwright/test';
  */
 export async function expectAnimationProgress(page, selector, progress) {
     const actual = await page.locator(selector).evaluate((node) =>
-        Number(node.dataset.animationProgress),
+        node.dataset.animationProgress,
     );
 
-    expect(actual).toBeCloseTo(progress, 10);
+    expect(actual).toBeDefined();
+    expect(actual).not.toBe('');
+    expect(Number(actual)).toBeCloseTo(progress, 10);
 }
 
 /**

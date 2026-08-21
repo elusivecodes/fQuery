@@ -1,7 +1,7 @@
 /**
  * Install Playwright's browser clock and pause it at a stable fixed time.
  * @param {import('@playwright/test').Page} page The Playwright page.
- * @return {Promise<void>} The promise.
+ * @returns {Promise<void>} The promise.
  */
 export async function setupClock(page) {
     await page.clock.install({ time: 0 });
@@ -9,20 +9,11 @@ export async function setupClock(page) {
 }
 
 /**
- * Resume the browser clock.
- * @param {import('@playwright/test').Page} page The Playwright page.
- * @return {Promise<void>} The promise.
- */
-export async function resumeClock(page) {
-    await page.clock.resume();
-}
-
-/**
  * Deterministically advance the browser clock, including enough margin for a
  * queued start and a frame on the requested boundary to be processed.
  * @param {import('@playwright/test').Page} page The Playwright page.
  * @param {number} milliseconds The duration to advance.
- * @return {Promise<void>} The promise.
+ * @returns {Promise<void>} The promise.
  */
 export async function advanceClock(page, milliseconds) {
     await page.clock.runFor(milliseconds + 2);
@@ -32,7 +23,7 @@ export async function advanceClock(page, milliseconds) {
  * Reset the browser page to the shared test app and clear any state that a
  * previous test could have left behind.
  * @param {import('@playwright/test').Page} page The Playwright page.
- * @return {Promise<void>} The promise.
+ * @returns {Promise<void>} The promise.
  */
 export async function resetPage(page) {
     await page.goto('/', {
