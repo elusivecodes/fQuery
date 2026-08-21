@@ -53,7 +53,7 @@ export function focus(selector) {
  * @param {EventCallback} callback The callback to execute.
  */
 export function ready(callback) {
-    if (getContext().readyState === 'complete') {
+    if (getContext().readyState !== 'loading') {
         callback();
     } else {
         getWindow().addEventListener('DOMContentLoaded', callback, { once: true });

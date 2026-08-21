@@ -4637,6 +4637,10 @@
         });
 
         for (const node of nodes) {
+            if (!events.has(node)) {
+                continue;
+            }
+
             const nodeEvents = events.get(node);
 
             for (const realEvents of Object.values(nodeEvents)) {
@@ -4876,6 +4880,7 @@
                         {
                             capture: eventData.capture,
                             delegate: eventData.delegate,
+                            passive: eventData.passive,
                             selfDestruct: eventData.selfDestruct,
                         },
                     );
@@ -6292,6 +6297,8 @@
                 return;
             }
 
+            const window = getWindow();
+
             const [moveEvent, upEvent] = event.type in eventLookup ?
                 eventLookup[event.type] :
                 eventLookup.mousedown;
@@ -6383,7 +6390,7 @@
      * @param {EventCallback} callback The callback to execute.
      */
     function ready(callback) {
-        if (getContext().readyState === 'complete') {
+        if (getContext().readyState !== 'loading') {
             callback();
         } else {
             getWindow().addEventListener('DOMContentLoaded', callback, { once: true });

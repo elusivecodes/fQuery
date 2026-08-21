@@ -59,6 +59,7 @@ function deepClone(node, clone, { deep = true, events = false, data = false, ani
                     {
                         capture: eventData.capture,
                         delegate: eventData.delegate,
+                        passive: eventData.passive,
                         selfDestruct: eventData.selfDestruct,
                     },
                 );

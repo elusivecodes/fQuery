@@ -1,3 +1,4 @@
+import { getWindow } from './../config.js';
 import { debounce as _debounce } from './../helpers.js';
 import { eventLookup } from './../vars.js';
 import { addEvent, removeEvent } from './event-handlers.js';
@@ -40,6 +41,8 @@ export function mouseDragFactory(down, move, up, { debounce = true, passive = tr
         if (!move && !up) {
             return;
         }
+
+        const window = getWindow();
 
         const [moveEvent, upEvent] = event.type in eventLookup ?
             eventLookup[event.type] :

@@ -52,6 +52,39 @@ test.describe('#mouseDragFactory', () => {
         })).toBe(2);
     });
 
+    test('uses the configured window', async ({ page }) => {
+        expect(await page.evaluate((_) => {
+            const iframe = document.createElement('iframe');
+            document.body.appendChild(iframe);
+
+            const configuredWindow = iframe.contentWindow;
+            const downEvent = new Event('mousedown');
+            const moveEvent = new configuredWindow.Event('mousemove');
+            const upEvent = new configuredWindow.Event('mouseup');
+            let result = 0;
+
+            $.setWindow(configuredWindow);
+            $.addEvent(
+                document.body,
+                'mousedown',
+                $.mouseDragFactory(
+                    null,
+                    (_) => {
+                        result++;
+                    },
+                    null,
+                    { debounce: false },
+                ),
+            );
+            document.body.dispatchEvent(downEvent);
+            configuredWindow.dispatchEvent(moveEvent);
+            configuredWindow.dispatchEvent(upEvent);
+            configuredWindow.dispatchEvent(moveEvent);
+
+            return result;
+        })).toBe(1);
+    });
+
     test('creates a mouse drag event with up event', async ({ page }) => {
         expect(await page.evaluate((_) => {
             let result = 0;

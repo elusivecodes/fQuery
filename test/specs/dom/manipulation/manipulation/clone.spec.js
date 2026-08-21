@@ -76,6 +76,19 @@ test.describe('#clone', () => {
         expect(clickCount).toBe(8);
     });
 
+    test('preserves passive events on descendant nodes', async ({ page }) => {
+        expect(await page.evaluate((_) => {
+            $.addEvent('.test1', 'test', (_) => false, { passive: true });
+
+            const [clone] = $.clone('.parent1', { events: true });
+            const event = new Event('test', { cancelable: true });
+
+            clone.querySelector('.test1').dispatchEvent(event);
+
+            return event.defaultPrevented;
+        })).toBe(false);
+    });
+
     test('clones all nodes with data', async ({ page }) => {
         const values = await page.evaluate(() => {
             $.setData('a', 'test', 'Test');

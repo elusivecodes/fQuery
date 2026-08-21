@@ -157,6 +157,10 @@ export function cloneEvents(selector, otherSelector) {
     });
 
     for (const node of nodes) {
+        if (!events.has(node)) {
+            continue;
+        }
+
         const nodeEvents = events.get(node);
 
         for (const realEvents of Object.values(nodeEvents)) {

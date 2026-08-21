@@ -45,6 +45,13 @@ test.describe('#cloneEvents', () => {
             '</div>');
     });
 
+    test('does nothing when a node has no registered events', async ({ page }) => {
+        expect(await page.evaluate((_) => {
+            $.cloneEvents('#test3', '#test4');
+            return true;
+        })).toBe(true);
+    });
+
     test('works with HTMLElement nodes', async ({ page }) => {
         expect(await page.evaluate((_) => {
             const event = new Event('click');
