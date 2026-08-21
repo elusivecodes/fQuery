@@ -84,11 +84,19 @@ test.describe('QuerySet #clearQueue', () => {
             $('.queue').queue((node) => {
                 node.dataset.test2 = 'Test';
             }, { queueName: 'test' });
+        });
 
-            $('.queue').clearQueue({ queueName: 'test' });
+        await expect.poll(async () => await page.evaluate(() => ({
+            default: window.defaultQueueResolvers.length,
+            named: window.namedQueueResolvers.length,
+        }))).toEqual({
+            default: 2,
+            named: 2,
         });
 
         await page.evaluate(() => {
+            $('.queue').clearQueue({ queueName: 'test' });
+
             window.defaultQueueResolvers.splice(0).forEach((resolve) => {
                 resolve();
             });
@@ -117,18 +125,26 @@ test.describe('QuerySet #clearQueue', () => {
                 new Promise((resolve) => {
                     window.namedQueueResolvers.push(resolve);
                 }),
-            'test');
+            { queueName: 'test' });
             $('.queue').queue((node) => {
                 node.dataset.test1 = 'Test';
             });
             $('.queue').queue((node) => {
                 node.dataset.test2 = 'Test';
-            }, 'test');
+            }, { queueName: 'test' });
+        });
 
-            $('.queue').clearQueue(false);
+        await expect.poll(async () => await page.evaluate(() => ({
+            default: window.defaultQueueResolvers.length,
+            named: window.namedQueueResolvers.length,
+        }))).toEqual({
+            default: 2,
+            named: 2,
         });
 
         await page.evaluate(() => {
+            $('.queue').clearQueue({ queueName: null });
+
             window.defaultQueueResolvers.splice(0).forEach((resolve) => {
                 resolve();
             });
