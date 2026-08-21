@@ -1,6 +1,6 @@
 import { expect, test } from '@playwright/test';
 import { advanceClock, resetPage, setupClock } from '../../../../setup/browser.js';
-import { expectAnimationProgress, expectNoAnimation, expectNoStyle, expectStyle } from '../../../../support/assertions/animation.js';
+import { expectAnimationState } from '../../../../support/assertions/animation.js';
 
 test.beforeEach(async ({ page }) => {
     await setupClock(page);
@@ -27,23 +27,24 @@ test.describe('QuerySet #rotateOut', () => {
                 });
         });
         await advanceClock(page, 100);
-        await expectNoAnimation(page, '#test1');
-        await expectNoAnimation(page, '#test3');
-        await expectNoStyle(page, '#test1');
-        await expectNoStyle(page, '#test3');
-        await expectAnimationProgress(page, '#test2', 0.5);
-        await expectAnimationProgress(page, '#test4', 0.5);
-        await expectStyle(page, '#test2', { transform: 'rotate3d(0, 1, 0, 45deg)' });
-        await expectStyle(page, '#test4', { transform: 'rotate3d(0, 1, 0, 45deg)' });
+        await expectAnimationState(page, [
+            {
+                selectors: ['#test1', '#test3'],
+                styles: { transform: '' },
+            },
+            {
+                selectors: ['#test2', '#test4'],
+                progress: 0.5,
+                styles: { transform: 'rotate3d(0, 1, 0, 45deg)' },
+            },
+        ]);
         await advanceClock(page, 150);
-        await expectNoAnimation(page, '#test1');
-        await expectNoAnimation(page, '#test2');
-        await expectNoAnimation(page, '#test3');
-        await expectNoAnimation(page, '#test4');
-        await expectNoStyle(page, '#test1');
-        await expectNoStyle(page, '#test2');
-        await expectNoStyle(page, '#test3');
-        await expectNoStyle(page, '#test4');
+        await expectAnimationState(page, [
+            {
+                selectors: ['#test1', '#test2', '#test3', '#test4'],
+                styles: { transform: '' },
+            },
+        ]);
     });
 
     test('adds a rotate-out animation to each node with duration', async ({ page }) => {
@@ -55,23 +56,24 @@ test.describe('QuerySet #rotateOut', () => {
                 });
         });
         await advanceClock(page, 50);
-        await expectAnimationProgress(page, '#test2', 0.5);
-        await expectAnimationProgress(page, '#test4', 0.5);
-        await expectStyle(page, '#test2', { transform: 'rotate3d(0, 1, 0, 45deg)' });
-        await expectStyle(page, '#test4', { transform: 'rotate3d(0, 1, 0, 45deg)' });
-        await expectNoAnimation(page, '#test1');
-        await expectNoAnimation(page, '#test3');
-        await expectNoStyle(page, '#test1');
-        await expectNoStyle(page, '#test3');
+        await expectAnimationState(page, [
+            {
+                selectors: ['#test2', '#test4'],
+                progress: 0.5,
+                styles: { transform: 'rotate3d(0, 1, 0, 45deg)' },
+            },
+            {
+                selectors: ['#test1', '#test3'],
+                styles: { transform: '' },
+            },
+        ]);
         await advanceClock(page, 100);
-        await expectNoAnimation(page, '#test1');
-        await expectNoAnimation(page, '#test2');
-        await expectNoAnimation(page, '#test3');
-        await expectNoAnimation(page, '#test4');
-        await expectNoStyle(page, '#test1');
-        await expectNoStyle(page, '#test2');
-        await expectNoStyle(page, '#test3');
-        await expectNoStyle(page, '#test4');
+        await expectAnimationState(page, [
+            {
+                selectors: ['#test1', '#test2', '#test3', '#test4'],
+                styles: { transform: '' },
+            },
+        ]);
     });
 
     test('adds a rotate-out animation to each node (X)', async ({ page }) => {
@@ -85,23 +87,24 @@ test.describe('QuerySet #rotateOut', () => {
                 });
         });
         await advanceClock(page, 50);
-        await expectAnimationProgress(page, '#test2', 0.5);
-        await expectAnimationProgress(page, '#test4', 0.5);
-        await expectStyle(page, '#test2', { transform: 'rotate3d(1, 0, 0, 45deg)' });
-        await expectStyle(page, '#test4', { transform: 'rotate3d(1, 0, 0, 45deg)' });
-        await expectNoAnimation(page, '#test1');
-        await expectNoAnimation(page, '#test3');
-        await expectNoStyle(page, '#test1');
-        await expectNoStyle(page, '#test3');
+        await expectAnimationState(page, [
+            {
+                selectors: ['#test2', '#test4'],
+                progress: 0.5,
+                styles: { transform: 'rotate3d(1, 0, 0, 45deg)' },
+            },
+            {
+                selectors: ['#test1', '#test3'],
+                styles: { transform: '' },
+            },
+        ]);
         await advanceClock(page, 100);
-        await expectNoAnimation(page, '#test1');
-        await expectNoAnimation(page, '#test2');
-        await expectNoAnimation(page, '#test3');
-        await expectNoAnimation(page, '#test4');
-        await expectNoStyle(page, '#test1');
-        await expectNoStyle(page, '#test2');
-        await expectNoStyle(page, '#test3');
-        await expectNoStyle(page, '#test4');
+        await expectAnimationState(page, [
+            {
+                selectors: ['#test1', '#test2', '#test3', '#test4'],
+                styles: { transform: '' },
+            },
+        ]);
     });
 
     test('adds a rotate-out animation to each node (default Y)', async ({ page }) => {
@@ -115,23 +118,24 @@ test.describe('QuerySet #rotateOut', () => {
                 });
         });
         await advanceClock(page, 50);
-        await expectAnimationProgress(page, '#test2', 0.5);
-        await expectAnimationProgress(page, '#test4', 0.5);
-        await expectStyle(page, '#test2', { transform: 'rotate3d(0, 1, 0, 45deg)' });
-        await expectStyle(page, '#test4', { transform: 'rotate3d(0, 1, 0, 45deg)' });
-        await expectNoAnimation(page, '#test1');
-        await expectNoAnimation(page, '#test3');
-        await expectNoStyle(page, '#test1');
-        await expectNoStyle(page, '#test3');
+        await expectAnimationState(page, [
+            {
+                selectors: ['#test2', '#test4'],
+                progress: 0.5,
+                styles: { transform: 'rotate3d(0, 1, 0, 45deg)' },
+            },
+            {
+                selectors: ['#test1', '#test3'],
+                styles: { transform: '' },
+            },
+        ]);
         await advanceClock(page, 100);
-        await expectNoAnimation(page, '#test1');
-        await expectNoAnimation(page, '#test2');
-        await expectNoAnimation(page, '#test3');
-        await expectNoAnimation(page, '#test4');
-        await expectNoStyle(page, '#test1');
-        await expectNoStyle(page, '#test2');
-        await expectNoStyle(page, '#test3');
-        await expectNoStyle(page, '#test4');
+        await expectAnimationState(page, [
+            {
+                selectors: ['#test1', '#test2', '#test3', '#test4'],
+                styles: { transform: '' },
+            },
+        ]);
     });
 
     test('adds a rotate-out animation to each node (Y)', async ({ page }) => {
@@ -144,23 +148,24 @@ test.describe('QuerySet #rotateOut', () => {
                 });
         });
         await advanceClock(page, 50);
-        await expectAnimationProgress(page, '#test2', 0.5);
-        await expectAnimationProgress(page, '#test4', 0.5);
-        await expectStyle(page, '#test2', { transform: 'rotate3d(0, 1, 0, 45deg)' });
-        await expectStyle(page, '#test4', { transform: 'rotate3d(0, 1, 0, 45deg)' });
-        await expectNoAnimation(page, '#test1');
-        await expectNoAnimation(page, '#test3');
-        await expectNoStyle(page, '#test1');
-        await expectNoStyle(page, '#test3');
+        await expectAnimationState(page, [
+            {
+                selectors: ['#test2', '#test4'],
+                progress: 0.5,
+                styles: { transform: 'rotate3d(0, 1, 0, 45deg)' },
+            },
+            {
+                selectors: ['#test1', '#test3'],
+                styles: { transform: '' },
+            },
+        ]);
         await advanceClock(page, 100);
-        await expectNoAnimation(page, '#test1');
-        await expectNoAnimation(page, '#test2');
-        await expectNoAnimation(page, '#test3');
-        await expectNoAnimation(page, '#test4');
-        await expectNoStyle(page, '#test1');
-        await expectNoStyle(page, '#test2');
-        await expectNoStyle(page, '#test3');
-        await expectNoStyle(page, '#test4');
+        await expectAnimationState(page, [
+            {
+                selectors: ['#test1', '#test2', '#test3', '#test4'],
+                styles: { transform: '' },
+            },
+        ]);
     });
 
     test('adds a rotate-out animation to each node (Z)', async ({ page }) => {
@@ -174,23 +179,24 @@ test.describe('QuerySet #rotateOut', () => {
                 });
         });
         await advanceClock(page, 50);
-        await expectAnimationProgress(page, '#test2', 0.5);
-        await expectAnimationProgress(page, '#test4', 0.5);
-        await expectStyle(page, '#test2', { transform: 'rotate3d(0, 0, 1, 45deg)' });
-        await expectStyle(page, '#test4', { transform: 'rotate3d(0, 0, 1, 45deg)' });
-        await expectNoAnimation(page, '#test1');
-        await expectNoAnimation(page, '#test3');
-        await expectNoStyle(page, '#test1');
-        await expectNoStyle(page, '#test3');
+        await expectAnimationState(page, [
+            {
+                selectors: ['#test2', '#test4'],
+                progress: 0.5,
+                styles: { transform: 'rotate3d(0, 0, 1, 45deg)' },
+            },
+            {
+                selectors: ['#test1', '#test3'],
+                styles: { transform: '' },
+            },
+        ]);
         await advanceClock(page, 100);
-        await expectNoAnimation(page, '#test1');
-        await expectNoAnimation(page, '#test2');
-        await expectNoAnimation(page, '#test3');
-        await expectNoAnimation(page, '#test4');
-        await expectNoStyle(page, '#test1');
-        await expectNoStyle(page, '#test2');
-        await expectNoStyle(page, '#test3');
-        await expectNoStyle(page, '#test4');
+        await expectAnimationState(page, [
+            {
+                selectors: ['#test1', '#test2', '#test3', '#test4'],
+                styles: { transform: '' },
+            },
+        ]);
     });
 
     test('adds a rotate-out animation to each node (X,Y,Z)', async ({ page }) => {
@@ -205,23 +211,24 @@ test.describe('QuerySet #rotateOut', () => {
                 });
         });
         await advanceClock(page, 50);
-        await expectAnimationProgress(page, '#test2', 0.5);
-        await expectAnimationProgress(page, '#test4', 0.5);
-        await expectStyle(page, '#test2', { transform: 'rotate3d(1, 1, 1, 45deg)' });
-        await expectStyle(page, '#test4', { transform: 'rotate3d(1, 1, 1, 45deg)' });
-        await expectNoAnimation(page, '#test1');
-        await expectNoAnimation(page, '#test3');
-        await expectNoStyle(page, '#test1');
-        await expectNoStyle(page, '#test3');
+        await expectAnimationState(page, [
+            {
+                selectors: ['#test2', '#test4'],
+                progress: 0.5,
+                styles: { transform: 'rotate3d(1, 1, 1, 45deg)' },
+            },
+            {
+                selectors: ['#test1', '#test3'],
+                styles: { transform: '' },
+            },
+        ]);
         await advanceClock(page, 100);
-        await expectNoAnimation(page, '#test1');
-        await expectNoAnimation(page, '#test2');
-        await expectNoAnimation(page, '#test3');
-        await expectNoAnimation(page, '#test4');
-        await expectNoStyle(page, '#test1');
-        await expectNoStyle(page, '#test2');
-        await expectNoStyle(page, '#test3');
-        await expectNoStyle(page, '#test4');
+        await expectAnimationState(page, [
+            {
+                selectors: ['#test1', '#test2', '#test3', '#test4'],
+                styles: { transform: '' },
+            },
+        ]);
     });
 
     test('adds a rotate-out animation to each node (inverse)', async ({ page }) => {
@@ -234,23 +241,24 @@ test.describe('QuerySet #rotateOut', () => {
                 });
         });
         await advanceClock(page, 50);
-        await expectAnimationProgress(page, '#test2', 0.5);
-        await expectAnimationProgress(page, '#test4', 0.5);
-        await expectStyle(page, '#test2', { transform: 'rotate3d(0, 1, 0, -45deg)' });
-        await expectStyle(page, '#test4', { transform: 'rotate3d(0, 1, 0, -45deg)' });
-        await expectNoAnimation(page, '#test1');
-        await expectNoAnimation(page, '#test3');
-        await expectNoStyle(page, '#test1');
-        await expectNoStyle(page, '#test3');
+        await expectAnimationState(page, [
+            {
+                selectors: ['#test2', '#test4'],
+                progress: 0.5,
+                styles: { transform: 'rotate3d(0, 1, 0, -45deg)' },
+            },
+            {
+                selectors: ['#test1', '#test3'],
+                styles: { transform: '' },
+            },
+        ]);
         await advanceClock(page, 100);
-        await expectNoAnimation(page, '#test1');
-        await expectNoAnimation(page, '#test2');
-        await expectNoAnimation(page, '#test3');
-        await expectNoAnimation(page, '#test4');
-        await expectNoStyle(page, '#test1');
-        await expectNoStyle(page, '#test2');
-        await expectNoStyle(page, '#test3');
-        await expectNoStyle(page, '#test4');
+        await expectAnimationState(page, [
+            {
+                selectors: ['#test1', '#test2', '#test3', '#test4'],
+                styles: { transform: '' },
+            },
+        ]);
     });
 
     test('adds a rotate-out animation to each node (linear)', async ({ page }) => {
@@ -263,23 +271,24 @@ test.describe('QuerySet #rotateOut', () => {
                 });
         });
         await advanceClock(page, 50);
-        await expectAnimationProgress(page, '#test2', 0.5);
-        await expectAnimationProgress(page, '#test4', 0.5);
-        await expectStyle(page, '#test2', { transform: 'rotate3d(0, 1, 0, 45deg)' });
-        await expectStyle(page, '#test4', { transform: 'rotate3d(0, 1, 0, 45deg)' });
-        await expectNoAnimation(page, '#test1');
-        await expectNoAnimation(page, '#test3');
-        await expectNoStyle(page, '#test1');
-        await expectNoStyle(page, '#test3');
+        await expectAnimationState(page, [
+            {
+                selectors: ['#test2', '#test4'],
+                progress: 0.5,
+                styles: { transform: 'rotate3d(0, 1, 0, 45deg)' },
+            },
+            {
+                selectors: ['#test1', '#test3'],
+                styles: { transform: '' },
+            },
+        ]);
         await advanceClock(page, 100);
-        await expectNoAnimation(page, '#test1');
-        await expectNoAnimation(page, '#test2');
-        await expectNoAnimation(page, '#test3');
-        await expectNoAnimation(page, '#test4');
-        await expectNoStyle(page, '#test1');
-        await expectNoStyle(page, '#test2');
-        await expectNoStyle(page, '#test3');
-        await expectNoStyle(page, '#test4');
+        await expectAnimationState(page, [
+            {
+                selectors: ['#test1', '#test2', '#test3', '#test4'],
+                styles: { transform: '' },
+            },
+        ]);
     });
 
     test('adds a rotate-out animation to each node (ease-in)', async ({ page }) => {
@@ -292,23 +301,24 @@ test.describe('QuerySet #rotateOut', () => {
                 });
         });
         await advanceClock(page, 50);
-        await expectAnimationProgress(page, '#test2', 0.25);
-        await expectAnimationProgress(page, '#test4', 0.25);
-        await expectStyle(page, '#test2', { transform: 'rotate3d(0, 1, 0, 22.5deg)' });
-        await expectStyle(page, '#test4', { transform: 'rotate3d(0, 1, 0, 22.5deg)' });
-        await expectNoAnimation(page, '#test1');
-        await expectNoAnimation(page, '#test3');
-        await expectNoStyle(page, '#test1');
-        await expectNoStyle(page, '#test3');
+        await expectAnimationState(page, [
+            {
+                selectors: ['#test2', '#test4'],
+                progress: 0.25,
+                styles: { transform: 'rotate3d(0, 1, 0, 22.5deg)' },
+            },
+            {
+                selectors: ['#test1', '#test3'],
+                styles: { transform: '' },
+            },
+        ]);
         await advanceClock(page, 100);
-        await expectNoAnimation(page, '#test1');
-        await expectNoAnimation(page, '#test2');
-        await expectNoAnimation(page, '#test3');
-        await expectNoAnimation(page, '#test4');
-        await expectNoStyle(page, '#test1');
-        await expectNoStyle(page, '#test2');
-        await expectNoStyle(page, '#test3');
-        await expectNoStyle(page, '#test4');
+        await expectAnimationState(page, [
+            {
+                selectors: ['#test1', '#test2', '#test3', '#test4'],
+                styles: { transform: '' },
+            },
+        ]);
     });
 
     test('adds a rotate-out animation to each node (ease-out)', async ({ page }) => {
@@ -321,23 +331,24 @@ test.describe('QuerySet #rotateOut', () => {
                 });
         });
         await advanceClock(page, 50);
-        await expectAnimationProgress(page, '#test2', 0.7071067812);
-        await expectAnimationProgress(page, '#test4', 0.7071067812);
-        await expectStyle(page, '#test2', { transform: 'rotate3d(0, 1, 0, 63.64deg)' });
-        await expectStyle(page, '#test4', { transform: 'rotate3d(0, 1, 0, 63.64deg)' });
-        await expectNoAnimation(page, '#test1');
-        await expectNoAnimation(page, '#test3');
-        await expectNoStyle(page, '#test1');
-        await expectNoStyle(page, '#test3');
+        await expectAnimationState(page, [
+            {
+                selectors: ['#test2', '#test4'],
+                progress: 0.7071067812,
+                styles: { transform: 'rotate3d(0, 1, 0, 63.64deg)' },
+            },
+            {
+                selectors: ['#test1', '#test3'],
+                styles: { transform: '' },
+            },
+        ]);
         await advanceClock(page, 100);
-        await expectNoAnimation(page, '#test1');
-        await expectNoAnimation(page, '#test2');
-        await expectNoAnimation(page, '#test3');
-        await expectNoAnimation(page, '#test4');
-        await expectNoStyle(page, '#test1');
-        await expectNoStyle(page, '#test2');
-        await expectNoStyle(page, '#test3');
-        await expectNoStyle(page, '#test4');
+        await expectAnimationState(page, [
+            {
+                selectors: ['#test1', '#test2', '#test3', '#test4'],
+                styles: { transform: '' },
+            },
+        ]);
     });
 
     test('adds a rotate-out animation to each node (infinite)', async ({ page }) => {
@@ -351,32 +362,41 @@ test.describe('QuerySet #rotateOut', () => {
                 });
         });
         await advanceClock(page, 50);
-        await expectAnimationProgress(page, '#test2', 0.5);
-        await expectAnimationProgress(page, '#test4', 0.5);
-        await expectStyle(page, '#test2', { transform: 'rotate3d(0, 1, 0, 45deg)' });
-        await expectStyle(page, '#test4', { transform: 'rotate3d(0, 1, 0, 45deg)' });
-        await expectNoAnimation(page, '#test1');
-        await expectNoAnimation(page, '#test3');
-        await expectNoStyle(page, '#test1');
-        await expectNoStyle(page, '#test3');
+        await expectAnimationState(page, [
+            {
+                selectors: ['#test2', '#test4'],
+                progress: 0.5,
+                styles: { transform: 'rotate3d(0, 1, 0, 45deg)' },
+            },
+            {
+                selectors: ['#test1', '#test3'],
+                styles: { transform: '' },
+            },
+        ]);
         await advanceClock(page, 50);
-        await expectAnimationProgress(page, '#test2', 0);
-        await expectAnimationProgress(page, '#test4', 0);
-        await expectStyle(page, '#test2', { transform: 'rotate3d(0, 1, 0, 0deg)' });
-        await expectStyle(page, '#test4', { transform: 'rotate3d(0, 1, 0, 0deg)' });
-        await expectNoAnimation(page, '#test1');
-        await expectNoAnimation(page, '#test3');
-        await expectNoStyle(page, '#test1');
-        await expectNoStyle(page, '#test3');
+        await expectAnimationState(page, [
+            {
+                selectors: ['#test2', '#test4'],
+                progress: 0,
+                styles: { transform: 'rotate3d(0, 1, 0, 0deg)' },
+            },
+            {
+                selectors: ['#test1', '#test3'],
+                styles: { transform: '' },
+            },
+        ]);
         await advanceClock(page, 50);
-        await expectAnimationProgress(page, '#test2', 0.5);
-        await expectAnimationProgress(page, '#test4', 0.5);
-        await expectStyle(page, '#test2', { transform: 'rotate3d(0, 1, 0, 45deg)' });
-        await expectStyle(page, '#test4', { transform: 'rotate3d(0, 1, 0, 45deg)' });
-        await expectNoAnimation(page, '#test1');
-        await expectNoAnimation(page, '#test3');
-        await expectNoStyle(page, '#test1');
-        await expectNoStyle(page, '#test3');
+        await expectAnimationState(page, [
+            {
+                selectors: ['#test2', '#test4'],
+                progress: 0.5,
+                styles: { transform: 'rotate3d(0, 1, 0, 45deg)' },
+            },
+            {
+                selectors: ['#test1', '#test3'],
+                styles: { transform: '' },
+            },
+        ]);
     });
 
     test('adds the animation to the queue', async ({ page }) => {
@@ -401,14 +421,17 @@ test.describe('QuerySet #rotateOut', () => {
                 '<div id="test3"></div>' +
                 '<div id="test4" class="animate"></div>');
         await advanceClock(page, 100);
-        await expectNoAnimation(page, '#test1');
-        await expectNoAnimation(page, '#test3');
-        await expectNoStyle(page, '#test1');
-        await expectNoStyle(page, '#test3');
-        await expectAnimationProgress(page, '#test2', 0.5);
-        await expectAnimationProgress(page, '#test4', 0.5);
-        await expectStyle(page, '#test2', { transform: 'rotate3d(0, 1, 0, 45deg)' });
-        await expectStyle(page, '#test4', { transform: 'rotate3d(0, 1, 0, 45deg)' });
+        await expectAnimationState(page, [
+            {
+                selectors: ['#test1', '#test3'],
+                styles: { transform: '' },
+            },
+            {
+                selectors: ['#test2', '#test4'],
+                progress: 0.5,
+                styles: { transform: 'rotate3d(0, 1, 0, 45deg)' },
+            },
+        ]);
     });
 
     test('returns the QuerySet', async ({ page }) => {

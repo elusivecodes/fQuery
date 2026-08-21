@@ -3,7 +3,7 @@ import { expect } from '@playwright/test';
 /**
  * @typedef {object} AnimationStateExpectation
  * @property {string[]} selectors The selectors.
- * @property {number|null} progress The expected progress, or `null` if no animation data should exist.
+ * @property {number|null} [progress=null] The expected progress, or `null` if no animation data should exist.
  * @property {Record<string, string>} [styles] The expected inline styles.
  */
 
@@ -17,7 +17,7 @@ export async function expectAnimationState(page, expectations) {
     const expectedStates = expectations.flatMap((expectation) =>
         expectation.selectors.map((selector) => ({
             selector,
-            progress: expectation.progress,
+            progress: expectation.progress ?? null,
             styles: expectation.styles,
         })),
     );

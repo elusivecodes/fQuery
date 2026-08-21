@@ -34,7 +34,6 @@ test.describe('QuerySet #fadeOut', () => {
             },
             {
                 selectors: ['#test1', '#test3'],
-                progress: null,
                 styles: { opacity: '' },
             },
         ]);
@@ -42,7 +41,6 @@ test.describe('QuerySet #fadeOut', () => {
         await expectAnimationState(page, [
             {
                 selectors: ['#test1', '#test2', '#test3', '#test4'],
-                progress: null,
                 styles: { opacity: '' },
             },
         ]);
@@ -65,7 +63,6 @@ test.describe('QuerySet #fadeOut', () => {
             },
             {
                 selectors: ['#test1', '#test3'],
-                progress: null,
                 styles: { opacity: '' },
             },
         ]);
@@ -73,7 +70,6 @@ test.describe('QuerySet #fadeOut', () => {
         await expectAnimationState(page, [
             {
                 selectors: ['#test1', '#test2', '#test3', '#test4'],
-                progress: null,
                 styles: { opacity: '' },
             },
         ]);
@@ -97,7 +93,6 @@ test.describe('QuerySet #fadeOut', () => {
             },
             {
                 selectors: ['#test1', '#test3'],
-                progress: null,
                 styles: { opacity: '' },
             },
         ]);
@@ -105,7 +100,6 @@ test.describe('QuerySet #fadeOut', () => {
         await expectAnimationState(page, [
             {
                 selectors: ['#test1', '#test2', '#test3', '#test4'],
-                progress: null,
                 styles: { opacity: '' },
             },
         ]);
@@ -129,7 +123,6 @@ test.describe('QuerySet #fadeOut', () => {
             },
             {
                 selectors: ['#test1', '#test3'],
-                progress: null,
                 styles: { opacity: '' },
             },
         ]);
@@ -137,7 +130,6 @@ test.describe('QuerySet #fadeOut', () => {
         await expectAnimationState(page, [
             {
                 selectors: ['#test1', '#test2', '#test3', '#test4'],
-                progress: null,
                 styles: { opacity: '' },
             },
         ]);
@@ -161,7 +153,6 @@ test.describe('QuerySet #fadeOut', () => {
             },
             {
                 selectors: ['#test1', '#test3'],
-                progress: null,
                 styles: { opacity: '' },
             },
         ]);
@@ -169,7 +160,6 @@ test.describe('QuerySet #fadeOut', () => {
         await expectAnimationState(page, [
             {
                 selectors: ['#test1', '#test2', '#test3', '#test4'],
-                progress: null,
                 styles: { opacity: '' },
             },
         ]);
@@ -194,7 +184,6 @@ test.describe('QuerySet #fadeOut', () => {
             },
             {
                 selectors: ['#test1', '#test3'],
-                progress: null,
                 styles: { opacity: '' },
             },
         ]);
@@ -207,7 +196,6 @@ test.describe('QuerySet #fadeOut', () => {
             },
             {
                 selectors: ['#test1', '#test3'],
-                progress: null,
                 styles: { opacity: '' },
             },
         ]);
@@ -220,7 +208,6 @@ test.describe('QuerySet #fadeOut', () => {
             },
             {
                 selectors: ['#test1', '#test3'],
-                progress: null,
                 styles: { opacity: '' },
             },
         ]);
@@ -251,7 +238,6 @@ test.describe('QuerySet #fadeOut', () => {
         await expectAnimationState(page, [
             {
                 selectors: ['#test1', '#test3'],
-                progress: null,
                 styles: { opacity: '' },
             },
             {

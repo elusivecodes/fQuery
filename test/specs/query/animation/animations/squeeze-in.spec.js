@@ -1,6 +1,6 @@
 import { expect, test } from '@playwright/test';
 import { advanceClock, resetPage, setupClock } from '../../../../setup/browser.js';
-import { expectAnimationProgress, expectNoAnimation, expectNoStyle, expectStyle } from '../../../../support/assertions/animation.js';
+import { expectAnimationState } from '../../../../support/assertions/animation.js';
 
 test.beforeEach(async ({ page }) => {
     await setupClock(page);
@@ -27,23 +27,24 @@ test.describe('QuerySetIn', () => {
                 });
         });
         await advanceClock(page, 100);
-        await expectNoAnimation(page, '#test1');
-        await expectNoAnimation(page, '#test3');
-        await expectNoStyle(page, '#test1');
-        await expectNoStyle(page, '#test3');
-        await expectStyle(page, '#test2', { overflow: 'hidden', height: '50px' });
-        await expectAnimationProgress(page, '#test2', 0.5);
-        await expectStyle(page, '#test4', { overflow: 'hidden', height: '50px' });
-        await expectAnimationProgress(page, '#test4', 0.5);
+        await expectAnimationState(page, [
+            {
+                selectors: ['#test1', '#test3'],
+                styles: { overflow: '', height: '' },
+            },
+            {
+                selectors: ['#test2', '#test4'],
+                progress: 0.5,
+                styles: { overflow: 'hidden', height: '50px' },
+            },
+        ]);
         await advanceClock(page, 150);
-        await expectNoAnimation(page, '#test1');
-        await expectNoAnimation(page, '#test2');
-        await expectNoAnimation(page, '#test3');
-        await expectNoAnimation(page, '#test4');
-        await expectNoStyle(page, '#test1');
-        await expectNoStyle(page, '#test2');
-        await expectNoStyle(page, '#test3');
-        await expectNoStyle(page, '#test4');
+        await expectAnimationState(page, [
+            {
+                selectors: ['#test1', '#test2', '#test3', '#test4'],
+                styles: { overflow: '', height: '' },
+            },
+        ]);
     });
 
     test('adds a squeeze-in animation to each node with duration', async ({ page }) => {
@@ -55,23 +56,24 @@ test.describe('QuerySetIn', () => {
                 });
         });
         await advanceClock(page, 50);
-        await expectNoAnimation(page, '#test1');
-        await expectNoAnimation(page, '#test3');
-        await expectNoStyle(page, '#test1');
-        await expectNoStyle(page, '#test3');
-        await expectStyle(page, '#test2', { overflow: 'hidden', height: '50px' });
-        await expectAnimationProgress(page, '#test2', 0.5);
-        await expectStyle(page, '#test4', { overflow: 'hidden', height: '50px' });
-        await expectAnimationProgress(page, '#test4', 0.5);
+        await expectAnimationState(page, [
+            {
+                selectors: ['#test1', '#test3'],
+                styles: { overflow: '', height: '' },
+            },
+            {
+                selectors: ['#test2', '#test4'],
+                progress: 0.5,
+                styles: { overflow: 'hidden', height: '50px' },
+            },
+        ]);
         await advanceClock(page, 100);
-        await expectNoAnimation(page, '#test1');
-        await expectNoAnimation(page, '#test2');
-        await expectNoAnimation(page, '#test3');
-        await expectNoAnimation(page, '#test4');
-        await expectNoStyle(page, '#test1');
-        await expectNoStyle(page, '#test2');
-        await expectNoStyle(page, '#test3');
-        await expectNoStyle(page, '#test4');
+        await expectAnimationState(page, [
+            {
+                selectors: ['#test1', '#test2', '#test3', '#test4'],
+                styles: { overflow: '', height: '' },
+            },
+        ]);
     });
 
     test('adds a squeeze-in animation to each node (top)', async ({ page }) => {
@@ -84,23 +86,24 @@ test.describe('QuerySetIn', () => {
                 });
         });
         await advanceClock(page, 50);
-        await expectNoAnimation(page, '#test1');
-        await expectNoAnimation(page, '#test3');
-        await expectNoStyle(page, '#test1');
-        await expectNoStyle(page, '#test3');
-        await expectStyle(page, '#test2', { overflow: 'hidden', height: '50px', transform: 'translateY(50px)' });
-        await expectAnimationProgress(page, '#test2', 0.5);
-        await expectStyle(page, '#test4', { overflow: 'hidden', height: '50px', transform: 'translateY(50px)' });
-        await expectAnimationProgress(page, '#test4', 0.5);
+        await expectAnimationState(page, [
+            {
+                selectors: ['#test1', '#test3'],
+                styles: { overflow: '', height: '', transform: '' },
+            },
+            {
+                selectors: ['#test2', '#test4'],
+                progress: 0.5,
+                styles: { overflow: 'hidden', height: '50px', transform: 'translateY(50px)' },
+            },
+        ]);
         await advanceClock(page, 100);
-        await expectNoAnimation(page, '#test1');
-        await expectNoAnimation(page, '#test2');
-        await expectNoAnimation(page, '#test3');
-        await expectNoAnimation(page, '#test4');
-        await expectNoStyle(page, '#test1');
-        await expectNoStyle(page, '#test2');
-        await expectNoStyle(page, '#test3');
-        await expectNoStyle(page, '#test4');
+        await expectAnimationState(page, [
+            {
+                selectors: ['#test1', '#test2', '#test3', '#test4'],
+                styles: { overflow: '', height: '', transform: '' },
+            },
+        ]);
     });
 
     test('adds a squeeze-in animation to each node (right)', async ({ page }) => {
@@ -113,23 +116,24 @@ test.describe('QuerySetIn', () => {
                 });
         });
         await advanceClock(page, 50);
-        await expectNoAnimation(page, '#test1');
-        await expectNoAnimation(page, '#test3');
-        await expectNoStyle(page, '#test1');
-        await expectNoStyle(page, '#test3');
-        await expectStyle(page, '#test2', { overflow: 'hidden', width: '50px' });
-        await expectAnimationProgress(page, '#test2', 0.5);
-        await expectStyle(page, '#test4', { overflow: 'hidden', width: '50px' });
-        await expectAnimationProgress(page, '#test4', 0.5);
+        await expectAnimationState(page, [
+            {
+                selectors: ['#test1', '#test3'],
+                styles: { overflow: '', width: '' },
+            },
+            {
+                selectors: ['#test2', '#test4'],
+                progress: 0.5,
+                styles: { overflow: 'hidden', width: '50px' },
+            },
+        ]);
         await advanceClock(page, 100);
-        await expectNoAnimation(page, '#test1');
-        await expectNoAnimation(page, '#test2');
-        await expectNoAnimation(page, '#test3');
-        await expectNoAnimation(page, '#test4');
-        await expectNoStyle(page, '#test1');
-        await expectNoStyle(page, '#test2');
-        await expectNoStyle(page, '#test3');
-        await expectNoStyle(page, '#test4');
+        await expectAnimationState(page, [
+            {
+                selectors: ['#test1', '#test2', '#test3', '#test4'],
+                styles: { overflow: '', width: '' },
+            },
+        ]);
     });
 
     test('adds a squeeze-in animation to each node (bottom)', async ({ page }) => {
@@ -142,23 +146,24 @@ test.describe('QuerySetIn', () => {
                 });
         });
         await advanceClock(page, 50);
-        await expectNoAnimation(page, '#test1');
-        await expectNoAnimation(page, '#test3');
-        await expectNoStyle(page, '#test1');
-        await expectNoStyle(page, '#test3');
-        await expectStyle(page, '#test2', { overflow: 'hidden', height: '50px' });
-        await expectAnimationProgress(page, '#test2', 0.5);
-        await expectStyle(page, '#test4', { overflow: 'hidden', height: '50px' });
-        await expectAnimationProgress(page, '#test4', 0.5);
+        await expectAnimationState(page, [
+            {
+                selectors: ['#test1', '#test3'],
+                styles: { overflow: '', height: '' },
+            },
+            {
+                selectors: ['#test2', '#test4'],
+                progress: 0.5,
+                styles: { overflow: 'hidden', height: '50px' },
+            },
+        ]);
         await advanceClock(page, 100);
-        await expectNoAnimation(page, '#test1');
-        await expectNoAnimation(page, '#test2');
-        await expectNoAnimation(page, '#test3');
-        await expectNoAnimation(page, '#test4');
-        await expectNoStyle(page, '#test1');
-        await expectNoStyle(page, '#test2');
-        await expectNoStyle(page, '#test3');
-        await expectNoStyle(page, '#test4');
+        await expectAnimationState(page, [
+            {
+                selectors: ['#test1', '#test2', '#test3', '#test4'],
+                styles: { overflow: '', height: '' },
+            },
+        ]);
     });
 
     test('adds a squeeze-in animation to each node (left)', async ({ page }) => {
@@ -171,23 +176,24 @@ test.describe('QuerySetIn', () => {
                 });
         });
         await advanceClock(page, 50);
-        await expectNoAnimation(page, '#test1');
-        await expectNoAnimation(page, '#test3');
-        await expectNoStyle(page, '#test1');
-        await expectNoStyle(page, '#test3');
-        await expectStyle(page, '#test2', { overflow: 'hidden', width: '50px', transform: 'translateX(50px)' });
-        await expectAnimationProgress(page, '#test2', 0.5);
-        await expectStyle(page, '#test4', { overflow: 'hidden', width: '50px', transform: 'translateX(50px)' });
-        await expectAnimationProgress(page, '#test4', 0.5);
+        await expectAnimationState(page, [
+            {
+                selectors: ['#test1', '#test3'],
+                styles: { overflow: '', width: '', transform: '' },
+            },
+            {
+                selectors: ['#test2', '#test4'],
+                progress: 0.5,
+                styles: { overflow: 'hidden', width: '50px', transform: 'translateX(50px)' },
+            },
+        ]);
         await advanceClock(page, 100);
-        await expectNoAnimation(page, '#test1');
-        await expectNoAnimation(page, '#test2');
-        await expectNoAnimation(page, '#test3');
-        await expectNoAnimation(page, '#test4');
-        await expectNoStyle(page, '#test1');
-        await expectNoStyle(page, '#test2');
-        await expectNoStyle(page, '#test3');
-        await expectNoStyle(page, '#test4');
+        await expectAnimationState(page, [
+            {
+                selectors: ['#test1', '#test2', '#test3', '#test4'],
+                styles: { overflow: '', width: '', transform: '' },
+            },
+        ]);
     });
 
     test('adds a squeeze-in animation to each node (direction callback)', async ({ page }) => {
@@ -200,23 +206,24 @@ test.describe('QuerySetIn', () => {
                 });
         });
         await advanceClock(page, 50);
-        await expectNoAnimation(page, '#test1');
-        await expectNoAnimation(page, '#test3');
-        await expectNoStyle(page, '#test1');
-        await expectNoStyle(page, '#test3');
-        await expectStyle(page, '#test2', { overflow: 'hidden', height: '50px' });
-        await expectAnimationProgress(page, '#test2', 0.5);
-        await expectStyle(page, '#test4', { overflow: 'hidden', height: '50px' });
-        await expectAnimationProgress(page, '#test4', 0.5);
+        await expectAnimationState(page, [
+            {
+                selectors: ['#test1', '#test3'],
+                styles: { overflow: '', height: '' },
+            },
+            {
+                selectors: ['#test2', '#test4'],
+                progress: 0.5,
+                styles: { overflow: 'hidden', height: '50px' },
+            },
+        ]);
         await advanceClock(page, 100);
-        await expectNoAnimation(page, '#test1');
-        await expectNoAnimation(page, '#test2');
-        await expectNoAnimation(page, '#test3');
-        await expectNoAnimation(page, '#test4');
-        await expectNoStyle(page, '#test1');
-        await expectNoStyle(page, '#test2');
-        await expectNoStyle(page, '#test3');
-        await expectNoStyle(page, '#test4');
+        await expectAnimationState(page, [
+            {
+                selectors: ['#test1', '#test2', '#test3', '#test4'],
+                styles: { overflow: '', height: '' },
+            },
+        ]);
     });
 
     test('adds a squeeze-in animation to each node without gpu', async ({ page }) => {
@@ -229,23 +236,24 @@ test.describe('QuerySetIn', () => {
                 });
         });
         await advanceClock(page, 50);
-        await expectNoAnimation(page, '#test1');
-        await expectNoAnimation(page, '#test3');
-        await expectNoStyle(page, '#test1');
-        await expectNoStyle(page, '#test3');
-        await expectStyle(page, '#test2', { overflow: 'hidden', height: '50px' });
-        await expectAnimationProgress(page, '#test2', 0.5);
-        await expectStyle(page, '#test4', { overflow: 'hidden', height: '50px' });
-        await expectAnimationProgress(page, '#test4', 0.5);
+        await expectAnimationState(page, [
+            {
+                selectors: ['#test1', '#test3'],
+                styles: { overflow: '', height: '' },
+            },
+            {
+                selectors: ['#test2', '#test4'],
+                progress: 0.5,
+                styles: { overflow: 'hidden', height: '50px' },
+            },
+        ]);
         await advanceClock(page, 100);
-        await expectNoAnimation(page, '#test1');
-        await expectNoAnimation(page, '#test2');
-        await expectNoAnimation(page, '#test3');
-        await expectNoAnimation(page, '#test4');
-        await expectNoStyle(page, '#test1');
-        await expectNoStyle(page, '#test2');
-        await expectNoStyle(page, '#test3');
-        await expectNoStyle(page, '#test4');
+        await expectAnimationState(page, [
+            {
+                selectors: ['#test1', '#test2', '#test3', '#test4'],
+                styles: { overflow: '', height: '' },
+            },
+        ]);
     });
 
     test('adds a squeeze-in animation to each node without gpu (top)', async ({ page }) => {
@@ -259,23 +267,24 @@ test.describe('QuerySetIn', () => {
                 });
         });
         await advanceClock(page, 50);
-        await expectNoAnimation(page, '#test1');
-        await expectNoAnimation(page, '#test3');
-        await expectNoStyle(page, '#test1');
-        await expectNoStyle(page, '#test3');
-        await expectStyle(page, '#test2', { overflow: 'hidden', height: '50px', marginTop: '50px' });
-        await expectAnimationProgress(page, '#test2', 0.5);
-        await expectStyle(page, '#test4', { overflow: 'hidden', height: '50px', marginTop: '50px' });
-        await expectAnimationProgress(page, '#test4', 0.5);
+        await expectAnimationState(page, [
+            {
+                selectors: ['#test1', '#test3'],
+                styles: { overflow: '', height: '', marginTop: '' },
+            },
+            {
+                selectors: ['#test2', '#test4'],
+                progress: 0.5,
+                styles: { overflow: 'hidden', height: '50px', marginTop: '50px' },
+            },
+        ]);
         await advanceClock(page, 100);
-        await expectNoAnimation(page, '#test1');
-        await expectNoAnimation(page, '#test2');
-        await expectNoAnimation(page, '#test3');
-        await expectNoAnimation(page, '#test4');
-        await expectNoStyle(page, '#test1');
-        await expectNoStyle(page, '#test2');
-        await expectNoStyle(page, '#test3');
-        await expectNoStyle(page, '#test4');
+        await expectAnimationState(page, [
+            {
+                selectors: ['#test1', '#test2', '#test3', '#test4'],
+                styles: { overflow: '', height: '', marginTop: '' },
+            },
+        ]);
     });
 
     test('adds a squeeze-in animation to each node without gpu (right)', async ({ page }) => {
@@ -289,23 +298,24 @@ test.describe('QuerySetIn', () => {
                 });
         });
         await advanceClock(page, 50);
-        await expectNoAnimation(page, '#test1');
-        await expectNoAnimation(page, '#test3');
-        await expectNoStyle(page, '#test1');
-        await expectNoStyle(page, '#test3');
-        await expectStyle(page, '#test2', { overflow: 'hidden', width: '50px' });
-        await expectAnimationProgress(page, '#test2', 0.5);
-        await expectStyle(page, '#test4', { overflow: 'hidden', width: '50px' });
-        await expectAnimationProgress(page, '#test4', 0.5);
+        await expectAnimationState(page, [
+            {
+                selectors: ['#test1', '#test3'],
+                styles: { overflow: '', width: '' },
+            },
+            {
+                selectors: ['#test2', '#test4'],
+                progress: 0.5,
+                styles: { overflow: 'hidden', width: '50px' },
+            },
+        ]);
         await advanceClock(page, 100);
-        await expectNoAnimation(page, '#test1');
-        await expectNoAnimation(page, '#test2');
-        await expectNoAnimation(page, '#test3');
-        await expectNoAnimation(page, '#test4');
-        await expectNoStyle(page, '#test1');
-        await expectNoStyle(page, '#test2');
-        await expectNoStyle(page, '#test3');
-        await expectNoStyle(page, '#test4');
+        await expectAnimationState(page, [
+            {
+                selectors: ['#test1', '#test2', '#test3', '#test4'],
+                styles: { overflow: '', width: '' },
+            },
+        ]);
     });
 
     test('adds a squeeze-in animation to each node without gpu (bottom)', async ({ page }) => {
@@ -319,23 +329,24 @@ test.describe('QuerySetIn', () => {
                 });
         });
         await advanceClock(page, 50);
-        await expectNoAnimation(page, '#test1');
-        await expectNoAnimation(page, '#test3');
-        await expectNoStyle(page, '#test1');
-        await expectNoStyle(page, '#test3');
-        await expectStyle(page, '#test2', { overflow: 'hidden', height: '50px' });
-        await expectAnimationProgress(page, '#test2', 0.5);
-        await expectStyle(page, '#test4', { overflow: 'hidden', height: '50px' });
-        await expectAnimationProgress(page, '#test4', 0.5);
+        await expectAnimationState(page, [
+            {
+                selectors: ['#test1', '#test3'],
+                styles: { overflow: '', height: '' },
+            },
+            {
+                selectors: ['#test2', '#test4'],
+                progress: 0.5,
+                styles: { overflow: 'hidden', height: '50px' },
+            },
+        ]);
         await advanceClock(page, 100);
-        await expectNoAnimation(page, '#test1');
-        await expectNoAnimation(page, '#test2');
-        await expectNoAnimation(page, '#test3');
-        await expectNoAnimation(page, '#test4');
-        await expectNoStyle(page, '#test1');
-        await expectNoStyle(page, '#test2');
-        await expectNoStyle(page, '#test3');
-        await expectNoStyle(page, '#test4');
+        await expectAnimationState(page, [
+            {
+                selectors: ['#test1', '#test2', '#test3', '#test4'],
+                styles: { overflow: '', height: '' },
+            },
+        ]);
     });
 
     test('adds a squeeze-in animation to each node without gpu (left)', async ({ page }) => {
@@ -349,23 +360,24 @@ test.describe('QuerySetIn', () => {
                 });
         });
         await advanceClock(page, 50);
-        await expectNoAnimation(page, '#test1');
-        await expectNoAnimation(page, '#test3');
-        await expectNoStyle(page, '#test1');
-        await expectNoStyle(page, '#test3');
-        await expectStyle(page, '#test2', { overflow: 'hidden', width: '50px', marginLeft: '50px' });
-        await expectAnimationProgress(page, '#test2', 0.5);
-        await expectStyle(page, '#test4', { overflow: 'hidden', width: '50px', marginLeft: '50px' });
-        await expectAnimationProgress(page, '#test4', 0.5);
+        await expectAnimationState(page, [
+            {
+                selectors: ['#test1', '#test3'],
+                styles: { overflow: '', width: '', marginLeft: '' },
+            },
+            {
+                selectors: ['#test2', '#test4'],
+                progress: 0.5,
+                styles: { overflow: 'hidden', width: '50px', marginLeft: '50px' },
+            },
+        ]);
         await advanceClock(page, 100);
-        await expectNoAnimation(page, '#test1');
-        await expectNoAnimation(page, '#test2');
-        await expectNoAnimation(page, '#test3');
-        await expectNoAnimation(page, '#test4');
-        await expectNoStyle(page, '#test1');
-        await expectNoStyle(page, '#test2');
-        await expectNoStyle(page, '#test3');
-        await expectNoStyle(page, '#test4');
+        await expectAnimationState(page, [
+            {
+                selectors: ['#test1', '#test2', '#test3', '#test4'],
+                styles: { overflow: '', width: '', marginLeft: '' },
+            },
+        ]);
     });
 
     test('adds a squeeze-in animation to each node (linear)', async ({ page }) => {
@@ -378,23 +390,24 @@ test.describe('QuerySetIn', () => {
                 });
         });
         await advanceClock(page, 50);
-        await expectNoAnimation(page, '#test1');
-        await expectNoAnimation(page, '#test3');
-        await expectNoStyle(page, '#test1');
-        await expectNoStyle(page, '#test3');
-        await expectStyle(page, '#test2', { overflow: 'hidden', height: '50px' });
-        await expectAnimationProgress(page, '#test2', 0.5);
-        await expectStyle(page, '#test4', { overflow: 'hidden', height: '50px' });
-        await expectAnimationProgress(page, '#test4', 0.5);
+        await expectAnimationState(page, [
+            {
+                selectors: ['#test1', '#test3'],
+                styles: { overflow: '', height: '' },
+            },
+            {
+                selectors: ['#test2', '#test4'],
+                progress: 0.5,
+                styles: { overflow: 'hidden', height: '50px' },
+            },
+        ]);
         await advanceClock(page, 100);
-        await expectNoAnimation(page, '#test1');
-        await expectNoAnimation(page, '#test2');
-        await expectNoAnimation(page, '#test3');
-        await expectNoAnimation(page, '#test4');
-        await expectNoStyle(page, '#test1');
-        await expectNoStyle(page, '#test2');
-        await expectNoStyle(page, '#test3');
-        await expectNoStyle(page, '#test4');
+        await expectAnimationState(page, [
+            {
+                selectors: ['#test1', '#test2', '#test3', '#test4'],
+                styles: { overflow: '', height: '' },
+            },
+        ]);
     });
 
     test('adds a squeeze-in animation to each node (ease-in)', async ({ page }) => {
@@ -407,23 +420,24 @@ test.describe('QuerySetIn', () => {
                 });
         });
         await advanceClock(page, 50);
-        await expectNoAnimation(page, '#test1');
-        await expectNoAnimation(page, '#test3');
-        await expectNoStyle(page, '#test1');
-        await expectNoStyle(page, '#test3');
-        await expectStyle(page, '#test2', { overflow: 'hidden', height: '25px' });
-        await expectAnimationProgress(page, '#test2', 0.25);
-        await expectStyle(page, '#test4', { overflow: 'hidden', height: '25px' });
-        await expectAnimationProgress(page, '#test4', 0.25);
+        await expectAnimationState(page, [
+            {
+                selectors: ['#test1', '#test3'],
+                styles: { overflow: '', height: '' },
+            },
+            {
+                selectors: ['#test2', '#test4'],
+                progress: 0.25,
+                styles: { overflow: 'hidden', height: '25px' },
+            },
+        ]);
         await advanceClock(page, 100);
-        await expectNoAnimation(page, '#test1');
-        await expectNoAnimation(page, '#test2');
-        await expectNoAnimation(page, '#test3');
-        await expectNoAnimation(page, '#test4');
-        await expectNoStyle(page, '#test1');
-        await expectNoStyle(page, '#test2');
-        await expectNoStyle(page, '#test3');
-        await expectNoStyle(page, '#test4');
+        await expectAnimationState(page, [
+            {
+                selectors: ['#test1', '#test2', '#test3', '#test4'],
+                styles: { overflow: '', height: '' },
+            },
+        ]);
     });
 
     test('adds a squeeze-in animation to each node (ease-out)', async ({ page }) => {
@@ -436,23 +450,24 @@ test.describe('QuerySetIn', () => {
                 });
         });
         await advanceClock(page, 50);
-        await expectNoAnimation(page, '#test1');
-        await expectNoAnimation(page, '#test3');
-        await expectNoStyle(page, '#test1');
-        await expectNoStyle(page, '#test3');
-        await expectStyle(page, '#test2', { overflow: 'hidden', height: '70.71px' });
-        await expectAnimationProgress(page, '#test2', 0.7071067812);
-        await expectStyle(page, '#test4', { overflow: 'hidden', height: '70.71px' });
-        await expectAnimationProgress(page, '#test4', 0.7071067812);
+        await expectAnimationState(page, [
+            {
+                selectors: ['#test1', '#test3'],
+                styles: { overflow: '', height: '' },
+            },
+            {
+                selectors: ['#test2', '#test4'],
+                progress: 0.7071067812,
+                styles: { overflow: 'hidden', height: '70.71px' },
+            },
+        ]);
         await advanceClock(page, 100);
-        await expectNoAnimation(page, '#test1');
-        await expectNoAnimation(page, '#test2');
-        await expectNoAnimation(page, '#test3');
-        await expectNoAnimation(page, '#test4');
-        await expectNoStyle(page, '#test1');
-        await expectNoStyle(page, '#test2');
-        await expectNoStyle(page, '#test3');
-        await expectNoStyle(page, '#test4');
+        await expectAnimationState(page, [
+            {
+                selectors: ['#test1', '#test2', '#test3', '#test4'],
+                styles: { overflow: '', height: '' },
+            },
+        ]);
     });
 
     test('adds a squeeze-in animation to each node (infinite)', async ({ page }) => {
@@ -466,32 +481,41 @@ test.describe('QuerySetIn', () => {
                 });
         });
         await advanceClock(page, 50);
-        await expectNoAnimation(page, '#test1');
-        await expectNoAnimation(page, '#test3');
-        await expectNoStyle(page, '#test1');
-        await expectNoStyle(page, '#test3');
-        await expectStyle(page, '#test2', { overflow: 'hidden', height: '50px' });
-        await expectAnimationProgress(page, '#test2', 0.5);
-        await expectStyle(page, '#test4', { overflow: 'hidden', height: '50px' });
-        await expectAnimationProgress(page, '#test4', 0.5);
+        await expectAnimationState(page, [
+            {
+                selectors: ['#test1', '#test3'],
+                styles: { overflow: '', height: '' },
+            },
+            {
+                selectors: ['#test2', '#test4'],
+                progress: 0.5,
+                styles: { overflow: 'hidden', height: '50px' },
+            },
+        ]);
         await advanceClock(page, 50);
-        await expectNoAnimation(page, '#test1');
-        await expectNoAnimation(page, '#test3');
-        await expectNoStyle(page, '#test1');
-        await expectNoStyle(page, '#test3');
-        await expectStyle(page, '#test2', { overflow: 'hidden', height: '0px' });
-        await expectAnimationProgress(page, '#test2', 0);
-        await expectStyle(page, '#test4', { overflow: 'hidden', height: '0px' });
-        await expectAnimationProgress(page, '#test4', 0);
+        await expectAnimationState(page, [
+            {
+                selectors: ['#test1', '#test3'],
+                styles: { overflow: '', height: '' },
+            },
+            {
+                selectors: ['#test2', '#test4'],
+                progress: 0,
+                styles: { overflow: 'hidden', height: '0px' },
+            },
+        ]);
         await advanceClock(page, 50);
-        await expectNoAnimation(page, '#test1');
-        await expectNoAnimation(page, '#test3');
-        await expectNoStyle(page, '#test1');
-        await expectNoStyle(page, '#test3');
-        await expectStyle(page, '#test2', { overflow: 'hidden', height: '50px' });
-        await expectAnimationProgress(page, '#test2', 0.5);
-        await expectStyle(page, '#test4', { overflow: 'hidden', height: '50px' });
-        await expectAnimationProgress(page, '#test4', 0.5);
+        await expectAnimationState(page, [
+            {
+                selectors: ['#test1', '#test3'],
+                styles: { overflow: '', height: '' },
+            },
+            {
+                selectors: ['#test2', '#test4'],
+                progress: 0.5,
+                styles: { overflow: 'hidden', height: '50px' },
+            },
+        ]);
     });
 
     test('adds the animation to the queue', async ({ page }) => {
@@ -516,14 +540,17 @@ test.describe('QuerySetIn', () => {
                 '<div id="test3"></div>' +
                 '<div id="test4" class="animate"></div>');
         await advanceClock(page, 100);
-        await expectNoAnimation(page, '#test1');
-        await expectNoAnimation(page, '#test3');
-        await expectNoStyle(page, '#test1');
-        await expectNoStyle(page, '#test3');
-        await expectStyle(page, '#test2', { overflow: 'hidden', height: '50px' });
-        await expectAnimationProgress(page, '#test2', 0.5);
-        await expectStyle(page, '#test4', { overflow: 'hidden', height: '50px' });
-        await expectAnimationProgress(page, '#test4', 0.5);
+        await expectAnimationState(page, [
+            {
+                selectors: ['#test1', '#test3'],
+                styles: { overflow: '', height: '' },
+            },
+            {
+                selectors: ['#test2', '#test4'],
+                progress: 0.5,
+                styles: { overflow: 'hidden', height: '50px' },
+            },
+        ]);
     });
 
     test('returns the QuerySet', async ({ page }) => {
