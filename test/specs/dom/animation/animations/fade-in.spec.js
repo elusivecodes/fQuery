@@ -1,6 +1,6 @@
 import { expect, test } from '@playwright/test';
 import { advanceClock, resetPage, setupClock } from '../../../../setup/browser.js';
-import { expectAnimationProgress, expectNoAnimation, expectNoStyle, expectStyle } from '../../../../support/assertions/animation.js';
+import { expectAnimationState } from '../../../../support/assertions/animation.js';
 
 test.beforeEach(async ({ page }) => {
     await setupClock(page);
@@ -25,23 +25,26 @@ test.describe('#fadeIn', () => {
             });
         });
         await advanceClock(page, 100);
-        await expectNoAnimation(page, '#test1');
-        await expectNoAnimation(page, '#test3');
-        await expectNoStyle(page, '#test1');
-        await expectNoStyle(page, '#test3');
-        await expectAnimationProgress(page, '#test2', 0.5);
-        await expectAnimationProgress(page, '#test4', 0.5);
-        await expectStyle(page, '#test2', { opacity: '0.5' });
-        await expectStyle(page, '#test4', { opacity: '0.5' });
+        await expectAnimationState(page, [
+            {
+                selectors: ['#test1', '#test3'],
+                progress: null,
+                styles: { opacity: '' },
+            },
+            {
+                selectors: ['#test2', '#test4'],
+                progress: 0.5,
+                styles: { opacity: '0.5' },
+            },
+        ]);
         await advanceClock(page, 150);
-        await expectNoAnimation(page, '#test1');
-        await expectNoAnimation(page, '#test2');
-        await expectNoAnimation(page, '#test3');
-        await expectNoAnimation(page, '#test4');
-        await expectNoStyle(page, '#test1');
-        await expectNoStyle(page, '#test2');
-        await expectNoStyle(page, '#test3');
-        await expectNoStyle(page, '#test4');
+        await expectAnimationState(page, [
+            {
+                selectors: ['#test1', '#test2', '#test3', '#test4'],
+                progress: null,
+                styles: { opacity: '' },
+            },
+        ]);
     });
 
     test('adds a fade-in animation to each node with duration', async ({ page }) => {
@@ -52,23 +55,26 @@ test.describe('#fadeIn', () => {
             });
         });
         await advanceClock(page, 50);
-        await expectNoAnimation(page, '#test1');
-        await expectNoAnimation(page, '#test3');
-        await expectNoStyle(page, '#test1');
-        await expectNoStyle(page, '#test3');
-        await expectAnimationProgress(page, '#test2', 0.5);
-        await expectAnimationProgress(page, '#test4', 0.5);
-        await expectStyle(page, '#test2', { opacity: '0.5' });
-        await expectStyle(page, '#test4', { opacity: '0.5' });
+        await expectAnimationState(page, [
+            {
+                selectors: ['#test1', '#test3'],
+                progress: null,
+                styles: { opacity: '' },
+            },
+            {
+                selectors: ['#test2', '#test4'],
+                progress: 0.5,
+                styles: { opacity: '0.5' },
+            },
+        ]);
         await advanceClock(page, 100);
-        await expectNoAnimation(page, '#test1');
-        await expectNoAnimation(page, '#test2');
-        await expectNoAnimation(page, '#test3');
-        await expectNoAnimation(page, '#test4');
-        await expectNoStyle(page, '#test1');
-        await expectNoStyle(page, '#test2');
-        await expectNoStyle(page, '#test3');
-        await expectNoStyle(page, '#test4');
+        await expectAnimationState(page, [
+            {
+                selectors: ['#test1', '#test2', '#test3', '#test4'],
+                progress: null,
+                styles: { opacity: '' },
+            },
+        ]);
     });
 
     test('adds a fade-in animation to each node (linear)', async ({ page }) => {
@@ -80,23 +86,26 @@ test.describe('#fadeIn', () => {
             });
         });
         await advanceClock(page, 50);
-        await expectNoAnimation(page, '#test1');
-        await expectNoAnimation(page, '#test3');
-        await expectNoStyle(page, '#test1');
-        await expectNoStyle(page, '#test3');
-        await expectAnimationProgress(page, '#test2', 0.5);
-        await expectAnimationProgress(page, '#test4', 0.5);
-        await expectStyle(page, '#test2', { opacity: '0.5' });
-        await expectStyle(page, '#test4', { opacity: '0.5' });
+        await expectAnimationState(page, [
+            {
+                selectors: ['#test1', '#test3'],
+                progress: null,
+                styles: { opacity: '' },
+            },
+            {
+                selectors: ['#test2', '#test4'],
+                progress: 0.5,
+                styles: { opacity: '0.5' },
+            },
+        ]);
         await advanceClock(page, 100);
-        await expectNoAnimation(page, '#test1');
-        await expectNoAnimation(page, '#test2');
-        await expectNoAnimation(page, '#test3');
-        await expectNoAnimation(page, '#test4');
-        await expectNoStyle(page, '#test1');
-        await expectNoStyle(page, '#test2');
-        await expectNoStyle(page, '#test3');
-        await expectNoStyle(page, '#test4');
+        await expectAnimationState(page, [
+            {
+                selectors: ['#test1', '#test2', '#test3', '#test4'],
+                progress: null,
+                styles: { opacity: '' },
+            },
+        ]);
     });
 
     test('adds a fade-in animation to each node (ease-in)', async ({ page }) => {
@@ -108,23 +117,26 @@ test.describe('#fadeIn', () => {
             });
         });
         await advanceClock(page, 50);
-        await expectNoAnimation(page, '#test1');
-        await expectNoAnimation(page, '#test3');
-        await expectNoStyle(page, '#test1');
-        await expectNoStyle(page, '#test3');
-        await expectAnimationProgress(page, '#test2', 0.25);
-        await expectAnimationProgress(page, '#test4', 0.25);
-        await expectStyle(page, '#test2', { opacity: '0.25' });
-        await expectStyle(page, '#test4', { opacity: '0.25' });
+        await expectAnimationState(page, [
+            {
+                selectors: ['#test1', '#test3'],
+                progress: null,
+                styles: { opacity: '' },
+            },
+            {
+                selectors: ['#test2', '#test4'],
+                progress: 0.25,
+                styles: { opacity: '0.25' },
+            },
+        ]);
         await advanceClock(page, 100);
-        await expectNoAnimation(page, '#test1');
-        await expectNoAnimation(page, '#test2');
-        await expectNoAnimation(page, '#test3');
-        await expectNoAnimation(page, '#test4');
-        await expectNoStyle(page, '#test1');
-        await expectNoStyle(page, '#test2');
-        await expectNoStyle(page, '#test3');
-        await expectNoStyle(page, '#test4');
+        await expectAnimationState(page, [
+            {
+                selectors: ['#test1', '#test2', '#test3', '#test4'],
+                progress: null,
+                styles: { opacity: '' },
+            },
+        ]);
     });
 
     test('adds a fade-in animation to each node (ease-out)', async ({ page }) => {
@@ -136,23 +148,26 @@ test.describe('#fadeIn', () => {
             });
         });
         await advanceClock(page, 50);
-        await expectNoAnimation(page, '#test1');
-        await expectNoAnimation(page, '#test3');
-        await expectNoStyle(page, '#test1');
-        await expectNoStyle(page, '#test3');
-        await expectAnimationProgress(page, '#test2', 0.7071067812);
-        await expectAnimationProgress(page, '#test4', 0.7071067812);
-        await expectStyle(page, '#test2', { opacity: '0.71' });
-        await expectStyle(page, '#test4', { opacity: '0.71' });
+        await expectAnimationState(page, [
+            {
+                selectors: ['#test1', '#test3'],
+                progress: null,
+                styles: { opacity: '' },
+            },
+            {
+                selectors: ['#test2', '#test4'],
+                progress: 0.7071067812,
+                styles: { opacity: '0.71' },
+            },
+        ]);
         await advanceClock(page, 100);
-        await expectNoAnimation(page, '#test1');
-        await expectNoAnimation(page, '#test2');
-        await expectNoAnimation(page, '#test3');
-        await expectNoAnimation(page, '#test4');
-        await expectNoStyle(page, '#test1');
-        await expectNoStyle(page, '#test2');
-        await expectNoStyle(page, '#test3');
-        await expectNoStyle(page, '#test4');
+        await expectAnimationState(page, [
+            {
+                selectors: ['#test1', '#test2', '#test3', '#test4'],
+                progress: null,
+                styles: { opacity: '' },
+            },
+        ]);
     });
 
     test('adds a fade-in animation to each node (infinite)', async ({ page }) => {
@@ -165,32 +180,44 @@ test.describe('#fadeIn', () => {
             });
         });
         await advanceClock(page, 50);
-        await expectNoAnimation(page, '#test1');
-        await expectNoAnimation(page, '#test3');
-        await expectNoStyle(page, '#test1');
-        await expectNoStyle(page, '#test3');
-        await expectAnimationProgress(page, '#test2', 0.5);
-        await expectAnimationProgress(page, '#test4', 0.5);
-        await expectStyle(page, '#test2', { opacity: '0.5' });
-        await expectStyle(page, '#test4', { opacity: '0.5' });
+        await expectAnimationState(page, [
+            {
+                selectors: ['#test1', '#test3'],
+                progress: null,
+                styles: { opacity: '' },
+            },
+            {
+                selectors: ['#test2', '#test4'],
+                progress: 0.5,
+                styles: { opacity: '0.5' },
+            },
+        ]);
         await advanceClock(page, 50);
-        await expectNoAnimation(page, '#test1');
-        await expectNoAnimation(page, '#test3');
-        await expectNoStyle(page, '#test1');
-        await expectNoStyle(page, '#test3');
-        await expectAnimationProgress(page, '#test2', 0);
-        await expectAnimationProgress(page, '#test4', 0);
-        await expectStyle(page, '#test2', { opacity: '0' });
-        await expectStyle(page, '#test4', { opacity: '0' });
+        await expectAnimationState(page, [
+            {
+                selectors: ['#test1', '#test3'],
+                progress: null,
+                styles: { opacity: '' },
+            },
+            {
+                selectors: ['#test2', '#test4'],
+                progress: 0,
+                styles: { opacity: '0' },
+            },
+        ]);
         await advanceClock(page, 50);
-        await expectNoAnimation(page, '#test1');
-        await expectNoAnimation(page, '#test3');
-        await expectNoStyle(page, '#test1');
-        await expectNoStyle(page, '#test3');
-        await expectAnimationProgress(page, '#test2', 0.5);
-        await expectAnimationProgress(page, '#test4', 0.5);
-        await expectStyle(page, '#test2', { opacity: '0.5' });
-        await expectStyle(page, '#test4', { opacity: '0.5' });
+        await expectAnimationState(page, [
+            {
+                selectors: ['#test1', '#test3'],
+                progress: null,
+                styles: { opacity: '' },
+            },
+            {
+                selectors: ['#test2', '#test4'],
+                progress: 0.5,
+                styles: { opacity: '0.5' },
+            },
+        ]);
     });
 
     test('can be stopped', async ({ page }) => {
@@ -205,14 +232,13 @@ test.describe('#fadeIn', () => {
             animation.stop();
         });
         await animationHandle.dispose();
-        await expectNoAnimation(page, '#test1');
-        await expectNoAnimation(page, '#test2');
-        await expectNoAnimation(page, '#test3');
-        await expectNoAnimation(page, '#test4');
-        await expectNoStyle(page, '#test1');
-        await expectNoStyle(page, '#test2');
-        await expectNoStyle(page, '#test3');
-        await expectNoStyle(page, '#test4');
+        await expectAnimationState(page, [
+            {
+                selectors: ['#test1', '#test2', '#test3', '#test4'],
+                progress: null,
+                styles: { opacity: '' },
+            },
+        ]);
     });
 
     test('can be stopped (without finishing)', async ({ page }) => {
@@ -231,23 +257,31 @@ test.describe('#fadeIn', () => {
             animation.stop({ finish: false });
         });
         await animationHandle.dispose();
-        await expectNoAnimation(page, '#test1');
-        await expectNoAnimation(page, '#test3');
-        await expectNoStyle(page, '#test1');
-        await expectNoStyle(page, '#test3');
-        await expectAnimationProgress(page, '#test2', 0.5);
-        await expectAnimationProgress(page, '#test4', 0.5);
-        await expectStyle(page, '#test2', { opacity: '0.5' });
-        await expectStyle(page, '#test4', { opacity: '0.5' });
+        await expectAnimationState(page, [
+            {
+                selectors: ['#test1', '#test3'],
+                progress: null,
+                styles: { opacity: '' },
+            },
+            {
+                selectors: ['#test2', '#test4'],
+                progress: 0.5,
+                styles: { opacity: '0.5' },
+            },
+        ]);
         await advanceClock(page, 100);
-        await expectNoAnimation(page, '#test1');
-        await expectNoAnimation(page, '#test3');
-        await expectNoStyle(page, '#test1');
-        await expectNoStyle(page, '#test3');
-        await expectAnimationProgress(page, '#test2', 0.5);
-        await expectAnimationProgress(page, '#test4', 0.5);
-        await expectStyle(page, '#test2', { opacity: '0.5' });
-        await expectStyle(page, '#test4', { opacity: '0.5' });
+        await expectAnimationState(page, [
+            {
+                selectors: ['#test1', '#test3'],
+                progress: null,
+                styles: { opacity: '' },
+            },
+            {
+                selectors: ['#test2', '#test4'],
+                progress: 0.5,
+                styles: { opacity: '0.5' },
+            },
+        ]);
     });
 
     test('resolves when the animation is stopped', async ({ page }) => {
@@ -259,14 +293,13 @@ test.describe('#fadeIn', () => {
             animation.stop();
             await animation;
         });
-        await expectNoAnimation(page, '#test1');
-        await expectNoAnimation(page, '#test2');
-        await expectNoAnimation(page, '#test3');
-        await expectNoAnimation(page, '#test4');
-        await expectNoStyle(page, '#test1');
-        await expectNoStyle(page, '#test2');
-        await expectNoStyle(page, '#test3');
-        await expectNoStyle(page, '#test4');
+        await expectAnimationState(page, [
+            {
+                selectors: ['#test1', '#test2', '#test3', '#test4'],
+                progress: null,
+                styles: { opacity: '' },
+            },
+        ]);
     });
 
     test('throws when the animation is stopped (without finishing)', async ({ page }) => {
@@ -306,10 +339,18 @@ test.describe('#fadeIn', () => {
             animation.stop();
         });
         await animationHandle.dispose();
-        await expectNoAnimation(page, '#test1');
-        await expectNoAnimation(page, '#test3');
-        await expectAnimationProgress(page, '#test2', 0.5);
-        await expectAnimationProgress(page, '#test4', 0.5);
+        await expectAnimationState(page, [
+            {
+                selectors: ['#test1', '#test3'],
+                progress: null,
+                styles: { opacity: '' },
+            },
+            {
+                selectors: ['#test2', '#test4'],
+                progress: 0.5,
+                styles: { opacity: '' },
+            },
+        ]);
     });
 
     test('resolves when the animation is completed', async ({ page }) => {
@@ -324,14 +365,13 @@ test.describe('#fadeIn', () => {
             await animation;
         });
         await animationHandle.dispose();
-        await expectNoAnimation(page, '#test1');
-        await expectNoAnimation(page, '#test2');
-        await expectNoAnimation(page, '#test3');
-        await expectNoAnimation(page, '#test4');
-        await expectNoStyle(page, '#test1');
-        await expectNoStyle(page, '#test2');
-        await expectNoStyle(page, '#test3');
-        await expectNoStyle(page, '#test4');
+        await expectAnimationState(page, [
+            {
+                selectors: ['#test1', '#test2', '#test3', '#test4'],
+                progress: null,
+                styles: { opacity: '' },
+            },
+        ]);
     });
 
     test('throws when all animations are stopped (without finishing)', async ({ page }) => {
@@ -361,23 +401,26 @@ test.describe('#fadeIn', () => {
             );
         });
         await advanceClock(page, 50);
-        await expectNoAnimation(page, '#test1');
-        await expectNoAnimation(page, '#test3');
-        await expectNoAnimation(page, '#test4');
-        await expectNoStyle(page, '#test1');
-        await expectNoStyle(page, '#test3');
-        await expectNoStyle(page, '#test4');
-        await expectAnimationProgress(page, '#test2', 0.5);
-        await expectStyle(page, '#test2', { opacity: '0.5' });
+        await expectAnimationState(page, [
+            {
+                selectors: ['#test1', '#test3', '#test4'],
+                progress: null,
+                styles: { opacity: '' },
+            },
+            {
+                selectors: ['#test2'],
+                progress: 0.5,
+                styles: { opacity: '0.5' },
+            },
+        ]);
         await advanceClock(page, 100);
-        await expectNoAnimation(page, '#test1');
-        await expectNoAnimation(page, '#test2');
-        await expectNoAnimation(page, '#test3');
-        await expectNoAnimation(page, '#test4');
-        await expectNoStyle(page, '#test1');
-        await expectNoStyle(page, '#test2');
-        await expectNoStyle(page, '#test3');
-        await expectNoStyle(page, '#test4');
+        await expectAnimationState(page, [
+            {
+                selectors: ['#test1', '#test2', '#test3', '#test4'],
+                progress: null,
+                styles: { opacity: '' },
+            },
+        ]);
     });
 
     test('works with NodeList nodes', async ({ page }) => {
@@ -391,23 +434,26 @@ test.describe('#fadeIn', () => {
             );
         });
         await advanceClock(page, 50);
-        await expectNoAnimation(page, '#test1');
-        await expectNoAnimation(page, '#test3');
-        await expectNoStyle(page, '#test1');
-        await expectNoStyle(page, '#test3');
-        await expectAnimationProgress(page, '#test2', 0.5);
-        await expectAnimationProgress(page, '#test4', 0.5);
-        await expectStyle(page, '#test2', { opacity: '0.5' });
-        await expectStyle(page, '#test4', { opacity: '0.5' });
+        await expectAnimationState(page, [
+            {
+                selectors: ['#test1', '#test3'],
+                progress: null,
+                styles: { opacity: '' },
+            },
+            {
+                selectors: ['#test2', '#test4'],
+                progress: 0.5,
+                styles: { opacity: '0.5' },
+            },
+        ]);
         await advanceClock(page, 100);
-        await expectNoAnimation(page, '#test1');
-        await expectNoAnimation(page, '#test2');
-        await expectNoAnimation(page, '#test3');
-        await expectNoAnimation(page, '#test4');
-        await expectNoStyle(page, '#test1');
-        await expectNoStyle(page, '#test2');
-        await expectNoStyle(page, '#test3');
-        await expectNoStyle(page, '#test4');
+        await expectAnimationState(page, [
+            {
+                selectors: ['#test1', '#test2', '#test3', '#test4'],
+                progress: null,
+                styles: { opacity: '' },
+            },
+        ]);
     });
 
     test('works with HTMLCollection nodes', async ({ page }) => {
@@ -421,23 +467,21 @@ test.describe('#fadeIn', () => {
             );
         });
         await advanceClock(page, 50);
-        await expectAnimationProgress(page, '#test1', 0.5);
-        await expectAnimationProgress(page, '#test2', 0.5);
-        await expectAnimationProgress(page, '#test3', 0.5);
-        await expectAnimationProgress(page, '#test4', 0.5);
-        await expectStyle(page, '#test1', { opacity: '0.5' });
-        await expectStyle(page, '#test2', { opacity: '0.5' });
-        await expectStyle(page, '#test4', { opacity: '0.5' });
-        await expectStyle(page, '#test3', { opacity: '0.5' });
+        await expectAnimationState(page, [
+            {
+                selectors: ['#test1', '#test2', '#test3', '#test4'],
+                progress: 0.5,
+                styles: { opacity: '0.5' },
+            },
+        ]);
         await advanceClock(page, 100);
-        await expectNoAnimation(page, '#test1');
-        await expectNoAnimation(page, '#test2');
-        await expectNoAnimation(page, '#test3');
-        await expectNoAnimation(page, '#test4');
-        await expectNoStyle(page, '#test1');
-        await expectNoStyle(page, '#test2');
-        await expectNoStyle(page, '#test3');
-        await expectNoStyle(page, '#test4');
+        await expectAnimationState(page, [
+            {
+                selectors: ['#test1', '#test2', '#test3', '#test4'],
+                progress: null,
+                styles: { opacity: '' },
+            },
+        ]);
     });
 
     test('works with array nodes', async ({ page }) => {
@@ -451,22 +495,25 @@ test.describe('#fadeIn', () => {
             });
         });
         await advanceClock(page, 50);
-        await expectNoAnimation(page, '#test1');
-        await expectNoAnimation(page, '#test3');
-        await expectNoStyle(page, '#test1');
-        await expectNoStyle(page, '#test3');
-        await expectAnimationProgress(page, '#test2', 0.5);
-        await expectAnimationProgress(page, '#test4', 0.5);
-        await expectStyle(page, '#test2', { opacity: '0.5' });
-        await expectStyle(page, '#test4', { opacity: '0.5' });
+        await expectAnimationState(page, [
+            {
+                selectors: ['#test1', '#test3'],
+                progress: null,
+                styles: { opacity: '' },
+            },
+            {
+                selectors: ['#test2', '#test4'],
+                progress: 0.5,
+                styles: { opacity: '0.5' },
+            },
+        ]);
         await advanceClock(page, 100);
-        await expectNoAnimation(page, '#test1');
-        await expectNoAnimation(page, '#test2');
-        await expectNoAnimation(page, '#test3');
-        await expectNoAnimation(page, '#test4');
-        await expectNoStyle(page, '#test1');
-        await expectNoStyle(page, '#test2');
-        await expectNoStyle(page, '#test3');
-        await expectNoStyle(page, '#test4');
+        await expectAnimationState(page, [
+            {
+                selectors: ['#test1', '#test2', '#test3', '#test4'],
+                progress: null,
+                styles: { opacity: '' },
+            },
+        ]);
     });
 });
