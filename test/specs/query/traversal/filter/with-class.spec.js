@@ -1,7 +1,7 @@
 import { expect, test } from '@playwright/test';
 import { resetPage } from '../../../../setup/browser.js';
 
-const bodyMarkup = '<div id="div1" class="test"></div><div id="div2"></div><div id="div3" class="test"></div><div id="div4"></div>';
+const bodyMarkup = '<div id="div1" class="test"></div><div id="div2" class="test2"></div><div id="div3" class="test"></div><div id="div4"></div>';
 
 test.beforeEach(async ({ page }) => {
     await resetPage(page);
@@ -20,6 +20,17 @@ test.describe('QuerySet #withClass', () => {
 
         expect(ids).toEqual([
             'div1',
+            'div3',
+        ]);
+    });
+
+    test('returns nodes with any specified class', async ({ page }) => {
+        const ids = await page.evaluate((_) =>
+            $('div').withClass('test', 'test2').get().map((node) => node.id));
+
+        expect(ids).toEqual([
+            'div1',
+            'div2',
             'div3',
         ]);
     });

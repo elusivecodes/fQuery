@@ -199,8 +199,7 @@ Filtering methods return matching nodes; their `is...` and `has...` counterparts
 - `withAnimation()` / `hasAnimation()`: active fQuery animations.
 - `withAttribute(attribute)` / `hasAttribute(attribute)`: attribute presence.
 - `withChildren()` / `hasChildren()`: child-node presence.
-- `$.withClass(selector, ...classes)` / `query.withClass(classes)`: return nodes with any specified class.
-- `hasClass(...classes)`: class presence.
+- `withClass(...classes)` / `hasClass(...classes)`: class presence.
 - `withCSSAnimation()` / `hasCSSAnimation()`: computed CSS animations.
 - `withCSSTransition()` / `hasCSSTransition()`: computed CSS transitions.
 - `withData(key?)` / `hasData(key?)`: fQuery custom data.

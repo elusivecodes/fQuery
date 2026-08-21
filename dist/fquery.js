@@ -8433,11 +8433,11 @@
     }
     /**
      * Returns all nodes with any of the specified classes.
-     * @param {string|string[]} classes The classes.
+     * @param {...string|string[]} classes The classes.
      * @returns {QuerySet} The QuerySet object.
      */
-    function withClass(classes) {
-        return new QuerySet(withClass$1(this, classes));
+    function withClass(...classes) {
+        return new QuerySet(withClass$1(this, ...classes));
     }
     /**
      * Returns all nodes with a CSS animation.
