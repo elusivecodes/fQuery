@@ -18,6 +18,23 @@ test.describe('#fadeOut', () => {
         });
     });
 
+    test('restores existing inline opacity', async ({ page }) => {
+        await page.evaluate((_) => {
+            for (const node of document.querySelectorAll('.animate')) {
+                node.style.setProperty('opacity', '0.25');
+            }
+
+            $.fadeOut('.animate', { duration: 100 });
+        });
+        await advanceClock(page, 100);
+        await expectAnimationState(page, [
+            {
+                selectors: ['#test2', '#test4'],
+                styles: { opacity: '0.25' },
+            },
+        ]);
+    });
+
     test('adds a fade-out animation to each node', async ({ page }) => {
         await page.evaluate((_) => {
             $.fadeOut('.animate', {

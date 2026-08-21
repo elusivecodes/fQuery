@@ -19,6 +19,24 @@ test.describe('#slideIn', () => {
         });
     });
 
+    test('restores existing inline transform without changing overflow', async ({ page }) => {
+        await page.evaluate((_) => {
+            for (const node of document.querySelectorAll('.animate')) {
+                node.style.setProperty('overflow', 'scroll');
+                node.style.setProperty('transform', 'scale(2)');
+            }
+
+            $.slideIn('.animate', { duration: 100 });
+        });
+        await advanceClock(page, 100);
+        await expectAnimationState(page, [
+            {
+                selectors: ['#test2', '#test4'],
+                styles: { overflow: 'scroll', transform: 'scale(2)' },
+            },
+        ]);
+    });
+
     test('adds a slide-in animation to each node', async ({ page }) => {
         await page.evaluate((_) => {
             $.slideIn('.animate', {

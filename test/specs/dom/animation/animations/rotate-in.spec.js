@@ -19,6 +19,23 @@ test.describe('#rotateIn', () => {
         });
     });
 
+    test('restores existing inline transform', async ({ page }) => {
+        await page.evaluate((_) => {
+            for (const node of document.querySelectorAll('.animate')) {
+                node.style.setProperty('transform', 'scale(2)');
+            }
+
+            $.rotateIn('.animate', { duration: 100 });
+        });
+        await advanceClock(page, 100);
+        await expectAnimationState(page, [
+            {
+                selectors: ['#test2', '#test4'],
+                styles: { transform: 'scale(2)' },
+            },
+        ]);
+    });
+
     test('adds a rotate-in animation to each node', async ({ page }) => {
         await page.evaluate((_) => {
             $.rotateIn('.animate', {

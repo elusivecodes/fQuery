@@ -3187,6 +3187,16 @@
     /**
      * @typedef {import('../helpers.js').ElementInput} ElementInput
      * @typedef {import('./animation.js').AnimationOptions} AnimationOptions
+     * @typedef {Record<string, {priority: string, value: string}>} InlineStyles
+     */
+
+    /**
+     * @callback AnimationEffectCallback
+     * @param {Element} node The animated element.
+     * @param {number} progress The animation progress from 0 to 1.
+     * @param {AnimationOptions} options The resolved animation options.
+     * @param {InlineStyles} initialStyles The initial inline styles.
+     * @returns {void} Nothing.
      */
 
     /**
@@ -3226,14 +3236,13 @@
      * @returns {AnimationSet} A new AnimationSet that resolves when the animation has completed.
      */
     function fadeIn$1(selector, options) {
-        return animate$1(
+        return animateEffect(
             selector,
+            ['opacity'],
             (node, progress) =>
                 node.style.setProperty(
                     'opacity',
-                    progress < 1 ?
-                        progress.toFixed(2) :
-                        '',
+                    progress.toFixed(2),
                 ),
             options,
         );
@@ -3245,14 +3254,13 @@
      * @returns {AnimationSet} A new AnimationSet that resolves when the animation has completed.
      */
     function fadeOut$1(selector, options) {
-        return animate$1(
+        return animateEffect(
             selector,
+            ['opacity'],
             (node, progress) =>
                 node.style.setProperty(
                     'opacity',
-                    progress < 1 ?
-                        (1 - progress).toFixed(2) :
-                        '',
+                    (1 - progress).toFixed(2),
                 ),
             options,
         );
@@ -3264,16 +3272,12 @@
      * @returns {AnimationSet} A new AnimationSet that resolves when the animation has completed.
      */
     function rotateIn$1(selector, options) {
-        return animate$1(
+        return animateEffect(
             selector,
+            ['transform'],
             (node, progress, options) => {
                 const amount = ((90 - (progress * 90)) * (options.inverse ? -1 : 1)).toFixed(2);
-                node.style.setProperty(
-                    'transform',
-                    progress < 1 ?
-                        `rotate3d(${options.x}, ${options.y}, ${options.z}, ${amount}deg)` :
-                        '',
-                );
+                node.style.setProperty('transform', `rotate3d(${options.x}, ${options.y}, ${options.z}, ${amount}deg)`);
             },
             {
                 x: 0,
@@ -3290,16 +3294,12 @@
      * @returns {AnimationSet} A new AnimationSet that resolves when the animation has completed.
      */
     function rotateOut$1(selector, options) {
-        return animate$1(
+        return animateEffect(
             selector,
+            ['transform'],
             (node, progress, options) => {
                 const amount = ((progress * 90) * (options.inverse ? -1 : 1)).toFixed(2);
-                node.style.setProperty(
-                    'transform',
-                    progress < 1 ?
-                        `rotate3d(${options.x}, ${options.y}, ${options.z}, ${amount}deg)` :
-                        '',
-                );
+                node.style.setProperty('transform', `rotate3d(${options.x}, ${options.y}, ${options.z}, ${amount}deg)`);
             },
             {
                 x: 0,
@@ -3316,20 +3316,18 @@
      * @returns {AnimationSet} A new AnimationSet that resolves when the animation has completed.
      */
     function slideIn$1(selector, options) {
-        return animate$1(
-            selector,
-            (node, progress, options) => {
-                if (progress === 1) {
-                    node.style.setProperty('overflow', '');
-                    if (options.useGpu) {
-                        node.style.setProperty('transform', '');
-                    } else {
-                        node.style.setProperty('margin-left', '');
-                        node.style.setProperty('margin-top', '');
-                    }
-                    return;
-                }
+        options = {
+            direction: 'bottom',
+            useGpu: true,
+            ...options,
+        };
 
+        return animateEffect(
+            selector,
+            options.useGpu ?
+                ['transform'] :
+                ['margin-left', 'margin-top'],
+            (node, progress, options) => {
                 const dir = evaluate(options.direction);
 
                 let size; let translateStyle; let inverse;
@@ -3354,11 +3352,7 @@
                     node.style.setProperty(translateStyle, `${translateAmount}px`);
                 }
             },
-            {
-                direction: 'bottom',
-                useGpu: true,
-                ...options,
-            },
+            options,
         );
     }
     /**
@@ -3368,20 +3362,18 @@
      * @returns {AnimationSet} A new AnimationSet that resolves when the animation has completed.
      */
     function slideOut$1(selector, options) {
-        return animate$1(
-            selector,
-            (node, progress, options) => {
-                if (progress === 1) {
-                    node.style.setProperty('overflow', '');
-                    if (options.useGpu) {
-                        node.style.setProperty('transform', '');
-                    } else {
-                        node.style.setProperty('margin-left', '');
-                        node.style.setProperty('margin-top', '');
-                    }
-                    return;
-                }
+        options = {
+            direction: 'bottom',
+            useGpu: true,
+            ...options,
+        };
 
+        return animateEffect(
+            selector,
+            options.useGpu ?
+                ['transform'] :
+                ['margin-left', 'margin-top'],
+            (node, progress, options) => {
                 const dir = evaluate(options.direction);
 
                 let size; let translateStyle; let inverse;
@@ -3406,11 +3398,7 @@
                     node.style.setProperty(translateStyle, `${translateAmount}px`);
                 }
             },
-            {
-                direction: 'bottom',
-                useGpu: true,
-                ...options,
-            },
+            options,
         );
     }
     /**
@@ -3420,77 +3408,58 @@
      * @returns {AnimationSet} A new AnimationSet that resolves when the animation has completed.
      */
     function squeezeIn$1(selector, options) {
-        const nodes = parseNodes(selector);
-
         options = {
             direction: 'bottom',
             useGpu: true,
             ...options,
         };
 
-        const newAnimations = nodes.map((node) => {
-            const initialHeight = node.style.height;
-            const initialWidth = node.style.width;
-            node.style.setProperty('overflow', 'hidden');
+        return animateEffect(
+            selector,
+            options.useGpu ?
+                ['height', 'overflow', 'transform', 'width'] :
+                ['height', 'margin-left', 'margin-top', 'overflow', 'width'],
+            (node, progress, options, initialStyles) => {
+                node.style.setProperty('height', initialStyles.height.value);
+                node.style.setProperty('width', initialStyles.width.value);
+                node.style.setProperty('overflow', 'hidden');
 
-            return new Animation(
-                node,
-                (node, progress, options) => {
-                    node.style.setProperty('height', initialHeight);
-                    node.style.setProperty('width', initialWidth);
+                const dir = evaluate(options.direction);
 
-                    if (progress === 1) {
-                        node.style.setProperty('overflow', '');
-                        if (options.useGpu) {
-                            node.style.setProperty('transform', '');
-                        } else {
-                            node.style.setProperty('margin-left', '');
-                            node.style.setProperty('margin-top', '');
-                        }
-                        return;
+                let size; let sizeStyle; let translateStyle;
+                if (['top', 'bottom'].includes(dir)) {
+                    size = node.clientHeight;
+                    sizeStyle = 'height';
+                    if (dir === 'top') {
+                        translateStyle = options.useGpu ?
+                            'Y' :
+                            'margin-top';
                     }
+                } else {
+                    size = node.clientWidth;
+                    sizeStyle = 'width';
+                    if (dir === 'left') {
+                        translateStyle = options.useGpu ?
+                            'X' :
+                            'margin-left';
+                    }
+                }
 
-                    const dir = evaluate(options.direction);
+                const amount = (size * progress).toFixed(2);
 
-                    let size; let sizeStyle; let translateStyle;
-                    if (['top', 'bottom'].includes(dir)) {
-                        size = node.clientHeight;
-                        sizeStyle = 'height';
-                        if (dir === 'top') {
-                            translateStyle = options.useGpu ?
-                                'Y' :
-                                'margin-top';
-                        }
+                node.style.setProperty(sizeStyle, `${amount}px`);
+
+                if (translateStyle) {
+                    const translateAmount = (size - amount).toFixed(2);
+                    if (options.useGpu) {
+                        node.style.setProperty('transform', `translate${translateStyle}(${translateAmount}px)`);
                     } else {
-                        size = node.clientWidth;
-                        sizeStyle = 'width';
-                        if (dir === 'left') {
-                            translateStyle = options.useGpu ?
-                                'X' :
-                                'margin-left';
-                        }
+                        node.style.setProperty(translateStyle, `${translateAmount}px`);
                     }
-
-                    const amount = (size * progress).toFixed(2);
-
-                    node.style.setProperty(sizeStyle, `${amount}px`);
-
-                    if (translateStyle) {
-                        const translateAmount = (size - amount).toFixed(2);
-                        if (options.useGpu) {
-                            node.style.setProperty('transform', `translate${translateStyle}(${translateAmount}px)`);
-                        } else {
-                            node.style.setProperty(translateStyle, `${translateAmount}px`);
-                        }
-                    }
-                },
-                options,
-            );
-        });
-
-        start();
-
-        return new AnimationSet(newAnimations);
+                }
+            },
+            options,
+        );
     }
     /**
      * Squeezes each node out from a direction.
@@ -3499,77 +3468,97 @@
      * @returns {AnimationSet} A new AnimationSet that resolves when the animation has completed.
      */
     function squeezeOut$1(selector, options) {
-        const nodes = parseNodes(selector);
-
         options = {
             direction: 'bottom',
             useGpu: true,
             ...options,
         };
 
-        const newAnimations = nodes.map((node) => {
-            const initialHeight = node.style.height;
-            const initialWidth = node.style.width;
-            node.style.setProperty('overflow', 'hidden');
+        return animateEffect(
+            selector,
+            options.useGpu ?
+                ['height', 'overflow', 'transform', 'width'] :
+                ['height', 'margin-left', 'margin-top', 'overflow', 'width'],
+            (node, progress, options, initialStyles) => {
+                node.style.setProperty('height', initialStyles.height.value);
+                node.style.setProperty('width', initialStyles.width.value);
+                node.style.setProperty('overflow', 'hidden');
 
-            return new Animation(
-                node,
-                (node, progress, options) => {
-                    node.style.setProperty('height', initialHeight);
-                    node.style.setProperty('width', initialWidth);
+                const dir = evaluate(options.direction);
 
-                    if (progress === 1) {
-                        node.style.setProperty('overflow', '');
-                        if (options.useGpu) {
-                            node.style.setProperty('transform', '');
-                        } else {
-                            node.style.setProperty('margin-left', '');
-                            node.style.setProperty('margin-top', '');
-                        }
-                        return;
+                let size; let sizeStyle; let translateStyle;
+                if (['top', 'bottom'].includes(dir)) {
+                    size = node.clientHeight;
+                    sizeStyle = 'height';
+                    if (dir === 'top') {
+                        translateStyle = options.useGpu ?
+                            'Y' :
+                            'margin-top';
                     }
+                } else {
+                    size = node.clientWidth;
+                    sizeStyle = 'width';
+                    if (dir === 'left') {
+                        translateStyle = options.useGpu ?
+                            'X' :
+                            'margin-left';
+                    }
+                }
 
-                    const dir = evaluate(options.direction);
+                const amount = (size - (size * progress)).toFixed(2);
 
-                    let size; let sizeStyle; let translateStyle;
-                    if (['top', 'bottom'].includes(dir)) {
-                        size = node.clientHeight;
-                        sizeStyle = 'height';
-                        if (dir === 'top') {
-                            translateStyle = options.useGpu ?
-                                'Y' :
-                                'margin-top';
-                        }
+                node.style.setProperty(sizeStyle, `${amount}px`);
+
+                if (translateStyle) {
+                    const translateAmount = (size - amount).toFixed(2);
+                    if (options.useGpu) {
+                        node.style.setProperty('transform', `translate${translateStyle}(${translateAmount}px)`);
                     } else {
-                        size = node.clientWidth;
-                        sizeStyle = 'width';
-                        if (dir === 'left') {
-                            translateStyle = options.useGpu ?
-                                'X' :
-                                'margin-left';
-                        }
+                        node.style.setProperty(translateStyle, `${translateAmount}px`);
                     }
+                }
+            },
+            options,
+        );
+    }
+    /**
+     * Animates inline styles and restores their initial values on completion.
+     * @param {ElementInput} selector The input node(s), or a query selector string.
+     * @param {string[]} properties The inline style properties changed by the animation.
+     * @param {AnimationEffectCallback} callback The animation callback.
+     * @param {AnimationOptions} [options] The animation options.
+     * @returns {AnimationSet} A new AnimationSet that resolves when the animation has completed.
+     */
+    function animateEffect(selector, properties, callback, options) {
+        const initialStyles = new WeakMap;
 
-                    const amount = (size - (size * progress)).toFixed(2);
+        return animate$1(selector, (node, progress, options) => {
+            if (!initialStyles.has(node)) {
+                initialStyles.set(
+                    node,
+                    Object.fromEntries(
+                        properties.map((property) => [
+                            property,
+                            {
+                                priority: node.style.getPropertyPriority(property),
+                                value: node.style.getPropertyValue(property),
+                            },
+                        ]),
+                    ),
+                );
+            }
 
-                    node.style.setProperty(sizeStyle, `${amount}px`);
+            const styles = initialStyles.get(node);
 
-                    if (translateStyle) {
-                        const translateAmount = (size - amount).toFixed(2);
-                        if (options.useGpu) {
-                            node.style.setProperty('transform', `translate${translateStyle}(${translateAmount}px)`);
-                        } else {
-                            node.style.setProperty(translateStyle, `${translateAmount}px`);
-                        }
-                    }
-                },
-                options,
-            );
-        });
+            if (progress < 1) {
+                callback(node, progress, options, styles);
+                return;
+            }
 
-        start();
-
-        return new AnimationSet(newAnimations);
+            for (const [property, { priority, value }] of Object.entries(styles)) {
+                node.style.setProperty(property, value, priority);
+            }
+        }, options);
     }
 
     /** @typedef {import('../helpers.js').ElementInput} ElementInput */

@@ -19,6 +19,37 @@ test.describe('#squeezeOut', () => {
         });
     });
 
+    test('restores existing inline dimensions, margins and overflow', async ({ page }) => {
+        await page.evaluate((_) => {
+            for (const node of document.querySelectorAll('.animate')) {
+                node.style.setProperty('height', '80px');
+                node.style.setProperty('margin-left', '10px');
+                node.style.setProperty('margin-top', '20px');
+                node.style.setProperty('overflow', 'scroll');
+                node.style.setProperty('width', '90px');
+            }
+
+            $.squeezeOut('.animate', {
+                direction: 'left',
+                duration: 100,
+                useGpu: false,
+            });
+        });
+        await advanceClock(page, 100);
+        await expectAnimationState(page, [
+            {
+                selectors: ['#test2', '#test4'],
+                styles: {
+                    height: '80px',
+                    marginLeft: '10px',
+                    marginTop: '20px',
+                    overflow: 'scroll',
+                    width: '90px',
+                },
+            },
+        ]);
+    });
+
     test('adds a squeeze-out animation to each node', async ({ page }) => {
         await page.evaluate((_) => {
             $.squeezeOut('.animate', {

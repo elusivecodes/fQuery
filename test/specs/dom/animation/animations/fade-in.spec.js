@@ -18,6 +18,25 @@ test.describe('#fadeIn', () => {
         });
     });
 
+    test('restores existing inline opacity', async ({ page }) => {
+        await page.evaluate((_) => {
+            for (const node of document.querySelectorAll('.animate')) {
+                node.style.setProperty('opacity', '0.25', 'important');
+            }
+
+            $.fadeIn('.animate', { duration: 100 });
+        });
+        await advanceClock(page, 100);
+        await expectAnimationState(page, [
+            {
+                selectors: ['#test2', '#test4'],
+                styles: { opacity: '0.25' },
+            },
+        ]);
+        expect(await page.evaluate((_) => document.getElementById('test2').style.getPropertyPriority('opacity')))
+            .toBe('important');
+    });
+
     test('adds a fade-in animation to each node', async ({ page }) => {
         await page.evaluate((_) => {
             $.fadeIn('.animate', {

@@ -19,6 +19,29 @@ test.describe('#squeezeIn', () => {
         });
     });
 
+    test('restores existing inline dimensions, overflow and transform', async ({ page }) => {
+        await page.evaluate((_) => {
+            for (const node of document.querySelectorAll('.animate')) {
+                node.style.setProperty('height', '80px');
+                node.style.setProperty('overflow', 'scroll');
+                node.style.setProperty('transform', 'scale(2)');
+                node.style.setProperty('width', '90px');
+            }
+
+            $.squeezeIn('.animate', {
+                direction: 'top',
+                duration: 100,
+            });
+        });
+        await advanceClock(page, 100);
+        await expectAnimationState(page, [
+            {
+                selectors: ['#test2', '#test4'],
+                styles: { height: '80px', overflow: 'scroll', transform: 'scale(2)', width: '90px' },
+            },
+        ]);
+    });
+
     test('adds a squeeze-in animation to each node', async ({ page }) => {
         await page.evaluate((_) => {
             $.squeezeIn('.animate', {
