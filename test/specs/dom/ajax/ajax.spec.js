@@ -371,17 +371,14 @@ test.describe('#ajax', () => {
         })).toBe('GET');
     });
 
-    test('moves false GET data to the query string', async ({ page }) => {
+    test('sends a false request body', async ({ page }) => {
         expect(await page.evaluate(async (_) => {
-            const response = await $.ajax({ data: false });
-            return {
-                body: response.xhr.data.body,
-                url: response.xhr.data.url,
-            };
-        })).toEqual({
-            body: null,
-            url: 'http://localhost:3001/?false=',
-        });
+            const response = await $.ajax({
+                data: false,
+                method: 'POST',
+            });
+            return response.xhr.data.body;
+        })).toBe(false);
     });
 
     test('encodes parameter names and values', async ({ page }) => {
