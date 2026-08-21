@@ -1,6 +1,6 @@
 import { expect, test } from '@playwright/test';
 import { advanceClock, resetPage, setupClock } from '../../../setup/browser.js';
-import { expectAnimationProgress, expectNoAnimation } from '../../../support/assertions/animation.js';
+import { expectAnimationState } from '../../../support/assertions/animation.js';
 
 test.beforeEach(async ({ page }) => {
     await setupClock(page);
@@ -33,10 +33,11 @@ test.describe('#stop', () => {
         await page.evaluate((_) => {
             $.stop('.animate');
         });
-        await expectNoAnimation(page, '#test1');
-        await expectNoAnimation(page, '#test2');
-        await expectNoAnimation(page, '#test3');
-        await expectNoAnimation(page, '#test4');
+        await expectAnimationState(page, [
+            {
+                selectors: ['#test1', '#test2', '#test3', '#test4'],
+            },
+        ]);
     });
 
     test('stops animations on all nodes (without finishing)', async ({ page }) => {
@@ -55,10 +56,15 @@ test.describe('#stop', () => {
             $.stop('.animate', { finish: false });
             return document.body.innerHTML;
         });
-        await expectNoAnimation(page, '#test1');
-        await expectNoAnimation(page, '#test3');
-        await expectAnimationProgress(page, '#test2', 0.5);
-        await expectAnimationProgress(page, '#test4', 0.5);
+        await expectAnimationState(page, [
+            {
+                selectors: ['#test1', '#test3'],
+            },
+            {
+                selectors: ['#test2', '#test4'],
+                progress: 0.5,
+            },
+        ]);
         await advanceClock(page, 25);
         const html = await page.evaluate((_) => document.body.innerHTML);
         expect(html).toBe(testHtml);
@@ -81,10 +87,15 @@ test.describe('#stop', () => {
                 document.getElementById('test2'),
             );
         });
-        await expectNoAnimation(page, '#test1');
-        await expectNoAnimation(page, '#test2');
-        await expectNoAnimation(page, '#test3');
-        await expectAnimationProgress(page, '#test4', 0.5);
+        await expectAnimationState(page, [
+            {
+                selectors: ['#test1', '#test2', '#test3'],
+            },
+            {
+                selectors: ['#test4'],
+                progress: 0.5,
+            },
+        ]);
     });
 
     test('works with NodeList nodes', async ({ page }) => {
@@ -104,10 +115,11 @@ test.describe('#stop', () => {
                 document.querySelectorAll('.animate'),
             );
         });
-        await expectNoAnimation(page, '#test1');
-        await expectNoAnimation(page, '#test2');
-        await expectNoAnimation(page, '#test3');
-        await expectNoAnimation(page, '#test4');
+        await expectAnimationState(page, [
+            {
+                selectors: ['#test1', '#test2', '#test3', '#test4'],
+            },
+        ]);
     });
 
     test('works with HTMLCollection nodes', async ({ page }) => {
@@ -127,10 +139,11 @@ test.describe('#stop', () => {
                 document.body.children,
             );
         });
-        await expectNoAnimation(page, '#test1');
-        await expectNoAnimation(page, '#test2');
-        await expectNoAnimation(page, '#test3');
-        await expectNoAnimation(page, '#test4');
+        await expectAnimationState(page, [
+            {
+                selectors: ['#test1', '#test2', '#test3', '#test4'],
+            },
+        ]);
     });
 
     test('works with array nodes', async ({ page }) => {
@@ -151,9 +164,10 @@ test.describe('#stop', () => {
                 document.getElementById('test4'),
             ]);
         });
-        await expectNoAnimation(page, '#test1');
-        await expectNoAnimation(page, '#test2');
-        await expectNoAnimation(page, '#test3');
-        await expectNoAnimation(page, '#test4');
+        await expectAnimationState(page, [
+            {
+                selectors: ['#test1', '#test2', '#test3', '#test4'],
+            },
+        ]);
     });
 });

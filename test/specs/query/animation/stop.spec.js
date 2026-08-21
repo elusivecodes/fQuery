@@ -1,6 +1,6 @@
 import { expect, test } from '@playwright/test';
 import { advanceClock, resetPage, setupClock } from '../../../setup/browser.js';
-import { expectAnimationProgress, expectNoAnimation } from '../../../support/assertions/animation.js';
+import { expectAnimationState } from '../../../support/assertions/animation.js';
 
 test.beforeEach(async ({ page }) => {
     await setupClock(page);
@@ -34,10 +34,11 @@ test.describe('QuerySet #stop', () => {
             $('.animate')
                     .stop();
         });
-        await expectNoAnimation(page, '#test1');
-        await expectNoAnimation(page, '#test2');
-        await expectNoAnimation(page, '#test3');
-        await expectNoAnimation(page, '#test4');
+        await expectAnimationState(page, [
+            {
+                selectors: ['#test1', '#test2', '#test3', '#test4'],
+            },
+        ]);
     });
 
     test('stops animations on all nodes (without finishing)', async ({ page }) => {
@@ -57,10 +58,15 @@ test.describe('QuerySet #stop', () => {
                     .stop({ finish: false });
             return document.body.innerHTML;
         });
-        await expectNoAnimation(page, '#test1');
-        await expectNoAnimation(page, '#test3');
-        await expectAnimationProgress(page, '#test2', 0.5);
-        await expectAnimationProgress(page, '#test4', 0.5);
+        await expectAnimationState(page, [
+            {
+                selectors: ['#test1', '#test3'],
+            },
+            {
+                selectors: ['#test2', '#test4'],
+                progress: 0.5,
+            },
+        ]);
         await advanceClock(page, 25);
         const html = await page.evaluate((_) => document.body.innerHTML);
         expect(html).toBe(testHtml);
