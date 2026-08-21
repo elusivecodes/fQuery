@@ -135,6 +135,85 @@ test.describe('#queue', () => {
         expect(await page.locator('#test3').getAttribute('data-test2')).toBeNull();
     });
 
+    test('keeps named queues when another queue completes', async ({ page }) => {
+        await page.evaluate(() => {
+            window.namedQueueResolver = null;
+
+            $.queue('#test2', () =>
+                new Promise((resolve) => {
+                    window.namedQueueResolver = resolve;
+                }),
+            { queueName: 'test' });
+            $.queue('#test2', (node) => {
+                node.dataset.named = 'Test';
+            }, { queueName: 'test' });
+        });
+
+        await expect.poll(async () => await page.evaluate(() => Boolean(window.namedQueueResolver))).toBe(true);
+
+        await page.evaluate(() => {
+            $.queue('#test2', (node) => {
+                node.dataset.default = 'Test';
+            });
+        });
+
+        await expect(page.locator('#test2')).toHaveAttribute('data-default', 'Test');
+
+        await page.evaluate(() => {
+            window.namedQueueResolver();
+        });
+
+        await expect(page.locator('#test2')).toHaveAttribute('data-named', 'Test');
+    });
+
+    test('keeps named queues when another queue rejects', async ({ page }) => {
+        await page.evaluate(() => {
+            window.defaultQueueRejector = null;
+            window.namedQueueResolver = null;
+
+            $.queue('#test2', () =>
+                new Promise((resolve) => {
+                    window.namedQueueResolver = resolve;
+                }),
+            { queueName: 'test' });
+            $.queue('#test2', (node) => {
+                node.dataset.named = 'Test';
+            }, { queueName: 'test' });
+        });
+
+        await expect.poll(async () => await page.evaluate(() => Boolean(window.namedQueueResolver))).toBe(true);
+
+        await page.evaluate(() => {
+            $.queue('#test2', () =>
+                new Promise((_, reject) => {
+                    window.defaultQueueRejector = reject;
+                }),
+            );
+        });
+
+        await expect.poll(async () => await page.evaluate(() => Boolean(window.defaultQueueRejector))).toBe(true);
+
+        await page.evaluate(async () => {
+            window.defaultQueueRejector();
+            await new Promise((resolve) => {
+                setTimeout(resolve);
+            });
+            window.namedQueueResolver();
+        });
+
+        await expect(page.locator('#test2')).toHaveAttribute('data-named', 'Test');
+    });
+
+    test('works with special queue names', async ({ page }) => {
+        await page.evaluate(() => {
+            $.queue('#test2', (node) => {
+                node.dataset.test = 'Test';
+            }, { queueName: '__proto__' });
+        });
+
+        await expect(page.locator('#test2')).toHaveAttribute('data-test', 'Test');
+    });
+
     test('works with HTMLElement nodes', async ({ page }) => {
         await page.evaluate(() => {
             $.queue(

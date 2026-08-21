@@ -7781,11 +7781,11 @@
 
             const queue = queues.get(node);
 
-            if (queueName) {
-                delete queue[queueName];
+            if (queueName !== null) {
+                queue.delete(queueName);
             }
 
-            if (!queueName || !Object.keys(queue).length) {
+            if (queueName === null || !queue.size) {
                 queues.delete(node);
             }
         }
@@ -7798,22 +7798,36 @@
     function dequeue(node, { queueName = 'default' } = {}) {
         const queue = queues.get(node);
 
-        if (!queue || !(queueName in queue)) {
+        if (!queue || !queue.has(queueName)) {
             return;
         }
 
-        const next = queue[queueName].shift();
+        const callbacks = queue.get(queueName);
+        const next = callbacks.shift();
 
         if (!next) {
-            queues.delete(node);
+            queue.delete(queueName);
+
+            if (!queue.size && queues.get(node) === queue) {
+                queues.delete(node);
+            }
+
             return;
         }
 
         Promise.resolve(next(node))
             .then((_) => {
-                dequeue(node, { queueName });
+                if (queues.get(node) === queue && queue.get(queueName) === callbacks) {
+                    dequeue(node, { queueName });
+                }
             }).catch((_) => {
-                queues.delete(node);
+                if (queues.get(node) === queue && queue.get(queueName) === callbacks) {
+                    queue.delete(queueName);
+
+                    if (!queue.size) {
+                        queues.delete(node);
+                    }
+                }
             });
     }
     /**
@@ -7827,21 +7841,21 @@
 
         for (const node of nodes) {
             if (!queues.has(node)) {
-                queues.set(node, {});
+                queues.set(node, new Map());
             }
 
             const queue = queues.get(node);
-            const runningQueue = queueName in queue;
+            const runningQueue = queue.has(queueName);
 
             if (!runningQueue) {
-                queue[queueName] = [
+                queue.set(queueName, [
                     (_) => new Promise((resolve) => {
                         setTimeout(resolve, 1);
                     }),
-                ];
+                ]);
             }
 
-            queue[queueName].push(callback);
+            queue.get(queueName).push(callback);
 
             if (!runningQueue) {
                 dequeue(node, { queueName });
