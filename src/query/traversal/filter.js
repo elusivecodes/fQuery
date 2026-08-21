@@ -123,7 +123,7 @@ export function withChildren() {
 
 /**
  * Returns all nodes with any of the specified classes.
- * @param {...string|string[]} classes The classes.
+ * @param {string|string[]} classes The classes.
  * @returns {QuerySet} The QuerySet object.
  */
 export function withClass(classes) {

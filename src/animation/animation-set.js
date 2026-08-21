@@ -28,7 +28,7 @@ export default class AnimationSet {
     /**
      * Executes a callback once the animation is settled (resolved or rejected).
      * @param {(() => void)} [onFinally] The callback to execute once the animation set is settled.
-     * @returns {Promise<*>} The resulting promise.
+     * @returns {Promise<Element[]>} The resulting promise.
      */
     finally(onFinally) {
         return this._promise.finally(onFinally);
@@ -46,7 +46,7 @@ export default class AnimationSet {
 
     /**
      * Executes a callback once the animation is resolved (or optionally rejected).
-     * @param {((value: HTMLElement[]) => *)} onFulfilled The callback to execute if the animations resolve.
+     * @param {((value: Element[]) => *)} onFulfilled The callback to execute if the animations resolve.
      * @param {((reason: *) => *)} [onRejected] The callback to execute if an animation is rejected.
      * @returns {Promise<*>} The resulting promise.
      */

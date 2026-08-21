@@ -403,7 +403,7 @@ Cookie helpers are `$.getCookie(name)`, `$.setCookie(name, value, { expires?, pa
 
 ### Parsing and sanitization
 
-- `$.parseHTML(html)`: parse HTML into an array of nodes.
+- `$.parseHTML(html)`: parse HTML into an array of elements; top-level text and comment nodes are discarded.
 - `$.parseDocument(input, { contentType? })`: parse text into a `Document`.
 - `$.sanitize(html, allowedTags?)`: remove disallowed elements and attributes from HTML.
 

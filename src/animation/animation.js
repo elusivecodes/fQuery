@@ -37,7 +37,7 @@ import { getTime } from './helpers.js';
 
 /**
  * @callback AnimationCallback
- * @param {HTMLElement} node The animated element.
+ * @param {Element} node The animated element.
  * @param {number} progress The animation progress from 0 to 1.
  * @param {AnimationOptions} options The resolved animation options.
  * @returns {void} Nothing.
@@ -49,7 +49,7 @@ import { getTime } from './helpers.js';
 export default class Animation {
     /**
      * Creates an animation.
-     * @param {HTMLElement} node The input node.
+     * @param {Element} node The input node.
      * @param {AnimationCallback} callback The animation callback.
      * @param {AnimationOptions} [options] The animation options.
      */
@@ -93,7 +93,7 @@ export default class Animation {
 
     /**
      * Clones the animation to a new node.
-     * @param {HTMLElement} node The input node.
+     * @param {Element} node The input node.
      * @returns {Animation} The cloned Animation.
      */
     clone(node) {
@@ -103,7 +103,7 @@ export default class Animation {
     /**
      * Executes a callback once the animation is settled (resolved or rejected).
      * @param {(() => void)} [onFinally] The callback to execute once the animation is settled.
-     * @returns {Promise<*>} The resulting promise.
+     * @returns {Promise<Element>} The resulting promise.
      */
     finally(onFinally) {
         return this._promise.finally(onFinally);
@@ -140,7 +140,7 @@ export default class Animation {
 
     /**
      * Executes a callback once the animation is resolved (or optionally rejected).
-     * @param {((value: HTMLElement) => *)} onFulfilled The callback to execute if the animation is resolved.
+     * @param {((value: Element) => *)} onFulfilled The callback to execute if the animation is resolved.
      * @param {((reason: *) => *)} [onRejected] The callback to execute if the animation is rejected.
      * @returns {Promise<*>} The resulting promise.
      */

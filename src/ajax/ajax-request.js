@@ -229,7 +229,7 @@ export default class AjaxRequest {
     /**
      * Executes a callback once the request is settled (resolved or rejected).
      * @param {(() => void)} [onFinally] The callback to execute once the request is settled.
-     * @returns {Promise<*>} The resulting promise.
+     * @returns {Promise<AjaxResult>} The resulting promise.
      */
     finally(onFinally) {
         return this._promise.finally(onFinally);
