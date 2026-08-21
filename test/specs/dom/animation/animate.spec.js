@@ -1,7 +1,6 @@
 import { expect, test } from '@playwright/test';
-import { advanceClock, resetPage, resumeClock, setupClock } from '../../../setup/browser.js';
-import { expectAnimation, expectAnimationProgress, expectNoAnimation } from '../../../support/assertions/animation.js';
-import { easeInOut } from '../../../support/utils/animation.js';
+import { advanceClock, resetPage, setupClock } from '../../../setup/browser.js';
+import { expectAnimationProgress, expectNoAnimation } from '../../../support/assertions/animation.js';
 
 test.beforeEach(async ({ page }) => {
     await setupClock(page);
@@ -167,8 +166,7 @@ test.describe('#animate', () => {
     });
 
     test('can be stopped', async ({ page }) => {
-        await resumeClock(page);
-        await page.evaluate(async (_) => {
+        const animationHandle = await page.evaluateHandle((_) => {
             const animation = $.animate(
                 '.animate',
                 (_) => { },
@@ -177,26 +175,22 @@ test.describe('#animate', () => {
                     debug: true,
                 },
             );
-            await new Promise((resolve) => {
-                setTimeout(
-                    (_) => {
-                        animation.stop();
-                        resolve();
-                    },
-                    50,
-                );
-            });
-        }).then(async (_) => {
-            await expectNoAnimation(page, '#test1');
-            await expectNoAnimation(page, '#test2');
-            await expectNoAnimation(page, '#test3');
-            await expectNoAnimation(page, '#test4');
+
+            return { animation };
         });
+        await advanceClock(page, 50);
+        await animationHandle.evaluate(({ animation }) => {
+            animation.stop();
+        });
+        await animationHandle.dispose();
+        await expectNoAnimation(page, '#test1');
+        await expectNoAnimation(page, '#test2');
+        await expectNoAnimation(page, '#test3');
+        await expectNoAnimation(page, '#test4');
     });
 
     test('can be stopped (without finishing)', async ({ page }) => {
-        await resumeClock(page);
-        await page.evaluate(async (_) => {
+        const animationHandle = await page.evaluateHandle((_) => {
             const animation = $.animate(
                 '.animate',
                 (_) => { },
@@ -205,30 +199,28 @@ test.describe('#animate', () => {
                     debug: true,
                 },
             );
-            await new Promise((resolve) => {
-                setTimeout(
-                    (_) => {
-                        animation.stop({ finish: false });
-                        resolve();
-                    },
-                    50,
-                );
-            });
-        }).then(async (_) => {
-            await expectNoAnimation(page, '#test1');
-            await expectNoAnimation(page, '#test3');
-            await expectAnimation(page, '#test2', easeInOut, 100);
-            await expectAnimation(page, '#test4', easeInOut, 100);
+
+            animation.catch((_) => { });
+
+            return { animation };
         });
+        await advanceClock(page, 50);
+        await animationHandle.evaluate(({ animation }) => {
+            animation.stop({ finish: false });
+        });
+        await animationHandle.dispose();
+        await expectNoAnimation(page, '#test1');
+        await expectNoAnimation(page, '#test3');
+        await expectAnimationProgress(page, '#test2', 0.5);
+        await expectAnimationProgress(page, '#test4', 0.5);
         await advanceClock(page, 100);
         await expectNoAnimation(page, '#test1');
         await expectNoAnimation(page, '#test3');
-        await expectAnimation(page, '#test2', easeInOut, 100);
-        await expectAnimation(page, '#test4', easeInOut, 100);
+        await expectAnimationProgress(page, '#test2', 0.5);
+        await expectAnimationProgress(page, '#test4', 0.5);
     });
 
     test('resolves when the animation is stopped', async ({ page }) => {
-        await resumeClock(page);
         await page.evaluate(async (_) => {
             const animation = $.animate(
                 '.animate',
@@ -238,18 +230,16 @@ test.describe('#animate', () => {
                     debug: true,
                 },
             );
-            $.stop();
+            animation.stop();
             await animation;
-        }).then(async (_) => {
-            await expectNoAnimation(page, '#test1');
-            await expectNoAnimation(page, '#test2');
-            await expectNoAnimation(page, '#test3');
-            await expectNoAnimation(page, '#test4');
         });
+        await expectNoAnimation(page, '#test1');
+        await expectNoAnimation(page, '#test2');
+        await expectNoAnimation(page, '#test3');
+        await expectNoAnimation(page, '#test4');
     });
 
     test('throws when the animation is stopped (without finishing)', async ({ page }) => {
-        await resumeClock(page);
         expect(await page.evaluate(async (_) => {
             try {
                 const animation = $.animate(
@@ -270,8 +260,7 @@ test.describe('#animate', () => {
     });
 
     test('does not stop all animations', async ({ page }) => {
-        await resumeClock(page);
-        await page.evaluate(async (_) => {
+        const animationHandle = await page.evaluateHandle((_) => {
             const animation = $.animate(
                 '.animate',
                 (_) => { },
@@ -287,44 +276,43 @@ test.describe('#animate', () => {
                     debug: true,
                 },
             );
-            await new Promise((resolve) => {
-                setTimeout(
-                    (_) => {
-                        animation.stop();
-                        resolve();
-                    },
-                    50,
-                );
-            });
-        }).then(async (_) => {
-            await expectNoAnimation(page, '#test1');
-            await expectNoAnimation(page, '#test3');
-            await expectAnimation(page, '#test2', easeInOut, 100);
-            await expectAnimation(page, '#test4', easeInOut, 100);
+
+            return { animation };
         });
+        await advanceClock(page, 50);
+        await animationHandle.evaluate(({ animation }) => {
+            animation.stop();
+        });
+        await animationHandle.dispose();
+        await expectNoAnimation(page, '#test1');
+        await expectNoAnimation(page, '#test3');
+        await expectAnimationProgress(page, '#test2', 0.5);
+        await expectAnimationProgress(page, '#test4', 0.5);
     });
 
     test('resolves when the animation is completed', async ({ page }) => {
-        await resumeClock(page);
-        await page.evaluate(async (_) => {
-            await $.animate(
+        const animationHandle = await page.evaluateHandle((_) => ({
+            animation: $.animate(
                 '.animate',
                 (_) => { },
                 {
                     duration: 100,
                     debug: true,
                 },
-            );
-        }).then(async (_) => {
-            await expectNoAnimation(page, '#test1');
-            await expectNoAnimation(page, '#test2');
-            await expectNoAnimation(page, '#test3');
-            await expectNoAnimation(page, '#test4');
+            ),
+        }));
+        await advanceClock(page, 100);
+        await animationHandle.evaluate(async ({ animation }) => {
+            await animation;
         });
+        await animationHandle.dispose();
+        await expectNoAnimation(page, '#test1');
+        await expectNoAnimation(page, '#test2');
+        await expectNoAnimation(page, '#test3');
+        await expectNoAnimation(page, '#test4');
     });
 
     test('throws when all animations are stopped (without finishing)', async ({ page }) => {
-        await resumeClock(page);
         expect(await page.evaluate(async (_) => {
             try {
                 const animation = $.animate(

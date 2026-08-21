@@ -1375,7 +1375,8 @@
     });
 
     /**
-     * DOM Config
+     * @typedef {import('./ajax/ajax-request.js').AjaxOptions} AjaxOptions
+     * @typedef {import('./animation/animation.js').AnimationOptions} AnimationOptions
      */
 
     const ajaxDefaults = {
@@ -1410,50 +1411,51 @@
     };
 
     /**
-     * Get the AJAX defaults.
-     * @return {object} The AJAX defaults.
+     * Gets the AJAX defaults.
+     * @returns {AjaxOptions} The AJAX defaults.
      */
     function getAjaxDefaults() {
         return ajaxDefaults;
     }
     /**
-     * Get the animation defaults.
-     * @return {object} The animation defaults.
+     * Gets the animation defaults.
+     * @returns {AnimationOptions} The animation defaults.
      */
     function getAnimationDefaults() {
         return animationDefaults;
     }
     /**
-     * Get the document context.
-     * @return {Document} The document context.
+     * Gets the document context.
+     * @returns {Document} The document context.
      */
     function getContext() {
         return config.context;
     }
     /**
-     * Get the window.
-     * @return {Window} The window.
+     * Gets the window.
+     * @returns {Window} The window.
      */
     function getWindow() {
         return config.window;
     }
     /**
-     * Set the AJAX defaults.
-     * @param {object} options The ajax default options.
+     * Sets the AJAX defaults.
+     * @param {Partial<AjaxOptions>} options The AJAX default options.
      */
     function setAjaxDefaults(options) {
         extend(ajaxDefaults, options);
     }
     /**
-     * Set the animation defaults.
-     * @param {object} options The animation default options.
+     * Sets the animation defaults.
+     * @param {Partial<AnimationOptions>} options The animation default options.
      */
     function setAnimationDefaults(options) {
         extend(animationDefaults, options);
     }
     /**
-     * Set the document context.
+     * Sets the document context.
      * @param {Document} context The document context.
+     * @throws {Error} When context is not a Document.
      */
     function setContext(context) {
         if (!isDocument(context)) {
@@ -1463,8 +1465,9 @@
         config.context = context;
     }
     /**
-     * Set the window.
+     * Sets the window.
      * @param {Window} window The window.
+     * @throws {Error} When window is not a Window.
      */
     function setWindow(window) {
         if (!isWindow(window)) {
@@ -1474,23 +1477,25 @@
         config.window = window;
     }
     /**
-     * Set whether animations should use setTimeout.
-     * @param {Boolean} [enable=true] Whether animations should use setTimeout.
+     * Sets whether animations should use setTimeout.
+     * @param {boolean} [enable=true] Whether animations should use setTimeout.
      */
     function useTimeout(enable = true) {
         config.useTimeout = enable;
     }
 
-    /**
-     * Ajax Helpers
-     */
+    /** @typedef {{name: string, value: *}} FormEntry */
+
+    /** @typedef {FormEntry[]|Record<string, *>} FormInput */
+
+    /** @typedef {[string, *]} ParamEntry */
 
     /**
-     * Append a query string to a URL.
+     * Appends a query string to a URL.
      * @param {string} url The input URL.
      * @param {string} key The query string key.
-     * @param {string} value The query string value.
-     * @return {string} The new URL.
+     * @param {string|number} value The query string value.
+     * @returns {string} The new URL.
      */
     function appendQueryString(url, key, value) {
         const searchParams = getSearchParams(url);
@@ -1500,17 +1505,17 @@
         return setSearchParams(url, searchParams);
     }
     /**
-     * Get the URLSearchParams from a URL string.
+     * Gets the URLSearchParams from a URL string.
      * @param {string} url The URL.
-     * @return {URLSearchParams} The URLSearchParams.
+     * @returns {URLSearchParams} The URLSearchParams.
      */
     function getSearchParams(url) {
         return getURL(url).searchParams;
     }
     /**
-     * Get the URL from a URL string.
+     * Gets the URL from a URL string.
      * @param {string} url The URL.
-     * @return {URL} The URL.
+     * @returns {URL} The URL.
      */
     function getURL(url) {
         const window = getWindow();
@@ -1519,9 +1524,9 @@
         return new URL(url, baseHref);
     }
     /**
-     * Return a FormData object from an array or object.
-     * @param {array|object} data The input data.
-     * @return {FormData} The FormData object.
+     * Returns a FormData object from form entries or a data object.
+     * @param {FormInput} data The input data.
+     * @returns {FormData} The parsed FormData object.
      */
     function parseFormData(data) {
         const values = parseValues(data);
@@ -1539,9 +1544,9 @@
         return formData;
     }
     /**
-     * Return a URI-encoded attribute string from an array or object.
-     * @param {array|object} data The input data.
-     * @return {string} The URI-encoded attribute string.
+     * Returns a URI-encoded attribute string from form entries or a data object.
+     * @param {FormInput} data The input data.
+     * @returns {string} The URI-encoded attribute string.
      */
     function parseParams(data) {
         const values = parseValues(data);
@@ -1553,10 +1558,10 @@
         return encodeURI(paramString);
     }
     /**
-     * Return an attributes array, or a flat array of attributes from a key and value.
+     * Returns flattened parameter entries for a key and value.
      * @param {string} key The input key.
-     * @param {array|object|string} [value] The input value.
-     * @return {array} The parsed attributes.
+     * @param {*} [value] The input value.
+     * @returns {ParamEntry[]} The parsed parameter entries.
      */
     function parseValue(key, value) {
         if (value === null || isUndefined(value)) {
@@ -1579,9 +1584,9 @@
         return [[key, value]];
     }
     /**
-     * Return an attributes array from a data array or data object.
-     * @param {array|object} data The input data.
-     * @return {array} The parsed attributes.
+     * Returns flattened parameter entries from form entries or a data object.
+     * @param {FormInput} data The input data.
+     * @returns {ParamEntry[]} The parsed parameter entries.
      */
     function parseValues(data) {
         if (isArray(data)) {
@@ -1596,10 +1601,10 @@
         return data;
     }
     /**
-     * Set the URLSearchParams for a URL string.
+     * Sets the URLSearchParams for a URL string.
      * @param {string} url The URL.
      * @param {URLSearchParams} searchParams The URLSearchParams.
-     * @return {string} The new URL string.
+     * @returns {string} The new URL string.
      */
     function setSearchParams(url, searchParams) {
         const urlData = getURL(url);
@@ -1613,31 +1618,68 @@
     }
 
     /**
-     * AjaxRequest Class
-     * @class
+     * @typedef {boolean|string|Array<*>|Record<string, *>|FormData|null} AjaxData
+     */
+
+    /**
+     * @callback AjaxHook
+     * @param {XMLHttpRequest} xhr The request object.
+     * @returns {void} Nothing.
+     */
+
+    /**
+     * @callback AjaxProgressCallback
+     * @param {number} progress The completion ratio from 0 to 1.
+     * @param {XMLHttpRequest} xhr The request object.
+     * @param {ProgressEvent} event The progress event.
+     * @returns {void} Nothing.
+     */
+
+    /**
+     * @typedef {object} AjaxOptions
+     * @property {string} [url] The request URL. Defaults to the current location.
+     * @property {string} [method='GET'] The HTTP method.
+     * @property {AjaxData} [data=null] The request data.
+     * @property {string|false} [contentType='application/x-www-form-urlencoded'] The request content type, or false to omit it.
+     * @property {XMLHttpRequestResponseType|null} [responseType=null] The response type.
+     * @property {string} [mimeType] The MIME type override.
+     * @property {string} [username] The authentication username.
+     * @property {string} [password] The authentication password.
+     * @property {number} [timeout=0] The timeout in milliseconds.
+     * @property {boolean|null} [isLocal=null] Whether to treat the request as local. Null enables automatic detection.
+     * @property {boolean} [cache=true] Whether to cache the request.
+     * @property {boolean} [processData=true] Whether to encode the request data.
+     * @property {boolean} [rejectOnCancel=true] Whether cancellation rejects the request promise.
+     * @property {Record<string, string>} [headers={}] Additional request headers.
+     * @property {AjaxHook|null} [afterSend=null] The callback invoked after sending.
+     * @property {AjaxHook|null} [beforeSend=null] The callback invoked before sending.
+     * @property {AjaxProgressCallback|null} [onProgress=null] The download progress callback.
+     * @property {AjaxProgressCallback|null} [onUploadProgress=null] The upload progress callback.
+     * @property {() => XMLHttpRequest} [xhr] The request factory.
+     */
+
+    /**
+     * @typedef {object} AjaxResult
+     * @property {*} response The response value.
+     * @property {XMLHttpRequest} xhr The request object.
+     * @property {ProgressEvent} event The load event.
+     */
+
+    /**
+     * @typedef {object} AjaxError
+     * @property {number} status The HTTP status.
+     * @property {XMLHttpRequest} xhr The request object.
+     * @property {ProgressEvent} [event] The failure event.
+     * @property {string} [reason] The cancellation reason.
+     */
+
+    /**
+     * Represents a cancellable XMLHttpRequest with Promise-compatible methods.
      */
     class AjaxRequest {
         /**
-         * New AjaxRequest constructor.
-         * @param {object} [options] The options to use for the request.
-         * @param {string} [options.url=window.location] The URL of the request.
-         * @param {string} [options.method=GET] The HTTP method of the request.
-         * @param {Boolean|string|array|object|FormData} [options.data=null] The data to send with the request.
-         * @param {Boolean|string} [options.contentType=application/x-www-form-urlencoded] The content type of the request.
-         * @param {Boolean|string} [options.responseType] The content type of the response.
-         * @param {string} [options.mimeType] The MIME type to use.
-         * @param {string} [options.username] The username to authenticate with.
-         * @param {string} [options.password] The password to authenticate with.
-         * @param {number} [options.timeout] The number of milliseconds before the request will be terminated.
-         * @param {Boolean} [options.isLocal] Whether to treat the request as a local request.
-         * @param {Boolean} [options.cache=true] Whether to cache the request.
-         * @param {Boolean} [options.processData=true] Whether to process the data based on the content type.
-         * @param {Boolean} [options.rejectOnCancel=true] Whether to reject the promise if the request is cancelled.
-         * @param {object} [options.headers] Additional headers to send with the request.
-         * @param {Boolean|function} [options.afterSend=null] A callback to execute after making the request.
-         * @param {Boolean|function} [options.beforeSend=null] A callback to execute before making the request.
-         * @param {Boolean|function} [options.onProgress=null] A callback to execute on download progress.
-         * @param {Boolean|function} [options.onUploadProgress=null] A callback to execute on upload progress.
+         * Creates an AJAX request.
+         * @param {AjaxOptions} [options] The request options.
          */
         constructor(options) {
             this._options = extend(
@@ -1769,8 +1811,8 @@
         }
 
         /**
-         * Cancel a pending request.
-         * @param {string} [reason=Request was cancelled] The reason for cancelling the request.
+         * Cancels a pending request.
+         * @param {string} [reason='Request was cancelled'] The cancellation reason.
          */
         cancel(reason = 'Request was cancelled') {
             if (this._isResolved || this._isRejected || this._isCancelled) {
@@ -1791,28 +1833,28 @@
         }
 
         /**
-         * Execute a callback if the request is rejected.
-         * @param {function} [onRejected] The callback to execute if the request is rejected.
-         * @return {Promise} The promise.
+         * Executes a callback if the request is rejected.
+         * @param {((reason: AjaxError) => *)} [onRejected] The callback to execute if the request is rejected.
+         * @returns {Promise<*>} The resulting promise.
          */
         catch(onRejected) {
             return this._promise.catch(onRejected);
         }
 
         /**
-         * Execute a callback once the request is settled (resolved or rejected).
-         * @param {function} [onFinally] The callback to execute once the request is settled.
-         * @return {Promise} The promise.
+         * Executes a callback once the request is settled (resolved or rejected).
+         * @param {(() => void)} [onFinally] The callback to execute once the request is settled.
+         * @returns {Promise<*>} The resulting promise.
          */
         finally(onFinally) {
             return this._promise.finally(onFinally);
         }
 
         /**
-         * Execute a callback once the request is resolved (or optionally rejected).
-         * @param {function} onFulfilled The callback to execute if the request is resolved.
-         * @param {function} [onRejected] The callback to execute if the request is rejected.
-         * @return {Promise} The promise.
+         * Executes a callback once the request is resolved (or optionally rejected).
+         * @param {((value: AjaxResult) => *)} onFulfilled The callback to execute if the request is resolved.
+         * @param {((reason: AjaxError) => *)} [onRejected] The callback to execute if the request is rejected.
+         * @returns {Promise<*>} The resulting promise.
          */
         then(onFulfilled, onRejected) {
             return this._promise.then(onFulfilled, onRejected);
@@ -1822,30 +1864,15 @@
     Object.setPrototypeOf(AjaxRequest.prototype, Promise.prototype);
 
     /**
-     * DOM Ajax
+     * @typedef {import('./ajax-request.js').AjaxData} AjaxData
+     * @typedef {import('./ajax-request.js').AjaxOptions} AjaxOptions
      */
 
     /**
-     * Perform an XHR DELETE request.
-     * @param {string} url The URL of the request.
-     * @param {object} [options] The options to use for the request.
-     * @param {string} [options.method=DELETE] The HTTP method of the request.
-     * @param {Boolean|string} [options.contentType=application/x-www-form-urlencoded] The content type of the request.
-     * @param {Boolean|string} [options.responseType] The content type of the response.
-     * @param {string} [options.mimeType] The MIME type to use.
-     * @param {string} [options.username] The username to authenticate with.
-     * @param {string} [options.password] The password to authenticate with.
-     * @param {number} [options.timeout] The number of milliseconds before the request will be terminated.
-     * @param {Boolean} [options.isLocal] Whether to treat the request as a local request.
-     * @param {Boolean} [options.cache=true] Whether to cache the request.
-     * @param {Boolean} [options.processData=true] Whether to process the data based on the content type.
-     * @param {Boolean} [options.rejectOnCancel=true] Whether to reject the promise if the request is cancelled.
-     * @param {object} [options.headers] Additional headers to send with the request.
-     * @param {Boolean|function} [options.afterSend=null] A callback to execute after making the request.
-     * @param {Boolean|function} [options.beforeSend=null] A callback to execute before making the request.
-     * @param {Boolean|function} [options.onProgress=null] A callback to execute on download progress.
-     * @param {Boolean|function} [options.onUploadProgress=null] A callback to execute on upload progress.
-     * @return {AjaxRequest} A new AjaxRequest that resolves when the request is completed, or rejects on failure.
+     * Performs an XHR DELETE request.
+     * @param {string|null} [url] The request URL.
+     * @param {AjaxOptions} [options] The request options. The method defaults to `DELETE`.
+     * @returns {AjaxRequest} A new AjaxRequest that resolves when the request is completed, or rejects on failure.
      */
     function _delete(url, options) {
         return new AjaxRequest({
@@ -1855,53 +1882,19 @@
         });
     }
     /**
-     * New AjaxRequest constructor.
-     * @param {object} [options] The options to use for the request.
-     * @param {string} [options.url=window.location] The URL of the request.
-     * @param {string} [options.method=GET] The HTTP method of the request.
-     * @param {Boolean|string|array|object|FormData} [options.data=null] The data to send with the request.
-     * @param {Boolean|string} [options.contentType=application/x-www-form-urlencoded] The content type of the request.
-     * @param {Boolean|string} [options.responseType] The content type of the response.
-     * @param {string} [options.mimeType] The MIME type to use.
-     * @param {string} [options.username] The username to authenticate with.
-     * @param {string} [options.password] The password to authenticate with.
-     * @param {number} [options.timeout] The number of milliseconds before the request will be terminated.
-     * @param {Boolean} [options.isLocal] Whether to treat the request as a local request.
-     * @param {Boolean} [options.cache=true] Whether to cache the request.
-     * @param {Boolean} [options.processData=true] Whether to process the data based on the content type.
-     * @param {Boolean} [options.rejectOnCancel=true] Whether to reject the promise if the request is cancelled.
-     * @param {object} [options.headers] Additional headers to send with the request.
-     * @param {Boolean|function} [options.afterSend=null] A callback to execute after making the request.
-     * @param {Boolean|function} [options.beforeSend=null] A callback to execute before making the request.
-     * @param {Boolean|function} [options.onProgress=null] A callback to execute on download progress.
-     * @param {Boolean|function} [options.onUploadProgress=null] A callback to execute on upload progress.
-     * @return {AjaxRequest} A new AjaxRequest that resolves when the request is completed, or rejects on failure.
+     * Creates an AJAX request.
+     * @param {AjaxOptions} [options] The request options.
+     * @returns {AjaxRequest} A new AjaxRequest that resolves when the request is completed, or rejects on failure.
      */
     function ajax(options) {
         return new AjaxRequest(options);
     }
     /**
-     * Perform an XHR GET request.
-     * @param {string} url The URL of the request.
-     * @param {string|array|object} data The data to send with the request.
-     * @param {object} [options] The options to use for the request.
-     * @param {string} [options.method=GET] The HTTP method of the request.
-     * @param {Boolean|string} [options.contentType=application/x-www-form-urlencoded] The content type of the request.
-     * @param {Boolean|string} [options.responseType] The content type of the response.
-     * @param {string} [options.mimeType] The MIME type to use.
-     * @param {string} [options.username] The username to authenticate with.
-     * @param {string} [options.password] The password to authenticate with.
-     * @param {number} [options.timeout] The number of milliseconds before the request will be terminated.
-     * @param {Boolean} [options.isLocal] Whether to treat the request as a local request.
-     * @param {Boolean} [options.cache=true] Whether to cache the request.
-     * @param {Boolean} [options.processData=true] Whether to process the data based on the content type.
-     * @param {Boolean} [options.rejectOnCancel=true] Whether to reject the promise if the request is cancelled.
-     * @param {object} [options.headers] Additional headers to send with the request.
-     * @param {Boolean|function} [options.afterSend=null] A callback to execute after making the request.
-     * @param {Boolean|function} [options.beforeSend=null] A callback to execute before making the request.
-     * @param {Boolean|function} [options.onProgress=null] A callback to execute on download progress.
-     * @param {Boolean|function} [options.onUploadProgress=null] A callback to execute on upload progress.
-     * @return {AjaxRequest} A new AjaxRequest that resolves when the request is completed, or rejects on failure.
+     * Performs an XHR GET request.
+     * @param {string|null} [url] The request URL.
+     * @param {AjaxData} [data] The request data.
+     * @param {AjaxOptions} [options] The request options.
+     * @returns {AjaxRequest} A new AjaxRequest that resolves when the request is completed, or rejects on failure.
      */
     function get(url, data, options) {
         return new AjaxRequest({
@@ -1911,27 +1904,11 @@
         });
     }
     /**
-     * Perform an XHR PATCH request.
-     * @param {string} url The URL of the request.
-     * @param {string|array|object|FormData} data The data to send with the request.
-     * @param {object} [options] The options to use for the request.
-     * @param {string} [options.method=PATCH] The HTTP method of the request.
-     * @param {Boolean|string} [options.contentType=application/x-www-form-urlencoded] The content type of the request.
-     * @param {Boolean|string} [options.responseType] The content type of the response.
-     * @param {string} [options.mimeType] The MIME type to use.
-     * @param {string} [options.username] The username to authenticate with.
-     * @param {string} [options.password] The password to authenticate with.
-     * @param {number} [options.timeout] The number of milliseconds before the request will be terminated.
-     * @param {Boolean} [options.isLocal] Whether to treat the request as a local request.
-     * @param {Boolean} [options.cache=true] Whether to cache the request.
-     * @param {Boolean} [options.processData=true] Whether to process the data based on the content type.
-     * @param {Boolean} [options.rejectOnCancel=true] Whether to reject the promise if the request is cancelled.
-     * @param {object} [options.headers] Additional headers to send with the request.
-     * @param {Boolean|function} [options.afterSend=null] A callback to execute after making the request.
-     * @param {Boolean|function} [options.beforeSend=null] A callback to execute before making the request.
-     * @param {Boolean|function} [options.onProgress=null] A callback to execute on download progress.
-     * @param {Boolean|function} [options.onUploadProgress=null] A callback to execute on upload progress.
-     * @return {AjaxRequest} A new AjaxRequest that resolves when the request is completed, or rejects on failure.
+     * Performs an XHR PATCH request.
+     * @param {string|null} [url] The request URL.
+     * @param {AjaxData} [data] The request data.
+     * @param {AjaxOptions} [options] The request options. The method defaults to `PATCH`.
+     * @returns {AjaxRequest} A new AjaxRequest that resolves when the request is completed, or rejects on failure.
      */
     function patch(url, data, options) {
         return new AjaxRequest({
@@ -1942,27 +1919,11 @@
         });
     }
     /**
-     * Perform an XHR POST request.
-     * @param {string} url The URL of the request.
-     * @param {string|array|object|FormData} data The data to send with the request.
-     * @param {object} [options] The options to use for the request.
-     * @param {string} [options.method=POST] The HTTP method of the request.
-     * @param {Boolean|string} [options.contentType=application/x-www-form-urlencoded] The content type of the request.
-     * @param {Boolean|string} [options.responseType] The content type of the response.
-     * @param {string} [options.mimeType] The MIME type to use.
-     * @param {string} [options.username] The username to authenticate with.
-     * @param {string} [options.password] The password to authenticate with.
-     * @param {number} [options.timeout] The number of milliseconds before the request will be terminated.
-     * @param {Boolean} [options.isLocal] Whether to treat the request as a local request.
-     * @param {Boolean} [options.cache=true] Whether to cache the request.
-     * @param {Boolean} [options.processData=true] Whether to process the data based on the content type.
-     * @param {Boolean} [options.rejectOnCancel=true] Whether to reject the promise if the request is cancelled.
-     * @param {object} [options.headers] Additional headers to send with the request.
-     * @param {Boolean|function} [options.afterSend=null] A callback to execute after making the request.
-     * @param {Boolean|function} [options.beforeSend=null] A callback to execute before making the request.
-     * @param {Boolean|function} [options.onProgress=null] A callback to execute on download progress.
-     * @param {Boolean|function} [options.onUploadProgress=null] A callback to execute on upload progress.
-     * @return {AjaxRequest} A new AjaxRequest that resolves when the request is completed, or rejects on failure.
+     * Performs an XHR POST request.
+     * @param {string|null} [url] The request URL.
+     * @param {AjaxData} [data] The request data.
+     * @param {AjaxOptions} [options] The request options. The method defaults to `POST`.
+     * @returns {AjaxRequest} A new AjaxRequest that resolves when the request is completed, or rejects on failure.
      */
     function post(url, data, options) {
         return new AjaxRequest({
@@ -1973,27 +1934,11 @@
         });
     }
     /**
-     * Perform an XHR PUT request.
-     * @param {string} url The URL of the request.
-     * @param {string|array|object|FormData} data The data to send with the request.
-     * @param {object} [options] The options to use for the request.
-     * @param {string} [options.method=PUT] The HTTP method of the request.
-     * @param {Boolean|string} [options.contentType=application/x-www-form-urlencoded] The content type of the request.
-     * @param {Boolean|string} [options.responseType] The content type of the response.
-     * @param {string} [options.mimeType] The MIME type to use.
-     * @param {string} [options.username] The username to authenticate with.
-     * @param {string} [options.password] The password to authenticate with.
-     * @param {number} [options.timeout] The number of milliseconds before the request will be terminated.
-     * @param {Boolean} [options.isLocal] Whether to treat the request as a local request.
-     * @param {Boolean} [options.cache=true] Whether to cache the request.
-     * @param {Boolean} [options.processData=true] Whether to process the data based on the content type.
-     * @param {Boolean} [options.rejectOnCancel=true] Whether to reject the promise if the request is cancelled.
-     * @param {object} [options.headers] Additional headers to send with the request.
-     * @param {Boolean|function} [options.afterSend=null] A callback to execute after making the request.
-     * @param {Boolean|function} [options.beforeSend=null] A callback to execute before making the request.
-     * @param {Boolean|function} [options.onProgress=null] A callback to execute on download progress.
-     * @param {Boolean|function} [options.onUploadProgress=null] A callback to execute on upload progress.
-     * @return {AjaxRequest} A new AjaxRequest that resolves when the request is completed, or rejects on failure.
+     * Performs an XHR PUT request.
+     * @param {string|null} [url] The request URL.
+     * @param {AjaxData} [data] The request data.
+     * @param {AjaxOptions} [options] The request options. The method defaults to `PUT`.
+     * @returns {AjaxRequest} A new AjaxRequest that resolves when the request is completed, or rejects on failure.
      */
     function put(url, data, options) {
         return new AjaxRequest({
@@ -2005,30 +1950,29 @@
     }
 
     /**
-     * QuerySet Class
-     * @class
+     * Represents an ordered, chainable collection of DOM nodes.
      */
     class QuerySet {
         /**
-         * New DOM constructor.
-         * @param {array} nodes The input nodes.
+         * Creates a QuerySet.
+         * @param {Array<Node|Window>} [nodes=[]] The input nodes.
          */
         constructor(nodes = []) {
             this._nodes = nodes;
         }
 
         /**
-         * Get the number of nodes.
-         * @return {number} The number of nodes.
+         * Gets the number of nodes.
+         * @returns {number} The number of nodes.
          */
         get length() {
             return this._nodes.length;
         }
 
         /**
-         * Execute a function for each node in the set.
-         * @param {function} callback The callback to execute
-         * @return {QuerySet} The QuerySet object.
+         * Executes a function for each node in the set.
+         * @param {((node: Node|Window, index: number) => void)} callback The callback to execute.
+         * @returns {this} The current QuerySet.
          */
         each(callback) {
             this._nodes.forEach(
@@ -2039,9 +1983,9 @@
         }
 
         /**
-         * Retrieve the DOM node(s) contained in the QuerySet.
+         * Retrieves the DOM node(s) contained in the QuerySet.
          * @param {number} [index=null] The index of the node.
-         * @return {array|Node|Document|Window} The node(s).
+         * @returns {Array<Node|Window>|Node|Window|undefined} The nodes, or the node at the specified index.
          */
         get(index = null) {
             if (index === null) {
@@ -2054,9 +1998,9 @@
         }
 
         /**
-         * Execute a function for each node in the set.
-         * @param {function} callback The callback to execute
-         * @return {QuerySet} A new QuerySet object.
+         * Executes a function for each node in the set.
+         * @param {((node: Node|Window, index: number) => (Node|Window))} callback The callback to execute.
+         * @returns {QuerySet} A new QuerySet object.
          */
         map(callback) {
             const nodes = this._nodes.map(callback);
@@ -2065,10 +2009,10 @@
         }
 
         /**
-         * Reduce the set of matched nodes to a subset specified by a range of indices.
+         * Reduces the set of matched nodes to a subset specified by a range of indices.
          * @param {number} [begin] The index to slice from.
          * @param {number} [end]  The index to slice to.
-         * @return {QuerySet} A new QuerySet object.
+         * @returns {QuerySet} A new QuerySet object.
          */
         slice(begin, end) {
             const nodes = this._nodes.slice(begin, end);
@@ -2077,8 +2021,8 @@
         }
 
         /**
-         * Return an iterable from the nodes.
-         * @return {ArrayIterator} The iterator object.
+         * Returns an iterable from the nodes.
+         * @returns {IterableIterator<Node|Window>} The node iterator.
          */
         [Symbol.iterator]() {
             return this._nodes.values();
@@ -2086,15 +2030,29 @@
     }
 
     /**
-     * DOM Helpers
+     * @typedef {string|Element|Array<string|Element>|NodeList|HTMLCollection|QuerySet} ElementInput
      */
 
     /**
-     * Resolve a single node.
-     * @param {string|Node|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector or HTML string.
-     * @param {function} stringCallback The callback used to resolve strings.
-     * @param {DOM~nodeCallback} nodeFilter The callback used to filter nodes.
-     * @return {Node|HTMLElement|DocumentFragment|ShadowRoot|Document|Window} The resolved node.
+     * @typedef {string|Node|Array<string|Node>|NodeList|HTMLCollection|QuerySet} NodeInput
+     */
+
+    /**
+     * @typedef {string|Node|Window|Array<string|Node|Window>|NodeList|HTMLCollection|QuerySet} QueryInput
+     */
+
+    /**
+     * @callback NodeFilterCallback
+     * @param {Node|Window} node The node to test.
+     * @returns {boolean} Whether the node matches.
+     */
+
+    /**
+     * Resolves a single node.
+     * @param {QueryInput} nodes The input node(s), or a query selector or HTML string.
+     * @param {((value: string) => (Node|Window|null|undefined))} stringCallback The callback used to resolve strings.
+     * @param {NodeFilterCallback} nodeFilter The callback used to filter nodes.
+     * @returns {Node|Window|null|undefined} The resolved node, or `undefined` if none matches.
      */
     function resolveNode(nodes, stringCallback, nodeFilter) {
         if (isString(nodes)) {
@@ -2118,11 +2076,11 @@
         }
     }
     /**
-     * Resolve multiple nodes.
-     * @param {string|Node|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector or HTML string.
-     * @param {function} stringCallback The callback used to resolve strings.
-     * @param {DOM~nodeCallback} nodeFilter The callback used to filter nodes.
-     * @return {array} The resolved nodes.
+     * Resolves multiple nodes.
+     * @param {QueryInput} nodes The input node(s), or a query selector or HTML string.
+     * @param {((value: string) => Array<Node|Window>)} stringCallback The callback used to resolve strings.
+     * @param {NodeFilterCallback} nodeFilter The callback used to filter nodes.
+     * @returns {Array<Node|Window>} The resolved nodes.
      */
     function resolveNodes(nodes, stringCallback, nodeFilter) {
         if (isString(nodes)) {
@@ -2144,9 +2102,10 @@
         return [];
     }
     /**
-     * Create a wrapped version of a function that executes once per tick.
-     * @param {function} callback Callback function to debounce.
-     * @return {function} The wrapped function.
+     * Creates a wrapped version of a function that executes once per tick.
+     * @template {(...args: any[]) => any} T
+     * @param {T} callback The callback to debounce.
+     * @returns {(...args: Parameters<T>) => void} The wrapped function.
      */
     function debounce(callback) {
         let running;
@@ -2165,17 +2124,17 @@
         };
     }
     /**
-     * Return a RegExp for testing a namespaced event.
+     * Returns a RegExp for testing a namespaced event.
      * @param {string} event The namespaced event.
-     * @return {RegExp} The namespaced event RegExp.
+     * @returns {RegExp} The namespaced event RegExp.
      */
     function eventNamespacedRegExp(event) {
         return new RegExp(`^${escapeRegExp(event)}(?:\\.|$)`, 'i');
     }
     /**
-     * Return a single dimensional array of classes (from a multi-dimensional array or space-separated strings).
-     * @param {array} classList The classes to parse.
-     * @return {string[]} The parsed classes.
+     * Returns a one-dimensional array of classes from nested arrays or space-separated strings.
+     * @param {Array<string|string[]>} classList The classes to parse.
+     * @returns {string[]} The parsed classes.
      */
     function parseClasses(classList) {
         return classList
@@ -2184,12 +2143,11 @@
             .filter((val) => !!val);
     }
     /**
-     * Return a data object from a key and value, or a data object.
-     * @param {string|object} key The data key, or an object containing data.
+     * Normalizes a key and value, or an existing data object, into a data object.
+     * @param {string|Record<string, *>} key The data key, or an object containing data.
      * @param {*} [value] The data value.
-     * @param {object} [options] The options for parsing data.
-     * @param {Boolean} [options.json=false] Whether to JSON encode the values.
-     * @return {object} The data object.
+     * @param {{json?: boolean}} [options] The options for parsing data.
+     * @returns {Record<string, *>} The data object.
      */
     function parseData(key, value, { json = false } = {}) {
         const result = isString(key) ?
@@ -2206,9 +2164,9 @@
         );
     }
     /**
-     * Return a JS primitive from a dataset string.
+     * Parses a dataset string into a JavaScript value.
      * @param {string} value The input value.
-     * @return {*} The parsed value.
+     * @returns {boolean|number|Record<string, *>|Array<*>|string|null|undefined} The parsed value.
      */
     function parseDataset(value) {
         if (isUndefined(value)) {
@@ -2245,43 +2203,38 @@
         return value;
     }
     /**
-     * Return a "real" event from a namespaced event.
+     * Returns the base event name from a namespaced event.
      * @param {string} event The namespaced event.
-     * @return {string} The real event.
+     * @returns {string} The real event.
      */
     function parseEvent(event) {
         return event.split('.')
             .shift();
     }
     /**
-     * Return an array of events from a space-separated string.
+     * Returns an array of events from a space-separated string.
      * @param {string} events The events.
-     * @return {array} The parsed events.
+     * @returns {string[]} The parsed events.
      */
     function parseEvents(events) {
         return events.split(' ');
     }
 
-    /**
-     * DOM Parser
-     */
-
     const parser = new DOMParser();
 
     /**
-     * Create a Document object from a string.
+     * Creates a Document object from a string.
      * @param {string} input The input string.
-     * @param {object} [options] The options for parsing the string.
-     * @param {string} [options.contentType=text/html] The content type.
-     * @return {Document} A new Document object.
+     * @param {{contentType?: DOMParserSupportedType}} [options] The parsing options.
+     * @returns {Document} A new Document object.
      */
     function parseDocument(input, { contentType = 'text/html' } = {}) {
         return parser.parseFromString(input, contentType);
     }
     /**
-     * Create an Array containing nodes parsed from a HTML string.
+     * Creates an array containing elements parsed from an HTML string.
      * @param {string} html The HTML input string.
-     * @return {array} An array of nodes.
+     * @returns {Element[]} The parsed elements.
      */
     function parseHTML(html) {
         const childNodes = getContext()
@@ -2292,14 +2245,21 @@
         return merge([], childNodes);
     }
 
+    /** @typedef {import('../query/query-set.js').default} QuerySet */
+
     /**
-     * DOM Find
+     * @typedef {Element|Document|DocumentFragment|ShadowRoot} QueryContext
      */
 
     /**
-     * Resolve one or more find contexts without using the higher-level node parser.
-     * @param {*} context The input context.
-     * @return {array} The resolved contexts.
+     * @typedef {string|QueryContext|Array<string|QueryContext>|NodeList|HTMLCollection|QuerySet} QueryContextInput
+     * A query context, collection of query contexts, QuerySet, or selector string.
+     */
+
+    /**
+     * Resolves one or more find contexts without using the higher-level node parser.
+     * @param {QueryContextInput} context The input context.
+     * @returns {QueryContext[]} The resolved contexts.
      */
     function resolveContexts(context) {
         const nodeFilter = (node) => isDocument(node) || isElement(node) || isFragment(node) || isShadow(node);
@@ -2315,10 +2275,10 @@
             results;
     }
     /**
-     * Return all nodes matching a selector.
+     * Returns all nodes matching a selector.
      * @param {string} selector The query selector.
-     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|NodeList|HTMLCollection|QuerySet} [context=getContext()] The input node(s), or a query selector string.
-     * @return {array} The matching nodes.
+     * @param {QueryContextInput} [context=getContext()] The query context.
+     * @returns {Element[]} The matching nodes.
      */
     function find$1(selector, context = getContext()) {
         if (!selector) {
@@ -2359,10 +2319,10 @@
             results;
     }
     /**
-     * Return all nodes with a specific class.
+     * Returns all nodes with a specific class.
      * @param {string} className The class name.
-     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|NodeList|HTMLCollection|QuerySet} [context=getContext()] The input node(s), or a query selector string.
-     * @return {array} The matching nodes.
+     * @param {QueryContextInput} [context=getContext()] The query context.
+     * @returns {Element[]} The matching nodes.
      */
     function findByClass$1(className, context = getContext()) {
         if (isDocument(context) || isElement(context)) {
@@ -2390,10 +2350,10 @@
             results;
     }
     /**
-     * Return all nodes with a specific ID.
+     * Returns all nodes with a specific ID.
      * @param {string} id The id.
-     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|NodeList|HTMLCollection|QuerySet} [context=getContext()] The input node(s), or a query selector string.
-     * @return {array} The matching nodes.
+     * @param {QueryContextInput} [context=getContext()] The query context.
+     * @returns {Element[]} The matching nodes.
      */
     function findById$1(id, context = getContext()) {
         if (isDocument(context) || isElement(context) || isFragment(context) || isShadow(context)) {
@@ -2415,10 +2375,10 @@
             results;
     }
     /**
-     * Return all nodes with a specific tag.
+     * Returns all nodes with a specific tag.
      * @param {string} tagName The tag name.
-     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|NodeList|HTMLCollection|QuerySet} [context=getContext()] The input node(s), or a query selector string.
-     * @return {array} The matching nodes.
+     * @param {QueryContextInput} [context=getContext()] The query context.
+     * @returns {Element[]} The matching nodes.
      */
     function findByTag$1(tagName, context = getContext()) {
         if (isDocument(context) || isElement(context)) {
@@ -2446,10 +2406,10 @@
             results;
     }
     /**
-     * Return a single node matching a selector.
+     * Returns a single node matching a selector.
      * @param {string} selector The query selector.
-     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|NodeList|HTMLCollection|QuerySet} [context=getContext()] The input node(s), or a query selector string.
-     * @return {HTMLElement} The matching node.
+     * @param {QueryContextInput} [context=getContext()] The query context.
+     * @returns {Element|null|undefined} The matching element, or `undefined` if none matches.
      */
     function findOne$1(selector, context = getContext()) {
         if (!selector) {
@@ -2492,10 +2452,10 @@
         return null;
     }
     /**
-     * Return a single node with a specific class.
+     * Returns a single node with a specific class.
      * @param {string} className The class name.
-     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|NodeList|HTMLCollection|QuerySet} [context=getContext()] The input node(s), or a query selector string.
-     * @return {HTMLElement} The matching node.
+     * @param {QueryContextInput} [context=getContext()] The query context.
+     * @returns {Element|null|undefined} The matching element, or `undefined` if none matches.
      */
     function findOneByClass$1(className, context = getContext()) {
         if (isDocument(context) || isElement(context)) {
@@ -2525,10 +2485,10 @@
         return null;
     }
     /**
-     * Return a single node with a specific ID.
+     * Returns a single node with a specific ID.
      * @param {string} id The id.
-     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|NodeList|HTMLCollection|QuerySet} [context=getContext()] The input node(s), or a query selector string.
-     * @return {HTMLElement} The matching element.
+     * @param {QueryContextInput} [context=getContext()] The query context.
+     * @returns {Element|null|undefined} The matching element, or `undefined` if none matches.
      */
     function findOneById$1(id, context = getContext()) {
         if (isDocument(context)) {
@@ -2558,10 +2518,10 @@
         return null;
     }
     /**
-     * Return a single node with a specific tag.
+     * Returns a single node with a specific tag.
      * @param {string} tagName The tag name.
-     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|NodeList|HTMLCollection|QuerySet} [context=getContext()] The input node(s), or a query selector string.
-     * @return {HTMLElement} The matching node.
+     * @param {QueryContextInput} [context=getContext()] The query context.
+     * @returns {Element|null|undefined} The matching element, or `undefined` if none matches.
      */
     function findOneByTag$1(tagName, context = getContext()) {
         if (isDocument(context) || isElement(context)) {
@@ -2592,14 +2552,32 @@
     }
 
     /**
-     * DOM Filters
+     * @typedef {import('./helpers.js').NodeFilterCallback} NodeFilterCallback
+     * @typedef {import('./helpers.js').NodeInput} NodeInput
+     * @typedef {import('./helpers.js').QueryInput} QueryInput
+     * @typedef {import('./traversal/find.js').QueryContextInput} QueryContextInput
      */
 
     /**
-     * Return a node filter callback.
-     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet|DOM~filterCallback} filter The filter node(s), a query selector string or custom filter function.
-     * @param {Boolean} [defaultValue=true] The default return value.
-     * @return {DOM~filterCallback} The node filter callback.
+     * @typedef {NodeInput|NodeFilterCallback} NodeFilterInput
+     */
+
+    /**
+     * @typedef {object} NodeParseOptions
+     * @property {boolean} [node=false] Whether to allow text and comment nodes.
+     * @property {boolean} [fragment=false] Whether to allow DocumentFragment.
+     * @property {boolean} [shadow=false] Whether to allow ShadowRoot.
+     * @property {boolean} [document=false] Whether to allow Document.
+     * @property {boolean} [window=false] Whether to allow Window.
+     * @property {boolean} [html=false] Whether to allow HTML strings.
+     * @property {QueryContextInput} [context] The query context.
+     */
+
+    /**
+     * Returns a node filter callback.
+     * @param {NodeFilterInput} filter The filter node(s), a query selector string or custom filter function.
+     * @param {boolean} [defaultValue=true] The default return value.
+     * @returns {NodeFilterCallback} The node filter callback.
      */
     function parseFilter(filter, defaultValue = true) {
         if (!filter) {
@@ -2631,10 +2609,10 @@
         return (_) => !defaultValue;
     }
     /**
-     * Return a node contains filter callback.
-     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet|DOM~filterCallback} filter The filter node(s), a query selector string or custom filter function.
-     * @param {Boolean} [defaultValue=true] The default return value.
-     * @return {DOM~filterCallback} The node contains filter callback.
+     * Returns a node-containment filter callback.
+     * @param {NodeFilterInput} filter The filter node(s), a query selector string or custom filter function.
+     * @param {boolean} [defaultValue=true] The default return value.
+     * @returns {NodeFilterCallback} The node contains filter callback.
      */
     function parseFilterContains(filter, defaultValue = true) {
         if (!filter) {
@@ -2666,17 +2644,10 @@
         return (_) => !defaultValue;
     }
     /**
-     * Return the first node matching a filter.
-     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector or HTML string.
-     * @param {object} [options] The options for filtering.
-     * @param {Boolean} [options.node=false] Whether to allow text and comment nodes.
-     * @param {Boolean} [options.fragment=false] Whether to allow DocumentFragment.
-     * @param {Boolean} [options.shadow=false] Whether to allow ShadowRoot.
-     * @param {Boolean} [options.document=false] Whether to allow Document.
-     * @param {Boolean} [options.window=false] Whether to allow Window.
-     * @param {Boolean} [options.html=false] Whether to allow HTML strings.
-     * @param {HTMLElement|Document} [options.context=getContext()] The Document context.
-     * @return {Node|HTMLElement|DocumentFragment|ShadowRoot|Document|Window} The matching node.
+     * Returns the first node matching a filter.
+     * @param {QueryInput} nodes The input node(s), or a query selector or HTML string.
+     * @param {NodeParseOptions} [options] The parsing options.
+     * @returns {Node|Window|null|undefined} The matching node, or `undefined` if none matches.
      */
     function parseNode(nodes, options = {}) {
         const filter = parseNodesFilter(options);
@@ -2698,17 +2669,10 @@
         }
     }
     /**
-     * Return a filtered array of nodes.
-     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|NodeList|HTMLCollection|QuerySet} nodes The input node(s), or a query selector or HTML string.
-     * @param {object} [options] The options for filtering.
-     * @param {Boolean} [options.node=false] Whether to allow text and comment nodes.
-     * @param {Boolean} [options.fragment=false] Whether to allow DocumentFragment.
-     * @param {Boolean} [options.shadow=false] Whether to allow ShadowRoot.
-     * @param {Boolean} [options.document=false] Whether to allow Document.
-     * @param {Boolean} [options.window=false] Whether to allow Window.
-     * @param {Boolean} [options.html=false] Whether to allow HTML strings.
-     * @param {HTMLElement|DocumentFragment|ShadowRoot|Document} [options.context=getContext()] The Document context.
-     * @return {array} The filtered array of nodes.
+     * Returns a filtered array of nodes.
+     * @param {QueryInput} nodes The input node(s), or a query selector or HTML string.
+     * @param {NodeParseOptions} [options] The parsing options.
+     * @returns {Array<Node|Window>} The filtered array of nodes.
      */
     function parseNodes(nodes, options = {}) {
         const filter = parseNodesFilter(options);
@@ -2728,14 +2692,9 @@
             results;
     }
     /**
-     * Return a function for filtering nodes.
-     * @param {object} [options] The options for filtering.
-     * @param {Boolean} [options.node=false] Whether to allow text and comment nodes.
-     * @param {Boolean} [options.fragment=false] Whether to allow DocumentFragment.
-     * @param {Boolean} [options.shadow=false] Whether to allow ShadowRoot.
-     * @param {Boolean} [options.document=false] Whether to allow Document.
-     * @param {Boolean} [options.window=false] Whether to allow Window.
-     * @return {DOM~nodeCallback} The node filter function.
+     * Returns a function for filtering nodes.
+     * @param {NodeParseOptions} [options] The parsing options.
+     * @returns {NodeFilterCallback} The node filter function.
      */
     function parseNodesFilter(options) {
         if (!options) {
@@ -2768,10 +2727,6 @@
 
         return (node) => callbacks.some((callback) => callback(node));
     }
-
-    /**
-     * DOM Variables
-     */
 
     const CONTENT_BOX = 0;
     const PADDING_BOX = 1;
@@ -2831,13 +2786,17 @@
     const styles = new WeakMap();
 
     /**
-    * AnimationSet Class
-    * @class
-    */
+     * @typedef {import('./animation.js').default} Animation
+     * @typedef {import('./animation.js').StopAnimationOptions} StopAnimationOptions
+     */
+
+    /**
+     * Represents a Promise-compatible collection of animations.
+     */
     class AnimationSet {
         /**
-         * New AnimationSet constructor.
-         * @param {array} animations The animations.
+         * Creates an animation set.
+         * @param {Animation[]} animations The animations.
          */
         constructor(animations) {
             this._animations = animations;
@@ -2845,28 +2804,27 @@
         }
 
         /**
-         * Execute a callback if any of the animations is rejected.
-         * @param {function} [onRejected] The callback to execute if an animation is rejected.
-         * @return {Promise} The promise.
+         * Executes a callback if any of the animations is rejected.
+         * @param {((reason: HTMLElement) => *)} [onRejected] The callback to execute if an animation is rejected.
+         * @returns {Promise<*>} The resulting promise.
          */
         catch(onRejected) {
             return this._promise.catch(onRejected);
         }
 
         /**
-         * Execute a callback once the animation is settled (resolved or rejected).
-         * @param {function} [onFinally] The callback to execute once the animation is settled.
-         * @return {Promise} The promise.
+         * Executes a callback once the animation is settled (resolved or rejected).
+         * @param {(() => void)} [onFinally] The callback to execute once the animation set is settled.
+         * @returns {Promise<*>} The resulting promise.
          */
         finally(onFinally) {
             return this._promise.finally(onFinally);
         }
 
         /**
-         * Stop the animations.
-         * @param {object} [options] The options for stopping the animation.
-         * @param {Boolean} [options.finish=true] Whether to finish the animations.
-        */
+         * Stops the animations.
+         * @param {StopAnimationOptions} [options] The stopping options.
+         */
         stop({ finish = true } = {}) {
             for (const animation of this._animations) {
                 animation.stop({ finish });
@@ -2874,10 +2832,10 @@
         }
 
         /**
-         * Execute a callback once the animation is resolved (or optionally rejected).
-         * @param {function} onFulfilled The callback to execute if the animation is resolved.
-         * @param {function} [onRejected] The callback to execute if the animation is rejected.
-         * @return {Promise} The promise.
+         * Executes a callback once the animation is resolved (or optionally rejected).
+         * @param {((value: HTMLElement[]) => *)} onFulfilled The callback to execute if the animations resolve.
+         * @param {((reason: HTMLElement) => *)} [onRejected] The callback to execute if an animation is rejected.
+         * @returns {Promise<*>} The resulting promise.
          */
         then(onFulfilled, onRejected) {
             return this._promise.then(onFulfilled, onRejected);
@@ -2886,21 +2844,17 @@
 
     Object.setPrototypeOf(AnimationSet.prototype, Promise.prototype);
 
-    /**
-     * Animation Helpers
-     */
-
     let animating = false;
 
     /**
-     * Get the current time.
-     * @return {number} The current time.
+     * Gets the current time.
+     * @returns {number} The current time.
      */
     function getTime() {
         return performance.now();
     }
     /**
-     * Start the animation loop (if not already started).
+     * Starts the animation loop (if not already started).
      */
     function start() {
         if (animating) {
@@ -2911,7 +2865,7 @@
         update();
     }
     /**
-     * Run a single frame of all animations, and then queue up the next frame.
+     * Runs a single frame of all animations, and then queue up the next frame.
      */
     function update() {
         const time = getTime();
@@ -2936,19 +2890,54 @@
     }
 
     /**
-     * Animation Class
-     * @class
+     * @typedef {'linear'|'ease-in'|'ease-out'|'ease-in-out'} AnimationType
+     */
+
+    /**
+     * @typedef {'top'|'right'|'bottom'|'left'|(() => string)} AnimationDirection
+     */
+
+    /**
+     * @typedef {object} AnimationOptions
+     * @property {number} [duration=1000] The duration in milliseconds.
+     * @property {AnimationType} [type='ease-in-out'] The easing type.
+     * @property {boolean} [infinite=false] Whether to repeat indefinitely.
+     * @property {boolean} [debug=false] Whether to expose timing data on the element.
+     * @property {AnimationDirection} [direction] The animation direction.
+     * @property {boolean} [useGpu=true] Whether to use GPU-accelerated transforms.
+     * @property {number} [x=0] The X-axis rotation component.
+     * @property {number} [y=1] The Y-axis rotation component.
+     * @property {number} [z=0] The Z-axis rotation component.
+     * @property {boolean} [inverse=false] Whether to invert the rotation.
+     * @property {number} [start] The animation start time.
+     */
+
+    /**
+     * @typedef {AnimationOptions & {queueName?: string}} QueuedAnimationOptions
+     */
+
+    /**
+     * @typedef {object} StopAnimationOptions
+     * @property {boolean} [finish=true] Whether to finish the animation.
+     */
+
+    /**
+     * @callback AnimationCallback
+     * @param {HTMLElement} node The animated element.
+     * @param {number} progress The animation progress from 0 to 1.
+     * @param {AnimationOptions} options The resolved animation options.
+     * @returns {void} Nothing.
+     */
+
+    /**
+     * Represents a single Promise-compatible element animation.
      */
     class Animation {
         /**
-         * New Animation constructor.
+         * Creates an animation.
          * @param {HTMLElement} node The input node.
-         * @param {DOM~animationCallback} callback The animation callback.
-         * @param {object} [options] The options to use for the animation.
-         * @param {string} [options.type=ease-in-out] The type of animation
-         * @param {number} [options.duration=1000] The duration the animation should last.
-         * @param {Boolean} [options.infinite] Whether to repeat the animation.
-         * @param {Boolean} [options.debug] Whether to set debugging info on the node.
+         * @param {AnimationCallback} callback The animation callback.
+         * @param {AnimationOptions} [options] The animation options.
          */
         constructor(node, callback, options) {
             this._node = node;
@@ -2980,37 +2969,36 @@
         }
 
         /**
-         * Execute a callback if the animation is rejected.
-         * @param {function} [onRejected] The callback to execute if the animation is rejected.
-         * @return {Promise} The promise.
+         * Executes a callback if the animation is rejected.
+         * @param {((reason: HTMLElement) => *)} [onRejected] The callback to execute if the animation is rejected.
+         * @returns {Promise<*>} The resulting promise.
          */
         catch(onRejected) {
             return this._promise.catch(onRejected);
         }
 
         /**
-         * Clone the animation to a new node.
+         * Clones the animation to a new node.
          * @param {HTMLElement} node The input node.
-         * @return {Animation} The cloned Animation.
+         * @returns {Animation} The cloned Animation.
          */
         clone(node) {
             return new Animation(node, this._callback, this._options);
         }
 
         /**
-         * Execute a callback once the animation is settled (resolved or rejected).
-         * @param {function} [onFinally] The callback to execute once the animation is settled.
-         * @return {Promise} The promise.
+         * Executes a callback once the animation is settled (resolved or rejected).
+         * @param {(() => void)} [onFinally] The callback to execute once the animation is settled.
+         * @returns {Promise<*>} The resulting promise.
          */
         finally(onFinally) {
             return this._promise.finally(onFinally);
         }
 
         /**
-         * Stop the animation.
-         * @param {object} [options] The options for stopping the animation.
-         * @param {Boolean} [options.finish=true] Whether to finish the animation.
-        */
+         * Stops the animation.
+         * @param {StopAnimationOptions} [options] The stopping options.
+         */
         stop({ finish = true } = {}) {
             if (this._isStopped || this._isFinished) {
                 return;
@@ -3037,19 +3025,19 @@
         }
 
         /**
-         * Execute a callback once the animation is resolved (or optionally rejected).
-         * @param {function} onFulfilled The callback to execute if the animation is resolved.
-         * @param {function} [onRejected] The callback to execute if the animation is rejected.
-         * @return {Promise} The promise.
+         * Executes a callback once the animation is resolved (or optionally rejected).
+         * @param {((value: HTMLElement) => *)} onFulfilled The callback to execute if the animation is resolved.
+         * @param {((reason: HTMLElement) => *)} [onRejected] The callback to execute if the animation is rejected.
+         * @returns {Promise<*>} The resulting promise.
          */
         then(onFulfilled, onRejected) {
             return this._promise.then(onFulfilled, onRejected);
         }
 
         /**
-         * Run a single frame of the animation.
+         * Runs a single frame of the animation.
          * @param {number} [time] The current time.
-         * @return {Boolean} TRUE if the animation is finished, otherwise FALSE.
+         * @returns {boolean} Whether the animation is finished.
          */
         update(time = null) {
             if (this._isStopped) {
@@ -3112,19 +3100,18 @@
     Object.setPrototypeOf(Animation.prototype, Promise.prototype);
 
     /**
-     * DOM Animate
+     * @typedef {import('../helpers.js').ElementInput} ElementInput
+     * @typedef {import('./animation.js').AnimationCallback} AnimationCallback
+     * @typedef {import('./animation.js').AnimationOptions} AnimationOptions
+     * @typedef {import('./animation.js').StopAnimationOptions} StopAnimationOptions
      */
 
     /**
-     * Add an animation to each node.
-     * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
-     * @param {DOM~animationCallback} callback The animation callback.
-     * @param {object} [options] The options to use for animating.
-     * @param {number} [options.duration=1000] The duration of the animation.
-     * @param {string} [options.type=ease-in-out] The type of animation.
-     * @param {Boolean} [options.infinite] Whether the animation should run forever.
-     * @param {Boolean} [options.debug] Whether to set debugging info on the node.
-     * @return {AnimationSet} A new AnimationSet that resolves when the animation has completed.
+     * Adds an animation to each node.
+     * @param {ElementInput} selector The input node(s), or a query selector string.
+     * @param {AnimationCallback} callback The animation callback.
+     * @param {AnimationOptions} [options] The animation options.
+     * @returns {AnimationSet} A new AnimationSet that resolves when the animation has completed.
      */
     function animate$1(selector, callback, options) {
         const nodes = parseNodes(selector);
@@ -3136,10 +3123,9 @@
         return new AnimationSet(newAnimations);
     }
     /**
-     * Stop all animations for each node.
-     * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
-     * @param {object} [options] The options for stopping the animation.
-     * @param {Boolean} [options.finish=true] Whether to complete all current animations.
+     * Stops all animations for each node.
+     * @param {ElementInput} selector The input node(s), or a query selector string.
+     * @param {StopAnimationOptions} [options] The stopping options.
      */
     function stop$1(selector, { finish = true } = {}) {
         const nodes = parseNodes(selector);
@@ -3157,20 +3143,15 @@
     }
 
     /**
-     * DOM Animations
+     * @typedef {import('../helpers.js').ElementInput} ElementInput
+     * @typedef {import('./animation.js').AnimationOptions} AnimationOptions
      */
 
     /**
-     * Drop each node into place.
-     * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
-     * @param {object} [options] The options to use for animating.
-     * @param {string|function} [options.direction=top] The direction to drop the node from.
-     * @param {number} [options.duration=1000] The duration of the animation.
-     * @param {string} [options.type=ease-in-out] The type of animation.
-     * @param {Boolean} [options.infinite] Whether the animation should run forever.
-     * @param {Boolean} [options.useGpu=true] Whether the animation should use GPU acceleration.
-     * @param {Boolean} [options.debug] Whether to set debugging info on the node.
-     * @return {AnimationSet} A new AnimationSet that resolves when the animation has completed.
+     * Drops each node into place.
+     * @param {ElementInput} selector The input node(s), or a query selector string.
+     * @param {AnimationOptions} [options] The animation options.
+     * @returns {AnimationSet} A new AnimationSet that resolves when the animation has completed.
      */
     function dropIn$1(selector, options) {
         return slideIn$1(
@@ -3182,16 +3163,10 @@
         );
     }
     /**
-     * Drop each node out of place.
-     * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
-     * @param {object} [options] The options to use for animating.
-     * @param {string|function} [options.direction=top] The direction to drop the node to.
-     * @param {number} [options.duration=1000] The duration of the animation.
-     * @param {string} [options.type=ease-in-out] The type of animation.
-     * @param {Boolean} [options.infinite] Whether the animation should run forever.
-     * @param {Boolean} [options.useGpu=true] Whether the animation should use GPU acceleration.
-     * @param {Boolean} [options.debug] Whether to set debugging info on the node.
-     * @return {AnimationSet} A new AnimationSet that resolves when the animation has completed.
+     * Drops each node out of place.
+     * @param {ElementInput} selector The input node(s), or a query selector string.
+     * @param {AnimationOptions} [options] The animation options.
+     * @returns {AnimationSet} A new AnimationSet that resolves when the animation has completed.
      */
     function dropOut$1(selector, options) {
         return slideOut$1(
@@ -3203,14 +3178,10 @@
         );
     }
     /**
-     * Fade the opacity of each node in.
-     * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
-     * @param {object} [options] The options to use for animating.
-     * @param {number} [options.duration=1000] The duration of the animation.
-     * @param {string} [options.type=ease-in-out] The type of animation.
-     * @param {Boolean} [options.infinite] Whether the animation should run forever.
-     * @param {Boolean} [options.debug] Whether to set debugging info on the node.
-     * @return {AnimationSet} A new AnimationSet that resolves when the animation has completed.
+     * Fades the opacity of each node in.
+     * @param {ElementInput} selector The input node(s), or a query selector string.
+     * @param {AnimationOptions} [options] The animation options.
+     * @returns {AnimationSet} A new AnimationSet that resolves when the animation has completed.
      */
     function fadeIn$1(selector, options) {
         return animate$1(
@@ -3226,14 +3197,10 @@
         );
     }
     /**
-     * Fade the opacity of each node out.
-     * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
-     * @param {object} [options] The options to use for animating.
-     * @param {number} [options.duration=1000] The duration of the animation.
-     * @param {string} [options.type=ease-in-out] The type of animation.
-     * @param {Boolean} [options.infinite] Whether the animation should run forever.
-     * @param {Boolean} [options.debug] Whether to set debugging info on the node.
-     * @return {AnimationSet} A new AnimationSet that resolves when the animation has completed.
+     * Fades the opacity of each node out.
+     * @param {ElementInput} selector The input node(s), or a query selector string.
+     * @param {AnimationOptions} [options] The animation options.
+     * @returns {AnimationSet} A new AnimationSet that resolves when the animation has completed.
      */
     function fadeOut$1(selector, options) {
         return animate$1(
@@ -3249,18 +3216,10 @@
         );
     }
     /**
-     * Rotate each node in on an X, Y or Z.
-     * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
-     * @param {object} [options] The options to use for animating.
-     * @param {number} [options.x=0] The amount to rotate on the X-axis.
-     * @param {number} [options.y=1] The amount to rotate on the Y-axis.
-     * @param {number} [options.z=1] The amount to rotate on the Z-axis.
-     * @param {Boolean} [options.inverse] Whether to invert the rotation.
-     * @param {number} [options.duration=1000] The duration of the animation.
-     * @param {string} [options.type=ease-in-out] The type of animation.
-     * @param {Boolean} [options.infinite] Whether the animation should run forever.
-     * @param {Boolean} [options.debug] Whether to set debugging info on the node.
-     * @return {AnimationSet} A new AnimationSet that resolves when the animation has completed.
+     * Rotates each node in on an X, Y or Z.
+     * @param {ElementInput} selector The input node(s), or a query selector string.
+     * @param {AnimationOptions} [options] The animation options.
+     * @returns {AnimationSet} A new AnimationSet that resolves when the animation has completed.
      */
     function rotateIn$1(selector, options) {
         return animate$1(
@@ -3283,18 +3242,10 @@
         );
     }
     /**
-     * Rotate each node out on an X, Y or Z.
-     * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
-     * @param {object} [options] The options to use for animating.
-     * @param {number} [options.x=0] The amount to rotate on the X-axis.
-     * @param {number} [options.y=1] The amount to rotate on the Y-axis.
-     * @param {number} [options.z=1] The amount to rotate on the Z-axis.
-     * @param {Boolean} [options.inverse] Whether to invert the rotation.
-     * @param {number} [options.duration=1000] The duration of the animation.
-     * @param {string} [options.type=ease-in-out] The type of animation.
-     * @param {Boolean} [options.infinite] Whether the animation should run forever.
-     * @param {Boolean} [options.debug] Whether to set debugging info on the node.
-     * @return {AnimationSet} A new AnimationSet that resolves when the animation has completed.
+     * Rotates each node out on an X, Y or Z.
+     * @param {ElementInput} selector The input node(s), or a query selector string.
+     * @param {AnimationOptions} [options] The animation options.
+     * @returns {AnimationSet} A new AnimationSet that resolves when the animation has completed.
      */
     function rotateOut$1(selector, options) {
         return animate$1(
@@ -3317,16 +3268,10 @@
         );
     }
     /**
-     * Slide each node in from a direction.
-     * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
-     * @param {object} [options] The options to use for animating.
-     * @param {string|function} [options.direction=bottom] The direction to slide from.
-     * @param {number} [options.duration=1000] The duration of the animation.
-     * @param {string} [options.type=ease-in-out] The type of animation.
-     * @param {Boolean} [options.infinite] Whether the animation should run forever.
-     * @param {Boolean} [options.useGpu=true] Whether the animation should use GPU acceleration.
-     * @param {Boolean} [options.debug] Whether to set debugging info on the node.
-     * @return {AnimationSet} A new AnimationSet that resolves when the animation has completed.
+     * Slides each node in from a direction.
+     * @param {ElementInput} selector The input node(s), or a query selector string.
+     * @param {AnimationOptions} [options] The animation options.
+     * @returns {AnimationSet} A new AnimationSet that resolves when the animation has completed.
      */
     function slideIn$1(selector, options) {
         return animate$1(
@@ -3375,16 +3320,10 @@
         );
     }
     /**
-     * Slide each node out from a direction.
-     * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
-     * @param {object} [options] The options to use for animating.
-     * @param {string|function} [options.direction=bottom] The direction to slide to.
-     * @param {number} [options.duration=1000] The duration of the animation.
-     * @param {string} [options.type=ease-in-out] The type of animation.
-     * @param {Boolean} [options.infinite] Whether the animation should run forever.
-     * @param {Boolean} [options.useGpu=true] Whether the animation should use GPU acceleration.
-     * @param {Boolean} [options.debug] Whether to set debugging info on the node.
-     * @return {AnimationSet} A new AnimationSet that resolves when the animation has completed.
+     * Slides each node out from a direction.
+     * @param {ElementInput} selector The input node(s), or a query selector string.
+     * @param {AnimationOptions} [options] The animation options.
+     * @returns {AnimationSet} A new AnimationSet that resolves when the animation has completed.
      */
     function slideOut$1(selector, options) {
         return animate$1(
@@ -3433,16 +3372,10 @@
         );
     }
     /**
-     * Squeeze each node in from a direction.
-     * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
-     * @param {object} [options] The options to use for animating.
-     * @param {string|function} [options.direction=bottom] The direction to squeeze from.
-     * @param {number} [options.duration=1000] The duration of the animation.
-     * @param {string} [options.type=ease-in-out] The type of animation.
-     * @param {Boolean} [options.infinite] Whether the animation should run forever.
-     * @param {Boolean} [options.useGpu=true] Whether the animation should use GPU acceleration.
-     * @param {Boolean} [options.debug] Whether to set debugging info on the node.
-     * @return {AnimationSet} A new AnimationSet that resolves when the animation has completed.
+     * Squeezes each node in from a direction.
+     * @param {ElementInput} selector The input node(s), or a query selector string.
+     * @param {AnimationOptions} [options] The animation options.
+     * @returns {AnimationSet} A new AnimationSet that resolves when the animation has completed.
      */
     function squeezeIn$1(selector, options) {
         const nodes = parseNodes(selector);
@@ -3518,16 +3451,10 @@
         return new AnimationSet(newAnimations);
     }
     /**
-     * Squeeze each node out from a direction.
-     * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
-     * @param {object} [options] The options to use for animating.
-     * @param {string|function} [options.direction=bottom] The direction to squeeze to.
-     * @param {number} [options.duration=1000] The duration of the animation.
-     * @param {string} [options.type=ease-in-out] The type of animation.
-     * @param {Boolean} [options.infinite] Whether the animation should run forever.
-     * @param {Boolean} [options.useGpu=true] Whether the animation should use GPU acceleration.
-     * @param {Boolean} [options.debug] Whether to set debugging info on the node.
-     * @return {AnimationSet} A new AnimationSet that resolves when the animation has completed.
+     * Squeezes each node out from a direction.
+     * @param {ElementInput} selector The input node(s), or a query selector string.
+     * @param {AnimationOptions} [options] The animation options.
+     * @returns {AnimationSet} A new AnimationSet that resolves when the animation has completed.
      */
     function squeezeOut$1(selector, options) {
         const nodes = parseNodes(selector);
@@ -3603,16 +3530,25 @@
         return new AnimationSet(newAnimations);
     }
 
+    /** @typedef {import('../helpers.js').ElementInput} ElementInput */
+
     /**
-     * DOM Create
+     * @typedef {object} CreateOptions
+     * @property {string} [html] The HTML contents.
+     * @property {string} [text] The text contents.
+     * @property {string|string[]} [class] The classes.
+     * @property {Record<string, string|number>} [style] The style properties.
+     * @property {*} [value] The value.
+     * @property {Record<string, *>} [attributes] The attributes.
+     * @property {Record<string, *>} [properties] The properties.
+     * @property {Record<string, *>} [dataset] The dataset values.
      */
 
     /**
-     * Attach a shadow DOM tree to the first node.
-     * @param {string|array|HTMLElement|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
-     * @param {object} [options] The options for attaching the shadow DOM.
-     * @param {Boolean} [options.open=true] Whether the elements are accessible from JavaScript outside the root.
-     * @return {ShadowRoot} The new ShadowRoot.
+     * Attaches a shadow DOM tree to the first node.
+     * @param {ElementInput} selector The input node(s), or a query selector string.
+     * @param {{open?: boolean}} [options] The shadow DOM options.
+     * @returns {ShadowRoot|undefined} The new ShadowRoot, or `undefined` if no element matches.
      */
     function attachShadow$1(selector, { open = true } = {}) {
         const node = parseNode(selector);
@@ -3628,18 +3564,10 @@
         });
     }
     /**
-     * Create a new DOM element.
-     * @param {string} [tagName=div] The type of HTML element to create.
-     * @param {object} [options] The options to use for creating the element.
-     * @param {string} [options.html] The HTML contents.
-     * @param {string} [options.text] The text contents.
-     * @param {string|array} [options.class] The classes.
-     * @param {object} [options.style] An object containing style properties.
-     * @param {string} [options.value] The value.
-     * @param {object} [options.attributes] An object containing attributes.
-     * @param {object} [options.properties] An object containing properties.
-     * @param {object} [options.dataset] An object containing dataset values.
-     * @return {HTMLElement} The new HTMLElement.
+     * Creates a new DOM element.
+     * @param {string} [tagName='div'] The type of HTML element to create.
+     * @param {CreateOptions} [options] The element options.
+     * @returns {HTMLElement} The new HTMLElement.
      */
     function create(tagName = 'div', options = {}) {
         const node = getContext().createElement(tagName);
@@ -3697,53 +3625,56 @@
         return node;
     }
     /**
-     * Create a new comment node.
+     * Creates a new comment node.
      * @param {string} comment The comment contents.
-     * @return {Node} The new comment node.
+     * @returns {Node} The new comment node.
      */
     function createComment(comment) {
         return getContext().createComment(comment);
     }
     /**
-     * Create a new document fragment.
-     * @return {DocumentFragment} The new DocumentFragment.
+     * Creates a new document fragment.
+     * @returns {DocumentFragment} The new DocumentFragment.
      */
     function createFragment() {
         return getContext().createDocumentFragment();
     }
     /**
-     * Create a new range object.
-     * @return {Range} The new Range.
+     * Creates a new range object.
+     * @returns {Range} The new Range.
      */
     function createRange() {
         return getContext().createRange();
     }
     /**
-     * Create a new text node.
+     * Creates a new text node.
      * @param {string} text The text contents.
-     * @return {Node} The new text node.
+     * @returns {Node} The new text node.
      */
     function createText(text) {
         return getContext().createTextNode(text);
     }
 
     /**
-     * DOM Utility
+     * @typedef {import('../filters.js').NodeFilterInput} NodeFilterInput
+     * @typedef {import('../helpers.js').ElementInput} ElementInput
+     * @typedef {import('../helpers.js').NodeInput} NodeInput
+     * @typedef {import('../helpers.js').QueryInput} QueryInput
      */
 
     /**
-     * Execute a command in the document context.
+     * Executes a command in the document context.
      * @param {string} command The command to execute.
      * @param {string} [value] The value to give the command.
-     * @return {Boolean} TRUE if the command was executed, otherwise FALSE.
+     * @returns {boolean} Whether the command was executed.
      */
     function exec(command, value = null) {
         return getContext().execCommand(command, false, value);
     }
     /**
-     * Get the index of the first node relative to it's parent.
-     * @param {string|array|Node|HTMLElement|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
-     * @return {number} The index.
+     * Gets the index of the first node relative to its parent.
+     * @param {NodeInput} selector The input node(s), or a query selector string.
+     * @returns {number|undefined} The index, or `undefined` if no node or parent matches.
      */
     function index$2(selector) {
         const node = parseNode(selector, {
@@ -3757,10 +3688,10 @@
         return merge([], node.parentNode.children).indexOf(node);
     }
     /**
-     * Get the index of the first node matching a filter.
-     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
-     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet|DOM~filterCallback} [nodeFilter] The filter node(s), a query selector string or custom filter function.
-     * @return {number} The index.
+     * Gets the index of the first node matching a filter.
+     * @param {NodeInput} selector The input node(s), or a query selector string.
+     * @param {NodeFilterInput} [nodeFilter] The filter node(s), a query selector string or custom filter function.
+     * @returns {number} The index.
      */
     function indexOf$1(selector, nodeFilter) {
         nodeFilter = parseFilter(nodeFilter);
@@ -3772,8 +3703,8 @@
         }).findIndex(nodeFilter);
     }
     /**
-     * Normalize nodes (remove empty text nodes, and join adjacent text nodes).
-     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|Document|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
+     * Normalizes nodes (remove empty text nodes, and join adjacent text nodes).
+     * @param {NodeInput} selector The input node(s), or a query selector string.
      */
     function normalize$1(selector) {
         const nodes = parseNodes(selector, {
@@ -3788,9 +3719,9 @@
         }
     }
     /**
-     * Return a serialized string containing names and values of all form nodes.
-     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
-     * @return {string} The serialized string.
+     * Returns a serialized string containing names and values of all form nodes.
+     * @param {NodeInput} selector The input node(s), or a query selector string.
+     * @returns {string} The serialized string.
      */
     function serialize$1(selector) {
         return parseParams(
@@ -3798,9 +3729,9 @@
         );
     }
     /**
-     * Return a serialized array containing names and values of all form nodes.
-     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
-     * @return {array} The serialized array.
+     * Returns a serialized array containing names and values of all form nodes.
+     * @param {NodeInput} selector The input node(s), or a query selector string.
+     * @returns {Array<{name: string, value: string}>} The serialized entries.
      */
     function serializeArray$1(selector) {
         return parseNodes(selector, {
@@ -3862,9 +3793,9 @@
     }
 
     /**
-     * Sort nodes by their position in the document.
-     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
-     * @return {array} The sorted array of nodes.
+     * Sorts nodes by their position in the document.
+     * @param {QueryInput} selector The input node(s), or a query selector string.
+     * @returns {Array<Node|Window>} The sorted nodes.
      */
     function sort$1(selector) {
         return parseNodes(selector, {
@@ -3945,9 +3876,9 @@
         });
     }
     /**
-     * Return the tag name (lowercase) of the first node.
-     * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
-     * @return {string} The nodes tag name (lowercase).
+     * Returns the tag name (lowercase) of the first node.
+     * @param {ElementInput} selector The input node(s), or a query selector string.
+     * @returns {string|undefined} The node's lowercase tag name, or `undefined` if no element matches.
      */
     function tagName$1(selector) {
         const node = parseNode(selector);
@@ -3960,26 +3891,25 @@
     }
 
     /**
-     * DOM Traversal
+     * @typedef {import('../filters.js').NodeFilterInput} NodeFilterInput
+     * @typedef {import('../helpers.js').NodeInput} NodeInput
      */
 
     /**
-     * Return the first child of each node (optionally matching a filter).
-     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
-     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet|DOM~filterCallback} [nodeFilter] The filter node(s), a query selector string or custom filter function.
-     * @return {array} The matching nodes.
+     * Returns the first child of each node (optionally matching a filter).
+     * @param {NodeInput} selector The input node(s), or a query selector string.
+     * @param {NodeFilterInput} [nodeFilter] The filter node(s), a query selector string or custom filter function.
+     * @returns {Node[]} The matching nodes.
      */
     function child$1(selector, nodeFilter) {
         return children$1(selector, nodeFilter, { first: true });
     }
     /**
-     * Return all children of each node (optionally matching a filter).
-     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
-     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet|DOM~filterCallback} [nodeFilter] The filter node(s), a query selector string or custom filter function.
-     * @param {object} [options] The options for filtering the nodes.
-     * @param {Boolean} [options.first=false] Whether to only return the first matching node for each node.
-     * @param {Boolean} [options.elementsOnly=true] Whether to only return element nodes.
-     * @return {array} The matching nodes.
+     * Returns all children of each node (optionally matching a filter).
+     * @param {NodeInput} selector The input node(s), or a query selector string.
+     * @param {NodeFilterInput} [nodeFilter] The filter node(s), a query selector string or custom filter function.
+     * @param {{first?: boolean, elementsOnly?: boolean}} [options] The filtering options.
+     * @returns {Node[]} The matching nodes.
      */
     function children$1(selector, nodeFilter, { first = false, elementsOnly = true } = {}) {
         nodeFilter = parseFilter(nodeFilter);
@@ -4015,19 +3945,19 @@
             results;
     }
     /**
-     * Return the closest ancestor to each node (optionally matching a filter, and before a limit).
-     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
-     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet|DOM~filterCallback} [nodeFilter] The filter node(s), a query selector string or custom filter function.
-     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet|DOM~filterCallback} [limitFilter] The limit node(s), a query selector string or custom filter function.
-     * @return {array} The matching nodes.
+     * Returns the closest ancestor to each node (optionally matching a filter, and before a limit).
+     * @param {NodeInput} selector The input node(s), or a query selector string.
+     * @param {NodeFilterInput} [nodeFilter] The filter node(s), a query selector string or custom filter function.
+     * @param {NodeFilterInput} [limitFilter] The limit node(s), a query selector string or custom filter function.
+     * @returns {Node[]} The matching nodes.
      */
     function closest$1(selector, nodeFilter, limitFilter) {
         return parents$1(selector, nodeFilter, limitFilter, { first: true });
     }
     /**
-     * Return the common ancestor of all nodes.
-     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
-     * @return {HTMLElement} The common ancestor.
+     * Returns the common ancestor of all nodes.
+     * @param {NodeInput} selector The input node(s), or a query selector string.
+     * @returns {Node|undefined} The common ancestor, or `undefined` if it cannot be resolved.
      */
     function commonAncestor$1(selector) {
         const nodes = sort$1(selector);
@@ -4053,17 +3983,17 @@
         return range.commonAncestorContainer;
     }
     /**
-     * Return all children of each node (including text and comment nodes).
-     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
-     * @return {array} The matching nodes.
+     * Returns all children of each node (including text and comment nodes).
+     * @param {NodeInput} selector The input node(s), or a query selector string.
+     * @returns {Node[]} The matching nodes.
      */
     function contents$1(selector) {
         return children$1(selector, false, { elementsOnly: false });
     }
     /**
-     * Return the DocumentFragment of the first node.
-     * @param {string|array|Node|HTMLElement|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
-     * @return {DocumentFragment} The DocumentFragment.
+     * Returns the DocumentFragment of the first node.
+     * @param {NodeInput} selector The input node(s), or a query selector string.
+     * @returns {DocumentFragment|undefined} The DocumentFragment, or `undefined` if none exists.
      */
     function fragment$1(selector) {
         const node = parseNode(selector);
@@ -4075,10 +4005,10 @@
         return node.content;
     }
     /**
-     * Return the next sibling for each node (optionally matching a filter).
-     * @param {string|array|Node|HTMLElement|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
-     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet|DOM~filterCallback} [nodeFilter] The filter node(s), a query selector string or custom filter function.
-     * @return {array} The matching nodes.
+     * Returns the next sibling for each node (optionally matching a filter).
+     * @param {NodeInput} selector The input node(s), or a query selector string.
+     * @param {NodeFilterInput} [nodeFilter] The filter node(s), a query selector string or custom filter function.
+     * @returns {Node[]} The matching nodes.
      */
     function next$1(selector, nodeFilter) {
         nodeFilter = parseFilter(nodeFilter);
@@ -4109,12 +4039,12 @@
             results;
     }
     /**
-     * Return all next siblings for each node (optionally matching a filter, and before a limit).
-     * @param {string|array|Node|HTMLElement|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
-     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet|DOM~filterCallback} [nodeFilter] The filter node(s), a query selector string or custom filter function.
-     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet|DOM~filterCallback} [limitFilter] The limit node(s), a query selector string or custom filter function.
-     * @param {Boolean} [first=false] Whether to only return the first matching node for each node.
-     * @return {array} The matching nodes.
+     * Returns all next siblings for each node (optionally matching a filter, and before a limit).
+     * @param {NodeInput} selector The input node(s), or a query selector string.
+     * @param {NodeFilterInput} [nodeFilter] The filter node(s), a query selector string or custom filter function.
+     * @param {NodeFilterInput} [limitFilter] The limit node(s), a query selector string or custom filter function.
+     * @param {{first?: boolean}} [options] The filtering options.
+     * @returns {Node[]} The matching nodes.
      */
     function nextAll$1(selector, nodeFilter, limitFilter, { first = false } = {}) {
         nodeFilter = parseFilter(nodeFilter);
@@ -4154,9 +4084,9 @@
             results;
     }
     /**
-     * Return the offset parent (relatively positioned) of the first node.
-     * @param {string|array|Node|HTMLElement|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
-     * @return {HTMLElement} The offset parent.
+     * Returns the offset parent (relatively positioned) of the first node.
+     * @param {NodeInput} selector The input node(s), or a query selector string.
+     * @returns {Element|null|undefined} The offset parent, or `undefined` if no node matches.
      */
     function offsetParent$1(selector) {
         const node = parseNode(selector);
@@ -4168,10 +4098,10 @@
         return node.offsetParent;
     }
     /**
-     * Return the parent of each node (optionally matching a filter).
-     * @param {string|array|Node|HTMLElement|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
-     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet|DOM~filterCallback} [nodeFilter] The filter node(s), a query selector string or custom filter function.
-     * @return {array} The matching nodes.
+     * Returns the parent of each node (optionally matching a filter).
+     * @param {NodeInput} selector The input node(s), or a query selector string.
+     * @param {NodeFilterInput} [nodeFilter] The filter node(s), a query selector string or custom filter function.
+     * @returns {Node[]} The matching nodes.
      */
     function parent$1(selector, nodeFilter) {
         nodeFilter = parseFilter(nodeFilter);
@@ -4202,12 +4132,12 @@
             results;
     }
     /**
-     * Return all parents of each node (optionally matching a filter, and before a limit).
-     * @param {string|array|Node|HTMLElement|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
-     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet|DOM~filterCallback} [nodeFilter] The filter node(s), a query selector string or custom filter function.
-     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet|DOM~filterCallback} [limitFilter] The limit node(s), a query selector string or custom filter function.
-     * @param {Boolean} [first=false] Whether to only return the first matching node for each node.
-     * @return {array} The matching nodes.
+     * Returns all parents of each node (optionally matching a filter, and before a limit).
+     * @param {NodeInput} selector The input node(s), or a query selector string.
+     * @param {NodeFilterInput} [nodeFilter] The filter node(s), a query selector string or custom filter function.
+     * @param {NodeFilterInput} [limitFilter] The limit node(s), a query selector string or custom filter function.
+     * @param {{first?: boolean}} [options] The filtering options.
+     * @returns {Node[]} The matching nodes.
      */
     function parents$1(selector, nodeFilter, limitFilter, { first = false } = {}) {
         nodeFilter = parseFilter(nodeFilter);
@@ -4250,10 +4180,10 @@
             results;
     }
     /**
-     * Return the previous sibling for each node (optionally matching a filter).
-     * @param {string|array|Node|HTMLElement|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
-     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet|DOM~filterCallback} [nodeFilter] The filter node(s), a query selector string or custom filter function.
-     * @return {array} The matching nodes.
+     * Returns the previous sibling for each node (optionally matching a filter).
+     * @param {NodeInput} selector The input node(s), or a query selector string.
+     * @param {NodeFilterInput} [nodeFilter] The filter node(s), a query selector string or custom filter function.
+     * @returns {Node[]} The matching nodes.
      */
     function prev$1(selector, nodeFilter) {
         nodeFilter = parseFilter(nodeFilter);
@@ -4284,12 +4214,12 @@
             results;
     }
     /**
-     * Return all previous siblings for each node (optionally matching a filter, and before a limit).
-     * @param {string|array|Node|HTMLElement|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
-     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet|DOM~filterCallback} [nodeFilter] The filter node(s), a query selector string or custom filter function.
-     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet|DOM~filterCallback} [limitFilter] The limit node(s), a query selector string or custom filter function.
-     * @param {Boolean} [first=false] Whether to only return the first matching node for each node.
-     * @return {array} The matching nodes.
+     * Returns all previous siblings for each node (optionally matching a filter, and before a limit).
+     * @param {NodeInput} selector The input node(s), or a query selector string.
+     * @param {NodeFilterInput} [nodeFilter] The filter node(s), a query selector string or custom filter function.
+     * @param {NodeFilterInput} [limitFilter] The limit node(s), a query selector string or custom filter function.
+     * @param {{first?: boolean}} [options] The filtering options.
+     * @returns {Node[]} The matching nodes.
      */
     function prevAll$1(selector, nodeFilter, limitFilter, { first = false } = {}) {
         nodeFilter = parseFilter(nodeFilter);
@@ -4332,9 +4262,9 @@
             results;
     }
     /**
-     * Return the ShadowRoot of the first node.
-     * @param {string|array|Node|HTMLElement|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
-     * @return {ShadowRoot} The ShadowRoot.
+     * Returns the ShadowRoot of the first node.
+     * @param {NodeInput} selector The input node(s), or a query selector string.
+     * @returns {ShadowRoot|null|undefined} The ShadowRoot, or `undefined` if no node matches.
      */
     function shadow$1(selector) {
         const node = parseNode(selector);
@@ -4346,12 +4276,11 @@
         return node.shadowRoot;
     }
     /**
-     * Return all siblings for each node (optionally matching a filter).
-     * @param {string|array|Node|HTMLElement|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
-     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet|DOM~filterCallback} [nodeFilter] The filter node(s), a query selector string or custom filter function.
-     * @param {object} [options] The options for filtering the nodes.
-     * @param {Boolean} [options.elementsOnly=true] Whether to only return element nodes.
-     * @return {array} The matching nodes.
+     * Returns all siblings for each node (optionally matching a filter).
+     * @param {NodeInput} selector The input node(s), or a query selector string.
+     * @param {NodeFilterInput} [nodeFilter] The filter node(s), a query selector string or custom filter function.
+     * @param {{elementsOnly?: boolean}} [options] The filtering options.
+     * @returns {Node[]} The matching nodes.
      */
     function siblings$1(selector, nodeFilter, { elementsOnly = true } = {}) {
         nodeFilter = parseFilter(nodeFilter);
@@ -4393,15 +4322,19 @@
             results;
     }
 
+    /** @typedef {import('./event-handlers.js').EventCallback} EventCallback */
+
     /**
-     * DOM Event Wrappers
+     * @callback DelegateCallback
+     * @param {Element} target The event target to test.
+     * @returns {Element|false|undefined} The matching delegate element, or no match.
      */
 
     /**
-     * Return a function for matching a delegate target to a custom selector.
-     * @param {HTMLElement|ShadowRoot|Document} node The input node.
+     * Returns a function for matching a delegate target to a custom selector.
+     * @param {Element|ShadowRoot|Document} node The input node.
      * @param {string} selector The delegate query selector.
-     * @return {DOM~delegateCallback} The callback for finding the matching delegate.
+     * @returns {DelegateCallback} The callback for finding the matching delegate.
      */
     function getDelegateContainsFactory(node, selector) {
         return (target) => {
@@ -4423,10 +4356,10 @@
         };
     }
     /**
-     * Return a function for matching a delegate target to a standard selector.
-     * @param {HTMLElement|ShadowRoot|Document} node The input node.
+     * Returns a function for matching a delegate target to a standard selector.
+     * @param {Element|ShadowRoot|Document} node The input node.
      * @param {string} selector The delegate query selector.
-     * @return {DOM~delegateCallback} The callback for finding the matching delegate.
+     * @returns {DelegateCallback} The callback for finding the matching delegate.
      */
     function getDelegateMatchFactory(node, selector) {
         return (target) =>
@@ -4439,11 +4372,11 @@
                 ).shift();
     }
     /**
-     * Return a wrapped event callback that executes on a delegate selector.
-     * @param {HTMLElement|ShadowRoot|Document} node The input node.
+     * Returns a wrapped event callback that executes on a delegate selector.
+     * @param {Element|ShadowRoot|Document} node The input node.
      * @param {string} selector The delegate query selector.
-     * @param {function} callback The event callback.
-     * @return {DOM~eventCallback} The delegated event callback.
+     * @param {EventCallback} callback The event callback.
+     * @returns {EventCallback} The delegated event callback.
      */
     function delegateFactory(node, selector, callback) {
         const getDelegate = selector.match(/(?:^\s*:scope|,(?=(?:(?:[^"']*["']){2})*[^"']*$)\s*:scope)/) ?
@@ -4476,10 +4409,10 @@
         };
     }
     /**
-     * Return a wrapped event callback that cleans up delegate events.
-     * @param {HTMLElement|ShadowRoot|Document} node The input node.
-     * @param {function} callback The event callback.
-     * @return {DOM~eventCallback} The cleaned event callback.
+     * Returns a wrapped event callback that cleans up delegate events.
+     * @param {Element|ShadowRoot|Document} node The input node.
+     * @param {EventCallback} callback The event callback.
+     * @returns {EventCallback} The cleaned event callback.
      */
     function delegateFactoryClean(node, callback) {
         return (event) => {
@@ -4502,10 +4435,10 @@
         };
     }
     /**
-     * Return a wrapped event callback that checks for a namespace match.
+     * Returns a wrapped event callback that checks for a namespace match.
      * @param {string} eventName The namespaced event name.
-     * @param {DOM~eventCallback} callback The callback to execute.
-     * @return {DOM~eventCallback} The wrapped event callback.
+     * @param {EventCallback} callback The callback to execute.
+     * @returns {EventCallback} The wrapped event callback.
      */
     function namespaceFactory(eventName, callback) {
         return (event) => {
@@ -4517,9 +4450,9 @@
         };
     }
     /**
-     * Return a wrapped event callback that checks for a return false for preventing default.
-     * @param {DOM~eventCallback} callback The callback to execute.
-     * @return {DOM~eventCallback} The wrapped event callback.
+     * Returns a wrapped event callback that prevents the default action when the callback returns false.
+     * @param {EventCallback} callback The callback to execute.
+     * @returns {EventCallback} The wrapped event callback.
      */
     function preventFactory(callback) {
         return (event) => {
@@ -4529,10 +4462,10 @@
         };
     }
     /**
-     * Return a wrapped callback that performs cleanup before its first execution.
-     * @param {DOM~eventCallback} callback The callback to execute.
-     * @param {function} cleanup The cleanup callback.
-     * @return {DOM~eventCallback} The wrapped event callback.
+     * Returns a wrapped callback that performs cleanup before its first execution.
+     * @param {EventCallback} callback The callback to execute.
+     * @param {() => void} cleanup The cleanup callback.
+     * @returns {EventCallback} The wrapped event callback.
      */
     function selfDestructCallbackFactory(callback, cleanup) {
         return (event) => {
@@ -4541,20 +4474,50 @@
         };
     }
 
+    /** @typedef {import('../query/query-set.js').default} QuerySet */
+
     /**
-     * DOM Event Handlers
+     * @typedef {Element|Document|ShadowRoot|Window} EventTargetNode
      */
 
     /**
-     * Add events to each node.
-     * @param {string|array|HTMLElement|ShadowRoot|Document|Window|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
+     * @typedef {string|EventTargetNode|Array<string|EventTargetNode>|NodeList|HTMLCollection|QuerySet} EventTargetInput
+     */
+
+    /**
+     * @callback EventCallback
+     * @param {Event} event The event object.
+     * @returns {*} The callback result.
+     */
+
+    /**
+     * @typedef {object} EventOptions
+     * @property {boolean} [capture=false] Whether to use event capture.
+     * @property {string|null} [delegate=null] The delegate selector.
+     * @property {boolean} [passive=false] Whether to use a passive listener.
+     * @property {boolean} [selfDestruct=false] Whether to remove the listener before its first execution.
+     */
+
+    /**
+     * @typedef {object} RemoveEventOptions
+     * @property {boolean|null} [capture=null] Whether to match event capture. Null matches either mode.
+     * @property {string|null} [delegate=null] The delegate selector.
+     */
+
+    /**
+     * @typedef {object} TriggerEventOptions
+     * @property {Record<string, *>} [data={}] Additional data assigned to the event.
+     * @property {*} [detail] Additional event details.
+     * @property {boolean} [bubbles=true] Whether the event bubbles.
+     * @property {boolean} [cancelable=true] Whether the event can be cancelled.
+     */
+
+    /**
+     * Adds events to each node.
+     * @param {EventTargetInput} selector The input node(s), or a query selector string.
      * @param {string} eventNames The event names.
-     * @param {DOM~eventCallback} callback The callback to execute.
-     * @param {object} [options] The options for the event.
-     * @param {Boolean} [options.capture] Whether to use a capture event.
-     * @param {string} [options.delegate] The delegate selector.
-     * @param {Boolean} [options.passive] Whether to use a passive event.
-     * @param {Boolean} [options.selfDestruct] Whether to use a self-destructing event.
+     * @param {EventCallback} callback The callback to execute.
+     * @param {EventOptions} [options] The event options.
      */
     function addEvent$1(selector, eventNames, callback, { capture = false, delegate = null, passive = false, selfDestruct = false } = {}) {
         const nodes = parseNodes(selector, {
@@ -4617,47 +4580,41 @@
         }
     }
     /**
-     * Add delegated events to each node.
-     * @param {string|array|HTMLElement|ShadowRoot|Document|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
+     * Adds delegated events to each node.
+     * @param {EventTargetInput} selector The input node(s), or a query selector string.
      * @param {string} events The event names.
      * @param {string} delegate The delegate selector.
-     * @param {DOM~eventCallback} callback The callback to execute.
-     * @param {object} [options] The options for the event.
-     * @param {Boolean} [options.capture] Whether to use a capture event.
-     * @param {Boolean} [options.passive] Whether to use a passive event.
+     * @param {EventCallback} callback The callback to execute.
+     * @param {EventOptions} [options] The event options.
      */
     function addEventDelegate$1(selector, events, delegate, callback, { capture = false, passive = false } = {}) {
         addEvent$1(selector, events, callback, { capture, delegate, passive });
     }
     /**
-     * Add self-destructing delegated events to each node.
-     * @param {string|array|HTMLElement|ShadowRoot|Document|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
+     * Adds self-destructing delegated events to each node.
+     * @param {EventTargetInput} selector The input node(s), or a query selector string.
      * @param {string} events The event names.
      * @param {string} delegate The delegate selector.
-     * @param {DOM~eventCallback} callback The callback to execute.
-     * @param {object} [options] The options for the event.
-     * @param {Boolean} [options.capture] Whether to use a capture event.
-     * @param {Boolean} [options.passive] Whether to use a passive event.
+     * @param {EventCallback} callback The callback to execute.
+     * @param {EventOptions} [options] The event options.
      */
     function addEventDelegateOnce$1(selector, events, delegate, callback, { capture = false, passive = false } = {}) {
         addEvent$1(selector, events, callback, { capture, delegate, passive, selfDestruct: true });
     }
     /**
-     * Add self-destructing events to each node.
-     * @param {string|array|HTMLElement|ShadowRoot|Document|Window|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
+     * Adds self-destructing events to each node.
+     * @param {EventTargetInput} selector The input node(s), or a query selector string.
      * @param {string} events The event names.
-     * @param {DOM~eventCallback} callback The callback to execute.
-     * @param {object} [options] The options for the event.
-     * @param {Boolean} [options.capture] Whether to use a capture event.
-     * @param {Boolean} [options.passive] Whether to use a passive event.
+     * @param {EventCallback} callback The callback to execute.
+     * @param {EventOptions} [options] The event options.
      */
     function addEventOnce$1(selector, events, callback, { capture = false, passive = false } = {}) {
         addEvent$1(selector, events, callback, { capture, passive, selfDestruct: true });
     }
     /**
-     * Clone all events from each node to other nodes.
-     * @param {string|array|HTMLElement|ShadowRoot|Document|Window|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
-     * @param {string|array|HTMLElement|ShadowRoot|Document|Window|HTMLCollection|QuerySet} otherSelector The other node(s), or a query selector string.
+     * Clones all events from each node to other nodes.
+     * @param {EventTargetInput} selector The input node(s), or a query selector string.
+     * @param {EventTargetInput} otherSelector The other node(s), or a query selector string.
      */
     function cloneEvents$1(selector, otherSelector) {
         const nodes = parseNodes(selector, {
@@ -4687,13 +4644,11 @@
         }
     }
     /**
-     * Remove events from each node.
-     * @param {string|array|HTMLElement|ShadowRoot|Document|Window|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
+     * Removes events from each node.
+     * @param {EventTargetInput} selector The input node(s), or a query selector string.
      * @param {string} [eventNames] The event names.
-     * @param {DOM~eventCallback} [callback] The callback to remove.
-     * @param {object} [options] The options for the event.
-     * @param {Boolean} [options.capture] Whether to use a capture event.
-     * @param {string} [options.delegate] The delegate selector.
+     * @param {EventCallback} [callback] The callback to remove.
+     * @param {RemoveEventOptions} [options] The removal options.
      */
     function removeEvent$1(selector, eventNames, callback, { capture = null, delegate = null } = {}) {
         const nodes = parseNodes(selector, {
@@ -4772,26 +4727,21 @@
         }
     }
     /**
-     * Remove delegated events from each node.
-     * @param {string|array|HTMLElement|ShadowRoot|Document|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
+     * Removes delegated events from each node.
+     * @param {EventTargetInput} selector The input node(s), or a query selector string.
      * @param {string} [events] The event names.
      * @param {string} [delegate] The delegate selector.
-     * @param {DOM~eventCallback} [callback] The callback to remove.
-     * @param {object} [options] The options for the event.
-     * @param {Boolean} [options.capture] Whether to use a capture event.
+     * @param {EventCallback} [callback] The callback to remove.
+     * @param {RemoveEventOptions} [options] The removal options.
      */
     function removeEventDelegate$1(selector, events, delegate, callback, { capture = null } = {}) {
         removeEvent$1(selector, events, callback, { capture, delegate });
     }
     /**
-     * Trigger events on each node.
-     * @param {string|array|HTMLElement|ShadowRoot|Document|Window|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
+     * Triggers events on each node.
+     * @param {EventTargetInput} selector The input node(s), or a query selector string.
      * @param {string} events The event names.
-     * @param {object} [options] The options to use for the Event.
-     * @param {object} [options.data] Additional data to attach to the event.
-     * @param {*} [options.detail] Additional details to attach to the event.
-     * @param {Boolean} [options.bubbles=true] Whether the event will bubble.
-     * @param {Boolean} [options.cancelable=true] Whether the event is cancelable.
+     * @param {TriggerEventOptions} [options] The event options.
      */
     function triggerEvent$1(selector, events, { data = null, detail = null, bubbles = true, cancelable = true } = {}) {
         const nodes = parseNodes(selector, {
@@ -4826,15 +4776,11 @@
         }
     }
     /**
-     * Trigger an event for the first node.
-     * @param {string|array|HTMLElement|ShadowRoot|Document|Window|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
+     * Triggers an event for the first node.
+     * @param {EventTargetInput} selector The input node(s), or a query selector string.
      * @param {string} event The event name.
-     * @param {object} [options] The options to use for the Event.
-     * @param {object} [options.data] Additional data to attach to the event.
-     * @param {*} [options.detail] Additional details to attach to the event.
-     * @param {Boolean} [options.bubbles=true] Whether the event will bubble.
-     * @param {Boolean} [options.cancelable=true] Whether the event is cancelable.
-     * @return {Boolean} FALSE if the event was cancelled, otherwise TRUE.
+     * @param {TriggerEventOptions} [options] The event options.
+     * @returns {boolean} Whether the event was dispatched without cancellation.
      */
     function triggerOne$1(selector, event, { data = null, detail = null, bubbles = true, cancelable = true } = {}) {
         const node = parseNode(selector, {
@@ -4864,18 +4810,22 @@
     }
 
     /**
-     * DOM Manipulation
+     * @typedef {import('../helpers.js').NodeInput} NodeInput
      */
 
     /**
-     * Clone each node.
-     * @param {string|array|Node|HTMLElement|DocumentFragment|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
-     * @param {object} options The options for cloning the node.
-     * @param {Boolean} [options.deep=true] Whether to also clone all descendent nodes.
-     * @param {Boolean} [options.events] Whether to also clone events.
-     * @param {Boolean} [options.data] Whether to also clone custom data.
-     * @param {Boolean} [options.animations] Whether to also clone animations.
-     * @return {array} The cloned nodes.
+     * @typedef {object} CloneOptions
+     * @property {boolean} [deep=true] Whether to also clone all descendant nodes.
+     * @property {boolean} [events=false] Whether to also clone events.
+     * @property {boolean} [data=false] Whether to also clone custom data.
+     * @property {boolean} [animations=false] Whether to also clone animations.
+     */
+
+    /**
+     * Clones each node.
+     * @param {NodeInput} selector The input node(s), or a query selector string.
+     * @param {CloneOptions} [options] The cloning options.
+     * @returns {Node[]} The cloned nodes.
      */
     function clone$1(selector, { deep = true, events = false, data = false, animations = false } = {}) {
         // ShadowRoot nodes can not be cloned
@@ -4895,14 +4845,10 @@
         });
     }
     /**
-     * Deep clone a single node.
-     * @param {Node|HTMLElement|DocumentFragment} node The node.
-     * @param {Node|HTMLElement|DocumentFragment} clone The clone.
-     * @param {object} options The options for cloning the node.
-     * @param {Boolean} [options.deep=true] Whether to also clone all descendent nodes.
-     * @param {Boolean} [options.events] Whether to also clone events.
-     * @param {Boolean} [options.data] Whether to also clone custom data.
-     * @param {Boolean} [options.animations] Whether to also clone animations.
+     * Deep-clones a single node.
+     * @param {Node|DocumentFragment} node The node.
+     * @param {Node|DocumentFragment} clone The clone.
+     * @param {CloneOptions} [options] The cloning options.
      */
     function deepClone(node, clone, { deep = true, events: events$1 = false, data: data$1 = false, animations: animations$1 = false } = {}) {
         if (events$1 && events.has(node)) {
@@ -4945,9 +4891,9 @@
         }
     }
     /**
-     * Detach each node from the DOM.
-     * @param {string|array|Node|HTMLElement|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
-     * @return {array} The detached nodes.
+     * Detaches each node from the DOM.
+     * @param {NodeInput} selector The input node(s), or a query selector string.
+     * @returns {Node[]} The detached nodes.
      */
     function detach$1(selector) {
         // DocumentFragment and ShadowRoot nodes can not be detached
@@ -4962,8 +4908,8 @@
         return nodes;
     }
     /**
-     * Remove all children of each node from the DOM.
-     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
+     * Removes all children of each node from the DOM.
+     * @param {NodeInput} selector The input node(s), or a query selector string.
      */
     function empty$1(selector) {
         const nodes = parseNodes(selector, {
@@ -4975,7 +4921,7 @@
         for (const node of nodes) {
             const childNodes = merge([], node.childNodes);
 
-            // Remove descendent elements
+            // Remove descendant elements
             for (const child of childNodes) {
                 if (isElement(child) || isFragment(child) || isShadow(child)) {
                     removeNode(child);
@@ -4996,8 +4942,8 @@
         }
     }
     /**
-     * Remove each node from the DOM.
-     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
+     * Removes each node from the DOM.
+     * @param {NodeInput} selector The input node(s), or a query selector string.
      */
     function remove$1(selector) {
         const nodes = parseNodes(selector, {
@@ -5018,8 +4964,8 @@
         }
     }
     /**
-     * Remove all data for a single node.
-     * @param {Node|HTMLElement|DocumentFragment|ShadowRoot} node The node.
+     * Removes all data for a single node.
+     * @param {Node} node The node.
      */
     function removeNode(node) {
         if (events.has(node)) {
@@ -5062,7 +5008,7 @@
             data.delete(node);
         }
 
-        // Remove descendent elements
+        // Remove descendant elements
         const childNodes = merge([], node.children);
 
         for (const child of childNodes) {
@@ -5080,17 +5026,17 @@
         }
     }
     /**
-     * Replace each other node with nodes.
-     * @param {string|array|Node|HTMLElement|DocumentFragment|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector or HTML string.
-     * @param {string|array|Node|HTMLElement|NodeList|HTMLCollection|QuerySet} otherSelector The input node(s), or a query selector string.
+     * Replaces each other node with nodes.
+     * @param {NodeInput} selector The input node(s), or a query selector or HTML string.
+     * @param {NodeInput} otherSelector The input node(s), or a query selector string.
      */
     function replaceAll$1(selector, otherSelector) {
         replaceWith$1(otherSelector, selector);
     }
     /**
-     * Replace each node with other nodes.
-     * @param {string|array|Node|HTMLElement|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
-     * @param {string|array|Node|HTMLElement|DocumentFragment|NodeList|HTMLCollection|QuerySet} otherSelector The input node(s), or a query selector or HTML string.
+     * Replaces each node with other nodes.
+     * @param {NodeInput} selector The input node(s), or a query selector string.
+     * @param {NodeInput} otherSelector The input node(s), or a query selector or HTML string.
      */
     function replaceWith$1(selector, otherSelector) {
         // DocumentFragment and ShadowRoot nodes can not be removed
@@ -5148,15 +5094,17 @@
         remove$1(nodes);
     }
 
+    /** @typedef {import('../helpers.js').ElementInput} ElementInput */
+
     /**
-     * DOM Attributes
+     * @typedef {Record<string, *>} AttributeValues
      */
 
     /**
-     * Get attribute value(s) for the first node.
-     * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
+     * Gets attribute value(s) for the first node.
+     * @param {ElementInput} selector The input node(s), or a query selector string.
      * @param {string} [attribute] The attribute name.
-     * @return {string|object} The attribute value, or an object containing attributes.
+     * @returns {string|null|Record<string, string|null>|undefined} The attribute value, all attributes, or `undefined` if no element matches.
      */
     function getAttribute$1(selector, attribute) {
         const node = parseNode(selector);
@@ -5175,10 +5123,10 @@
         );
     }
     /**
-     * Get dataset value(s) for the first node.
-     * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
+     * Gets dataset value(s) for the first node.
+     * @param {ElementInput} selector The input node(s), or a query selector string.
      * @param {string} [key] The dataset key.
-     * @return {*} The dataset value, or an object containing the dataset.
+     * @returns {*|undefined} The dataset value, all dataset values, or `undefined` if no element matches.
      */
     function getDataset$1(selector, key) {
         const node = parseNode(selector);
@@ -5199,18 +5147,18 @@
         );
     }
     /**
-     * Get the HTML contents of the first node.
-     * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
-     * @return {string} The HTML contents.
+     * Gets the HTML contents of the first node.
+     * @param {ElementInput} selector The input node(s), or a query selector string.
+     * @returns {string|undefined} The HTML contents, or `undefined` if no element matches.
      */
     function getHTML$1(selector) {
         return getProperty$1(selector, 'innerHTML');
     }
     /**
-     * Get a property value for the first node.
-     * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
+     * Gets a property value for the first node.
+     * @param {ElementInput} selector The input node(s), or a query selector string.
      * @param {string} property The property name.
-     * @return {string} The property value.
+     * @returns {*|undefined} The property value, or `undefined` if no element matches.
      */
     function getProperty$1(selector, property) {
         const node = parseNode(selector);
@@ -5222,24 +5170,24 @@
         return node[property];
     }
     /**
-     * Get the text contents of the first node.
-     * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
-     * @return {string} The text contents.
+     * Gets the text contents of the first node.
+     * @param {ElementInput} selector The input node(s), or a query selector string.
+     * @returns {string|null|undefined} The text contents, or `undefined` if no element matches.
      */
     function getText$1(selector) {
         return getProperty$1(selector, 'textContent');
     }
     /**
-     * Get the value property of the first node.
-     * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
-     * @return {string} The value.
+     * Gets the value property of the first node.
+     * @param {ElementInput} selector The input node(s), or a query selector string.
+     * @returns {*|undefined} The value, or `undefined` if no element matches.
      */
     function getValue$1(selector) {
         return getProperty$1(selector, 'value');
     }
     /**
-     * Remove an attribute from each node.
-     * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
+     * Removes an attribute from each node.
+     * @param {ElementInput} selector The input node(s), or a query selector string.
      * @param {string} attribute The attribute name.
      */
     function removeAttribute$1(selector, attribute) {
@@ -5250,8 +5198,8 @@
         }
     }
     /**
-     * Remove a dataset value from each node.
-     * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
+     * Removes a dataset value from each node.
+     * @param {ElementInput} selector The input node(s), or a query selector string.
      * @param {string} key The dataset key.
      */
     function removeDataset$1(selector, key) {
@@ -5264,8 +5212,8 @@
         }
     }
     /**
-     * Remove a property from each node.
-     * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
+     * Removes a property from each node.
+     * @param {ElementInput} selector The input node(s), or a query selector string.
      * @param {string} property The property name.
      */
     function removeProperty$1(selector, property) {
@@ -5276,10 +5224,10 @@
         }
     }
     /**
-     * Set an attribute value for each node.
-     * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
-     * @param {string|object} attribute The attribute name, or an object containing attributes.
-     * @param {string} [value] The attribute value.
+     * Sets an attribute value for each node.
+     * @param {ElementInput} selector The input node(s), or a query selector string.
+     * @param {string|AttributeValues} attribute The attribute name, or an object containing attributes.
+     * @param {*} [value] The attribute value.
      */
     function setAttribute$1(selector, attribute, value) {
         const nodes = parseNodes(selector);
@@ -5293,9 +5241,9 @@
         }
     }
     /**
-     * Set a dataset value for each node.
-     * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
-     * @param {string|object} key The dataset key, or an object containing dataset values.
+     * Sets a dataset value for each node.
+     * @param {ElementInput} selector The input node(s), or a query selector string.
+     * @param {string|Record<string, *>} key The dataset key, or an object containing dataset values.
      * @param {*} [value] The dataset value.
      */
     function setDataset$1(selector, key, value) {
@@ -5311,8 +5259,8 @@
         }
     }
     /**
-     * Set the HTML contents of each node.
-     * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
+     * Sets the HTML contents of each node.
+     * @param {ElementInput} selector The input node(s), or a query selector string.
      * @param {string} html The HTML contents.
      */
     function setHTML$1(selector, html) {
@@ -5339,10 +5287,10 @@
         }
     }
     /**
-     * Set a property value for each node.
-     * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
-     * @param {string|object} property The property name, or an object containing properties.
-     * @param {string} [value] The property value.
+     * Sets a property value for each node.
+     * @param {ElementInput} selector The input node(s), or a query selector string.
+     * @param {string|Record<string, *>} property The property name, or an object containing properties.
+     * @param {*} [value] The property value.
      */
     function setProperty$1(selector, property, value) {
         const nodes = parseNodes(selector);
@@ -5356,8 +5304,8 @@
         }
     }
     /**
-     * Set the text contents of each node.
-     * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
+     * Sets the text contents of each node.
+     * @param {ElementInput} selector The input node(s), or a query selector string.
      * @param {string} text The text contents.
      */
     function setText$1(selector, text) {
@@ -5384,8 +5332,8 @@
         }
     }
     /**
-     * Set the value property of each node.
-     * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
+     * Sets the value property of each node.
+     * @param {ElementInput} selector The input node(s), or a query selector string.
      * @param {string} value The value.
      */
     function setValue$1(selector, value) {
@@ -5396,14 +5344,12 @@
         }
     }
 
-    /**
-     * DOM Data
-     */
+    /** @typedef {import('../helpers.js').QueryInput} QueryInput */
 
     /**
-     * Clone custom data from each node to each other node.
-     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
-     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|NodeList|HTMLCollection|QuerySet} otherSelector The other node(s), or a query selector string.
+     * Clones custom data from each node to each other node.
+     * @param {QueryInput} selector The input node(s), or a query selector string.
+     * @param {QueryInput} otherSelector The other node(s), or a query selector string.
      */
     function cloneData$1(selector, otherSelector) {
         const nodes = parseNodes(selector, {
@@ -5430,10 +5376,10 @@
         }
     }
     /**
-     * Get custom data for the first node.
-     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
+     * Gets custom data for the first node.
+     * @param {QueryInput} selector The input node(s), or a query selector string.
      * @param {string} [key] The data key.
-     * @return {*} The data value.
+     * @returns {*|undefined} The data value, all custom data, or `undefined` if none exists.
      */
     function getData$1(selector, key) {
         const node = parseNode(selector, {
@@ -5454,8 +5400,8 @@
             nodeData;
     }
     /**
-     * Remove custom data from each node.
-     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
+     * Removes custom data from each node.
+     * @param {QueryInput} selector The input node(s), or a query selector string.
      * @param {string} [key] The data key.
      */
     function removeData$1(selector, key) {
@@ -5483,9 +5429,9 @@
         }
     }
     /**
-     * Set custom data for each node.
-     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
-     * @param {string|object} key The data key, or an object containing data.
+     * Sets custom data for each node.
+     * @param {QueryInput} selector The input node(s), or a query selector string.
+     * @param {string|Record<string, *>} key The data key, or an object containing data.
      * @param {*} [value] The data value.
      */
     function setData$1(selector, key, value) {
@@ -5509,13 +5455,13 @@
         }
     }
 
-    /**
-     * DOM Styles
-     */
+    /** @typedef {import('../helpers.js').ElementInput} ElementInput */
+
+    /** @typedef {Record<string, string|number>} StyleValues */
 
     /**
-     * Add classes to each node.
-     * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
+     * Adds classes to each node.
+     * @param {ElementInput} selector The input node(s), or a query selector string.
      * @param {...string|string[]} classes The classes.
      */
     function addClass$1(selector, ...classes) {
@@ -5532,10 +5478,10 @@
         }
     }
     /**
-     * Get computed CSS style value(s) for the first node.
-     * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
+     * Gets computed CSS style value(s) for the first node.
+     * @param {ElementInput} selector The input node(s), or a query selector string.
      * @param {string} [style] The CSS style name.
-     * @return {string|object} The CSS style value, or an object containing the computed CSS style properties.
+     * @returns {string|Record<string, string>|undefined} The CSS style value, all computed styles, or `undefined` if no element matches.
      */
     function css$1(selector, style) {
         const node = parseNode(selector);
@@ -5568,10 +5514,10 @@
         return nodeStyles.getPropertyValue(style);
     }
     /**
-     * Get style properties for the first node.
-     * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
+     * Gets style properties for the first node.
+     * @param {ElementInput} selector The input node(s), or a query selector string.
      * @param {string} [style] The style name.
-     * @return {string|object} The style value, or an object containing the style properties.
+     * @returns {string|Record<string, string>|undefined} The style value, all inline styles, or `undefined` if no element matches.
      */
     function getStyle$1(selector, style) {
         const node = parseNode(selector);
@@ -5595,8 +5541,8 @@
         return styles;
     }
     /**
-     * Hide each node from display.
-     * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
+     * Hides each node from display.
+     * @param {ElementInput} selector The input node(s), or a query selector string.
      */
     function hide$1(selector) {
         const nodes = parseNodes(selector);
@@ -5606,8 +5552,8 @@
         }
     }
     /**
-     * Remove classes from each node.
-     * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
+     * Removes classes from each node.
+     * @param {ElementInput} selector The input node(s), or a query selector string.
      * @param {...string|string[]} classes The classes.
      */
     function removeClass$1(selector, ...classes) {
@@ -5624,8 +5570,8 @@
         }
     }
     /**
-     * Remove a style property from each node.
-     * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} selector
+     * Removes a style property from each node.
+     * @param {ElementInput} selector The input node(s), or a query selector string.
      * @param {string} style The style name.
      */
     function removeStyle$1(selector, style) {
@@ -5638,12 +5584,11 @@
         }
     }
     /**
-     * Set style properties for each node.
-     * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
-     * @param {string|object} style The style name, or an object containing styles.
-     * @param {string} [value] The style value.
-     * @param {object} [options] The options for setting the style.
-     * @param {Boolean} [options.important] Whether the style should be !important.
+     * Sets style properties for each node.
+     * @param {ElementInput} selector The input node(s), or a query selector string.
+     * @param {string|StyleValues} style The style name, or an object containing styles.
+     * @param {string|number} [value] The style value.
+     * @param {{important?: boolean}} [options] The style options.
      */
     function setStyle$1(selector, style, value, { important = false } = {}) {
         const nodes = parseNodes(selector);
@@ -5670,8 +5615,8 @@
         }
     }
     /**
-     * Display each hidden node.
-     * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
+     * Displays each hidden node.
+     * @param {ElementInput} selector The input node(s), or a query selector string.
      */
     function show$1(selector) {
         const nodes = parseNodes(selector);
@@ -5681,8 +5626,8 @@
         }
     }
     /**
-     * Toggle the visibility of each node.
-     * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
+     * Toggles the visibility of each node.
+     * @param {ElementInput} selector The input node(s), or a query selector string.
      */
     function toggle$1(selector) {
         const nodes = parseNodes(selector);
@@ -5697,8 +5642,8 @@
         }
     }
     /**
-     * Toggle classes for each node.
-     * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
+     * Toggles classes for each node.
+     * @param {ElementInput} selector The input node(s), or a query selector string.
      * @param {...string|string[]} classes The classes.
      */
     function toggleClass$1(selector, ...classes) {
@@ -5717,16 +5662,28 @@
         }
     }
 
+    /** @typedef {import('../helpers.js').ElementInput} ElementInput */
+
     /**
-     * DOM Position
+     * @typedef {object} Coordinates
+     * @property {number} x The X co-ordinate.
+     * @property {number} y The Y co-ordinate.
      */
 
     /**
-     * Get the X,Y co-ordinates for the center of the first node.
-     * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
-     * @param {object} [options] The options for calculating the co-ordinates.
-     * @param {Boolean} [options.offset] Whether to offset from the top-left of the Document.
-     * @return {object} An object with the x and y co-ordinates.
+     * @typedef {object} OffsetOptions
+     * @property {boolean} [offset=false] Whether to offset from the top-left of the Document.
+     */
+
+    /**
+     * @typedef {OffsetOptions & {clamp?: boolean}} PercentOptions
+     */
+
+    /**
+     * Gets the X,Y co-ordinates for the center of the first node.
+     * @param {ElementInput} selector The input node(s), or a query selector string.
+     * @param {OffsetOptions} [options] The positioning options.
+     * @returns {Coordinates|undefined} The center co-ordinates, or `undefined` if no element matches.
      */
     function center$1(selector, { offset = false } = {}) {
         const nodeBox = rect$1(selector, { offset });
@@ -5741,9 +5698,9 @@
         };
     }
     /**
-     * Contrain each node to a container node.
-     * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
-     * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} containerSelector The container node, or a query selector string.
+     * Constrains each node to a container node.
+     * @param {ElementInput} selector The input node(s), or a query selector string.
+     * @param {ElementInput} containerSelector The container node, or a query selector string.
      */
     function constrain$1(selector, containerSelector) {
         const containerBox = rect$1(containerSelector);
@@ -5812,13 +5769,12 @@
         }
     }
     /**
-     * Get the distance of a node to an X,Y position in the Window.
-     * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
+     * Gets the distance of a node to an X,Y position in the Window.
+     * @param {ElementInput} selector The input node(s), or a query selector string.
      * @param {number} x The X co-ordinate.
      * @param {number} y The Y co-ordinate.
-     * @param {object} [options] The options for calculating the distance.
-     * @param {Boolean} [options.offset] Whether to offset from the top-left of the Document.
-     * @return {number} The distance to the element.
+     * @param {OffsetOptions} [options] The positioning options.
+     * @returns {number|undefined} The distance to the element, or `undefined` if no element matches.
      */
     function distTo$1(selector, x, y, { offset = false } = {}) {
         const nodeCenter = center$1(selector, { offset });
@@ -5830,10 +5786,10 @@
         return dist(nodeCenter.x, nodeCenter.y, x, y);
     }
     /**
-     * Get the distance between two nodes.
-     * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
-     * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} otherSelector The node to compare, or a query selector string.
-     * @return {number} The distance between the nodes.
+     * Gets the distance between two nodes.
+     * @param {ElementInput} selector The input node(s), or a query selector string.
+     * @param {ElementInput} otherSelector The node to compare, or a query selector string.
+     * @returns {number|undefined} The distance between the nodes, or `undefined` if either element does not match.
      */
     function distToNode$1(selector, otherSelector) {
         const otherCenter = center$1(otherSelector);
@@ -5845,13 +5801,12 @@
         return distTo$1(selector, otherCenter.x, otherCenter.y);
     }
     /**
-     * Get the nearest node to an X,Y position in the Window.
-     * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
+     * Gets the nearest node to an X,Y position in the Window.
+     * @param {ElementInput} selector The input node(s), or a query selector string.
      * @param {number} x The X co-ordinate.
      * @param {number} y The Y co-ordinate.
-     * @param {object} [options] The options for calculating the distance.
-     * @param {Boolean} [options.offset] Whether to offset from the top-left of the Document.
-     * @return {HTMLElement} The nearest node.
+     * @param {OffsetOptions} [options] The positioning options.
+     * @returns {Element|undefined} The nearest element, or `undefined` if none matches.
      */
     function nearestTo$1(selector, x, y, { offset = false } = {}) {
         let closest;
@@ -5870,10 +5825,10 @@
         return closest;
     }
     /**
-     * Get the nearest node to another node.
-     * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
-     * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} otherSelector The node to compare, or a query selector string.
-     * @return {HTMLElement} The nearest node.
+     * Gets the nearest node to another node.
+     * @param {ElementInput} selector The input node(s), or a query selector string.
+     * @param {ElementInput} otherSelector The node to compare, or a query selector string.
+     * @returns {Element|undefined} The nearest element, or `undefined` if none matches.
      */
     function nearestToNode$1(selector, otherSelector) {
         const otherCenter = center$1(otherSelector);
@@ -5885,13 +5840,11 @@
         return nearestTo$1(selector, otherCenter.x, otherCenter.y);
     }
     /**
-     * Get the percentage of an X co-ordinate relative to a node's width.
-     * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
+     * Gets the percentage of an X co-ordinate relative to a node's width.
+     * @param {ElementInput} selector The input node(s), or a query selector string.
      * @param {number} x The X co-ordinate.
-     * @param {object} [options] The options for calculating the percentage.
-     * @param {Boolean} [options.offset] Whether to offset from the top-left of the Document.
-     * @param {Boolean} [options.clamp=true] Whether to clamp the percent between 0 and 100.
-     * @return {number} The percent.
+     * @param {PercentOptions} [options] The percentage options.
+     * @returns {number|undefined} The percentage, or `undefined` if no element matches.
      */
     function percentX$1(selector, x, { offset = false, clamp = true } = {}) {
         const nodeBox = rect$1(selector, { offset });
@@ -5909,13 +5862,11 @@
             percent;
     }
     /**
-     * Get the percentage of a Y co-ordinate relative to a node's height.
-     * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
+     * Gets the percentage of a Y co-ordinate relative to a node's height.
+     * @param {ElementInput} selector The input node(s), or a query selector string.
      * @param {number} y The Y co-ordinate.
-     * @param {object} [options] The options for calculating the percentage.
-     * @param {Boolean} [options.offset] Whether to offset from the top-left of the Document.
-     * @param {Boolean} [options.clamp=true] Whether to clamp the percent between 0 and 100.
-     * @return {number} The percent.
+     * @param {PercentOptions} [options] The percentage options.
+     * @returns {number|undefined} The percentage, or `undefined` if no element matches.
      */
     function percentY$1(selector, y, { offset = false, clamp = true } = {}) {
         const nodeBox = rect$1(selector, { offset });
@@ -5933,11 +5884,10 @@
             percent;
     }
     /**
-     * Get the position of the first node relative to the Window or Document.
-     * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
-     * @param {object} [options] The options for calculating the position.
-     * @param {Boolean} [options.offset] Whether to offset from the top-left of the Document.
-     * @return {object} An object with the X and Y co-ordinates.
+     * Gets the position of the first node relative to the Window or Document.
+     * @param {ElementInput} selector The input node(s), or a query selector string.
+     * @param {OffsetOptions} [options] The positioning options.
+     * @returns {Coordinates|undefined} The co-ordinates, or `undefined` if no element matches.
      */
     function position$1(selector, { offset = false } = {}) {
         const node = parseNode(selector);
@@ -5963,11 +5913,10 @@
         return result;
     }
     /**
-     * Get the computed bounding rectangle of the first node.
-     * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
-     * @param {object} [options] The options for calculating the bounding rectangle.
-     * @param {Boolean} [options.offset] Whether to offset from the top-left of the Document.
-     * @return {DOMRect} The computed bounding rectangle.
+     * Gets the computed bounding rectangle of the first node.
+     * @param {ElementInput} selector The input node(s), or a query selector string.
+     * @param {OffsetOptions} [options] The positioning options.
+     * @returns {DOMRect|undefined} The computed bounding rectangle, or `undefined` if no element matches.
      */
     function rect$1(selector, { offset = false } = {}) {
         const node = parseNode(selector);
@@ -5987,14 +5936,12 @@
         return result;
     }
 
-    /**
-     * DOM Scroll
-     */
+    /** @typedef {import('../helpers.js').QueryInput} QueryInput */
 
     /**
-     * Get the scroll X position of the first node.
-     * @param {string|array|HTMLElement|Document|Window|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
-     * @return {number} The scroll X position.
+     * Gets the scroll X position of the first node.
+     * @param {QueryInput} selector The input node(s), or a query selector string.
+     * @returns {number|undefined} The scroll X position, or `undefined` if no node matches.
      */
     function getScrollX$1(selector) {
         const node = parseNode(selector, {
@@ -6017,9 +5964,9 @@
         return node.scrollLeft;
     }
     /**
-     * Get the scroll Y position of the first node.
-     * @param {string|array|HTMLElement|Document|Window|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
-     * @return {number} The scroll Y position.
+     * Gets the scroll Y position of the first node.
+     * @param {QueryInput} selector The input node(s), or a query selector string.
+     * @returns {number|undefined} The scroll Y position, or `undefined` if no node matches.
      */
     function getScrollY$1(selector) {
         const node = parseNode(selector, {
@@ -6042,8 +5989,8 @@
         return node.scrollTop;
     }
     /**
-     * Scroll each node to an X,Y position.
-     * @param {string|array|HTMLElement|Document|Window|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
+     * Scrolls each node to an X,Y position.
+     * @param {QueryInput} selector The input node(s), or a query selector string.
      * @param {number} x The scroll X position.
      * @param {number} y The scroll Y position.
      */
@@ -6066,8 +6013,8 @@
         }
     }
     /**
-     * Scroll each node to an X position.
-     * @param {string|array|HTMLElement|Document|Window|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
+     * Scrolls each node to an X position.
+     * @param {QueryInput} selector The input node(s), or a query selector string.
      * @param {number} x The scroll X position.
      */
     function setScrollX$1(selector, x) {
@@ -6087,8 +6034,8 @@
         }
     }
     /**
-     * Scroll each node to a Y position.
-     * @param {string|array|HTMLElement|Document|Window|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
+     * Scrolls each node to a Y position.
+     * @param {QueryInput} selector The input node(s), or a query selector string.
      * @param {number} y The scroll Y position.
      */
     function setScrollY$1(selector, y) {
@@ -6108,17 +6055,19 @@
         }
     }
 
+    /** @typedef {import('../helpers.js').QueryInput} QueryInput */
+
     /**
-     * DOM Size
+     * @typedef {object} SizeOptions
+     * @property {number} [boxSize=PADDING_BOX] The box sizing to calculate.
+     * @property {boolean} [outer=false] Whether to use the Window outer dimension.
      */
 
     /**
-     * Get the computed height of the first node.
-     * @param {string|array|HTMLElement|Document|Window|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
-     * @param {object} [options] The options for calculating the height.
-     * @param {number} [options.boxSize=PADDING_BOX] The box sizing to calculate.
-     * @param {Boolean} [options.outer] Whether to use the window outer height.
-     * @return {number} The height.
+     * Gets the computed height of the first node.
+     * @param {QueryInput} selector The input node(s), or a query selector string.
+     * @param {SizeOptions} [options] The sizing options.
+     * @returns {number|undefined} The height, or `undefined` if no node matches.
      */
     function height$1(selector, { boxSize = PADDING_BOX, outer = false } = {}) {
         let node = parseNode(selector, {
@@ -6164,12 +6113,10 @@
         return result;
     }
     /**
-     * Get the computed width of the first node.
-     * @param {string|array|HTMLElement|Document|Window|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
-     * @param {object} [options] The options for calculating the width.
-     * @param {number} [options.boxSize=PADDING_BOX] The box sizing to calculate.
-     * @param {Boolean} [options.outer] Whether to use the window outer width.
-     * @return {number} The width.
+     * Gets the computed width of the first node.
+     * @param {QueryInput} selector The input node(s), or a query selector string.
+     * @param {SizeOptions} [options] The sizing options.
+     * @returns {number|undefined} The width, or `undefined` if no node matches.
      */
     function width$1(selector, { boxSize = PADDING_BOX, outer = false } = {}) {
         let node = parseNode(selector, {
@@ -6216,13 +6163,9 @@
     }
 
     /**
-     * DOM Cookie
-     */
-
-    /**
-     * Get a cookie value.
+     * Gets a cookie value.
      * @param {string} name The cookie name.
-     * @return {*} The cookie value.
+     * @returns {string|null} The cookie value, or `null` if it does not exist.
      */
     function getCookie(name) {
         const cookie = getContext().cookie
@@ -6243,11 +6186,9 @@
         );
     }
     /**
-     * Remove a cookie.
+     * Removes a cookie.
      * @param {string} name The cookie name.
-     * @param {object} [options] The options to use for the cookie.
-     * @param {string} [options.path] The cookie path.
-     * @param {Boolean} [options.secure] Whether the cookie is secure.
+     * @param {{path?: string, secure?: boolean}} [options] The cookie options.
      */
     function removeCookie(name, { path = null, secure = false } = {}) {
         if (!name) {
@@ -6267,13 +6208,10 @@
         getContext().cookie = cookie;
     }
     /**
-     * Set a cookie value.
+     * Sets a cookie value.
      * @param {string} name The cookie name.
      * @param {*} value The cookie value.
-     * @param {object} [options] The options to use for the cookie.
-     * @param {number} [options.expires] The number of seconds until the cookie will expire.
-     * @param {string} [options.path] The path to use for the cookie.
-     * @param {Boolean} [options.secure] Whether the cookie is secure.
+     * @param {{expires?: number, path?: string, secure?: boolean}} [options] The cookie options.
      */
     function setCookie(name, value, { expires = null, path = null, secure = false } = {}) {
         if (!name) {
@@ -6302,21 +6240,15 @@
         getContext().cookie = cookie;
     }
 
-    /**
-     * DOM Event Factory
-     */
+    /** @typedef {import('./event-handlers.js').EventCallback} EventCallback */
 
     /**
-     * Return a wrapped mouse drag event (optionally debounced).
-     * @param {DOM~eventCallback} down The callback to execute on mousedown.
-     * @param {DOM~eventCallback} move The callback to execute on mousemove.
-     * @param {DOM~eventCallback} up The callback to execute on mouseup.
-     * @param {object} [options] The options for the mouse drag event.
-     * @param {Boolean} [options.debounce=true] Whether to debounce the move event.
-     * @param {Boolean} [options.passive=true] Whether to use passive event listeners.
-     * @param {Boolean} [options.preventDefault=true] Whether to prevent the default event.
-     * @param {number} [options.touches=1] The number of touches to trigger the event for.
-     * @return {DOM~eventCallback} The mouse drag event callback.
+     * Returns a wrapped mouse drag event (optionally debounced).
+     * @param {EventCallback} down The callback to execute on mousedown.
+     * @param {EventCallback} move The callback to execute on mousemove.
+     * @param {EventCallback} up The callback to execute on mouseup.
+     * @param {{debounce?: boolean, passive?: boolean, preventDefault?: boolean, touches?: number}} [options] The mouse drag options.
+     * @returns {EventCallback} The mouse drag event callback.
      */
     function mouseDragFactory(down, move, up, { debounce: debounce$1 = true, passive = true, preventDefault = true, touches = 1 } = {}) {
         if (move && debounce$1) {
@@ -6390,12 +6322,13 @@
     }
 
     /**
-     * DOM Events
+     * @typedef {import('../helpers.js').ElementInput} ElementInput
+     * @typedef {import('./event-handlers.js').EventCallback} EventCallback
      */
 
     /**
-     * Trigger a blur event on the first node.
-     * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
+     * Triggers a blur event on the first node.
+     * @param {ElementInput} selector The input node(s), or a query selector string.
      */
     function blur$1(selector) {
         const node = parseNode(selector);
@@ -6407,8 +6340,8 @@
         node.blur();
     }
     /**
-     * Trigger a click event on the first node.
-     * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
+     * Triggers a click event on the first node.
+     * @param {ElementInput} selector The input node(s), or a query selector string.
      */
     function click$1(selector) {
         const node = parseNode(selector);
@@ -6420,8 +6353,8 @@
         node.click();
     }
     /**
-     * Trigger a focus event on the first node.
-     * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
+     * Triggers a focus event on the first node.
+     * @param {ElementInput} selector The input node(s), or a query selector string.
      */
     function focus$1(selector) {
         const node = parseNode(selector);
@@ -6433,8 +6366,8 @@
         node.focus();
     }
     /**
-     * Add a function to the ready queue.
-     * @param {DOM~eventCallback} callback The callback to execute.
+     * Adds a function to the ready queue.
+     * @param {EventCallback} callback The callback to execute.
      */
     function ready(callback) {
         if (getContext().readyState === 'complete') {
@@ -6448,7 +6381,7 @@
     let fQuery;
 
     /**
-     * Reset the global $ variable.
+     * Resets the global $ variable.
      */
     function noConflict() {
         const window = getWindow();
@@ -6458,11 +6391,11 @@
         }
     }
     /**
-     * Register the global variables.
+     * Registers the global variables.
      * @param {Window} window The window.
      * @param {Document} [document] The document.
-     * @param {object} query The fQuery object.
-     * @return {object} The fQuery object.
+     * @param {Function} query The fQuery function.
+     * @returns {Function} The fQuery function.
      */
     function registerGlobals(window, document, query) {
         fQuery = query;
@@ -6476,14 +6409,12 @@
         return fQuery;
     }
 
-    /**
-     * DOM Move
-     */
+    /** @typedef {import('../helpers.js').NodeInput} NodeInput */
 
     /**
-     * Insert each other node after each node.
-     * @param {string|array|Node|HTMLElement|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
-     * @param {string|array|Node|HTMLElement|DocumentFragment|NodeList|HTMLCollection|QuerySet} otherSelector The other node(s), or a query selector or HTML string.
+     * Inserts each other node after each node.
+     * @param {NodeInput} selector The input node(s), or a query selector string.
+     * @param {NodeInput} otherSelector The other node(s), or a query selector or HTML string.
      */
     function after$1(selector, otherSelector) {
         // DocumentFragment and ShadowRoot nodes can not have siblings
@@ -6522,9 +6453,9 @@
         }
     }
     /**
-     * Append each other node to each node.
-     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
-     * @param {string|array|Node|HTMLElement|DocumentFragment|NodeList|HTMLCollection|QuerySet} otherSelector The other node(s), or a query selector or HTML string.
+     * Appends each other node to each node.
+     * @param {NodeInput} selector The input node(s), or a query selector string.
+     * @param {NodeInput} otherSelector The other node(s), or a query selector or HTML string.
      */
     function append$1(selector, otherSelector) {
         const nodes = parseNodes(selector, {
@@ -6558,17 +6489,17 @@
         }
     }
     /**
-     * Append each node to each other node.
-     * @param {string|array|Node|HTMLElement|DocumentFragment|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector or HTML string.
-     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|NodeList|HTMLCollection|QuerySet} otherSelector The other node(s), or a query selector string.
+     * Appends each node to each other node.
+     * @param {NodeInput} selector The input node(s), or a query selector or HTML string.
+     * @param {NodeInput} otherSelector The other node(s), or a query selector string.
      */
     function appendTo$1(selector, otherSelector) {
         append$1(otherSelector, selector);
     }
     /**
-     * Insert each other node before each node.
-     * @param {string|array|Node|HTMLElement|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
-     * @param {string|array|Node|HTMLElement|DocumentFragment|NodeList|HTMLCollection|QuerySet} otherSelector The other node(s), or a query selector or HTML string.
+     * Inserts each other node before each node.
+     * @param {NodeInput} selector The input node(s), or a query selector string.
+     * @param {NodeInput} otherSelector The other node(s), or a query selector or HTML string.
      */
     function before$1(selector, otherSelector) {
         // DocumentFragment and ShadowRoot nodes can not have siblings
@@ -6607,25 +6538,25 @@
         }
     }
     /**
-     * Insert each node after each other node.
-     * @param {string|array|Node|HTMLElement|DocumentFragment|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector or HTML string.
-     * @param {string|array|Node|HTMLElement|NodeList|HTMLCollection|QuerySet} otherSelector The other node(s), or a query selector string.
+     * Inserts each node after each other node.
+     * @param {NodeInput} selector The input node(s), or a query selector or HTML string.
+     * @param {NodeInput} otherSelector The other node(s), or a query selector string.
      */
     function insertAfter$1(selector, otherSelector) {
         after$1(otherSelector, selector);
     }
     /**
-     * Insert each node before each other node.
-     * @param {string|array|Node|HTMLElement|DocumentFragment|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector or HTML string.
-     * @param {string|array|Node|HTMLElement|NodeList|HTMLCollection|QuerySet} otherSelector The other node(s), or a query selector string.
+     * Inserts each node before each other node.
+     * @param {NodeInput} selector The input node(s), or a query selector or HTML string.
+     * @param {NodeInput} otherSelector The other node(s), or a query selector string.
      */
     function insertBefore$1(selector, otherSelector) {
         before$1(otherSelector, selector);
     }
     /**
-     * Prepend each other node to each node.
-     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
-     * @param {string|array|Node|HTMLElement|DocumentFragment|NodeList|HTMLCollection} otherSelector The other node(s), or a query selector or HTML string.
+     * Prepends each other node to each node.
+     * @param {NodeInput} selector The input node(s), or a query selector string.
+     * @param {NodeInput} otherSelector The other node(s), or a query selector or HTML string.
      */
     function prepend$1(selector, otherSelector) {
         const nodes = parseNodes(selector, {
@@ -6661,22 +6592,23 @@
         }
     }
     /**
-     * Prepend each node to each other node.
-     * @param {string|array|Node|HTMLElement|DocumentFragment|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector or HTML string.
-     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|NodeList|HTMLCollection|QuerySet} otherSelector The other node(s), or a query selector string.
+     * Prepends each node to each other node.
+     * @param {NodeInput} selector The input node(s), or a query selector or HTML string.
+     * @param {NodeInput} otherSelector The other node(s), or a query selector string.
      */
     function prependTo$1(selector, otherSelector) {
         prepend$1(otherSelector, selector);
     }
 
     /**
-     * DOM Wrap
+     * @typedef {import('../filters.js').NodeFilterInput} NodeFilterInput
+     * @typedef {import('../helpers.js').NodeInput} NodeInput
      */
 
     /**
-     * Unwrap each node.
-     * @param {string|array|Node|HTMLElement|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
-     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet|DOM~filterCallback} [nodeFilter] The filter node(s), a query selector string or custom filter function.
+     * Unwraps each node.
+     * @param {NodeInput} selector The input node(s), or a query selector string.
+     * @param {NodeFilterInput} [nodeFilter] The filter node(s), a query selector string or custom filter function.
      */
     function unwrap$1(selector, nodeFilter) {
         // DocumentFragment and ShadowRoot nodes can not be unwrapped
@@ -6723,9 +6655,9 @@
         remove$1(parents);
     }
     /**
-     * Wrap each nodes with other nodes.
-     * @param {string|array|Node|HTMLElement|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
-     * @param {string|array|HTMLElement|DocumentFragment|NodeList|HTMLCollection|QuerySet} otherSelector The other node(s), or a query selector or HTML string.
+     * Wraps each nodes with other nodes.
+     * @param {NodeInput} selector The input node(s), or a query selector string.
+     * @param {NodeInput} otherSelector The other node(s), or a query selector or HTML string.
      */
     function wrap$1(selector, otherSelector) {
         // DocumentFragment and ShadowRoot nodes can not be wrapped
@@ -6767,9 +6699,9 @@
         }
     }
     /**
-     * Wrap all nodes with other nodes.
-     * @param {string|array|Node|HTMLElement|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
-     * @param {string|array|HTMLElement|DocumentFragment|NodeList|HTMLCollection|QuerySet} otherSelector The other node(s), or a query selector or HTML string.
+     * Wraps all nodes with other nodes.
+     * @param {NodeInput} selector The input node(s), or a query selector string.
+     * @param {NodeInput} otherSelector The other node(s), or a query selector or HTML string.
      */
     function wrapAll$1(selector, otherSelector) {
         // DocumentFragment and ShadowRoot nodes can not be wrapped
@@ -6817,9 +6749,9 @@
         }
     }
     /**
-     * Wrap the contents of each node with other nodes.
-     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
-     * @param {string|array|HTMLElement|DocumentFragment|NodeList|HTMLCollection|QuerySet} otherSelector The other node(s), or a query selector or HTML string.
+     * Wraps the contents of each node with other nodes.
+     * @param {NodeInput} selector The input node(s), or a query selector string.
+     * @param {NodeInput} otherSelector The other node(s), or a query selector or HTML string.
      */
     function wrapInner$1(selector, otherSelector) {
         const nodes = parseNodes(selector, {
@@ -6861,19 +6793,17 @@
     }
 
     /**
-     * QuerySet Animate
+     * @typedef {import('../../animation/animation.js').AnimationCallback} AnimationCallback
+     * @typedef {import('../../animation/animation.js').QueuedAnimationOptions} QueuedAnimationOptions
+     * @typedef {import('../../animation/animation.js').StopAnimationOptions} StopAnimationOptions
+     * @typedef {import('../query-set.js').default} QuerySet
      */
 
     /**
-     * Add an animation to the queue for each node.
-     * @param {DOM~animationCallback} callback The animation callback.
-     * @param {object} [options] The options to use for animating.
-     * @param {string} [options.queueName=default] The name of the queue to use.
-     * @param {number} [options.duration=1000] The duration of the animation.
-     * @param {string} [options.type=ease-in-out] The type of animation.
-     * @param {Boolean} [options.infinite] Whether the animation should run forever.
-     * @param {Boolean} [options.debug] Whether to set debugging info on the node.
-     * @return {QuerySet} The QuerySet object.
+     * Adds an animation to the queue for each node.
+     * @param {AnimationCallback} callback The animation callback.
+     * @param {QueuedAnimationOptions} [options] The queued animation options.
+     * @returns {QuerySet} The QuerySet object.
      */
     function animate(callback, { queueName = 'default', ...options } = {}) {
         return this.queue((node) =>
@@ -6882,10 +6812,9 @@
         );
     }
     /**
-     * Stop all animations and clear the queue of each node.
-     * @param {object} [options] The options for stopping the animation.
-     * @param {Boolean} [options.finish=true] Whether to complete all current animations.
-     * @return {QuerySet} The QuerySet object.
+     * Stops all animations and clears the queue of each node.
+     * @param {StopAnimationOptions} [options] The stopping options.
+     * @returns {QuerySet} The QuerySet object.
      */
     function stop({ finish = true } = {}) {
         this.clearQueue();
@@ -6895,20 +6824,14 @@
     }
 
     /**
-     * QuerySet Animations
+     * @typedef {import('../../animation/animation.js').QueuedAnimationOptions} QueuedAnimationOptions
+     * @typedef {import('../query-set.js').default} QuerySet
      */
 
     /**
-     * Add a drop in animation to the queue for each node.
-     * @param {object} [options] The options to use for animating.
-     * @param {string} [options.queueName=default] The name of the queue to use.
-     * @param {string|function} [options.direction=top] The direction to drop the node from.
-     * @param {number} [options.duration=1000] The duration of the animation.
-     * @param {string} [options.type=ease-in-out] The type of animation.
-     * @param {Boolean} [options.infinite] Whether the animation should run forever.
-     * @param {Boolean} [options.useGpu=true] Whether the animation should use GPU acceleration.
-     * @param {Boolean} [options.debug] Whether to set debugging info on the node.
-     * @return {QuerySet} The QuerySet object.
+     * Adds a drop in animation to the queue for each node.
+     * @param {QueuedAnimationOptions} [options] The queued animation options.
+     * @returns {QuerySet} The QuerySet object.
      */
     function dropIn({ queueName = 'default', ...options } = {}) {
         return this.queue((node) =>
@@ -6917,16 +6840,9 @@
         );
     }
     /**
-     * Add a drop out animation to the queue for each node.
-     * @param {object} [options] The options to use for animating.
-     * @param {string} [options.queueName=default] The name of the queue to use.
-     * @param {string|function} [options.direction=top] The direction to drop the node to.
-     * @param {number} [options.duration=1000] The duration of the animation.
-     * @param {string} [options.type=ease-in-out] The type of animation.
-     * @param {Boolean} [options.infinite] Whether the animation should run forever.
-     * @param {Boolean} [options.useGpu=true] Whether the animation should use GPU acceleration.
-     * @param {Boolean} [options.debug] Whether to set debugging info on the node.
-     * @return {QuerySet} The QuerySet object.
+     * Adds a drop out animation to the queue for each node.
+     * @param {QueuedAnimationOptions} [options] The queued animation options.
+     * @returns {QuerySet} The QuerySet object.
      */
     function dropOut({ queueName = 'default', ...options } = {}) {
         return this.queue((node) =>
@@ -6935,14 +6851,9 @@
         );
     }
     /**
-     * Add a fade in animation to the queue for each node.
-     * @param {object} [options] The options to use for animating.
-     * @param {string} [options.queueName=default] The name of the queue to use.
-     * @param {number} [options.duration=1000] The duration of the animation.
-     * @param {string} [options.type=ease-in-out] The type of animation.
-     * @param {Boolean} [options.infinite] Whether the animation should run forever.
-     * @param {Boolean} [options.debug] Whether to set debugging info on the node.
-     * @return {QuerySet} The QuerySet object.
+     * Adds a fade in animation to the queue for each node.
+     * @param {QueuedAnimationOptions} [options] The queued animation options.
+     * @returns {QuerySet} The QuerySet object.
      */
     function fadeIn({ queueName = 'default', ...options } = {}) {
         return this.queue((node) =>
@@ -6951,14 +6862,9 @@
         );
     }
     /**
-     * Add a fade out animation to the queue for each node.
-     * @param {object} [options] The options to use for animating.
-     * @param {string} [options.queueName=default] The name of the queue to use.
-     * @param {number} [options.duration=1000] The duration of the animation.
-     * @param {string} [options.type=ease-in-out] The type of animation.
-     * @param {Boolean} [options.infinite] Whether the animation should run forever.
-     * @param {Boolean} [options.debug] Whether to set debugging info on the node.
-     * @return {QuerySet} The QuerySet object.
+     * Adds a fade out animation to the queue for each node.
+     * @param {QueuedAnimationOptions} [options] The queued animation options.
+     * @returns {QuerySet} The QuerySet object.
      */
     function fadeOut({ queueName = 'default', ...options } = {}) {
         return this.queue((node) =>
@@ -6967,18 +6873,9 @@
         );
     }
     /**
-     * Add a rotate in animation to the queue for each node.
-     * @param {object} [options] The options to use for animating.
-     * @param {string} [options.queueName=default] The name of the queue to use.
-     * @param {number} [options.x=0] The amount to rotate on the X-axis.
-     * @param {number} [options.y=1] The amount to rotate on the Y-axis.
-     * @param {number} [options.z=0] The amount to rotate on the Z-axis.
-     * @param {Boolean} [options.inverse] Whether to invert the rotation.
-     * @param {number} [options.duration=1000] The duration of the animation.
-     * @param {string} [options.type=ease-in-out] The type of animation.
-     * @param {Boolean} [options.infinite] Whether the animation should run forever.
-     * @param {Boolean} [options.debug] Whether to set debugging info on the node.
-     * @return {QuerySet} The QuerySet object.
+     * Adds a rotate in animation to the queue for each node.
+     * @param {QueuedAnimationOptions} [options] The queued animation options.
+     * @returns {QuerySet} The QuerySet object.
      */
     function rotateIn({ queueName = 'default', ...options } = {}) {
         return this.queue((node) =>
@@ -6987,18 +6884,9 @@
         );
     }
     /**
-     * Add a rotate out animation to the queue for each node.
-     * @param {object} [options] The options to use for animating.
-     * @param {string} [options.queueName=default] The name of the queue to use.
-     * @param {number} [options.x=0] The amount to rotate on the X-axis.
-     * @param {number} [options.y=1] The amount to rotate on the Y-axis.
-     * @param {number} [options.z=0] The amount to rotate on the Z-axis.
-     * @param {Boolean} [options.inverse] Whether to invert the rotation.
-     * @param {number} [options.duration=1000] The duration of the animation.
-     * @param {string} [options.type=ease-in-out] The type of animation.
-     * @param {Boolean} [options.infinite] Whether the animation should run forever.
-     * @param {Boolean} [options.debug] Whether to set debugging info on the node.
-     * @return {QuerySet} The QuerySet object.
+     * Adds a rotate out animation to the queue for each node.
+     * @param {QueuedAnimationOptions} [options] The queued animation options.
+     * @returns {QuerySet} The QuerySet object.
      */
     function rotateOut({ queueName = 'default', ...options } = {}) {
         return this.queue((node) =>
@@ -7007,16 +6895,9 @@
         );
     }
     /**
-     * Add a slide in animation to the queue for each node.
-     * @param {object} [options] The options to use for animating.
-     * @param {string} [options.queueName=default] The name of the queue to use.
-     * @param {string|function} [options.direction=bottom] The direction to slide from.
-     * @param {number} [options.duration=1000] The duration of the animation.
-     * @param {string} [options.type=ease-in-out] The type of animation.
-     * @param {Boolean} [options.infinite] Whether the animation should run forever.
-     * @param {Boolean} [options.useGpu=true] Whether the animation should use GPU acceleration.
-     * @param {Boolean} [options.debug] Whether to set debugging info on the node.
-     * @return {QuerySet} The QuerySet object.
+     * Adds a slide in animation to the queue for each node.
+     * @param {QueuedAnimationOptions} [options] The queued animation options.
+     * @returns {QuerySet} The QuerySet object.
      */
     function slideIn({ queueName = 'default', ...options } = {}) {
         return this.queue((node) =>
@@ -7025,16 +6906,9 @@
         );
     }
     /**
-     * Add a slide out animation to the queue for each node.
-     * @param {object} [options] The options to use for animating.
-     * @param {string} [options.queueName=default] The name of the queue to use.
-     * @param {string|function} [options.direction=bottom] The direction to slide to.
-     * @param {number} [options.duration=1000] The duration of the animation.
-     * @param {string} [options.type=ease-in-out] The type of animation.
-     * @param {Boolean} [options.infinite] Whether the animation should run forever.
-     * @param {Boolean} [options.useGpu=true] Whether the animation should use GPU acceleration.
-     * @param {Boolean} [options.debug] Whether to set debugging info on the node.
-     * @return {QuerySet} The QuerySet object.
+     * Adds a slide out animation to the queue for each node.
+     * @param {QueuedAnimationOptions} [options] The queued animation options.
+     * @returns {QuerySet} The QuerySet object.
      */
     function slideOut({ queueName = 'default', ...options } = {}) {
         return this.queue((node) =>
@@ -7043,16 +6917,9 @@
         );
     }
     /**
-     * Add a squeeze in animation to the queue for each node.
-     * @param {object} [options] The options to use for animating.
-     * @param {string} [options.queueName=default] The name of the queue to use.
-     * @param {string|function} [options.direction=bottom] The direction to squeeze from.
-     * @param {number} [options.duration=1000] The duration of the animation.
-     * @param {string} [options.type=ease-in-out] The type of animation.
-     * @param {Boolean} [options.infinite] Whether the animation should run forever.
-     * @param {Boolean} [options.useGpu=true] Whether the animation should use GPU acceleration.
-     * @param {Boolean} [options.debug] Whether to set debugging info on the node.
-     * @return {QuerySet} The QuerySet object.
+     * Adds a squeeze in animation to the queue for each node.
+     * @param {QueuedAnimationOptions} [options] The queued animation options.
+     * @returns {QuerySet} The QuerySet object.
      */
     function squeezeIn({ queueName = 'default', ...options } = {}) {
         return this.queue((node) =>
@@ -7061,16 +6928,9 @@
         );
     }
     /**
-     * Add a squeeze out animation to the queue for each node.
-     * @param {object} [options] The options to use for animating.
-     * @param {string} [options.queueName=default] The name of the queue to use.
-     * @param {string|function} [options.direction=bottom] The direction to squeeze to.
-     * @param {number} [options.duration=1000] The duration of the animation.
-     * @param {string} [options.type=ease-in-out] The type of animation.
-     * @param {Boolean} [options.infinite] Whether the animation should run forever.
-     * @param {Boolean} [options.useGpu=true] Whether the animation should use GPU acceleration.
-     * @param {Boolean} [options.debug] Whether to set debugging info on the node.
-     * @return {QuerySet} The QuerySet object.
+     * Adds a squeeze out animation to the queue for each node.
+     * @param {QueuedAnimationOptions} [options] The queued animation options.
+     * @returns {QuerySet} The QuerySet object.
      */
     function squeezeOut({ queueName = 'default', ...options } = {}) {
         return this.queue((node) =>
@@ -7080,58 +6940,59 @@
     }
 
     /**
-     * QuerySet Attributes
+     * @typedef {import('../../attributes/attributes.js').AttributeValues} AttributeValues
+     * @typedef {import('../query-set.js').default} QuerySet
      */
 
     /**
-     * Get attribute value(s) for the first node.
+     * Gets attribute value(s) for the first node.
      * @param {string} [attribute] The attribute name.
-     * @return {string} The attribute value.
+     * @returns {string|null|Record<string, string|null>|undefined} The attribute value, all attributes, or `undefined` if no element matches.
      */
     function getAttribute(attribute) {
         return getAttribute$1(this, attribute);
     }
     /**
-     * Get dataset value(s) for the first node.
+     * Gets dataset value(s) for the first node.
      * @param {string} [key] The dataset key.
-     * @return {*} The dataset value, or an object containing the dataset.
+     * @returns {*|undefined} The dataset value, all dataset values, or `undefined` if no element matches.
      */
     function getDataset(key) {
         return getDataset$1(this, key);
     }
     /**
-     * Get the HTML contents of the first node.
-     * @return {string} The HTML contents.
+     * Gets the HTML contents of the first node.
+     * @returns {string|undefined} The HTML contents, or `undefined` if no element matches.
      */
     function getHTML() {
         return getHTML$1(this);
     }
     /**
-     * Get a property value for the first node.
+     * Gets a property value for the first node.
      * @param {string} property The property name.
-     * @return {string} The property value.
+     * @returns {*|undefined} The property value, or `undefined` if no element matches.
      */
     function getProperty(property) {
         return getProperty$1(this, property);
     }
     /**
-     * Get the text contents of the first node.
-     * @return {string} The text contents.
+     * Gets the text contents of the first node.
+     * @returns {string|null|undefined} The text contents, or `undefined` if no element matches.
      */
     function getText() {
         return getText$1(this);
     }
     /**
-     * Get the value property of the first node.
-     * @return {string} The value.
+     * Gets the value property of the first node.
+     * @returns {*|undefined} The value, or `undefined` if no element matches.
      */
     function getValue() {
         return getValue$1(this);
     }
     /**
-     * Remove an attribute from each node.
+     * Removes an attribute from each node.
      * @param {string} attribute The attribute name.
-     * @return {QuerySet} The QuerySet object.
+     * @returns {QuerySet} The QuerySet object.
      */
     function removeAttribute(attribute) {
         removeAttribute$1(this, attribute);
@@ -7139,9 +7000,9 @@
         return this;
     }
     /**
-     * Remove a dataset value from each node.
+     * Removes a dataset value from each node.
      * @param {string} key The dataset key.
-     * @return {QuerySet} The QuerySet object.
+     * @returns {QuerySet} The QuerySet object.
      */
     function removeDataset(key) {
         removeDataset$1(this, key);
@@ -7149,9 +7010,9 @@
         return this;
     }
     /**
-     * Remove a property from each node.
+     * Removes a property from each node.
      * @param {string} property The property name.
-     * @return {QuerySet} The QuerySet object.
+     * @returns {QuerySet} The QuerySet object.
      */
     function removeProperty(property) {
         removeProperty$1(this, property);
@@ -7159,10 +7020,10 @@
         return this;
     }
     /**
-     * Set an attribute value for each node.
-     * @param {string|object} attribute The attribute name, or an object containing attributes.
-     * @param {string} [value] The attribute value.
-     * @return {QuerySet} The QuerySet object.
+     * Sets an attribute value for each node.
+     * @param {string|AttributeValues} attribute The attribute name, or an object containing attributes.
+     * @param {*} [value] The attribute value.
+     * @returns {QuerySet} The QuerySet object.
      */
     function setAttribute(attribute, value) {
         setAttribute$1(this, attribute, value);
@@ -7170,10 +7031,10 @@
         return this;
     }
     /**
-     * Set a dataset value for each node.
-     * @param {string|object} key The dataset key, or an object containing dataset values.
+     * Sets a dataset value for each node.
+     * @param {string|Record<string, *>} key The dataset key, or an object containing dataset values.
      * @param {*} [value] The dataset value.
-     * @return {QuerySet} The QuerySet object.
+     * @returns {QuerySet} The QuerySet object.
      */
     function setDataset(key, value) {
         setDataset$1(this, key, value);
@@ -7181,9 +7042,9 @@
         return this;
     }
     /**
-     * Set the HTML contents of each node.
+     * Sets the HTML contents of each node.
      * @param {string} html The HTML contents.
-     * @return {QuerySet} The QuerySet object.
+     * @returns {QuerySet} The QuerySet object.
      */
     function setHTML(html) {
         setHTML$1(this, html);
@@ -7191,10 +7052,10 @@
         return this;
     }
     /**
-     * Set a property value for each node.
-     * @param {string|object} property The property name, or an object containing properties.
-     * @param {string} [value] The property value.
-     * @return {QuerySet} The QuerySet object.
+     * Sets a property value for each node.
+     * @param {string|Record<string, *>} property The property name, or an object containing properties.
+     * @param {*} [value] The property value.
+     * @returns {QuerySet} The QuerySet object.
      */
     function setProperty(property, value) {
         setProperty$1(this, property, value);
@@ -7202,9 +7063,9 @@
         return this;
     }
     /**
-     * Set the text contents of each node.
+     * Sets the text contents of each node.
      * @param {string} text The text contents.
-     * @return {QuerySet} The QuerySet object.
+     * @returns {QuerySet} The QuerySet object.
      */
     function setText(text) {
         setText$1(this, text);
@@ -7212,9 +7073,9 @@
         return this;
     }
     /**
-     * Set the value property of each node.
+     * Sets the value property of each node.
      * @param {string} value The value.
-     * @return {QuerySet} The QuerySet object.
+     * @returns {QuerySet} The QuerySet object.
      */
     function setValue(value) {
         setValue$1(this, value);
@@ -7223,13 +7084,14 @@
     }
 
     /**
-     * QuerySet Data
+     * @typedef {import('../../helpers.js').QueryInput} QueryInput
+     * @typedef {import('../query-set.js').default} QuerySet
      */
 
     /**
-     * Clone custom data from each node to each other node.
-     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|NodeList|HTMLCollection|QuerySet} otherSelector The other node(s), or a query selector string.
-     * @return {QuerySet} The QuerySet object.
+     * Clones custom data from each node to each other node.
+     * @param {QueryInput} otherSelector The other node(s), or a query selector string.
+     * @returns {QuerySet} The QuerySet object.
      */
     function cloneData(otherSelector) {
         cloneData$1(this, otherSelector);
@@ -7237,17 +7099,17 @@
         return this;
     }
     /**
-     * Get custom data for the first node.
+     * Gets custom data for the first node.
      * @param {string} [key] The data key.
-     * @return {*} The data value.
+     * @returns {*|undefined} The data value, all custom data, or `undefined` if none exists.
      */
     function getData(key) {
         return getData$1(this, key);
     }
     /**
-     * Remove custom data from each node.
+     * Removes custom data from each node.
      * @param {string} [key] The data key.
-     * @return {QuerySet} The QuerySet object.
+     * @returns {QuerySet} The QuerySet object.
      */
     function removeData(key) {
         removeData$1(this, key);
@@ -7255,10 +7117,10 @@
         return this;
     }
     /**
-     * Set custom data for each node.
-     * @param {string|object} key The data key, or an object containing data.
+     * Sets custom data for each node.
+     * @param {string|Record<string, *>} key The data key, or an object containing data.
      * @param {*} [value] The data value.
-     * @return {QuerySet} The QuerySet object.
+     * @returns {QuerySet} The QuerySet object.
      */
     function setData(key, value) {
         setData$1(this, key, value);
@@ -7267,22 +7129,24 @@
     }
 
     /**
-     * QuerySet Position
+     * @typedef {import('../../attributes/position.js').Coordinates} Coordinates
+     * @typedef {import('../../attributes/position.js').OffsetOptions} OffsetOptions
+     * @typedef {import('../../attributes/position.js').PercentOptions} PercentOptions
+     * @typedef {import('../../helpers.js').ElementInput} ElementInput
      */
 
     /**
-     * Get the X,Y co-ordinates for the center of the first node.
-     * @param {object} [options] The options for calculating the co-ordinates.
-     * @param {Boolean} [options.offset] Whether to offset from the top-left of the Document.
-     * @return {object} An object with the x and y co-ordinates.
+     * Gets the X,Y co-ordinates for the center of the first node.
+     * @param {OffsetOptions} [options] The positioning options.
+     * @returns {Coordinates|undefined} The center co-ordinates, or `undefined` if no element matches.
      */
     function center({ offset = false } = {}) {
         return center$1(this, { offset });
     }
     /**
-     * Contrain each node to a container node.
-     * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} container The container node, or a query selector string.
-     * @return {QuerySet} The QuerySet object.
+     * Constrains each node to a container node.
+     * @param {ElementInput} container The container node, or a query selector string.
+     * @returns {QuerySet} The QuerySet object.
      */
     function constrain(container) {
         constrain$1(this, container);
@@ -7290,31 +7154,29 @@
         return this;
     }
     /**
-     * Get the distance of a node to an X,Y position in the Window.
+     * Gets the distance of a node to an X,Y position in the Window.
      * @param {number} x The X co-ordinate.
      * @param {number} y The Y co-ordinate.
-     * @param {object} [options] The options for calculating the distance.
-     * @param {Boolean} [options.offset] Whether to offset from the top-left of the Document.
-     * @return {number} The distance to the node.
+     * @param {OffsetOptions} [options] The positioning options.
+     * @returns {number|undefined} The distance to the node, or `undefined` if no element matches.
      */
     function distTo(x, y, { offset = false } = {}) {
         return distTo$1(this, x, y, { offset });
     }
     /**
-     * Get the distance between two nodes.
-     * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} otherSelector The node to compare, or a query selector string.
-     * @return {number} The distance between the nodes.
+     * Gets the distance between two nodes.
+     * @param {ElementInput} otherSelector The node to compare, or a query selector string.
+     * @returns {number|undefined} The distance between the nodes, or `undefined` if either element does not match.
      */
     function distToNode(otherSelector) {
         return distToNode$1(this, otherSelector);
     }
     /**
-     * Get the nearest node to an X,Y position in the Window.
+     * Gets the nearest node to an X,Y position in the Window.
      * @param {number} x The X co-ordinate.
      * @param {number} y The Y co-ordinate.
-     * @param {object} [options] The options for calculating the distance.
-     * @param {Boolean} [options.offset] Whether to offset from the top-left of the Document.
-     * @return {QuerySet} A new QuerySet object.
+     * @param {OffsetOptions} [options] The positioning options.
+     * @returns {QuerySet} A new QuerySet object.
      */
     function nearestTo(x, y, { offset = false } = {}) {
         const node = nearestTo$1(this, x, y, { offset });
@@ -7322,9 +7184,9 @@
         return new QuerySet(node ? [node] : []);
     }
     /**
-     * Get the nearest node to another node.
-     * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} otherSelector The node to compare, or a query selector string.
-     * @return {QuerySet} A new QuerySet object.
+     * Gets the nearest node to another node.
+     * @param {ElementInput} otherSelector The node to compare, or a query selector string.
+     * @returns {QuerySet} A new QuerySet object.
      */
     function nearestToNode(otherSelector) {
         const node = nearestToNode$1(this, otherSelector);
@@ -7332,69 +7194,61 @@
         return new QuerySet(node ? [node] : []);
     }
     /**
-     * Get the percentage of an X co-ordinate relative to a node's width.
+     * Gets the percentage of an X co-ordinate relative to a node's width.
      * @param {number} x The X co-ordinate.
-     * @param {object} [options] The options for calculating the percentage.
-     * @param {Boolean} [options.offset] Whether to offset from the top-left of the Document.
-     * @param {Boolean} [options.clamp=true] Whether to clamp the percent between 0 and 100.
-     * @return {number} The percent.
+     * @param {PercentOptions} [options] The percentage options.
+     * @returns {number|undefined} The percentage, or `undefined` if no element matches.
      */
     function percentX(x, { offset = false, clamp = true } = {}) {
         return percentX$1(this, x, { offset, clamp });
     }
     /**
-     * Get the percentage of a Y co-ordinate relative to a node's height.
+     * Gets the percentage of a Y co-ordinate relative to a node's height.
      * @param {number} y The Y co-ordinate.
-     * @param {object} [options] The options for calculating the percentage.
-     * @param {Boolean} [options.offset] Whether to offset from the top-left of the Document.
-     * @param {Boolean} [options.clamp=true] Whether to clamp the percent between 0 and 100.
-     * @return {number} The percent.
+     * @param {PercentOptions} [options] The percentage options.
+     * @returns {number|undefined} The percentage, or `undefined` if no element matches.
      */
     function percentY(y, { offset = false, clamp = true } = {}) {
         return percentY$1(this, y, { offset, clamp });
     }
     /**
-     * Get the position of the first node relative to the Window or Document.
-     * @param {object} [options] The options for calculating the position.
-     * @param {Boolean} [options.offset] Whether to offset from the top-left of the Document.
-     * @return {object} An object with the x and y co-ordinates.
+     * Gets the position of the first node relative to the Window or Document.
+     * @param {OffsetOptions} [options] The positioning options.
+     * @returns {Coordinates|undefined} The co-ordinates, or `undefined` if no element matches.
      */
     function position({ offset = false } = {}) {
         return position$1(this, { offset });
     }
     /**
-     * Get the computed bounding rectangle of the first node.
-     * @param {object} [options] The options for calculating the bounding rectangle.
-     * @param {Boolean} [options.offset] Whether to offset from the top-left of the Document.
-     * @return {DOMRect} The computed bounding rectangle.
+     * Gets the computed bounding rectangle of the first node.
+     * @param {OffsetOptions} [options] The positioning options.
+     * @returns {DOMRect|undefined} The computed bounding rectangle, or `undefined` if no element matches.
      */
     function rect({ offset = false } = {}) {
         return rect$1(this, { offset });
     }
 
-    /**
-     * QuerySet Scroll
-     */
+    /** @typedef {import('../query-set.js').default} QuerySet */
 
     /**
-     * Get the scroll X position of the first node.
-     * @return {number} The scroll X position.
+     * Gets the scroll X position of the first node.
+     * @returns {number|undefined} The scroll X position, or `undefined` if no node matches.
      */
     function getScrollX() {
         return getScrollX$1(this);
     }
     /**
-     * Get the scroll Y position of the first node.
-     * @return {number} The scroll Y position.
+     * Gets the scroll Y position of the first node.
+     * @returns {number|undefined} The scroll Y position, or `undefined` if no node matches.
      */
     function getScrollY() {
         return getScrollY$1(this);
     }
     /**
-     * Scroll each node to an X,Y position.
+     * Scrolls each node to an X,Y position.
      * @param {number} x The scroll X position.
      * @param {number} y The scroll Y position.
-     * @return {QuerySet} The QuerySet object.
+     * @returns {QuerySet} The QuerySet object.
      */
     function setScroll(x, y) {
         setScroll$1(this, x, y);
@@ -7402,9 +7256,9 @@
         return this;
     }
     /**
-     * Scroll each node to an X position.
+     * Scrolls each node to an X position.
      * @param {number} x The scroll X position.
-     * @return {QuerySet} The QuerySet object.
+     * @returns {QuerySet} The QuerySet object.
      */
     function setScrollX(x) {
         setScrollX$1(this, x);
@@ -7412,9 +7266,9 @@
         return this;
     }
     /**
-     * Scroll each node to a Y position.
+     * Scrolls each node to a Y position.
      * @param {number} y The scroll Y position.
-     * @return {QuerySet} The QuerySet object.
+     * @returns {QuerySet} The QuerySet object.
      */
     function setScrollY(y) {
         setScrollY$1(this, y);
@@ -7422,39 +7276,34 @@
         return this;
     }
 
-    /**
-     * QuerySet Size
-     */
+    /** @typedef {import('../../attributes/size.js').SizeOptions} SizeOptions */
 
     /**
-     * Get the computed height of the first node.
-     * @param {object} [options] The options for calculating the height.
-     * @param {number} [options.boxSize=PADDING_BOX] The box sizing to calculate.
-     * @param {Boolean} [options.outer] Whether to use the window outer height.
-     * @return {number} The height.
+     * Gets the computed height of the first node.
+     * @param {SizeOptions} [options] The sizing options.
+     * @returns {number|undefined} The height, or `undefined` if no node matches.
      */
     function height({ boxSize = PADDING_BOX, outer = false } = {}) {
         return height$1(this, { boxSize, outer });
     }
     /**
-     * Get the computed width of the first node.
-     * @param {object} [options] The options for calculating the width.
-     * @param {number} [options.boxSize=PADDING_BOX] The box sizing to calculate.
-     * @param {Boolean} [options.outer] Whether to use the window outer width.
-     * @return {number} The width.
+     * Gets the computed width of the first node.
+     * @param {SizeOptions} [options] The sizing options.
+     * @returns {number|undefined} The width, or `undefined` if no node matches.
      */
     function width({ boxSize = PADDING_BOX, outer = false } = {}) {
         return width$1(this, { boxSize, outer });
     }
 
     /**
-     * QuerySet Styles
+     * @typedef {import('../../attributes/styles.js').StyleValues} StyleValues
+     * @typedef {import('../query-set.js').default} QuerySet
      */
 
     /**
-     * Add classes to each node.
+     * Adds classes to each node.
      * @param {...string|string[]} classes The classes.
-     * @return {QuerySet} The QuerySet object.
+     * @returns {QuerySet} The QuerySet object.
      */
     function addClass(...classes) {
         addClass$1(this, ...classes);
@@ -7462,24 +7311,24 @@
         return this;
     }
     /**
-     * Get computed CSS style values for the first node.
+     * Gets computed CSS style values for the first node.
      * @param {string} [style] The CSS style name.
-     * @return {string|object} The CSS style value, or an object containing the computed CSS style properties.
+     * @returns {string|Record<string, string>|undefined} The CSS style value, all computed styles, or `undefined` if no element matches.
      */
     function css(style) {
         return css$1(this, style);
     }
     /**
-     * Get style properties for the first node.
+     * Gets style properties for the first node.
      * @param {string} [style] The style name.
-     * @return {string|object} The style value, or an object containing the style properties.
+     * @returns {string|Record<string, string>|undefined} The style value, all inline styles, or `undefined` if no element matches.
      */
     function getStyle(style) {
         return getStyle$1(this, style);
     }
     /**
-     * Hide each node from display.
-     * @return {QuerySet} The QuerySet object.
+     * Hides each node from display.
+     * @returns {QuerySet} The QuerySet object.
      */
     function hide() {
         hide$1(this);
@@ -7487,9 +7336,9 @@
         return this;
     }
     /**
-     * Remove classes from each node.
+     * Removes classes from each node.
      * @param {...string|string[]} classes The classes.
-     * @return {QuerySet} The QuerySet object.
+     * @returns {QuerySet} The QuerySet object.
      */
     function removeClass(...classes) {
         removeClass$1(this, ...classes);
@@ -7497,9 +7346,9 @@
         return this;
     }
     /**
-     * Remove a style property from each node.
+     * Removes a style property from each node.
      * @param {string} style The style name.
-     * @return {QuerySet} The QuerySet object.
+     * @returns {QuerySet} The QuerySet object.
      */
     function removeStyle(style) {
         removeStyle$1(this, style);
@@ -7507,12 +7356,11 @@
         return this;
     }
     /**
-     * Set style properties for each node.
-     * @param {string|object} style The style name, or an object containing styles.
-     * @param {string} [value] The style value.
-     * @param {object} [options] The options for setting the style.
-     * @param {Boolean} [options.important] Whether the style should be !important.
-     * @return {QuerySet} The QuerySet object.
+     * Sets style properties for each node.
+     * @param {string|StyleValues} style The style name, or an object containing styles.
+     * @param {string|number} [value] The style value.
+     * @param {{important?: boolean}} [options] The style options.
+     * @returns {QuerySet} The QuerySet object.
      */
     function setStyle(style, value, { important = false } = {}) {
         setStyle$1(this, style, value, { important });
@@ -7520,8 +7368,8 @@
         return this;
     }
     /**
-     * Display each hidden node.
-     * @return {QuerySet} The QuerySet object.
+     * Displays each hidden node.
+     * @returns {QuerySet} The QuerySet object.
      */
     function show() {
         show$1(this);
@@ -7529,8 +7377,8 @@
         return this;
     }
     /**
-     * Toggle the visibility of each node.
-     * @return {QuerySet} The QuerySet object.
+     * Toggles the visibility of each node.
+     * @returns {QuerySet} The QuerySet object.
      */
     function toggle() {
         toggle$1(this);
@@ -7538,9 +7386,9 @@
         return this;
     }
     /**
-     * Toggle classes for each node.
+     * Toggles classes for each node.
      * @param {...string|string[]} classes The classes.
-     * @return {QuerySet} The QuerySet object.
+     * @returns {QuerySet} The QuerySet object.
      */
     function toggleClass(...classes) {
         toggleClass$1(this, ...classes);
@@ -7549,17 +7397,20 @@
     }
 
     /**
-     * QuerySet Event Handlers
+     * @typedef {import('../../events/event-handlers.js').EventCallback} EventCallback
+     * @typedef {import('../../events/event-handlers.js').EventOptions} EventOptions
+     * @typedef {import('../../events/event-handlers.js').EventTargetInput} EventTargetInput
+     * @typedef {import('../../events/event-handlers.js').RemoveEventOptions} RemoveEventOptions
+     * @typedef {import('../../events/event-handlers.js').TriggerEventOptions} TriggerEventOptions
+     * @typedef {import('../query-set.js').default} QuerySet
      */
 
     /**
-     * Add an event to each node.
+     * Adds an event to each node.
      * @param {string} events The event names.
-     * @param {DOM~eventCallback} callback The callback to execute.
-     * @param {object} [options] The options for the event.
-     * @param {Boolean} [options.capture] Whether to use a capture event.
-     * @param {Boolean} [options.passive] Whether to use a passive event.
-     * @return {QuerySet} The QuerySet object.
+     * @param {EventCallback} callback The callback to execute.
+     * @param {EventOptions} [options] The event options.
+     * @returns {QuerySet} The QuerySet object.
      */
     function addEvent(events, callback, { capture = false, passive = false } = {}) {
         addEvent$1(this, events, callback, { capture, passive });
@@ -7567,14 +7418,12 @@
         return this;
     }
     /**
-     * Add a delegated event to each node.
+     * Adds a delegated event to each node.
      * @param {string} events The event names.
      * @param {string} delegate The delegate selector.
-     * @param {DOM~eventCallback} callback The callback to execute.
-     * @param {object} [options] The options for the event.
-     * @param {Boolean} [options.capture] Whether to use a capture event.
-     * @param {Boolean} [options.passive] Whether to use a passive event.
-     * @return {QuerySet} The QuerySet object.
+     * @param {EventCallback} callback The callback to execute.
+     * @param {EventOptions} [options] The event options.
+     * @returns {QuerySet} The QuerySet object.
      */
     function addEventDelegate(events, delegate, callback, { capture = false, passive = false } = {}) {
         addEventDelegate$1(this, events, delegate, callback, { capture, passive });
@@ -7582,14 +7431,12 @@
         return this;
     }
     /**
-     * Add a self-destructing delegated event to each node.
+     * Adds a self-destructing delegated event to each node.
      * @param {string} events The event names.
      * @param {string} delegate The delegate selector.
-     * @param {DOM~eventCallback} callback The callback to execute.
-     * @param {object} [options] The options for the event.
-     * @param {Boolean} [options.capture] Whether to use a capture event.
-     * @param {Boolean} [options.passive] Whether to use a passive event.
-     * @return {QuerySet} The QuerySet object.
+     * @param {EventCallback} callback The callback to execute.
+     * @param {EventOptions} [options] The event options.
+     * @returns {QuerySet} The QuerySet object.
      */
     function addEventDelegateOnce(events, delegate, callback, { capture = false, passive = false } = {}) {
         addEventDelegateOnce$1(this, events, delegate, callback, { capture, passive });
@@ -7597,13 +7444,11 @@
         return this;
     }
     /**
-     * Add a self-destructing event to each node.
+     * Adds a self-destructing event to each node.
      * @param {string} events The event names.
-     * @param {DOM~eventCallback} callback The callback to execute.
-     * @param {object} [options] The options for the event.
-     * @param {Boolean} [options.capture] Whether to use a capture event.
-     * @param {Boolean} [options.passive] Whether to use a passive event.
-     * @return {QuerySet} The QuerySet object.
+     * @param {EventCallback} callback The callback to execute.
+     * @param {EventOptions} [options] The event options.
+     * @returns {QuerySet} The QuerySet object.
      */
     function addEventOnce(events, callback, { capture = false, passive = false } = {}) {
         addEventOnce$1(this, events, callback, { capture, passive });
@@ -7611,9 +7456,9 @@
         return this;
     }
     /**
-     * Clone all events from each node to other nodes.
-     * @param {string|array|HTMLElement|ShadowRoot|Document|Window|HTMLCollection|QuerySet} otherSelector The other node(s), or a query selector string.
-     * @return {QuerySet} The QuerySet object.
+     * Clones all events from each node to other nodes.
+     * @param {EventTargetInput} otherSelector The other node(s), or a query selector string.
+     * @returns {QuerySet} The QuerySet object.
      */
     function cloneEvents(otherSelector) {
         cloneEvents$1(this, otherSelector);
@@ -7621,12 +7466,11 @@
         return this;
     }
     /**
-     * Remove events from each node.
+     * Removes events from each node.
      * @param {string} [events] The event names.
-     * @param {DOM~eventCallback} [callback] The callback to remove.
-     * @param {object} [options] The options for the event.
-     * @param {Boolean} [options.capture] Whether to use a capture event.
-     * @return {QuerySet} The QuerySet object.
+     * @param {EventCallback} [callback] The callback to remove.
+     * @param {RemoveEventOptions} [options] The removal options.
+     * @returns {QuerySet} The QuerySet object.
      */
     function removeEvent(events, callback, { capture = null } = {}) {
         removeEvent$1(this, events, callback, { capture });
@@ -7634,13 +7478,12 @@
         return this;
     }
     /**
-     * Remove delegated events from each node.
+     * Removes delegated events from each node.
      * @param {string} [events] The event names.
      * @param {string} [delegate] The delegate selector.
-     * @param {DOM~eventCallback} [callback] The callback to remove.
-     * @param {object} [options] The options for the event.
-     * @param {Boolean} [options.capture] Whether to use a capture event.
-     * @return {QuerySet} The QuerySet object.
+     * @param {EventCallback} [callback] The callback to remove.
+     * @param {RemoveEventOptions} [options] The removal options.
+     * @returns {QuerySet} The QuerySet object.
      */
     function removeEventDelegate(events, delegate, callback, { capture = null } = {}) {
         removeEventDelegate$1(this, events, delegate, callback, { capture });
@@ -7648,14 +7491,10 @@
         return this;
     }
     /**
-     * Trigger events on each node.
+     * Triggers events on each node.
      * @param {string} events The event names.
-     * @param {object} [options] The options to use for the Event.
-     * @param {object} [options.data] Additional data to attach to the event.
-     * @param {*} [options.detail] Additional details to attach to the event.
-     * @param {Boolean} [options.bubbles=true] Whether the event will bubble.
-     * @param {Boolean} [options.cancelable=true] Whether the event is cancelable.
-     * @return {QuerySet} The QuerySet object.
+     * @param {TriggerEventOptions} [options] The event options.
+     * @returns {QuerySet} The QuerySet object.
      */
     function triggerEvent(events, { data = null, detail = null, bubbles = true, cancelable = true } = {}) {
         triggerEvent$1(this, events, { data, detail, bubbles, cancelable });
@@ -7663,26 +7502,20 @@
         return this;
     }
     /**
-     * Trigger an event for the first node.
+     * Triggers an event for the first node.
      * @param {string} event The event name.
-     * @param {object} [options] The options to use for the Event.
-     * @param {object} [options.data] Additional data to attach to the event.
-     * @param {*} [options.detail] Additional details to attach to the event.
-     * @param {Boolean} [options.bubbles=true] Whether the event will bubble.
-     * @param {Boolean} [options.cancelable=true] Whether the event is cancelable.
-     * @return {Boolean} FALSE if the event was cancelled, otherwise TRUE.
+     * @param {TriggerEventOptions} [options] The event options.
+     * @returns {boolean} Whether the event was dispatched without cancellation.
      */
     function triggerOne(event, { data = null, detail = null, bubbles = true, cancelable = true } = {}) {
         return triggerOne$1(this, event, { data, detail, bubbles, cancelable });
     }
 
-    /**
-     * QuerySet Events
-     */
+    /** @typedef {import('../query-set.js').default} QuerySet */
 
     /**
-     * Trigger a blur event on the first node.
-     * @return {QuerySet} The QuerySet object.
+     * Triggers a blur event on the first node.
+     * @returns {QuerySet} The QuerySet object.
      */
     function blur() {
         blur$1(this);
@@ -7690,8 +7523,8 @@
         return this;
     }
     /**
-     * Trigger a click event on the first node.
-     * @return {QuerySet} The QuerySet object.
+     * Triggers a click event on the first node.
+     * @returns {QuerySet} The QuerySet object.
      */
     function click() {
         click$1(this);
@@ -7699,8 +7532,8 @@
         return this;
     }
     /**
-     * Trigger a focus event on the first node.
-     * @return {QuerySet} The QuerySet object.
+     * Triggers a focus event on the first node.
+     * @returns {QuerySet} The QuerySet object.
      */
     function focus() {
         focus$1(this);
@@ -7709,13 +7542,9 @@
     }
 
     /**
-     * QuerySet Create
-     */
-
-    /**
-     * Attach a shadow DOM tree to the first node.
-     * @param {Boolean} [open=true] Whether the elements are accessible from JavaScript outside the root.
-     * @return {QuerySet} A new QuerySet object.
+     * Attaches a shadow DOM tree to the first node.
+     * @param {{open?: boolean}} [options] The shadow DOM options.
+     * @returns {QuerySet} A new QuerySet object.
      */
     function attachShadow({ open = true } = {}) {
         const shadow = attachShadow$1(this, { open });
@@ -7724,17 +7553,14 @@
     }
 
     /**
-     * QuerySet Manipulation
+     * @typedef {import('../../helpers.js').NodeInput} NodeInput
+     * @typedef {import('../../manipulation/manipulation.js').CloneOptions} CloneOptions
      */
 
     /**
-     * Clone each node.
-     * @param {object} options The options for cloning the node.
-     * @param {Boolean} [options.deep=true] Whether to also clone all descendent nodes.
-     * @param {Boolean} [options.events] Whether to also clone events.
-     * @param {Boolean} [options.data] Whether to also clone custom data.
-     * @param {Boolean} [options.animations] Whether to also clone animations.
-     * @return {QuerySet} A new QuerySet object.
+     * Clones each node.
+     * @param {CloneOptions} [options] The cloning options.
+     * @returns {QuerySet} A new QuerySet object.
      */
     function clone(options) {
         const clones = clone$1(this, options);
@@ -7742,8 +7568,8 @@
         return new QuerySet(clones);
     }
     /**
-     * Detach each node from the DOM.
-     * @return {QuerySet} The QuerySet object.
+     * Detaches each node from the DOM.
+     * @returns {QuerySet} The QuerySet object.
      */
     function detach() {
         detach$1(this);
@@ -7751,8 +7577,8 @@
         return this;
     }
     /**
-     * Remove all children of each node from the DOM.
-     * @return {QuerySet} The QuerySet object.
+     * Removes all children of each node from the DOM.
+     * @returns {QuerySet} The QuerySet object.
      */
     function empty() {
         empty$1(this);
@@ -7760,8 +7586,8 @@
         return this;
     }
     /**
-     * Remove each node from the DOM.
-     * @return {QuerySet} The QuerySet object.
+     * Removes each node from the DOM.
+     * @returns {QuerySet} The QuerySet object.
      */
     function remove() {
         remove$1(this);
@@ -7769,9 +7595,9 @@
         return this;
     }
     /**
-     * Replace each other node with nodes.
-     * @param {string|array|Node|HTMLElement|NodeList|HTMLCollection|QuerySet} otherSelector The input node(s), or a query selector string.
-     * @return {QuerySet} The QuerySet object.
+     * Replaces each other node with nodes.
+     * @param {NodeInput} otherSelector The input node(s), or a query selector string.
+     * @returns {QuerySet} The QuerySet object.
      */
     function replaceAll(otherSelector) {
         replaceAll$1(this, otherSelector);
@@ -7779,9 +7605,9 @@
         return this;
     }
     /**
-     * Replace each node with other nodes.
-     * @param {string|array|Node|HTMLElement|DocumentFragment|NodeList|HTMLCollection|QuerySet} otherSelector The input node(s), or a query selector or HTML string.
-     * @return {QuerySet} The QuerySet object.
+     * Replaces each node with other nodes.
+     * @param {NodeInput} otherSelector The input node(s), or a query selector or HTML string.
+     * @returns {QuerySet} The QuerySet object.
      */
     function replaceWith(otherSelector) {
         replaceWith$1(this, otherSelector);
@@ -7790,13 +7616,14 @@
     }
 
     /**
-     * QuerySet Move
+     * @typedef {import('../../helpers.js').NodeInput} NodeInput
+     * @typedef {import('../query-set.js').default} QuerySet
      */
 
     /**
-     * Insert each other node after the first node.
-     * @param {string|array|Node|HTMLElement|DocumentFragment|NodeList|HTMLCollection|QuerySet} otherSelector The other node(s), or a query selector or HTML string.
-     * @return {QuerySet} The QuerySet object.
+     * Inserts each other node after the first node.
+     * @param {NodeInput} otherSelector The other node(s), or a query selector or HTML string.
+     * @returns {QuerySet} The QuerySet object.
      */
     function after(otherSelector) {
         after$1(this, otherSelector);
@@ -7804,9 +7631,9 @@
         return this;
     }
     /**
-     * Append each other node to the first node.
-     * @param {string|array|Node|HTMLElement|DocumentFragment|NodeList|HTMLCollection|QuerySet} otherSelector The other node(s), or a query selector or HTML string.
-     * @return {QuerySet} The QuerySet object.
+     * Appends each other node to the first node.
+     * @param {NodeInput} otherSelector The other node(s), or a query selector or HTML string.
+     * @returns {QuerySet} The QuerySet object.
      */
     function append(otherSelector) {
         append$1(this, otherSelector);
@@ -7814,9 +7641,9 @@
         return this;
     }
     /**
-     * Append each node to the first other node.
-     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|NodeList|HTMLCollection|QuerySet} otherSelector The other node(s), or a query selector string.
-     * @return {QuerySet} The QuerySet object.
+     * Appends each node to the first other node.
+     * @param {NodeInput} otherSelector The other node(s), or a query selector string.
+     * @returns {QuerySet} The QuerySet object.
      */
     function appendTo(otherSelector) {
         appendTo$1(this, otherSelector);
@@ -7824,9 +7651,9 @@
         return this;
     }
     /**
-     * Insert each other node before the first node.
-     * @param {string|array|Node|HTMLElement|DocumentFragment|NodeList|HTMLCollection|QuerySet} otherSelector The other node(s), or a query selector or HTML string.
-     * @return {QuerySet} The QuerySet object.
+     * Inserts each other node before the first node.
+     * @param {NodeInput} otherSelector The other node(s), or a query selector or HTML string.
+     * @returns {QuerySet} The QuerySet object.
      */
     function before(otherSelector) {
         before$1(this, otherSelector);
@@ -7834,9 +7661,9 @@
         return this;
     }
     /**
-     * Insert each node after the first other node.
-     * @param {string|array|Node|HTMLElement|NodeList|HTMLCollection|QuerySet} otherSelector The other node(s), or a query selector string.
-     * @return {QuerySet} The QuerySet object.
+     * Inserts each node after the first other node.
+     * @param {NodeInput} otherSelector The other node(s), or a query selector string.
+     * @returns {QuerySet} The QuerySet object.
      */
     function insertAfter(otherSelector) {
         insertAfter$1(this, otherSelector);
@@ -7844,9 +7671,9 @@
         return this;
     }
     /**
-     * Insert each node before the first other node.
-     * @param {string|array|Node|HTMLElement|NodeList|HTMLCollection|QuerySet} otherSelector The other node(s), or a query selector string.
-     * @return {QuerySet} The QuerySet object.
+     * Inserts each node before the first other node.
+     * @param {NodeInput} otherSelector The other node(s), or a query selector string.
+     * @returns {QuerySet} The QuerySet object.
      */
     function insertBefore(otherSelector) {
         insertBefore$1(this, otherSelector);
@@ -7854,9 +7681,9 @@
         return this;
     }
     /**
-     * Prepend each other node to the first node.
-     * @param {string|array|Node|HTMLElement|DocumentFragment|NodeList|HTMLCollection|QuerySet} otherSelector The other node(s), or a query selector or HTML string.
-     * @return {QuerySet} The QuerySet object.
+     * Prepends each other node to the first node.
+     * @param {NodeInput} otherSelector The other node(s), or a query selector or HTML string.
+     * @returns {QuerySet} The QuerySet object.
      */
     function prepend(otherSelector) {
         prepend$1(this, otherSelector);
@@ -7864,9 +7691,9 @@
         return this;
     }
     /**
-     * Prepend each node to the first other node.
-     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|NodeList|HTMLCollection|QuerySet} otherSelector The other node(s), or a query selector string.
-     * @return {QuerySet} The QuerySet object.
+     * Prepends each node to the first other node.
+     * @param {NodeInput} otherSelector The other node(s), or a query selector string.
+     * @returns {QuerySet} The QuerySet object.
      */
     function prependTo(otherSelector) {
         prependTo$1(this, otherSelector);
@@ -7875,13 +7702,15 @@
     }
 
     /**
-     * QuerySet Wrap
+     * @typedef {import('../../filters.js').NodeFilterInput} NodeFilterInput
+     * @typedef {import('../../helpers.js').NodeInput} NodeInput
+     * @typedef {import('../query-set.js').default} QuerySet
      */
 
     /**
-     * Unwrap each node.
-     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet|DOM~filterCallback} [nodeFilter] The filter node(s), a query selector string or custom filter function.
-     * @return {QuerySet} The QuerySet object.
+     * Unwraps each node.
+     * @param {NodeFilterInput} [nodeFilter] The filter node(s), a query selector string or custom filter function.
+     * @returns {QuerySet} The QuerySet object.
      */
     function unwrap(nodeFilter) {
         unwrap$1(this, nodeFilter);
@@ -7889,9 +7718,9 @@
         return this;
     }
     /**
-     * Wrap each nodes with other nodes.
-     * @param {string|array|HTMLElement|DocumentFragment|NodeList|HTMLCollection|QuerySet} otherSelector The other node(s), or a query selector or HTML string.
-     * @return {QuerySet} The QuerySet object.
+     * Wraps each nodes with other nodes.
+     * @param {NodeInput} otherSelector The other node(s), or a query selector or HTML string.
+     * @returns {QuerySet} The QuerySet object.
      */
     function wrap(otherSelector) {
         wrap$1(this, otherSelector);
@@ -7899,9 +7728,9 @@
         return this;
     }
     /**
-     * Wrap all nodes with other nodes.
-     * @param {string|array|HTMLElement|DocumentFragment|NodeList|HTMLCollection|QuerySet} otherSelector The other node(s), or a query selector or HTML string.
-     * @return {QuerySet} The QuerySet object.
+     * Wraps all nodes with other nodes.
+     * @param {NodeInput} otherSelector The other node(s), or a query selector or HTML string.
+     * @returns {QuerySet} The QuerySet object.
      */
     function wrapAll(otherSelector) {
         wrapAll$1(this, otherSelector);
@@ -7909,9 +7738,9 @@
         return this;
     }
     /**
-     * Wrap the contents of each node with other nodes.
-     * @param {string|array|HTMLElement|DocumentFragment|NodeList|HTMLCollection|QuerySet} otherSelector The other node(s), or a query selector or HTML string.
-     * @return {QuerySet} The QuerySet object.
+     * Wraps the contents of each node with other nodes.
+     * @param {NodeInput} otherSelector The other node(s), or a query selector or HTML string.
+     * @returns {QuerySet} The QuerySet object.
      */
     function wrapInner(otherSelector) {
         wrapInner$1(this, otherSelector);
@@ -7919,15 +7748,28 @@
         return this;
     }
 
+    /** @typedef {import('../helpers.js').ElementInput} ElementInput */
+
     /**
-     * DOM Queue
+     * @callback QueueCallback
+     * @param {Element} node The queued element.
+     * @returns {*|Promise<*>} The callback result.
      */
 
     /**
-     * Clear the queue of each node.
-     * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
-     * @param {object} [options] The options for clearing the queue.
-     * @param {string} [options.queueName] The name of the queue to use.
+     * @typedef {object} QueueOptions
+     * @property {string} [queueName='default'] The queue name.
+     */
+
+    /**
+     * @typedef {object} ClearQueueOptions
+     * @property {string|null} [queueName=null] The queue name. Null addresses every queue.
+     */
+
+    /**
+     * Clears the queue of each node.
+     * @param {ElementInput} selector The input node(s), or a query selector string.
+     * @param {ClearQueueOptions} [options] The queue clearing options.
      */
     function clearQueue$1(selector, { queueName = null } = {}) {
         const nodes = parseNodes(selector);
@@ -7949,10 +7791,9 @@
         }
     }
     /**
-     * Run the next callback for a single node.
-     * @param {HTMLElement} node The input node.
-     * @param {object} [options] The options for clearing the queue.
-     * @param {string} [options.queueName=default] The name of the queue to use.
+     * Runs the next callback for a single node.
+     * @param {Element} node The input node.
+     * @param {QueueOptions} [options] The queue options.
      */
     function dequeue(node, { queueName = 'default' } = {}) {
         const queue = queues.get(node);
@@ -7976,11 +7817,10 @@
             });
     }
     /**
-     * Queue a callback on each node.
-     * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
-     * @param {DOM~queueCallback} callback The callback to queue.
-     * @param {object} [options] The options for clearing the queue.
-     * @param {string} [options.queueName=default] The name of the queue to use.
+     * Queues a callback on each node.
+     * @param {ElementInput} selector The input node(s), or a query selector string.
+     * @param {QueueCallback} callback The callback to queue.
+     * @param {QueueOptions} [options] The queue options.
      */
     function queue$1(selector, callback, { queueName = 'default' } = {}) {
         const nodes = parseNodes(selector);
@@ -8010,14 +7850,15 @@
     }
 
     /**
-     * QuerySet Queue
+     * @typedef {import('../../queue/queue.js').QueueCallback} QueueCallback
+     * @typedef {import('../../queue/queue.js').QueueOptions} QueueOptions
+     * @typedef {import('../query-set.js').default} QuerySet
      */
 
     /**
-     * Clear the queue of each node.
-     * @param {object} [options] The options for clearing the queue.
-     * @param {string} [options.queueName=default] The name of the queue to clear.
-     * @return {QuerySet} The QuerySet object.
+     * Clears the queue of each node.
+     * @param {QueueOptions} [options] The queue options.
+     * @returns {QuerySet} The QuerySet object.
      */
     function clearQueue({ queueName = 'default' } = {}) {
         clearQueue$1(this, { queueName });
@@ -8025,11 +7866,10 @@
         return this;
     }
     /**
-     * Delay execution of subsequent items in the queue for each node.
+     * Delays execution of subsequent items in the queue for each node.
      * @param {number} duration The number of milliseconds to delay execution by.
-     * @param {object} [options] The options for clearing the queue.
-     * @param {string} [options.queueName=default] The name of the queue to use.
-     * @return {QuerySet} The QuerySet object.
+     * @param {QueueOptions} [options] The queue options.
+     * @returns {QuerySet} The QuerySet object.
      */
     function delay(duration, { queueName = 'default' } = {}) {
         return this.queue((_) =>
@@ -8040,11 +7880,10 @@
         );
     }
     /**
-     * Queue a callback on each node.
-     * @param {DOM~queueCallback} callback The callback to queue.
-     * @param {object} [options] The options for clearing the queue.
-     * @param {string} [options.queueName=default] The name of the queue to use.
-     * @return {QuerySet} The QuerySet object.
+     * Queues a callback on each node.
+     * @param {QueueCallback} callback The callback to queue.
+     * @param {QueueOptions} [options] The queue options.
+     * @returns {QuerySet} The QuerySet object.
      */
     function queue(callback, { queueName = 'default' } = {}) {
         queue$1(this, callback, { queueName });
@@ -8053,13 +7892,16 @@
     }
 
     /**
-     * DOM Filter
+     * @typedef {import('../filters.js').NodeFilterInput} NodeFilterInput
+     * @typedef {import('../helpers.js').ElementInput} ElementInput
+     * @typedef {import('../helpers.js').NodeInput} NodeInput
+     * @typedef {import('../helpers.js').QueryInput} QueryInput
      */
 
     /**
-     * Return all nodes connected to the DOM.
-     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
-     * @return {array} The filtered nodes.
+     * Returns all nodes connected to the DOM.
+     * @param {NodeInput} selector The input node(s), or a query selector string.
+     * @returns {Node[]} The filtered nodes.
      */
     function connected$1(selector) {
         return parseNodes(selector, {
@@ -8069,10 +7911,10 @@
         }).filter((node) => node.isConnected);
     }
     /**
-     * Return all nodes considered equal to any of the other nodes.
-     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
-     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet} otherSelector The other node(s), or a query selector string.
-     * @return {array} The filtered nodes.
+     * Returns all nodes considered equal to any of the other nodes.
+     * @param {NodeInput} selector The input node(s), or a query selector string.
+     * @param {NodeInput} otherSelector The other node(s), or a query selector string.
+     * @returns {Node[]} The filtered nodes.
      */
     function equal$1(selector, otherSelector) {
         const others = parseNodes(otherSelector, {
@@ -8092,10 +7934,10 @@
         );
     }
     /**
-     * Return all nodes matching a filter.
-     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
-     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet|DOM~filterCallback} [nodeFilter] The filter node(s), a query selector string or custom filter function.
-     * @return {array} The filtered nodes.
+     * Returns all nodes matching a filter.
+     * @param {NodeInput} selector The input node(s), or a query selector string.
+     * @param {NodeFilterInput} [nodeFilter] The filter node(s), a query selector string or custom filter function.
+     * @returns {Node[]} The filtered nodes.
      */
     function filter$1(selector, nodeFilter) {
         nodeFilter = parseFilter(nodeFilter);
@@ -8107,10 +7949,10 @@
         }).filter(nodeFilter);
     }
     /**
-     * Return the first node matching a filter.
-     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
-     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet|DOM~filterCallback} [nodeFilter] The filter node(s), a query selector string or custom filter function.
-     * @return {Node|HTMLElement|DocumentFragment|ShadowRoot} The filtered node.
+     * Returns the first node matching a filter.
+     * @param {NodeInput} selector The input node(s), or a query selector string.
+     * @param {NodeFilterInput} [nodeFilter] The filter node(s), a query selector string or custom filter function.
+     * @returns {Node|null} The matching node, or null when none matches.
      */
     function filterOne$1(selector, nodeFilter) {
         nodeFilter = parseFilter(nodeFilter);
@@ -8122,9 +7964,9 @@
         }).find(nodeFilter) || null;
     }
     /**
-     * Return all "fixed" nodes.
-     * @param {string|array|Node|HTMLElement|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
-     * @return {array} The filtered nodes.
+     * Returns all "fixed" nodes.
+     * @param {NodeInput} selector The input node(s), or a query selector string.
+     * @returns {Node[]} The filtered nodes.
      */
     function fixed$1(selector) {
         return parseNodes(selector, {
@@ -8138,9 +7980,9 @@
         );
     }
     /**
-     * Return all hidden nodes.
-     * @param {string|array|Node|HTMLElement|Document|Window|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
-     * @return {array} The filtered nodes.
+     * Returns all hidden nodes.
+     * @param {QueryInput} selector The input node(s), or a query selector string.
+     * @returns {Array<Node|Window>} The filtered nodes.
      */
     function hidden$1(selector) {
         return parseNodes(selector, {
@@ -8160,10 +8002,10 @@
         });
     }
     /**
-     * Return all nodes not matching a filter.
-     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
-     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet|DOM~filterCallback} [nodeFilter] The filter node(s), a query selector string or custom filter function.
-     * @return {array} The filtered nodes.
+     * Returns all nodes not matching a filter.
+     * @param {NodeInput} selector The input node(s), or a query selector string.
+     * @param {NodeFilterInput} [nodeFilter] The filter node(s), a query selector string or custom filter function.
+     * @returns {Node[]} The filtered nodes.
      */
     function not$1(selector, nodeFilter) {
         nodeFilter = parseFilter(nodeFilter);
@@ -8175,10 +8017,10 @@
         }).filter((node, index) => !nodeFilter(node, index));
     }
     /**
-     * Return the first node not matching a filter.
-     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
-     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet|DOM~filterCallback} [nodeFilter] The filter node(s), a query selector string or custom filter function.
-     * @return {Node|HTMLElement|DocumentFragment|ShadowRoot} The filtered node.
+     * Returns the first node not matching a filter.
+     * @param {NodeInput} selector The input node(s), or a query selector string.
+     * @param {NodeFilterInput} [nodeFilter] The filter node(s), a query selector string or custom filter function.
+     * @returns {Node|null} The matching node, or null when none matches.
      */
     function notOne$1(selector, nodeFilter) {
         nodeFilter = parseFilter(nodeFilter);
@@ -8190,10 +8032,10 @@
         }).find((node, index) => !nodeFilter(node, index)) || null;
     }
     /**
-     * Return all nodes considered identical to any of the other nodes.
-     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
-     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet} otherSelector The other node(s), or a query selector string.
-     * @return {array} The filtered nodes.
+     * Returns all nodes considered identical to any of the other nodes.
+     * @param {NodeInput} selector The input node(s), or a query selector string.
+     * @param {NodeInput} otherSelector The other node(s), or a query selector string.
+     * @returns {Node[]} The filtered nodes.
      */
     function same$1(selector, otherSelector) {
         const others = parseNodes(otherSelector, {
@@ -8213,9 +8055,9 @@
         );
     }
     /**
-     * Return all visible nodes.
-     * @param {string|array|Node|HTMLElement|Document|Window|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
-     * @return {array} The filtered nodes.
+     * Returns all visible nodes.
+     * @param {QueryInput} selector The input node(s), or a query selector string.
+     * @returns {Array<Node|Window>} The filtered nodes.
      */
     function visible$1(selector) {
         return parseNodes(selector, {
@@ -8235,9 +8077,9 @@
         });
     }
     /**
-     * Return all nodes with an animation.
-     * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
-     * @return {array} The filtered nodes.
+     * Returns all nodes with an animation.
+     * @param {ElementInput} selector The input node(s), or a query selector string.
+     * @returns {Node[]} The filtered nodes.
      */
     function withAnimation$1(selector) {
         return parseNodes(selector)
@@ -8246,10 +8088,10 @@
             );
     }
     /**
-     * Return all nodes with a specified attribute.
-     * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
+     * Returns all nodes with a specified attribute.
+     * @param {ElementInput} selector The input node(s), or a query selector string.
      * @param {string} attribute The attribute name.
-     * @return {array} The filtered nodes.
+     * @returns {Node[]} The filtered nodes.
      */
     function withAttribute$1(selector, attribute) {
         return parseNodes(selector)
@@ -8258,9 +8100,9 @@
             );
     }
     /**
-     * Return all nodes with child elements.
-     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
-     * @return {array} The filtered nodes.
+     * Returns all nodes with child elements.
+     * @param {NodeInput} selector The input node(s), or a query selector string.
+     * @returns {Node[]} The filtered nodes.
      */
     function withChildren$1(selector) {
         return parseNodes(selector, {
@@ -8272,10 +8114,10 @@
         );
     }
     /**
-     * Return all nodes with any of the specified classes.
-     * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
+     * Returns all nodes with any of the specified classes.
+     * @param {ElementInput} selector The input node(s), or a query selector string.
      * @param {...string|string[]} classes The classes.
-     * @return {array} The filtered nodes.
+     * @returns {Node[]} The filtered nodes.
      */
     function withClass$1(selector, ...classes) {
         classes = parseClasses(classes);
@@ -8288,9 +8130,9 @@
             );
     }
     /**
-     * Return all nodes with a CSS animation.
-     * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
-     * @return {array} The filtered nodes.
+     * Returns all nodes with a CSS animation.
+     * @param {ElementInput} selector The input node(s), or a query selector string.
+     * @returns {Node[]} The filtered nodes.
      */
     function withCSSAnimation$1(selector) {
         return parseNodes(selector)
@@ -8299,9 +8141,9 @@
             );
     }
     /**
-     * Return all nodes with a CSS transition.
-     * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
-     * @return {array} The filtered nodes.
+     * Returns all nodes with a CSS transition.
+     * @param {ElementInput} selector The input node(s), or a query selector string.
+     * @returns {Node[]} The filtered nodes.
      */
     function withCSSTransition$1(selector) {
         return parseNodes(selector)
@@ -8310,10 +8152,10 @@
             );
     }
     /**
-     * Return all nodes with custom data.
-     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
+     * Returns all nodes with custom data.
+     * @param {QueryInput} selector The input node(s), or a query selector string.
      * @param {string} [key] The data key.
-     * @return {array} The filtered nodes.
+     * @returns {Array<Node|Window>} The filtered nodes.
      */
     function withData$1(selector, key) {
         return parseNodes(selector, {
@@ -8337,10 +8179,10 @@
         });
     }
     /**
-     * Return all nodes with a descendent matching a filter.
-     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
-     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet|DOM~filterCallback} [nodeFilter] The filter node(s), a query selector string or custom filter function.
-     * @return {array} The filtered nodes.
+     * Returns all nodes with a descendant matching a filter.
+     * @param {NodeInput} selector The input node(s), or a query selector string.
+     * @param {NodeFilterInput} [nodeFilter] The filter node(s), a query selector string or custom filter function.
+     * @returns {Node[]} The filtered nodes.
      */
     function withDescendent$1(selector, nodeFilter) {
         nodeFilter = parseFilterContains(nodeFilter);
@@ -8352,10 +8194,10 @@
         }).filter(nodeFilter);
     }
     /**
-     * Return all nodes with a specified property.
-     * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
+     * Returns all nodes with a specified property.
+     * @param {ElementInput} selector The input node(s), or a query selector string.
      * @param {string} property The property name.
-     * @return {array} The filtered nodes.
+     * @returns {Node[]} The filtered nodes.
      */
     function withProperty$1(selector, property) {
         return parseNodes(selector)
@@ -8365,36 +8207,37 @@
     }
 
     /**
-     * QuerySet Filter
+     * @typedef {import('../../filters.js').NodeFilterInput} NodeFilterInput
+     * @typedef {import('../../helpers.js').NodeInput} NodeInput
      */
 
     /**
-     * Return all nodes connected to the DOM.
-     * @return {QuerySet} The QuerySet object.
+     * Returns all nodes connected to the DOM.
+     * @returns {QuerySet} The QuerySet object.
      */
     function connected() {
         return new QuerySet(connected$1(this));
     }
     /**
-     * Return all nodes considered equal to any of the other nodes.
-     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet} otherSelector The other node(s), or a query selector string.
-     * @return {QuerySet} The QuerySet object.
+     * Returns all nodes considered equal to any of the other nodes.
+     * @param {NodeInput} otherSelector The other node(s), or a query selector string.
+     * @returns {QuerySet} The QuerySet object.
      */
     function equal(otherSelector) {
         return new QuerySet(equal$1(this, otherSelector));
     }
     /**
-     * Return all nodes matching a filter.
-     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet|DOM~filterCallback} [nodeFilter] The filter node(s), a query selector string or custom filter function.
-     * @return {QuerySet} The QuerySet object.
+     * Returns all nodes matching a filter.
+     * @param {NodeFilterInput} [nodeFilter] The filter node(s), a query selector string or custom filter function.
+     * @returns {QuerySet} The QuerySet object.
      */
     function filter(nodeFilter) {
         return new QuerySet(filter$1(this, nodeFilter));
     }
     /**
-     * Return the first node matching a filter.
-     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet|DOM~filterCallback} [nodeFilter] The filter node(s), a query selector string or custom filter function.
-     * @return {QuerySet} The QuerySet object.
+     * Returns the first node matching a filter.
+     * @param {NodeFilterInput} [nodeFilter] The filter node(s), a query selector string or custom filter function.
+     * @returns {QuerySet} The QuerySet object.
      */
     function filterOne(nodeFilter) {
         const node = filterOne$1(this, nodeFilter);
@@ -8402,31 +8245,31 @@
         return new QuerySet(node ? [node] : []);
     }
     /**
-     * Return all "fixed" nodes.
-     * @return {QuerySet} The QuerySet object.
+     * Returns all "fixed" nodes.
+     * @returns {QuerySet} The QuerySet object.
      */
     function fixed() {
         return new QuerySet(fixed$1(this));
     }
     /**
-     * Return all hidden nodes.
-     * @return {QuerySet} The QuerySet object.
+     * Returns all hidden nodes.
+     * @returns {QuerySet} The QuerySet object.
      */
     function hidden() {
         return new QuerySet(hidden$1(this));
     }
     /**
-     * Return all nodes not matching a filter.
-     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet|DOM~filterCallback} [nodeFilter] The filter node(s), a query selector string or custom filter function.
-     * @return {QuerySet} The QuerySet object.
+     * Returns all nodes not matching a filter.
+     * @param {NodeFilterInput} [nodeFilter] The filter node(s), a query selector string or custom filter function.
+     * @returns {QuerySet} The QuerySet object.
      */
     function not(nodeFilter) {
         return new QuerySet(not$1(this, nodeFilter));
     }
     /**
-     * Return the first node not matching a filter.
-     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet|DOM~filterCallback} [nodeFilter] The filter node(s), a query selector string or custom filter function.
-     * @return {QuerySet} The QuerySet object.
+     * Returns the first node not matching a filter.
+     * @param {NodeFilterInput} [nodeFilter] The filter node(s), a query selector string or custom filter function.
+     * @returns {QuerySet} The QuerySet object.
      */
     function notOne(nodeFilter) {
         const node = notOne$1(this, nodeFilter);
@@ -8434,129 +8277,125 @@
         return new QuerySet(node ? [node] : []);
     }
     /**
-     * Return all nodes considered identical to any of the other nodes.
-     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet} otherSelector The other node(s), or a query selector string.
-     * @return {QuerySet} The QuerySet object.
+     * Returns all nodes considered identical to any of the other nodes.
+     * @param {NodeInput} otherSelector The other node(s), or a query selector string.
+     * @returns {QuerySet} The QuerySet object.
      */
     function same(otherSelector) {
         return new QuerySet(same$1(this, otherSelector));
     }
     /**
-     * Return all visible nodes.
-     * @return {QuerySet} The QuerySet object.
+     * Returns all visible nodes.
+     * @returns {QuerySet} The QuerySet object.
      */
     function visible() {
         return new QuerySet(visible$1(this));
     }
     /**
-     * Return all nodes with an animation.
-     * @return {QuerySet} The QuerySet object.
+     * Returns all nodes with an animation.
+     * @returns {QuerySet} The QuerySet object.
     */
     function withAnimation() {
         return new QuerySet(withAnimation$1(this));
     }
     /**
-     * Return all nodes with a specified attribute.
+     * Returns all nodes with a specified attribute.
      * @param {string} attribute The attribute name.
-     * @return {QuerySet} The QuerySet object.
+     * @returns {QuerySet} The QuerySet object.
      */
     function withAttribute(attribute) {
         return new QuerySet(withAttribute$1(this, attribute));
     }
     /**
-     * Return all nodes with child elements.
-     * @return {QuerySet} The QuerySet object.
+     * Returns all nodes with child elements.
+     * @returns {QuerySet} The QuerySet object.
      */
     function withChildren() {
         return new QuerySet(withChildren$1(this));
     }
     /**
-     * Return all nodes with any of the specified classes.
+     * Returns all nodes with any of the specified classes.
      * @param {...string|string[]} classes The classes.
-     * @return {QuerySet} The QuerySet object.
+     * @returns {QuerySet} The QuerySet object.
      */
     function withClass(classes) {
         return new QuerySet(withClass$1(this, classes));
     }
     /**
-     * Return all nodes with a CSS animation.
-     * @return {QuerySet} The QuerySet object.
+     * Returns all nodes with a CSS animation.
+     * @returns {QuerySet} The QuerySet object.
     */
     function withCSSAnimation() {
         return new QuerySet(withCSSAnimation$1(this));
     }
     /**
-     * Return all nodes with a CSS transition.
-     * @return {QuerySet} The QuerySet object.
+     * Returns all nodes with a CSS transition.
+     * @returns {QuerySet} The QuerySet object.
      */
     function withCSSTransition() {
         return new QuerySet(withCSSTransition$1(this));
     }
     /**
-     * Return all nodes with custom data.
+     * Returns all nodes with custom data.
      * @param {string} [key] The data key.
-     * @return {QuerySet} The QuerySet object.
+     * @returns {QuerySet} The QuerySet object.
      */
     function withData(key) {
         return new QuerySet(withData$1(this, key));
     }
     /**
-     * Return all elements with a descendent matching a filter.
-     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet|DOM~filterCallback} [nodeFilter] The filter node(s), a query selector string or custom filter function.
-     * @return {QuerySet} The QuerySet object.
+     * Returns all elements with a descendant matching a filter.
+     * @param {NodeFilterInput} [nodeFilter] The filter node(s), a query selector string or custom filter function.
+     * @returns {QuerySet} The QuerySet object.
      */
     function withDescendent(nodeFilter) {
         return new QuerySet(withDescendent$1(this, nodeFilter));
     }
     /**
-     * Return all nodes with a specified property.
+     * Returns all nodes with a specified property.
      * @param {string} property The property name.
-     * @return {QuerySet} The QuerySet object.
+     * @returns {QuerySet} The QuerySet object.
      */
     function withProperty(property) {
         return new QuerySet(withProperty$1(this, property));
     }
 
     /**
-     * QuerySet Find
-     */
-
-    /**
-     * Return all descendent nodes matching a selector.
+     * Returns all descendant nodes matching a selector.
      * @param {string} selector The query selector.
-     * @return {QuerySet} The QuerySet object.
+     * @returns {QuerySet} The QuerySet object.
      */
     function find(selector) {
         return new QuerySet(find$1(selector, this));
     }
     /**
-     * Return all descendent nodes with a specific class.
+     * Returns all descendant nodes with a specific class.
      * @param {string} className The class name.
-     * @return {QuerySet} The QuerySet object.
+     * @returns {QuerySet} The QuerySet object.
      */
     function findByClass(className) {
         return new QuerySet(findByClass$1(className, this));
     }
     /**
-     * Return all descendent nodes with a specific ID.
+     * Returns all descendant nodes with a specific ID.
      * @param {string} id The id.
-     * @return {QuerySet} The QuerySet object.
+     * @returns {QuerySet} The QuerySet object.
      */
     function findById(id) {
         return new QuerySet(findById$1(id, this));
     }
     /**
-     * Return all descendent nodes with a specific tag.
+     * Returns all descendant nodes with a specific tag.
      * @param {string} tagName The tag name.
-     * @return {QuerySet} The QuerySet object.
+     * @returns {QuerySet} The QuerySet object.
      */
     function findByTag(tagName) {
         return new QuerySet(findByTag$1(tagName, this));
     }
     /**
-     * Return a single descendent node matching a selector.
+     * Returns a single descendant node matching a selector.
      * @param {string} selector The query selector.
-     * @return {QuerySet} The QuerySet object.
+     * @returns {QuerySet} The QuerySet object.
      */
     function findOne(selector) {
         const node = findOne$1(selector, this);
@@ -8564,9 +8403,9 @@
         return new QuerySet(node ? [node] : []);
     }
     /**
-     * Return a single descendent node with a specific class.
+     * Returns a single descendant node with a specific class.
      * @param {string} className The class name.
-     * @return {QuerySet} The QuerySet object.
+     * @returns {QuerySet} The QuerySet object.
      */
     function findOneByClass(className) {
         const node = findOneByClass$1(className, this);
@@ -8574,9 +8413,9 @@
         return new QuerySet(node ? [node] : []);
     }
     /**
-     * Return a single descendent node with a specific ID.
+     * Returns a single descendant node with a specific ID.
      * @param {string} id The id.
-     * @return {QuerySet} The QuerySet object.
+     * @returns {QuerySet} The QuerySet object.
      */
     function findOneById(id) {
         const node = findOneById$1(id, this);
@@ -8584,9 +8423,9 @@
         return new QuerySet(node ? [node] : []);
     }
     /**
-     * Return a single descendent node with a specific tag.
+     * Returns a single descendant node with a specific tag.
      * @param {string} tagName The tag name.
-     * @return {QuerySet} The QuerySet object.
+     * @returns {QuerySet} The QuerySet object.
      */
     function findOneByTag(tagName) {
         const node = findOneByTag$1(tagName, this);
@@ -8594,38 +8433,36 @@
         return new QuerySet(node ? [node] : []);
     }
 
-    /**
-     * QuerySet Traversal
-     */
+    /** @typedef {import('../../filters.js').NodeFilterInput} NodeFilterInput */
 
     /**
-     * Return the first child of each node (optionally matching a filter).
-     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet|DOM~filterCallback} [nodeFilter] The filter node(s), a query selector string or custom filter function.
-     * @return {QuerySet} The QuerySet object.
+     * Returns the first child of each node (optionally matching a filter).
+     * @param {NodeFilterInput} [nodeFilter] The filter node(s), a query selector string or custom filter function.
+     * @returns {QuerySet} The QuerySet object.
      */
     function child(nodeFilter) {
         return new QuerySet(child$1(this, nodeFilter));
     }
     /**
-     * Return all children of each node (optionally matching a filter).
-     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet|DOM~filterCallback} [nodeFilter] The filter node(s), a query selector string or custom filter function.
-     * @return {QuerySet} The QuerySet object.
+     * Returns all children of each node (optionally matching a filter).
+     * @param {NodeFilterInput} [nodeFilter] The filter node(s), a query selector string or custom filter function.
+     * @returns {QuerySet} The QuerySet object.
      */
     function children(nodeFilter, { elementsOnly = true } = {}) {
         return new QuerySet(children$1(this, nodeFilter, { elementsOnly }));
     }
     /**
-     * Return the closest ancestor to each node (optionally matching a filter, and before a limit).
-     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet|DOM~filterCallback} [nodeFilter] The filter node(s), a query selector string or custom filter function.
-     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet|DOM~filterCallback} [limitFilter] The limit node(s), a query selector string or custom filter function.
-     * @return {QuerySet} The QuerySet object.
+     * Returns the closest ancestor to each node (optionally matching a filter, and before a limit).
+     * @param {NodeFilterInput} [nodeFilter] The filter node(s), a query selector string or custom filter function.
+     * @param {NodeFilterInput} [limitFilter] The limit node(s), a query selector string or custom filter function.
+     * @returns {QuerySet} The QuerySet object.
      */
     function closest(nodeFilter, limitFilter) {
         return new QuerySet(closest$1(this, nodeFilter, limitFilter));
     }
     /**
-     * Return the common ancestor of all nodes.
-     * @return {QuerySet} The QuerySet object.
+     * Returns the common ancestor of all nodes.
+     * @returns {QuerySet} The QuerySet object.
      */
     function commonAncestor() {
         const node = commonAncestor$1(this);
@@ -8633,15 +8470,15 @@
         return new QuerySet(node ? [node] : []);
     }
     /**
-     * Return all children of each node (including text and comment nodes).
-     * @return {QuerySet} The QuerySet object.
+     * Returns all children of each node (including text and comment nodes).
+     * @returns {QuerySet} The QuerySet object.
      */
     function contents() {
         return new QuerySet(contents$1(this));
     }
     /**
-     * Return the DocumentFragment of the first node.
-     * @return {QuerySet} The QuerySet object.
+     * Returns the DocumentFragment of the first node.
+     * @returns {QuerySet} The QuerySet object.
      */
     function fragment() {
         const node = fragment$1(this);
@@ -8649,25 +8486,25 @@
         return new QuerySet(node ? [node] : []);
     }
     /**
-     * Return the next sibling for each node (optionally matching a filter).
-     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet|DOM~filterCallback} [nodeFilter] The filter node(s), a query selector string or custom filter function.
-     * @return {QuerySet} The QuerySet object.
+     * Returns the next sibling for each node (optionally matching a filter).
+     * @param {NodeFilterInput} [nodeFilter] The filter node(s), a query selector string or custom filter function.
+     * @returns {QuerySet} The QuerySet object.
      */
     function next(nodeFilter) {
         return new QuerySet(next$1(this, nodeFilter));
     }
     /**
-     * Return all next siblings for each node (optionally matching a filter, and before a limit).
-     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet|DOM~filterCallback} [nodeFilter] The filter node(s), a query selector string or custom filter function.
-     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet|DOM~filterCallback} [limitFilter] The limit node(s), a query selector string or custom filter function.
-     * @return {QuerySet} The QuerySet object.
+     * Returns all next siblings for each node (optionally matching a filter, and before a limit).
+     * @param {NodeFilterInput} [nodeFilter] The filter node(s), a query selector string or custom filter function.
+     * @param {NodeFilterInput} [limitFilter] The limit node(s), a query selector string or custom filter function.
+     * @returns {QuerySet} The QuerySet object.
      */
     function nextAll(nodeFilter, limitFilter) {
         return new QuerySet(nextAll$1(this, nodeFilter, limitFilter));
     }
     /**
-     * Return the offset parent (relatively positioned) of the first node.
-     * @return {QuerySet} The QuerySet object.
+     * Returns the offset parent (relatively positioned) of the first node.
+     * @returns {QuerySet} The QuerySet object.
      */
     function offsetParent() {
         const node = offsetParent$1(this);
@@ -8675,42 +8512,42 @@
         return new QuerySet(node ? [node] : []);
     }
     /**
-     * Return the parent of each node (optionally matching a filter).
-     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet|DOM~filterCallback} [nodeFilter] The filter node(s), a query selector string or custom filter function.
-     * @return {QuerySet} The QuerySet object.
+     * Returns the parent of each node (optionally matching a filter).
+     * @param {NodeFilterInput} [nodeFilter] The filter node(s), a query selector string or custom filter function.
+     * @returns {QuerySet} The QuerySet object.
      */
     function parent(nodeFilter) {
         return new QuerySet(parent$1(this, nodeFilter));
     }
     /**
-     * Return all parents of each node (optionally matching a filter, and before a limit).
-     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet|DOM~filterCallback} [nodeFilter] The filter node(s), a query selector string or custom filter function.
-     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet|DOM~filterCallback} [limitFilter] The limit node(s), a query selector string or custom filter function.
-     * @return {QuerySet} The QuerySet object.
+     * Returns all parents of each node (optionally matching a filter, and before a limit).
+     * @param {NodeFilterInput} [nodeFilter] The filter node(s), a query selector string or custom filter function.
+     * @param {NodeFilterInput} [limitFilter] The limit node(s), a query selector string or custom filter function.
+     * @returns {QuerySet} The QuerySet object.
      */
     function parents(nodeFilter, limitFilter) {
         return new QuerySet(parents$1(this, nodeFilter, limitFilter));
     }
     /**
-     * Return the previous sibling for each node (optionally matching a filter).
-     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet|DOM~filterCallback} [nodeFilter] The filter node(s), a query selector string or custom filter function.
-     * @return {QuerySet} The QuerySet object.
+     * Returns the previous sibling for each node (optionally matching a filter).
+     * @param {NodeFilterInput} [nodeFilter] The filter node(s), a query selector string or custom filter function.
+     * @returns {QuerySet} The QuerySet object.
      */
     function prev(nodeFilter) {
         return new QuerySet(prev$1(this, nodeFilter));
     }
     /**
-     * Return all previous siblings for each node (optionally matching a filter, and before a limit).
-     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet|DOM~filterCallback} [nodeFilter] The filter node(s), a query selector string or custom filter function.
-     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet|DOM~filterCallback} [limitFilter] The limit node(s), a query selector string or custom filter function.
-     * @return {QuerySet} The QuerySet object.
+     * Returns all previous siblings for each node (optionally matching a filter, and before a limit).
+     * @param {NodeFilterInput} [nodeFilter] The filter node(s), a query selector string or custom filter function.
+     * @param {NodeFilterInput} [limitFilter] The limit node(s), a query selector string or custom filter function.
+     * @returns {QuerySet} The QuerySet object.
      */
     function prevAll(nodeFilter, limitFilter) {
         return new QuerySet(prevAll$1(this, nodeFilter, limitFilter));
     }
     /**
-     * Return the ShadowRoot of the first node.
-     * @return {QuerySet} The QuerySet object.
+     * Returns the ShadowRoot of the first node.
+     * @returns {QuerySet} The QuerySet object.
      */
     function shadow() {
         const node = shadow$1(this);
@@ -8718,22 +8555,20 @@
         return new QuerySet(node ? [node] : []);
     }
     /**
-     * Return all siblings for each node (optionally matching a filter).
-     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet|DOM~filterCallback} [nodeFilter] The filter node(s), a query selector string or custom filter function.
-     * @param {Boolean} [elementsOnly=true] Whether to only return element nodes.
-     * @return {QuerySet} The QuerySet object.
+     * Returns all siblings for each node (optionally matching a filter).
+     * @param {NodeFilterInput} [nodeFilter] The filter node(s), a query selector string or custom filter function.
+     * @param {{elementsOnly?: boolean}} [options] The filtering options.
+     * @returns {QuerySet} The QuerySet object.
      */
     function siblings(nodeFilter, { elementsOnly = true } = {}) {
         return new QuerySet(siblings$1(this, nodeFilter, { elementsOnly }));
     }
 
-    /**
-     * DOM Selection
-     */
+    /** @typedef {import('../helpers.js').NodeInput} NodeInput */
 
     /**
-     * Insert each node after the selection.
-     * @param {string|array|Node|HTMLElement|DocumentFragment|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector or HTML string.
+     * Inserts each node after the selection.
+     * @param {NodeInput} selector The input node(s), or a query selector or HTML string.
      */
     function afterSelection$1(selector) {
         // ShadowRoot nodes can not be moved
@@ -8759,8 +8594,8 @@
         }
     }
     /**
-     * Insert each node before the selection.
-     * @param {string|array|Node|HTMLElement|DocumentFragment|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector or HTML string.
+     * Inserts each node before the selection.
+     * @param {NodeInput} selector The input node(s), or a query selector or HTML string.
      */
     function beforeSelection$1(selector) {
         // ShadowRoot nodes can not be moved
@@ -8785,8 +8620,8 @@
         }
     }
     /**
-     * Extract selected nodes from the DOM.
-     * @return {array} The selected nodes.
+     * Extracts selected nodes from the DOM.
+     * @returns {Node[]} The selected nodes.
      */
     function extractSelection() {
         const selection = getWindow().getSelection();
@@ -8804,8 +8639,8 @@
         return merge([], fragment.childNodes);
     }
     /**
-     * Return all selected nodes.
-     * @return {array} The selected nodes.
+     * Returns all selected nodes.
+     * @returns {Node[]} The selected nodes.
      */
     function getSelection() {
         const selection = getWindow().getSelection();
@@ -8855,8 +8690,8 @@
             results;
     }
     /**
-     * Create a selection on the first node.
-     * @param {string|array|Node|HTMLElement|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
+     * Creates a selection on the first node.
+     * @param {NodeInput} selector The input node(s), or a query selector string.
      */
     function select$1(selector) {
         const node = parseNode(selector, {
@@ -8883,8 +8718,8 @@
         selection.addRange(range);
     }
     /**
-     * Create a selection containing all of the nodes.
-     * @param {string|array|Node|HTMLElement|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
+     * Creates a selection containing all of the nodes.
+     * @param {NodeInput} selector The input node(s), or a query selector string.
      */
     function selectAll$1(selector) {
         const nodes = sort$1(selector);
@@ -8911,8 +8746,8 @@
         selection.addRange(range);
     }
     /**
-     * Wrap selected nodes with other nodes.
-     * @param {string|array|HTMLElement|DocumentFragment|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector or HTML string.
+     * Wraps selected nodes with other nodes.
+     * @param {NodeInput} selector The input node(s), or a query selector or HTML string.
      */
     function wrapSelection$1(selector) {
         // ShadowRoot nodes can not be cloned
@@ -8947,13 +8782,11 @@
         }
     }
 
-    /**
-     * QuerySet Selection
-     */
+    /** @typedef {import('../query-set.js').default} QuerySet */
 
     /**
-     * Insert each node after the selection.
-     * @return {QuerySet} The QuerySet object.
+     * Inserts each node after the selection.
+     * @returns {QuerySet} The QuerySet object.
      */
     function afterSelection() {
         afterSelection$1(this);
@@ -8961,8 +8794,8 @@
         return this;
     }
     /**
-     * Insert each node before the selection.
-     * @return {QuerySet} The QuerySet object.
+     * Inserts each node before the selection.
+     * @returns {QuerySet} The QuerySet object.
      */
     function beforeSelection() {
         beforeSelection$1(this);
@@ -8970,8 +8803,8 @@
         return this;
     }
     /**
-     * Create a selection on the first node.
-     * @return {QuerySet} The QuerySet object.
+     * Creates a selection on the first node.
+     * @returns {QuerySet} The QuerySet object.
      */
     function select() {
         select$1(this);
@@ -8979,8 +8812,8 @@
         return this;
     }
     /**
-     * Create a selection containing all of the nodes.
-     * @return {QuerySet} The QuerySet object.
+     * Creates a selection containing all of the nodes.
+     * @returns {QuerySet} The QuerySet object.
      */
     function selectAll() {
         selectAll$1(this);
@@ -8988,8 +8821,8 @@
         return this;
     }
     /**
-     * Wrap selected nodes with other nodes.
-     * @return {QuerySet} The QuerySet object.
+     * Wraps selected nodes with other nodes.
+     * @returns {QuerySet} The QuerySet object.
      */
     function wrapSelection() {
         wrapSelection$1(this);
@@ -8998,32 +8831,35 @@
     }
 
     /**
-     * DOM Tests
+     * @typedef {import('../filters.js').NodeFilterInput} NodeFilterInput
+     * @typedef {import('../helpers.js').ElementInput} ElementInput
+     * @typedef {import('../helpers.js').NodeInput} NodeInput
+     * @typedef {import('../helpers.js').QueryInput} QueryInput
      */
 
     /**
-     * Returns true if any of the nodes has an animation.
-     * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
-     * @return {Boolean} TRUE if any of the nodes has an animation, otherwise FALSE.
+     * Checks whether any of the nodes has an animation.
+     * @param {ElementInput} selector The input node(s), or a query selector string.
+     * @returns {boolean} Whether any of the nodes has an animation.
      */
     function hasAnimation$1(selector) {
         return parseNodes(selector)
             .some((node) => animations.has(node));
     }
     /**
-     * Returns true if any of the nodes has a specified attribute.
-     * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
+     * Checks whether any of the nodes has a specified attribute.
+     * @param {ElementInput} selector The input node(s), or a query selector string.
      * @param {string} attribute The attribute name.
-     * @return {Boolean} TRUE if any of the nodes has the attribute, otherwise FALSE.
+     * @returns {boolean} Whether any of the nodes has the attribute.
      */
     function hasAttribute$1(selector, attribute) {
         return parseNodes(selector)
             .some((node) => node.hasAttribute(attribute));
     }
     /**
-     * Returns true if any of the nodes has child nodes.
-     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
-     * @return {Boolean} TRUE if the any of the nodes has child nodes, otherwise FALSE.
+     * Checks whether any of the nodes has child nodes.
+     * @param {NodeInput} selector The input node(s), or a query selector string.
+     * @returns {boolean} Whether any of the nodes has child nodes.
      */
     function hasChildren$1(selector) {
         return parseNodes(selector, {
@@ -9033,10 +8869,10 @@
         }).some((node) => node.childElementCount);
     }
     /**
-     * Returns true if any of the nodes has any of the specified classes.
-     * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
+     * Checks whether any of the nodes has any of the specified classes.
+     * @param {ElementInput} selector The input node(s), or a query selector string.
      * @param {...string|string[]} classes The classes.
-     * @return {Boolean} TRUE if any of the nodes has any of the classes, otherwise FALSE.
+     * @returns {boolean} Whether any of the nodes has any of the classes.
      */
     function hasClass$1(selector, ...classes) {
         classes = parseClasses(classes);
@@ -9047,9 +8883,9 @@
             );
     }
     /**
-     * Returns true if any of the nodes has a CSS animation.
-     * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
-     * @return {Boolean} TRUE if any of the nodes has a CSS animation, otherwise FALSE.
+     * Checks whether any of the nodes has a CSS animation.
+     * @param {ElementInput} selector The input node(s), or a query selector string.
+     * @returns {boolean} Whether any of the nodes has a CSS animation.
      */
     function hasCSSAnimation$1(selector) {
         return parseNodes(selector)
@@ -9058,9 +8894,9 @@
             );
     }
     /**
-     * Returns true if any of the nodes has a CSS transition.
-     * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
-     * @return {Boolean} TRUE if any of the nodes has a CSS transition, otherwise FALSE.
+     * Checks whether any of the nodes has a CSS transition.
+     * @param {ElementInput} selector The input node(s), or a query selector string.
+     * @returns {boolean} Whether any of the nodes has a CSS transition.
      */
     function hasCSSTransition$1(selector) {
         return parseNodes(selector)
@@ -9069,10 +8905,10 @@
             );
     }
     /**
-     * Returns true if any of the nodes has custom data.
-     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
+     * Checks whether any of the nodes has custom data.
+     * @param {QueryInput} selector The input node(s), or a query selector string.
      * @param {string} [key] The data key.
-     * @return {Boolean} TRUE if any of the nodes has custom data, otherwise FALSE.
+     * @returns {boolean} Whether any of the nodes has custom data.
      */
     function hasData$1(selector, key) {
         return parseNodes(selector, {
@@ -9095,10 +8931,10 @@
         });
     }
     /**
-     * Returns true if any of the nodes has the specified dataset value.
-     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
+     * Checks whether any of the nodes has the specified dataset value.
+     * @param {QueryInput} selector The input node(s), or a query selector string.
      * @param {string} [key] The dataset key.
-     * @return {Boolean} TRUE if any of the nodes has the dataset value, otherwise FALSE.
+     * @returns {boolean} Whether any of the nodes has the dataset value.
      */
     function hasDataset$1(selector, key) {
         key = camelCase(key);
@@ -9107,10 +8943,10 @@
             .some((node) => !!node.dataset[key]);
     }
     /**
-     * Returns true if any of the nodes contains a descendent matching a filter.
-     * @param {string|array|HTMLElement|DocumentFragment|ShadowRoot|Document|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
-     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet|DOM~filterCallback} [nodeFilter] The filter node(s), a query selector string or custom filter function.
-     * @return {Boolean} TRUE if any of the nodes contains a descendent matching the filter, otherwise FALSE.
+     * Checks whether any of the nodes contains a descendant matching a filter.
+     * @param {NodeInput} selector The input node(s), or a query selector string.
+     * @param {NodeFilterInput} [nodeFilter] The filter node(s), a query selector string or custom filter function.
+     * @returns {boolean} Whether any of the nodes contains a descendant matching the filter.
      */
     function hasDescendent$1(selector, nodeFilter) {
         nodeFilter = parseFilterContains(nodeFilter);
@@ -9122,38 +8958,38 @@
         }).some(nodeFilter);
     }
     /**
-     * Returns true if any of the nodes has a DocumentFragment.
-     * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
-     * @return {Boolean} TRUE if any of the nodes has a DocumentFragment, otherwise FALSE.
+     * Checks whether any of the nodes has a DocumentFragment.
+     * @param {ElementInput} selector The input node(s), or a query selector string.
+     * @returns {boolean} Whether any of the nodes has a DocumentFragment.
      */
     function hasFragment$1(selector) {
         return parseNodes(selector)
             .some((node) => node.content);
     }
     /**
-     * Returns true if any of the nodes has a specified property.
-     * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
+     * Checks whether any of the nodes has a specified property.
+     * @param {ElementInput} selector The input node(s), or a query selector string.
      * @param {string} property The property name.
-     * @return {Boolean} TRUE if any of the nodes has the property, otherwise FALSE.
+     * @returns {boolean} Whether any of the nodes has the property.
      */
     function hasProperty$1(selector, property) {
         return parseNodes(selector)
             .some((node) => Object.hasOwn(node, property));
     }
     /**
-     * Returns true if any of the nodes has a ShadowRoot.
-     * @param {string|array|HTMLElement|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
-     * @return {Boolean} TRUE if any of the nodes has a ShadowRoot, otherwise FALSE.
+     * Checks whether any of the nodes has a ShadowRoot.
+     * @param {ElementInput} selector The input node(s), or a query selector string.
+     * @returns {boolean} Whether any of the nodes has a ShadowRoot.
      */
     function hasShadow$1(selector) {
         return parseNodes(selector)
             .some((node) => node.shadowRoot);
     }
     /**
-     * Returns true if any of the nodes matches a filter.
-     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
-     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet|DOM~filterCallback} [nodeFilter] The filter node(s), a query selector string or custom filter function.
-     * @return {Boolean} TRUE if any of the nodes matches the filter, otherwise FALSE.
+     * Checks whether any of the nodes matches a filter.
+     * @param {NodeInput} selector The input node(s), or a query selector string.
+     * @param {NodeFilterInput} [nodeFilter] The filter node(s), a query selector string or custom filter function.
+     * @returns {boolean} Whether any of the nodes matches the filter.
      */
     function is$1(selector, nodeFilter) {
         nodeFilter = parseFilter(nodeFilter);
@@ -9165,9 +9001,9 @@
         }).some(nodeFilter);
     }
     /**
-     * Returns true if any of the nodes is connected to the DOM.
-     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
-     * @return {Boolean} TRUE if any of the nodes is connected to the DOM, otherwise FALSE.
+     * Checks whether any of the nodes is connected to the DOM.
+     * @param {NodeInput} selector The input node(s), or a query selector string.
+     * @returns {boolean} Whether any of the nodes is connected to the DOM.
      */
     function isConnected$1(selector) {
         return parseNodes(selector, {
@@ -9177,12 +9013,11 @@
         }).some((node) => node.isConnected);
     }
     /**
-     * Returns true if any of the nodes is considered equal to any of the other nodes.
-     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
-     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet} otherSelector The other node(s), or a query selector string.
-     * @param {object} options The options for performing the comparison.
-     * @param {Boolean} [options.shallow=true] Whether to do a shallow comparison.
-     * @return {Boolean} TRUE if any of the nodes is considered equal to any of the other nodes, otherwise FALSE.
+     * Checks whether any of the nodes is considered equal to any of the other nodes.
+     * @param {NodeInput} selector The input node(s), or a query selector string.
+     * @param {NodeInput} otherSelector The other node(s), or a query selector string.
+     * @param {{shallow?: boolean}} [options] The comparison options.
+     * @returns {boolean} Whether any of the nodes is considered equal to any of the other nodes.
      */
     function isEqual$1(selector, otherSelector, { shallow = false } = {}) {
         let nodes = parseNodes(selector, {
@@ -9207,9 +9042,9 @@
         );
     }
     /**
-     * Returns true if any of the nodes or a parent of any of the nodes is "fixed".
-     * @param {string|array|Node|HTMLElement|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
-     * @return {Boolean} TRUE if any of the nodes is "fixed", otherwise FALSE.
+     * Checks whether any of the nodes or a parent of any of the nodes is "fixed".
+     * @param {NodeInput} selector The input node(s), or a query selector string.
+     * @returns {boolean} Whether any of the nodes is "fixed".
      */
     function isFixed$1(selector) {
         return parseNodes(selector, {
@@ -9223,9 +9058,9 @@
         );
     }
     /**
-     * Returns true if any of the nodes is hidden.
-     * @param {string|array|Node|HTMLElement|Document|Window|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
-     * @return {Boolean} TRUE if any of the nodes is hidden, otherwise FALSE.
+     * Checks whether any of the nodes is hidden.
+     * @param {QueryInput} selector The input node(s), or a query selector string.
+     * @returns {boolean} Whether any of the nodes is hidden.
      */
     function isHidden$1(selector) {
         return parseNodes(selector, {
@@ -9245,10 +9080,10 @@
         });
     }
     /**
-     * Returns true if any of the nodes is considered identical to any of the other nodes.
-     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
-     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet} otherSelector The other node(s), or a query selector string.
-     * @return {Boolean} TRUE if any of the nodes is considered identical to any of the other nodes, otherwise FALSE.
+     * Checks whether any of the nodes is considered identical to any of the other nodes.
+     * @param {NodeInput} selector The input node(s), or a query selector string.
+     * @param {NodeInput} otherSelector The other node(s), or a query selector string.
+     * @returns {boolean} Whether any of the nodes is considered identical to any of the other nodes.
      */
     function isSame$1(selector, otherSelector) {
         const others = parseNodes(otherSelector, {
@@ -9266,9 +9101,9 @@
         );
     }
     /**
-     * Returns true if any of the nodes is visible.
-     * @param {string|array|Node|HTMLElement|Document|Window|NodeList|HTMLCollection|QuerySet} selector The input node(s), or a query selector string.
-     * @return {Boolean} TRUE if any of the nodes is visible, otherwise FALSE.
+     * Checks whether any of the nodes is visible.
+     * @param {QueryInput} selector The input node(s), or a query selector string.
+     * @returns {boolean} Whether any of the nodes is visible.
      */
     function isVisible$1(selector) {
         return parseNodes(selector, {
@@ -9289,163 +9124,166 @@
     }
 
     /**
-     * QuerySet Tests
+     * @typedef {import('../../filters.js').NodeFilterInput} NodeFilterInput
+     * @typedef {import('../../helpers.js').NodeInput} NodeInput
+     * @typedef {import('../query-set.js').default} QuerySet
      */
 
     /**
-     * Returns true if any of the nodes has an animation.
-     * @return {Boolean} TRUE if any of the nodes has an animation, otherwise FALSE.
+     * Checks whether any of the nodes has an animation.
+     * @returns {boolean} Whether any of the nodes has an animation.
      */
     function hasAnimation() {
         return hasAnimation$1(this);
     }
     /**
-     * Returns true if any of the nodes has a specified attribute.
+     * Checks whether any of the nodes has a specified attribute.
      * @param {string} attribute The attribute name.
-     * @return {Boolean} TRUE if any of the nodes has the attribute, otherwise FALSE.
+     * @returns {boolean} Whether any of the nodes has the attribute.
      */
     function hasAttribute(attribute) {
         return hasAttribute$1(this, attribute);
     }
     /**
-     * Returns true if any of the nodes has child nodes.
-     * @return {Boolean} TRUE if the any of the nodes has child nodes, otherwise FALSE.
+     * Checks whether any of the nodes has child nodes.
+     * @returns {boolean} Whether any of the nodes has child nodes.
      */
     function hasChildren() {
         return hasChildren$1(this);
     }
     /**
-     * Returns true if any of the nodes has any of the specified classes.
+     * Checks whether any of the nodes has any of the specified classes.
      * @param {...string|string[]} classes The classes.
-     * @return {Boolean} TRUE if any of the nodes has any of the classes, otherwise FALSE.
+     * @returns {boolean} Whether any of the nodes has any of the classes.
      */
     function hasClass(...classes) {
         return hasClass$1(this, ...classes);
     }
     /**
-     * Returns true if any of the nodes has a CSS animation.
-     * @return {Boolean} TRUE if any of the nodes has a CSS animation, otherwise FALSE.
+     * Checks whether any of the nodes has a CSS animation.
+     * @returns {boolean} Whether any of the nodes has a CSS animation.
      */
     function hasCSSAnimation() {
         return hasCSSAnimation$1(this);
     }
     /**
-     * Returns true if any of the nodes has a CSS transition.
-     * @return {Boolean} TRUE if any of the nodes has a CSS transition, otherwise FALSE.
+     * Checks whether any of the nodes has a CSS transition.
+     * @returns {boolean} Whether any of the nodes has a CSS transition.
      */
     function hasCSSTransition() {
         return hasCSSTransition$1(this);
     }
     /**
-     * Returns true if any of the nodes has custom data.
+     * Checks whether any of the nodes has custom data.
      * @param {string} [key] The data key.
-     * @return {Boolean} TRUE if any of the nodes has custom data, otherwise FALSE.
+     * @returns {boolean} Whether any of the nodes has custom data.
      */
     function hasData(key) {
         return hasData$1(this, key);
     }
     /**
-     * Returns true if any of the nodes has the specified dataset value.
+     * Checks whether any of the nodes has the specified dataset value.
      * @param {string} [key] The dataset key.
-     * @return {Boolean} TRUE if any of the nodes has the dataset value, otherwise FALSE.
+     * @returns {boolean} Whether any of the nodes has the dataset value.
      */
     function hasDataset(key) {
         return hasDataset$1(this, key);
     }
     /**
-     * Returns true if any of the nodes contains a descendent matching a filter.
-     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet|DOM~filterCallback} [nodeFilter] The filter node(s), a query selector string or custom filter function.
-     * @return {Boolean} TRUE if any of the nodes contains a descendent matching the filter, otherwise FALSE.
+     * Checks whether any of the nodes contains a descendant matching a filter.
+     * @param {NodeFilterInput} [nodeFilter] The filter node(s), a query selector string or custom filter function.
+     * @returns {boolean} Whether any of the nodes contains a descendant matching the filter.
      */
     function hasDescendent(nodeFilter) {
         return hasDescendent$1(this, nodeFilter);
     }
     /**
-     * Returns true if any of the nodes has a DocumentFragment.
-     * @return {Boolean} TRUE if any of the nodes has a DocumentFragment, otherwise FALSE.
+     * Checks whether any of the nodes has a DocumentFragment.
+     * @returns {boolean} Whether any of the nodes has a DocumentFragment.
      */
     function hasFragment() {
         return hasFragment$1(this);
     }
     /**
-     * Returns true if any of the nodes has a specified property.
+     * Checks whether any of the nodes has a specified property.
      * @param {string} property The property name.
-     * @return {Boolean} TRUE if any of the nodes has the property, otherwise FALSE.
+     * @returns {boolean} Whether any of the nodes has the property.
      */
     function hasProperty(property) {
         return hasProperty$1(this, property);
     }
     /**
-     * Returns true if any of the nodes has a ShadowRoot.
-     * @return {Boolean} TRUE if any of the nodes has a ShadowRoot, otherwise FALSE.
+     * Checks whether any of the nodes has a ShadowRoot.
+     * @returns {boolean} Whether any of the nodes has a ShadowRoot.
      */
     function hasShadow() {
         return hasShadow$1(this);
     }
     /**
-     * Returns true if any of the nodes matches a filter.
-     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet|DOM~filterCallback} [nodeFilter] The filter node(s), a query selector string or custom filter function.
-     * @return {Boolean} TRUE if any of the nodes matches the filter, otherwise FALSE.
+     * Checks whether any of the nodes matches a filter.
+     * @param {NodeFilterInput} [nodeFilter] The filter node(s), a query selector string or custom filter function.
+     * @returns {boolean} Whether any of the nodes matches the filter.
      */
     function is(nodeFilter) {
         return is$1(this, nodeFilter);
     }
     /**
-     * Returns true if any of the nodes is connected to the DOM.
-     * @return {Boolean} TRUE if any of the nodes is connected to the DOM, otherwise FALSE.
+     * Checks whether any of the nodes is connected to the DOM.
+     * @returns {boolean} Whether any of the nodes is connected to the DOM.
      */
     function isConnected() {
         return isConnected$1(this);
     }
     /**
-     * Returns true if any of the nodes is considered equal to any of the other nodes.
-     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet} otherSelector The other node(s), or a query selector string.
-     * @param {object} options The options for performing the comparison.
-     * @param {Boolean} [options.shallow=true] Whether to do a shallow comparison.
-     * @return {Boolean} TRUE if any of the nodes is considered equal to any of the other nodes, otherwise FALSE.
+     * Checks whether any of the nodes is considered equal to any of the other nodes.
+     * @param {NodeInput} otherSelector The other node(s), or a query selector string.
+     * @param {{shallow?: boolean}} [options] The comparison options.
+     * @returns {boolean} Whether any of the nodes is considered equal to any of the other nodes.
      */
     function isEqual(otherSelector, { shallow = false } = {}) {
         return isEqual$1(this, otherSelector, { shallow });
     }
     /**
-     * Returns true if any of the elements or a parent of any of the elements is "fixed".
-     * @return {Boolean} TRUE if any of the nodes is "fixed", otherwise FALSE.
+     * Checks whether any of the elements or a parent of any of the elements is "fixed".
+     * @returns {boolean} Whether any of the nodes is "fixed".
      */
     function isFixed() {
         return isFixed$1(this);
     }
     /**
-     * Returns true if any of the nodes is hidden.
-     * @return {Boolean} TRUE if any of the nodes is hidden, otherwise FALSE.
+     * Checks whether any of the nodes is hidden.
+     * @returns {boolean} Whether any of the nodes is hidden.
      */
     function isHidden() {
         return isHidden$1(this);
     }
     /**
-     * Returns true if any of the nodes is considered identical to any of the other nodes.
-     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet} otherSelector The other node(s), or a query selector string.
-     * @return {Boolean} TRUE if any of the nodes is considered identical to any of the other nodes, otherwise FALSE.
+     * Checks whether any of the nodes is considered identical to any of the other nodes.
+     * @param {NodeInput} otherSelector The other node(s), or a query selector string.
+     * @returns {boolean} Whether any of the nodes is considered identical to any of the other nodes.
      */
     function isSame(otherSelector) {
         return isSame$1(this, otherSelector);
     }
     /**
-     * Returns true if any of the nodes is visible.
-     * @return {Boolean} TRUE if any of the nodes is visible, otherwise FALSE.
+     * Checks whether any of the nodes is visible.
+     * @returns {boolean} Whether any of the nodes is visible.
      */
     function isVisible() {
         return isVisible$1(this);
     }
 
     /**
-     * QuerySet Utility
+     * @typedef {import('../../filters.js').NodeFilterInput} NodeFilterInput
+     * @typedef {import('../../helpers.js').QueryInput} QueryInput
+     * @typedef {import('../../traversal/find.js').QueryContextInput} QueryContextInput
      */
 
     /**
-     * Merge with new nodes and sort the results.
-     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|NodeList|HTMLCollection|QuerySet} selector The input selector.
-     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|NodeList|HTMLCollection|QuerySet} [context] The context to search in.
-     * @return {QuerySet} The QuerySet object.
+     * Merges with new nodes and sorts the results.
+     * @param {QueryInput} selector The input selector.
+     * @param {QueryContextInput} [context] The context to search in.
+     * @returns {QuerySet} The QuerySet object.
      */
     function add(selector, context = null) {
         const otherNodes = parseNodes(selector, {
@@ -9462,9 +9300,9 @@
         return new QuerySet(nodes);
     }
     /**
-     * Reduce the set of nodes to the one at the specified index.
+     * Reduces the set of nodes to the one at the specified index.
      * @param {number} index The index of the node.
-     * @return {QuerySet} The QuerySet object.
+     * @returns {QuerySet} The QuerySet object.
      */
     function eq(index) {
         const node = this.get(index);
@@ -9472,37 +9310,37 @@
         return new QuerySet(node ? [node] : []);
     }
     /**
-     * Reduce the set of nodes to the first.
-     * @return {QuerySet} The QuerySet object.
+     * Reduces the set of nodes to the first.
+     * @returns {QuerySet} The QuerySet object.
      */
     function first() {
         return this.eq(0);
     }
     /**
-     * Get the index of the first node relative to it's parent node.
-     * @return {number} The index.
+     * Gets the index of the first node relative to its parent node.
+     * @returns {number|undefined} The index, or `undefined` if no node or parent matches.
      */
     function index$1() {
         return index$2(this);
     }
     /**
-     * Get the index of the first node matching a filter.
-     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|NodeList|HTMLCollection|QuerySet|DOM~filterCallback} [nodeFilter] The filter node(s), a query selector string or custom filter function.
-     * @return {number} The index.
+     * Gets the index of the first node matching a filter.
+     * @param {NodeFilterInput} [nodeFilter] The filter node(s), a query selector string or custom filter function.
+     * @returns {number} The index.
      */
     function indexOf(nodeFilter) {
         return indexOf$1(this, nodeFilter);
     }
     /**
-     * Reduce the set of nodes to the last.
-     * @return {QuerySet} The QuerySet object.
+     * Reduces the set of nodes to the last.
+     * @returns {QuerySet} The QuerySet object.
      */
     function last() {
         return this.eq(-1);
     }
     /**
-     * Normalize nodes (remove empty text nodes, and join adjacent text nodes).
-     * @return {QuerySet} The QuerySet object.
+     * Normalizes nodes (remove empty text nodes, and join adjacent text nodes).
+     * @returns {QuerySet} The QuerySet object.
      */
     function normalize() {
         normalize$1(this);
@@ -9510,29 +9348,29 @@
         return this;
     }
     /**
-     * Return a serialized string containing names and values of all form nodes.
-     * @return {string} The serialized string.
+     * Returns a serialized string containing names and values of all form nodes.
+     * @returns {string} The serialized string.
      */
     function serialize() {
         return serialize$1(this);
     }
     /**
-     * Return a serialized array containing names and values of all form nodes.
-     * @return {array} The serialized array.
+     * Returns a serialized array containing names and values of all form nodes.
+     * @returns {Array<{name: string, value: string}>} The serialized entries.
      */
     function serializeArray() {
         return serializeArray$1(this);
     }
     /**
-     * Sort nodes by their position in the document.
-     * @return {QuerySet} The QuerySet object.
+     * Sorts nodes by their position in the document.
+     * @returns {QuerySet} The QuerySet object.
      */
     function sort() {
         return new QuerySet(sort$1(this));
     }
     /**
-     * Return the tag name (lowercase) of the first node.
-     * @return {string} The nodes tag name (lowercase).
+     * Returns the tag name (lowercase) of the first node.
+     * @returns {string|undefined} The node's lowercase tag name, or `undefined` if no element matches.
      */
     function tagName() {
         return tagName$1(this);
@@ -9711,14 +9549,15 @@
     proto.wrapSelection = wrapSelection;
 
     /**
-     * DOM Query
+     * @typedef {import('../helpers.js').QueryInput} QueryInput
+     * @typedef {import('../traversal/find.js').QueryContextInput} QueryContextInput
      */
 
     /**
-     * Add a function to the ready queue or return a QuerySet.
-     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|NodeList|HTMLCollection|QuerySet|function} selector The input selector.
-     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|NodeList|HTMLCollection|QuerySet} [context] The context to search in.
-     * @return {QuerySet} The new QuerySet object.
+     * Adds a function to the ready queue or returns a QuerySet.
+     * @param {(() => void)|QueryInput} selector The ready callback or input selector.
+     * @param {QueryContextInput} [context] The context to search in.
+     * @returns {QuerySet|undefined} A new QuerySet, or `undefined` when registering a ready callback.
      */
     function query(selector, context = null) {
         if (isFunction(selector)) {
@@ -9738,10 +9577,10 @@
         return new QuerySet(nodes);
     }
     /**
-     * Return a QuerySet for the first node.
-     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|NodeList|HTMLCollection|QuerySet} selector The input selector.
-     * @param {string|array|Node|HTMLElement|DocumentFragment|ShadowRoot|Document|Window|NodeList|HTMLCollection|QuerySet} [context] The context to search in.
-     * @return {QuerySet} The new QuerySet object.
+     * Returns a QuerySet for the first node.
+     * @param {QueryInput} selector The input selector.
+     * @param {QueryContextInput} [context] The context to search in.
+     * @returns {QuerySet} The new QuerySet object.
      */
     function queryOne(selector, context = null) {
         const node = parseNode(selector, {
@@ -9757,20 +9596,26 @@
         return new QuerySet(node ? [node] : []);
     }
 
+    /** @typedef {Record<string, *>} ScriptAttributes */
+
+    /** @typedef {string|ScriptAttributes} ScriptSource */
+
     /**
-     * DOM AJAX Scripts
+     * @typedef {object} ScriptLoadOptions
+     * @property {boolean} [cache=true] Whether to cache the request.
+     * @property {Document} [context] The document context. Defaults to the configured context.
      */
 
     /**
-     * Return whether a boolean attribute should be enabled.
+     * Checks whether a boolean attribute should be enabled.
      * @param {*} value The attribute value.
-     * @return {Boolean} True if the attribute should be enabled.
+     * @returns {boolean} True if the attribute should be enabled.
      */
     function isEnabled(value) {
         return value !== false && value !== null && typeof value !== 'undefined';
     }
     /**
-     * Apply a script attribute if it should be serialized.
+     * Applies a script attribute if it should be serialized.
      * @param {HTMLScriptElement} script The script element.
      * @param {string} key The attribute key.
      * @param {*} value The attribute value.
@@ -9783,13 +9628,11 @@
         script.setAttribute(key, value === true ? '' : value);
     }
     /**
-     * Load and execute a JavaScript file.
-     * @param {string} url The URL of the script.
-     * @param {object} [attributes] Additional attributes to set on the script tag.
-     * @param {object} [options] The options for loading the script.
-     * @param {Boolean} [options.cache=true] Whether to cache the request.
-     * @param {Document} [options.context=getContext()] The document context.
-     * @return {Promise} A new Promise that resolves when the script is loaded, or rejects on failure.
+     * Loads and executes a JavaScript file.
+     * @param {string|null} url The URL of the script.
+     * @param {ScriptAttributes} [attributes] Additional attributes to set on the script element.
+     * @param {ScriptLoadOptions} [options] The loading options.
+     * @returns {Promise<void>} A promise that resolves when the script loads, or rejects on failure.
      */
     function loadScript(url, attributes, { cache = true, context = getContext() } = {}) {
         attributes = {
@@ -9821,12 +9664,10 @@
         });
     }
     /**
-     * Load and executes multiple JavaScript files (in order).
-     * @param {array} urls An array of script URLs or attribute objects.
-     * @param {object} [options] The options for loading the scripts.
-     * @param {Boolean} [options.cache=true] Whether to cache the request.
-     * @param {Document} [options.context=getContext()] The document context.
-     * @return {Promise} A new Promise that resolves when the request is completed, or rejects on failure.
+     * Loads and executes multiple JavaScript files (in order).
+     * @param {ScriptSource[]} urls The script URLs or attribute objects.
+     * @param {ScriptLoadOptions} [options] The loading options.
+     * @returns {Promise<void[]>} A promise that resolves when every script loads, or rejects on failure.
      */
     function loadScripts(urls, { cache = true, context = getContext() } = {}) {
         return Promise.all(
@@ -9838,18 +9679,22 @@
         );
     }
 
+    /** @typedef {Record<string, *>} StyleAttributes */
+
+    /** @typedef {string|StyleAttributes} StyleSource */
+
     /**
-     * DOM AJAX Styles
+     * @typedef {object} StyleLoadOptions
+     * @property {boolean} [cache=true] Whether to cache the request.
+     * @property {Document} [context] The document context. Defaults to the configured context.
      */
 
     /**
-     * Import a CSS Stylesheet file.
-     * @param {string} url The URL of the stylesheet.
-     * @param {object} [attributes] Additional attributes to set on the style tag.
-     * @param {object} [options] The options for loading the stylesheet.
-     * @param {Boolean} [options.cache=true] Whether to cache the request.
-     * @param {Document} [options.context=getContext()] The document context.
-     * @return {Promise} A new Promise that resolves when the stylesheet is loaded, or rejects on failure.
+     * Imports a CSS stylesheet.
+     * @param {string|null} url The URL of the stylesheet.
+     * @param {StyleAttributes} [attributes] Additional attributes to set on the link element.
+     * @param {StyleLoadOptions} [options] The loading options.
+     * @returns {Promise<void>} A promise that resolves when the stylesheet loads, or rejects on failure.
      */
     function loadStyle(url, attributes, { cache = true, context = getContext() } = {}) {
         attributes = {
@@ -9876,12 +9721,10 @@
         });
     }
     /**
-     * Import multiple CSS Stylesheet files.
-     * @param {array} urls An array of stylesheet URLs or attribute objects.
-     * @param {object} [options] The options for loading the stylesheets.
-     * @param {Boolean} [options.cache=true] Whether to cache the request.
-     * @param {Document} [options.context=getContext()] The document context.
-     * @return {Promise} A new Promise that resolves when the request is completed, or rejects on failure.
+     * Imports multiple CSS stylesheets.
+     * @param {StyleSource[]} urls The stylesheet URLs or attribute objects.
+     * @param {StyleLoadOptions} [options] The loading options.
+     * @returns {Promise<void[]>} A promise that resolves when every stylesheet loads, or rejects on failure.
      */
     function loadStyles(urls, { cache = true, context = getContext() } = {}) {
         return Promise.all(
@@ -9893,15 +9736,13 @@
         );
     }
 
-    /**
-     * DOM Utility
-     */
+    /** @typedef {Record<string, Array<string|RegExp>>} AllowedTags */
 
     /**
-     * Sanitize a HTML string.
+     * Sanitizes a HTML string.
      * @param {string} html The input HTML string.
-     * @param {object} [allowedTags] An object containing allowed tags and attributes.
-     * @return {string} The sanitized HTML string.
+     * @param {AllowedTags} [allowedTags] The allowed tags and attributes.
+     * @returns {string} The sanitized HTML string.
      */
     function sanitize(html, allowedTags$1 = allowedTags) {
         const template = getContext().createElement('template');
@@ -9916,9 +9757,9 @@
         return template.innerHTML;
     }
     /**
-     * Sanitize a single node.
-     * @param {HTMLElement} node The input node.
-     * @param {object} [allowedTags] An object containing allowed tags and attributes.
+     * Sanitizes a single node.
+     * @param {Element} node The input node.
+     * @param {AllowedTags} [allowedTags] The allowed tags and attributes.
      */
     function sanitizeNode(node, allowedTags$1 = allowedTags) {
         // check node
