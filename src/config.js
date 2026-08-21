@@ -96,7 +96,7 @@ export function setAnimationDefaults(options) {
  */
 export function setContext(context) {
     if (!isDocument(context)) {
-        throw new Error('FrostDOM requires a valid Document.');
+        throw new Error('fQuery requires a valid Document.');
     }
 
     config.context = context;
@@ -109,7 +109,7 @@ export function setContext(context) {
  */
 export function setWindow(window) {
     if (!isWindow(window)) {
-        throw new Error('FrostDOM requires a valid Window.');
+        throw new Error('fQuery requires a valid Window.');
     }
 
     config.window = window;

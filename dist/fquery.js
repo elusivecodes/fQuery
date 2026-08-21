@@ -1462,7 +1462,7 @@
      */
     function setContext(context) {
         if (!isDocument(context)) {
-            throw new Error('FrostDOM requires a valid Document.');
+            throw new Error('fQuery requires a valid Document.');
         }
 
         config.context = context;
@@ -1474,7 +1474,7 @@
      */
     function setWindow(window) {
         if (!isWindow(window)) {
-            throw new Error('FrostDOM requires a valid Window.');
+            throw new Error('fQuery requires a valid Window.');
         }
 
         config.window = window;
@@ -7864,7 +7864,7 @@
 
     /**
      * @typedef {object} ClearQueueOptions
-     * @property {string|null} [queueName=null] The queue name. Null addresses every queue.
+     * @property {string|null} [queueName='default'] The queue name. Null addresses every queue.
      */
 
     /**
@@ -7872,7 +7872,7 @@
      * @param {ElementInput} selector The input node(s), or a query selector string.
      * @param {ClearQueueOptions} [options] The queue clearing options.
      */
-    function clearQueue$1(selector, { queueName = null } = {}) {
+    function clearQueue$1(selector, { queueName = 'default' } = {}) {
         const nodes = parseNodes(selector);
 
         for (const node of nodes) {

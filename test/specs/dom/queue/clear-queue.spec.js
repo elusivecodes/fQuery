@@ -32,6 +32,23 @@ test.describe('#clearQueue', () => {
         expect(await page.locator('#test3').getAttribute('data-test')).toBeNull();
     });
 
+    test('clears only the default queue by default', async ({ page }) => {
+        await page.evaluate(() => {
+            $.queue('.queue', (node) => {
+                node.dataset.test1 = 'Test';
+            });
+            $.queue('.queue', (node) => {
+                node.dataset.test2 = 'Test';
+            }, { queueName: 'test' });
+            $.clearQueue('.queue');
+        });
+
+        expect(await page.locator('#test2').getAttribute('data-test1')).toBeNull();
+        expect(await page.locator('#test4').getAttribute('data-test1')).toBeNull();
+        await expect(page.locator('#test2')).toHaveAttribute('data-test2', 'Test');
+        await expect(page.locator('#test4')).toHaveAttribute('data-test2', 'Test');
+    });
+
     test('clears future queued items', async ({ page }) => {
         await page.evaluate(() => {
             window.queueResolvers = [];

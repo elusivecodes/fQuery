@@ -235,7 +235,7 @@ Custom data is stored separately from DOM attributes and `dataset`.
 - `css(style)`: read one or more computed CSS values from the first node.
 - `getStyle(style)`: read inline style values from the first node.
 - `setStyle(style, value, { important? })`: set one or more inline styles.
-- `removeStyle(style)`: remove one or more inline styles.
+- `removeStyle(style)`: remove an inline style.
 - `hide()` / `show()` / `toggle()`: change element visibility.
 
 ### Size, position, and scrolling
@@ -327,6 +327,8 @@ Common animation options are:
 - `squeezeIn(options?)` / `squeezeOut(options?)`: animate dimensions from or toward a direction.
 - `stop({ finish? })`: stop active animations, finishing them by default.
 
+Built-in effects restore the inline styles they change when they complete or are stopped with `finish: true`. Stopping with `finish: false` leaves the current animated styles in place.
+
 The static forms return an `AnimationSet`. QuerySet forms queue the work and return the current set.
 
 `new $.Animation(node, callback, options?)` creates one promise-like animation. It supports `then`, `catch`, `finally`, `clone(node)`, `stop({ finish? })`, and `update(time?)`. `new $.AnimationSet(animations)` combines animations and supports `then`, `catch`, `finally`, and `stop({ finish? })`.
@@ -343,7 +345,7 @@ $('.notice')
 ```
 
 - `$.queue(selector, callback, { queueName? })` and `query.queue(callback, { queueName? })` queue callbacks.
-- `$.clearQueue(selector, { queueName? })` and `query.clearQueue({ queueName? })` clear one or all queues.
+- `$.clearQueue(selector, { queueName? })` and `query.clearQueue({ queueName? })` clear the default or named queue. Pass `{ queueName: null }` to clear all queues.
 - `query.delay(duration, { queueName? })` queues a delay.
 
 ## AJAX
@@ -407,7 +409,7 @@ Cookie helpers are `$.getCookie(name)`, `$.setCookie(name, value, { expires?, pa
 - `$.parseDocument(input, { contentType? })`: parse text into a `Document`.
 - `$.sanitize(html, allowedTags?)`: remove disallowed elements and attributes from HTML.
 
-The sanitizer's `allowedTags` argument maps lowercase tag names to arrays of allowed attribute names or regular expressions. The `'*'` entry applies attributes to every allowed tag.
+The sanitizer's `allowedTags` argument maps lowercase tag names to arrays of allowed attribute names or regular expressions. String rules match exact attribute names, while the `'*'` entry applies attributes to every allowed tag. URI attributes using the `javascript:` protocol are removed; other protocols are not filtered.
 
 ### Selection
 

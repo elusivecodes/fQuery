@@ -17,7 +17,7 @@ import { queues } from './../vars.js';
 
 /**
  * @typedef {object} ClearQueueOptions
- * @property {string|null} [queueName=null] The queue name. Null addresses every queue.
+ * @property {string|null} [queueName='default'] The queue name. Null addresses every queue.
  */
 
 /**
@@ -25,7 +25,7 @@ import { queues } from './../vars.js';
  * @param {ElementInput} selector The input node(s), or a query selector string.
  * @param {ClearQueueOptions} [options] The queue clearing options.
  */
-export function clearQueue(selector, { queueName = null } = {}) {
+export function clearQueue(selector, { queueName = 'default' } = {}) {
     const nodes = parseNodes(selector);
 
     for (const node of nodes) {
