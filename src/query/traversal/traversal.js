@@ -1,5 +1,5 @@
 import { child as _child, children as _children, closest as _closest, commonAncestor as _commonAncestor, contents as _contents, fragment as _fragment, next as _next, nextAll as _nextAll, offsetParent as _offsetParent, parent as _parent, parents as _parents, prev as _prev, prevAll as _prevAll, shadow as _shadow, siblings as _siblings } from './../../traversal/traversal.js';
-import QuerySet from './../query-set.js';
+import QuerySet from './../query-set-core.js';
 
 /** @typedef {import('../../filters.js').NodeFilterInput} NodeFilterInput */
 

@@ -2,7 +2,7 @@ import { isFunction } from '@fr0st/core';
 import { getContext } from './../config.js';
 import { ready } from './../events/events.js';
 import { parseNode, parseNodes } from './../filters.js';
-import QuerySet from './proto.js';
+import QuerySet from './query-set.js';
 
 /**
  * @typedef {import('../helpers.js').QueryInput} QueryInput

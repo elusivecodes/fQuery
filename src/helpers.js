@@ -1,6 +1,6 @@
 import { escapeRegExp, isArray, isNumeric, isObject, isString, isUndefined, merge } from '@fr0st/core';
 import { getWindow } from './config.js';
-import QuerySet from './query/query-set.js';
+import QuerySet from './query/query-set-core.js';
 
 /**
  * @typedef {string|Element|Array<string|Element>|NodeList|HTMLCollection|QuerySet} ElementInput

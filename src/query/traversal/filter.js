@@ -1,5 +1,5 @@
 import { connected as _connected, equal as _equal, filter as _filter, filterOne as _filterOne, fixed as _fixed, hidden as _hidden, not as _not, notOne as _notOne, same as _same, visible as _visible, withAnimation as _withAnimation, withAttribute as _withAttribute, withChildren as _withChildren, withClass as _withClass, withCSSAnimation as _withCSSAnimation, withCSSTransition as _withCSSTransition, withData as _withData, withDescendent as _withDescendent, withProperty as _withProperty } from './../../traversal/filter.js';
-import QuerySet from './../query-set.js';
+import QuerySet from './../query-set-core.js';
 
 /**
  * @typedef {import('../../filters.js').NodeFilterInput} NodeFilterInput

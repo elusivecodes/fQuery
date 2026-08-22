@@ -1,81 +1,205 @@
-/**
- * Represents an ordered, chainable collection of DOM nodes.
- */
-export default class QuerySet {
-    #nodes;
+import { animate, stop } from './animation/animate.js';
+import { dropIn, dropOut, fadeIn, fadeOut, rotateIn, rotateOut, slideIn, slideOut, squeezeIn, squeezeOut } from './animation/animations.js';
+import { getAttribute, getDataset, getHTML, getProperty, getText, getValue, removeAttribute, removeDataset, removeProperty, setAttribute, setDataset, setHTML, setProperty, setText, setValue } from './attributes/attributes.js';
+import { cloneData, getData, removeData, setData } from './attributes/data.js';
+import { center, constrain, distTo, distToNode, nearestTo, nearestToNode, percentX, percentY, position, rect } from './attributes/position.js';
+import { getScrollX, getScrollY, setScroll, setScrollX, setScrollY } from './attributes/scroll.js';
+import { height, width } from './attributes/size.js';
+import { addClass, css, getStyle, hide, removeClass, removeStyle, setStyle, show, toggle, toggleClass } from './attributes/styles.js';
+import { addEvent, addEventDelegate, addEventDelegateOnce, addEventOnce, cloneEvents, removeEvent, removeEventDelegate, triggerEvent, triggerOne } from './events/event-handlers.js';
+import { blur, click, focus } from './events/events.js';
+import { attachShadow } from './manipulation/create.js';
+import { clone, detach, empty, remove, replaceAll, replaceWith } from './manipulation/manipulation.js';
+import { after, append, appendTo, before, insertAfter, insertBefore, prepend, prependTo } from './manipulation/move.js';
+import { unwrap, wrap, wrapAll, wrapInner } from './manipulation/wrap.js';
+import QuerySet from './query-set-core.js';
+import { clearQueue, delay, queue } from './queue/queue.js';
+import { connected, equal, filter, filterOne, fixed, hidden, not, notOne, same, visible, withAnimation, withAttribute, withChildren, withClass, withCSSAnimation, withCSSTransition, withData, withDescendent, withProperty } from './traversal/filter.js';
+import { find, findByClass, findById, findByTag, findOne, findOneByClass, findOneById, findOneByTag } from './traversal/find.js';
+import { child, children, closest, commonAncestor, contents, fragment, next, nextAll, offsetParent, parent, parents, prev, prevAll, shadow, siblings } from './traversal/traversal.js';
+import { afterSelection, beforeSelection, select, selectAll, wrapSelection } from './utility/selection.js';
+import { hasAnimation, hasAttribute, hasChildren, hasClass, hasCSSAnimation, hasCSSTransition, hasData, hasDataset, hasDescendent, hasFragment, hasProperty, hasShadow, is, isConnected, isEqual, isFixed, isHidden, isSame, isVisible } from './utility/tests.js';
+import { add, eq, first, index, indexOf, last, normalize, serialize, serializeArray, sort, tagName } from './utility/utility.js';
 
-    /**
-     * Creates a QuerySet.
-     * @param {Array<Node|Window>} [nodes=[]] The input nodes.
-     */
-    constructor(nodes = []) {
-        this.#nodes = nodes;
-    }
+const methods = {
+    add,
+    addClass,
+    addEvent,
+    addEventDelegate,
+    addEventDelegateOnce,
+    addEventOnce,
+    after,
+    afterSelection,
+    animate,
+    append,
+    appendTo,
+    attachShadow,
+    before,
+    beforeSelection,
+    blur,
+    center,
+    child,
+    children,
+    clearQueue,
+    click,
+    clone,
+    cloneData,
+    cloneEvents,
+    closest,
+    commonAncestor,
+    connected,
+    constrain,
+    contents,
+    css,
+    delay,
+    detach,
+    distTo,
+    distToNode,
+    dropIn,
+    dropOut,
+    empty,
+    eq,
+    equal,
+    fadeIn,
+    fadeOut,
+    filter,
+    filterOne,
+    find,
+    findByClass,
+    findById,
+    findByTag,
+    findOne,
+    findOneByClass,
+    findOneById,
+    findOneByTag,
+    first,
+    fixed,
+    focus,
+    fragment,
+    getAttribute,
+    getData,
+    getDataset,
+    getHTML,
+    getProperty,
+    getScrollX,
+    getScrollY,
+    getStyle,
+    getText,
+    getValue,
+    hasAnimation,
+    hasAttribute,
+    hasChildren,
+    hasClass,
+    hasCSSAnimation,
+    hasCSSTransition,
+    hasData,
+    hasDataset,
+    hasDescendent,
+    hasFragment,
+    hasProperty,
+    hasShadow,
+    height,
+    hidden,
+    hide,
+    index,
+    indexOf,
+    insertAfter,
+    insertBefore,
+    is,
+    isConnected,
+    isEqual,
+    isFixed,
+    isHidden,
+    isSame,
+    isVisible,
+    last,
+    nearestTo,
+    nearestToNode,
+    next,
+    nextAll,
+    normalize,
+    not,
+    notOne,
+    offsetParent,
+    parent,
+    parents,
+    percentX,
+    percentY,
+    position,
+    prepend,
+    prependTo,
+    prev,
+    prevAll,
+    queue,
+    rect,
+    remove,
+    removeAttribute,
+    removeClass,
+    removeData,
+    removeDataset,
+    removeEvent,
+    removeEventDelegate,
+    removeProperty,
+    removeStyle,
+    replaceAll,
+    replaceWith,
+    rotateIn,
+    rotateOut,
+    same,
+    select,
+    selectAll,
+    serialize,
+    serializeArray,
+    setAttribute,
+    setData,
+    setDataset,
+    setHTML,
+    setProperty,
+    setScroll,
+    setScrollX,
+    setScrollY,
+    setStyle,
+    setText,
+    setValue,
+    shadow,
+    show,
+    siblings,
+    slideIn,
+    slideOut,
+    sort,
+    squeezeIn,
+    squeezeOut,
+    stop,
+    tagName,
+    toggle,
+    toggleClass,
+    triggerEvent,
+    triggerOne,
+    unwrap,
+    visible,
+    width,
+    withAnimation,
+    withAttribute,
+    withChildren,
+    withClass,
+    withCSSAnimation,
+    withCSSTransition,
+    withData,
+    withDescendent,
+    withProperty,
+    wrap,
+    wrapAll,
+    wrapInner,
+    wrapSelection,
+};
 
-    /**
-     * Gets the number of nodes.
-     * @returns {number} The number of nodes.
-     */
-    get length() {
-        return this.#nodes.length;
-    }
-
-    /**
-     * Executes a function for each node in the set.
-     * @param {((node: Node|Window, index: number) => void)} callback The callback to execute.
-     * @returns {this} The current QuerySet.
-     */
-    each(callback) {
-        this.#nodes.forEach(
-            (v, i) => callback(v, i),
-        );
-
-        return this;
-    }
-
-    /**
-     * Retrieves the DOM node(s) contained in the QuerySet.
-     * @param {number} [index=null] The index of the node.
-     * @returns {Array<Node|Window>|Node|Window|undefined} The nodes, or the node at the specified index.
-     */
-    get(index = null) {
-        if (index === null) {
-            return this.#nodes;
-        }
-
-        return index < 0 ?
-            this.#nodes[index + this.#nodes.length] :
-            this.#nodes[index];
-    }
-
-    /**
-     * Executes a function for each node in the set.
-     * @param {((node: Node|Window, index: number) => (Node|Window))} callback The callback to execute.
-     * @returns {QuerySet} A new QuerySet object.
-     */
-    map(callback) {
-        const nodes = this.#nodes.map(callback);
-
-        return new QuerySet(nodes);
-    }
-
-    /**
-     * Reduces the set of matched nodes to a subset specified by a range of indices.
-     * @param {number} [begin] The index to slice from.
-     * @param {number} [end]  The index to slice to.
-     * @returns {QuerySet} A new QuerySet object.
-     */
-    slice(begin, end) {
-        const nodes = this.#nodes.slice(begin, end);
-
-        return new QuerySet(nodes);
-    }
-
-    /**
-     * Returns an iterable from the nodes.
-     * @returns {IterableIterator<Node|Window>} The node iterator.
-     */
-    [Symbol.iterator]() {
-        return this.#nodes.values();
-    }
+for (const [name, method] of Object.entries(methods)) {
+    Object.defineProperty(QuerySet.prototype, name, {
+        configurable: true,
+        enumerable: false,
+        value: method,
+        writable: true,
+    });
 }
+
+export default QuerySet;

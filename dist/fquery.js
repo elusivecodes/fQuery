@@ -9522,177 +9522,186 @@
         return tagName$1(this);
     }
 
-    const proto = QuerySet.prototype;
+    const methods = {
+        add,
+        addClass,
+        addEvent,
+        addEventDelegate,
+        addEventDelegateOnce,
+        addEventOnce,
+        after,
+        afterSelection,
+        animate,
+        append,
+        appendTo,
+        attachShadow,
+        before,
+        beforeSelection,
+        blur,
+        center,
+        child,
+        children,
+        clearQueue,
+        click,
+        clone,
+        cloneData,
+        cloneEvents,
+        closest,
+        commonAncestor,
+        connected,
+        constrain,
+        contents,
+        css,
+        delay,
+        detach,
+        distTo,
+        distToNode,
+        dropIn,
+        dropOut,
+        empty,
+        eq,
+        equal,
+        fadeIn,
+        fadeOut,
+        filter,
+        filterOne,
+        find,
+        findByClass,
+        findById,
+        findByTag,
+        findOne,
+        findOneByClass,
+        findOneById,
+        findOneByTag,
+        first,
+        fixed,
+        focus,
+        fragment,
+        getAttribute,
+        getData,
+        getDataset,
+        getHTML,
+        getProperty,
+        getScrollX,
+        getScrollY,
+        getStyle,
+        getText,
+        getValue,
+        hasAnimation,
+        hasAttribute,
+        hasChildren,
+        hasClass,
+        hasCSSAnimation,
+        hasCSSTransition,
+        hasData,
+        hasDataset,
+        hasDescendent,
+        hasFragment,
+        hasProperty,
+        hasShadow,
+        height,
+        hidden,
+        hide,
+        index: index$1,
+        indexOf,
+        insertAfter,
+        insertBefore,
+        is,
+        isConnected,
+        isEqual,
+        isFixed,
+        isHidden,
+        isSame,
+        isVisible,
+        last,
+        nearestTo,
+        nearestToNode,
+        next,
+        nextAll,
+        normalize,
+        not,
+        notOne,
+        offsetParent,
+        parent,
+        parents,
+        percentX,
+        percentY,
+        position,
+        prepend,
+        prependTo,
+        prev,
+        prevAll,
+        queue,
+        rect,
+        remove,
+        removeAttribute,
+        removeClass,
+        removeData,
+        removeDataset,
+        removeEvent,
+        removeEventDelegate,
+        removeProperty,
+        removeStyle,
+        replaceAll,
+        replaceWith,
+        rotateIn,
+        rotateOut,
+        same,
+        select,
+        selectAll,
+        serialize,
+        serializeArray,
+        setAttribute,
+        setData,
+        setDataset,
+        setHTML,
+        setProperty,
+        setScroll,
+        setScrollX,
+        setScrollY,
+        setStyle,
+        setText,
+        setValue,
+        shadow,
+        show,
+        siblings,
+        slideIn,
+        slideOut,
+        sort,
+        squeezeIn,
+        squeezeOut,
+        stop,
+        tagName,
+        toggle,
+        toggleClass,
+        triggerEvent,
+        triggerOne,
+        unwrap,
+        visible,
+        width,
+        withAnimation,
+        withAttribute,
+        withChildren,
+        withClass,
+        withCSSAnimation,
+        withCSSTransition,
+        withData,
+        withDescendent,
+        withProperty,
+        wrap,
+        wrapAll,
+        wrapInner,
+        wrapSelection,
+    };
 
-    proto.add = add;
-    proto.addClass = addClass;
-    proto.addEvent = addEvent;
-    proto.addEventDelegate = addEventDelegate;
-    proto.addEventDelegateOnce = addEventDelegateOnce;
-    proto.addEventOnce = addEventOnce;
-    proto.after = after;
-    proto.afterSelection = afterSelection;
-    proto.animate = animate;
-    proto.append = append;
-    proto.appendTo = appendTo;
-    proto.attachShadow = attachShadow;
-    proto.before = before;
-    proto.beforeSelection = beforeSelection;
-    proto.blur = blur;
-    proto.center = center;
-    proto.child = child;
-    proto.children = children;
-    proto.clearQueue = clearQueue;
-    proto.click = click;
-    proto.clone = clone;
-    proto.cloneData = cloneData;
-    proto.cloneEvents = cloneEvents;
-    proto.closest = closest;
-    proto.commonAncestor = commonAncestor;
-    proto.connected = connected;
-    proto.constrain = constrain;
-    proto.contents = contents;
-    proto.css = css;
-    proto.delay = delay;
-    proto.detach = detach;
-    proto.distTo = distTo;
-    proto.distToNode = distToNode;
-    proto.dropIn = dropIn;
-    proto.dropOut = dropOut;
-    proto.empty = empty;
-    proto.eq = eq;
-    proto.equal = equal;
-    proto.fadeIn = fadeIn;
-    proto.fadeOut = fadeOut;
-    proto.filter = filter;
-    proto.filterOne = filterOne;
-    proto.find = find;
-    proto.findByClass = findByClass;
-    proto.findById = findById;
-    proto.findByTag = findByTag;
-    proto.findOne = findOne;
-    proto.findOneByClass = findOneByClass;
-    proto.findOneById = findOneById;
-    proto.findOneByTag = findOneByTag;
-    proto.first = first;
-    proto.fixed = fixed;
-    proto.focus = focus;
-    proto.fragment = fragment;
-    proto.getAttribute = getAttribute;
-    proto.getData = getData;
-    proto.getDataset = getDataset;
-    proto.getHTML = getHTML;
-    proto.getProperty = getProperty;
-    proto.getScrollX = getScrollX;
-    proto.getScrollY = getScrollY;
-    proto.getStyle = getStyle;
-    proto.getText = getText;
-    proto.getValue = getValue;
-    proto.hasAnimation = hasAnimation;
-    proto.hasAttribute = hasAttribute;
-    proto.hasChildren = hasChildren;
-    proto.hasClass = hasClass;
-    proto.hasCSSAnimation = hasCSSAnimation;
-    proto.hasCSSTransition = hasCSSTransition;
-    proto.hasData = hasData;
-    proto.hasDataset = hasDataset;
-    proto.hasDescendent = hasDescendent;
-    proto.hasFragment = hasFragment;
-    proto.hasProperty = hasProperty;
-    proto.hasShadow = hasShadow;
-    proto.height = height;
-    proto.hidden = hidden;
-    proto.hide = hide;
-    proto.index = index$1;
-    proto.indexOf = indexOf;
-    proto.insertAfter = insertAfter;
-    proto.insertBefore = insertBefore;
-    proto.is = is;
-    proto.isConnected = isConnected;
-    proto.isEqual = isEqual;
-    proto.isFixed = isFixed;
-    proto.isHidden = isHidden;
-    proto.isSame = isSame;
-    proto.isVisible = isVisible;
-    proto.last = last;
-    proto.nearestTo = nearestTo;
-    proto.nearestToNode = nearestToNode;
-    proto.next = next;
-    proto.nextAll = nextAll;
-    proto.normalize = normalize;
-    proto.not = not;
-    proto.notOne = notOne;
-    proto.offsetParent = offsetParent;
-    proto.parent = parent;
-    proto.parents = parents;
-    proto.percentX = percentX;
-    proto.percentY = percentY;
-    proto.position = position;
-    proto.prepend = prepend;
-    proto.prependTo = prependTo;
-    proto.prev = prev;
-    proto.prevAll = prevAll;
-    proto.queue = queue;
-    proto.rect = rect;
-    proto.remove = remove;
-    proto.removeAttribute = removeAttribute;
-    proto.removeClass = removeClass;
-    proto.removeData = removeData;
-    proto.removeDataset = removeDataset;
-    proto.removeEvent = removeEvent;
-    proto.removeEventDelegate = removeEventDelegate;
-    proto.removeProperty = removeProperty;
-    proto.removeStyle = removeStyle;
-    proto.replaceAll = replaceAll;
-    proto.replaceWith = replaceWith;
-    proto.rotateIn = rotateIn;
-    proto.rotateOut = rotateOut;
-    proto.same = same;
-    proto.select = select;
-    proto.selectAll = selectAll;
-    proto.serialize = serialize;
-    proto.serializeArray = serializeArray;
-    proto.setAttribute = setAttribute;
-    proto.setData = setData;
-    proto.setDataset = setDataset;
-    proto.setHTML = setHTML;
-    proto.setProperty = setProperty;
-    proto.setScroll = setScroll;
-    proto.setScrollX = setScrollX;
-    proto.setScrollY = setScrollY;
-    proto.setStyle = setStyle;
-    proto.setText = setText;
-    proto.setValue = setValue;
-    proto.shadow = shadow;
-    proto.show = show;
-    proto.siblings = siblings;
-    proto.slideIn = slideIn;
-    proto.slideOut = slideOut;
-    proto.sort = sort;
-    proto.squeezeIn = squeezeIn;
-    proto.squeezeOut = squeezeOut;
-    proto.stop = stop;
-    proto.tagName = tagName;
-    proto.toggle = toggle;
-    proto.toggleClass = toggleClass;
-    proto.triggerEvent = triggerEvent;
-    proto.triggerOne = triggerOne;
-    proto.unwrap = unwrap;
-    proto.visible = visible;
-    proto.width = width;
-    proto.withAnimation = withAnimation;
-    proto.withAttribute = withAttribute;
-    proto.withChildren = withChildren;
-    proto.withClass = withClass;
-    proto.withCSSAnimation = withCSSAnimation;
-    proto.withCSSTransition = withCSSTransition;
-    proto.withData = withData;
-    proto.withDescendent = withDescendent;
-    proto.withProperty = withProperty;
-    proto.wrap = wrap;
-    proto.wrapAll = wrapAll;
-    proto.wrapInner = wrapInner;
-    proto.wrapSelection = wrapSelection;
+    for (const [name, method] of Object.entries(methods)) {
+        Object.defineProperty(QuerySet.prototype, name, {
+            configurable: true,
+            enumerable: false,
+            value: method,
+            writable: true,
+        });
+    }
 
     /**
      * @typedef {import('../helpers.js').QueryInput} QueryInput

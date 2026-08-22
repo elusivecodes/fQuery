@@ -2,7 +2,7 @@ import { merge, unique } from '@fr0st/core';
 import { getContext } from './../../config.js';
 import { parseNodes } from './../../filters.js';
 import { index as _index, indexOf as _indexOf, normalize as _normalize, serialize as _serialize, serializeArray as _serializeArray, sort as _sort, tagName as _tagName } from './../../utility/utility.js';
-import QuerySet from './../query-set.js';
+import QuerySet from './../query-set-core.js';
 
 /**
  * @typedef {import('../../filters.js').NodeFilterInput} NodeFilterInput
