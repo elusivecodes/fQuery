@@ -62,6 +62,14 @@ import { appendQueryString, createSearchParams, getSearchParams, parseFormData, 
  * Represents a cancellable XMLHttpRequest with Promise-compatible methods.
  */
 export default class AjaxRequest {
+    #isCancelled;
+    #isRejected;
+    #isResolved;
+    #options;
+    #promise;
+    #reject;
+    #resolve;
+
     /**
      * Creates an AJAX request.
      * @param {AjaxOptions} [options] The request options.
@@ -69,100 +77,100 @@ export default class AjaxRequest {
     constructor(options) {
         const { location } = getWindow();
 
-        this._options = extend(
+        this.#options = extend(
             {},
             getAjaxDefaults(),
             options,
         );
-        this._options.method = this._options.method.toUpperCase();
+        this.#options.method = this.#options.method.toUpperCase();
 
-        const isFormData = Object.prototype.toString.call(this._options.data) === '[object FormData]';
+        const isFormData = Object.prototype.toString.call(this.#options.data) === '[object FormData]';
 
-        if (!this._options.url) {
-            this._options.url = location.href;
+        if (!this.#options.url) {
+            this.#options.url = location.href;
         }
 
-        if (!this._options.cache) {
-            this._options.url = appendQueryString(this._options.url, '_', Date.now());
+        if (!this.#options.cache) {
+            this.#options.url = appendQueryString(this.#options.url, '_', Date.now());
         }
 
-        if (!isFormData && !('Content-Type' in this._options.headers) && this._options.contentType) {
-            this._options.headers['Content-Type'] = this._options.contentType;
+        if (!isFormData && !('Content-Type' in this.#options.headers) && this.#options.contentType) {
+            this.#options.headers['Content-Type'] = this.#options.contentType;
         }
 
-        if (this._options.isLocal === null) {
-            this._options.isLocal = /^(?:about|app|app-storage|.+-extension|file|res|widget):$/.test(location.protocol);
+        if (this.#options.isLocal === null) {
+            this.#options.isLocal = /^(?:about|app|app-storage|.+-extension|file|res|widget):$/.test(location.protocol);
         }
 
-        if (!this._options.isLocal && !('X-Requested-With' in this._options.headers)) {
-            this._options.headers['X-Requested-With'] = 'XMLHttpRequest';
+        if (!this.#options.isLocal && !('X-Requested-With' in this.#options.headers)) {
+            this.#options.headers['X-Requested-With'] = 'XMLHttpRequest';
         }
 
-        this._promise = new Promise((resolve, reject) => {
-            this._resolve = (value) => {
-                this._isResolved = true;
+        this.#promise = new Promise((resolve, reject) => {
+            this.#resolve = (value) => {
+                this.#isResolved = true;
                 resolve(value);
             };
 
-            this._reject = (error) => {
-                this._isRejected = true;
+            this.#reject = (error) => {
+                this.#isRejected = true;
                 reject(error);
             };
         });
 
-        this.xhr = this._options.xhr();
+        this.xhr = this.#options.xhr();
 
-        if (this._options.data !== null && this._options.data !== undefined) {
-            if (!isFormData && this._options.processData && isObject(this._options.data)) {
-                if (this._options.contentType === 'application/json') {
-                    this._options.data = JSON.stringify(this._options.data);
-                } else if (this._options.contentType === 'application/x-www-form-urlencoded') {
-                    this._options.data = parseParams(this._options.data);
+        if (this.#options.data !== null && this.#options.data !== undefined) {
+            if (!isFormData && this.#options.processData && isObject(this.#options.data)) {
+                if (this.#options.contentType === 'application/json') {
+                    this.#options.data = JSON.stringify(this.#options.data);
+                } else if (this.#options.contentType === 'application/x-www-form-urlencoded') {
+                    this.#options.data = parseParams(this.#options.data);
                 } else {
-                    this._options.data = parseFormData(this._options.data);
+                    this.#options.data = parseFormData(this.#options.data);
                 }
             }
 
-            if (this._options.method === 'GET') {
-                const dataParams = createSearchParams(this._options.data);
+            if (this.#options.method === 'GET') {
+                const dataParams = createSearchParams(this.#options.data);
 
-                const searchParams = getSearchParams(this._options.url);
+                const searchParams = getSearchParams(this.#options.url);
                 for (const [key, value] of dataParams.entries()) {
                     searchParams.append(key, value);
                 }
 
-                this._options.url = setSearchParams(this._options.url, searchParams);
-                this._options.data = null;
+                this.#options.url = setSearchParams(this.#options.url, searchParams);
+                this.#options.data = null;
             }
         }
 
-        this.xhr.open(this._options.method, this._options.url, true, this._options.username, this._options.password);
+        this.xhr.open(this.#options.method, this.#options.url, true, this.#options.username, this.#options.password);
 
-        for (const [key, value] of Object.entries(this._options.headers)) {
+        for (const [key, value] of Object.entries(this.#options.headers)) {
             this.xhr.setRequestHeader(key, value);
         }
 
-        if (this._options.responseType) {
-            this.xhr.responseType = this._options.responseType;
+        if (this.#options.responseType) {
+            this.xhr.responseType = this.#options.responseType;
         }
 
-        if (this._options.mimeType) {
-            this.xhr.overrideMimeType(this._options.mimeType);
+        if (this.#options.mimeType) {
+            this.xhr.overrideMimeType(this.#options.mimeType);
         }
 
-        if (this._options.timeout) {
-            this.xhr.timeout = this._options.timeout;
+        if (this.#options.timeout) {
+            this.xhr.timeout = this.#options.timeout;
         }
 
         this.xhr.onload = (e) => {
             if (this.xhr.status >= 400) {
-                this._reject({
+                this.#reject({
                     status: this.xhr.status,
                     xhr: this.xhr,
                     event: e,
                 });
             } else {
-                this._resolve({
+                this.#resolve({
                     response: this.xhr.response,
                     xhr: this.xhr,
                     event: e,
@@ -170,9 +178,9 @@ export default class AjaxRequest {
             }
         };
 
-        if (!this._options.isLocal) {
+        if (!this.#options.isLocal) {
             this.xhr.onerror = (e) =>
-                this._reject({
+                this.#reject({
                     status: this.xhr.status,
                     xhr: this.xhr,
                     event: e,
@@ -180,30 +188,30 @@ export default class AjaxRequest {
         }
 
         this.xhr.ontimeout = (e) =>
-            this._reject({
+            this.#reject({
                 status: this.xhr.status,
                 xhr: this.xhr,
                 event: e,
             });
 
-        if (this._options.onProgress) {
+        if (this.#options.onProgress) {
             this.xhr.onprogress = (e) =>
-                this._options.onProgress(e.loaded / e.total, this.xhr, e);
+                this.#options.onProgress(e.loaded / e.total, this.xhr, e);
         }
 
-        if (this._options.onUploadProgress) {
+        if (this.#options.onUploadProgress) {
             this.xhr.upload.onprogress = (e) =>
-                this._options.onUploadProgress(e.loaded / e.total, this.xhr, e);
+                this.#options.onUploadProgress(e.loaded / e.total, this.xhr, e);
         }
 
-        if (this._options.beforeSend) {
-            this._options.beforeSend(this.xhr);
+        if (this.#options.beforeSend) {
+            this.#options.beforeSend(this.xhr);
         }
 
-        this.xhr.send(this._options.data);
+        this.xhr.send(this.#options.data);
 
-        if (this._options.afterSend) {
-            this._options.afterSend(this.xhr);
+        if (this.#options.afterSend) {
+            this.#options.afterSend(this.xhr);
         }
     }
 
@@ -212,16 +220,16 @@ export default class AjaxRequest {
      * @param {string} [reason='Request was cancelled'] The cancellation reason.
      */
     cancel(reason = 'Request was cancelled') {
-        if (this._isResolved || this._isRejected || this._isCancelled) {
+        if (this.#isResolved || this.#isRejected || this.#isCancelled) {
             return;
         }
 
         this.xhr.abort();
 
-        this._isCancelled = true;
+        this.#isCancelled = true;
 
-        if (this._options.rejectOnCancel) {
-            this._reject({
+        if (this.#options.rejectOnCancel) {
+            this.#reject({
                 status: this.xhr.status,
                 xhr: this.xhr,
                 reason,
@@ -235,7 +243,7 @@ export default class AjaxRequest {
      * @returns {Promise<*>} The resulting promise.
      */
     catch(onRejected) {
-        return this._promise.catch(onRejected);
+        return this.#promise.catch(onRejected);
     }
 
     /**
@@ -244,7 +252,7 @@ export default class AjaxRequest {
      * @returns {Promise<AjaxResult>} The resulting promise.
      */
     finally(onFinally) {
-        return this._promise.finally(onFinally);
+        return this.#promise.finally(onFinally);
     }
 
     /**
@@ -254,7 +262,7 @@ export default class AjaxRequest {
      * @returns {Promise<*>} The resulting promise.
      */
     then(onFulfilled, onRejected) {
-        return this._promise.then(onFulfilled, onRejected);
+        return this.#promise.then(onFulfilled, onRejected);
     }
 }
 

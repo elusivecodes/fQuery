@@ -7,13 +7,16 @@
  * Represents a Promise-compatible collection of animations.
  */
 export default class AnimationSet {
+    #animations;
+    #promise;
+
     /**
      * Creates an animation set.
      * @param {Animation[]} animations The animations.
      */
     constructor(animations) {
-        this._animations = animations;
-        this._promise = Promise.all(animations);
+        this.#animations = animations;
+        this.#promise = Promise.all(animations);
     }
 
     /**
@@ -22,7 +25,7 @@ export default class AnimationSet {
      * @returns {Promise<*>} The resulting promise.
      */
     catch(onRejected) {
-        return this._promise.catch(onRejected);
+        return this.#promise.catch(onRejected);
     }
 
     /**
@@ -31,7 +34,7 @@ export default class AnimationSet {
      * @returns {Promise<Element[]>} The resulting promise.
      */
     finally(onFinally) {
-        return this._promise.finally(onFinally);
+        return this.#promise.finally(onFinally);
     }
 
     /**
@@ -39,7 +42,7 @@ export default class AnimationSet {
      * @param {StopAnimationOptions} [options] The stopping options.
      */
     stop({ finish = true } = {}) {
-        for (const animation of this._animations) {
+        for (const animation of this.#animations) {
             animation.stop({ finish });
         }
     }
@@ -51,7 +54,7 @@ export default class AnimationSet {
      * @returns {Promise<*>} The resulting promise.
      */
     then(onFulfilled, onRejected) {
-        return this._promise.then(onFulfilled, onRejected);
+        return this.#promise.then(onFulfilled, onRejected);
     }
 }
 

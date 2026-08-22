@@ -47,6 +47,15 @@ import { getTime } from './helpers.js';
  * Represents a single Promise-compatible element animation.
  */
 export default class Animation {
+    #callback;
+    #isFinished;
+    #isStopped;
+    #node;
+    #options;
+    #promise;
+    #reject;
+    #resolve;
+
     /**
      * Creates an animation.
      * @param {Element} node The input node.
@@ -54,25 +63,25 @@ export default class Animation {
      * @param {AnimationOptions} [options] The animation options.
      */
     constructor(node, callback, options) {
-        this._node = node;
-        this._callback = callback;
+        this.#node = node;
+        this.#callback = callback;
 
-        this._options = {
+        this.#options = {
             ...getAnimationDefaults(),
             ...options,
         };
 
-        if (!('start' in this._options)) {
-            this._options.start = getTime();
+        if (!('start' in this.#options)) {
+            this.#options.start = getTime();
         }
 
-        if (this._options.debug) {
-            this._node.dataset.animationStart = this._options.start;
+        if (this.#options.debug) {
+            this.#node.dataset.animationStart = this.#options.start;
         }
 
-        this._promise = new Promise((resolve, reject) => {
-            this._resolve = resolve;
-            this._reject = reject;
+        this.#promise = new Promise((resolve, reject) => {
+            this.#resolve = resolve;
+            this.#reject = reject;
         });
 
         if (!animations.has(node)) {
@@ -88,7 +97,7 @@ export default class Animation {
      * @returns {Promise<*>} The resulting promise.
      */
     catch(onRejected) {
-        return this._promise.catch(onRejected);
+        return this.#promise.catch(onRejected);
     }
 
     /**
@@ -97,7 +106,7 @@ export default class Animation {
      * @returns {Animation} The cloned Animation.
      */
     clone(node) {
-        return new Animation(node, this._callback, this._options);
+        return new Animation(node, this.#callback, this.#options);
     }
 
     /**
@@ -106,7 +115,7 @@ export default class Animation {
      * @returns {Promise<Element>} The resulting promise.
      */
     finally(onFinally) {
-        return this._promise.finally(onFinally);
+        return this.#promise.finally(onFinally);
     }
 
     /**
@@ -114,27 +123,27 @@ export default class Animation {
      * @param {StopAnimationOptions} [options] The stopping options.
      */
     stop({ finish = true } = {}) {
-        if (this._isStopped || this._isFinished) {
+        if (this.#isStopped || this.#isFinished) {
             return;
         }
 
-        const otherAnimations = animations.get(this._node)
+        const otherAnimations = animations.get(this.#node)
             .filter((animation) => animation !== this);
 
         if (!otherAnimations.length) {
-            animations.delete(this._node);
+            animations.delete(this.#node);
         } else {
-            animations.set(this._node, otherAnimations);
+            animations.set(this.#node, otherAnimations);
         }
 
         if (finish) {
             this.update();
         }
 
-        this._isStopped = true;
+        this.#isStopped = true;
 
         if (!finish) {
-            this._reject(this._node);
+            this.#reject(this.#node);
         }
     }
 
@@ -145,7 +154,7 @@ export default class Animation {
      * @returns {Promise<*>} The resulting promise.
      */
     then(onFulfilled, onRejected) {
-        return this._promise.then(onFulfilled, onRejected);
+        return this.#promise.then(onFulfilled, onRejected);
     }
 
     /**
@@ -154,7 +163,7 @@ export default class Animation {
      * @returns {boolean} Whether the animation is finished.
      */
     update(time = null) {
-        if (this._isStopped) {
+        if (this.#isStopped) {
             return true;
         }
 
@@ -163,19 +172,19 @@ export default class Animation {
         if (time === null) {
             progress = 1;
         } else {
-            progress = (time - this._options.start) / this._options.duration;
+            progress = (time - this.#options.start) / this.#options.duration;
 
-            if (this._options.infinite) {
+            if (this.#options.infinite) {
                 progress %= 1;
             } else {
                 progress = clamp(progress);
             }
 
-            if (this._options.type === 'ease-in') {
+            if (this.#options.type === 'ease-in') {
                 progress = progress ** 2;
-            } else if (this._options.type === 'ease-out') {
+            } else if (this.#options.type === 'ease-out') {
                 progress = Math.sqrt(progress);
-            } else if (this._options.type === 'ease-in-out') {
+            } else if (this.#options.type === 'ease-in-out') {
                 if (progress <= 0.5) {
                     progress = progress ** 2 * 2;
                 } else {
@@ -184,22 +193,22 @@ export default class Animation {
             }
         }
 
-        if (this._options.debug) {
-            this._node.dataset.animationTime = time;
-            this._node.dataset.animationProgress = progress;
+        if (this.#options.debug) {
+            this.#node.dataset.animationTime = time;
+            this.#node.dataset.animationProgress = progress;
         }
 
         try {
-            this._callback(this._node, progress, this._options);
+            this.#callback(this.#node, progress, this.#options);
         } catch (error) {
-            if (this._options.debug) {
-                delete this._node.dataset.animationStart;
-                delete this._node.dataset.animationTime;
-                delete this._node.dataset.animationProgress;
+            if (this.#options.debug) {
+                delete this.#node.dataset.animationStart;
+                delete this.#node.dataset.animationTime;
+                delete this.#node.dataset.animationProgress;
             }
 
-            this._isFinished = true;
-            this._reject(error);
+            this.#isFinished = true;
+            this.#reject(error);
 
             return true;
         }
@@ -208,16 +217,16 @@ export default class Animation {
             return false;
         }
 
-        if (this._options.debug) {
-            delete this._node.dataset.animationStart;
-            delete this._node.dataset.animationTime;
-            delete this._node.dataset.animationProgress;
+        if (this.#options.debug) {
+            delete this.#node.dataset.animationStart;
+            delete this.#node.dataset.animationTime;
+            delete this.#node.dataset.animationProgress;
         }
 
-        if (!this._isFinished) {
-            this._isFinished = true;
+        if (!this.#isFinished) {
+            this.#isFinished = true;
 
-            this._resolve(this._node);
+            this.#resolve(this.#node);
         }
 
         return true;

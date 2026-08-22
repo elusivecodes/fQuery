@@ -1,6 +1,6 @@
 {
     "name": "@fr0st/query",
-    "version": "4.0.0",
+    "version": "4.0.1",
     "private": false,
     "description": "Lightweight JavaScript library for DOM querying, traversal, manipulation, events, animation, AJAX, and browser utilities.",
     "keywords": [
